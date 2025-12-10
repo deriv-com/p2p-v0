@@ -560,7 +560,7 @@ export default function PaymentDetailsForm({
                     }
                   }}
                   placeholder={t("adForm.instructions")}
-                  className={`min-h-[120px] resize-none ${instructionsError ? "border-red-500" : ""}`}
+                  className={`min-h-[120px] resize-none ${instructionsError ? "border-red-500 focus:border-red-500" : ""}`}
                   maxLength={300}
                 />
                 {instructionsError && (
