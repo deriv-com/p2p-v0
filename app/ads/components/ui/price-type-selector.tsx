@@ -79,16 +79,18 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-        </TooltipTrigger>
-        <TooltipContent>
-          <p className="text-white">Set a constant price, unaffected by market fluctuations.</p>
-          <TooltipArrow className="fill-black" />
-        </TooltipContent>
-      </Tooltip>
+      {marketPrice ? 
+        (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>) :
+        (<Tooltip>
+          <TooltipTrigger asChild>
+            <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="text-white">Set a constant price, unaffected by market fluctuations.</p>
+            <TooltipArrow className="fill-black" />
+          </TooltipContent>
+        </Tooltip>)
+      }
       {isMobile ? (
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
