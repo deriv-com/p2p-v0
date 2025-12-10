@@ -99,7 +99,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         }
         {isMobile ? (
           <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
+            <DrawerTrigger asChild>{marketPrice && triggerButton}</DrawerTrigger>
             <DrawerContent>
               <div className="px-4 pb-6">
                 <div className="py-4">
