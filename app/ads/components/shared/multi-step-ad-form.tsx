@@ -590,7 +590,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                   <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
                 </div>
 
-                <div className="w-full md:w-[70%]">
+                <div className="w-full md:w-[100%]">
                   <div className="flex gap-[4px] items-center mb-4">
                     <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
                     <TooltipProvider>

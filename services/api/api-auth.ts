@@ -1,5 +1,4 @@
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getFeatureFlag } from "./api-remote-config"
 
 export interface LoginRequest {
   email: string
@@ -138,10 +137,11 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
   const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
-  
+
   try {
-    if(isOryEnabled) {
-      const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
+    if (isOryEnabled) {
+      const url =
+        process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
         method: "GET",
@@ -156,23 +156,21 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       const result = await response.json()
       const { data } = result
-      console.log(data)
 
-      if(data.recovery_link) {
+      if (data.recovery_link) {
         const recoveryResponse = await fetch(data.recovery_link, {
-          method: 'GET',
-          redirect: 'manual',
-          credentials: 'include',
+          method: "GET",
+          redirect: "manual",
+          credentials: "include",
         })
-      
-        if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
-          window.location.href = url
+
+        if (recoveryResponse.ok || recoveryResponse.type === "opaqueredirect") {
           return data
         } else {
-          throw new Error('Failed to process recovery link')
+          throw new Error("Failed to process recovery link")
         }
       }
-      
+
       return data
     } else {
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
@@ -206,7 +204,9 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 export async function getSession(): Promise<boolean> {
   try {
     const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
-    const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
+    const sessionUrl = isOryEnabled
+      ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami`
+      : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
       method: "GET",
@@ -215,7 +215,6 @@ export async function getSession(): Promise<boolean> {
 
     return response.status === 200
   } catch (error) {
-    console.error(error)
     return false
   }
 }
@@ -251,7 +250,7 @@ export async function logout(): Promise<void> {
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
-  
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
@@ -259,28 +258,28 @@ export async function fetchUserIdAndStore(): Promise<void> {
     })
 
     const result = await response.json()
-    
+
     if (response.status === 403) {
       const errors = result?.errors || []
-      const isUserDisabled = errors.some((error: any) => 
-        error.code === "UserDisabled" || error.message?.includes("UserDisabled")
+      const isUserDisabled = errors.some(
+        (error: any) => error.code === "UserDisabled" || error.message?.includes("UserDisabled"),
       )
-      
+
       if (isUserDisabled) {
         useUserDataStore.getState().updateUserData({
-          balances: [{amount: "0"}],
+          balances: [{ amount: "0" }],
           signup: "v2",
-          status: "disabled"
+          status: "disabled",
         })
         return
       }
     }
-    
+
     if (!response.ok) {
       useUserDataStore.getState().updateUserData({
-          balances: [{amount: "0"}],
-          signup: "v2"
-        })
+        balances: [{ amount: "0" }],
+        signup: "v2",
+      })
       return
     }
 
@@ -303,7 +302,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
       const { userData } = useUserDataStore.getState()
       if (userData) {
-      
         useUserDataStore.getState().updateUserData({
           adverts_are_listed: result.data.adverts_are_listed,
           signup: result.data.signup,
@@ -315,11 +313,10 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
     } else {
       useUserDataStore.getState().updateUserData({
-          balances: [{amount: "0"}],
-          signup: "v2"
-        })
+        balances: [{ amount: "0" }],
+        signup: "v2",
+      })
     }
-  
   } catch (error) {
     console.error("Error fetching user ID:", error)
   }
@@ -327,7 +324,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-  
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
       method: "GET",
       credentials: "include",
