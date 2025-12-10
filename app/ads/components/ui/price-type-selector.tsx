@@ -80,8 +80,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
   return (
     <TooltipProvider>
       <div className="space-y-4">
-        {value == "float" && marketPrice ? 
-          (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>) :
+        {value == "float" && !marketPrice ? 
           (
             <div className="flex items-center">
               <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
@@ -95,7 +94,8 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 </TooltipContent>
               </Tooltip>
             </div>
-          )
+          ) :
+          (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>)
         }
         {isMobile ? (
           <Drawer open={open} onOpenChange={setOpen}>
