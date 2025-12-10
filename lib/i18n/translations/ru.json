@@ -371,8 +371,7 @@
     "invalidEmail": "Неверный адрес электронной почты",
     "invalidAmount": "Неверная сумма",
     "minAmount": "Минимальная сумма {min}",
-    "maxAmount": "Максимальная сумма {max}",
-    "instructionsInvalidCharacters": "Разрешены только буквы, цифры и пробелы"
+    "maxAmount": "Максимальная сумма {max}"
   },
   "myAds": {
     "title": "Все объявления",

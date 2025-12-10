@@ -565,7 +565,7 @@ export default function PaymentDetailsForm({
                 />
                 {instructionsError && (
                   <div className="flex items-center gap-2 mt-2 text-red-500 text-sm mx-4">
-                    <span>{t("adForm.instructionsInvalidCharacters")}</span>
+                    <span>Please enter allowed characters</span>
                   </div>
                 )}
                 <div className="flex justify-between items-start mt-2 text-xs text-gray-500 mx-4">

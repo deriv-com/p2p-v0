@@ -373,8 +373,7 @@
     "invalidEmail": "Địa chỉ email không hợp lệ",
     "invalidAmount": "Số tiền không hợp lệ",
     "minAmount": "Số tiền tối thiểu là {min}",
-    "maxAmount": "Số tiền tối đa là {max}",
-    "instructionsInvalidCharacters": "Chỉ cho phép chữ cái, số và khoảng trắng"
+    "maxAmount": "Số tiền tối đa là {max}"
   },
   "myAds": {
     "title": "Tất cả quảng cáo",

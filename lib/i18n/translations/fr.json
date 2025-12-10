@@ -324,8 +324,7 @@
     "validationSymbolsOnly": "Seuls les lettres, chiffres, espaces et symboles -+.,'#@():; sont autorisés",
     "fieldRequired": "{field} est obligatoire",
     "enterField": "Entrez {field}",
-    "tryAgain": "Réessayer",
-    "instructionsInvalidCharacters": "Seuls les lettres, les chiffres et les espaces sont autorisés"
+    "tryAgain": "Réessayer"
   },
   "wallet": {
     "title": "Portefeuille",
