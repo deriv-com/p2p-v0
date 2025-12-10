@@ -39,8 +39,7 @@ export function FloatingRateInput({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Remove percentage symbol and any extra whitespace
-    const newValue = e.target.value.replace(/%/g, "").trim()
+    const newValue = e.target.value.replace("%", "").trim()
 
     if (newValue === "" || newValue === "-") {
       onChange(newValue)
@@ -51,11 +50,7 @@ export function FloatingRateInput({
     if (/^-?\d*\.?\d{0,2}$/.test(newValue)) {
       const numValue = Number.parseFloat(newValue)
       // Only validate range if it's a complete number, not a partial decimal
-      if (
-        newValue.endsWith(".") ||
-        (newValue.includes(".") && newValue.split(".")[1].length === 0) ||
-        isNaN(numValue)
-      ) {
+      if (newValue.endsWith(".") || isNaN(numValue)) {
         onChange(newValue)
       } else if (numValue >= -100 && numValue <= 100) {
         onChange(newValue)
@@ -80,14 +75,14 @@ export function FloatingRateInput({
             <div className="flex-1 relative">
               <Input
                 type="text"
-                value={value !== "" && value !== null && value !== undefined ? `${value}%` : ""}
+                value={`${value}%`}
                 onChange={handleChange}
                 onBlur={() => {
                   setIsFocused(false)
                   onBlur?.()
                 }}
                 onFocus={() => setIsFocused(true)}
-                placeholder="0%"
+                placeholder=""
                 aria-invalid={error}
                 className="pr-8 border-0 h-[56px] text-grayscale-600"
               />
