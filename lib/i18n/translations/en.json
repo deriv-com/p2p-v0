@@ -527,7 +527,7 @@
     "chooseYourAudience": "Choose your audience",
     "audienceTooltip": "You can filter who interacts with your ads based on their location or P2P history. Stricter filters may reduce ad visibility.",
     "adVisibility": "Ad visibility",
-    "adVisibilityTooltip": "Choose who can see your ad on the marketplace.",
+    "adVisibilityTooltip": "Choose who can see and interact with your ads on the marketplace.",
     "everyone": "Everyone",
     "everyoneDescription": "Your ad will be visible to everyone on the marketplace.",
     "closedGroup": "Closed group",
