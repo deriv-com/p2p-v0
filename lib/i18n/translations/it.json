@@ -375,14 +375,18 @@
     "unauthorized": "Non sei autorizzato a eseguire questa azione.",
     "notFound": "La risorsa richiesta non è stata trovata.",
     "invalidExchangeRateMessage": "Il tasso di cambio fornito non è valido.",
-    "invalidOrderAmountMessage": "I limiti dell'importo dell'ordine non sono validi."
+    "invalidOrderAmountMessage": "I limiti dell'importo dell'ordine non sono validi.",
+    "genericErrorCodeMessage": "Riprova o contatta l'assistenza.",
+    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova.",
+    "unknownErrorMessage": "Si è verificato un errore sconosciuto"
   },
   "validation": {
     "required": "Questo campo è obbligatorio",
     "invalidEmail": "Indirizzo email non valido",
     "invalidAmount": "Importo non valido",
     "minAmount": "L'importo minimo è {min}",
-    "maxAmount": "L'importo massimo è {max}"
+    "maxAmount": "L'importo massimo è {max}",
+    "instructionsInvalidCharacters": "Sono consentite solo lettere, numeri e spazi"
   },
   "myAds": {
     "title": "Tutti gli annunci",
@@ -537,10 +541,7 @@
     "amountExceedsBalanceMessage": "L'importo totale supera il tuo saldo disponibile. Inserisci un importo inferiore.",
     "selectPayment": "Seleziona metodo di pagamento",
     "selected": "Selezionati {{count}}",
-    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato",
-    "genericErrorCodeMessage": "Riprova o contatta l'assistenza.",
-    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova.",
-    "unknownErrorMessage": "Si è verificato un errore sconosciuto"
+    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato"
   },
   "advertiser": {
     "goBack": "Torna Indietro",

@@ -370,7 +370,8 @@
     "invalidEmail": "অবৈধ ইমেল ঠিকানা",
     "invalidAmount": "অবৈধ পরিমাণ",
     "minAmount": "সর্বনিম্ন পরিমাণ হল {min}",
-    "maxAmount": "সর্বোচ্চ পরিমাণ হল {max}"
+    "maxAmount": "সর্বোচ্চ পরিমাণ হল {max}",
+    "instructionsInvalidCharacters": "শুধুমাত্র অক্ষর, সংখ্যা এবং স্পেস অনুমোদিত"
   },
   "myAds": {
     "title": "সকল বিজ্ঞাপন",

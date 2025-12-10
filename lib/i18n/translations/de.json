@@ -365,14 +365,18 @@
     "unauthorized": "Sie sind nicht berechtigt, diese Aktion auszuführen.",
     "notFound": "Die angeforderte Ressource wurde nicht gefunden.",
     "invalidExchangeRateMessage": "Der von Ihnen angegebene Wechselkurs ist ungültig.",
-    "invalidOrderAmountMessage": "Die Bestellbetragsgrenzen sind ungültig."
+    "invalidOrderAmountMessage": "Die Bestellbetragsgrenzen sind ungültig.",
+    "genericErrorCodeMessage": "Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
+    "genericProcessingErrorMessage": "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten"
   },
   "validation": {
     "required": "Dieses Feld ist erforderlich",
     "invalidEmail": "Ungültige E-Mail-Adresse",
     "invalidAmount": "Ungültiger Betrag",
     "minAmount": "Mindestbetrag ist {min}",
-    "maxAmount": "Höchstbetrag ist {max}"
+    "maxAmount": "Höchstbetrag ist {max}",
+    "instructionsInvalidCharacters": "Nur Buchstaben, Zahlen und Leerzeichen sind erlaubt"
   },
   "myAds": {
     "title": "Alle Anzeigen",
