@@ -280,6 +280,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         InvalidOrderAmount: t("adForm.invalidOrderAmountMessage"),
         InsufficientBalance: t("adForm.insufficientBalanceMessage"),
         AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
+        AdvertActiveCountExceeded: "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad."
       }
 
       if (errorCodeMap[errors[0].code]) {
