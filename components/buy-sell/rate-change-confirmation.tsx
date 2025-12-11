@@ -14,6 +14,7 @@ interface RateChangeConfirmationProps {
   paymentCurrency: string
   oldRate: number
   newRate: number
+  isBuy: boolean
 }
 
 export default function RateChangeConfirmation({
@@ -25,6 +26,7 @@ export default function RateChangeConfirmation({
   paymentCurrency,
   oldRate,
   newRate,
+  isBuy,
 }: RateChangeConfirmationProps) {
   const isMobile = useIsMobile()
 
