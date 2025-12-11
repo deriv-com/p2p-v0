@@ -183,9 +183,9 @@ export function RatingSidebar({
 
   if (!isOpen) return null
 
-  const displayTitle = title || t("ratingSidebar.title")
-  const displayRatingLabel = ratingLabel || t("ratingSidebar.ratingLabel")
-  const displayRecommendLabel = recommendLabel || t("ratingSidebar.recommendLabel")
+  const displayTitle = t("ratingSidebar.title") || title
+  const displayRatingLabel = t("ratingSidebar.ratingLabel") || ratingLabel
+  const displayRecommendLabel = t("ratingSidebar.recommendLabel") || recommendLabel
 
   if (isMobile) {
     return (
