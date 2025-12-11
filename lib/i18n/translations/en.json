@@ -317,7 +317,8 @@
     "validationSymbolsOnly": "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
     "fieldRequired": "{field} is required",
     "enterField": "Enter {field}",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "noResultForPrefix": "There is no result for"
   },
   "wallet": {
     "title": "Wallet",
