@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import { getAdvertStatistics } from "@/services/api/api-auth"
 import Image from "next/image"
-import { currencyLogoMapper } from "@/lib/utils"
+import { currencyFlagMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 
