@@ -143,6 +143,19 @@ export default function BuySellPage() {
   }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
+    const fetchAdvertStatistics = async () => {
+      try {
+        const statistics = await BuySellAPI.getAdvertStatistics("USD")
+        console.log("[v0] Advert Statistics Response:", statistics)
+      } catch (error) {
+        console.error("[v0] Error fetching advert statistics:", error)
+      }
+    }
+
+    fetchAdvertStatistics()
+  }, [])
+
+  useEffect(() => {
     fetchBalance()
   }, [fetchBalance])
 

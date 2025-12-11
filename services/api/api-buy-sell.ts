@@ -425,6 +425,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
     try {
       data = JSON.parse(responseText)
     } catch (e) {
+      console.error("Failed to parse response:", e)
       data = { data: [] }
     }
 
@@ -436,5 +437,41 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
   } catch (error) {
     // Return empty array on error to prevent map errors
     return []
+  }
+}
+
+/**
+ * Get advert statistics for a specific currency
+ * @param accountCurrency - The currency code (default: USD)
+ * @returns Promise with the advert statistics data
+ */
+export async function getAdvertStatistics(accountCurrency = "USD"): Promise<any> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.advertStatistics}/${accountCurrency}`
+    const headers = AUTH.getAuthHeader()
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      console.error("Error Response:", response.status, response.statusText)
+      throw new Error(`Error fetching advert statistics: ${response.statusText}`)
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      console.error("Failed to parse response:", e)
+      data = {}
+    }
+
+    return data
+  } catch (error) {
+    console.error("Error fetching advert statistics:", error)
+    return null
   }
 }
