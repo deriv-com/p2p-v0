@@ -541,6 +541,7 @@
     "maximumOrder": "Pedido máximo",
     "orderTimeLimit": "Limite de tempo do pedido",
     "orderTimeLimitTooltip": "Os pedidos expirarão se não forem concluídos dentro deste prazo.",
+    "orderTimeLimitPlaceholder": "Os pedidos devem ser concluídos em",
     "timeLimit15Minutes": "15 minutos",
     "timeLimit30Minutes": "30 minutos",
     "timeLimit45Minutes": "45 minutos",
