@@ -371,7 +371,7 @@ export default function AdDetailsForm({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
-                <label className="block mb-2 ext-slate-1200 text-sm font-normal leading-5">
+                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
                   {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
@@ -384,8 +384,8 @@ export default function AdDetailsForm({
                               currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
                             alt={`${buyCurrency} logo`}
-                            width={20}
-                            height={20}
+                            width={24}
+                            height={24}
                             className="w-5 h-5 rounded-full object-contain"
                           />
                         )}
