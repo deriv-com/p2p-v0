@@ -38,7 +38,7 @@ export default function RateChangeConfirmation({
         The exchange rate for your order has changed
         </p>
         <p className="text-grayscale-100 text-base">
-          You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}. The rate may vary slightly due to market movements. 
+          You’re {buySellLabel} {amount} {accountCurrency} for {newTotal} {paymentCurrency}, but the new rate is {newRate} {paymentCurrency}.
         </p>
         <p className="text-grayscale-100 text-base">
         Would you like to continue with the new rate?
