@@ -39,8 +39,7 @@ export function FloatingRateInput({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Remove percentage symbol and any extra whitespace
-    const newValue = e.target.value.replace(/%/g, "").trim()
+    const newValue = e.target.value.replace("%", "").trim()
 
     if (newValue === "" || newValue === "-") {
       onChange(newValue)
