@@ -389,7 +389,7 @@ export default function AdDetailsForm({
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span>{buyCurrency}</span>
+                        <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
                       </div>
                     </SelectValue>
                   </SelectTrigger>
