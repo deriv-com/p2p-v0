@@ -41,7 +41,7 @@ export default function RateChangeConfirmation({
           You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}. The rate may vary slightly due to market movements. 
         </p>
         <p className="text-grayscale-100 text-base">
-          If the rate changes significantly, we can’t process your order.
+          Would you like to continue with the new rate?
         </p>
       </div>
       <div className="flex flex-col gap-3">
