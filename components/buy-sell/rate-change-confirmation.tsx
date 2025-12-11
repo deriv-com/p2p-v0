@@ -65,7 +65,7 @@ export default function RateChangeConfirmation({
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
         <DrawerContent className="px-6 pb-8">
-          <DrawerTitle className="text-2xl font-bold my-4">Market rate changed</DrawerTitle>
+          <DrawerTitle className="text-2xl font-bold my-4">Exchange rate updated</DrawerTitle>
           {content}
         </DrawerContent>
       </Drawer>
@@ -75,7 +75,7 @@ export default function RateChangeConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
       <DialogContent className="p-[32px] sm:rounded-[32px]">
-        <DialogTitle className="font-bold text-2xl mb-4">Market rate changed</DialogTitle>
+        <DialogTitle className="font-bold text-2xl mb-4">Exchange rate updated</DialogTitle>
         {content}
       </DialogContent>
     </Dialog>
