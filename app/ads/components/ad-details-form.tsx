@@ -167,7 +167,7 @@ export default function AdDetailsForm({
   }, [isConnected])
 
   useEffect(() => {
-    if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
+    if (!buyCurrency || !forCurrency || !isConnected) return
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
