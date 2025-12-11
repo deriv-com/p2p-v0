@@ -297,7 +297,7 @@
     "blockedUsersAppear": "Users you block will appear here.",
     "loadingUsers": "Loading users...",
     "noPaymentMethodsYet": "No payment method",
-    "startAddingPaymentMethods": "Start adding payment methods",
+    "startAddingPaymentMethods": "You haven't added any payment method yet.",
     "edit": "Edit",
     "delete": "Delete",
     "deletePaymentMethodTitle": "Delete payment method?",
