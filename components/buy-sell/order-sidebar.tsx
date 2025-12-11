@@ -272,7 +272,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           showAlert({
             title: "The rate moved too much",
             description:
-              "The market price moved before we could place your order. Try again to proceed with the latest rate.",
+              "The market rate moved significantly before we could place your order. Try again with the latest rate.",
             confirmText: "Try again",
             type: "warning",
           })
