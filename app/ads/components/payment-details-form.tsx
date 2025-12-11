@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import { ProfileAPI } from "@/services/api"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
@@ -63,8 +65,10 @@ const FullPagePaymentSelection = ({
   onAddPaymentMethod: () => void
 }) => {
   const { t } = useTranslations()
+  const isMobile = useIsMobile()
   const [localSelected, setLocalSelected] = useState<string[]>(selectedPaymentMethods)
   const [searchQuery, setSearchQuery] = useState("")
+  const [isSearchFocused, setIsSearchFocused] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
@@ -99,84 +103,133 @@ const FullPagePaymentSelection = ({
     onClose()
   }
 
-  if (!isOpen) return null
-
-  return (
-    <div className="fixed inset-0 z-50 bg-white">
-      <div className="max-w-xl mx-auto flex flex-col w-full h-full">
-        <div className="flex items-center justify-end p-6 pb-4">
-          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
-          </Button>
+  const content = (
+    <>
+      {isMobile && (
+        <div className="px-4 pb-4 text-center">
+          <p className="text-base text-grayscale-600">{t("paymentMethod.selectUpTo3")}</p>
         </div>
-        <div className="px-6 pb-4">
-          <h2 className="text-2xl font-bold mb-6">{t("paymentMethod.title")}</h2>
-          <div className="relative">
-            <Image
-              src="/icons/search-icon-custom.png"
-              alt="Search"
-              width={20}
-              height={20}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
-            />
-            <Input
-              type="text"
-              placeholder={t("common.search")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="px-6 pb-4">
-          <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
-        </div>
-        <div className="flex-1 overflow-y-auto px-6 space-y-3">
-          {filteredMethods.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-600">{t("adForm.noPaymentMethodsFound")}</p>
-            </div>
-          ) : (
-            filteredMethods.map((method) => {
-              const methodId = getMethodId(method)
-              const isSelected = localSelected.includes(methodId)
-              const isDisabled = !isSelected && localSelected.length >= 3
-
-              return (
-                <div
-                  key={methodId}
-                  className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors ${
-                    isDisabled ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  onClick={() => !isDisabled && handleToggle(methodId)}
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`h-2 w-2 rounded-full ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
-                    />
-                    <span className="text-base text-slate-1200">{method.display_name}</span>
-                  </div>
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <Checkbox
-                      checked={isSelected}
-                      disabled={isDisabled}
-                      onCheckedChange={() => !isDisabled && handleToggle(methodId)}
-                      className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
-                    />
-                  </div>
-                </div>
-              )
-            })
+      )}
+      <div className={isMobile ? "px-4 pb-6" : ""}>
+        <div className="relative">
+          <Image
+            src="/icons/search-icon-custom.png"
+            alt="Search"
+            width={24}
+            height={24}
+            className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
+          />
+          <Input
+            type="text"
+            placeholder={t("common.search")}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+            className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${
+              searchQuery.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
+            }`}
+          />
+          {searchQuery && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
+            >
+              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+            </Button>
           )}
         </div>
-
-        <div className="p-6 pt-4 self-end">
-          <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary">
-            {t("common.confirm")}
-          </Button>
-        </div>
       </div>
-    </div>
+      {!isMobile && filteredMethods.length > 0 && (
+        <div className="my-0">
+          <p className="text-base text-slate-1200">{t("paymentMethod.selectUpTo3")}</p>
+        </div>
+      )}
+      <div className="flex-1 overflow-y-auto px-4 md:px-0 space-y-2">
+        {filteredMethods.length === 0 ? (
+          <div className="text-center pt-0 pb-4 md:pt-4 md:pb-8 flex flex-col items-center">
+            <Image src="/icons/magnifier.png" alt="No results" width={88} height={88} className="mb-0" />
+            <p className="text-slate-1200 text-base font-bold text-center mb-2">
+              {t("paymentMethod.noMatchingPayment")}
+            </p>
+            <p className="text-grayscale-text-muted text-base text-center">
+              {t("profile.noResultForPrefix")} &quot;{searchQuery}&quot;
+            </p>
+          </div>
+        ) : (
+          filteredMethods.map((method) => {
+            const methodId = getMethodId(method)
+            const isSelected = localSelected.includes(methodId)
+            const isDisabled = !isSelected && localSelected.length >= 3
+
+            return (
+              <div
+                key={methodId}
+                className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer ${
+                  isSelected ? "border border-black" : "border border-transparent"
+                } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                onClick={() => !isDisabled && handleToggle(methodId)}
+              >
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`h-[10px] w-[10px] rounded-full mx-[11px] ${method.type === "bank" ? "bg-[#26A44E]" : "bg-[#3DAAFF]"}`}
+                  />
+                  <span className="text-base text-slate-1200">{method.display_name}</span>
+                </div>
+                <div onClick={(e) => e.stopPropagation()}>
+                  <Checkbox
+                    checked={isSelected}
+                    disabled={isDisabled}
+                    onCheckedChange={() => !isDisabled && handleToggle(methodId)}
+                    className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-grayscale-text-muted rounded-[2px]"
+                  />
+                </div>
+              </div>
+            )
+          })
+        )}
+      </div>
+      <div className={isMobile ? "p-4 pt-4" : "pt-4"}>
+        <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary" className="w-full">
+          {t("common.confirm")}
+        </Button>
+      </div>
+    </>
+  )
+
+  if (isMobile) {
+    return (
+      <Drawer open={isOpen} onOpenChange={onClose}>
+        <DrawerContent className="max-h-[90vh]">
+          <DrawerHeader className="pb-[10px]">
+            <DrawerTitle className="text-[20px] font-bold">{t("paymentMethod.title")}</DrawerTitle>
+          </DrawerHeader>
+          {content}
+        </DrawerContent>
+      </Drawer>
+    )
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
+        <DialogHeader className="relative mb-4">
+          <DialogTitle className="text-2xl font-extrabold mt-0">{t("paymentMethod.title")}</DialogTitle>
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="icon"
+            className="absolute right-[-16px] top-[-16px] p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12 pb-4"
+            aria-label="Close"
+          >
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
+          </Button>
+        </DialogHeader>
+        {content}
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -236,7 +289,7 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full md:h-[60vh] md:max-h-[600px]">
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
-        {paymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
+        {paymentMethods && <div className="text-grayscale-600">{t("paymentMethod.selectUpTo3")}</div>}
         {paymentMethods.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-600 mb-4">{t("adForm.noPaymentMethodsFound")}</p>
@@ -478,7 +531,9 @@ export default function PaymentDetailsForm({
                   onClick={() => handleShowPaymentSelection()}
                   type="button"
                 >
-                  <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
+                  <span className="text-left font-normal text-base text-black/[0.72]">
+                    {getSelectedPaymentMethodsText()}
+                  </span>
                   <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
                 </Button>
               </div>
