@@ -80,7 +80,7 @@ export function FloatingRateInput({
                   onBlur?.()
                 }}
                 onFocus={() => setIsFocused(true)}
-                placeholder="0%"
+                placeholder=""
                 aria-invalid={error}
                 className="pr-8 border-0 h-[56px] text-grayscale-600"
               />
