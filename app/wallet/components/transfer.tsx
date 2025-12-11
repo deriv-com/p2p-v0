@@ -134,7 +134,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [showMobileConfirmSheet, setShowMobileConfirmSheet] = useState(false)
   const [showDesktopConfirmPopup, setShowDesktopConfirmPopup] = useState(false)
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
-  const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
+  const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(() => {
+    console.log("[v0] Initial sourceWalletData state")
+    return null
+  })
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
 
   const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
@@ -206,9 +209,18 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }, [])
 
   useEffect(() => {
+    // Add debug log to trace loadWallets useEffect
+    console.log("[v0] loadWallets useEffect triggered", {
+      selectedCurrency,
+      hasCurrenciesData: !!currenciesData,
+      hasSourceWalletData: !!sourceWalletData,
+    })
+
     if (!selectedCurrency) return
 
     const loadWallets = async () => {
+      // Add debug log to trace loadWallets function
+      console.log("[v0] Starting loadWallets function")
       try {
         const response = await fetchWalletsList()
 
@@ -261,7 +273,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
 
+          // Add debug log for P2P wallet finding and sourceWalletData state
+          console.log("[v0] P2P wallet found:", p2pWallet)
+          console.log("[v0] Current sourceWalletData:", sourceWalletData)
+
           if (p2pWallet && !sourceWalletData) {
+            // Add debug log when setting sourceWalletData
+            console.log("[v0] Setting sourceWalletData to P2P wallet")
             setSourceWalletData({
               id: p2pWallet.wallet_id,
               name: p2pWallet.name,
@@ -697,16 +715,25 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency
 
     if (numAmount < effectiveMinAmount && effectiveMinAmount > 0) {
-      return t("wallet.minimumTransfer", { amount: formatAmountByCurrency(effectiveMinAmount), currency: effectiveCurrency || ""})
+      return t("wallet.minimumTransfer", {
+        amount: formatAmountByCurrency(effectiveMinAmount),
+        currency: effectiveCurrency || "",
+      })
     }
 
     const minAmount = getMinimumAmount()
     if (numAmount < minAmount) {
-      return t("wallet.minimumTransferAmount", { amount: formatAmountWithDecimals(minAmount), currency: selectedCurrency || "USD"})
+      return t("wallet.minimumTransferAmount", {
+        amount: formatAmountWithDecimals(minAmount),
+        currency: selectedCurrency || "USD",
+      })
     }
 
     if (numAmount > sourceBalance) {
-      return t("wallet.exceedsBalance", { amount: formatAmountWithDecimals(sourceBalance.toString()), currency: selectedCurrency || "USD"})
+      return t("wallet.exceedsBalance", {
+        amount: formatAmountWithDecimals(sourceBalance.toString()),
+        currency: selectedCurrency || "USD",
+      })
     }
 
     return ""
@@ -950,6 +977,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -996,6 +1024,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1011,6 +1040,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1167,6 +1197,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1213,6 +1244,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1228,6 +1260,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1506,6 +1539,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1521,6 +1555,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
