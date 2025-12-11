@@ -305,6 +305,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       setAmount(null)
       setValidationError(null)
       setTempSelectedPaymentMethods([])
+      setShowRateChangeConfirmation(false)
       onClose()
     }, 300)
   }
