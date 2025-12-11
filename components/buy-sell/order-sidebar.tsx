@@ -463,7 +463,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                       onClick={handleShowPaymentSelection}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
+                        <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
                         <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </div>
