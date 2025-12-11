@@ -238,7 +238,7 @@ export default function WalletSummary({
                 size="icon"
                 className={cn(
                   "h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white",
-                  !hasBalance && " opacity-24 cursor-not-allowed",
+                  !hasBalance && "opacity-24 cursor-not-allowed",
                 )}
                 onClick={handleTransferClick}
                 disabled={!hasBalance}
