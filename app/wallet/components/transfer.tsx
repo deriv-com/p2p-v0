@@ -211,7 +211,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
     const loadWallets = async () => {
       try {
-        console.log("[v0] Loading wallets with currenciesData available")
         const response = await fetchWalletsList()
 
         if (response?.data?.wallets) {
@@ -406,7 +405,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         countdownIntervalRef.current = setInterval(() => {
           setCountdown((prev) => {
             if (prev <= 1) {
-              // Refetch exchange rate when countdown reaches 0
               fetchAndSetExchangeRate()
               return 30
             }
@@ -435,7 +433,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       return
     }
 
-    // Check if currencies are different
+
     if (sourceWalletData.currency === destinationWalletData.currency) {
       setShowCurrencySwitcher(false)
       setExchangeRateData(null)
@@ -457,7 +455,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
     if (hasFee) {
       setShowCurrencySwitcher(true)
-      // Fetch exchange rate if fee exists
       fetchAndSetExchangeRate()
     } else {
       setShowCurrencySwitcher(false)
@@ -465,7 +462,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }, [sourceWalletData, destinationWalletData, currenciesData, fetchAndSetExchangeRate])
 
-  // This was causing the toggle to disappear when amount was not entered
+
 
   useEffect(() => {
     const calculation = calculateTransferFeeWithExchangeRate()
@@ -532,14 +529,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       }
 
       if (result?.errors && result.errors.length > 0) {
-        // Error case: extract message from first error
         const errorMessage = result.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
         toUnsuccessful()
       } else if (!result?.data?.errors || result.data.errors.length === 0) {
-        // Success case
         if (result?.data?.external_reference_id) {
           setExternalReferenceId(result.data.external_reference_id)
         }
@@ -547,7 +542,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         setShowMobileConfirmSheet(false)
         toSuccess()
       } else {
-        // Fallback error case
         const errorMessage = result.data.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
         setShowDesktopConfirmPopup(false)
@@ -575,7 +569,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       const response = await fetchTransactionByReferenceId(requestId)
 
       if (response?.data?.transactions && response.data.transactions.length > 0) {
-        // Get the first transaction from the response
         const transaction = response.data.transactions[0]
         setSelectedTransaction(transaction)
       } else {
