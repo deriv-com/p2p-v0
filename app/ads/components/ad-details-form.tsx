@@ -457,7 +457,7 @@ export default function AdDetailsForm({
                               className="w-5 h-5 rounded-full object-contain"
                             />
                           )}
-                          <span>{currency.code}</span>
+                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
                         </div>
                       </SelectItem>
                     ))}
