@@ -53,7 +53,7 @@ export default function OrderDetailsPage() {
   const [isConfirmLoading, setIsConfirmLoading] = useState(false)
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [showRatingSidebar, setShowRatingSidebar] = useState(false)
+  const [showRatingSidebar, setShowRatingSidebar] = useState(true)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState(false)
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
