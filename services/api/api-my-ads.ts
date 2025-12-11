@@ -484,6 +484,7 @@ export async function createAd(
       if (responseData.errors && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
         if (responseData.errors[0].code) {
           errorCode = responseData.errors[0].code
+          console.log(errorCode)
 
           switch (errorCode) {
             case "AdvertExchangeRateDuplicate":
