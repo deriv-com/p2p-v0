@@ -252,25 +252,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const formatErrorMessage = (errors: any[]): string => {
-
     if (!errors || errors.length === 0) {
-      return t("adForm.unknownErrorMessage")
-    }
-
-    if (errors[0].code === "AdvertExchangeRateDuplicate") {
-      const error = new Error(t("adForm.duplicateRateMessage"))
-      error.name = "AdvertExchangeRateDuplicate"
-      throw error
-    }
-
-    if (errors[0].code === "AdvertOrderRangeOverlap") {
-      const error = new Error(t("adForm.rangeOverlapMessage"))
-      error.name = "AdvertOrderRangeOverlap"
-      throw error
-    }
-
-    if (errors[0].message) {
-      return errors[0].message
+      return t("adForm.genericProcessingErrorMessage")
     }
 
     if (errors[0].code) {
@@ -280,7 +263,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         InvalidOrderAmount: t("adForm.invalidOrderAmountMessage"),
         InsufficientBalance: t("adForm.insufficientBalanceMessage"),
         AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
-        AdvertActiveCountExceeded: "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad."
+        AdvertActiveCountExceeded: t("adForm.adLimitReachedMessage"),
       }
 
       if (errorCodeMap[errors[0].code]) {
@@ -430,10 +413,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           }
         } else if (error.name === "AdvertActiveCountExceeded") {
           errorInfo = {
-            title: "Ad limit reached",
-            message: "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
+            title: t("adForm.adLimitReachedTitle"),
+            message: t("adForm.adLimitReachedMessage"),
             type: "error",
-            actionButtonText: "OK",
+            actionButtonText: t("common.ok"),
           }
         } else {
           errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.name })

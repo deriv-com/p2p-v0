@@ -506,7 +506,8 @@ export async function createAd(
               errorMessage = "The total amount exceeds your available balance. Please enter a smaller amount."
               break
             case "AdvertActiveCountExceeded":
-              errorMessage = "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad."
+              errorMessage =
+                "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad."
               break
             default:
               errorMessage = "Please try again or contact support."
