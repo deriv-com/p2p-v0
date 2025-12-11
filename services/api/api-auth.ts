@@ -570,3 +570,27 @@ export async function createP2PUser(): Promise<CreateP2PUserResponse> {
     throw error
   }
 }
+
+/**
+ * Get advert statistics for a specific currency
+ * Returns minimum and maximum exchange rates for fixed and floating adverts
+ */
+export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/advert-statistics/${accountCurrency}`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch advert statistics: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching advert statistics:", error)
+    throw error
+  }
+}

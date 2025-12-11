@@ -106,6 +106,40 @@ export class WebSocketClient {
     this.send(joinMessage)
   }
 
+  public joinExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
+    const channel = forCurrency ? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    const joinMessage: WebSocketMessage = {
+      action: "join",
+      options: {
+        channel,
+      },
+      payload: {},
+    }
+    this.send(joinMessage)
+  }
+
+  public leaveExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
+    const channel = forCurrency ? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    this.leaveChannel(channel)
+  }
+
+  public joinAdvertsChannel(accountCurrency: string, localCurrency: string, advertType: string): void {
+    const channel = `adverts/currency/${accountCurrency}/${localCurrency}/${advertType}`
+    const joinMessage: WebSocketMessage = {
+      action: "join",
+      options: {
+        channel,
+      },
+      payload: {},
+    }
+    this.send(joinMessage)
+  }
+
+  public leaveAdvertsChannel(accountCurrency: string, localCurrency: string, advertType: string): void {
+    const channel = `adverts/currency/${accountCurrency}/${localCurrency}/${advertType}`
+    this.leaveChannel(channel)
+  }
+
   public joinUserChannel(): void {
     const joinMessage: WebSocketMessage = {
       action: "join",
@@ -184,6 +218,18 @@ export class WebSocketClient {
     }
     this.send(unsubscribeMessage)
   }
+
+  public requestExchangeRate(buyCurrency: string, forCurrency: string): void {
+    const channel = forCurrency ? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    const requestMessage: WebSocketMessage = {
+      action: "message",
+      options: {
+        channel,
+      },
+      payload: {},
+    }
+    this.send(requestMessage)
+  }
 }
 
 let wsClientInstance: WebSocketClient | null = null
@@ -204,6 +250,11 @@ interface WebSocketContextType {
   reconnect: () => void
   subscribeToUserUpdates: () => void
   unsubscribeFromUserUpdates: () => void
+  joinExchangeRatesChannel: (buyCurrency: string, forCurrency: string) => void
+  leaveExchangeRatesChannel: (buyCurrency: string, forCurrency: string) => void
+  requestExchangeRate: (buyCurrency: string, forCurrency: string) => void
+  joinAdvertsChannel: (accountCurrency: string, localCurrency: string, advertType: string) => void
+  leaveAdvertsChannel: (accountCurrency: string, localCurrency: string, advertType: string) => void
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -304,6 +355,26 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current?.unsubscribeFromUserUpdates()
   }
 
+  const joinExchangeRatesChannel = (buyCurrency: string, forCurrency: string) => {
+    wsClientRef.current?.joinExchangeRatesChannel(buyCurrency, forCurrency)
+  }
+
+  const leaveExchangeRatesChannel = (buyCurrency: string, forCurrency: string) => {
+    wsClientRef.current?.leaveExchangeRatesChannel(buyCurrency, forCurrency)
+  }
+
+  const requestExchangeRate = (buyCurrency: string, forCurrency: string) => {
+    wsClientRef.current?.requestExchangeRate(buyCurrency, forCurrency)
+  }
+
+  const joinAdvertsChannel = (accountCurrency: string, localCurrency: string, advertType: string) => {
+    wsClientRef.current?.joinAdvertsChannel(accountCurrency, localCurrency, advertType)
+  }
+
+  const leaveAdvertsChannel = (accountCurrency: string, localCurrency: string, advertType: string) => {
+    wsClientRef.current?.leaveAdvertsChannel(accountCurrency, localCurrency, advertType)
+  }
+
   const value: WebSocketContextType = {
     isConnected,
     joinChannel,
@@ -313,6 +384,11 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     reconnect,
     subscribeToUserUpdates,
     unsubscribeFromUserUpdates,
+    joinExchangeRatesChannel,
+    leaveExchangeRatesChannel,
+    requestExchangeRate,
+    joinAdvertsChannel,
+    leaveAdvertsChannel,
   }
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>
