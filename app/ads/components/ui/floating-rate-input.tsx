@@ -73,7 +73,7 @@ export function FloatingRateInput({
             <div className="flex-1 relative">
               <Input
                 type="text"
-                value={value !== "" && value !== null && value !== undefined ? `${value}%` : ""}
+                value={`${value}%`}
                 onChange={handleChange}
                 onBlur={() => {
                   setIsFocused(false)
