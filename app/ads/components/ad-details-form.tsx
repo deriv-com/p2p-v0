@@ -386,7 +386,7 @@ export default function AdDetailsForm({
                             alt={`${buyCurrency} logo`}
                             width={24}
                             height={24}
-                            className="w-5 h-5 rounded-full object-contain"
+                            className="w-6 h-6 rounded object-cover"
                           />
                         )}
                         <span>{buyCurrency}</span>
