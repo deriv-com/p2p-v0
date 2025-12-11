@@ -183,6 +183,7 @@ export default function AdDetailsForm({
           }
         } else {
           setMarketPrice(null)
+          setPriceType("fixed")
         }
       } else if (data.action === "error") {
         setMarketPrice(null)
