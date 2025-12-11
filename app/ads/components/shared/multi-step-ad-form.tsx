@@ -423,7 +423,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         } else if (error.name === "AdvertActiveCountExceeded") {
           errorInfo = {
             title: "Ad limit reached",
-            message: "You can have only 3 active ads for this currency pair and order type.",
+            message: "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
             type: "error",
             actionButtonText: "OK",
           }
