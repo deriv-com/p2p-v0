@@ -237,8 +237,8 @@ export default function WalletSummary({
               <Button
                 size="icon"
                 className={cn(
-                  "h-12 w-12 rounded-full p-0",
-                  !hasBalance ? "bg-[#FF444F]/40 cursor-not-allowed" : "bg-[#FF444F] hover:bg-[#E63946] text-white",
+                  "h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white",
+                  !hasBalance && "opacity-24 cursor-not-allowed",
                 )}
                 onClick={handleTransferClick}
                 disabled={!hasBalance}
@@ -246,18 +246,7 @@ export default function WalletSummary({
               >
                 <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
               </Button>
-              <span
-                className={cn(
-                  "text-xs font-normal",
-                  !hasBalance
-                    ? isBalancesView
-                      ? "text-white/40"
-                      : "text-slate-1200/40"
-                    : isBalancesView
-                      ? "text-white"
-                      : "text-slate-1200",
-                )}
-              >
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 {t("wallet.transfer")}
               </span>
             </div>
