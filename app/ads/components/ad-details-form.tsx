@@ -378,10 +378,10 @@ export default function AdDetailsForm({
                   <SelectTrigger className="w-full h-14 rounded-lg" disabled>
                     <SelectValue>
                       <div className="flex items-center gap-2">
-                        {currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] && (
+                        {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
                           <Image
                             src={
-                              currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
+                              currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
                             alt={`${buyCurrency} logo`}
                             width={20}
@@ -397,10 +397,10 @@ export default function AdDetailsForm({
                     {accountCurrencies.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         <div className="flex items-center gap-2">
-                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
+                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
                             <Image
                               src={
-                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg"
