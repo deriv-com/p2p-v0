@@ -26,6 +26,7 @@ interface AdDetailsFormProps {
 interface ValidationErrors {
   totalAmount?: string
   fixedRate?: string
+  floatingRate?: string
   minAmount?: string
   maxAmount?: string
 }
@@ -58,6 +59,7 @@ export default function AdDetailsForm({
     fixedRate: false,
     minAmount: false,
     maxAmount: false,
+    floatingRate: false,
   })
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
@@ -165,7 +167,7 @@ export default function AdDetailsForm({
   }, [isConnected])
 
   useEffect(() => {
-    if (!buyCurrency || !forCurrency || !isConnected) return
+    if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
@@ -181,7 +183,6 @@ export default function AdDetailsForm({
           }
         } else {
           setMarketPrice(null)
-          setPriceType("fixed")
         }
       } else if (data.action === "error") {
         setMarketPrice(null)
@@ -239,6 +240,12 @@ export default function AdDetailsForm({
       }
     }
 
+    if (touched.floatingRate && priceType === "float") {
+      if (!floatingRate) {
+        errors.floatingRate = t("adForm.rateRequired")
+      }
+    }
+
     if (touched.minAmount) {
       if (!minAmount) {
         errors.minAmount = t("adForm.minAmountRequired")
@@ -272,6 +279,7 @@ export default function AdDetailsForm({
       minAmount: true,
       maxAmount: true,
       forCurrency,
+      floatingRate: true,
     })
 
     const total = Number(totalAmount)
@@ -393,6 +401,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -439,9 +448,7 @@ export default function AdDetailsForm({
                           {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
                             <Image
                               src={
-                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
-                                "/placeholder.svg"
+                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper]
                               }
                               alt={`${currency.code} logo`}
                               width={20}
@@ -463,7 +470,7 @@ export default function AdDetailsForm({
         )}
 
         <div>
-          <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />
+          <PriceTypeSelector value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
           <div className="mt-4">
             <div className="grid gap-4">
@@ -502,9 +509,11 @@ export default function AdDetailsForm({
                 <FloatingRateInput
                   value={floatingRate}
                   onChange={setFloatingRate}
+                  onBlur={() => setTouched((prev) => ({ ...prev, floatingRate: true }))}
                   label="Rate"
                   currency={forCurrency}
                   marketPrice={marketPrice || undefined}
+                  error={touched.floatingRate && !!formErrors.floatingRate}
                 />
               )}
             </div>

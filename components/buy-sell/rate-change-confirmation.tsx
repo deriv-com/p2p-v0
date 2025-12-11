@@ -14,7 +14,6 @@ interface RateChangeConfirmationProps {
   paymentCurrency: string
   oldRate: number
   newRate: number
-  isBuy: boolean
 }
 
 export default function RateChangeConfirmation({
@@ -26,25 +25,20 @@ export default function RateChangeConfirmation({
   paymentCurrency,
   oldRate,
   newRate,
-  isBuy,
 }: RateChangeConfirmationProps) {
   const isMobile = useIsMobile()
 
   const oldTotal = (Number.parseFloat(amount) * oldRate)
   const newTotal = (Number.parseFloat(amount) * newRate)
-  const buySellLabel = isBuy ? "buying" : "selling"
 
   const content = (
     <div className="flex flex-col gap-8">
       <div className="space-y-4">
         <p className="text-grayscale-100 text-base">
-          The exchange rate for your order has changed.
+          You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}. The rate may vary slightly due to market movements. 
         </p>
         <p className="text-grayscale-100 text-base">
-          You’re {buySellLabel} {amount} {accountCurrency} for {newTotal} {paymentCurrency}, but the new rate is <span className="font-bold">{newRate} {paymentCurrency}</span>.
-        </p>
-        <p className="text-grayscale-100 text-base">
-          Would you like to continue with the new rate?
+        If the rate changes significantly, we can’t process your order.
         </p>
       </div>
       <div className="flex flex-col gap-3">
@@ -71,7 +65,7 @@ export default function RateChangeConfirmation({
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
         <DrawerContent className="px-6 pb-8">
-          <DrawerTitle className="text-2xl font-bold my-4">Exchange rate updated</DrawerTitle>
+          <DrawerTitle className="text-2xl font-bold my-4">Market rate changed</DrawerTitle>
           {content}
         </DrawerContent>
       </Drawer>
@@ -81,7 +75,7 @@ export default function RateChangeConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
       <DialogContent className="p-[32px] sm:rounded-[32px]">
-        <DialogTitle className="font-bold text-2xl mb-4">Exchange rate updated</DialogTitle>
+        <DialogTitle className="font-bold text-2xl mb-4">Market rate changed</DialogTitle>
         {content}
       </DialogContent>
     </Dialog>

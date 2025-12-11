@@ -237,7 +237,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const handleSubmit = async () => {
     if (!ad) return
 
-    if (ad.exchange_rate_type === "float" && marketRate && marketRate != ad.effective_rate_display) {
+    if (marketRate && marketRate != ad.effective_rate_display) {
       setShowRateChangeConfirmation(true)
       return
     }
@@ -270,9 +270,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           })
         } else if (errorCode === "OrderFloatRateSlippage") {
           showAlert({
-            title: "The rate moved too much",
+            title: "Market rate changed significantly",
             description:
-              "The market rate moved significantly before we could place your order. Try again with the latest rate.",
+              "The market price moved before we could place your order. Try again to proceed with the latest rate.",
             confirmText: "Try again",
             type: "warning",
           })
@@ -305,7 +305,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       setAmount(null)
       setValidationError(null)
       setTempSelectedPaymentMethods([])
-      setShowRateChangeConfirmation(false)
       onClose()
     }, 300)
   }
@@ -470,7 +469,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
                     <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
-                      {ad.exchange_rate_type === "fixed" ? "Fixed" : "Floating"}
+                      {ad.exchange_rate_type}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
@@ -569,7 +568,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           paymentCurrency={ad.payment_currency}
           oldRate={ad.effective_rate_display}
           newRate={marketRate}
-          isBuy={isBuy}
         />
       )}
     </>
