@@ -350,10 +350,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const getSelectedPaymentMethodsText = () => {
-    if (selectedPaymentMethods.length === 0) return t("order.selectPayment")
+    if (selectedPaymentMethods.length === 0) return t("order.receivePaymentTo")
     if (selectedPaymentMethods.length === 1) {
       const method = userPaymentMethods.find((m) => m.id === selectedPaymentMethods[0])
-      return method ? `${method.display_name}` : t("order.selectPayment")
+      return method ? `${method.display_name}` : t("order.receivePaymentTo")
     }
     return t("order.selected") + ` (${selectedPaymentMethods.length})`
   }
