@@ -227,7 +227,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   if (ads.length === 0) {
-    return <EmptyState title={t("myAds.noAdsTitle")} description={t("myAds.noAdsDescription")} redirectToAds={true} />
+    return (
+      <EmptyState
+        title={t("myAds.noAdsTitle")}
+        description={t("myAds.noAdsDescription")}
+        redirectToAds={true}
+        kycRoute="ads"
+      />
+    )
   }
 
   if (showShareView && adToShare) {
