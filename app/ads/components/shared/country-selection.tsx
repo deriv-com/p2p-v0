@@ -53,12 +53,12 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return t("common.selectedAll")
+      return t("common.all")
     }
-    return `${t("common.selectedCount")} (${selectedCountries.length})`
-  }
 
-  const hasValue = true // Always show the floating label
+    const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
+    return countryNames
+  }
 
   const CountryList = () => (
     <div className="space-y-4">
@@ -90,37 +90,33 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         )}
       </div>
 
-      <div className="space-y-4 px-1 relative">
-        <div className="flex items-center space-x-3 mt-6 mb-1">
+      <div className="space-y-4 overflow-y-auto px-4">
+        <div className="flex items-center space-x-3">
           <Checkbox
             id="all-countries"
             checked={isAllSelected}
             onCheckedChange={handleAllToggle}
-            className="data-[state=checked]:bg-black "
+            className="data-[state=checked]:bg-black border-black"
           />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
-            {t("common.allCountries")}
+            {t("common.all")}
           </label>
         </div>
 
-        <div className="h-px bg-black/[0.08] my-7 md:fixed md:left-0 md:w-full" />
-
-        <div className="space-y-4 max-h-[300px] overflow-y-auto md:pt-6">
-          {filteredCountries.map((country) => (
-            <div key={country.code} className="flex items-center space-x-3">
-              <Checkbox
-                id={country.code}
-                checked={selectedCountries.includes(country.code)}
-                onCheckedChange={() => handleCountryToggle(country.code)}
-                disabled={false}
-                className="data-[state=checked]:bg-black "
-              />
-              <label htmlFor={country.code} className="text-sm cursor-pointer">
-                {country.name}
-              </label>
-            </div>
-          ))}
-        </div>
+        {filteredCountries.map((country) => (
+          <div key={country.code} className="flex items-center space-x-3">
+            <Checkbox
+              id={country.code}
+              checked={selectedCountries.includes(country.code)}
+              onCheckedChange={() => handleCountryToggle(country.code)}
+              disabled={false}
+              className="data-[state=checked]:bg-black border-black"
+            />
+            <label htmlFor={country.code} className="text-sm cursor-pointer">
+              {country.name}
+            </label>
+          </div>
+        ))}
       </div>
     </div>
   )
@@ -128,34 +124,22 @@ export default function CountrySelection({ countries, selectedCountries, onCount
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
-        <div className="relative">
-          <DrawerTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
-                hasValue ? "pt-6 pb-2" : "py-4",
-              )}
-              onClick={() => setIsOpen(true)}
-            >
-              <span className="text-left text-base text-grayscale-600">{getDisplayText()}</span>
-            </Button>
-          </DrawerTrigger>
-          {hasValue && (
-            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
-              {t("common.countrySelection")}
-            </label>
-          )}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+        <DrawerTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black"
+            onClick={() => setIsOpen(true)}
+          >
+            <span className="text-left font-normal">{getDisplayText()}</span>
             <Image
               src="/icons/chevron-down.png"
-              alt="Arrow"
+              alt="Dropdown icon"
               width={24}
               height={24}
-              className={cn("transition-transform", isOpen && "rotate-180")}
+              className={cn("ml-2 transition-transform duration-200", isOpen && "rotate-180")}
             />
-          </div>
-        </div>
+          </Button>
+        </DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
@@ -171,40 +155,23 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <div className="relative">
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={cn(
-              "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
-              hasValue ? "pt-6 pb-2" : "py-4",
-            )}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span className="text-left text-base text-grayscale-600">{getDisplayText()}</span>
-          </Button>
-        </PopoverTrigger>
-        {hasValue && (
-          <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
-            {t("common.countrySelection")}
-          </label>
-        )}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className="text-left font-normal">{getDisplayText()}</span>
           <Image
             src="/icons/chevron-down.png"
-            alt="Arrow"
+            alt="Dropdown icon"
             width={24}
             height={24}
-            className={cn("transition-transform", isOpen && "rotate-180")}
+            className={cn("ml-2 transition-transform duration-200", isOpen && "rotate-180")}
           />
-        </div>
-      </div>
-      <PopoverContent
-        align="start"
-        className="p-4 
-                   w-[var(--radix-popover-trigger-width)] 
-                   min-w-[var(--radix-popover-trigger-width)]"
-      >
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full p-4" align="start">
         <CountryList />
       </PopoverContent>
     </Popover>

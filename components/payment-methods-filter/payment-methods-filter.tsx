@@ -3,7 +3,7 @@
 import type React from "react"
 
 import type { ReactElement } from "react"
-import { useCallback, useState, useMemo, cloneElement, useRef, useEffect } from "react"
+import { useCallback, useState, useMemo, cloneElement } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -27,7 +27,6 @@ interface PaymentMethodsFilterProps {
   onSelectionChange: (selectedMethods: string[]) => void
   isLoading?: boolean
   trigger: ReactElement
-  onOpenChange?: (isOpen: boolean) => void
 }
 
 export default function PaymentMethodsFilter({
@@ -36,15 +35,12 @@ export default function PaymentMethodsFilter({
   onSelectionChange,
   isLoading = false,
   trigger,
-  onOpenChange: onOpenChangeProp,
 }: PaymentMethodsFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const scrollPositionRef = useRef<number>(0)
 
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
@@ -94,14 +90,6 @@ export default function PaymentMethodsFilter({
   }, [])
 
   const handleMethodToggle = (methodId: string) => {
-    if (scrollContainerRef.current) {
-      scrollPositionRef.current = scrollContainerRef.current.scrollTop
-    }
-
-    if (isAllSelected) {
-      setTempSelectedMethods([methodId])
-      return
-    }
     const isSelected = tempSelectedMethods.includes(methodId)
     if (isSelected) {
       setTempSelectedMethods(tempSelectedMethods.filter((id) => id !== methodId))
@@ -112,7 +100,6 @@ export default function PaymentMethodsFilter({
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
-    onOpenChangeProp?.(open)
     if (!open) {
       setSearchQuery("")
     } else {
@@ -125,14 +112,12 @@ export default function PaymentMethodsFilter({
     setTempSelectedMethods(allMethodIds)
     onSelectionChange(allMethodIds)
     setIsOpen(false)
-    onOpenChangeProp?.(false)
     setSearchQuery("")
   }
 
   const handleApply = () => {
     onSelectionChange(tempSelectedMethods)
     setIsOpen(false)
-    onOpenChangeProp?.(false)
     setSearchQuery("")
   }
 
@@ -157,9 +142,9 @@ export default function PaymentMethodsFilter({
               <div key={method.method} className="flex items-center space-x-3">
                 <Checkbox
                   id={method.method}
-                  checked={isAllSelected ? false : tempSelectedMethods.includes(method.method)}
+                  checked={tempSelectedMethods.includes(method.method)}
                   onCheckedChange={() => handleMethodToggle(method.method)}
-                  className="data-[state=checked]:bg-black "
+                  className="data-[state=checked]:bg-black border-black"
                   disabled={isLoading}
                 />
                 <label htmlFor={method.method} className="text-sm text-grayscale-600 cursor-pointer flex-1">
@@ -186,7 +171,7 @@ export default function PaymentMethodsFilter({
           placeholder={t("paymentMethod.search")}
           value={searchQuery}
           onChange={handleSearchChange}
-          className="text-sm font-normal placeholder:text-grayscale-text-placeholder pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
+          className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -211,7 +196,7 @@ export default function PaymentMethodsFilter({
               if (el) el.indeterminate = isIndeterminate
             }}
             onCheckedChange={handleSelectAll}
-            className="data-[state=checked]:bg-black "
+            className="data-[state=checked]:bg-black border-black"
             disabled={isLoading || filteredPaymentMethods.length === 0}
           />
           <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
@@ -220,7 +205,7 @@ export default function PaymentMethodsFilter({
         </div>
       )}
 
-      <div ref={scrollContainerRef} className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
+      <div className="space-y-2 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">{t("paymentMethod.loadingPaymentMethods")}</div>
         ) : filteredPaymentMethods.length === 0 ? (
@@ -257,12 +242,6 @@ export default function PaymentMethodsFilter({
       )}
     </div>
   )
-
-  useEffect(() => {
-    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
-      scrollContainerRef.current.scrollTop = scrollPositionRef.current
-    }
-  }, [tempSelectedMethods])
 
   const enhancedTrigger = cloneElement(trigger, {
     className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"),

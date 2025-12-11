@@ -9,15 +9,10 @@ import { useState, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
-import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
-import OrdersSelectedIcon from "@/public/icons/ic-orders-selected.svg"
 import AdsIcon from "@/public/icons/ic-my-ads.svg"
-import AdsSelectedIcon from "@/public/icons/ic-my-ads-selected.svg"
 import WalletIcon from "@/public/icons/ic-wallet.svg"
-import WalletSelectedIcon from "@/public/icons/ic-wallet-selected.svg"
 import ProfileIcon from "@/public/icons/ic-profile.svg"
-import ProfileSelectedIcon from "@/public/icons/ic-profile-selected.svg"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
@@ -50,26 +45,20 @@ export default function MobileFooterNav() {
     return null
   }
 
-  const isMarketActive = pathname === "/" || pathname.startsWith("/advertiser")
-  const isOrdersActive = pathname.startsWith("/orders")
-  const isAdsActive = pathname.startsWith("/ads")
-  const isWalletActive = pathname.startsWith("/wallet")
-  const isProfileActive = pathname.startsWith("/profile")
-
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
       <div className={cn("grid grid-cols-4 min-h-16", showWallet && "grid-cols-5")}>
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
-            "text-primary": isMarketActive,
-            "text-slate-1200": !isMarketActive,
+            "text-primary": pathname === "/" || pathname.startsWith("/advertiser"),
+            "text-slate-1200": !(pathname === "/" || pathname.startsWith("/advertiser")),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
             <SvgIcon
-              src={isMarketActive ? MarketSelectedIcon : MarketIcon}
-              fill={isMarketActive ? "#FF444F" : "#181C25"}
+              src={MarketIcon}
+              fill={pathname === "/" || pathname.startsWith("/advertiser") ? "#FF444F" : "#181C25"}
             />
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.market")}</span>
@@ -77,24 +66,24 @@ export default function MobileFooterNav() {
         <Link
           href="/orders"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
-            "text-primary": isOrdersActive,
-            "text-slate-1200": !isOrdersActive,
+            "text-primary": pathname.startsWith("/orders"),
+            "text-slate-1200": !pathname.startsWith("/orders"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
-            <SvgIcon src={isOrdersActive ? OrdersSelectedIcon : OrdersIcon} fill={isOrdersActive ? "#FF444F" : "#181C25"} />
+            <SvgIcon src={OrdersIcon} fill={pathname.startsWith("/orders") ? "#FF444F" : "#181C25"} />
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.orders")}</span>
         </Link>
         <Link
           href="/ads"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
-            "text-primary": isAdsActive,
-            "text-slate-1200": !isAdsActive,
+            "text-primary": pathname.startsWith("/ads"),
+            "text-slate-1200": !pathname.startsWith("/ads"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
-            <SvgIcon src={isAdsActive ? AdsSelectedIcon : AdsIcon} fill={isAdsActive ? "#FF444F" : "#181C25"} />
+            <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"} />
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.myAds")}</span>
         </Link>
@@ -102,12 +91,12 @@ export default function MobileFooterNav() {
           <Link
             href="/wallet"
             className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
-              "text-primary": isWalletActive,
-              "text-slate-1200": !isWalletActive,
+              "text-primary": pathname.startsWith("/wallet"),
+              "text-slate-1200": !pathname.startsWith("/wallet"),
             })}
           >
             <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
-              <SvgIcon src={isWalletActive ? WalletSelectedIcon : WalletIcon} fill={isWalletActive ? "#FF444F" : "#181C25"} />
+              <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"} />
             </div>
             <span className="text-xs mt-1 line-clamp-2">{t("navigation.wallet")}</span>
           </Link>
@@ -115,12 +104,12 @@ export default function MobileFooterNav() {
         <Link
           href="/profile"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
-            "text-primary": isProfileActive,
-            "text-slate-1200": !isProfileActive,
+            "text-primary": pathname.startsWith("/profile"),
+            "text-slate-1200": !pathname.startsWith("/profile"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
-            <SvgIcon src={isProfileActive ? ProfileSelectedIcon : ProfileIcon} fill={isProfileActive ? "#FF444F" : "#181C25"} />
+            <SvgIcon src={ProfileIcon} fill={pathname.startsWith("/profile") ? "#FF444F" : "#181C25"} />
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.profile")}</span>
         </Link>

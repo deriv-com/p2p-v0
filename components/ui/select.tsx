@@ -18,8 +18,8 @@ const SelectValue = SelectPrimitive.Value
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & { hideChevron?: boolean }
->(({ className, children, hideChevron = false, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -29,17 +29,15 @@ const SelectTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    {!hideChevron && (
-      <SelectPrimitive.Icon asChild>
-        <Image
-          src="/icons/chevron-down.png"
-          alt="Dropdown icon"
-          width={24}
-          height={24}
-          className="ml-[8px] transition-transform duration-200 group-data-[state=open]:rotate-180"
-        />
-      </SelectPrimitive.Icon>
-    )}
+    <SelectPrimitive.Icon asChild>
+      <Image
+        src="/icons/chevron-down.png"
+        alt="Dropdown icon"
+        width={24}
+        height={24}
+        className="ml-[8px] transition-transform duration-200 group-data-[state=open]:rotate-180"
+      />
+    </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
@@ -83,7 +81,7 @@ const SelectContent = React.forwardRef<
       <SelectPrimitive.ScrollUpButton />
       <SelectPrimitive.Viewport
         className={cn(
-          "p-2",
+          "p-1",
           position === "popper" &&
             "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
         )}
@@ -111,7 +109,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-4 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}

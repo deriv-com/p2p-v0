@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect, useMemo } from "react"
@@ -12,17 +12,11 @@ import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import HomeIcon from "@/public/icons/ic-arrow-left.svg"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
-import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
-import OrdersSelectedIcon from "@/public/icons/ic-orders-selected.svg"
 import AdsIcon from "@/public/icons/ic-my-ads.svg"
-import AdsSelectedIcon from "@/public/icons/ic-my-ads-selected.svg"
 import WalletIcon from "@/public/icons/ic-wallet.svg"
-import WalletSelectedIcon from "@/public/icons/ic-wallet-selected.svg"
 import ProfileIcon from "@/public/icons/ic-profile.svg"
-import ProfileSelectedIcon from "@/public/icons/ic-profile-selected.svg"
 import GuideIcon from "@/public/icons/ic-guide.svg"
-import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
 
 interface SidebarProps {
   className?: string
@@ -64,15 +58,15 @@ export default function Sidebar({ className }: SidebarProps) {
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
   const navItems = [
-    { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon, selectedIcon: HomeIcon },
+    { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon },
     ...(!isDisabled
       ? [
-          { name: t("navigation.market"), href: "/", icon: MarketIcon, selectedIcon: MarketSelectedIcon },
-          { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon, selectedIcon: OrdersSelectedIcon },
-          { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon, selectedIcon: AdsSelectedIcon },
-          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, selectedIcon: WalletSelectedIcon }] : []),
-          { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, selectedIcon: ProfileSelectedIcon },
-          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, selectedIcon: GuideSelectedIcon },
+          { name: t("navigation.market"), href: "/", icon: MarketIcon },
+          { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon },
+          { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
+          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
+          { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
+          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon },
         ]
       : []),
   ]
@@ -112,7 +106,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   className={cn("flex items-center gap-3 rounded-md py-4 text-sm", isActive ? "text-primary" : "")}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                    <SvgIcon src={isActive ? item.selectedIcon : item.icon} fill={isActive ? "#FF444F" : "#181C25"} />
+                    <SvgIcon src={item.icon} fill={isActive ? "#FF444F" : "#181C25"} />
                   </div>
                   {item.name}
                 </Link>
