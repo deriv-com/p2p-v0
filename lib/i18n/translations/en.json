@@ -114,7 +114,8 @@
     "apply": "Apply",
     "selectPaymentMethod": "Select a payment method",
     "addPaymentDetails": "Add payment details",
-    "enterInstructions": "Enter your instructions"
+    "enterInstructions": "Enter your instructions",
+    "noMatchingPayment": "No matching payment"
   },
   "paymentMethodFields": {
     "account": "Account",
