@@ -433,9 +433,9 @@ export default function AdDetailsForm({
                               currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
                             alt={`${forCurrency} logo`}
-                            width={20}
-                            height={20}
-                            className="w-5 h-5 rounded-full object-contain"
+                             width={24}
+                            height={24}
+                            className="w-6 h-6 rounded object-cover"
                           />
                         )}
                         <span>{forCurrency}</span>
