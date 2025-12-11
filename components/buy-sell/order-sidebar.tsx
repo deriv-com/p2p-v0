@@ -469,7 +469,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
                     <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
-                      {ad.exchange_rate_type === "fixed" ? "Fixed" : "Floating" }
+                      {ad.exchange_rate_type === "fixed" ? "Fixed" : "Floating"}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
