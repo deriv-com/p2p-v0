@@ -28,6 +28,7 @@ export default function WalletPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
+  const [hasBalance, setHasBalance] = useState(false)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -46,6 +47,10 @@ export default function WalletPage() {
         setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
         setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
 
+        const hasAnyBalance =
+          p2pWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
+        setHasBalance(hasAnyBalance)
+
         if (p2pWallet.balances) {
           const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
             wallet_id: p2pWallet.id,
@@ -59,6 +64,7 @@ export default function WalletPage() {
     } catch (error) {
       console.error("Error fetching P2P wallet balance:", error)
       setTotalBalance("0.00")
+      setHasBalance(false)
     } finally {
       setIsLoading(false)
     }
@@ -112,6 +118,7 @@ export default function WalletPage() {
             balance={totalBalance}
             currency={balanceCurrency}
             isLoading={isLoading}
+            hasBalance={hasBalance}
           />
         </div>
         {tempBanUntil && (

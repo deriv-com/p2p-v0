@@ -33,6 +33,7 @@ interface WalletSummaryProps {
   balance?: string
   currency?: string
   isLoading?: boolean
+  hasBalance?: boolean
 }
 
 export default function WalletSummary({
@@ -42,6 +43,7 @@ export default function WalletSummary({
   balance: propBalance = "0.00",
   currency: propCurrency = "USD",
   isLoading: propIsLoading = true,
+  hasBalance = false,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
@@ -117,6 +119,8 @@ export default function WalletSummary({
   }
 
   const handleTransferClick = () => {
+    if (!hasBalance) return
+
     if (userId && verificationStatus?.phone_verified) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
@@ -232,13 +236,28 @@ export default function WalletSummary({
             <div className="flex flex-col items-center gap-2">
               <Button
                 size="icon"
-                className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
+                className={cn(
+                  "h-12 w-12 rounded-full p-0",
+                  !hasBalance ? "bg-[#FF444F]/40 cursor-not-allowed" : "bg-[#FF444F] hover:bg-[#E63946] text-white",
+                )}
                 onClick={handleTransferClick}
+                disabled={!hasBalance}
                 aria-label="Transfer"
               >
                 <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
               </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+              <span
+                className={cn(
+                  "text-xs font-normal",
+                  !hasBalance
+                    ? isBalancesView
+                      ? "text-white/40"
+                      : "text-slate-1200/40"
+                    : isBalancesView
+                      ? "text-white"
+                      : "text-slate-1200",
+                )}
+              >
                 {t("wallet.transfer")}
               </span>
             </div>
