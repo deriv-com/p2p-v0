@@ -78,37 +78,54 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
   )
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-bold leading-6 tracking-normal">Rate type</h3>
-
-      {isMobile ? (
-        <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
-          <DrawerContent>
-            <div className="px-4 pb-6">
-              <div className="py-4">
-                <h3 className="text-xl font-bold text-center">Rate type</h3>
-              </div>
-              {content}
+    <TooltipProvider>
+      <div className="space-y-4">
+        {!marketPrice ? 
+          (
+            <div className="flex items-center">
+              <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-white">Set a constant price, unaffected by market fluctuations.</p>
+                  <TooltipArrow className="fill-black" />
+                </TooltipContent>
+              </Tooltip>
             </div>
-          </DrawerContent>
-        </Drawer>
-      ) : (
-        <Dialog open={open} onOpenChange={setOpen} className="sm:rounded-4xl">
-          <DialogTrigger asChild>{triggerButton}</DialogTrigger>
-          <DialogContent className="p-[32px] sm:rounded-[32px]">
-            <DialogHeader className="flex-row items-center justify-between mb-4">
-              <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
-              <DialogClose> 
-                <Button variant="ghost" className="bg-slate-75 min-w-[48px] px-0 absolute right-[32px] top-4">
-                  <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
-                </Button>
-              </DialogClose>
-            </DialogHeader>
-            {content}
-          </DialogContent>
-        </Dialog>
-      )}
-    </div>
+          ) :
+          (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>)
+        }
+        {isMobile ? (
+          <Drawer open={open} onOpenChange={setOpen}>
+            <DrawerTrigger asChild>{marketPrice && triggerButton}</DrawerTrigger>
+            <DrawerContent>
+              <div className="px-4 pb-6">
+                <div className="py-4">
+                  <h3 className="text-xl font-bold text-center">Rate type</h3>
+                </div>
+                {content}
+              </div>
+            </DrawerContent>
+          </Drawer>
+        ) : (
+          <Dialog open={open} onOpenChange={setOpen} className="sm:rounded-4xl">
+            <DialogTrigger asChild>{marketPrice && triggerButton}</DialogTrigger>
+            <DialogContent className="p-[32px] sm:rounded-[32px]">
+              <DialogHeader className="flex-row items-center justify-between mb-4">
+                <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
+                <DialogClose> 
+                  <Button variant="ghost" className="bg-slate-75 min-w-[48px] px-0 absolute right-[32px] top-4">
+                    <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                </DialogClose>
+              </DialogHeader>
+              {content}
+            </DialogContent>
+          </Dialog>
+        )}
+      </div>
+    </TooltipProvider>
   )
 }
