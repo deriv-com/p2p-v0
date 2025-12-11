@@ -569,29 +569,27 @@ export default function BuySellPage() {
                                 }`}
                               />
                             </div>
-                            <div>
-                              <div className="flex items-center gap-1">
-                                <button
-                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                  className="hover:underline cursor-pointer"
-                                >
-                                  {ad.user?.nickname}
-                                </button>
-                                <VerifiedBadge />
-                                {ad.user.trade_band && (
-                                  <TradeBandBadge
-                                    tradeBand={ad.user.trade_band}
-                                    showLearnMore={true}
-                                    size={18}
-                                    className="mr-1"
-                                  />
-                                )}
-                                {ad.user?.is_favourite && (
-                                  <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                    {t("market.following")}
-                                  </span>
-                                )}
-                              </div>
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                className="hover:underline cursor-pointer"
+                              >
+                                {ad.user?.nickname}
+                              </button>
+                              <VerifiedBadge />
+                              {ad.user.trade_band && (
+                                <TradeBandBadge
+                                  tradeBand={ad.user.trade_band}
+                                  showLearnMore={true}
+                                  size={18}
+                                  className="mr-1"
+                                />
+                              )}
+                              {ad.user?.is_favourite && (
+                                <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                  {t("market.following")}
+                                </span>
+                              )}
                             </div>
                           </div>
                           <div className="flex items-center text-xs text-slate-500 mt-[4px]">
