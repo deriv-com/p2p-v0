@@ -457,7 +457,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
-                    <h3 className="text-sm text-slate-1200 mb-3">{t("order.receivePaymentTo")}</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
