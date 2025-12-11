@@ -427,6 +427,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             type: "error",
             actionButtonText: t("adForm.updateAd"),
           }
+        } else if (error.name === "AdvertTotalAmountExceeded") {
+          errorInfo = {
+            title: t("adForm.amountExceedsBalanceTitle"),
+            message: t("adForm.amountExceedsBalanceMessage"),
+            type: "error",
+            actionButtonText: t("adForm.updateAd"),
+          }
         } else {
           errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.name })
         }
