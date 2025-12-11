@@ -655,7 +655,7 @@ export default function OrderDetailsPage() {
         type={complainType}
       />
       <RatingSidebar
-        isOpen={true}
+        isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
         orderId={orderId}
         onSubmit={handleSubmitReview}
