@@ -48,6 +48,7 @@ export const API = {
     userFavourites: "/user-favourites",
     userBlocks: "/user-blocks",
     walletsTransactions: "/wallets/transactions",
+    advertStatistics: "/advert-statistics",
   },
 }
 

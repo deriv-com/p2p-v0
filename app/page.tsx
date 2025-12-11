@@ -329,6 +329,19 @@ export default function BuySellPage() {
     }
   }, [])
 
+  useEffect(() => {
+    const fetchAdvertStatistics = async () => {
+      try {
+        const statistics = await BuySellAPI.getAdvertStatistics("USD")
+        console.log("[v0] Advert Statistics:", statistics)
+      } catch (error) {
+        console.error("[v0] Error fetching advert statistics:", error)
+      }
+    }
+
+    fetchAdvertStatistics()
+  }, [])
+
   return (
     <>
       <div className="flex flex-col h-screen overflow-hidden px-3">

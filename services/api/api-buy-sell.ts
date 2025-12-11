@@ -438,3 +438,40 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
     return []
   }
 }
+
+/**
+ * Get advert statistics for a specific account currency
+ * @param accountCurrency - The account currency (mandatory field)
+ * @returns Promise with advert statistics data
+ */
+export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.advertStatistics}?account_currency=${accountCurrency}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      console.error("Error Response:", response.status, response.statusText)
+      throw new Error(`Error fetching advert statistics: ${response.statusText}`)
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      console.error("Failed to parse response:", e)
+      data = {}
+    }
+
+    return data
+  } catch (error) {
+    console.error("Error fetching advert statistics:", error)
+    return {}
+  }
+}
