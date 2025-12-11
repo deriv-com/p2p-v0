@@ -163,7 +163,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }
   const toSuccess = () => setStep("success")
-  const toUnsuccessful = () => setStep("unsuccessful") // Added function to navigate to unsuccessful step
+  const toUnsuccessful = () => setStep("unsuccessful") 
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
@@ -207,7 +207,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
   useEffect(() => {
     if (!selectedCurrency) return
-    // Wait for currencies data to be loaded before processing wallets
     if (!currenciesData?.data) return
 
     const loadWallets = async () => {
@@ -333,7 +332,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     let calculation: TransferFeeCalculation
 
     if (selectedAmountCurrency === "source") {
-      // User entered amount in source currency
       const transferFee = amount * (fee / 100)
 
       const youllReceiveConverted = amount * (1 - fee / 100)
@@ -347,7 +345,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         feePercentage: fee,
       }
     } else {
-      // User entered amount in destination currency
       const transferFee = (amount / exchangeRate) * (fee / 100)
       const youllReceive = amount * (1 - fee / 100)
       const youllReceiveConverted = amount / exchangeRate - (amount / exchangeRate) * (fee / 100)
