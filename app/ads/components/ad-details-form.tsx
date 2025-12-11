@@ -433,12 +433,12 @@ export default function AdDetailsForm({
                               currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
                             alt={`${forCurrency} logo`}
-                             width={24}
+                            width={24}
                             height={24}
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span>{forCurrency}</span>
+                        <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
                       </div>
                     </SelectValue>
                   </SelectTrigger>
