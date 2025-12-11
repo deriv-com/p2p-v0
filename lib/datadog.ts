@@ -5,15 +5,17 @@ export const initDatadog = () => {
     return
   }
 
+  // NOTE: NEXT_PUBLIC_DATADOG_CLIENT_TOKEN is a Datadog Client Token (not an API key)
+  // and is intentionally exposed to the client. Client tokens can only send telemetry
+  // data to Datadog and cannot be used to read or modify Datadog configuration.
+  // This is the recommended approach per Datadog's RUM documentation.
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
- const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
+  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
   const env = process.env.NEXT_PUBLIC_DATADOG_ENV
   const service = process.env.NEXT_PUBLIC_DATADOG_SERVICE
   const version = process.env.NEXT_PUBLIC_DATADOG_VERSION
 
-  if (!applicationId || 
-  !clientToken
-  ) {
+  if (!applicationId || !clientToken) {
     return
   }
 
