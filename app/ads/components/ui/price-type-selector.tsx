@@ -55,7 +55,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             Set a constant price, unaffected by market fluctuations.
           </div>
         </div>
-        <RadioGroupItem value="fixed" id="fixed" className="mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
 
       <Label
@@ -72,7 +72,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             Set a rate that changes with market movements.
           </div>
         </div>
-        <RadioGroupItem value="float" id="float" className="mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="float" id="float" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
     </RadioGroup>
   )
