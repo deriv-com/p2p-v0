@@ -24,23 +24,12 @@ export function useCurrencyData(currency = "USD") {
           }
         })
 
-        const availableAdverts = response.available_adverts || {}
-
-        let currencyList: Currency[] = []
-
-        const paymentCurrencies = availableAdverts[currency]?.map((advert: { payment_currency: string }) => ({
-          code: advert.payment_currency,
-          name: currencyMap.get(advert.payment_currency) || advert.payment_currency,
-        }))
-
-        const uniqueCurrencies = paymentCurrencies?.reduce((acc: Currency[], curr: Currency) => {
-          if (!acc.find((c) => c.code === curr.code)) {
-            acc.push(curr)
-          }
-          return acc
-        }, [])
-
-        currencyList = (uniqueCurrencies || []).sort((a, b) => a.code.localeCompare(b.code))
+        const currencyList: Currency[] = Array.from(currencyMap.entries())
+          .map(([code, name]) => ({
+            code,
+            name,
+          }))
+          .sort((a, b) => a.code.localeCompare(b.code))
 
         setCurrencies(currencyList)
         setError(null)
