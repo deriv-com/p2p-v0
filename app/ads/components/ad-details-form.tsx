@@ -364,9 +364,10 @@ export default function AdDetailsForm({
     document.dispatchEvent(event)
   }, [type, totalAmount, fixedRate, floatingRate, minAmount, maxAmount, formErrors, priceType])
 
-  return <AdDetailsFormSkeleton />
+  if(isLoadingInitialData) return <AdDetailsFormSkeleton />
 
   return (
+  <AdDetailsFormSkeleton />
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
         
