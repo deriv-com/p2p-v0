@@ -93,8 +93,6 @@ export default function AdDetailsForm({
 
   useEffect(() => {
     const fetchPriceRange = async () => {
-      if (!buyCurrency || !forCurrency) return
-
       setIsLoadingPriceRange(true)
       try {
         const response = await getAdvertStatistics(buyCurrency)
@@ -157,6 +155,7 @@ export default function AdDetailsForm({
       }
     }
 
+    if (!buyCurrency || !forCurrency) return
     fetchPriceRange()
   }, [buyCurrency, forCurrency, priceType, type])
 
