@@ -100,6 +100,8 @@ export default function AdDetailsForm({
         if (Array.isArray(response)) {
           const currencyStats = response.find((stat) => stat.payment_currency === forCurrency)
           console.log(currencyStats)
+          console.log(type)
+          console.log(priceType)
 
           if (currencyStats) {
             let lowestPrice = null
