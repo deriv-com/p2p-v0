@@ -104,7 +104,7 @@ export function FloatingRateInput({
             Current market price:{" "}
             {marketPrice ? (
               <span>
-                {marketPrice.toLocaleString(undefined, {
+                {Number(marketPrice).toLocaleString(undefined, {
                   minimumFractionDigits: 6,
                   maximumFractionDigits: 6,
                 })}{" "}
