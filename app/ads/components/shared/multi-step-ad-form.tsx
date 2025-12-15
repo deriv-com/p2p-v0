@@ -63,6 +63,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const { leaveExchangeRatesChannel } = useWebSocketContext()
+  const [isLoadingInitialData, setIsLoadingInitialData] = useState(mode === "edit")
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
@@ -142,6 +143,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     if (mode === "edit" && adId) {
       const loadInitialData = async () => {
         try {
+          setIsLoadingInitialData(true)
           const advertData = await AdsAPI.getAdvert(adId)
           const { data } = advertData
 
@@ -197,7 +199,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               setSelectedCountries(data.available_countries)
             }
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("Error loading initial data:", error)
+        } finally {
+          setIsLoadingInitialData(false)
+        }
       }
 
       loadInitialData()
@@ -533,7 +539,14 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           />
 
           <div className="relative mb-16 md:mb-0 mx-6">
-            {currentStep === 0 ? (
+            {isLoadingInitialData ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+                </div>
+              </div>
+            ) : currentStep === 0 ? (
               <AdDetailsForm
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
