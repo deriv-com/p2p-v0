@@ -365,7 +365,7 @@ export default function AdDetailsForm({
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
-        {!isEditMode && (
+        
           <div>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
 
@@ -468,7 +468,7 @@ export default function AdDetailsForm({
 
             <div className="border-b border-grayscale-200 mt-6"></div>
           </div>
-        )}
+        
 
         <div>
           <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />
