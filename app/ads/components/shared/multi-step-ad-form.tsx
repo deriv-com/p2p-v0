@@ -546,7 +546,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           />
 
           <div className="relative mb-16 md:mb-0 mx-6">
-            {isLoadingInitialData ? <AdDetailsForm /> : currentStep === 0 ? (
+            {isLoadingInitialData ? <AdDetailsFormSkeleton /> : currentStep === 0 ? (
               <AdDetailsForm
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
