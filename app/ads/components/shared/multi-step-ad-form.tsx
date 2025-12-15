@@ -200,7 +200,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         } catch (error) {}
       }
 
-      await loadInitialData()
+      loadInitialData()
     }
   }, [mode, adId, setSelectedPaymentMethodIds])
 
