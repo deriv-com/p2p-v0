@@ -167,7 +167,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
       joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
       const requestTimer = setTimeout(() => {
-        requestExchangeRate(buyCurrency)
+        requestExchangeRate(ad.account_currency)
       }, 100)
 
       const unsubscribe = subscribe((data) => {
