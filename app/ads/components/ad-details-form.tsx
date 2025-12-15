@@ -40,7 +40,7 @@ interface PriceRange {
 export default function AdDetailsForm({
   onNext,
   initialData,
-  isLoadingInitialData
+  isLoadingInitialData,
   isEditMode,
   currencies: currenciesProp,
 }: AdDetailsFormProps) {
