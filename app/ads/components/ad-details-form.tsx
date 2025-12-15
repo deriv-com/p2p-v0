@@ -155,7 +155,7 @@ export default function AdDetailsForm({
       }
     }
 
-    if (!isEditMode || !buyCurrency || !forCurrency) return
+    if (isEditMode || !buyCurrency || !forCurrency) return
     fetchPriceRange()
   }, [buyCurrency, forCurrency, priceType, type])
 
