@@ -95,6 +95,9 @@ export function FloatingRateInput({
               </Button>
             </div>
           </div>
+          {error && (
+            <p className="text-destructive text-xs mt-1">{formErrors.floatingRate}</p>
+          )}
           <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
             Current market price:{" "}
             {marketPrice ? (
