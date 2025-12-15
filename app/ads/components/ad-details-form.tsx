@@ -367,7 +367,7 @@ export default function AdDetailsForm({
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
         
           <div>
-            {!isEditMode && <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />}
+            {!isEditMode && (<TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />)}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
