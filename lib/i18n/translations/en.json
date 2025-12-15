@@ -610,7 +610,7 @@
     "adLimitReachedTitle": "Ad limit reached",
     "adLimitReachedMessage": "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
     "advertFloatRateMaximumTitle": "Check your floating rate",
-    "advertFloatRateMaximumMessage": "",
+    "advertFloatRateMaximumMessage": "The floating rate you entered is higher than the allowed limit. ",
     "insufficientBalanceTitle": "Insufficient balance",
     "insufficientBalanceMessage": "You don't have enough balance to create this ad",
     "invalidValuesTitle": "Invalid values",
