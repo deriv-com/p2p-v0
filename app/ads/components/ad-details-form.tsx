@@ -369,7 +369,6 @@ export default function AdDetailsForm({
   return (
  
     <div className="max-w-[800px] mx-auto">
-       <AdDetailsFormSkeleton />
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
         
           <div>
