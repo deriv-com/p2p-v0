@@ -506,15 +506,20 @@ export default function AdDetailsForm({
                   )}
                 </div>
               ) : (
-                <FloatingRateInput
-                  value={floatingRate}
-                  onChange={setFloatingRate}
-                  onBlur={() => setTouched((prev) => ({ ...prev, floatingRate: true }))}
-                  label="Rate"
-                  currency={forCurrency}
-                  marketPrice={marketPrice || undefined}
-                  error={touched.floatingRate && !!formErrors.floatingRate}
-                />
+                <div>
+                  <FloatingRateInput
+                    value={floatingRate}
+                    onChange={setFloatingRate}
+                    onBlur={() => setTouched((prev) => ({ ...prev, floatingRate: true }))}
+                    label="Rate"
+                    currency={forCurrency}
+                    marketPrice={marketPrice || undefined}
+                    error={touched.floatingRate && !!formErrors.floatingRate}
+                  />
+                  {touched.floatingRate && formErrors.floatingRate && (
+                    <p className="text-destructive text-xs mt-1">{formErrors.floatingRate}</p>
+                  )}
+                </div>
               )}
             </div>
           </div>
