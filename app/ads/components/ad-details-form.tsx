@@ -364,7 +364,7 @@ export default function AdDetailsForm({
     document.dispatchEvent(event)
   }, [type, totalAmount, fixedRate, floatingRate, minAmount, maxAmount, formErrors, priceType])
 
-  if(!isLoadingInitialData) return <AdDetailsFormSkeleton />
+  if(isLoadingInitialData) return <AdDetailsFormSkeleton />
 
   return (
     <div className="max-w-[800px] mx-auto">
