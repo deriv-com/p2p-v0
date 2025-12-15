@@ -15,6 +15,7 @@ import Image from "next/image"
 import { currencyFlagMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { AdDetailsFormSkeleton } from "../ui/ad-details-form-skeleton"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
