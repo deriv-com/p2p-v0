@@ -509,6 +509,10 @@ export async function createAd(
               errorMessage =
                 "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad."
               break
+            case "AdvertFloatRateMaximum":
+              errorMessage =
+                "The floating rate you entered is higher than the allowed limit. Lower the rate to continue."
+              break
             default:
               errorMessage = "Please try again or contact support."
           }
