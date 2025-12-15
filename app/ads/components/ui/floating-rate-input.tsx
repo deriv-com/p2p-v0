@@ -12,6 +12,7 @@ interface FloatingRateInputProps {
   onChange: (value: string) => void
   onBlur?: () => void
   error?: boolean
+  errorMsg?: string
   currency?: string
   marketPrice?: number
 }
@@ -21,6 +22,7 @@ export function FloatingRateInput({
   onChange,
   onBlur,
   error = false,
+  errorMsg = "",
   currency = "IDR",
   marketPrice,
 }: FloatingRateInputProps) {
