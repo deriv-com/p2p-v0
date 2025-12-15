@@ -196,6 +196,7 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency, isConnected, priceType])
 
   useEffect(() => {
+    console.log(initialData)
     if (initialData) {
       if (initialData.type) setType(initialData.type as "buy" | "sell")
       if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
