@@ -207,7 +207,7 @@ export default function AdDetailsForm({
       if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
       if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
     } 
-  }, [])
+  }, [initialData])
 
   useEffect(() => {
     const errors: ValidationErrors = {}
