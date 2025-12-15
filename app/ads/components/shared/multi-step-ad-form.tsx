@@ -554,6 +554,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 setFormData={setFormData}
                 isEditMode={mode === "edit"}
                 currencies={currencies}
+                isLoadingInitialData={isLoadingInitialData}
               />
             ) : currentStep === 1 ? (
               <PaymentDetailsForm
