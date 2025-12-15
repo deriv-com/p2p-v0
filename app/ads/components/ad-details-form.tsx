@@ -366,9 +366,9 @@ export default function AdDetailsForm({
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
-        
+        {!isEditMode && (
           <div>
-            {!isEditMode && (<TradeTypeSelector value={type} onChange={setType} />)}
+            <TradeTypeSelector value={type} onChange={setType} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
@@ -469,7 +469,7 @@ export default function AdDetailsForm({
 
             <div className="border-b border-grayscale-200 mt-6"></div>
           </div>
-        
+        )}
 
         <div>
           <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />
