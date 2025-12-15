@@ -142,6 +142,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   useEffect(() => {
     if (mode === "edit" && adId) {
+      setIsLoadingInitialData(true)
       const loadInitialData = async () => {
         try {
           const advertData = await AdsAPI.getAdvert(adId)
@@ -199,6 +200,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               setSelectedCountries(data.available_countries)
             }
           }
+
+          setIsLoadingInitialData(false)
         } catch (error) {}
       }
 
