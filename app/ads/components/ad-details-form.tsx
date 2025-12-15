@@ -515,6 +515,7 @@ export default function AdDetailsForm({
                     currency={forCurrency}
                     marketPrice={marketPrice || undefined}
                     error={touched.floatingRate && !!formErrors.floatingRate}
+                    errorMsg={formErrors.floatingRate}
                   />
                 </div>
               )}
