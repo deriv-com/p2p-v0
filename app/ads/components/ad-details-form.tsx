@@ -8,7 +8,6 @@ import { RateInput } from "./ui/rate-input"
 import { PriceTypeSelector } from "./ui/price-type-selector"
 import { FloatingRateInput } from "./ui/floating-rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
-import { AdDetailsFormSkeleton } from "./ui/ad-details-form-skeleton"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import { getAdvertStatistics } from "@/services/api/api-auth"
@@ -363,8 +362,6 @@ export default function AdDetailsForm({
     document.dispatchEvent(event)
   }, [type, totalAmount, fixedRate, floatingRate, minAmount, maxAmount, formErrors, priceType])
 
-  if(!initialData) return <AdDetailsFormSkeleton />
-  
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">

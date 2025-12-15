@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { AdDetailsFormSkeleton } from "./ui/ad-details-form-skeleton"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
