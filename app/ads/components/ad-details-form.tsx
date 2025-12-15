@@ -196,7 +196,7 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency, isConnected, priceType])
 
   useEffect(() => {
-    /*if (initialData) {
+    if (initialData) {
       if (initialData.type) setType(initialData.type as "buy" | "sell")
       if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
       if (initialData.priceType !== undefined) setPriceType(initialData.priceType.toString())
@@ -208,7 +208,7 @@ export default function AdDetailsForm({
       if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
     } else {
       setForCurrency(currenciesProp[0].code)
-    }*/
+    }
   }, [initialData])
 
   useEffect(() => {

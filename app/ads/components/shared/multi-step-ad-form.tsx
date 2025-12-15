@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
@@ -20,18 +18,12 @@ import { PaymentSelectionProvider, usePaymentSelection } from "../payment-select
 import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
   adId?: string
   initialType?: "buy" | "sell"
-  trigger?: React.ReactNode
-  userPaymentMethods?: UserPaymentMethod[]
-  availablePaymentMethods?: AvailablePaymentMethod[]
-  currencies?: Array<{ code: string }>
 }
 
 interface UserPaymentMethod {
@@ -49,19 +41,10 @@ interface AvailablePaymentMethod {
   method: string
 }
 
-function MultiStepAdFormInner({
-  mode,
-  adId,
-  initialType,
-  trigger,
-  userPaymentMethods,
-  availablePaymentMethods,
-  currencies,
-}: MultiStepAdFormProps) {
+function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps) {
   const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
-  const { leaveExchangeRatesChannel } = useWebSocketContext()
 
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
@@ -76,7 +59,11 @@ function MultiStepAdFormInner({
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
-  const [isLoadingInitialData, setIsLoadingInitialData] = useState(mode === "edit")
+  const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
+  const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
+  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
+  const { leaveExchangeRatesChannel } = useWebSocketContext()
+
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
 
@@ -101,7 +88,7 @@ function MultiStepAdFormInner({
         return
       }
 
-      setFormData({ ...formData, userPaymentMethods: response || [] })
+      setUserPaymentMethods(response || [])
     } catch (error) {
       console.error("Error fetching payment methods:", error)
     }
@@ -110,7 +97,7 @@ function MultiStepAdFormInner({
   const fetchAvailablePaymentMethods = async () => {
     try {
       const methods = await BuySellAPI.getPaymentMethods()
-      setFormData({ ...formData, availablePaymentMethods: methods || [] })
+      setAvailablePaymentMethods(methods || [])
     } catch (error) {
       console.error("Error fetching available payment methods:", error)
     }
@@ -139,10 +126,10 @@ function MultiStepAdFormInner({
           .map((code) => ({ code }))
           .sort((a, b) => a.code.localeCompare(b.code))
 
-        setFormData({ ...formData, currencies: uniqueCurrencies })
+        setCurrencies(uniqueCurrencies)
       } catch (error) {
         setCountries([])
-        setFormData({ ...formData, currencies: [] })
+        setCurrencies([])
       } finally {
         setIsLoadingCountries(false)
       }
@@ -154,7 +141,6 @@ function MultiStepAdFormInner({
   useEffect(() => {
     if (mode === "edit" && adId) {
       const loadInitialData = async () => {
-        setIsLoadingInitialData(true)
         try {
           const advertData = await AdsAPI.getAdvert(adId)
           const { data } = advertData
@@ -211,10 +197,7 @@ function MultiStepAdFormInner({
               setSelectedCountries(data.available_countries)
             }
           }
-        } catch (error) {
-        } finally {
-          setIsLoadingInitialData(false)
-        }
+        } catch (error) {}
       }
 
       loadInitialData()
@@ -502,8 +485,7 @@ function MultiStepAdFormInner({
   const handleClose = () => {
     const finalData = { ...formDataRef.current }
     const currency = finalData?.buyCurrency || "USD"
-    const forCurrency = finalData?.forCurrency || "USD"
-    leaveExchangeRatesChannel(currency, forCurrency)
+    leaveExchangeRatesChannel(currency)
 
     router.push("/ads")
   }
@@ -526,140 +508,122 @@ function MultiStepAdFormInner({
     return mode === "create" ? t("adForm.createAd") : t("adForm.editAd")
   }
 
-  const content = (
-    <div className="flex flex-col h-full">
-      {isLoadingInitialData ? (
-        <FormSkeletonLoader />
-      ) : (
-        <>
-          <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-            <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
-              <Navigation
-                isBackBtnVisible={currentStep != 0}
-                isVisible={false}
-                onBack={() => {
-                  const updatedStep = currentStep - 1
-                  setCurrentStep(updatedStep)
-                }}
+  return (
+    <form onSubmit={(e) => e.preventDefault()}>
+      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
+        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
+          <Navigation
+            isBackBtnVisible={currentStep != 0}
+            isVisible={false}
+            onBack={() => {
+              const updatedStep = currentStep - 1
+              setCurrentStep(updatedStep)
+            }}
+            onClose={handleClose}
+            title=""
+          />
+          <ProgressSteps
+            currentStep={currentStep}
+            steps={steps}
+            className="px-6 my-6"
+            title={{
+              label: getPageTitle(),
+              stepTitle: steps[currentStep].title,
+            }}
+          />
+
+          <div className="relative mb-16 md:mb-0 mx-6">
+            {currentStep === 0 ? (
+              <AdDetailsForm
+                onNext={handleAdDetailsNext}
                 onClose={handleClose}
-                title=""
+                initialData={formData}
+                setFormData={setFormData}
+                isEditMode={mode === "edit"}
+                currencies={currencies}
               />
-              <ProgressSteps
-                currentStep={currentStep}
-                steps={steps}
-                className="px-6 my-6"
-                title={{
-                  label: getPageTitle(),
-                  stepTitle: steps[currentStep].title,
-                }}
+            ) : currentStep === 1 ? (
+              <PaymentDetailsForm
+                onBack={() => setCurrentStep(0)}
+                onClose={handleClose}
+                initialData={formData}
+                setFormData={setFormData}
+                isSubmitting={isSubmitting}
+                isEditMode={mode === "edit"}
+                onBottomSheetOpenChange={handleBottomSheetOpenChange}
+                userPaymentMethods={userPaymentMethods}
+                availablePaymentMethods={availablePaymentMethods}
+                onRefetchPaymentMethods={fetchUserPaymentMethods}
               />
-
-              <div className="relative mb-16 md:mb-0 mx-6">
-                {currentStep === 0 ? (
-                  <AdDetailsForm
-                    onNext={handleAdDetailsNext}
-                    onClose={handleClose}
-                    initialData={formData}
-                    setFormData={setFormData}
-                    isEditMode={mode === "edit"}
-                    currencies={formData.currencies}
-                  />
-                ) : currentStep === 1 ? (
-                  <PaymentDetailsForm
-                    onBack={() => setCurrentStep(0)}
-                    onClose={handleClose}
-                    initialData={formData}
-                    setFormData={setFormData}
-                    isSubmitting={isSubmitting}
-                    isEditMode={mode === "edit"}
-                    onBottomSheetOpenChange={handleBottomSheetOpenChange}
-                    userPaymentMethods={formData.userPaymentMethods}
-                    availablePaymentMethods={formData.availablePaymentMethods}
-                    onRefetchPaymentMethods={fetchUserPaymentMethods}
-                  />
-                ) : (
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={24}
-                                height={24}
-                                className="ml-1 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
-                    </div>
-
-                    <div className="w-full md:w-[100%]">
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={24}
-                                height={24}
-                                className="ml-1 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-white">{t("adForm.audienceTooltip")}</p>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>{" "}
-                      </div>
-                      <div>
-                        <CountrySelection
-                          selectedCountries={selectedCountries}
-                          onCountriesChange={setSelectedCountries}
-                          countries={countries}
-                          isLoading={isLoadingCountries}
-                        />
-                      </div>
-                    </div>
+            ) : (
+              <div className="space-y-6">
+                <div>
+                  <div className="flex gap-[4px] items-center mb-4">
+                    <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.svg"
+                            alt="Info"
+                            width={24}
+                            height={24}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
-                )}
-              </div>
+                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                </div>
 
-              {isMobile ? (
-                <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
-                  <div className="mx-6">
-                    <Button
-                      type="button"
-                      onClick={handleButtonClick}
-                      disabled={isButtonDisabled || isSubmitting}
-                      className="w-full"
-                    >
-                      {isSubmitting ? (
-                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                      ) : (
-                        getButtonText()
-                      )}
-                    </Button>
+                <div className="w-full md:w-[100%]">
+                  <div className="flex gap-[4px] items-center mb-4">
+                    <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.svg"
+                            alt="Info"
+                            width={24}
+                            height={24}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-white">{t("adForm.audienceTooltip")}</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>{" "}
+                  </div>
+                  <div>
+                    <CountrySelection
+                      selectedCountries={selectedCountries}
+                      onCountriesChange={setSelectedCountries}
+                      countries={countries}
+                      isLoading={isLoadingCountries}
+                    />
                   </div>
                 </div>
-              ) : (
-                <div className="hidden md:block"></div>
-              )}
+              </div>
+            )}
+          </div>
 
-              <div className="hidden md:flex justify-end mt-8 px-6">
-                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+          {isMobile ? (
+            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
+              <div className="mx-6">
+                <Button
+                  type="button"
+                  onClick={handleButtonClick}
+                  disabled={isButtonDisabled || isSubmitting}
+                  className="w-full"
+                >
                   {isSubmitting ? (
                     <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                   ) : (
@@ -668,74 +632,29 @@ function MultiStepAdFormInner({
                 </Button>
               </div>
             </div>
+          ) : (
+            <div className="hidden md:block"></div>
+          )}
+
+          <div className="hidden md:flex justify-end mt-8 px-6">
+            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+              {isSubmitting ? (
+                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+              ) : (
+                getButtonText()
+              )}
+            </Button>
           </div>
-        </>
-      )}
-    </div>
-  )
-
-  return (
-    <Drawer trigger={trigger}>
-      <DrawerContent>{content}</DrawerContent>
-    </Drawer>
+        </div>
+      </div>
+    </form>
   )
 }
 
-function FormSkeletonLoader() {
-  return (
-    <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-8 w-8 rounded-full" />
-      </div>
-
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-28" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-      </div>
-
-      <div className="flex gap-3 mt-auto">
-        <Skeleton className="h-10 flex-1" />
-        <Skeleton className="h-10 flex-1" />
-      </div>
-    </div>
-  )
-}
-
-export default function MultiStepAdForm({
-  mode,
-  adId,
-  initialType,
-  trigger,
-  userPaymentMethods,
-  availablePaymentMethods,
-  currencies,
-}: MultiStepAdFormProps) {
+export default function MultiStepAdForm({ mode, adId, initialType }: MultiStepAdFormProps) {
   return (
     <PaymentSelectionProvider>
-      <MultiStepAdFormInner
-        mode={mode}
-        adId={adId}
-        initialType={initialType}
-        trigger={trigger}
-        userPaymentMethods={userPaymentMethods}
-        availablePaymentMethods={availablePaymentMethods}
-        currencies={currencies}
-      />
+      <MultiStepAdFormInner mode={mode} adId={adId} initialType={initialType} />
     </PaymentSelectionProvider>
   )
 }
