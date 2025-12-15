@@ -164,9 +164,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       ad.exchange_rate_type === "float" &&
       isConnected
     ) {
+      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+
       const requestTimer = setTimeout(() => {
         requestExchangeRate(ad.account_currency, ad.payment_currency)
-      }, 100)
+      }, 400)
 
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
@@ -184,12 +186,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       }
     }
   }, [isOpen, ad, isConnected])
-
-  useEffect(() => {
-    if (!isConnected) return
-
-    joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
-  }, [isConnected])
 
   useEffect(() => {
     if (isOpen) {
