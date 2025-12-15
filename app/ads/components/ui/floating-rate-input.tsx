@@ -105,8 +105,8 @@ export function FloatingRateInput({
             {marketPrice ? (
               <span>
                 {marketPrice.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 6,
+                  maximumFractionDigits: 6,
                 })}{" "}
                 {currency}
               </span>
@@ -121,8 +121,8 @@ export function FloatingRateInput({
         {yourPrice ? (
           <span className="text-slate-1200">
             {yourPrice.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              minimumFractionDigits: 6,
+              maximumFractionDigits: 6,
             })}{" "}
             <span className="text-xs font-normal">{currency}</span>
           </span>
