@@ -155,9 +155,9 @@ export default function AdDetailsForm({
       }
     }
 
-    if (!buyCurrency || !forCurrency) return
+    if (!isEditMode || !buyCurrency || !forCurrency) return
     fetchPriceRange()
-  }, [])
+  }, [buyCurrency, forCurrency, priceType, type])
 
   useEffect(() => {
     if (!isConnected) return
