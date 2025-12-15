@@ -368,7 +368,7 @@ export default function AdDetailsForm({
           <div>
             {!isEditMode && (<TradeTypeSelector value={type} onChange={setType} /> )}
 
-            {!isEditMode && (<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
                 <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
                   {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
@@ -418,7 +418,7 @@ export default function AdDetailsForm({
                 </Select>
               </div>
 
-              <div>
+              {!isEditMode && (<div>
                 <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
                   {type === "buy" ? "Paying with" : "Receive in"}
                 </label>
