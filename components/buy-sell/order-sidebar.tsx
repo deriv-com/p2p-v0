@@ -242,6 +242,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     if (!ad) return
 
     console.log(marketRate)
+    console.log(ad.effective_rate_display)
+    console.log(ad.exchange_rate_type == "float")
     if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate_display) {
       setShowRateChangeConfirmation(true)
       return
