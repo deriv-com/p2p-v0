@@ -114,10 +114,10 @@ export default function AdDetailsForm({
                   : null
               } else {
                 lowestPrice = currencyStats.buy_float_minimum_rate
-                  ? Number.parseFloat(currencyStats.buy_float_minimum_rate)
+                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.buy_float_minimum_rate) / 100))
                   : null
                 highestPrice = currencyStats.buy_float_maximum_rate
-                  ? Number.parseFloat(currencyStats.buy_float_maximum_rate)
+                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.buy_float_maximum_rate) / 100))
                   : null
               }
             } else {
@@ -130,10 +130,10 @@ export default function AdDetailsForm({
                   : null
               } else {
                 lowestPrice = currencyStats.sell_float_minimum_rate
-                  ? Number.parseFloat(currencyStats.sell_float_minimum_rate)
+                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.sell_float_minimum_rate) / 100))
                   : null
                 highestPrice = currencyStats.sell_float_maximum_rate
-                  ? Number.parseFloat(currencyStats.sell_float_maximum_rate)
+                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.sell_float_maximum_rate) / 100))
                   : null
               }
             }
