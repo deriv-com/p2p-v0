@@ -59,7 +59,7 @@ export function AdDetailsFormSkeleton() {
             <Skeleton className="bg-grayscale-500 h-4 w-32" />
             <Skeleton className="bg-grayscale-500 h-14 w-full rounded-lg" />
           </div>
-          <Skeleton className="h-6 w-4 hidden md:block" />
+          <Skeleton className="bg-grayscale-500 h-6 w-4 hidden md:block" />
           <div className="flex-1 space-y-2">
             <Skeleton className="bg-grayscale-500 h-4 w-32" />
             <Skeleton className="bg-grayscale-500 h-14 w-full rounded-lg" />
