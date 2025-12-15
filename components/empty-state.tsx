@@ -15,7 +15,6 @@ interface EmptyStateProps {
   className?: string
   redirectToAds?: boolean
   onAddPaymentMethod?: () => void
-  kycRoute?: "markets" | "ads" | "wallets" | "profile"
 }
 
 export default function EmptyState({
@@ -25,7 +24,6 @@ export default function EmptyState({
   className,
   redirectToAds = false,
   onAddPaymentMethod,
-  kycRoute = "markets",
 }: EmptyStateProps) {
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
