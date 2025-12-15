@@ -95,6 +95,11 @@ export function FloatingRateInput({
               </Button>
             </div>
           </div>
+          {error && (
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+            </div>
+          )}
           <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
             Current market price:{" "}
             {marketPrice ? (

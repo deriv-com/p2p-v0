@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import type { AdFormData } from "../types"
 import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
@@ -17,8 +17,10 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface AdDetailsFormProps {
+  onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
   initialData?: Partial<AdFormData>
-  onSubmit: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
+  isEditMode?: boolean
+  currencies?: Array<{ code: string }>
 }
 
 interface ValidationErrors {
@@ -34,7 +36,12 @@ interface PriceRange {
   highestPrice: number | null
 }
 
-export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormProps) {
+export default function AdDetailsForm({
+  onNext,
+  initialData,
+  isEditMode,
+  currencies: currenciesProp,
+}: AdDetailsFormProps) {
   const { t } = useTranslations()
   const [type, setType] = useState<"buy" | "sell">(initialData?.type || "buy")
   const [priceType, setPriceType] = useState<"fixed" | "float">(initialData?.priceType || "fixed")
@@ -44,7 +51,7 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
-  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "USD")
+  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || currenciesProp[0]?.code)
   const { accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
@@ -57,7 +64,6 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
   const [marketPrice, setMarketPrice] = useState<number | null>(null)
-  const fetchingPriceRangeRef = useRef(false)
 
   const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } = useWebSocketContext()
 
@@ -80,16 +86,13 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
   }
 
   useEffect(() => {
-    if (!initialData?.forCurrency && !forCurrency) {
-      setForCurrency("USD")
+    if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
+      setForCurrency(currenciesProp[0].code)
     }
-  }, [forCurrency])
+  }, [currenciesProp, forCurrency])
 
   useEffect(() => {
     const fetchPriceRange = async () => {
-      if (fetchingPriceRangeRef.current) return
-
-      fetchingPriceRangeRef.current = true
       setIsLoadingPriceRange(true)
       try {
         const response = await getAdvertStatistics(buyCurrency)
@@ -149,7 +152,6 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
         setPriceRange({ lowestPrice: null, highestPrice: null })
       } finally {
         setIsLoadingPriceRange(false)
-        fetchingPriceRangeRef.current = false
       }
     }
 
@@ -318,7 +320,7 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
         buyCurrency,
       }
 
-      onSubmit(formData, combinedErrors)
+      onNext(formData, combinedErrors)
       return
     }
 
@@ -334,7 +336,7 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
       buyCurrency,
     }
 
-    onSubmit(formData)
+    onNext(formData)
   }
 
   useEffect(() => {
@@ -362,108 +364,113 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <TradeTypeSelector value={type} onChange={setType} />
+        {!isEditMode && (
+          <div>
+            <TradeTypeSelector value={type} onChange={setType} />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <div>
-              <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
-                {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
-              </label>
-              <Select value={buyCurrency} onValueChange={setBuyCurrency}>
-                <SelectTrigger className="w-full h-14 rounded-lg" disabled>
-                  <SelectValue>
-                    <div className="flex items-center gap-2">
-                      {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
-                        <Image
-                          src={currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"}
-                          alt={`${buyCurrency} logo`}
-                          width={24}
-                          height={24}
-                          className="w-6 h-6 rounded object-cover"
-                        />
-                      )}
-                      <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
-                    </div>
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {accountCurrencies.map((currency) => (
-                    <SelectItem key={currency.code} value={currency.code}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div>
+                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                  {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
+                </label>
+                <Select value={buyCurrency} onValueChange={setBuyCurrency}>
+                  <SelectTrigger className="w-full h-14 rounded-lg" disabled>
+                    <SelectValue>
                       <div className="flex items-center gap-2">
-                        {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                        {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
                           <Image
                             src={
-                              currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg"
+                              currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
-                            alt={`${currency.code} logo`}
+                            alt={`${buyCurrency} logo`}
                             width={24}
                             height={24}
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                        <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
                       </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {accountCurrencies.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        <div className="flex items-center gap-2">
+                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                            <Image
+                              src={
+                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
+                                "/placeholder.svg" ||
+                                "/placeholder.svg" ||
+                                "/placeholder.svg"
+                              }
+                              alt={`${currency.code} logo`}
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 rounded object-cover"
+                            />
+                          )}
+                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div>
-              <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
-                {type === "buy" ? "Paying with" : "Receive in"}
-              </label>
-              <Select value={forCurrency} onValueChange={setForCurrency}>
-                <SelectTrigger className="w-full h-14 rounded-lg">
-                  <SelectValue>
-                    <div className="flex items-center gap-2">
-                      {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
-                        <Image
-                          src={currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"}
-                          alt={`${forCurrency} logo`}
-                          width={24}
-                          height={24}
-                          className="w-6 h-6 rounded object-cover"
-                        />
-                      )}
-                      <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
-                    </div>
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {accountCurrencies.map((currency) => (
-                    <SelectItem key={currency.code} value={currency.code}>
+              <div>
+                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                  {type === "buy" ? "Paying with" : "Receive in"}
+                </label>
+                <Select value={forCurrency} onValueChange={setForCurrency}>
+                  <SelectTrigger className="w-full h-14 rounded-lg">
+                    <SelectValue>
                       <div className="flex items-center gap-2">
-                        {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                        {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
                           <Image
                             src={
-                              currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg"
+                              currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
-                            alt={`${currency.code} logo`}
+                            alt={`${forCurrency} logo`}
                             width={24}
                             height={24}
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                        <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
                       </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currenciesProp.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        <div className="flex items-center gap-2">
+                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                            <Image
+                              src={
+                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper]
+                              }
+                              alt={`${currency.code} logo`}
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 rounded object-cover"
+                            />
+                          )}
+                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
+            <div className="border-b border-grayscale-200 mt-6"></div>
           </div>
-
-          <div className="border-b border-grayscale-200 mt-6"></div>
-        </div>
+        )}
 
         <div>
-          <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} />
+          <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
           <div className="mt-4">
             <div className="grid gap-4">
@@ -587,6 +594,7 @@ export default function AdDetailsForm({ initialData, onSubmit }: AdDetailsFormPr
               }}
               onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
               placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
+              isEditMode={isEditMode}
               error={touched.totalAmount && !!formErrors.totalAmount}
               currency={buyCurrency}
             />
