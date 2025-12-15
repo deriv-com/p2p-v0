@@ -516,9 +516,6 @@ export default function AdDetailsForm({
                     marketPrice={marketPrice || undefined}
                     error={touched.floatingRate && !!formErrors.floatingRate}
                   />
-                  {touched.floatingRate && formErrors.floatingRate && (
-                    <p className="text-destructive text-xs mt-1">{formErrors.floatingRate}</p>
-                  )}
                 </div>
               )}
             </div>
