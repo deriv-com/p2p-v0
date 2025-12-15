@@ -5,11 +5,7 @@ import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-interface KycOnboardingSheetProps {
-  route?: "markets" | "profile" | "wallets" | "ads"
-}
-
-function KycOnboardingSheet({ route }: KycOnboardingSheetProps = {}) {
+function KycOnboardingSheet() {
   const { t } = useTranslations()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
 
@@ -21,55 +17,34 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps = {}) {
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
-  const getFromParam = () => {
-    if (!route) return ""
-
-    const fromParamMap = {
-      markets: "from=p2p",
-      profile: "from=p2p-profile",
-      wallets: "from=p2p-wallet",
-      ads: "from=p2p-ads",
-    }
-
-    return fromParamMap[route] || ""
-  }
-
-  const appendFromParam = (url: string) => {
-    const fromParam = getFromParam()
-    if (!fromParam) return url
-
-    const separator = url.includes("?") ? "&" : "?"
-    return `${url}${separator}${fromParam}`
-  }
-
   const verificationSteps = [
     {
       id: "profile",
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
-      link: appendFromParam(`https://${getHomeUrl()}/dashboard/onboarding/personal-details?is_from_p2p=true`),
+      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details?is_from_p2p=true`,
     },
     {
       id: "poi",
       title: t("kyc.proofOfIdentity"),
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
-      link: appendFromParam(`https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`),
+      link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
       id: "poa",
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
-      link: appendFromParam(`https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`),
+      link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
       id: "phone",
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
-      link: appendFromParam(`https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`),
+      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
     },
   ]
 

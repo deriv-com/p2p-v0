@@ -67,6 +67,15 @@ export default function CountrySelection({ countries, selectedCountries, onCount
     }
   }, [selectedCountries])
 
+  const getDisplayText = () => {
+    if (isAllSelected) {
+      return t("common.selectedAll")
+    }
+    return `${t("common.selectedCount")} (${selectedCountries.length})`
+  }
+
+  const hasValue = true // Always show the floating label
+
   const CountryList = () => (
     <div className="space-y-4">
       <div className="relative">
@@ -141,18 +150,14 @@ export default function CountrySelection({ countries, selectedCountries, onCount
               variant="outline"
               className={cn(
                 "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
-                true ? "pt-6 pb-2" : "py-4",
+                hasValue ? "pt-6 pb-2" : "py-4",
               )}
               onClick={() => setIsOpen(true)}
             >
-              <span className="text-left text-base text-grayscale-600">
-                {selectedCountries.length === 0
-                  ? t("common.selectedAll")
-                  : `${t("common.selectedCount")} (${selectedCountries.length})`}
-              </span>
+              <span className="text-left text-base text-grayscale-600">{getDisplayText()}</span>
             </Button>
           </DrawerTrigger>
-          {true && (
+          {hasValue && (
             <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
               {t("common.countrySelection")}
             </label>
@@ -188,18 +193,14 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             variant="outline"
             className={cn(
               "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
-              true ? "pt-6 pb-2" : "py-4",
+              hasValue ? "pt-6 pb-2" : "py-4",
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className="text-left text-base text-grayscale-600">
-              {selectedCountries.length === 0
-                ? t("common.selectedAll")
-                : `${t("common.selectedCount")} (${selectedCountries.length})`}
-            </span>
+            <span className="text-left text-base text-grayscale-600">{getDisplayText()}</span>
           </Button>
         </PopoverTrigger>
-        {true && (
+        {hasValue && (
           <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
             {t("common.countrySelection")}
           </label>
