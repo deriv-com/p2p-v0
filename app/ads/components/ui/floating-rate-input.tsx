@@ -120,7 +120,7 @@ export function FloatingRateInput({
         <span className="text-grayscale-text-muted">Your rate:</span>
         {yourPrice ? (
           <span className="text-slate-1200">
-            {Number(yourPrice).toLocaleString(undefined, {
+            {yourPrice.toLocaleString(undefined, {
               minimumFractionDigits: 6,
               maximumFractionDigits: 6,
             })}{" "}
