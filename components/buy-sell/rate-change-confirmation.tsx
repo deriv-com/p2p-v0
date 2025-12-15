@@ -41,7 +41,7 @@ export default function RateChangeConfirmation({
         The exchange rate for your order has changed
         </p>
         <p className="text-grayscale-100 text-base">
-          You’re {buySellLabel} {amount} {accountCurrency} for {newTotal} {paymentCurrency}, but the new rate is <span className="font-bold">{newRate.toFixed(6)} {paymentCurrency}</span>.
+          You’re {buySellLabel} {amount} {accountCurrency} for {newTotal.toFixed(6)} {paymentCurrency}, but the new rate is <span className="font-bold">{newRate.toFixed(6)} {paymentCurrency}</span>.
         </p>
         <p className="text-grayscale-100 text-base">
         Would you like to continue with the new rate?
