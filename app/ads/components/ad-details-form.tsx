@@ -87,7 +87,7 @@ export default function AdDetailsForm({
 
   useEffect(() => {
     if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
-      //setForCurrency(currenciesProp[0].code)
+      setForCurrency(currenciesProp[0].code)
     }
   }, [currenciesProp, forCurrency])
 
@@ -206,8 +206,6 @@ export default function AdDetailsForm({
       if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
       if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
       if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
-    } else {
-      setForCurrency(currenciesProp[0].code)
     }
   }, [initialData])
 
