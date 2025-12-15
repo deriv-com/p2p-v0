@@ -41,7 +41,7 @@ export default function EmptyState({
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route={kycRoute} />
+            <KycOnboardingSheet />
           </div>
         ),
         confirmText: undefined,

@@ -54,7 +54,7 @@ export default function AdsPage() {
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet />
           </div>
         ),
         confirmText: undefined,
