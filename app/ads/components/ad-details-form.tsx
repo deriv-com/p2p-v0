@@ -418,7 +418,7 @@ export default function AdDetailsForm({
                 </Select>
               </div>
 
-              {!isEditMode && (<div>
+              <div>
                 <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
                   {type === "buy" ? "Paying with" : "Receive in"}
                 </label>
@@ -462,7 +462,7 @@ export default function AdDetailsForm({
                     ))}
                   </SelectContent>
                 </Select>
-              </div>)}
+              </div>
             </div>
 
             <div className="border-b border-grayscale-200 mt-6"></div>
