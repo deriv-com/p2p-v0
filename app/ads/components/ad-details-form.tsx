@@ -427,7 +427,7 @@ export default function AdDetailsForm({
                   {type === "buy" ? "Paying with" : "Receive in"}
                 </label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg">
+                  <SelectTrigger className="w-full h-14 rounded-lg" disabled={isEditMode}>
                     <SelectValue>
                       <div className="flex items-center gap-2">
                         {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
