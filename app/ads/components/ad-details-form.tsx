@@ -544,8 +544,8 @@ export default function AdDetailsForm({
               {priceRange?.lowestPrice ? (
                 <span className="text-slate-1200">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
-                    minimumFractionDigits: priceType === "float" ? 6 : 2,
-                    maximumFractionDigits: priceType === "float" ? 6 : 2,
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
                 </span>
@@ -558,8 +558,8 @@ export default function AdDetailsForm({
               {priceRange?.highestPrice ? (
                 <span className="text-slate-1200">
                   {priceRange.highestPrice.toLocaleString(undefined, {
-                    minimumFractionDigits: priceType === "float" ? 6 : 2,
-                    maximumFractionDigits: priceType === "float" ? 6 : 2,
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
                 </span>
