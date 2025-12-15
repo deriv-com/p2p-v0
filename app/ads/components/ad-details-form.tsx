@@ -528,7 +528,7 @@ export default function AdDetailsForm({
                 <span className="text-grayscale-text-muted">Your rate:</span>
                 {fixedRate ? (
                   <span className="text-slate-1200">
-                    {fixedRate.toLocaleString(undefined, {
+                    {Number(fixedRate).toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}{" "}
