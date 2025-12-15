@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function AdDetailsFormSkeleton() {
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 py-6">
       <div className="space-y-2">
         <Skeleton className="bg-grayscale-500 h-4 w-24" />
         <Skeleton className="bg-grayscale-500 h-12 w-full" />
