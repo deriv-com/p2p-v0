@@ -124,7 +124,7 @@ export default function Sidebar({ className }: SidebarProps) {
         <Button variant="ghost" size="sm" className="px-4 bg-grayscale-500 text-slate-1200 text-sm gap-[6px] hover:bg-none hover:text-white" onClick={() => {
           window.location.href = homeUrl
         }}>
-          <Image src="/icons/home-logo.svg" alt="Home" width={14} height={22} />
+          <Image src="/icons/home-logo-dark.svg" alt="Home" width={14} height={22} />
           <span>Go to Home</span>
         </Button>
       </div>
