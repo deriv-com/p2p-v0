@@ -122,7 +122,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowStatsSidebar(true)
               }}
-              className="grid grid-cols-[auto 1fr 1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-stats.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.stats")}</span>
