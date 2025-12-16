@@ -569,6 +569,7 @@ export default function BuySellPage() {
                 title={t("market.noAdsTitle")}
                 description={t("market.noAdsDescription")}
                 redirectToAds={true}
+                route="markets"
               />
             ) : (
               <div className="md:block">
