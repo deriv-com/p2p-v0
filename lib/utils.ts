@@ -484,6 +484,7 @@ export const currencyFlagMapper = {
   XOF: "/icons/flag-niger.png",
   OMR: "/icons/flag-oman.png",
   VES: "/icons/flag-venezuela.png",
+  TND: "/icons/flag-tunisia.png",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
