@@ -122,7 +122,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowStatsSidebar(true)
               }}
-              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-[auto 1fr 1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-stats.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900">{t("profile.stats")}</span>
@@ -146,7 +146,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider className="ml-6"/>
+            <Divider className="ml-[60px]"/>
             <div
               onClick={() => {
                 setShowPaymentMethodsSidebar(true)
