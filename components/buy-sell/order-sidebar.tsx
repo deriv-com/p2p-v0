@@ -177,7 +177,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
           setMarketRate(data.payload.data.rate * ((ad.exchange_rate/100) + 1))
-        }
+        } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
+          if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
+            const updatedAdvert = data.payload.data.advert
+            
+            setAdverts((currentAdverts) =>
+              currentAdverts.map((ad) =>
+                ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
+              ),
+            )
+          }
+        } 
       })
       return () => {
         clearTimeout(requestTimer)
