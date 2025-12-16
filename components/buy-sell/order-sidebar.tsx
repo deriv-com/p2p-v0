@@ -180,12 +180,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
           if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
             const updatedAdvert = data.payload.data.advert
-            
-            setAdverts((currentAdverts) =>
-              currentAdverts.map((ad) =>
-                ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
-              ),
-            )
+            if(ad.id == updatedAdvert.id) setMarketRate(updatedAdvert.effective_rate)
           }
         } 
       })
