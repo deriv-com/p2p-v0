@@ -349,7 +349,7 @@ export default function BuySellPage() {
 
           setAdverts((currentAdverts) =>
             currentAdverts.map((ad) =>
-              ad.id === updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
+              ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
             ),
           )
         }
