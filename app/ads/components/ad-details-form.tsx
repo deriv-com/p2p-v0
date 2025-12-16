@@ -639,7 +639,7 @@ export default function AdDetailsForm({
                 currency={buyCurrency}
               />
               {touched.minAmount && formErrors.minAmount && (
-                <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
+                <p className="text-destructive text-xs mt-1 ml-4">{formErrors.minAmount}</p>
               )}
             </div>
             <div className="text-xl hidden md:block">~</div>
@@ -670,7 +670,7 @@ export default function AdDetailsForm({
                 currency={buyCurrency}
               />
               {touched.maxAmount && formErrors.maxAmount && (
-                <p className="text-destructive text-xs mt-1">{formErrors.maxAmount}</p>
+                <p className="text-destructive text-xs mt-1 ml-4">{formErrors.maxAmount}</p>
               )}
             </div>
           </div>
