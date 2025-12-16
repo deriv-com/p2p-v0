@@ -26,7 +26,7 @@ export function useCurrencyData(currency = "USD") {
 
         const currencyList: Currency[] = Array.from(currencyMap.entries())
           .map(([code, name]) => ({ code, name }))
-          .sort((a, b) => a.code.localeCompare(b.code))
+          .sort((a, b) => b.code.localeCompare(a.code))
 
         setCurrencies(currencyList)
         setError(null)

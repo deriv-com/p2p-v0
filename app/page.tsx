@@ -143,34 +143,43 @@ export default function BuySellPage() {
   }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
-    if (currencies.length === 0) return
-
     const fetchAdvertStatistics = async () => {
       try {
         const statistics = await BuySellAPI.getAdvertStatistics("USD")
 
-        let currencyToSet = currencies[0]?.code
-        let shouldSetSellTab = false
+        if (currencies.length > 0) {
+          const operation = searchParams.get("operation")
+          let currencyToSet = currencies[0]?.code
+          let shouldSetSellTab = false
 
-        const currencyWithSellCount = statistics?.data?.find((stat: any) => stat.sell_count > 0)
+          const firstCurrencyStats = statistics?.data?.find(
+            (stat: any) => stat.payment_currency === currencies[0]?.code,
+          )
 
-        if (currencyWithSellCount) {
-          currencyToSet = currencyWithSellCount.payment_currency
-        } else {
-          const currencyWithBuyCount = statistics?.data?.find((stat: any) => stat.buy_count > 0)
+          if (firstCurrencyStats && firstCurrencyStats.sell_count > 0) {
+            currencyToSet = currencies[0]?.code
+          } else {
+            const currencyWithSellCount = statistics?.data?.find((stat: any) => stat.sell_count > 0)
 
-          if (currencyWithBuyCount) {
-            currencyToSet = currencyWithBuyCount.payment_currency
-            if (!searchParams.get("operation")) {
-              shouldSetSellTab = true
+            if (currencyWithSellCount) {
+              currencyToSet = currencyWithSellCount.payment_currency
+            } else {
+              const currencyWithBuyCount = statistics?.data?.find((stat: any) => stat.buy_count > 0)
+
+              if (currencyWithBuyCount) {
+                currencyToSet = currencyWithBuyCount.payment_currency
+                if (!operation) {
+                  shouldSetSellTab = true
+                }
+              }
             }
           }
-        }
 
-        setCurrency(currencyToSet)
+          setCurrency(currencyToSet)
 
-        if (shouldSetSellTab) {
-          setActiveTab("sell")
+          if (shouldSetSellTab) {
+            setActiveTab("sell")
+          }
         }
       } catch (error) {
         console.error("Error fetching advert statistics:", error)
