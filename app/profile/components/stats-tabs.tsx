@@ -261,7 +261,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-help-centre.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("navigation.p2pHelpCentre")}</span>
-              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
+              <Image src="/icons/chevron-right-gray.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
             </div>
           </div>
         ) : (
