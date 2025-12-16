@@ -343,7 +343,15 @@ export default function BuySellPage() {
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
       if (data?.options?.channel?.startsWith("adverts/currency/")) {
-        
+        if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
+          const updatedAdvert = data.payload.data.advert
+
+          setAdverts((currentAdverts) =>
+            currentAdverts.map((ad) =>
+              ad.id === updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
+            ),
+          )
+        }
       }
     })
 
