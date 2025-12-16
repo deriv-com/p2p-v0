@@ -183,10 +183,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
             if(ad.id == updatedAdvert.id) {
               setMarketRate(updatedAdvert.effective_rate)
               ad.effective_rate_display = updatedAdvert.effective_rate_display
-              console.log(amount)
-               console.log(updatedAdvert.effective_rate)
-              const total = Number.parseFloat(amount) * updatedAdvert.effective_rate
-              setTotalAmount(total)
+              
+              //const total = Number.parseFloat(amount) * updatedAdvert.effective_rate
+              //setTotalAmount(total)
             }
           }
         } 
