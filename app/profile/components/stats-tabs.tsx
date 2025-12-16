@@ -113,7 +113,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       <div className="mb-6">
         {isMobile ? (
           <div className="mx-[-12px]">
-            <Divider />
+            <div>About you</div>
             <div
               onClick={() => {
                 setShowStatsSidebar(true)
@@ -186,7 +186,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 )}
               </div>
             )}
-            <Divider />
+            <div>Settings</div>
             <div
               onClick={() => {
                 setShowFollowsSidebar(true)
