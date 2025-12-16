@@ -606,7 +606,7 @@
     "duplicateRateTitle": "You already have an ad with this rate",
     "duplicateRateMessage": "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
     "rangeOverlapTitle": "Order range overlaps",
-    "rangeOverlapMessage": "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
+    "rangeOverlapMessage": "You've an active ad with an order range that includes this one. Update that ad or change this range to continue.",
     "adLimitReachedTitle": "Ad limit reached",
     "adLimitReachedMessage": "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
     "advertFloatRateMaximumTitle": "Check your floating rate",
