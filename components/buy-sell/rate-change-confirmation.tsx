@@ -32,7 +32,7 @@ export default function RateChangeConfirmation({
 
   const oldTotal = (Number.parseFloat(amount) * oldRate)
   const newTotal = (Number.parseFloat(amount) * newRate)
-  const buySellLabel = isBuy ? "buying" : "selling"
+  const buySellLabel = isBuy ? "selling" : "buying"
 
   const content = (
     <div className="flex flex-col gap-8">
