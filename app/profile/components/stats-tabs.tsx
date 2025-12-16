@@ -242,7 +242,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider />
+            <div className="font-bold text-[18px] mx-6">Support</div>
           </div>
         ) : (
           <Tabs defaultValue="stats">
