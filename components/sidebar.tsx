@@ -122,7 +122,7 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Button variant="ghost" size="sm" className="px-4 bg-grayscale-500 text-slate-1200 text-sm gap-4 hover:bg-none hover:text-white" onClick={() => {
+        <Button variant="ghost" size="sm" className="px-4 bg-grayscale-500 text-slate-1200 text-xs gap-4 hover:bg-none hover:text-white" onClick={() => {
           window.location.href = homeUrl
         }}>
           <Image src="/icons/home-logo-dark.svg" alt="Home" width={14} height={22} />
