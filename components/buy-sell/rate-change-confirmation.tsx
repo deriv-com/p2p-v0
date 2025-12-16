@@ -38,7 +38,7 @@ export default function RateChangeConfirmation({
     <div className="flex flex-col gap-8">
       <div className="space-y-4">
         <p className="text-grayscale-100 text-base">
-        The exchange rate for your order has changed
+        The exchange rate for your order has changed.
         </p>
         <p className="text-grayscale-100 text-base">
           You’re {buySellLabel} {amount} {accountCurrency} for {oldTotal?.toFixed(6)} {paymentCurrency}, but the new rate is <span className="font-bold">{newRate?.toFixed(6)} {paymentCurrency}</span>.
