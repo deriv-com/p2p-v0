@@ -247,6 +247,15 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               </div>
             )}
             <div className="font-bold text-[18px] mx-6">Support</div>
+            <div
+              onClick={() => {
+                window.location.href = helpCentreUrl
+              }}
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <span className="text-sm font-normal text-gray-900">{t("navigation.p2pHelpCentre")}</span>
+              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+            </div>
           </div>
         ) : (
           <Tabs defaultValue="stats">
