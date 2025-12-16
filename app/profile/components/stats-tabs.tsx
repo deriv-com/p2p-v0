@@ -155,7 +155,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-pm.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.paymentMethods")}</span>
-              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
+              <Image src="/icons/chevron-right-gray.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
             </div>
             {showPaymentMethodsSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
