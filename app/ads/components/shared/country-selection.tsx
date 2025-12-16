@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,12 +27,18 @@ export default function CountrySelection({ countries, selectedCountries, onCount
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollPositionRef = useRef<number>(0)
 
   const filteredCountries = countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const isAllSelected = selectedCountries.length === 0
 
   const handleCountryToggle = (countryCode: string) => {
+    if (scrollContainerRef.current) {
+      scrollPositionRef.current = scrollContainerRef.current.scrollTop
+    }
+
     if (selectedCountries.length === 0) {
       onCountriesChange([countryCode])
     } else if (selectedCountries.includes(countryCode)) {
@@ -44,12 +50,22 @@ export default function CountrySelection({ countries, selectedCountries, onCount
   }
 
   const handleAllToggle = (checked: boolean | string) => {
+    if (scrollContainerRef.current) {
+      scrollPositionRef.current = scrollContainerRef.current.scrollTop
+    }
+
     if (checked) {
       onCountriesChange([])
     } else {
       onCountriesChange([])
     }
   }
+
+  useEffect(() => {
+    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
+      scrollContainerRef.current.scrollTop = scrollPositionRef.current
+    }
+  }, [selectedCountries])
 
   const getDisplayText = () => {
     if (isAllSelected) {
@@ -105,7 +121,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
         <div className="h-px bg-black/[0.08] my-7 md:fixed md:left-0 md:w-full" />
 
-        <div className="space-y-4 max-h-[300px] overflow-y-auto md:pt-6">
+        <div ref={scrollContainerRef} className="space-y-4 max-h-[300px] md:max-h-[240px] overflow-y-auto md:pt-6">
           {filteredCountries.map((country) => (
             <div key={country.code} className="flex items-center space-x-3">
               <Checkbox
