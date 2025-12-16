@@ -117,7 +117,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       <div className="mb-[64px] md:mb-6">
         {isMobile ? (
           <div className="mx-[-12px]">
-            <div className="font-bold text-[18px] mx-6">About you</div>
+            <div className="font-bold text-[18px] mx-6 mt-6">About you</div>
             <div
               onClick={() => {
                 setShowStatsSidebar(true)
