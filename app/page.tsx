@@ -343,8 +343,7 @@ export default function BuySellPage() {
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
       if (data?.options?.channel?.startsWith("adverts/currency/")) {
-        console.log("[v0] Received adverts update:", data)
-        // Handle adverts updates here if needed
+        
       }
     })
 
