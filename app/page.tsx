@@ -345,7 +345,6 @@ export default function BuySellPage() {
       if (data?.options?.channel?.startsWith("adverts/currency/")) {
         if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
           const updatedAdvert = data.payload.data.advert
-          console.log(updatedAdvert)
 
           setAdverts((currentAdverts) =>
             currentAdverts.map((ad) =>
