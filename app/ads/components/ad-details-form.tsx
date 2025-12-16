@@ -608,7 +608,7 @@ export default function AdDetailsForm({
               currency={buyCurrency}
             />
             {touched.totalAmount && formErrors.totalAmount && (
-              <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
+              <p className="text-destructive text-xs mt-1 ml-4">{formErrors.totalAmount}</p>
             )}
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
