@@ -226,7 +226,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     }
 
     if (!amount) setTotalAmount(0)
-  }, [amount, ad, orderType, p2pBalance, t])
+  }, [amount, ad, orderType, p2pBalance, t, ad.effective_rate_display])
 
   const handleShowPaymentSelection = () => {
     showAlert({
