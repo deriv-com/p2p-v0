@@ -32,7 +32,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useWebSocketContext } from "@/hooks/use-websocket-context"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
