@@ -23,6 +23,7 @@ import ProfileIcon from "@/public/icons/ic-profile.svg"
 import ProfileSelectedIcon from "@/public/icons/ic-profile-selected.svg"
 import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
+import { Button } from "@/components/ui/button"
 
 interface SidebarProps {
   className?: string
