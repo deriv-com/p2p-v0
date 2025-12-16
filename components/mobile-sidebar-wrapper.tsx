@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import Sidebar from "./sidebar"
 import Image from "next/image"
 
 export function MobileSidebarTrigger() {
