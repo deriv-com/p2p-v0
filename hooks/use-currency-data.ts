@@ -28,9 +28,9 @@ export function useCurrencyData(currency = "USD") {
 
         let currencyList: Currency[] = []
 
-        const paymentCurrencies = countries?.map((advert: { payment_currency: string }) => ({
-          code: advert.payment_currency,
-          name: currencyMap.get(advert.payment_currency) || advert.payment_currency,
+        const paymentCurrencies = countries?.map((advert: { currency: string, currency_name: string }) => ({
+          code: advert.currency,
+          name: advert.currency_name,
         }))
 
         const uniqueCurrencies = paymentCurrencies?.reduce((acc: Currency[], curr: Currency) => {
