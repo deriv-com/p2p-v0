@@ -257,7 +257,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="markets" />
           </div>
         ),
         confirmText: undefined,
@@ -276,7 +276,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="markets" />
           </div>
         ),
         confirmText: undefined,
@@ -574,8 +574,9 @@ export default function BuySellPage() {
                             <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                  }`}
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
+                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                }`}
                               />
                             </div>
                             <div className="flex items-center gap-1">
@@ -656,15 +657,16 @@ export default function BuySellPage() {
                           <div className="font-bold text-base flex items-center">
                             {ad.exchange_rate
                               ? ad.exchange_rate.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
                               : ""}{" "}
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                           </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
-                            }  ${ad.account_currency}`}</div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
+                            ad.actual_maximum_order_amount || "N/A"
+                          }  ${ad.account_currency}`}</div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                           <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
@@ -672,10 +674,11 @@ export default function BuySellPage() {
                               <div key={index} className="flex items-center">
                                 {method && (
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                      ? "bg-paymentMethod-bank"
-                                      : "bg-paymentMethod-ewallet"
-                                      }`}
+                                    className={`h-2 w-2 rounded-full mr-2 ${
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
+                                    }`}
                                   ></div>
                                 )}
                                 <span className="text-xs">{formatPaymentMethodName(method)}</span>

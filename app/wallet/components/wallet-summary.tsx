@@ -91,7 +91,7 @@ export default function WalletSummary({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -109,7 +109,7 @@ export default function WalletSummary({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -129,7 +129,7 @@ export default function WalletSummary({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -236,7 +236,7 @@ export default function WalletSummary({
             <div className="flex flex-col items-center gap-2">
               <Button
                 size="icon"
-                className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
+                className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-white/10 text-white"
                 onClick={handleTransferClick}
                 disabled={!hasBalance}
                 aria-label="Transfer"
