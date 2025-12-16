@@ -268,7 +268,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         InsufficientBalance: t("adForm.insufficientBalanceMessage"),
         AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
         AdvertActiveCountExceeded: t("adForm.adLimitReachedMessage"),
-        AdvertFloatRateMaximum: t("adForm.advertFloatRateMaximumMessage")
+        AdvertFloatRateMaximum: t("adForm.advertFloatRateMaximumMessage"),
+        AdvertExchangeRateDuplicate: t("adForm.duplicateRateMessage")
       }
 
       if (errorCodeMap[errors[0].code]) {
