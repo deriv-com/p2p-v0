@@ -174,11 +174,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
     
         if (data.options.channel === expectedChannel && data.payload?.rate) {
-          const rate = Number(data.payload.rate * ((ad.exchange_rate/100) + 1)).toFixed(6)
-          setMarketRate(rate)
+          setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-          const rate = Number(data.payload.data.rate * ((ad.exchange_rate/100) + 1)).toFixed(6)
-          setMarketRate(rate)
+          setMarketRate(data.payload.data.rate * ((ad.exchange_rate/100) + 1))
         }
       })
       return () => {
