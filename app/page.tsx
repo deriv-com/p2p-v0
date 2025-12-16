@@ -32,6 +32,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useWebSocketContext } from "@/hooks/use-websocket-context"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -73,6 +74,8 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
+
+  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -326,6 +329,27 @@ export default function BuySellPage() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (isConnected && selectedAccountCurrency && currency && activeTab) {
+      joinAdvertsChannel(selectedAccountCurrency, currency, activeTab)
+
+      return () => {
+        leaveAdvertsChannel(selectedAccountCurrency, currency, activeTab)
+      }
+    }
+  }, [isConnected, selectedAccountCurrency, currency, activeTab, joinAdvertsChannel, leaveAdvertsChannel])
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.options?.channel?.startsWith("adverts/currency/")) {
+        console.log("[v0] Received adverts update:", data)
+        // Handle adverts updates here if needed
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
 
   return (
     <>
