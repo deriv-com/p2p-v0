@@ -16,7 +16,7 @@ import AdsIcon from "@/public/icons/ic-my-ads.svg"
 import AdsSelectedIcon from "@/public/icons/ic-my-ads-selected.svg"
 import WalletIcon from "@/public/icons/ic-wallet.svg"
 import WalletSelectedIcon from "@/public/icons/ic-wallet-selected.svg"
-import ProfileIcon from "@/public/icons/ic-profile.svg"
+import ProfileIcon from "@/public/icons/profile-icon.svg"
 import ProfileSelectedIcon from "@/public/icons/ic-profile-selected.svg"
 
 export default function MobileFooterNav() {
