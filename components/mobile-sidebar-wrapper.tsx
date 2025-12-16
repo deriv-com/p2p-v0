@@ -23,7 +23,7 @@ export function MobileSidebarTrigger() {
   }, [userData?.signup])
 
   return (
-    <Button variant="ghost" size="sm" className="md:hidden px-2" onClick={() => {
+    <Button variant="ghost" size="sm" className="md:hidden px-2 bg-slate-900 " onClick={() => {
       const homeUrl = getHomeUrl(isV1Signup, "home")
       window.location.href = homeUrl
     }}>
