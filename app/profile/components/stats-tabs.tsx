@@ -190,6 +190,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 )}
               </div>
             )}
+            <Divider />
             <div className="font-bold text-[18px] mx-6">Settings</div>
             <div
               onClick={() => {
@@ -246,6 +247,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
+            <Divider />
             <div className="font-bold text-[18px] mx-6">Support</div>
             <div
               onClick={() => {
