@@ -1,22 +1,34 @@
 "use client"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+
+import { useState, useEffect } from "react"
+import { getHomeUrl } from "@/lib/utils"
+import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
-import Sidebar from "./sidebar"
 import Image from "next/image"
 
 export function MobileSidebarTrigger() {
+  const { userData } = useUserDataStore()
+  const [isV1Signup, setIsV1Signup] = useState(() => {
+    const cached = getCachedSignup()
+    if (cached !== null) return cached === "v1"
+    return userData?.signup === "v1"
+  })
+
+  useEffect(() => {
+    if (userData?.signup === "v1") {
+      setIsV1Signup(true)
+    } else if (userData?.signup) {
+      setIsV1Signup(false)
+    }
+  }, [userData?.signup])
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="sm" className="md:hidden px-2">
-          <Image src="/icons/menu.png" alt="Menu" width={24} height={24} />
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="p-0 w-[295px]">
-        <div className="h-full flex flex-col">
-          <Sidebar className="h-full border-r-0 mr-0 mt-6" />
-        </div>
-      </SheetContent>
-    </Sheet>
+    <Button variant="ghost" size="sm" className="md:hidden px-4 bg-[#ffffff0a] text-white text-sm gap-[6px] hover:bg-[#ffffff0a] hover:text-white" onClick={() => {
+      const homeUrl = getHomeUrl(isV1Signup, "home")
+      window.location.href = homeUrl
+    }}>
+      <Image src="/icons/home-logo.svg" alt="Home" width={14} height={22} />
+      <span>Home</span>
+    </Button>
   )
 }
