@@ -246,7 +246,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       return
     }
 
-    //await proceedWithOrder()
+    await proceedWithOrder()
   }
 
   const proceedWithOrder = async () => {
