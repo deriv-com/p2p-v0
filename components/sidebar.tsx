@@ -122,20 +122,12 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
-          {userName?.charAt(0).toUpperCase()}
-        </Avatar>
-        <div className="flex-1 min-w-0">
-          <h2 className="text-sm font-bold text-slate-1400 mb-1">
-            {userData?.first_name && userData?.last_name
-              ? `${userData.first_name} ${userData.last_name}`
-              : userData?.nickname}
-          </h2>
-          <div className="text-xs text-slate-1400 [overflow-wrap:anywhere]">{userData?.email || ""}</div>
-        </div>
-        <Link prefetch href={profileUrl}>
-          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
-        </Link>
+        <Button variant="ghost" size="sm" className="px-4 bg-slate-900 text-white text-sm gap-[6px] hover:bg-none hover:text-white" onClick={() => {
+          window.location.href = homeUrl
+        }}>
+          <Image src="/icons/home-logo.svg" alt="Home" width={14} height={22} />
+          <span>Go to Home</span>
+        </Button>
       </div>
     </div>
   )
