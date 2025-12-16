@@ -27,7 +27,8 @@ export function MobileSidebarTrigger() {
       const homeUrl = getHomeUrl(isV1Signup, "home")
       window.location.href = homeUrl
     }}>
-      <Image src="/icons/menu.png" alt="Menu" width={24} height={24} />
+      <Image src="/icons/home-logo.svg" alt="Home" width={24} height={24} />
+      <span className="">Home</span>
     </Button>
   )
 }
