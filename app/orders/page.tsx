@@ -26,6 +26,7 @@ import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 function TimeRemainingDisplay({ expiresAt }) {
@@ -44,6 +45,7 @@ function TimeRemainingDisplay({ expiresAt }) {
 export default function OrdersPage() {
   const { t } = useTranslations()
   const router = useRouter()
+  const { showAlert } = useAlertDialog()
   const { activeTab, setActiveTab, dateFilter, customDateRange, setDateFilter, setCustomDateRange } =
     useOrdersFilterStore()
   const { setIsChatVisible } = useChatVisibilityStore()
@@ -64,6 +66,32 @@ export default function OrdersPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      showAlert({
+        title: t("wallet.gettingStartedWithP2P"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="markets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
+      })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
+
+  useEffect(() => {
     if (userData?.signup === "v1") {
       setShowCheckPreviousOrdersButton(true)
     } else if (userData?.signup) {
@@ -80,15 +108,6 @@ export default function OrdersPage() {
       }
     }
   }, [activeTab, dateFilter, customDateRange])
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
-
-    if (shouldShowKyc) {
-      setShowKycPopup(true)
-    }
-  }, [])
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
@@ -469,11 +488,6 @@ export default function OrdersPage() {
           recommendLabel={t("orders.wouldYouRecommend", { role: getRecommendLabel() })}
         />
       </div>
-      {showKycPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <KycOnboardingSheet route="orders" onClose={() => setShowKycPopup(false)} />
-        </div>
-      )}
     </>
   )
 }

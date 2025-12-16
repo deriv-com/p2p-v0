@@ -14,13 +14,39 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [showKycPopup, setShowKycPopup] = useState(false)
-  const { showWarningDialog } = useAlertDialog()
+  const { showWarningDialog, showAlert } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
   const isDisabled = user?.status === "disabled"
   const { t } = useTranslations()
+  const [showKycPopup, setShowKycPopup] = useState(false)
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="profile" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
+      })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -125,15 +151,6 @@ export default function ProfilePage() {
     fetchUserData()
   }, [t])
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
-
-    if (shouldShowKyc) {
-      setShowKycPopup(true)
-    }
-  }, [])
-
   if (isDisabled) {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
@@ -170,11 +187,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      {showKycPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <KycOnboardingSheet route="profile" onClose={() => setShowKycPopup(false)} />
-        </div>
-      )}
     </>
   )
 }

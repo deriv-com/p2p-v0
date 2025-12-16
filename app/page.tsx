@@ -32,6 +32,10 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getTotalBalance } from "@/services/api/api-auth"
+import { useIsMobile } from "@/hooks/use-mobile"
+
+type Ad = Advertisement
+type AdType = "buy" | "sell"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -67,7 +71,22 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [isMarketFilterOpen, setIsMarketFilterOpen] = useState(false)
+  const [buyAds, setBuyAds] = useState<Ad[]>([])
+  const [sellAds, setSellAds] = useState<Ad[]>([])
+  const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<string>("USD")
+  const [selectedCryptoCurrency, setSelectedCryptoCurrency] = useState<string>("btc")
+  const [isLoadingCountries, setIsLoadingCountries] = useState(false)
+  const [previousFiltersString, setPreviousFiltersString] = useState<string>("")
+  const [showOnlyFav, setShowOnlyFav] = useState<boolean>(false)
+  const [showAccountSwitch, setShowAccountSwitch] = useState(false)
+  const [showBuySellOptions, setShowBuySellOptions] = useState(false)
+  const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
+  const [favAdList, setFavAdList] = useState<any>([])
+  const [initialBuyLoad, setInitialBuyLoad] = useState(true)
+  const [initialSellLoad, setInitialSellLoad] = useState(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
+
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -76,6 +95,7 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
+  const isMobile = useIsMobile()
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -254,7 +274,16 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      setShowKycPopup(true)
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="markets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     }
   }
 
@@ -264,7 +293,16 @@ export default function BuySellPage() {
       setIsOrderSidebarOpen(true)
       setError(null)
     } else {
-      setShowKycPopup(true)
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="markets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     }
   }
 
@@ -315,11 +353,28 @@ export default function BuySellPage() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
-
     if (shouldShowKyc) {
       setShowKycPopup(true)
     }
   }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="markets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
+      })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
 
   return (
     <>
@@ -711,12 +766,6 @@ export default function BuySellPage() {
           p2pBalance={Number.parseFloat(balance)}
         />
       </div>
-
-      {showKycPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <KycOnboardingSheet route="markets" onClose={() => setShowKycPopup(false)} />
-        </div>
-      )}
     </>
   )
 }

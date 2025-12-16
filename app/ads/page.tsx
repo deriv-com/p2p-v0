@@ -37,7 +37,6 @@ export default function AdsPage() {
   const { userData, userId, verificationStatus } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
-  const [showKycPopup, setShowKycPopup] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -45,12 +44,21 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
-  const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified) {
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
@@ -60,7 +68,16 @@ export default function AdsPage() {
         ),
         confirmText: undefined,
         cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
       })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
+
+  const handleCreateAd = () => {
+    if (!userId || !verificationStatus?.phone_verified) {
+      setShowKycPopup(true)
       return
     }
     router.push("/ads/create")
@@ -98,15 +115,6 @@ export default function AdsPage() {
       hasFetchedRef.current = true
     }
   }, [userId])
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
-
-    if (shouldShowKyc) {
-      setShowKycPopup(true)
-    }
-  }, [])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -282,12 +290,6 @@ export default function AdsPage() {
           />
         )}
       </div>
-
-      {showKycPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <KycOnboardingSheet route="ads" onClose={() => setShowKycPopup(false)} />
-        </div>
-      )}
     </>
   )
 }
