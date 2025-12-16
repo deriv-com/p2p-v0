@@ -2,15 +2,13 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
-import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import HomeIcon from "@/public/icons/ic-arrow-left.svg"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -70,9 +68,16 @@ export default function Sidebar({ className }: SidebarProps) {
           { name: t("navigation.market"), href: "/", icon: MarketIcon, selectedIcon: MarketSelectedIcon },
           { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon, selectedIcon: OrdersSelectedIcon },
           { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon, selectedIcon: AdsSelectedIcon },
-          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, selectedIcon: WalletSelectedIcon }] : []),
+          ...(showWallet
+            ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, selectedIcon: WalletSelectedIcon }]
+            : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, selectedIcon: ProfileSelectedIcon },
-          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, selectedIcon: GuideSelectedIcon },
+          {
+            name: t("navigation.p2pHelpCentre"),
+            href: helpCentreUrl,
+            icon: GuideIcon,
+            selectedIcon: GuideSelectedIcon,
+          },
         ]
       : []),
   ]
@@ -105,7 +110,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
-                {item.name === t("navigation.profile") && <div className="my-3 border-b border-grayscale-200"></div>}
+                {item.name === t("navigation.p2pHelpCentre") && <div className="my-3 border-b border-grayscale-200"></div>}
                 <Link
                   prefetch
                   href={item.href}
@@ -122,11 +127,16 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Button variant="ghost" size="sm" className="px-4 bg-grayscale-500 text-slate-1200 text-xs gap-4 hover:bg-grayscale-500 hover:slate-1200" onClick={() => {
-          window.location.href = homeUrl
-        }}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="px-4 bg-grayscale-500 text-slate-1200 text-xs gap-4 hover:bg-grayscale-500 hover:slate-1200"
+          onClick={() => {
+            window.location.href = homeUrl
+          }}
+        >
           <Image src="/icons/home-logo-dark.svg" alt="Home" width={14} height={22} />
-          <span>Go to Home</span>
+          <span>{t("navigation.backToHome")}</span>
         </Button>
       </div>
     </div>

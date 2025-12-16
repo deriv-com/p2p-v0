@@ -117,7 +117,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       <div className="mb-[64px] md:mb-6">
         {isMobile ? (
           <div className="mx-[-12px]">
-            <div className="font-bold text-[18px] mx-6 mt-6">About you</div>
+            <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.aboutYou")}</div>
             <div
               onClick={() => {
                 setShowStatsSidebar(true)
@@ -126,7 +126,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-stats.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.stats")}</span>
-              <Image src="/icons/chevron-right-gray.png" alt="Chevron right" width={20} height={20} className="justify-self-end" />
+              <Image
+                src="/icons/chevron-right-gray.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
             </div>
             {showStatsSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
@@ -146,7 +152,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider className="ml-[60px]"/>
+            <Divider className="ml-[60px]" />
             <div
               onClick={() => {
                 setShowPaymentMethodsSidebar(true)
@@ -155,7 +161,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-pm.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.paymentMethods")}</span>
-              <Image src="/icons/chevron-right-gray.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
+              <Image
+                src="/icons/chevron-right-gray.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
             </div>
             {showPaymentMethodsSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
@@ -193,7 +205,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               </div>
             )}
             <Divider className="ml-[60px]" />
-            <div className="font-bold text-[18px] mx-6 mt-6">Settings</div>
+            <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.settings")}</div>
             <div
               onClick={() => {
                 setShowFollowsSidebar(true)
@@ -202,7 +214,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-follows.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.follows")}</span>
-              <Image src="/icons/chevron-right-gray.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
+              <Image
+                src="/icons/chevron-right-gray.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
             </div>
             {showFollowsSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
@@ -231,7 +249,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-blocks.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.blocked")}</span>
-              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
+              <Image
+                src="/icons/chevron-right-sm.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
             </div>
             {showBlockedSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
@@ -252,7 +276,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               </div>
             )}
             <Divider className="ml-[60px]" />
-            <div className="font-bold text-[18px] mx-6 mt-6">Support</div>
+            <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.support")}</div>
             <div
               onClick={() => {
                 window.location.href = helpCentreUrl
@@ -261,7 +285,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             >
               <Image src="/icons/profile-help-centre.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("navigation.p2pHelpCentre")}</span>
-              <Image src="/icons/chevron-right-gray.png" alt="Chevron right" width={20} height={20} className="justify-self-end"/>
+              <Image
+                src="/icons/chevron-right-gray.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
             </div>
           </div>
         ) : (
