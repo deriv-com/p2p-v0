@@ -151,7 +151,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowPaymentMethodsSidebar(true)
               }}
-              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-pm.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900">{t("profile.paymentMethods")}</span>
@@ -198,7 +198,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowFollowsSidebar(true)
               }}
-              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-follows.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900">{t("profile.follows")}</span>
@@ -227,7 +227,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowBlockedSidebar(true)
               }}
-              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-blocks.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900">{t("profile.blocked")}</span>
@@ -257,7 +257,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 window.location.href = helpCentreUrl
               }}
-              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/ic-guide.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900">{t("navigation.p2pHelpCentre")}</span>
