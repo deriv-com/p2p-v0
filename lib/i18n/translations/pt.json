@@ -326,7 +326,10 @@
     "validationSymbolsOnly": "Apenas letras, números, espaços e símbolos -+.,'#@():; são permitidos",
     "fieldRequired": "{field} é obrigatório",
     "enterField": "Digite {field}",
-    "tryAgain": "Tentar novamente"
+    "tryAgain": "Tentar novamente",
+    "aboutYou": "Sobre você",
+    "settings": "Configurações",
+    "support": "Suporte"
   },
   "wallet": {
     "title": "Carteira",

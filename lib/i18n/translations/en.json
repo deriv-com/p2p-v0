@@ -320,7 +320,10 @@
     "fieldRequired": "{field} is required",
     "enterField": "Enter {field}",
     "tryAgain": "Try again",
-    "noResultForPrefix": "There is no result for"
+    "noResultForPrefix": "There is no result for",
+    "aboutYou": "About you",
+    "settings": "Settings",
+    "support": "Support"
   },
   "wallet": {
     "title": "Wallet",

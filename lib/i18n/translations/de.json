@@ -300,7 +300,10 @@
     "validationSymbolsOnly": "Nur Buchstaben, Zahlen, Leerzeichen und die Symbole -+.,'#@():; sind erlaubt",
     "fieldRequired": "{field} ist erforderlich",
     "enterField": "{field} eingeben",
-    "tryAgain": "Erneut versuchen"
+    "tryAgain": "Erneut versuchen",
+    "aboutYou": "Über Sie",
+    "settings": "Einstellungen",
+    "support": "Unterstützung"
   },
   "wallet": {
     "title": "Wallet",

@@ -312,7 +312,10 @@
     "validationSymbolsOnly": "Sono consentiti solo lettere, numeri, spazi e simboli -+.,'#@():;",
     "fieldRequired": "{field} è obbligatorio",
     "enterField": "Inserisci {field}",
-    "tryAgain": "Riprova"
+    "tryAgain": "Riprova",
+    "aboutYou": "Su di te",
+    "settings": "Impostazioni",
+    "support": "Supporto"
   },
   "wallet": {
     "title": "Portafoglio",
