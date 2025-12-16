@@ -122,7 +122,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowStatsSidebar(true)
               }}
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">{t("profile.stats")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
@@ -150,7 +150,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowPaymentMethodsSidebar(true)
               }}
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">{t("profile.paymentMethods")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
@@ -195,7 +195,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowFollowsSidebar(true)
               }}
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">{t("profile.follows")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
@@ -223,7 +223,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               onClick={() => {
                 setShowBlockedSidebar(true)
               }}
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">{t("profile.blocked")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
