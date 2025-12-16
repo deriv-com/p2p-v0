@@ -28,7 +28,7 @@ export function MobileSidebarTrigger() {
       window.location.href = homeUrl
     }}>
       <Image src="/icons/home-logo.svg" alt="Home" width={24} height={24} />
-      <span className="">Home</span>
+      <span>Home</span>
     </Button>
   )
 }
