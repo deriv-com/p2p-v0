@@ -67,6 +67,7 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [isMarketFilterOpen, setIsMarketFilterOpen] = useState(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -253,16 +254,7 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      setShowKycPopup(true)
     }
   }
 
@@ -272,16 +264,7 @@ export default function BuySellPage() {
       setIsOrderSidebarOpen(true)
       setError(null)
     } else {
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      setShowKycPopup(true)
     }
   }
 
@@ -326,6 +309,15 @@ export default function BuySellPage() {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
       }
+    }
+  }, [])
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
     }
   }, [])
 
@@ -719,6 +711,12 @@ export default function BuySellPage() {
           p2pBalance={Number.parseFloat(balance)}
         />
       </div>
+
+      {showKycPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <KycOnboardingSheet route="markets" onClose={() => setShowKycPopup(false)} />
+        </div>
+      )}
     </>
   )
 }

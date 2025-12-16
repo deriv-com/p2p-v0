@@ -8,8 +8,8 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useRouter } from "next/navigation"
+import KycOnboardingSheet from "@/components/kyc-onboarding-sheet" // Import KycOnboardingSheet component
 
 interface Balance {
   wallet_id: string
@@ -29,6 +29,7 @@ export default function WalletPage() {
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
   const [hasBalance, setHasBalance] = useState(false)
+  const [showKycPopup, setShowKycPopup] = useState(false) // Add state to track if KYC popup should be shown
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -82,6 +83,15 @@ export default function WalletPage() {
     loadBalanceData()
   }, [loadBalanceData])
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
   if (userData?.signup === "v1") {
     return null
   }
@@ -102,7 +112,7 @@ export default function WalletPage() {
   if (isDisabled) {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
+        <KycOnboardingSheet route="wallets" onClose={() => setShowKycPopup(false)} />
       </div>
     )
   }
@@ -134,6 +144,11 @@ export default function WalletPage() {
           )}
         </div>
       </div>
+      {showKycPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <KycOnboardingSheet route="wallets" onClose={() => setShowKycPopup(false)} />
+        </div>
+      )}
     </div>
   )
 }

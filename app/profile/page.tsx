@@ -9,10 +9,12 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+  const [showKycPopup, setShowKycPopup] = useState(false)
   const { showWarningDialog } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
@@ -38,12 +40,16 @@ export default function ProfilePage() {
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if (responseData.errors[0].status != 401 && responseData.errors[0].status != 403 && responseData.errors[0].status != 404) {
+          if (
+            responseData.errors[0].status != 401 &&
+            responseData.errors[0].status != 403 &&
+            responseData.errors[0].status != 404
+          ) {
             showWarningDialog({
-            title: t("common.error"),
-            description: errorMessage,
+              title: t("common.error"),
+              description: errorMessage,
             })
-          } 
+          }
 
           return
         }
@@ -119,6 +125,15 @@ export default function ProfilePage() {
     fetchUserData()
   }, [t])
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
   if (isDisabled) {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
@@ -155,6 +170,11 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+      {showKycPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <KycOnboardingSheet route="profile" onClose={() => setShowKycPopup(false)} />
+        </div>
+      )}
     </>
   )
 }

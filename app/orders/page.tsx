@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -24,9 +24,9 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -55,6 +55,7 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
@@ -79,6 +80,15 @@ export default function OrdersPage() {
       }
     }
   }, [activeTab, dateFilter, customDateRange])
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
@@ -459,6 +469,11 @@ export default function OrdersPage() {
           recommendLabel={t("orders.wouldYouRecommend", { role: getRecommendLabel() })}
         />
       </div>
+      {showKycPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <KycOnboardingSheet route="orders" onClose={() => setShowKycPopup(false)} />
+        </div>
+      )}
     </>
   )
 }
