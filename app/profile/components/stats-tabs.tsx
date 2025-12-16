@@ -145,7 +145,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider />
+            <Divider className="ml-6"/>
             <div
               onClick={() => {
                 setShowPaymentMethodsSidebar(true)
@@ -190,7 +190,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 )}
               </div>
             )}
-            <Divider />
+            <Divider className="ml-6" />
             <div className="font-bold text-[18px] mx-6">Settings</div>
             <div
               onClick={() => {
@@ -219,7 +219,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider />
+            <Divider className="ml-6" />
             <div
               onClick={() => {
                 setShowBlockedSidebar(true)
@@ -247,7 +247,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider />
+            <Divider className="ml-6" />
             <div className="font-bold text-[18px] mx-6">Support</div>
             <div
               onClick={() => {
