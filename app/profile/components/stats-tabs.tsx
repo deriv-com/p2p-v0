@@ -191,7 +191,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               </div>
             )}
             <Divider className="ml-6" />
-            <div className="font-bold text-[18px] mx-6">Settings</div>
+            <div className="font-bold text-[18px] mx-6 mt-6">Settings</div>
             <div
               onClick={() => {
                 setShowFollowsSidebar(true)
@@ -248,7 +248,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               </div>
             )}
             <Divider className="ml-6" />
-            <div className="font-bold text-[18px] mx-6">Support</div>
+            <div className="font-bold text-[18px] mx-6 mt-6">Support</div>
             <div
               onClick={() => {
                 window.location.href = helpCentreUrl
