@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { getHomeUrl } from "@/lib/utils"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
