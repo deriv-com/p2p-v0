@@ -259,7 +259,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               }}
               className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <Image src="/icons/profile-stats.svg" width={20} height={20} />
+              <Image src="/icons/ic-guide.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900">{t("navigation.p2pHelpCentre")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
