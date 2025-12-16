@@ -39,8 +39,12 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
+  const helpCentreUrl =
+    locale != "en"
+      ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
+      : `https://trade.deriv.com/help-centre/deriv-p2p`
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
