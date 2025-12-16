@@ -64,7 +64,6 @@ export default function Sidebar({ className }: SidebarProps) {
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
   const navItems = [
-    { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon, selectedIcon: HomeIcon },
     ...(!isDisabled
       ? [
           { name: t("navigation.market"), href: "/", icon: MarketIcon, selectedIcon: MarketSelectedIcon },
