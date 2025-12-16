@@ -146,14 +146,12 @@ export default function BuySellPage() {
     const fetchAdvertStatistics = async () => {
       try {
         const statistics = await BuySellAPI.getAdvertStatistics("USD")
-        console.log("[v0] Advert Statistics Response:", statistics)
 
         if (currencies.length > 0) {
           const operation = searchParams.get("operation")
           let currencyToSet = currencies[0]?.code
           let shouldSetSellTab = false
 
-          // Check if first currency has sell_count > 0
           const firstCurrencyStats = statistics?.data?.find(
             (stat: any) => stat.payment_currency === currencies[0]?.code,
           )
@@ -161,36 +159,30 @@ export default function BuySellPage() {
           if (firstCurrencyStats && firstCurrencyStats.sell_count > 0) {
             currencyToSet = currencies[0]?.code
           } else {
-            // Find first currency with sell_count > 0
             const currencyWithSellCount = statistics?.data?.find((stat: any) => stat.sell_count > 0)
 
             if (currencyWithSellCount) {
               currencyToSet = currencyWithSellCount.payment_currency
             } else {
-              // No currency has sell_count > 0, check buy_count > 0
               const currencyWithBuyCount = statistics?.data?.find((stat: any) => stat.buy_count > 0)
 
               if (currencyWithBuyCount) {
                 currencyToSet = currencyWithBuyCount.payment_currency
-                // Only set sell tab if operation is not set via searchParams
                 if (!operation) {
                   shouldSetSellTab = true
                 }
               }
-              // If no currency has sell_count or buy_count > 0, use currencies[0]?.code (default)
             }
           }
 
           setCurrency(currencyToSet)
 
-          // Set sell tab only if we found a currency with buy_count and no operation in searchParams
           if (shouldSetSellTab) {
             setActiveTab("sell")
           }
         }
       } catch (error) {
-        console.error("[v0] Error fetching advert statistics:", error)
-        // Fallback to default currency on error
+        console.error("Error fetching advert statistics:", error)
         if (currencies.length > 0) {
           setCurrency(currencies[0]?.code)
         }
