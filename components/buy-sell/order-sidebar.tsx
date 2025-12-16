@@ -150,100 +150,42 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     leaveExchangeRatesChannel,
     requestExchangeRate,
     subscribe,
-    joinChannel,
-    leaveChannel,
-    isConnected,
+    isConnected
   } = useWebSocketContext()
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
-  const [effectiveRateDisplay, setEffectiveRateDisplay] = useState<number | null>(null)
 
   useEffect(() => {
-    if (ad?.effective_rate_display) {
-      setEffectiveRateDisplay(ad.effective_rate_display)
-    }
-  }, [ad?.effective_rate_display])
-
-  useEffect(() => {
-    const accountCurrency = ad?.account_currency
-    const paymentCurrency = ad?.payment_currency
-    const exchangeRateType = ad?.exchange_rate_type
-    const exchangeRate = ad?.exchange_rate
-
-    if (isOpen && accountCurrency && paymentCurrency && exchangeRateType === "float" && isConnected) {
-      joinExchangeRatesChannel(accountCurrency, paymentCurrency)
+    if (
+      isOpen &&
+      ad &&
+      ad.payment_currency &&
+      ad.account_currency &&
+      ad.exchange_rate_type === "float" &&
+      isConnected
+    ) {
+      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
 
       const requestTimer = setTimeout(() => {
-        requestExchangeRate(accountCurrency, paymentCurrency)
+        requestExchangeRate(ad.account_currency, ad.payment_currency)
       }, 400)
 
       const unsubscribe = subscribe((data) => {
-        const expectedChannel = `exchange_rates/${accountCurrency}/${paymentCurrency}`
-
+        const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+    
         if (data.options.channel === expectedChannel && data.payload?.rate) {
-          setMarketRate(data.payload.rate * ((exchangeRate || 0) / 100 + 1))
+          setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-          setMarketRate(data.payload.data.rate * ((exchangeRate || 0) / 100 + 1))
+          setMarketRate(data.payload.data.rate * ((ad.exchange_rate/100) + 1))
         }
       })
-
       return () => {
         clearTimeout(requestTimer)
+        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
         unsubscribe()
-        leaveExchangeRatesChannel(accountCurrency, paymentCurrency)
       }
     }
-  }, [
-    isOpen,
-    ad?.account_currency,
-    ad?.payment_currency,
-    ad?.exchange_rate_type,
-    ad?.exchange_rate,
-    isConnected,
-    joinExchangeRatesChannel,
-    leaveExchangeRatesChannel,
-    requestExchangeRate,
-    subscribe,
-  ])
-
-  useEffect(() => {
-    const adId = ad?.id
-    const accountCurrency = ad?.account_currency
-    const paymentCurrency = ad?.payment_currency
-
-    if (isOpen && adId && accountCurrency && paymentCurrency && isConnected) {
-      const advertType = orderType === "buy" ? "sell" : "buy"
-      const channel = `/adverts/currency/${accountCurrency}/${paymentCurrency}/${advertType}`
-
-      joinChannel(channel)
-
-      const unsubscribe = subscribe((data) => {
-        if (
-          data.options?.channel === channel &&
-          data.payload?.data?.event === "update" &&
-          data.payload?.data?.id === adId &&
-          data.payload?.data?.effective_rate_display !== undefined
-        ) {
-          setEffectiveRateDisplay(data.payload.data.effective_rate_display)
-        }
-      })
-
-      return () => {
-        unsubscribe()
-        leaveChannel(channel)
-      }
-    }
-  }, [
-    isOpen,
-    ad?.id,
-    ad?.account_currency,
-    ad?.payment_currency,
-    orderType,
-    isConnected,
-    joinChannel,
-    leaveChannel,
-    subscribe,
-  ])
+  }, [isOpen, ad, isConnected])
 
   useEffect(() => {
     if (isOpen) {
@@ -257,7 +199,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   useEffect(() => {
     if (ad && amount) {
       const numAmount = Number.parseFloat(amount)
-      const exchangeRate = effectiveRateDisplay || ad?.effective_rate_display || 0
+      const exchangeRate = ad.effective_rate_display || 0
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
@@ -299,12 +241,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const handleSubmit = async () => {
     if (!ad) return
 
-    if (ad.exchange_rate_type == "float" && marketRate && marketRate != effectiveRateDisplay) {
+    if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
       setShowRateChangeConfirmation(true)
       return
     }
 
-    //await proceedWithOrder()
+    await proceedWithOrder()
   }
 
   const proceedWithOrder = async () => {
@@ -524,9 +466,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                       onClick={handleShowPaymentSelection}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-black/[0.72] text-base font-normal">
-                          {getSelectedPaymentMethodsText()}
-                        </span>
+                        <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
                         <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </div>
@@ -543,7 +483,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1200">
-                      {effectiveRateDisplay || ad.effective_rate_display} {ad.payment_currency}
+                      {ad.effective_rate_display} {ad.payment_currency}
                       <span className="text-grayscale-text-muted"> /{ad.account_currency}</span>
                     </span>
                   </div>
@@ -587,7 +527,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <h3 className="text-grayscale-text-muted">
                     {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
                   </h3>
-                  <p className="text-slate-1200 break-words mt-2">{ad.description || "-"}</p>
+                  <p className="text-slate-1200 break-words mt-2">
+                    {ad.description || "-"}
+                  </p>
                 </div>
 
                 <div className="mt-auto p-4 flex justify-end">
@@ -632,7 +574,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
           paymentCurrency={ad.payment_currency}
-          oldRate={effectiveRateDisplay || ad.effective_rate_display}
+          oldRate={ad.effective_rate_display}
           newRate={marketRate}
           isBuy={isBuy}
         />

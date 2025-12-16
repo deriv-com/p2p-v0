@@ -508,7 +508,7 @@ export default function AdDetailsForm({
                     error={touched.fixedRate && !!formErrors.fixedRate}
                   />
                   {touched.fixedRate && formErrors.fixedRate && (
-                    <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
+                    <p className="text-destructive text-xs mt-1 ml-4">{formErrors.fixedRate}</p>
                   )}
                 </div>
               ) : (
