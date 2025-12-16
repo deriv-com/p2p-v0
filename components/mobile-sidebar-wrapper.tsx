@@ -8,6 +8,7 @@ import Sidebar from "./sidebar"
 import Image from "next/image"
 
 export function MobileSidebarTrigger() {
+  const { userData } = useUserDataStore()
   const [isV1Signup, setIsV1Signup] = useState(() => {
     const cached = getCachedSignup()
     if (cached !== null) return cached === "v1"
