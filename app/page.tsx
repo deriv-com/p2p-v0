@@ -71,20 +71,6 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [isMarketFilterOpen, setIsMarketFilterOpen] = useState(false)
-  const [buyAds, setBuyAds] = useState<Ad[]>([])
-  const [sellAds, setSellAds] = useState<Ad[]>([])
-  const [selectedCurrencyCode, setSelectedCurrencyCode] = useState<string>("USD")
-  const [selectedCryptoCurrency, setSelectedCryptoCurrency] = useState<string>("btc")
-  const [isLoadingCountries, setIsLoadingCountries] = useState(false)
-  const [previousFiltersString, setPreviousFiltersString] = useState<string>("")
-  const [showOnlyFav, setShowOnlyFav] = useState<boolean>(false)
-  const [showAccountSwitch, setShowAccountSwitch] = useState(false)
-  const [showBuySellOptions, setShowBuySellOptions] = useState(false)
-  const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(true)
-  const [scrolled, setScrolled] = useState(false)
-  const [favAdList, setFavAdList] = useState<any>([])
-  const [initialBuyLoad, setInitialBuyLoad] = useState(true)
-  const [initialSellLoad, setInitialSellLoad] = useState(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
 
   const fetchedForRef = useRef<string | null>(null)
@@ -351,15 +337,9 @@ export default function BuySellPage() {
   }, [])
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
-    if (shouldShowKyc) {
+    if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (showKycPopup) {
       showAlert({
         title: t("profile.gettingStarted"),
         description: (
@@ -369,12 +349,9 @@ export default function BuySellPage() {
         ),
         confirmText: undefined,
         cancelText: undefined,
-        onConfirm: () => setShowKycPopup(false),
-        onCancel: () => setShowKycPopup(false),
       })
-      setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [searchParams, showKycPopup, showAlert, t])
 
   return (
     <>
