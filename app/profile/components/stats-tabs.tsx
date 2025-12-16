@@ -192,7 +192,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 )}
               </div>
             )}
-            <Divider className="ml-6" />
+            <Divider className="ml-[60px]" />
             <div className="font-bold text-[18px] mx-6 mt-6">Settings</div>
             <div
               onClick={() => {
@@ -222,7 +222,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider className="ml-6" />
+            <Divider className="ml-[60px]" />
             <div
               onClick={() => {
                 setShowBlockedSidebar(true)
@@ -251,7 +251,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider className="ml-6" />
+            <Divider className="ml-[60px]" />
             <div className="font-bold text-[18px] mx-6 mt-6">Support</div>
             <div
               onClick={() => {
