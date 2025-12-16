@@ -343,7 +343,7 @@ export default function BuySellPage() {
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
       if (data?.options?.channel?.startsWith("adverts/currency/")) {
-        
+        console.log(data)
       }
     })
 
