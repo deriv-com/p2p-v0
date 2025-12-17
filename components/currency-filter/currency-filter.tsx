@@ -145,7 +145,7 @@ export function CurrencyFilter({
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
-        <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
+        <DrawerContent side="bottom" className="h-[90vh] px-[16px] pb-[16px] rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">{title}</h3>
           </div>
