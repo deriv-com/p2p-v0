@@ -172,6 +172,7 @@ export default function AdDetailsForm({
     if (isLoadingInitialData) return
 
     const baseCurrency = initialData?.buyCurrency || "USD"
+    
     const requestTimer = setTimeout(() => {
       requestExchangeRate(baseCurrency)
     }, 400)
