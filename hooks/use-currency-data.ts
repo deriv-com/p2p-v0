@@ -16,16 +16,19 @@ export function useCurrencyData(currency = "USD") {
         const response = await getSettings()
 
         const countries = response.countries || []
-        const currencyMap = new Map<string, string>()
 
-        countries.forEach((country: { currency?: string; currency_name?: string }) => {
-          if (country.currency && country.currency_name) {
-            currencyMap.set(country.currency, country.currency_name)
-          }
-        })
-
-        const currencyList: Currency[] = Array.from(currencyMap.entries())
-          .map(([code, name]) => ({ code, name }))
+        const currencyList: Currency[] = countries
+          .map((country: { currency: string; currency_name: string }) => ({
+            code: country.currency,
+            name: country.currency_name,
+          }))
+          .reduce((acc: Currency[], curr: Currency) => {
+            // Remove duplicates
+            if (!acc.find((c) => c.code === curr.code)) {
+              acc.push(curr)
+            }
+            return acc
+          }, [])
           .sort((a, b) => a.code.localeCompare(b.code))
 
         setCurrencies(currencyList)

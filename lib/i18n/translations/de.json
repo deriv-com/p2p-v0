@@ -37,6 +37,7 @@
     "wallet": "Wallet",
     "profile": "Profil",
     "backToHome": "Zurück zur Startseite",
+    "home": "Startseite",
     "p2pHelpCentre": "P2P-Hilfezentrum"
   },
   "market": {
@@ -300,7 +301,10 @@
     "validationSymbolsOnly": "Nur Buchstaben, Zahlen, Leerzeichen und die Symbole -+.,'#@():; sind erlaubt",
     "fieldRequired": "{field} ist erforderlich",
     "enterField": "{field} eingeben",
-    "tryAgain": "Erneut versuchen"
+    "tryAgain": "Erneut versuchen",
+    "aboutYou": "Über Sie",
+    "settings": "Einstellungen",
+    "support": "Unterstützung"
   },
   "wallet": {
     "title": "Wallet",

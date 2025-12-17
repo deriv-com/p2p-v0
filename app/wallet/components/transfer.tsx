@@ -163,7 +163,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }
   const toSuccess = () => setStep("success")
-  const toUnsuccessful = () => setStep("unsuccessful") // Added function to navigate to unsuccessful step
+  const toUnsuccessful = () => setStep("unsuccessful") 
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
@@ -207,6 +207,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
   useEffect(() => {
     if (!selectedCurrency) return
+    if (!currenciesData?.data) return
 
     const loadWallets = async () => {
       try {
@@ -220,7 +221,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               currencies
                 .filter((currency) => currency.code === "USD")
                 .forEach((currency) => {
-                  const currencyLabel = currenciesData?.data?.[currency.code]?.label || currency.code
+                  const currencyLabel = currenciesData.data[currency.code]?.label || currency.code
                   const walletName =
                     (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
@@ -239,7 +240,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   return
                 }
 
-                const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
+                const currencyLabel = currenciesData.data[balance.currency]?.label || balance.currency
 
                 const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
@@ -261,7 +262,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
 
-          if (p2pWallet && !sourceWalletData) {
+          if (p2pWallet) {
             setSourceWalletData({
               id: p2pWallet.wallet_id,
               name: p2pWallet.name,
@@ -330,7 +331,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     let calculation: TransferFeeCalculation
 
     if (selectedAmountCurrency === "source") {
-      // User entered amount in source currency
       const transferFee = amount * (fee / 100)
 
       const youllReceiveConverted = amount * (1 - fee / 100)
@@ -344,7 +344,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         feePercentage: fee,
       }
     } else {
-      // User entered amount in destination currency
       const transferFee = (amount / exchangeRate) * (fee / 100)
       const youllReceive = amount * (1 - fee / 100)
       const youllReceiveConverted = amount / exchangeRate - (amount / exchangeRate) * (fee / 100)
@@ -406,7 +405,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         countdownIntervalRef.current = setInterval(() => {
           setCountdown((prev) => {
             if (prev <= 1) {
-              // Refetch exchange rate when countdown reaches 0
               fetchAndSetExchangeRate()
               return 30
             }
@@ -435,7 +433,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       return
     }
 
-    // Check if currencies are different
+
     if (sourceWalletData.currency === destinationWalletData.currency) {
       setShowCurrencySwitcher(false)
       setExchangeRateData(null)
@@ -457,7 +455,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
     if (hasFee) {
       setShowCurrencySwitcher(true)
-      // Fetch exchange rate if fee exists
       fetchAndSetExchangeRate()
     } else {
       setShowCurrencySwitcher(false)
@@ -465,7 +462,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }, [sourceWalletData, destinationWalletData, currenciesData, fetchAndSetExchangeRate])
 
-  // This was causing the toggle to disappear when amount was not entered
+
 
   useEffect(() => {
     const calculation = calculateTransferFeeWithExchangeRate()
@@ -532,14 +529,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       }
 
       if (result?.errors && result.errors.length > 0) {
-        // Error case: extract message from first error
         const errorMessage = result.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
         toUnsuccessful()
       } else if (!result?.data?.errors || result.data.errors.length === 0) {
-        // Success case
         if (result?.data?.external_reference_id) {
           setExternalReferenceId(result.data.external_reference_id)
         }
@@ -547,7 +542,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         setShowMobileConfirmSheet(false)
         toSuccess()
       } else {
-        // Fallback error case
         const errorMessage = result.data.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
         setShowDesktopConfirmPopup(false)
@@ -575,7 +569,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       const response = await fetchTransactionByReferenceId(requestId)
 
       if (response?.data?.transactions && response.data.transactions.length > 0) {
-        // Get the first transaction from the response
         const transaction = response.data.transactions[0]
         setSelectedTransaction(transaction)
       } else {
@@ -697,16 +690,25 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency
 
     if (numAmount < effectiveMinAmount && effectiveMinAmount > 0) {
-      return t("wallet.minimumTransfer", { amount: formatAmountByCurrency(effectiveMinAmount), currency: effectiveCurrency || ""})
+      return t("wallet.minimumTransfer", {
+        amount: formatAmountByCurrency(effectiveMinAmount),
+        currency: effectiveCurrency || "",
+      })
     }
 
     const minAmount = getMinimumAmount()
     if (numAmount < minAmount) {
-      return t("wallet.minimumTransferAmount", { amount: formatAmountWithDecimals(minAmount), currency: selectedCurrency || "USD"})
+      return t("wallet.minimumTransferAmount", {
+        amount: formatAmountWithDecimals(minAmount),
+        currency: selectedCurrency || "USD",
+      })
     }
 
     if (numAmount > sourceBalance) {
-      return t("wallet.exceedsBalance", { amount: formatAmountWithDecimals(sourceBalance.toString()), currency: selectedCurrency || "USD"})
+      return t("wallet.exceedsBalance", {
+        amount: formatAmountWithDecimals(sourceBalance.toString()),
+        currency: selectedCurrency || "USD",
+      })
     }
 
     return ""
@@ -949,9 +951,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
-                                  "/placeholder.svg"
-                                }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -964,8 +964,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
-                            }
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -995,9 +994,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                                  "/placeholder.svg"
-                                }
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1010,9 +1007,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                              "/placeholder.svg"
-                            }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1166,9 +1161,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
-                                  "/placeholder.svg"
-                                }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1181,8 +1174,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
-                            }
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -1212,9 +1204,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                                  "/placeholder.svg"
-                                }
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1227,9 +1217,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                              "/placeholder.svg"
-                            }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1443,8 +1431,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
-                            }
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                             alt={sourceWalletData.currency}
                             width={9}
                             height={9}
@@ -1456,7 +1443,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   ) : (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -1505,9 +1492,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                              "/placeholder.svg"
-                            }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                             alt={destinationWalletData.currency}
                             width={9}
                             height={9}
@@ -1520,9 +1505,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg"
-                        }
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}

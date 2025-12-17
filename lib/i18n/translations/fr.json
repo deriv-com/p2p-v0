@@ -41,6 +41,7 @@
     "wallet": "Portefeuille",
     "profile": "Profil",
     "backToHome": "Retour à l'Accueil",
+    "home": "Accueil",
     "p2pHelpCentre": "Centre d'Aide P2P"
   },
   "market": {
@@ -256,6 +257,9 @@
     "paymentMethods": "Méthodes de paiement",
     "follows": "Suivis",
     "blocked": "Bloqués",
+    "aboutYou": "À propos de vous",
+    "settings": "Paramètres",
+    "support": "Support",
     "addPaymentMethod": "Ajouter une méthode de paiement",
     "paymentMethodAdded": "Méthode de paiement ajoutée.",
     "bronzeTier": "Niveau Bronze",

@@ -1,7 +1,7 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
-
+import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -620,9 +620,8 @@ export default function BuySellPage() {
                             <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
-                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                }`}
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                  }`}
                               />
                             </div>
                             <div className="flex items-center gap-1">
@@ -633,44 +632,13 @@ export default function BuySellPage() {
                                 {ad.user?.nickname}
                               </button>
                               <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
-                              {ad.user.trade_band === "bronze" && (
-                                <TooltipProvider>
-                                  <Tooltip disableHoverableContent={false}>
-                                    <TooltipTrigger asChild>
-                                      <Image
-                                        src="/icons/bronze.png"
-                                        alt="Bronze"
-                                        width={18}
-                                        height={18}
-                                        className="mr-1 cursor-pointer"
-                                      />
-                                    </TooltipTrigger>
-                                    <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-                                      <>
-                                        <p className="font-bold text-white mb-2">Bronze tier</p>
-                                        <p className="text-white mb-4">
-                                          Default tier for new users with basic trading limits.
-                                        </p>
-                                        <Button
-                                          variant="ghost"
-                                          size="sm"
-                                          onClick={redirectToHelpCentre}
-                                          className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
-                                        >
-                                          Learn more
-                                          <Image
-                                            src="/icons/chevron-right-white.png"
-                                            alt="Arrow"
-                                            width={8}
-                                            height={18}
-                                            className="ml-2 cursor-pointer"
-                                          />
-                                        </Button>
-                                      </>
-                                      <TooltipArrow className="fill-black" />
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
+                              {ad.user.trade_band && (
+                                <TradeBandBadge
+                                  tradeBand={ad.user.trade_band}
+                                  showLearnMore={true}
+                                  size={18}
+                                  className="mr-1"
+                                />
                               )}
                               {ad.user?.is_favourite && (
                                 <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
@@ -734,16 +702,15 @@ export default function BuySellPage() {
                           <div className="font-bold text-base flex items-center">
                             {ad.exchange_rate
                               ? ad.exchange_rate.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
                               : ""}{" "}
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                           </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
-                            ad.actual_maximum_order_amount || "N/A"
-                          }  ${ad.account_currency}`}</div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                            }  ${ad.account_currency}`}</div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                           <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
@@ -751,11 +718,10 @@ export default function BuySellPage() {
                               <div key={index} className="flex items-center">
                                 {method && (
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank")
-                                        ? "bg-paymentMethod-bank"
-                                        : "bg-paymentMethod-ewallet"
-                                    }`}
+                                    className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                      ? "bg-paymentMethod-bank"
+                                      : "bg-paymentMethod-ewallet"
+                                      }`}
                                   ></div>
                                 )}
                                 <span className="text-xs">{formatPaymentMethodName(method)}</span>
