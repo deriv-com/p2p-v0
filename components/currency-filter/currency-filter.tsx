@@ -118,13 +118,13 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-0 md:pr-2">
-            {!isMobile && <div className="text-sm text-black/[0.48] font-normal py-3">{title}</div>}
+            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code, currency.name)}
                 className={cn(
-                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal relative md:left-[-8px] md:w-[calc(100%+16px)]",
+                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
                   selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
               >
