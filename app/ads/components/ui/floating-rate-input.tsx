@@ -39,13 +39,13 @@ export function FloatingRateInput({
   const handleIncrement = () => {
     const currentValue = Number.parseFloat(value) || 0
     const newValue = Math.min(currentValue + 0.01, 100)
-    onChange(newValue?.toFixed(6))
+    onChange(newValue?.toFixed(2))
   }
 
   const handleDecrement = () => {
     const currentValue = Number.parseFloat(value) || 0
     const newValue = Math.max(currentValue - 0.01, -100)
-    onChange(newValue?.toFixed(6))
+    onChange(newValue?.toFixed(2))
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
