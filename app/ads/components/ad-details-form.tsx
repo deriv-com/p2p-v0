@@ -168,7 +168,7 @@ export default function AdDetailsForm({
     joinExchangeRatesChannel(buyCurrency)
   }, [isConnected])
 
- /* useEffect(() => {
+  useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
 
     const requestTimer = setTimeout(() => {
@@ -196,7 +196,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [buyCurrency, forCurrency, isConnected])*/
+  }, [buyCurrency, forCurrency, isConnected])
 
   useEffect(() => {
     if (initialData) {
@@ -209,32 +209,6 @@ export default function AdDetailsForm({
       if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
       if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
       if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
-    }
-
-    const requestTimer = setTimeout(() => {
-      requestExchangeRate(buyCurrency)
-    }, 400)
-
-    const unsubscribe = subscribe((data: any) => {
-      if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
-        if (data.payload?.[forCurrency]?.rate) {
-          setMarketPrice(data.payload[forCurrency].rate)
-        } else if (data.action === "event") {
-          if (data.payload?.data[forCurrency]?.rate) {
-            setMarketPrice(data.payload.data[forCurrency].rate)
-          }
-        } else {
-          setMarketPrice(null)
-          setPriceType("fixed")
-        }
-      } else if (data.action === "error") {
-        setMarketPrice(null)
-      }
-    })
-
-    return () => {
-      clearTimeout(requestTimer)
-      unsubscribe()
     }
   }, [initialData]) 
 
