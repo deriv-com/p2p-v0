@@ -169,7 +169,7 @@ export default function AdDetailsForm({
   }, [isConnected])
 
   useEffect(() => {
-    if (isLoadingInitialData || !buyCurrency) return
+    if (isLoadingInitialData && !buyCurrency) return
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
@@ -196,7 +196,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [isLoadingInitialData])
+  }, [isLoadingInitialData, buyCurrency])
 
   useEffect(() => {
     if (initialData) {
