@@ -171,6 +171,8 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (isLoadingInitialData) return
 
+    console.log(buyCurrency)
+
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
     }, 400)
