@@ -91,7 +91,6 @@ export default function AdDetailsForm({
     
     if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
       //setForCurrency(currenciesProp[0].code)
-      console.log("forCurrency")
     }
   }, [currenciesProp, forCurrency])
 
