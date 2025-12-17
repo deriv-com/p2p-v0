@@ -87,7 +87,7 @@ export function NovuNotifications() {
     elements: {
        popoverTrigger: {
         borderRadius: "50%",
-        backgroundColor: isMobile ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.08)",
+        backgroundColor: isMobile ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.08)",
         padding: 0,
         width: "32px",
         height: "32px",
