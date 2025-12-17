@@ -80,7 +80,7 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-6 md:mb-0 md:pr-6">
+      <div className="relative mb-6 md:mb-0 md:pr-5">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
@@ -117,7 +117,7 @@ export function CurrencyFilter({
             redirectToAds={false}
           />
         ) : (
-          <div className="space-y-0 md:pr-2">
+          <div className="space-y-0 md:pr-2 md:relative md:left-[-16px] md:w-[calc(100%+32px)]">
             {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
@@ -158,7 +158,7 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-4 md:pt-4 md:pl-6 md:pr-0 md:pb-0" align="end">
+      <PopoverContent className="w-80 h-80 md:pt-4 md:pl-6 md:pr-0 md:pb-4" align="end">
         <CurrencyList />
       </PopoverContent>
     </Popover>
