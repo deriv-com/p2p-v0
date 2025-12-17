@@ -185,6 +185,7 @@ export default function AdDetailsForm({
           }
         } else {
           setMarketPrice(null)
+          setPriceType("fixed")
         }
       } else if (data.action === "error") {
         setMarketPrice(null)
@@ -195,7 +196,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [buyCurrency, forCurrency, isConnected, priceType])
+  }, [buyCurrency, forCurrency, isConnected])
 
   useEffect(() => {
     if (initialData) {
