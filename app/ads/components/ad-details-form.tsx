@@ -90,7 +90,7 @@ export default function AdDetailsForm({
   useEffect(() => {
     
     if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
-      setForCurrency(currenciesProp[0].code)
+      //setForCurrency(currenciesProp[0].code)
     }
   }, [currenciesProp, forCurrency])
 
