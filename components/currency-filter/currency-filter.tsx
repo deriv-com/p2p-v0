@@ -120,17 +120,15 @@ export function CurrencyFilter({
           <div className="space-y-0 md:pr-2">
             {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{title}</div>}
             {filteredCurrencies.map((currency) => (
-              <div key={currency.code}>
-                <div
-                  onClick={() => handleCurrencySelect(currency.code, currency.name)}
-                  className={cn(
-                    "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
-                    selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
-                  )}
-                >
-                  {currency.code} - {currency.name}
-                </div>
-                {isMobile && <div className="h-px bg-black/[0.08]" />}
+              <div
+                key={currency.code}
+                onClick={() => handleCurrencySelect(currency.code, currency.name)}
+                className={cn(
+                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                  selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
+                )}
+              >
+                {currency.code} - {currency.name}
               </div>
             ))}
           </div>
