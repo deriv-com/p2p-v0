@@ -118,7 +118,7 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-0 md:pr-2">
-            {!isMobile && <div className="text-sm text-black/[0.48] py-3 font-normal">{title}</div>}
+            {!isMobile && <div className="text-sm text-black/[0.48] font-normal py-3">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
