@@ -148,29 +148,27 @@ export default function BuySellPage() {
         const statistics = await BuySellAPI.getAdvertStatistics("USD")
 
         if (currencies.length > 0) {
+          const validCurrencyCodes = currencies.map((c) => c.code)
+          const filteredStatistics =
+            statistics?.data?.filter(
+              (stat: any) => stat.payment_currency && validCurrencyCodes.includes(stat.payment_currency),
+            ) || []
+
           const operation = searchParams.get("operation")
           let currencyToSet = currencies[0]?.code
           let shouldSetSellTab = false
 
-          const firstCurrencyStats = statistics?.data?.find(
-            (stat: any) => stat.payment_currency === currencies[0]?.code,
-          )
+          const currencyWithSellCount = filteredStatistics.find((stat: any) => stat.sell_count > 0)
 
-          if (firstCurrencyStats && firstCurrencyStats.sell_count > 0) {
-            currencyToSet = currencies[0]?.code
+          if (currencyWithSellCount) {
+            currencyToSet = currencyWithSellCount.payment_currency
           } else {
-            const currencyWithSellCount = statistics?.data?.find((stat: any) => stat.sell_count > 0)
+            const currencyWithBuyCount = filteredStatistics.find((stat: any) => stat.buy_count > 0)
 
-            if (currencyWithSellCount) {
-              currencyToSet = currencyWithSellCount.payment_currency
-            } else {
-              const currencyWithBuyCount = statistics?.data?.find((stat: any) => stat.buy_count > 0)
-
-              if (currencyWithBuyCount) {
-                currencyToSet = currencyWithBuyCount.payment_currency
-                if (!operation) {
-                  shouldSetSellTab = true
-                }
+            if (currencyWithBuyCount) {
+              currencyToSet = currencyWithBuyCount.payment_currency
+              if (!operation) {
+                shouldSetSellTab = true
               }
             }
           }
