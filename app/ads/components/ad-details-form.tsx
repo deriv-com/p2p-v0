@@ -173,7 +173,7 @@ export default function AdDetailsForm({
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
-    }, 100)
+    }, 400)
 
     const unsubscribe = subscribe((data: any) => {
       if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
