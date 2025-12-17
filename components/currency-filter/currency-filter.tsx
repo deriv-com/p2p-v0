@@ -109,7 +109,7 @@ export function CurrencyFilter({
         )}
       </div>
 
-      <div className="max-h-[80%] overflow-y-auto scrollbar-custom md:pr-2 md:mr-2">
+      <div className="max-h-[80%] overflow-y-auto scrollbar-custom md:pr-2 md:mr-2 md:relative md:left-[-16px] md:w-[calc(100%+32px)]">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={t("filter.currencyUnavailable", { currency: searchQuery })}
