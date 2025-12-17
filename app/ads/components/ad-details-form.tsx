@@ -196,7 +196,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [forCurrency])
+  }, [buyCurrency])
 
   useEffect(() => {
     if (initialData) {
