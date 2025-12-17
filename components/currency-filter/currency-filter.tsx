@@ -80,7 +80,7 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-6 md:mb-0 md:pr-5">
+      <div className="relative mb-6 md:mb-0 md:pr-6">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
