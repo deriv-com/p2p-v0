@@ -93,7 +93,7 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base h-8 pl-10 border-grayscale-500 focus:border-grayscale-500 bg-grayscale-500 rounded-lg"
+          className="text-base h-14 md:h-8 pl-10 bg-black/[0.24] border-0 focus:border-0 focus:ring-0 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -117,18 +117,20 @@ export function CurrencyFilter({
             redirectToAds={false}
           />
         ) : (
-          <div className="space-y-1 md:pr-2">
+          <div className="space-y-0 md:pr-2">
             {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{title}</div>}
             {filteredCurrencies.map((currency) => (
-              <div
-                key={currency.code}
-                onClick={() => handleCurrencySelect(currency.code, currency.name)}
-                className={cn(
-                  "px-4 py-3 rounded-sm cursor-pointer transition-colors",
-                  selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
-                )}
-              >
-                {currency.code} - {currency.name}
+              <div key={currency.code}>
+                <div
+                  onClick={() => handleCurrencySelect(currency.code, currency.name)}
+                  className={cn(
+                    "px-4 h-[72px] md:h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                    selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
+                  )}
+                >
+                  {currency.code} - {currency.name}
+                </div>
+                {isMobile && <div className="h-px bg-black/[0.08]" />}
               </div>
             ))}
           </div>
