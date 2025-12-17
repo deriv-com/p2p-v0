@@ -171,14 +171,12 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (isLoadingInitialData) return
 
-    const baseCurrency = initialData?.buyCurrency || "USD"
-    
     const requestTimer = setTimeout(() => {
-      requestExchangeRate(baseCurrency)
+      requestExchangeRate(buyCurrency)
     }, 400)
 
     const unsubscribe = subscribe((data: any) => {
-      if (data.options?.channel === `exchange_rates/${baseCurrency}`) {
+      if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
         if (data.payload?.[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
         } else if (data.action === "event") {
@@ -198,7 +196,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [isLoadingInitialData])
+  }, [isLoadingInitialData, buyCurrency, forCurrency])
 
   useEffect(() => {
     if (initialData) {
