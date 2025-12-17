@@ -50,23 +50,18 @@ export function FloatingRateInput({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value
-    // Strip all % symbols
     const newValue = input.replace(/%/g, "").trim()
 
-    // Update display value immediately for responsive typing
     setDisplayValue(newValue)
 
-    // Allow empty, minus sign, or partial decimal inputs
     if (newValue === "" || newValue === "-" || newValue === "." || newValue === "-.") {
       onChange(newValue)
       return
     }
 
-    // Check if it matches valid decimal pattern (up to 2 decimal places)
     if (/^-?\d*\.?\d{0,2}$/.test(newValue)) {
       const numValue = Number.parseFloat(newValue)
 
-      // Allow partial inputs while typing (like "1.", "-0.", etc)
       if (newValue.endsWith(".") || newValue === "-0" || isNaN(numValue)) {
         onChange(newValue)
       } else if (numValue >= -100 && numValue <= 100) {
