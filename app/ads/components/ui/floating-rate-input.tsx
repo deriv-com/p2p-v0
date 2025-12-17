@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -27,6 +27,14 @@ export function FloatingRateInput({
   marketPrice,
 }: FloatingRateInputProps) {
   const [isFocused, setIsFocused] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [displayValue, setDisplayValue] = useState(value)
+
+  useEffect(() => {
+    if (!isFocused) {
+      setDisplayValue(value)
+    }
+  }, [value, isFocused])
 
   const handleIncrement = () => {
     const currentValue = Number.parseFloat(value) || 0
@@ -41,21 +49,41 @@ export function FloatingRateInput({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value.replace("%", "").trim()
+    const input = e.target.value
+    // Strip all % symbols
+    const newValue = input.replace(/%/g, "").trim()
 
-    if (newValue === "" || newValue === "-") {
+    // Update display value immediately for responsive typing
+    setDisplayValue(newValue)
+
+    // Allow empty, minus sign, or partial decimal inputs
+    if (newValue === "" || newValue === "-" || newValue === "." || newValue === "-.") {
       onChange(newValue)
       return
     }
 
+    // Check if it matches valid decimal pattern (up to 2 decimal places)
     if (/^-?\d*\.?\d{0,2}$/.test(newValue)) {
       const numValue = Number.parseFloat(newValue)
-      if (newValue.endsWith(".") || isNaN(numValue)) {
+
+      // Allow partial inputs while typing (like "1.", "-0.", etc)
+      if (newValue.endsWith(".") || newValue === "-0" || isNaN(numValue)) {
         onChange(newValue)
       } else if (numValue >= -100 && numValue <= 100) {
         onChange(newValue)
       }
     }
+  }
+
+  const handleBlur = () => {
+    setIsFocused(false)
+    setDisplayValue(value)
+    onBlur?.()
+  }
+
+  const handleFocus = () => {
+    setIsFocused(true)
+    setDisplayValue(value)
   }
 
   const showFloating = isFocused || value.length > 0
@@ -74,14 +102,12 @@ export function FloatingRateInput({
           >
             <div className="flex-1 relative">
               <Input
+                ref={inputRef}
                 type="text"
-                value={`${value}%`}
+                value={`${displayValue}%`}
                 onChange={handleChange}
-                onBlur={() => {
-                  setIsFocused(false)
-                  onBlur?.()
-                }}
-                onFocus={() => setIsFocused(true)}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
                 placeholder=""
                 aria-invalid={error}
                 className={cn("pr-8 border-0 h-[56px] text-grayscale-600", error ? "text-destructive" : "")}
@@ -97,9 +123,7 @@ export function FloatingRateInput({
               </Button>
             </div>
           </div>
-          {error && (
-            <p className="text-destructive text-xs mt-1 ml-4">{errorMsg}</p>
-          )}
+          {error && <p className="text-destructive text-xs mt-1 ml-4">{errorMsg}</p>}
           <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
             Current market price:{" "}
             {marketPrice ? (
