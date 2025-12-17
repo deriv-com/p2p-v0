@@ -124,7 +124,7 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code, currency.name)}
                 className={cn(
-                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal relative md:left-[-8px] md:w-[calc(100%+16px)]",
                   selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
               >
@@ -158,7 +158,7 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 py-4 pl-2 pr-0 pb-0" align="end">
+      <PopoverContent className="w-80 h-80 p-4 md:pt-5 md:pl-5 md:pr-0 md:pb-0" align="end">
         <CurrencyList />
       </PopoverContent>
     </Popover>
