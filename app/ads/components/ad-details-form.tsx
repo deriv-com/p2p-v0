@@ -169,7 +169,7 @@ export default function AdDetailsForm({
   }, [isConnected])
 
   useEffect(() => {
-    if (!buyCurrency || !isConnected) return
+    if (!buyCurrency || !forCurrency || !isConnected) return
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
@@ -196,7 +196,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [buyCurrency, isConnected])
+  }, [buyCurrency, forCurrency, isConnected])
 
   useEffect(() => {
     if (initialData) {
