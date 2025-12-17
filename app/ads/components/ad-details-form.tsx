@@ -89,10 +89,10 @@ export default function AdDetailsForm({
 
   useEffect(() => {
     
-    if (!isEditMode) {
+    if (!isEditMode && currenciesProp.length > 0) {
       setForCurrency(currenciesProp[0].code)
     }
-  }, [])
+  }, [currenciesProp])
 
   useEffect(() => {
     const fetchPriceRange = async () => {
