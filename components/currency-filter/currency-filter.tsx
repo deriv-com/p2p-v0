@@ -124,7 +124,7 @@ export function CurrencyFilter({
                 <div
                   onClick={() => handleCurrencySelect(currency.code, currency.name)}
                   className={cn(
-                    "px-4 h-[72px] md:h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                    "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
                     selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                   )}
                 >
