@@ -246,6 +246,8 @@ export default function AdDetailsForm({
     if (touched.floatingRate && priceType === "float") {
       if (!floatingRate) {
         errors.floatingRate = t("adForm.rateRequired")
+      } else if (rate < -10 || rate > 10) {
+        errors.rate = "Enter a value that's within -10.00% to +10.00% only"
       }
     }
 
