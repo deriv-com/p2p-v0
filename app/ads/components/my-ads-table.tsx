@@ -19,6 +19,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { VisibilityStatusDialog } from "./visibility-status-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
@@ -41,6 +42,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
+  const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
+  const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -216,6 +219,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
+  const handleVisibilityStatusClick = (ad: Ad) => {
+    if (ad.visibility_status && ad.visibility_status.length > 0) {
+      setSelectedVisibilityReasons(ad.visibility_status)
+      setVisibilityDialogOpen(true)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="w-full space-y-4">
@@ -265,18 +275,25 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
               const adType = ad.type || "Buy"
-              const rate = ad.exchange_rate || ad.rate?.value || "N/A"
+              const rate = ad.effective_rate_display
+              const exchangeRate = `${ad.exchange_rate}%`
+              const exchangeRateType = ad.exchange_rate_type
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
+              const hasVisibilityStatus = ad.visibility_status && ad.visibility_status.length > 0
 
               return (
                 <TableRow
                   key={index}
                   className={cn(
                     "grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0",
-                    !isActive || hiddenAdverts ? "opacity-60" : "",
                   )}
                 >
-                  <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
+                  <TableCell
+                    className={cn(
+                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      !isActive || hiddenAdverts ? "opacity-60" : "",
+                    )}
+                  >
                     <div className="flex justify-between md:block">
                       <div className="mb-1 flex justify-normal ">
                         <span
@@ -306,17 +323,27 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
                               {t("myAds.rate")}:
                             </span>
-                            <span className="text-xs font-bold leading-5 0">{rate}</span>
+                            <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                            {exchangeRateType == "float" && ad.exchange_rate != 0 && (
+                              <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                                {exchangeRate}
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap text-xs text-slate-1200">
+                  <TableCell
+                    className={cn(
+                      "p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap",
+                      !isActive || hiddenAdverts ? "opacity-60" : "",
+                    )}
+                  >
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
-                    <div className="h-2 bg-[#E9ECEF] rounded-full w-full overflow-hidden mb-2">
+                    <div className="h-2 bg-[#E9ECEF] rounded-full w-full lg:w-[200px] overflow-hidden mb-2">
                       <div
                         className="h-full bg-neutral-10 rounded-full"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
@@ -325,7 +352,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {isMobile && (
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
-                        <span className="text-xs leading-5">{rate}</span>
+                        <div>
+                          <span className="text-xs leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                          {exchangeRateType == "float" && ad.exchange_rate != 0 && (
+                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                              {exchangeRate}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
@@ -333,57 +367,74 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       <span className="text-xs leading-5 overflow-hidden text-ellipsis">{formatLimits(ad)}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">
+                  <TableCell
+                    className={cn(
+                      "p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
+                      !isActive || hiddenAdverts ? "opacity-60" : "",
+                    )}
+                  >
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
                   </TableCell>
                   <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
-                    {isMobile ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                        onClick={() => handleOpenDrawer(ad)}
-                      >
-                        <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                      </Button>
-                    ) : (
-                      <>
-                        {!userId || !verificationStatus?.phone_verified ? (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                            onClick={() => handleOpenDrawer(ad)}
-                          >
-                            <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                          </Button>
-                        ) : (
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                              >
-                                <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
-                              <AdActionsMenu
-                                ad={ad}
-                                onEdit={handleEdit}
-                                onToggleStatus={handleToggleStatus}
-                                onDelete={handleDelete}
-                                onShare={handleShare}
-                              />
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        )}
-                      </>
-                    )}
+                    <div className="flex items-end justify-end">
+                      {hasVisibilityStatus && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onClick={() => handleVisibilityStatusClick(ad)}
+                        >
+                          <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
+                        </Button>
+                      )}
+                      {isMobile ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onClick={() => handleOpenDrawer(ad)}
+                        >
+                          <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                        </Button>
+                      ) : (
+                        <>
+                          {!userId || !verificationStatus?.phone_verified ? (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                              onClick={() => handleOpenDrawer(ad)}
+                            >
+                              <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                            </Button>
+                          ) : (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                >
+                                  <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
+                                <AdActionsMenu
+                                  ad={ad}
+                                  onEdit={handleEdit}
+                                  onToggleStatus={handleToggleStatus}
+                                  onDelete={handleDelete}
+                                  onShare={handleShare}
+                                />
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
+                        </>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               )
@@ -411,6 +462,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           </div>
         </DrawerContent>
       </Drawer>
+
+      <VisibilityStatusDialog
+        open={visibilityDialogOpen}
+        onOpenChange={setVisibilityDialogOpen}
+        reasons={selectedVisibilityReasons}
+      />
     </>
   )
 }

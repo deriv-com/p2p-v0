@@ -36,4 +36,5 @@ export interface Ad {
     name?: string
   }
   advertiser_id?: string
+  visibility_status?: string[]
 }

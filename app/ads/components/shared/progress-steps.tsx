@@ -27,7 +27,7 @@ export function ProgressSteps({ currentStep, steps, className = "", title }: Pro
       {title && (
         <div className="mt-6">
           <div className="text-base font-normal text-slate-1200">{title.label}</div>
-          <div className="text-2xl font-bold text-black mt-1">{title.stepTitle}</div>
+          <div className="text-[32px] font-bold text-black mt-1">{title.stepTitle}</div>
         </div>
       )}
     </div>
