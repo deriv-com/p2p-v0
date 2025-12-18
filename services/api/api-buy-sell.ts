@@ -423,9 +423,8 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
     let data
 
     try {
-      data = responseText ? JSON.parse(responseText) : {}
+      data = JSON.parse(responseText)
     } catch (e) {
-      console.error("Failed to parse response:", e)
       data = { data: [] }
     }
 
