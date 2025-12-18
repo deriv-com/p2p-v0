@@ -68,6 +68,7 @@ export function FloatingRateInput({
         onChange(newValue)
       }
     }
+    // If the regex doesn't match, don't update (prevents typing more than 2 decimal places)
   }
 
   const handleBlur = () => {
