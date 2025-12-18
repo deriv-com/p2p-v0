@@ -100,7 +100,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         }
         {isMobile ? (
           <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>{marketPrice && triggerButton}</DrawerTrigger>
+            <DrawerTrigger asChild>{marketPrice && isFloatingRateEnabled && triggerButton}</DrawerTrigger>
             <DrawerContent>
               <div className="px-4 pb-6">
                 <div className="py-4">
@@ -112,7 +112,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           </Drawer>
         ) : (
           <Dialog open={open} onOpenChange={setOpen} className="sm:rounded-4xl">
-            <DialogTrigger asChild>{marketPrice && triggerButton}</DialogTrigger>
+            <DialogTrigger asChild>{marketPrice && isFloatingRateEnabled && triggerButton}</DialogTrigger>
             <DialogContent className="p-[32px] sm:rounded-[32px]">
               <DialogHeader className="flex-row items-center justify-between mb-4">
                 <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
