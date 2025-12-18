@@ -228,7 +228,7 @@ export default function AdsPage() {
       <div className="flex flex-col h-screen bg-white px-3">
         <div className="flex-none container mx-auto">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
-            {t("myAds.title")}
+            {t("common.myAds")}
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
