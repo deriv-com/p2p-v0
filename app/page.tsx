@@ -159,6 +159,7 @@ export default function BuySellPage() {
       }
     }
 
+
     if (currencyParam) {
       setSelectedAccountCurrency(currencyParam.toUpperCase())
     }
