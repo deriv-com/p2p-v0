@@ -394,7 +394,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             title: t("adForm.adLimitReachedTitle"),
             message: t("adForm.adLimitReachedMessage"),
             type: "error",
-            actionButtonText: "Go to my ads",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
