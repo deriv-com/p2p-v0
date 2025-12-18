@@ -145,6 +145,26 @@ export default function BuySellPage() {
   }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
+    fetchBalance()
+  }, [fetchBalance])
+
+  useEffect(() => {
+    const operation = searchParams.get("operation")
+    const currencyParam = searchParams.get("currency")
+
+    if (operation && (operation === "buy" || operation === "sell")) {
+      if (operation === "buy") setActiveTab("sell")
+      else {
+        setActiveTab("buy")
+      }
+    }
+
+    if (currencyParam) {
+      setSelectedAccountCurrency(currencyParam.toUpperCase())
+    }
+  }, [searchParams, setActiveTab, setSelectedAccountCurrency])
+
+  useEffect(() => {
     const fetchAdvertStatistics = async () => {
       try {
         const statistics = await getAdvertStatistics(selectedAccountCurrency)
@@ -191,22 +211,6 @@ export default function BuySellPage() {
 
     fetchAdvertStatistics()
   }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency])
-
-  useEffect(() => {
-    const operation = searchParams.get("operation")
-    const currencyParam = searchParams.get("currency")
-
-    if (operation && (operation === "buy" || operation === "sell")) {
-      if (operation === "buy") setActiveTab("sell")
-      else {
-        setActiveTab("buy")
-      }
-    }
-
-    if (currencyParam) {
-      setSelectedAccountCurrency(currencyParam.toUpperCase())
-    }
-  }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
     if (currencies.length > 0) {
