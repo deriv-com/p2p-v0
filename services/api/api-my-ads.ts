@@ -506,7 +506,7 @@ export async function createAd(
               break
             case "AdvertActiveCountExceeded":
               errorMessage =
-                "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad."
+                "You can only have 3 active ads for this currency pair and order type. Delete an ad to create a new one."
               break
             case "AdvertFloatRateMaximum":
               errorMessage =

@@ -22,6 +22,7 @@ interface PriceTypeSelectorProps {
 export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
+  const isFloatingRateEnabled = process.env.NEXT_PUBLIC_FLOATING_RATE_ENABLED == 1
 
   const handleSelect = (newValue: PriceType) => {
     onChange(newValue)
@@ -80,7 +81,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
   return (
     <TooltipProvider>
       <div className="space-y-4">
-        {!marketPrice ? 
+        {!marketPrice || !isFloatingRateEnabled ? 
           (
             <div className="flex items-center">
               <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
@@ -99,7 +100,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         }
         {isMobile ? (
           <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>{marketPrice && triggerButton}</DrawerTrigger>
+            <DrawerTrigger asChild>{marketPrice && isFloatingRateEnabled && triggerButton}</DrawerTrigger>
             <DrawerContent>
               <div className="px-4 pb-6">
                 <div className="py-4">
@@ -111,7 +112,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           </Drawer>
         ) : (
           <Dialog open={open} onOpenChange={setOpen} className="sm:rounded-4xl">
-            <DialogTrigger asChild>{marketPrice && triggerButton}</DialogTrigger>
+            <DialogTrigger asChild>{marketPrice && isFloatingRateEnabled && triggerButton}</DialogTrigger>
             <DialogContent className="p-[32px] sm:rounded-[32px]">
               <DialogHeader className="flex-row items-center justify-between mb-4">
                 <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
