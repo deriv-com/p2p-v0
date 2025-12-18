@@ -422,7 +422,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             title: t("adForm.adLimitReachedTitle"),
             message: t("adForm.adLimitReachedMessage"),
             type: "error",
-            actionButtonText: ,
+            actionButtonText: "Go to my ads",
             onConfirm: () => {
               router.push("/ads")
             }
