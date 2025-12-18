@@ -142,7 +142,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       } else if (result.errors?.length > 0 && result.errors[0].code === "AdvertActiveCountExceeded") {
         showAlert({
           title: t("adForm.adLimitReachedTitle"),
-          message: t("adForm.adLimitReachedMessage"),
+          description: t("adForm.adLimitReachedMessage"),
           confirmText: t("common.ok"),
           type: "warning",
         })
