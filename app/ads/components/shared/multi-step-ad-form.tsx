@@ -395,9 +395,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             message: t("adForm.adLimitReachedMessage"),
             type: "error",
             actionButtonText: "Go to my ads",
-            onConfirm: () => {
-              router.push("/ads")
-            }
           }
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
@@ -426,6 +423,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             message: t("adForm.adLimitReachedMessage"),
             type: "error",
             actionButtonText: t("common.ok"),
+            onConfirm: () => {
+              router.push("/ads")
+            }
           }
         } else if (error.name === "AdvertFloatRateMaximum") {
           errorInfo = {
