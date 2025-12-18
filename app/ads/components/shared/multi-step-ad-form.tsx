@@ -445,7 +445,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         confirmText: errorInfo.actionButtonText,
         type: errorInfo.type,
         onConfirm: () => {
-          setCurrentStep(0)
+          if(errorInfo.onConfirm) {
+            errorInfo.onConfirm
+          } else {
+            setCurrentStep(0)
+          }
         },
       })
     } finally {
