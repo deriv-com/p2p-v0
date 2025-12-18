@@ -237,7 +237,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     return (
       <div className="w-full">
         <Table>
-          {/* Desktop table header skeleton */}
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
               <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
@@ -259,7 +258,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 key={index}
                 className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
               >
-                {/* Ad Type Column */}
                 <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
                   <div className="space-y-2">
                     <Skeleton className="h-6 w-24 bg-grayscale-500" />
@@ -267,8 +265,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     <Skeleton className="h-4 w-28 bg-grayscale-500" />
                   </div>
                 </TableCell>
-
-                {/* Available Amount Column */}
                 <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4">
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-32 bg-grayscale-500" />
@@ -276,8 +272,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     <Skeleton className="h-4 w-28 bg-grayscale-500" />
                   </div>
                 </TableCell>
-
-                {/* Payment Methods Column */}
                 <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full">
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-24 bg-grayscale-500" />
