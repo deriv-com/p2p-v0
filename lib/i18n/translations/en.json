@@ -612,7 +612,7 @@
     "rangeOverlapTitle": "Order range overlaps",
     "rangeOverlapMessage": "You've an active ad with an order range that includes this one. Update that ad or change this range to continue.",
     "adLimitReachedTitle": "Ad limit reached",
-    "adLimitReachedMessage": "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
+    "adLimitReachedMessage": "You can only have 3 active ads for this currency pair and order type. Delete an ad to create a new one.",
     "advertFloatRateMaximumTitle": "Check your floating rate",
     "advertFloatRateMaximumMessage": "The floating rate you entered is higher than the allowed limit.",
     "insufficientBalanceTitle": "Insufficient balance",
