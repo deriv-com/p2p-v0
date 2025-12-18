@@ -40,7 +40,8 @@
     "myAds": "My Ads",
     "wallet": "Wallet",
     "profile": "Profile",
-    "backToHome": "Back to Home",
+    "backToHome": "Go to Home",
+    "home": "Home",
     "p2pHelpCentre": "P2P help centre"
   },
   "market": {
@@ -318,7 +319,10 @@
     "fieldRequired": "{field} is required",
     "enterField": "Enter {field}",
     "tryAgain": "Try again",
-    "noResultForPrefix": "There is no result for"
+    "noResultForPrefix": "There is no result for",
+    "aboutYou": "About you",
+    "settings": "Settings",
+    "support": "Support"
   },
   "wallet": {
     "title": "Wallet",

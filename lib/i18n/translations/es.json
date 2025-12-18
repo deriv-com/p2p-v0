@@ -37,6 +37,7 @@
     "wallet": "Billetera",
     "profile": "Perfil",
     "backToHome": "Volver al Inicio",
+    "home": "Inicio",
     "p2pHelpCentre": "Centro de Ayuda P2P"
   },
   "market": {
@@ -322,7 +323,10 @@
     "validationSymbolsOnly": "Solo se permiten letras, números, espacios y símbolos -+.,'#@():;",
     "fieldRequired": "{field} es obligatorio",
     "enterField": "Introduce {field}",
-    "tryAgain": "Volver a intentar"
+    "tryAgain": "Volver a intentar",
+    "aboutYou": "Acerca de ti",
+    "settings": "Configuración",
+    "support": "Soporte"
   },
   "wallet": {
     "title": "Billetera",

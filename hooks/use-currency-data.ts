@@ -16,31 +16,20 @@ export function useCurrencyData(currency = "USD") {
         const response = await getSettings()
 
         const countries = response.countries || []
-        const currencyMap = new Map<string, string>()
 
-        countries.forEach((country: { currency?: string; currency_name?: string }) => {
-          if (country.currency && country.currency_name) {
-            currencyMap.set(country.currency, country.currency_name)
-          }
-        })
-
-        const availableAdverts = response.available_adverts || {}
-
-        let currencyList: Currency[] = []
-
-        const paymentCurrencies = availableAdverts[currency]?.map((advert: { payment_currency: string }) => ({
-          code: advert.payment_currency,
-          name: currencyMap.get(advert.payment_currency) || advert.payment_currency,
-        }))
-
-        const uniqueCurrencies = paymentCurrencies?.reduce((acc: Currency[], curr: Currency) => {
-          if (!acc.find((c) => c.code === curr.code)) {
-            acc.push(curr)
-          }
-          return acc
-        }, [])
-
-        currencyList = (uniqueCurrencies || []).sort((a, b) => a.code.localeCompare(b.code))
+        const currencyList: Currency[] = countries
+          .map((country: { currency: string; currency_name: string }) => ({
+            code: country.currency,
+            name: country.currency_name,
+          }))
+          .reduce((acc: Currency[], curr: Currency) => {
+            // Remove duplicates
+            if (!acc.find((c) => c.code === curr.code)) {
+              acc.push(curr)
+            }
+            return acc
+          }, [])
+          .sort((a, b) => a.code.localeCompare(b.code))
 
         setCurrencies(currencyList)
         setError(null)

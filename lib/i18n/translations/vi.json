@@ -37,6 +37,7 @@
     "wallet": "Ví",
     "profile": "Hồ sơ",
     "backToHome": "Quay lại Trang chủ",
+    "home": "Trang chủ",
     "p2pHelpCentre": "Trung tâm trợ giúp P2P"
   },
   "market": {
@@ -235,6 +236,9 @@
     "blocked": "Đã chặn",
     "addPaymentMethod": "Thêm phương thức thanh toán",
     "paymentMethodAdded": "Đã thêm phương thức thanh toán.",
+    "aboutYou": "Về bạn",
+    "settings": "Cài đặt",
+    "support": "Hỗ trợ",
     "bronzeTier": "Hạng Đồng",
     "bronzeTierDescription": "Hạng mặc định cho người dùng mới với giới hạn giao dịch cơ bản.",
     "silverTier": "Hạng Bạc",

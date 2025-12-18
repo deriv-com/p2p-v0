@@ -6,13 +6,13 @@ export const initDatadog = () => {
   }
 
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
- const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
+  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
   const env = process.env.NEXT_PUBLIC_DATADOG_ENV
   const service = process.env.NEXT_PUBLIC_DATADOG_SERVICE
   const version = process.env.NEXT_PUBLIC_DATADOG_VERSION
 
-  if (!applicationId || 
-  !clientToken
+  if (!applicationId ||
+    !clientToken
   ) {
     return
   }

@@ -37,6 +37,7 @@
     "wallet": "Portafoglio",
     "profile": "Profilo",
     "backToHome": "Torna alla Home",
+    "home": "Home",
     "p2pHelpCentre": "Centro Assistenza P2P"
   },
   "market": {
@@ -308,7 +309,10 @@
     "validationSymbolsOnly": "Sono consentiti solo lettere, numeri, spazi e simboli -+.,'#@():;",
     "fieldRequired": "{field} è obbligatorio",
     "enterField": "Inserisci {field}",
-    "tryAgain": "Riprova"
+    "tryAgain": "Riprova",
+    "aboutYou": "Su di te",
+    "settings": "Impostazioni",
+    "support": "Supporto"
   },
   "wallet": {
     "title": "Portafoglio",
