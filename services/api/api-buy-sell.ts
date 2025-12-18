@@ -81,7 +81,12 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     }
 
     const auth_country_code = useUserDataStore.getState().residenceCountry
-    if (auth_country_code) queryParams.append("auth_country_code", auth_country_code)
+    const onboardingStatus = useUserDataStore.getState().onboardingStatus
+    const isP2PUser = onboardingStatus?.p2p_allowed === false
+    
+    if (auth_country_code && !isP2PUser) {
+      queryParams.append("auth_country_code", auth_country_code)
+    }
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
 
