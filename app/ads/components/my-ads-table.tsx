@@ -235,10 +235,63 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   if (isLoading) {
     return (
-      <div className="w-full space-y-4">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <Skeleton key={index} className="h-[200px] w-full rounded-lg bg-grayscale-500" />
-        ))}
+      <div className="w-full">
+        <Table>
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+            <TableRow className="text-xs">
+              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
+                {t("myAds.adType")}
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                {t("myAds.availableAmount")}
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                {t("myAds.paymentMethods")}
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
+              <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <TableRow
+                key={index}
+                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+              >
+                <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
+                  <div className="space-y-2">
+                    <Skeleton className="h-6 w-24 bg-grayscale-500" />
+                    <Skeleton className="h-4 w-32 bg-grayscale-500" />
+                    <Skeleton className="h-4 w-28 bg-grayscale-500" />
+                  </div>
+                </TableCell>
+                <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-32 bg-grayscale-500" />
+                    <Skeleton className="h-2 w-full lg:w-[200px] rounded-full bg-grayscale-500" />
+                    <Skeleton className="h-4 w-28 bg-grayscale-500" />
+                  </div>
+                </TableCell>
+                <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24 bg-grayscale-500" />
+                    <Skeleton className="h-4 w-28 bg-grayscale-500" />
+                  </div>
+                </TableCell>
+
+                <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full">
+                  <Skeleton className="h-6 w-16 rounded-full bg-grayscale-500" />
+                </TableCell>
+
+                <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1">
+                  <div className="flex items-end justify-end">
+                    <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     )
   }
