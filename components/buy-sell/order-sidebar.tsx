@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -154,7 +154,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   } = useWebSocketContext()
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
-  const lockedRateRef = useRef<number | null>(null)
+  const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
 
   useEffect(() => {
     if (
@@ -174,10 +174,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
     
-        if (lockedRateRef.current !== null) {
-          return
-        }
-
         if (data.options.channel === expectedChannel && data.payload?.rate) {
           setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
@@ -255,7 +251,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     if (!ad) return
 
     if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
-      lockedRateRef.current = marketRate
+      setLockedConfirmationRate(marketRate)
       setShowRateChangeConfirmation(true)
       return
     }
@@ -273,7 +269,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
       const numAmount = Number.parseFloat(amount)
 
-      const order = await createOrder(ad.id, marketRate, numAmount, selectedPaymentMethods)
+      const rateToUse = lockedConfirmationRate || marketRate
+      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
@@ -324,7 +321,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       setValidationError(null)
       setTempSelectedPaymentMethods([])
       setShowRateChangeConfirmation(false)
-      lockedRateRef.current = null
+      setLockedConfirmationRate(null)
       onClose()
     }, 300)
   }
@@ -585,12 +582,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         <RateChangeConfirmation
           isOpen={showRateChangeConfirmation}
           onConfirm={proceedWithOrder}
-          onCancel={() => setShowRateChangeConfirmation(false)}
+          onCancel={() => {
+            setShowRateChangeConfirmation(false)
+            setLockedConfirmationRate(null)
+          }}
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
           paymentCurrency={ad.payment_currency}
-          oldRate={ad.effective_rate_display}
-          newRate={marketRate}
+          oldRate={ad.effective_rate}
+          newRate={lockedConfirmationRate}
           isBuy={isBuy}
         />
       )}
