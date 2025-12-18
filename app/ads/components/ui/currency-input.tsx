@@ -55,7 +55,7 @@ export function CurrencyInput({
             onFocus={() => setIsFocused(true)}
             placeholder=""
             className={cn(
-              "w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+              "h-[56px] w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
               isDisabled ? "bg-gray-50 text-gray-500 cursor-not-allowed" : "text-gray-900",
             )}
             disabled={isDisabled}

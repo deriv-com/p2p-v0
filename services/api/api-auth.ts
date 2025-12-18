@@ -572,7 +572,8 @@ export async function createP2PUser(): Promise<CreateP2PUserResponse> {
 }
 
 /**
- * Get advert statistics for a specific account currency
+ * Get advert statistics for a specific currency
+ * Returns minimum and maximum exchange rates for fixed and floating adverts
  */
 export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
   try {

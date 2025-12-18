@@ -56,19 +56,19 @@ export function RateInput({
             step={step}
             min={min}
             placeholder=""
-            className="w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none text-gray-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none text-gray-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-[56px]"
             aria-invalid={error}
           />
 
-     <label
-  className={cn(
-    "absolute left-3 pointer-events-none transition-all duration-200",
-    showFloating ? "text-xs top-2 bg-white px-1" : "text-sm top-1/2 -translate-y-1/2",
-    error ? "text-red-500" : "text-black/70",
-  )}
->
-  {label}
-</label>
+          <label
+            className={cn(
+              "absolute left-3 pointer-events-none transition-all duration-200",
+              showFloating ? "text-xs top-2 bg-white px-1" : "text-sm top-1/2 -translate-y-1/2",
+              error ? "text-red-500" : "text-black/70",
+            )}
+          >
+            {label}
+          </label>
 
           {error && (
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
