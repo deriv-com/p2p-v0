@@ -22,6 +22,7 @@ interface PriceTypeSelectorProps {
 export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
+  const isFloatingRateEnabled = process.env.NEXT_PUBLIC_FLOATING_RATE_ENABLED == 1
 
   const handleSelect = (newValue: PriceType) => {
     onChange(newValue)
