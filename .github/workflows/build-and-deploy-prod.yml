@@ -61,6 +61,7 @@ jobs:
                 NEXT_PUBLIC_NOTIFICATION_URL: ${{ vars.NEXT_PUBLIC_NOTIFICATION_URL }}
                 NEXT_PUBLIC_IS_ORY_ENABLED: ${{ vars.NEXT_PUBLIC_IS_ORY_ENABLED }}
                 NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL }}
+                NEXT_PUBLIC_FLOATING_RATE_ENABLED: ${{ vars.NEXT_PUBLIC_FLOATING_RATE_ENABLED }}
                 NEXT_PUBLIC_NODE_ENV: production
                 NODE_ENV: production
 
