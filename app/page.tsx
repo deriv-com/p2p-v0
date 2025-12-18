@@ -25,13 +25,14 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getTotalBalance } from "@/services/api/api-auth"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -60,13 +61,11 @@ export default function BuySellPage() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
-  const [isPaymentMethodsFilterOpen, setIsPaymentMethodsFilterOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
-  const [isMarketFilterOpen, setIsMarketFilterOpen] = useState(false)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -75,6 +74,8 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
+
+  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -329,6 +330,34 @@ export default function BuySellPage() {
     }
   }, [])
 
+  useEffect(() => {
+    if (isConnected && selectedAccountCurrency && currency && activeTab) {
+      joinAdvertsChannel(selectedAccountCurrency, currency, activeTab)
+
+      return () => {
+        leaveAdvertsChannel(selectedAccountCurrency, currency, activeTab)
+      }
+    }
+  }, [isConnected, selectedAccountCurrency, currency, activeTab, joinAdvertsChannel, leaveAdvertsChannel])
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.options?.channel?.startsWith("adverts/currency/")) {
+        if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
+          const updatedAdvert = data.payload.data.advert
+
+          setAdverts((currentAdverts) =>
+            currentAdverts.map((ad) =>
+              ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
+            ),
+          )
+        }
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
+
   return (
     <>
       <div className="flex flex-col h-screen overflow-hidden px-3">
@@ -413,18 +442,15 @@ export default function BuySellPage() {
                   selectedMethods={selectedPaymentMethods}
                   onSelectionChange={setSelectedPaymentMethods}
                   isLoading={isLoadingPaymentMethods}
-                  onOpenChange={setIsPaymentMethodsFilterOpen}
                   trigger={
                     <Button
                       variant="outline"
                       size="sm"
                       className={cn(
-                        "rounded-md border border-black/[0.08] font-normal w-full justify-between px-3 rounded-3xl",
+                        "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
                         hasFilteredPaymentMethods
                           ? "bg-black hover:bg-black text-white"
-                          : isPaymentMethodsFilterOpen
-                            ? "bg-black/[0.16] hover:bg-black/[0.16]"
-                            : "bg-transparent hover:bg-transparent",
+                          : "bg-transparent hover:bg-transparent",
                       )}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
@@ -459,18 +485,13 @@ export default function BuySellPage() {
                   initialFilters={filterOptions}
                   initialSortBy={sortBy}
                   hasActiveFilters={hasActiveFilters}
-                  onOpenChange={setIsMarketFilterOpen}
                   trigger={
                     <Button
                       variant="outline"
                       size="sm"
                       className={cn(
-                        "rounded-md border border-black/[0.08] font-normal px-3  focus:border-black min-w-fit rounded-3xl",
-                        hasActiveFilters
-                          ? "bg-black hover:bg-black"
-                          : isMarketFilterOpen
-                            ? "bg-black/[0.16] hover:bg-black/[0.16]"
-                            : "bg-transparent hover:bg-transparent",
+                        "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
+                        hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
                       )}
                     >
                       {hasActiveFilters ? (
@@ -585,7 +606,7 @@ export default function BuySellPage() {
                               >
                                 {ad.user?.nickname}
                               </button>
-                              <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
+                              <VerifiedBadge />
                               {ad.user.trade_band && (
                                 <TradeBandBadge
                                   tradeBand={ad.user.trade_band}
@@ -654,11 +675,11 @@ export default function BuySellPage() {
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
                           <div className="font-bold text-base flex items-center">
-                            {ad.exchange_rate
-                              ? ad.exchange_rate.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                            {ad.effective_rate_display
+                              ? ad.effective_rate_display.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
                               : ""}{" "}
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>

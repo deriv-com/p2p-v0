@@ -290,9 +290,7 @@
     "unfollow": "Unfollow",
     "userUnfollowed": "{nickname} unfollowed.",
     "userFollowed": "{nickname} followed.",
-    "blockUser": "Block {nickname}?",
-    "blockDescription": "You won't see {nickname}'s ads, and they can't place orders on yours.",
-    "youveBlockedUser": "You've blocked this user",
+    "unblockUser": "Unblock {nickname}?",
     "unblockDescription": "Unblock them if you'd like to interact with this advertiser again.",
     "unblock": "Unblock",
     "userUnblocked": "{nickname} unblocked.",
@@ -438,6 +436,65 @@
     "deleteAdOpenOrders": "The advert has ongoing orders.",
     "unableToUpdateAd": "Unable to update advert",
     "updateAdError": "There was an error when updating the advert. Please try again.",
+    "visibilityStatus": "Your ad isn't visible",
+    "visibilityStatusDescription": "Your ad isn't visible to others. Here's why:"
+  },
+  "visibilityStatus": {
+    "advertInactive": {
+      "title": "Your ad is inactive",
+      "description": "Activate your ad to make it visible to other traders."
+    },
+    "advertRemaining": {
+      "title": "Your ad isn't visible",
+      "description": "Your ad's remaining amount is below the minimum order."
+    },
+    "advertiserDailyLimit": {
+      "title": "Your ad isn't visible",
+      "description": "Your remaining daily limit is below the minimum order. Lower the minimum to list your ad or wait for the limit to reset within 24 hours."
+    },
+    "advertiserBalance": {
+      "title": "Your ad isn't visible",
+      "description": "Your balance is lower than your ad's minimum order. Add funds or lower the minimum to list your ad."
+    },
+    "advertiserAdvertsUnlisted": {
+      "title": "Your ads aren't visible",
+      "description": "You've paused all your ad. Activate your ads to make it visible to other traders."
+    },
+    "advertiserStatus": {
+      "title": "Your ad isn't visible",
+      "description": "Contact us via live chat for help."
+    },
+    "advertiserScheduleUnavailable": {
+      "title": "Your ad isn't visible",
+      "description": "It's outside your business hours. Update your schedule or wait until your active hours."
+    },
+    "advertiserTempBan": {
+      "title": "Your ad isn't visible",
+      "description": "Your account is temporarily restricted. Check your profile for details."
+    },
+    "advertiserNoPrivateGroups": {
+      "title": "Your ad isn't visible",
+      "description": "This ad is set for closed groups. You're no longer allowed to use that feature. Change the ad visibility to public to list it again."
+    },
+    "advertFloatRateDisabled": {
+      "title": "Your ad isn't visible",
+      "description": "Floating rates are no longer available for this currency pair. Switch to a fixed rate to make your ad visible."
+    },
+    "advertNoPaymentMethods": {
+      "title": "Your ad isn't visible",
+      "description": "This ad doesn't have a payment method. Add one to make it visible to other traders."
+    },
+    "actions": {
+      "activateAd": "Activate ad",
+      "editAd": "Update ad",
+      "close": "Maybe later",
+      "addFunds": "Add funds",
+      "activateAds": "Activate ads",
+      "contactSupport": "Contact support",
+      "editSchedule": "Edit schedule",
+      "viewProfile": "View profile",
+      "addPaymentMethod": "Add payment method"
+    },
     "shareAdTitle": "Share ad",
     "shareMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad {url}. Thanks!",
     "shareTelegramMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad. Thanks!",
@@ -506,7 +563,7 @@
     "editAd": "Edit ad",
     "saveChanges": "Save changes",
     "next": "Next",
-    "setTypeAndPrice": "Set Type and Price",
+    "setTypeAndPrice": "Set ad and rate type",
     "setPaymentDetails": "Set payment details",
     "setAdConditions": "Set ad conditions",
     "buyCurrency": "Buy",
@@ -514,8 +571,8 @@
     "for": "For",
     "priceType": "Price type",
     "ratePerCurrency": "Rate per {currency}",
-    "sellQuantity": "Sell quantity",
-    "buyQuantity": "Buy quantity",
+    "sellQuantity": "Total sell amount",
+    "buyQuantity": "Total buy amount",
     "lowestPrice": "Lowest price:",
     "highestPrice": "Highest price:",
     "transactionLimit": "Transaction limit",
@@ -532,18 +589,18 @@
     "audienceTooltip": "You can filter who interacts with your ads based on their location or P2P history. Stricter filters may reduce ad visibility.",
     "instructions": "Seller's instructions (Optional)",
     "instructionsDisclaimer": "This information will be visible to everyone. Don't share your phone number or personal details.",
-    "totalAmountRequired": "Total amount is required",
-    "totalAmountGreaterThanZero": "Total amount must be greater than 0",
-    "rateRequired": "Rate is required",
-    "rateGreaterThanZero": "Rate must be greater than 0",
-    "minAmountRequired": "Minimum amount is required",
-    "minAmountGreaterThanZero": "Minimum amount must be greater than 0",
-    "minAmountLessThanMax": "Minimum amount must be less than maximum amount",
-    "maxAmountRequired": "Maximum amount is required",
-    "maxAmountGreaterThanZero": "Maximum amount must be greater than 0",
-    "maxAmountGreaterThanMin": "Maximum amount must be greater than minimum amount",
-    "minAmountLessThanTotal": "Minimum amount must be less than total amount",
-    "maxAmountLessThanTotal": "Maximum amount must be less than total amount",
+    "totalAmountRequired": "Total amount is required.",
+    "totalAmountGreaterThanZero": "Total amount must be greater than 0.",
+    "rateRequired": "Rate is required.",
+    "rateGreaterThanZero": "Rate must be greater than 0.",
+    "minAmountRequired": "Minimum order is required.",
+    "minAmountGreaterThanZero": "Minimum order must be greater than 0.",
+    "minAmountLessThanMax": "Minimum order must be less than maximum order.",
+    "maxAmountRequired": "Maximum order is required.",
+    "maxAmountGreaterThanZero": "Maximum order must be greater than 0.",
+    "maxAmountGreaterThanMin": "Maximum order must be greater than minimum order.",
+    "minAmountLessThanTotal": "Minimum order should not exceed total amount.",
+    "maxAmountLessThanTotal": "Maximum order should not exceed total amount.",
     "adCreatedSuccess": "You've successfully created a {type} advert.\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.",
     "adUpdatedSuccess": "Ad details have been updated.",
     "failedToCreateAd": "Failed to create ad",
@@ -552,10 +609,12 @@
     "updateAd": "Update ad",
     "duplicateRateTitle": "You already have an ad with this rate",
     "duplicateRateMessage": "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
-    "rangeOverlapTitle": "You already have an ad with this range",
-    "rangeOverlapMessage": "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
+    "rangeOverlapTitle": "Order range overlaps",
+    "rangeOverlapMessage": "You've an active ad with an order range that includes this one. Update that ad or change this range to continue.",
     "adLimitReachedTitle": "Ad limit reached",
     "adLimitReachedMessage": "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
+    "advertFloatRateMaximumTitle": "Check your floating rate",
+    "advertFloatRateMaximumMessage": "The floating rate you entered is higher than the allowed limit.",
     "insufficientBalanceTitle": "Insufficient balance",
     "insufficientBalanceMessage": "You don't have enough balance to create this ad",
     "invalidValuesTitle": "Invalid values",

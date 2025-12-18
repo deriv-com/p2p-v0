@@ -2,8 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from 'next/navigation'
-import { ChevronRight } from 'lucide-react'
+import { useRouter } from "next/navigation"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -17,6 +17,8 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
+import RateChangeConfirmation from "./rate-change-confirmation"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -62,11 +64,9 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
-        {userPaymentMethods.length > 0 && (<div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>)}
+        {userPaymentMethods.length > 0 && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
-          <div className="pb-2 text-slate-1200 text-sm">
-            {t("paymentMethod.addCompatibleMethod")}
-          </div>
+          <div className="pb-2 text-slate-1200 text-sm">{t("paymentMethod.addCompatibleMethod")}</div>
         ) : (
           userPaymentMethods.map((method) => (
             <div
@@ -145,6 +145,55 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userData = useUserDataStore((state) => state.userData)
+  const {
+    joinExchangeRatesChannel,
+    leaveExchangeRatesChannel,
+    requestExchangeRate,
+    subscribe,
+    isConnected
+  } = useWebSocketContext()
+  const [marketRate, setMarketRate] = useState<number | null>(null)
+  const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
+
+  useEffect(() => {
+    if (
+      isOpen &&
+      ad &&
+      ad.payment_currency &&
+      ad.account_currency &&
+      ad.exchange_rate_type === "float" &&
+      isConnected
+    ) {
+      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+
+      const requestTimer = setTimeout(() => {
+        requestExchangeRate(ad.account_currency, ad.payment_currency)
+      }, 400)
+
+      const unsubscribe = subscribe((data) => {
+        const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+    
+        if (data.options.channel === expectedChannel && data.payload?.rate) {
+          setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
+        } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
+          setMarketRate(data.payload.data.rate * ((ad.exchange_rate/100) + 1))
+        } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
+          if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
+            const updatedAdvert = data.payload.data.advert
+            if(ad.id == updatedAdvert.id) {
+              setMarketRate(updatedAdvert.effective_rate)
+              ad.effective_rate_display = updatedAdvert.effective_rate_display
+            }
+          }
+        } 
+      })
+      return () => {
+        clearTimeout(requestTimer)
+        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+        unsubscribe()
+      }
+    }
+  }, [isOpen, ad, isConnected])
 
   useEffect(() => {
     if (isOpen) {
@@ -158,7 +207,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   useEffect(() => {
     if (ad && amount) {
       const numAmount = Number.parseFloat(amount)
-      const exchangeRate = ad.exchange_rate || 0
+      const exchangeRate = ad.effective_rate_display || 0
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
@@ -175,7 +224,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     }
 
     if (!amount) setTotalAmount(0)
-  }, [amount, ad, orderType, p2pBalance, t])
+  }, [amount, ad, orderType, p2pBalance, t, marketRate])
 
   const handleShowPaymentSelection = () => {
     showAlert({
@@ -200,13 +249,25 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const handleSubmit = async () => {
     if (!ad) return
 
+    if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
+      setShowRateChangeConfirmation(true)
+      return
+    }
+
+    await proceedWithOrder()
+  }
+
+  const proceedWithOrder = async () => {
+    if (!ad) return
+
     try {
       setIsSubmitting(true)
       setOrderStatus(null)
+      setShowRateChangeConfirmation(false)
 
       const numAmount = Number.parseFloat(amount)
 
-      const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
+      const order = await createOrder(ad.id, marketRate, numAmount, selectedPaymentMethods)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
@@ -217,7 +278,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
             type: "warning",
             onConfirm: () => {
               handleClose()
-            }
+            },
+          })
+        } else if (errorCode === "OrderFloatRateSlippage") {
+          showAlert({
+            title: "The rate moved too much",
+            description:
+              "The market rate moved significantly before we could place your order. Try again with the latest rate.",
+            confirmText: "Try again",
+            type: "warning",
           })
         } else {
           showAlert({
@@ -248,6 +317,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       setAmount(null)
       setValidationError(null)
       setTempSelectedPaymentMethods([])
+      setShowRateChangeConfirmation(false)
       onClose()
     }, 300)
   }
@@ -398,7 +468,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 </div>
 
                 {isBuy && (
-                  <div className="mx-4 mt-0 pb-6 border-b">
+                  <div className="mx-4 mt-4 pb-6 border-b">
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
@@ -415,17 +485,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
                     <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
-                      {ad.exchange_rate_type}
+                      {ad.exchange_rate_type === "float" ? "Floating" : "Fixed"}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1200">
-                      {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                      {ad.payment_currency}
+                      {ad.effective_rate_display} {ad.payment_currency}
                       <span className="text-grayscale-text-muted"> /{ad.account_currency}</span>
                     </span>
                   </div>
@@ -505,6 +571,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           isLoading={isAddingPaymentMethod}
           allowedPaymentMethods={ad?.payment_methods}
           onClose={() => setShowAddPaymentPanel(false)}
+        />
+      )}
+
+      {ad && (
+        <RateChangeConfirmation
+          isOpen={showRateChangeConfirmation}
+          onConfirm={proceedWithOrder}
+          onCancel={() => setShowRateChangeConfirmation(false)}
+          amount={amount || "0"}
+          accountCurrency={ad.account_currency}
+          paymentCurrency={ad.payment_currency}
+          oldRate={ad.effective_rate_display}
+          newRate={marketRate}
+          isBuy={isBuy}
         />
       )}
     </>
