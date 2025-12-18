@@ -279,12 +279,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </div>
                 </TableCell>
 
-                {/* Status Column */}
                 <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full">
                   <Skeleton className="h-6 w-16 rounded-full bg-grayscale-500" />
                 </TableCell>
 
-                {/* Actions Column */}
                 <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1">
                   <div className="flex items-end justify-end">
                     <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500" />
