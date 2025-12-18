@@ -71,19 +71,17 @@ const PaymentSelectionContent = ({
           userPaymentMethods.map((method) => (
             <div
               key={method.id}
-              className={` bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${
-                !selectedPMs?.includes(method.id) && selectedPMs?.length >= 3
-                  ? "opacity-30 cursor-not-allowed hover:bg-white"
-                  : ""
-              }`}
+              className={` bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3
+                ? "opacity-30 cursor-not-allowed hover:bg-white"
+                : ""
+                }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center mb-[6px] gap-2">
                     <div
-                      className={`h-2 w-2 rounded-full mr-2 ${
-                        method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                      }`}
+                      className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                        }`}
                     />
                     <div className="flex- flex-col">
                       <span className="text-base text-slate-1200">{getCategoryDisplayName(method.type)}</span>
@@ -173,20 +171,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
-    
+
         if (data.options.channel === expectedChannel && data.payload?.rate) {
-          setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
+          setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-          setMarketRate(data.payload.data.rate * ((ad.exchange_rate/100) + 1))
+          setMarketRate(data.payload.data.rate * ((ad.exchange_rate / 100) + 1))
         } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
           if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
             const updatedAdvert = data.payload.data.advert
-            if(ad.id == updatedAdvert.id) {
+            if (ad.id == updatedAdvert.id) {
               setMarketRate(updatedAdvert.effective_rate)
               ad.effective_rate_display = updatedAdvert.effective_rate_display
             }
           }
-        } 
+        }
       })
       return () => {
         clearTimeout(requestTimer)
@@ -415,15 +413,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     <>
       <div className="fixed inset-0 z-50 flex justify-end">
         <div
-          className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${
-            isOpen && isAnimating ? "opacity-100" : "opacity-0"
-          }`}
+          className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${isOpen && isAnimating ? "opacity-100" : "opacity-0"
+            }`}
           onClick={handleClose}
         />
         <div
-          className={`relative w-full bg-white h-full transform transition-transform duration-300 ease-in-out ${
-            isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`relative w-full bg-white h-full transform transition-transform duration-300 ease-in-out ${isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {ad && (
             <div className="flex flex-col h-full max-w-xl mx-auto">
@@ -525,9 +521,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                     {ad.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-2 w-2 rounded-full mr-2 ${
-                            method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                          }`}
+                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                            }`}
                         />
                         <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>
                       </div>
