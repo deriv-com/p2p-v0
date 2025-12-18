@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -154,6 +154,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   } = useWebSocketContext()
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
+  const lockedRateRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (
@@ -173,6 +174,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
     
+        if (lockedRateRef.current !== null) {
+          return
+        }
+
         if (data.options.channel === expectedChannel && data.payload?.rate) {
           setMarketRate(data.payload.rate * ((ad.exchange_rate/100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
@@ -250,6 +255,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     if (!ad) return
 
     if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
+      lockedRateRef.current = marketRate
       setShowRateChangeConfirmation(true)
       return
     }
@@ -318,6 +324,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       setValidationError(null)
       setTempSelectedPaymentMethods([])
       setShowRateChangeConfirmation(false)
+      lockedRateRef.current = null
       onClose()
     }, 300)
   }
