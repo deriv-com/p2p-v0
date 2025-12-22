@@ -65,7 +65,6 @@ export default function OrderDetailsPage() {
   useEffect(() => {
     fetchOrderDetails()
     fetchSettings()
-    console.log("fetchSettings")
 
     if (!isConnected) {
       reconnect()
