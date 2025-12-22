@@ -244,11 +244,7 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
-    const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
-    const shouldShowKyc = !userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired
-
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+    if (userId && verificationStatus?.phone_verified) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
       showAlert({
@@ -265,10 +261,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
-    const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
-
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+    if (userId && verificationStatus?.phone_verified) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
