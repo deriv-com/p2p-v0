@@ -671,7 +671,10 @@
     "setupProfile": "Set up your profile",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
-    "phoneNumber": "Phone number"
+    "phoneNumber": "Phone number",
+    "verificationExpired": "Verification expired",
+    "identityVerificationExpired": "Identity verification expired",
+    "addressVerificationExpired": "Address verification expired"
   },
   "status": {
     "refunded": "Refunded",

@@ -1,4 +1,4 @@
-import KycOnboardingSheet from "./kyc-onboarding-sheet"
+import KycOnboardingSheet, { getKycOnboardingTitle } from "./kyc-onboarding-sheet"
 
-export { KycOnboardingSheet }
+export { KycOnboardingSheet, getKycOnboardingTitle }
 export default KycOnboardingSheet
