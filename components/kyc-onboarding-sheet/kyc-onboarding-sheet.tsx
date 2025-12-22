@@ -71,6 +71,9 @@ function KycOnboardingSheet() {
   const handleStepClick = (link) => {
     window.location.href = link
   }
+  const handlePoiPoaExpiredLink = () => {
+
+  }
 
   if (!onboardingStatus) {
     return null
@@ -114,6 +117,7 @@ function KycOnboardingSheet() {
           </div>
         ))}
       </div>
+      {hasExpiredSteps && <Button onClick={handlePoiPoaExpiredLink}>Resubmit now</Button>}
     </div>
   )
 }
