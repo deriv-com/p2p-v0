@@ -315,17 +315,14 @@ export default function OrderDetailsPage() {
         setOrderVerificationEnabled(settings.order_verification_enabled)
       }
     } catch (error) {
-      console.error("Failed to fetch settings:", error)
       setOrderVerificationEnabled(true)
     }
   }
 
   const handlePaymentReceived = async () => {
     if (orderVerificationEnabled) {
-      // Show OTP sidebar if verification is enabled
       setShowPaymentReceivedConfirmation(true)
     } else {
-      // Complete order directly without OTP if verification is disabled
       setIsConfirmLoading(true)
       try {
         const result = await OrdersAPI.completeOrder(orderId, "")
