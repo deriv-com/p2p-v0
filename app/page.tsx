@@ -246,7 +246,7 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
       showAlert({
