@@ -59,10 +59,12 @@ export default function OrderDetailsPage() {
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(true)
+  const [orderVerificationEnabled, setOrderVerificationEnabled] = useState<boolean>(true)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
+    fetchSettings()
 
     if (!isConnected) {
       reconnect()
