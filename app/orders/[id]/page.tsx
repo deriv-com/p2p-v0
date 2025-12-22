@@ -307,7 +307,6 @@ export default function OrderDetailsPage() {
   const fetchSettings = async () => {
     try {
       const settings = await AuthAPI.getSettings()
-      console.log(settings)
       if (settings) {
         setOrderVerificationEnabled(settings.order_verification_enabled)
       }
