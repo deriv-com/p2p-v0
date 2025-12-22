@@ -15,6 +15,8 @@ function KycOnboardingSheet() {
     false
   const isPoiCompleted = onboardingStatus?.kyc?.poi_status === "approved"
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
   const verificationSteps = [
