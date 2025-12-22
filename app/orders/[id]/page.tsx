@@ -334,11 +334,6 @@ export default function OrderDetailsPage() {
             confirmText: t("common.ok"),
             type: "warning",
           })
-          toast({
-            description: result.errors[0].message || t("orders.errorCompletingOrder"),
-            className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
         } else {
           fetchOrderDetails()
         }
