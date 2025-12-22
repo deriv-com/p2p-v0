@@ -118,7 +118,7 @@ function KycOnboardingSheet() {
           </div>
         ))}
       </div>
-      {hasExpiredSteps && <Button onClick={handlePoiPoaExpiredLink}>Resubmit now</Button>}
+      {hasExpiredSteps && <Button className="w-full" onClick={handlePoiPoaExpiredLink}>Resubmit now</Button>}
     </div>
   )
 }
