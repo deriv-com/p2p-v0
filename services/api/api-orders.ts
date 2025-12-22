@@ -392,7 +392,7 @@ export async function reviewOrder(
   }
 }
 
-export async function completeOrder(orderId: string, otpValue: string): Promise<{ success: boolean; errors?: any[] }> {
+export async function completeOrder(orderId: string, otpValue: string | null): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/complete`
     const headers = {

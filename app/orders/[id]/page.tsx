@@ -9,7 +9,7 @@ import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { OrdersAPI } from "@/services/api"
+import { OrdersAPI, AuthAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import OrderChatSkeleton from "@/components/order-chat-skeleton"
@@ -59,10 +59,12 @@ export default function OrderDetailsPage() {
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(true)
+  const [orderVerificationEnabled, setOrderVerificationEnabled] = useState<boolean>(true)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
+    fetchSettings()
 
     if (!isConnected) {
       reconnect()
@@ -282,10 +284,6 @@ export default function OrderDetailsPage() {
     setShowPaymentConfirmation(true)
   }
 
-  const handleShowPaymentReceivedConfirmation = () => {
-    setShowPaymentReceivedConfirmation(true)
-  }
-
   const handleCancelOrder = () => {
     showAlert({
       title: t("orderDetails.cancellingYourOrder"),
@@ -304,6 +302,43 @@ export default function OrderDetailsPage() {
       },
       type: "warning",
     })
+  }
+
+  const fetchSettings = async () => {
+    try {
+      const settings = await AuthAPI.getSettings()
+      if (settings) {
+        setOrderVerificationEnabled(settings.order_verification_enabled)
+      }
+    } catch (error) {
+      setOrderVerificationEnabled(true)
+    }
+  }
+
+  const handlePaymentReceived = async () => {
+    if (orderVerificationEnabled) {
+      setShowPaymentReceivedConfirmation(true)
+    } else {
+      setIsConfirmLoading(true)
+      try {
+        const result = await OrdersAPI.completeOrder(orderId, null)
+
+        if (result.errors && result.errors.length > 0) {
+          showAlert({
+            title: "Unable to complete order",
+            description: result.errors[0].message,
+            confirmText: t("common.ok"),
+            type: "warning",
+          })
+        } else {
+          fetchOrderDetails()
+        }
+      } catch (error) {
+        console.error("Failed to complete order:", error)
+      } finally {
+        setIsConfirmLoading(false)
+      }
+    }
   }
 
   if (error) {
@@ -563,14 +598,11 @@ export default function OrderDetailsPage() {
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
                     <Button
                       className="flex-1"
-                      onClick={handleShowPaymentReceivedConfirmation}
+                      onClick={handlePaymentReceived}
                       disabled={isConfirmLoading}
                     >
                       {isConfirmLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          {t("orderDetails.processing")}
-                        </>
+                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                       ) : (
                         t("orderDetails.iveReceivedPayment")
                       )}
