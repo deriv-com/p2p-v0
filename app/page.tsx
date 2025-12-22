@@ -126,6 +126,7 @@ export default function BuySellPage() {
       const firstBalance = balances[0] || {}
       setBalance(firstBalance.amount || "0.00")
       setBalanceCurrency(firstBalance.currency || "USD")
+      console.log(firstBalance)
     } catch (error) {
       console.error("Failed to fetch balance:", error)
       setBalance("0.00")
