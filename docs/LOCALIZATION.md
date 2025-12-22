@@ -17,7 +17,7 @@ The localization system is built using:
 
 ## File Structure
 
-```
+\`\`\`
 lib/i18n/
 ├── config.ts                 # Language configuration
 ├── use-translations.ts       # Translation hook
@@ -31,13 +31,13 @@ stores/
 
 components/
 └── language-selector.tsx     # Language switcher UI
-```
+\`\`\`
 
 ## Usage
 
 ### Using Translations in Components
 
-```tsx
+\`\`\`tsx
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function MyComponent() {
@@ -50,11 +50,11 @@ export function MyComponent() {
     </div>
   )
 }
-```
+\`\`\`
 
 ### Using Translations with Parameters
 
-```tsx
+\`\`\`tsx
 const { t } = useTranslations()
 
 // Translation with parameters
@@ -64,17 +64,17 @@ const message = t("order.orderLimitError", {
   currency: "USD"
 })
 // Result: "Order limit: 10.00 - 1000.00 USD"
-```
+\`\`\`
 
 ### Changing Language
 
 Users can change the language using the `LanguageSelector` component in the header:
 
-```tsx
+\`\`\`tsx
 import { LanguageSelector } from "@/components/language-selector"
 
 <LanguageSelector />
-```
+\`\`\`
 
 The language preference is automatically persisted in localStorage.
 
@@ -86,7 +86,7 @@ The language preference is automatically persisted in localStorage.
 
 Example:
 
-```json
+\`\`\`json
 // en.json
 {
   "myFeature": {
@@ -110,12 +110,12 @@ Example:
     "description": "Questa è una nuova funzione"
   }
 }
-```
+\`\`\`
 
 ## Adding a New Language
 
 1. Update `lib/i18n/config.ts`:
-```typescript
+\`\`\`typescript
 export const locales = ['en', 'es', 'it', 'fr'] as const // Add 'fr'
 
 export const localeNames: Record<Locale, string> = {
@@ -124,12 +124,12 @@ export const localeNames: Record<Locale, string> = {
   it: 'Italiano',
   fr: 'Français', // Add French
 }
-```
+\`\`\`
 
 2. Create a new translation file: `lib/i18n/translations/fr.json`
 
 3. Import it in `lib/i18n/use-translations.ts`:
-```typescript
+\`\`\`typescript
 import fr from "./translations/fr.json"
 
 const translations = {
@@ -138,7 +138,7 @@ const translations = {
   it,
   fr, // Add French
 }
-```
+\`\`\`
 
 4. Update `lib/local-variables.ts` to include the new language code
 
