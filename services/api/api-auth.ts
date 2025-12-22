@@ -287,7 +287,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
-    const balances = result?.data?.balances
+    const balances = result?.data?.total_account_value
     const status = result?.data?.status
 
     if (userId) {
@@ -307,7 +307,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           signup: result.data.signup,
           wallet_id: result.data.wallet_id,
           temp_ban_until: tempBanUntil,
-          balances: balances,
+          balances: [balances],
           status: status,
         })
       }

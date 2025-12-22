@@ -422,7 +422,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             title: t("adForm.adLimitReachedTitle"),
             message: t("adForm.adLimitReachedMessage"),
             type: "error",
-            actionButtonText: t("common.ok"),
+            actionButtonText: "Go to my ads",
+            onConfirm: () => {
+              router.push("/ads")
+            }
           }
         } else if (error.name === "AdvertFloatRateMaximum") {
           errorInfo = {
@@ -442,7 +445,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         confirmText: errorInfo.actionButtonText,
         type: errorInfo.type,
         onConfirm: () => {
-          setCurrentStep(0)
+          if(errorInfo.onConfirm) {
+            errorInfo.onConfirm()
+          } else {
+            setCurrentStep(0)
+          }
         },
       })
     } finally {

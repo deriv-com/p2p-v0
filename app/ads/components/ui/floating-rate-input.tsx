@@ -52,6 +52,10 @@ export function FloatingRateInput({
     const input = e.target.value
     const newValue = input.replace(/%/g, "").trim()
 
+    if (!/^-?\d*\.?\d{0,2}$/.test(newValue)) {
+      return
+    }
+
     setDisplayValue(newValue)
 
     if (newValue === "" || newValue === "-" || newValue === "." || newValue === "-.") {
