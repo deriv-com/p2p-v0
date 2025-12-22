@@ -72,7 +72,8 @@ function KycOnboardingSheet() {
     window.location.href = link
   }
   const handlePoiPoaExpiredLink = () => {
-
+    if(isPoiExpired) window.location.href = `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`
+    else window.location.href = `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`
   }
 
   if (!onboardingStatus) {
