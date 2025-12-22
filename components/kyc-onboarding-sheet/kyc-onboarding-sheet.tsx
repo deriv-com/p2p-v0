@@ -80,11 +80,11 @@ function KycOnboardingSheet() {
     <div className="w-full">
       <h2 className="text-slate-1200 text-base font-normal mb-6">{getDescription()}</h2>
 
-      <div className="space-y-0">
+      <div className="space-y-6">
         {verificationSteps.map((step, index) => (
           <div key={step.id}>
             <div
-              className={cn("flex items-center gap-3 py-6", !step.completed && "hover:cursor-pointer")}
+              className={cn("flex items-center gap-3", !step.completed && "hover:cursor-pointer")}
               onClick={() => {
                 if (!step.completed) handleStepClick(step.link)
               }}
