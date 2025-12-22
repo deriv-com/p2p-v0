@@ -39,6 +39,9 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
   const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
   const helpCentreUrl =
