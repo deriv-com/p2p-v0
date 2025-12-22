@@ -28,6 +28,9 @@ export default function EmptyState({
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
   const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
 
