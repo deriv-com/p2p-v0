@@ -122,18 +122,10 @@ export default function BuySellPage() {
     setIsLoadingBalance(true)
 
     try {
-      if (isV1Signup) {
-        const balances = userData?.balances || []
-        const firstBalance = balances[0] || {}
-        setBalance(firstBalance.amount || "0.00")
-        setBalanceCurrency(firstBalance.currency || "USD")
-      } else {
-        const data = await getTotalBalance()
-        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-
-        setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
-        setBalanceCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
-      }
+      const balances = userData?.balances || []
+      const firstBalance = balances[0] || {}
+      setBalance(firstBalance.amount || "0.00")
+      setBalanceCurrency(firstBalance.currency || "USD")
     } catch (error) {
       console.error("Failed to fetch balance:", error)
       setBalance("0.00")
