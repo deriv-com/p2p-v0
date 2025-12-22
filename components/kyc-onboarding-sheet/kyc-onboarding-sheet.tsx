@@ -19,7 +19,7 @@ function KycOnboardingSheet() {
   const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
-  const verificationSteps = [
+  const allVerificationSteps = [
     {
       id: "profile",
       title: t("kyc.setupProfile"),
@@ -49,6 +49,15 @@ function KycOnboardingSheet() {
       link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
     },
   ]
+
+  const hasExpiredSteps = isPoiExpired || isPoaExpired
+  const verificationSteps = hasExpiredSteps
+    ? allVerificationSteps.filter((step) => {
+        if (isPoiExpired && step.id === "poi") return true
+        if (isPoaExpired && step.id === "poa") return true
+        return false
+      })
+    : allVerificationSteps
 
   const handleStepClick = (link) => {
     window.location.href = link

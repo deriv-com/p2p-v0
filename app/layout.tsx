@@ -1,31 +1,32 @@
-import type React from "react"
-import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
-import { Suspense } from "react"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import Main from "./main"
-import "./globals.css"
-import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
-import { DatadogRumInit } from "@/components/datadog-rum-init"
-import { LanguageSync } from "@/lib/i18n/language-sync"
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
+import './globals.css'
 
-const inter = Inter({ subsets: ["latin"] })
+const _geist = Geist({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
-  description: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
-  generator: "v0.dev",
+  title: 'v0 App',
+  description: 'Created with v0',
+  generator: 'v0.app',
   icons: {
-    icon: "/icons/dp2p.svg",
+    icon: [
+      {
+        url: '/icon-light-32x32.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/icon-dark-32x32.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: '/apple-icon.png',
   },
-}
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 }
 
 export default function RootLayout({
@@ -35,19 +36,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <DatadogRumInit />
-        <Suspense fallback={null}>
-          <LanguageSync />
-        </Suspense>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AlertDialogProvider>
-            <Toaster />
-            <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
-              <Main>{children}</Main>
-            </Suspense>
-          </AlertDialogProvider>
-        </ThemeProvider>
+      <body className={`font-sans antialiased`}>
+        {children}
+        <Analytics />
       </body>
     </html>
   )
