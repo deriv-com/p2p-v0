@@ -33,6 +33,10 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useIsMobile } from "@/hooks/use-mobile"
+
+type Ad = Advertisement
+type AdType = "buy" | "sell"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -66,6 +70,8 @@ export default function BuySellPage() {
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+  const [showKycPopup, setShowKycPopup] = useState(false)
+
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -74,6 +80,7 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
+  const isMobile = useIsMobile()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
@@ -250,7 +257,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="markets" />
           </div>
         ),
         confirmText: undefined,
@@ -269,7 +276,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="markets" />
           </div>
         ),
         confirmText: undefined,
@@ -349,6 +356,23 @@ export default function BuySellPage() {
 
     return unsubscribe
   }, [subscribe])
+
+  useEffect(() => {
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc && !showKycPopup) {
+      setShowKycPopup(true)
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="markets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
+    }
+  }, [searchParams, showKycPopup, showAlert, t])
 
   return (
     <>
@@ -558,6 +582,7 @@ export default function BuySellPage() {
                 title={t("market.noAdsTitle")}
                 description={t("market.noAdsDescription")}
                 redirectToAds={true}
+                route="markets"
               />
             ) : (
               <div className="md:block">
@@ -669,9 +694,9 @@ export default function BuySellPage() {
                           <div className="font-bold text-base flex items-center">
                             {ad.effective_rate_display
                               ? ad.effective_rate_display.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
                               : ""}{" "}
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
@@ -686,8 +711,8 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                      ? "bg-paymentMethod-bank"
-                                      : "bg-paymentMethod-ewallet"
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
                                       }`}
                                   ></div>
                                 )}
