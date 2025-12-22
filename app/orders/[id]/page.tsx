@@ -308,6 +308,60 @@ export default function OrderDetailsPage() {
     })
   }
 
+  const fetchSettings = async () => {
+    try {
+      const settings = await AuthAPI.getSettings()
+      if (settings && typeof settings.order_verification_enabled === 'boolean') {
+        setOrderVerificationEnabled(settings.order_verification_enabled)
+      }
+    } catch (error) {
+      console.error("Failed to fetch settings:", error)
+      setOrderVerificationEnabled(true)
+    }
+  }
+
+  const handlePaymentReceived = async () => {
+    if (orderVerificationEnabled) {
+      // Show OTP sidebar if verification is enabled
+      setShowPaymentReceivedConfirmation(true)
+    } else {
+      // Complete order directly without OTP if verification is disabled
+      setIsConfirmLoading(true)
+      try {
+        const result = await OrdersAPI.completeOrder(orderId, "")
+
+        if (result.errors && result.errors.length > 0) {
+          toast({
+            description: result.errors[0].message || t("orders.errorCompletingOrder"),
+            className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+        } else {
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                <span>{t("orders.orderCompleted")}</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+          fetchOrderDetails()
+        }
+      } catch (error) {
+        console.error("Failed to complete order:", error)
+        toast({
+          description: t("orders.errorCompletingOrder"),
+          className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      } finally {
+        setIsConfirmLoading(false)
+      }
+    }
+  }
+
   if (error) {
     return (
       <div className="px-4">
