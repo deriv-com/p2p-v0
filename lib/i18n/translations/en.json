@@ -556,7 +556,9 @@
     "verifying": "Verifying...",
     "didntReceiveCode": "Didn't receive the code?",
     "resendCode": "Resend code",
-    "resendCodeTimer": "Resend code ({seconds}s)"
+    "resendCodeTimer": "Resend code ({seconds}s)",
+    "orderCompleted": "Order completed successfully",
+    "errorCompletingOrder": "Failed to complete order. Please try again."
   },
   "adForm": {
     "createAd": "Create ad",
