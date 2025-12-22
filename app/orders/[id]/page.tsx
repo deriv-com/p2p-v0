@@ -334,25 +334,10 @@ export default function OrderDetailsPage() {
             duration: 2500,
           })
         } else {
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                <span>{t("orders.orderCompleted")}</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
           fetchOrderDetails()
         }
       } catch (error) {
         console.error("Failed to complete order:", error)
-        toast({
-          description: t("orders.errorCompletingOrder"),
-          className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
       } finally {
         setIsConfirmLoading(false)
       }
