@@ -73,6 +73,7 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const { showAlert } = useAlertDialog()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
@@ -243,7 +244,11 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId && verificationStatus?.phone_verified) {
+    const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
+    const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
+    const shouldShowKyc = !userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired
+
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
       showAlert({
@@ -260,7 +265,10 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if (userId && verificationStatus?.phone_verified) {
+    const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
+    const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
+
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
