@@ -86,7 +86,7 @@ export default function WalletSummary({
   }, [])
 
   const handleDepositClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
@@ -104,7 +104,7 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
@@ -124,7 +124,7 @@ export default function WalletSummary({
   const handleTransferClick = () => {
     if (!hasBalance) return
 
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
