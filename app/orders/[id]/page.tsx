@@ -603,8 +603,7 @@ export default function OrderDetailsPage() {
                     >
                       {isConfirmLoading ? (
                         <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          {t("orderDetails.processing")}
+                          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                         </>
                       ) : (
                         t("orderDetails.iveReceivedPayment")
