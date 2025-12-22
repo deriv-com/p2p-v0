@@ -481,7 +481,7 @@ export const currencyFlagMapper = {
   CRC: "/icons/flag-costa-rica.png",
   JOD: "/icons/flag-jordan.png",
   KHR: "/icons/flag-cambodia.png",
-  SOS: "/icons/flag-somali.png",
+  SOS: "/icons/flag-somalia.png",
   SVC: "/icons/flag-el-salvador.png",
   ETB: "/icons/flag-ethiopia.png",
   KWD: "/icons/flag-kuwait.png",
