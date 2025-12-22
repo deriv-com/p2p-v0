@@ -321,7 +321,7 @@ export default function OrderDetailsPage() {
     } else {
       setIsConfirmLoading(true)
       try {
-        const result = await OrdersAPI.completeOrder(orderId, "")
+        const result = await OrdersAPI.completeOrder(orderId, null)
 
         if (result.errors && result.errors.length > 0) {
           showAlert({
