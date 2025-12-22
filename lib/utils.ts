@@ -477,7 +477,7 @@ export const currencyFlagMapper = {
   BHD: "/icons/flag-bahrain.svg",
   BSD: "/icons/flag-bahamas.png",
   XAF: "/icons/flag-central-african-republic.png",
-  CLP: "/icons/flag-chile.svg",
+  CLP: "/icons/flag-chile.png",
   CRC: "/icons/flag-costa-rica.svg",
   JOD: "/icons/flag-jordan.svg",
   KHR: "/icons/flag-cambodia.svg",
