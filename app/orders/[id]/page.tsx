@@ -316,7 +316,6 @@ export default function OrderDetailsPage() {
   }
 
   const handlePaymentReceived = async () => {
-    console.log(orderVerificationEnabled)
     if (orderVerificationEnabled) {
       setShowPaymentReceivedConfirmation(true)
     } else {
