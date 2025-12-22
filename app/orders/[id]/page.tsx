@@ -328,6 +328,12 @@ export default function OrderDetailsPage() {
         const result = await OrdersAPI.completeOrder(orderId, "")
 
         if (result.errors && result.errors.length > 0) {
+          showAlert({
+            title: "Unable to complete order",
+            description: result.errors[0].message,
+            confirmText: t("common.ok"),
+            type: "warning",
+          })
           toast({
             description: result.errors[0].message || t("orders.errorCompletingOrder"),
             className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
