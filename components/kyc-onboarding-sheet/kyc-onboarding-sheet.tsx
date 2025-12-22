@@ -78,7 +78,7 @@ function KycOnboardingSheet() {
 
   return (
     <div className="w-full">
-      <h2 className="text-slate-1200 text-base font-normal mb-6">{getDescription()}</h2>
+      <h2 className="text-grayscale-600 text-base font-normal mb-6">{getDescription()}</h2>
 
       <div className="space-y-6">
         {verificationSteps.map((step, index) => (
