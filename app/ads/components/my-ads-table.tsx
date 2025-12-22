@@ -209,7 +209,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   const handleOpenDrawer = (ad: Ad) => {
-    if (!userId || !verificationStatus?.phone_verified) {
+    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
