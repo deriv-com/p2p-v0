@@ -602,9 +602,7 @@ export default function OrderDetailsPage() {
                       disabled={isConfirmLoading}
                     >
                       {isConfirmLoading ? (
-                        <>
-                          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                        </>
+                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                       ) : (
                         t("orderDetails.iveReceivedPayment")
                       )}
