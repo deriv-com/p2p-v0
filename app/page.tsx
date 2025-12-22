@@ -263,7 +263,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
