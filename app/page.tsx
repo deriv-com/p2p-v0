@@ -264,9 +264,19 @@ export default function BuySellPage() {
 
   const handleOrderClick = (ad: Advertisement) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      setSelectedAd(ad)
+      /* setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
-      setError(null)
+      setError(null) */
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     } else {
       showAlert({
         title: t("profile.gettingStarted"),
