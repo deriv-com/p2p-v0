@@ -52,7 +52,7 @@ export default function AdsPage() {
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
-      const title = t("wallet.gettingStartedWithP2P")
+      const title = t("profile.gettingStarted")
       
       if(isPoiExpired && isPoaExpired) return "Verification expired"
       else if(isPoiExpired) return "Identity verification expired"
