@@ -495,7 +495,7 @@
     "timeLimit60Minutes": "60 phút",
     "chooseYourAudience": "Chọn đối tượng của bạn",
     "audienceTooltip": "Bạn có thể lọc người tương tác với quảng cáo của mình dựa trên vị trí hoặc lịch sử P2P của họ. Bộ lọc nghiêm ngặt hơn có thể giảm khả năng hiển thị quảng cáo.",
-    "instructions": "Hướng dẫn (Tùy chọn)",
+    "sellerInstructions": "Hướng dẫn (tùy chọn)",
     "instructionsDisclaimer": "Thông tin này sẽ hiển thị cho mọi người. Đừng chia sẻ số điện thoại hoặc chi tiết cá nhân của bạn.",
     "totalAmountRequired": "Tổng số tiền là bắt buộc",
     "totalAmountGreaterThanZero": "Tổng số tiền phải lớn hơn 0",
