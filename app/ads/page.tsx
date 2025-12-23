@@ -49,7 +49,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified) {
+    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
