@@ -90,8 +90,13 @@ export default function WalletSummary({
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
+      const title = t("profile.gettingStarted")
+      
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title
         description: (
           <div className="space-y-4 my-2">
             <KycOnboardingSheet />
