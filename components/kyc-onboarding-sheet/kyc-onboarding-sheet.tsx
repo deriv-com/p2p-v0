@@ -54,7 +54,7 @@ function KycOnboardingSheet() {
     },
   ]
 
-  const hasExpiredSteps = isPoiExpired || !isPoaExpired
+  const hasExpiredSteps = isPoiExpired || isPoaExpired
   const verificationSteps = hasExpiredSteps
     ? allVerificationSteps.filter((step) => {
         if (isPoiExpired && step.id === "poi") return true
