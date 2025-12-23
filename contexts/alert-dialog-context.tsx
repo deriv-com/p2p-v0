@@ -67,8 +67,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     return (
       <div className="px-8 py-6 overflow-y-auto">
-        <div className="flex justify-between">
-          {config.title && <div className="mb-8 font-bold text-2xl mr-2">{config.title}</div>}
+        <div className="flex justify-between items-center mb-8">
+          {config.title && <div className="font-bold text-2xl mr-2">{config.title}</div>}
           <Button onClick={hideAlert} variant="ghost" className="bg-slate-75 px-1">
             <Image src="/icons/close-icon.png" alt="Close" width={12} height={24} />
           </Button>
