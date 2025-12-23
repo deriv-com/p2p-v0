@@ -115,6 +115,11 @@ function KycOnboardingSheet() {
                   />
                 </div>
               )}
+              {step.expired && (
+                <div className="text-xs">
+                  Unverified
+                </div>
+              )}
             </div>
           </div>
         ))}
