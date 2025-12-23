@@ -215,7 +215,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet />
           </div>
         ),
