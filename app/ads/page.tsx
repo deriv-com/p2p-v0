@@ -55,8 +55,8 @@ export default function AdsPage() {
       const title = t("wallet.gettingStartedWithP2P")
       
       if(isPoiExpired && isPoaExpired) return "Resubmit your proof of identity and address to continue using P2P."
-      else if(isPoiExpired) return "Resubmit your proof of identity to continue using P2P."
-      else if(isPoaExpired) return "Resubmit your proof of address to continue using P2P."
+      else if(isPoiExpired) return "Identity verification expired"
+      else if(isPoaExpired) return "Address verification expired"
       
       showAlert({
         title,
