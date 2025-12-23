@@ -35,8 +35,8 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId, onboardingStatus, verificationStatus } = useUserDataStore()
-  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
-  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status !== "approved"
   const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
