@@ -74,7 +74,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           </Button>
         </div>
         {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
-        <div className="flex flex-col gap-2 mt-6">
+        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-6">
           {config.cancelText && (
             <Button onClick={handleCancel} variant="primary" className="w-full">
               {config.cancelText}
@@ -85,7 +85,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               {config.confirmText || "Continue"}
             </Button>
           )}
-        </div>
+        </div>)}
       </div>
     )
   }
