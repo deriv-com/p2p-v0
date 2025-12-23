@@ -56,7 +56,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <div className="overflow-y-auto">
           <div className="flex justify-between px-8 pt-6">
             {config.title && <div className="mb-4 font-bold text-2xl">{config.title}</div>}
-            <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
+            <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-slate-75 px-1">
               <Image src="/icons/close-icon.png" alt="Close" width={48} height={48} className="size-5" />
             </Button>
           </div>
@@ -69,7 +69,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="px-8 py-6 overflow-y-auto">
         <div className="flex justify-between">
           {config.title && <div className="mb-8 font-bold text-2xl mr-2">{config.title}</div>}
-          <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
+          <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-slate-75 px-1">
             <Image src="/icons/close-icon.png" alt="Close" width={48} height={48} className="size-5" />
           </Button>
         </div>
