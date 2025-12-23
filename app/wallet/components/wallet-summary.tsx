@@ -97,7 +97,7 @@ export default function WalletSummary({
       else if(isPoaExpired) title = "Address verification expired"
 
       showAlert({
-        title
+        title,
         description: (
           <div className="space-y-4 my-2">
             <KycOnboardingSheet />
