@@ -33,6 +33,7 @@ function KycOnboardingSheet() {
       title: t("kyc.proofOfIdentity"),
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
+      expired: isPoiExpired,
       link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
@@ -40,6 +41,7 @@ function KycOnboardingSheet() {
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
+      expired: isPoaExpired,
       link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
