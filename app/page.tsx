@@ -249,8 +249,14 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
+      const title = t("profile.gettingStarted")
+      
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+
       showAlert({
-        title: t("profile.gettingStarted"),
+        title,
         description: (
           <div className="space-y-4 my-2">
             <KycOnboardingSheet />
