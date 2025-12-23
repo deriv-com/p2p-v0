@@ -118,7 +118,7 @@ function KycOnboardingSheet() {
                 </div>
               )}
               {step.expired && (
-                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm py-2">
+                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
                   Unverified
                 </div>
               )}
