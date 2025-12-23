@@ -74,8 +74,8 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
-  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired" || true
-  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired" || true
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
   const { showAlert } = useAlertDialog()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
