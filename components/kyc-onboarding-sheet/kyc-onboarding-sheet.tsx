@@ -39,7 +39,7 @@ function KycOnboardingSheet() {
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
-      expired: isPoaExpired,
+      expired: !isPoaCompleted,
       link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
@@ -51,11 +51,11 @@ function KycOnboardingSheet() {
     },
   ]
 
-  const hasExpiredSteps = isPoiExpired || isPoaExpired
+  const hasExpiredSteps = !isPoiCompleted || !isPoaCompleted
   const verificationSteps = hasExpiredSteps
     ? allVerificationSteps.filter((step) => {
-        if (isPoiExpired && step.id === "poi") return true
-        if (isPoaExpired && step.id === "poa") return true
+        if (!isPoiCompleted && step.id === "poi") return true
+        if (!isPoaCompleted && step.id === "poa") return true
         return false
       })
     : allVerificationSteps
