@@ -52,8 +52,14 @@ export default function AdsPage() {
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
+      const title = t("wallet.gettingStartedWithP2P")
+      
+      if(isPoiExpired && isPoaExpired) return "Resubmit your proof of identity and address to continue using P2P."
+      else if(isPoiExpired) return "Resubmit your proof of identity to continue using P2P."
+      else if(isPoaExpired) return "Resubmit your proof of address to continue using P2P."
+      
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
           <div className="space-y-4 my-2">
             <KycOnboardingSheet />
