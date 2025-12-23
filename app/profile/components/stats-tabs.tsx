@@ -40,8 +40,8 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
-  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "expired"
-  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "expired"
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status !== "approved"
   const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
   const helpCentreUrl =
