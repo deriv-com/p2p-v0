@@ -201,7 +201,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           }
 
           setIsLoadingInitialData(false)
-        } catch (error) {}
+        } catch (error) { }
       }
 
       loadInitialData()
@@ -445,7 +445,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         confirmText: errorInfo.actionButtonText,
         type: errorInfo.type,
         onConfirm: () => {
-          if(errorInfo.onConfirm) {
+          if (errorInfo.onConfirm) {
             errorInfo.onConfirm()
           } else {
             setCurrentStep(0)
@@ -530,8 +530,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
+      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
+        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden h-full md:px-0">
           <Navigation
             isBackBtnVisible={currentStep != 0}
             isVisible={false}
@@ -654,18 +654,16 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               </div>
             </div>
           ) : (
-            <div className="hidden md:block"></div>
+            <div className="hidden md:flex justify-end mt-8 px-6">
+              <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                {isSubmitting ? (
+                  <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                ) : (
+                  getButtonText()
+                )}
+              </Button>
+            </div>
           )}
-
-          <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
-              {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-              ) : (
-                getButtonText()
-              )}
-            </Button>
-          </div>
         </div>
       </div>
     </form>
@@ -679,3 +677,4 @@ export default function MultiStepAdForm({ mode, adId, initialType }: MultiStepAd
     </PaymentSelectionProvider>
   )
 }
+
