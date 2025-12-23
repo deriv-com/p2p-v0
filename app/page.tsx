@@ -270,24 +270,9 @@ export default function BuySellPage() {
 
   const handleOrderClick = (ad: Advertisement) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      /*setSelectedAd(ad)
+      setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
-      setError(null)*/
-      const title = t("profile.gettingStarted")
-      
-      if(isPoiExpired && isPoaExpired) title = "Verification expired"
-      else if(isPoiExpired) title = "Identity verification expired"
-      else if(isPoaExpired) title = "Address verification expired"
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      setError(null)
     } else {
       const title = t("profile.gettingStarted")
       
