@@ -654,7 +654,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               </div>
             </div>
           ) : (
-            <div className="hidden md:flex justify-end mt-8 px-6">
+            <div className="hidden md:flex justify-end mt-8 px-6 md:sticky md:bottom-6">
               <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
                 {isSubmitting ? (
                   <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
