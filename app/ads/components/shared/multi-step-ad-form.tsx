@@ -531,7 +531,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden md:overflow-y-hidden h-full md:px-0">
+        <div class="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
           <Navigation
             isBackBtnVisible={currentStep != 0}
             isVisible={false}
