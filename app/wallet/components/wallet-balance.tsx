@@ -156,7 +156,13 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           <p className="text-sm font-normal text-muted-foreground text-center leading-[22px]">Est total assets</p>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+              <Image
+                src="/icons/info-circle.svg"
+                alt="Info"
+                width={24}
+                height={24}
+                className="ml-1 cursor-pointer flex-shrink-0"
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p>This is your estimated combined balance across all P2P wallets, shown in USD.</p>
