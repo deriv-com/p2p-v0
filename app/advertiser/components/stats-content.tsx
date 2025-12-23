@@ -80,11 +80,11 @@ export default function StatsContent({ profile }: StatsContentProps) {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Image
-                    src="/icons/info-circle.png"
+                    src="/icons/info-circle.svg"
                     alt="Info"
-                    width={12}
-                    height={12}
-                    className="ml-1 cursor-pointer"
+                    width={24}
+                    height={24}
+                    className="ml-1 cursor-pointer flex-shrink-0"
                   />
                 </TooltipTrigger>
                 <TooltipContent>
