@@ -16,7 +16,8 @@ function KycOnboardingSheet() {
     false
   const isPoiCompleted = onboardingStatus?.kyc?.poi_status === "approved"
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
-  const isPoiExpired = onboardingStatus?.kyc?.poa_status === "approved"
+  const isPoiExpired = onboardingStatus?.kyc?.poi_status === "approved"
+  const isPoaExpired = onboardingStatus?.kyc?.poa_status === "approved"
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
   const allVerificationSteps = [
@@ -32,7 +33,7 @@ function KycOnboardingSheet() {
       title: t("kyc.proofOfIdentity"),
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
-      expired: !isPoiCompleted,
+      expired: isPoiExpired,
       link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
@@ -40,7 +41,7 @@ function KycOnboardingSheet() {
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
-      expired: !isPoaCompleted,
+      expired: isPoaExpired,
       link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
