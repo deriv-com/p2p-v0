@@ -84,7 +84,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const isP2PUser = onboardingStatus?.p2p?.allowed === true
 
     const auth_country_code = useUserDataStore.getState().residenceCountry
-    if (auth_country_code && !isP2PUser) {
+    if (auth_country_code && isP2PUser) {
       queryParams.append("auth_country_code", auth_country_code)
     }
 
