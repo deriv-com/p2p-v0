@@ -47,7 +47,10 @@ export default function WalletSummary({
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus) // Added verificationStatus from userDataStore to check phone_verified
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
