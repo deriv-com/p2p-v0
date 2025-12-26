@@ -22,7 +22,6 @@ export default function Main({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
-  const [isLoading, setIsLoading] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
@@ -43,7 +42,6 @@ export default function Main({
 
   useEffect(() => {
     isMountedRef.current = true
-    setIsLoading(true)
 
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
@@ -67,9 +65,6 @@ export default function Main({
           } catch (error) {
             if (!isPublic) {
               window.location.href = getLoginUrl(true)
-            }
-            if (isMountedRef.current) {
-              setIsLoading(false)
             }
             return
           }
@@ -112,26 +107,21 @@ export default function Main({
               }
 
               if (isMountedRef.current && !abortController.signal.aborted) {
-                setIsLoading(false)
                 router.push(pathname)
               }
             }
           } catch (error) {
             console.error("Error fetching onboarding status:", error)
             if (isMountedRef.current && !abortController.signal.aborted) {
-              setIsLoading(false)
               router.push(pathname)
             }
           }
-        } else {
-          setIsLoading(false)
         }
       } catch (error) {
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
         console.error("Error fetching session data:", error)
-        setIsLoading(false)
       }
     }
 
@@ -144,14 +134,6 @@ export default function Main({
       }
     }
   }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
-
-  if (isLoading && pathname !== "/login") {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    )
-  }
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
