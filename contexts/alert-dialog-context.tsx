@@ -54,10 +54,10 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     if (config.content) {
       return (
         <div className="overflow-y-auto">
-          <div className="flex justify-between px-8 pt-6">
-            {config.title && <div className="mb-4 font-bold text-2xl">{config.title}</div>}
-            <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
+          <div className="flex justify-between px-8 pt-6 items-center mb-4">
+            {config.title && <div className="font-bold text-2xl">{config.title}</div>}
+            <Button onClick={hideAlert} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
             </Button>
           </div>
           <div className="px-8 pb-6">{config.content}</div>
