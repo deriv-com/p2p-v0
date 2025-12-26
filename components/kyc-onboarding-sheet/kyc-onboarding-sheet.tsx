@@ -54,6 +54,25 @@ function KycOnboardingSheet() {
     },
   ]
 
+  const hasExpiredSteps = isPoiExpired || isPoaExpired
+  const verificationSteps = hasExpiredSteps
+    ? allVerificationSteps.filter((step) => {
+        if (isPoiExpired && step.id === "poi") return true
+        if (isPoaExpired && step.id === "poa") return true
+        return false
+      })
+    : allVerificationSteps
+
+  const getDescription = () => {
+    if(hasExpiredSteps){
+      if(isPoiExpired && isPoaExpired) return "Resubmit your proof of identity and address to continue using P2P."
+      else if(isPoiExpired) return "Resubmit your proof of identity to continue using P2P."
+      else if(isPoaExpired) return "Resubmit your proof of address to continue using P2P."
+    } 
+
+    return t("kyc.accessP2PMessage")
+  }
+
   const handleStepClick = (link) => {
     window.location.href = link
   }
