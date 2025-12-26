@@ -77,18 +77,13 @@ function KycOnboardingSheet() {
     window.location.href = link
   }
 
-  const handlePoiPoaExpiredLink = () => {
-    if(isPoiExpired) window.location.href = `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`
-    else window.location.href = `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`
-  }
-
   if (!onboardingStatus) {
     return null
   }
 
   return (
     <div className="w-full">
-      <h2 className="text-slate-1200 text-base font-normal mb-6">{t("kyc.accessP2PMessage")}</h2>
+      <h2 className="text-grayscale-600 text-base font-normal mb-6">{getDescription()}</h2>
 
       <div className="space-y-0">
         {verificationSteps.map((step, index) => (
