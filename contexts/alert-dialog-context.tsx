@@ -73,8 +73,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
-        {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
-        <div className="flex flex-col gap-2 mt-6">
+        {config.description && <div className="text-grayscale-100">{config.description}</div>}
+        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-6">
           {config.cancelText && (
             <Button onClick={handleCancel} variant="primary" className="w-full">
               {config.cancelText}
