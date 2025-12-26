@@ -72,7 +72,7 @@ export default function WalletSummary({
           code,
           name: data.label,
           logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-          label: data.label, // Added label field to currencyList
+          label: data.label,
         }))
         setCurrencies(currencyList)
       }
@@ -86,7 +86,7 @@ export default function WalletSummary({
   }, [])
 
   const handleDepositClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
