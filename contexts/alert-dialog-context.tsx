@@ -85,7 +85,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               {config.confirmText || "Continue"}
             </Button>
           )}
-        </div>
+        </div>)}
       </div>
     )
   }
