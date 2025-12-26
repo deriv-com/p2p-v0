@@ -35,7 +35,7 @@ export default function EmptyState({
   const { t } = useTranslations()
 
   const createAd = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push("/ads/create")
     } else {
       showAlert({
