@@ -9,6 +9,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 function KycOnboardingSheet() {
   const { t } = useTranslations()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const userId = useUserDataStore((state) => state.userId)
 
   const isProfileCompleted =
     (onboardingStatus?.p2p?.criteria?.find((c) => c.code === "deposit_enabled")?.passed &&
