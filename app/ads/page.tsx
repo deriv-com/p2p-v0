@@ -51,7 +51,12 @@ export default function AdsPage() {
   const router = useRouter()
 
   const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified) {
+    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
