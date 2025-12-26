@@ -29,8 +29,8 @@ export default function EmptyState({
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
-  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
-  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status === "expired"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status === "expired"
   const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
 
