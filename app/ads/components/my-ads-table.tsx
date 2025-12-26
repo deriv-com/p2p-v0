@@ -219,9 +219,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       else if(isPoaExpired) title = "Address verification expired"
       
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet />
           </div>
         ),
