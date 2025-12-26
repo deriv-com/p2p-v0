@@ -96,7 +96,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setShowAddPaymentPanel(true)
     } else {
       showAlert({
