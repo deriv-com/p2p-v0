@@ -121,7 +121,7 @@ function KycOnboardingSheet() {
                 </div>
               )}
             </div>
-            {index < verificationSteps.length - 1 && <div className="border-b border-gray-200" />}
+            
           </div>
         ))}
       </div>
