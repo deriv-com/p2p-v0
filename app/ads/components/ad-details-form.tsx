@@ -402,12 +402,9 @@ export default function AdDetailsForm({
                       {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
                         <Image
                           src={
-                            currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg"
+                            currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                           }
-                          alt={`${currency.code} logo`}
+                          alt={`${buyCurrency} logo`}
                           width={24}
                           height={24}
                           className="w-6 h-6 rounded object-cover"
@@ -424,7 +421,10 @@ export default function AdDetailsForm({
                         {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
                           <Image
                             src={
-                              currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                              currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
+                              "/placeholder.svg" ||
+                              "/placeholder.svg" ||
+                              "/placeholder.svg"
                             }
                             alt={`${currency.code} logo`}
                             width={24}
