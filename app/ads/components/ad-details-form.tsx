@@ -451,8 +451,7 @@ export default function AdDetailsForm({
                       {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
                         <Image
                           src={
-                            currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
-                          }
+                            currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper]}
                           alt={`${forCurrency} logo`}
                           width={24}
                           height={24}
