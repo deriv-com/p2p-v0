@@ -10,7 +10,7 @@ import { FloatingRateInput } from "./ui/floating-rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
-import { getAdvertStatistics } from "@/services/api/api-auth"
+import { getAdvertStatistics, getSettings } from "@/services/api/api-auth"
 import Image from "next/image"
 import { currencyFlagMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -63,9 +63,10 @@ export default function AdDetailsForm({
     maxAmount: false,
     floatingRate: false,
   })
+  const [isFloatingRateEnabled, setIsFloatingRateEnabled] = useState(false)
+  const [marketPrice, setMarketPrice] = useState<number | null>(null)
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
-  const [marketPrice, setMarketPrice] = useState<number | null>(null)
 
   const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } = useWebSocketContext()
 
@@ -88,7 +89,6 @@ export default function AdDetailsForm({
   }
 
   useEffect(() => {
-    
     if (!isEditMode && currenciesProp.length > 0) {
       setForCurrency(currenciesProp[0].code)
     }
@@ -366,119 +366,135 @@ export default function AdDetailsForm({
     document.dispatchEvent(event)
   }, [type, totalAmount, fixedRate, floatingRate, minAmount, maxAmount, formErrors, priceType])
 
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const settings = await getSettings()
+        if (settings) {
+          setIsFloatingRateEnabled(settings.float_rate_enabled === true)
+        }
+      } catch (error) {
+        console.error("Error fetching settings:", error)
+        setIsFloatingRateEnabled(false)
+      }
+    }
+
+    fetchSettings()
+  }, [])
+
   if(isLoadingInitialData) return <AdDetailsFormSkeleton />
 
   return (
- 
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
-        
-          <div>
-            {!isEditMode && (<TradeTypeSelector value={type} onChange={setType} /> )}
+        <div>
+          {!isEditMode && (<TradeTypeSelector value={type} onChange={setType} /> )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div>
-                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
-                  {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
-                </label>
-                <Select value={buyCurrency} onValueChange={setBuyCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg" disabled>
-                    <SelectValue>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div>
+              <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
+              </label>
+              <Select value={buyCurrency} onValueChange={setBuyCurrency}>
+                <SelectTrigger className="w-full h-14 rounded-lg" disabled>
+                  <SelectValue>
+                    <div className="flex items-center gap-2">
+                      {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
+                        <Image
+                          src={
+                            currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                          }
+                          alt={`${buyCurrency} logo`}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6 rounded object-cover"
+                        />
+                      )}
+                      <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
+                    </div>
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {accountCurrencies.map((currency) => (
+                    <SelectItem key={currency.code} value={currency.code}>
                       <div className="flex items-center gap-2">
-                        {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
+                        {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
                           <Image
                             src={
-                              currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                              currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                             }
-                            alt={`${buyCurrency} logo`}
+                            alt={`${currency.code} logo`}
                             width={24}
                             height={24}
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
+                        <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
                       </div>
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {accountCurrencies.map((currency) => (
-                      <SelectItem key={currency.code} value={currency.code}>
-                        <div className="flex items-center gap-2">
-                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
-                            <Image
-                              src={
-                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
-                                "/placeholder.svg" ||
-                                "/placeholder.svg" ||
-                                "/placeholder.svg"
-                              }
-                              alt={`${currency.code} logo`}
-                              width={24}
-                              height={24}
-                              className="w-6 h-6 rounded object-cover"
-                            />
-                          )}
-                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
-                  {type === "buy" ? "Paying with" : "Receive in"}
-                </label>
-                <Select value={forCurrency} onValueChange={setForCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg" disabled={isEditMode}>
-                    <SelectValue>
-                      <div className="flex items-center gap-2">
-                        {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
-                          <Image
-                            src={
-                              currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
-                            }
-                            alt={`${forCurrency} logo`}
-                            width={24}
-                            height={24}
-                            className="w-6 h-6 rounded object-cover"
-                          />
-                        )}
-                        <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
-                      </div>
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currenciesProp.map((currency) => (
-                      <SelectItem key={currency.code} value={currency.code}>
-                        <div className="flex items-center gap-2">
-                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
-                            <Image
-                              src={
-                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper]
-                              }
-                              alt={`${currency.code} logo`}
-                              width={24}
-                              height={24}
-                              className="w-6 h-6 rounded object-cover"
-                            />
-                          )}
-                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
-            <div className="border-b border-grayscale-200 mt-6"></div>
+            <div>
+              <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                {type === "buy" ? "Paying with" : "Receive in"}
+              </label>
+              <Select value={forCurrency} onValueChange={setForCurrency}>
+                <SelectTrigger className="w-full h-14 rounded-lg" disabled={isEditMode}>
+                  <SelectValue>
+                    <div className="flex items-center gap-2">
+                      {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
+                        <Image
+                          src={
+                            currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                          }
+                          alt={`${forCurrency} logo`}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6 rounded object-cover"
+                        />
+                      )}
+                      <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
+                    </div>
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {currenciesProp.map((currency) => (
+                    <SelectItem key={currency.code} value={currency.code}>
+                      <div className="flex items-center gap-2">
+                        {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                          <Image
+                            src={
+                              currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper]
+                             || "/placeholder.svg"}
+                            alt={`${currency.code} logo`}
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 rounded object-cover"
+                          />
+                        )}
+                        <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-       
+
+          <div className="border-b border-grayscale-200 mt-6"></div>
+        </div>
 
         <div>
-          <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />
+          <PriceTypeSelector 
+            marketPrice={marketPrice} 
+            value={priceType} 
+            onChange={setPriceType} 
+            disabled={isEditMode} 
+            isFloatingRateEnabled={isFloatingRateEnabled}
+          />
 
           <div className="mt-4">
             <div className="grid gap-4">
