@@ -10,6 +10,8 @@ function KycOnboardingSheet() {
   const { t } = useTranslations()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
+  const userData = useUserDataStore((state) => state.userData)
+  const isV1Signup = userData?.signup === "v1"
 
   const isProfileCompleted =
     (onboardingStatus?.p2p?.criteria?.find((c) => c.code === "deposit_enabled")?.passed &&
@@ -27,7 +29,7 @@ function KycOnboardingSheet() {
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true`,
     },
     {
       id: "poi",
@@ -35,7 +37,7 @@ function KycOnboardingSheet() {
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
       expired: isPoiExpired,
-      link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
       id: "poa",
@@ -43,14 +45,14 @@ function KycOnboardingSheet() {
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
       expired: isPoiExpired,
-      link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
       id: "phone",
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
-      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true`,
     },
   ]
 
