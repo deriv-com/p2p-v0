@@ -241,7 +241,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <div className="w-full">
         <Table>
