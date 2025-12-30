@@ -76,9 +76,8 @@ function KycOnboardingSheet() {
   }
 
   const handlePoiPoaExpiredLink = () => {
-    if(isPoiExpired) return `https://${getHomeUrl(isV1Signup, "poi")}`
-    
-    return `https://${getHomeUrl(isV1Signup, "poa")}`
+    if(isPoiExpired) window.location.href = `https://${getHomeUrl(isV1Signup, "poi")}`
+    else window.location.href = `https://${getHomeUrl(isV1Signup, "poa")}`
   }
 
   const handleStepClick = (link) => {
