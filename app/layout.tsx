@@ -43,7 +43,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
             <Toaster />
-            <Main>{children}</Main>
+             <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+              <Main>{children}</Main>
+            </Suspense>
           </AlertDialogProvider>
         </ThemeProvider>
       </body>
