@@ -29,6 +29,7 @@ export default function Main({
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
+  const [isReady, setIsReady] = useState(false);
 
   const isDisabled = userData?.status === "disabled"
 
@@ -122,6 +123,10 @@ export default function Main({
           return
         }
         console.error("Error fetching session data:", error)
+      } finally {
+        if (isMountedRef.current) {
+          setIsReady(true)
+        }
       }
     }
 
@@ -157,6 +162,14 @@ export default function Main({
           </main>
         </div>
       </>
+    )
+  }
+
+  if (!isReady) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
     )
   }
 

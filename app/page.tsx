@@ -74,6 +74,9 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { showAlert } = useAlertDialog()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
@@ -295,13 +298,19 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+
       showAlert({
-        title: t("profile.gettingStarted"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet />
           </div>
         ),
@@ -312,15 +321,21 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+
       showAlert({
-        title: t("profile.gettingStarted"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet />
           </div>
         ),

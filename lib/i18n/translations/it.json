@@ -501,7 +501,7 @@
     "timeLimit60Minutes": "60 minuti",
     "chooseYourAudience": "Scegli il tuo pubblico",
     "audienceTooltip": "Puoi filtrare chi interagisce con i tuoi annunci in base alla loro posizione o cronologia P2P. Filtri più rigidi possono ridurre la visibilità dell'annuncio.",
-    "instructions": "Istruzioni (Opzionale)",
+    "sellerInstructions": "Istruzioni (opzionale)",
     "instructionsDisclaimer": "Queste informazioni saranno visibili a tutti. Non condividere il tuo numero di telefono o dettagli personali.",
     "totalAmountRequired": "L'importo totale è obbligatorio",
     "totalAmountGreaterThanZero": "L'importo totale deve essere maggiore di 0",

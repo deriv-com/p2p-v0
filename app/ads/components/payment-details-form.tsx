@@ -287,7 +287,7 @@ const PaymentSelectionContent = ({
   }
 
   return (
-    <div className="flex flex-col h-full md:h-[60vh] md:max-h-[600px]">
+    <div className="flex flex-col h-full md:h-[60vh] md:max-h-[600px] pb-4">
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
         {paymentMethods && <div className="text-grayscale-600">{t("paymentMethod.selectUpTo3")}</div>}
         {paymentMethods.length === 0 ? (
@@ -542,7 +542,7 @@ export default function PaymentDetailsForm({
                 <Textarea
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
-                  placeholder={t("adForm.instructions")}
+                  placeholder={initialData.type === "buy" ? t("adForm.sellerInstructions"): t("adForm.buyerInstructions")}
                   className="min-h-[120px] resize-none"
                   maxLength={300}
                 />
