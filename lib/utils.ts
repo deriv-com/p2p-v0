@@ -506,6 +506,9 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
   if (section === "profile") {
     if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
     else url = `https://${baseUrl}/dashboard/profile`
+  } else if (section === "poa") {
+    if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
+    else url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true`
   } else if (section === "home") {
     if (isV1Signup) {
       url = `https://${baseUrl}`
