@@ -321,11 +321,11 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    /*if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
-    } else {*/
+    } else {
       const title = t("profile.gettingStarted")
 
       if(isPoiExpired && isPoaExpired) title = "Verification expired"
@@ -342,7 +342,7 @@ export default function BuySellPage() {
         confirmText: undefined,
         cancelText: undefined,
       })
-    //}
+    }
   }
 
   const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
