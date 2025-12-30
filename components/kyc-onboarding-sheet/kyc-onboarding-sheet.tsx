@@ -37,7 +37,7 @@ function KycOnboardingSheet() {
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
       expired: isPoiExpired,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup, "poi")}`,
     },
     {
       id: "poa",
@@ -45,7 +45,7 @@ function KycOnboardingSheet() {
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
       expired: isPoiExpired,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/address?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup, "poa")}`,
     },
     {
       id: "phone",
@@ -76,9 +76,9 @@ function KycOnboardingSheet() {
   }
 
   const handlePoiPoaExpiredLink = () => {
-    if(isPoiExpired) return `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/address?is_from_p2p=true`
+    if(isPoiExpired) return `https://${getHomeUrl(isV1Signup, "poi")}`
     
-    return `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/address?is_from_p2p=true`
+    return `https://${getHomeUrl(isV1Signup, "poa")}`
   }
 
   const handleStepClick = (link) => {
