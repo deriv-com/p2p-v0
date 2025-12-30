@@ -37,7 +37,7 @@ function KycOnboardingSheet() {
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
       expired: isPoiExpired,
-      link: `https://${getHomeUrl(isV1Signup, "poi")}`,
+      link: getHomeUrl(isV1Signup, "poi"),
     },
     {
       id: "poa",
@@ -45,7 +45,7 @@ function KycOnboardingSheet() {
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
       expired: isPoiExpired,
-      link: `https://${getHomeUrl(isV1Signup, "poa")}`,
+      link: getHomeUrl(isV1Signup, "poa"),
     },
     {
       id: "phone",
