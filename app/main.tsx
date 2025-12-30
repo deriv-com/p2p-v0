@@ -125,7 +125,7 @@ export default function Main({
         console.error("Error fetching session data:", error)
       } finally {
         if (isMountedRef.current) {
-          setIsReady(true);
+          setIsReady(true)
         }
       }
     }
