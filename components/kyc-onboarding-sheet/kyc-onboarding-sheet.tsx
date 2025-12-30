@@ -75,6 +75,12 @@ function KycOnboardingSheet() {
     return t("kyc.accessP2PMessage")
   }
 
+  const handlePoiPoaExpiredLink = () => {
+    if(isPoiExpired) return `https://${getHomeUrl(isV1Signup)}/dashboard/kyc/address?is_from_p2p=true`
+    
+    return "Resubmit your proof of identity to continue using P2P."
+  }
+
   const handleStepClick = (link) => {
     window.location.href = link
   }
