@@ -503,9 +503,9 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
     baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
   }
 
-  if (section === "profile") {
+  if (section === "poi") {
     if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
-    else url = `https://${baseUrl}/dashboard/profile`
+    else url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true`
   } else if (section === "poa") {
     if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
     else url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true`
