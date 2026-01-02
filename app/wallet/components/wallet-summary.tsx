@@ -91,7 +91,7 @@ export default function WalletSummary({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -109,7 +109,7 @@ export default function WalletSummary({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -129,7 +129,7 @@ export default function WalletSummary({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,

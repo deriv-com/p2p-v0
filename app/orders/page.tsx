@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -24,9 +24,10 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -44,6 +45,7 @@ function TimeRemainingDisplay({ expiresAt }) {
 export default function OrdersPage() {
   const { t } = useTranslations()
   const router = useRouter()
+  const { showAlert } = useAlertDialog()
   const { activeTab, setActiveTab, dateFilter, customDateRange, setDateFilter, setCustomDateRange } =
     useOrdersFilterStore()
   const { setIsChatVisible } = useChatVisibilityStore()
@@ -55,12 +57,39 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
   const abortControllerRef = useRef<AbortController | null>(null)
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      showAlert({
+        title: t("wallet.gettingStartedWithP2P"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="markets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
+      })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
 
   useEffect(() => {
     if (userData?.signup === "v1") {

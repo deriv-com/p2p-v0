@@ -44,22 +44,40 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
-  const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified) {
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="ads" />
           </div>
         ),
         confirmText: undefined,
         cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
       })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
+
+  const handleCreateAd = () => {
+    if (!userId || !verificationStatus?.phone_verified) {
+      setShowKycPopup(true)
       return
     }
     router.push("/ads/create")
