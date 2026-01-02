@@ -80,7 +80,7 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-4 md:mb-0 md:pr-5">
+      <div className="relative mb-6 md:mb-0 md:pr-6">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
@@ -93,7 +93,7 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base h-8 pl-10 border-grayscale-500 focus:border-grayscale-500 bg-grayscale-500 rounded-lg"
+          className="text-base h-14 pl-10 bg-black/[0.04] border-0 focus:border-0 focus:ring-0 rounded-lg placeholder:text-black/[0.24] placeholder:text-sm placeholder:font-normal"
           autoComplete="off"
           autoFocus
         />
@@ -102,14 +102,14 @@ export function CurrencyFilter({
             variant="ghost"
             size="sm"
             onClick={() => setSearchQuery("")}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+            className="absolute right-0  md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
             <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
           </Button>
         )}
       </div>
 
-      <div className="max-h-[85%] overflow-y-auto scrollbar-custom md:pr-2 md:mr-2">
+      <div className="max-h-[80%] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:pr-2 md:mr-2 md:relative md:left-[-16px] md:w-[calc(100%+24px)]">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={t("filter.currencyUnavailable", { currency: searchQuery })}
@@ -117,15 +117,15 @@ export function CurrencyFilter({
             redirectToAds={false}
           />
         ) : (
-          <div className="space-y-1 md:pr-2">
-            {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{title}</div>}
+          <div className="space-y-0 md:pr-2">
+            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code, currency.name)}
                 className={cn(
-                  "px-4 py-3 rounded-sm cursor-pointer transition-colors",
-                  selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
+                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                  selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
               >
                 {currency.code} - {currency.name}
@@ -145,9 +145,9 @@ export function CurrencyFilter({
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
-        <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
+        <DrawerContent side="bottom" className="h-[90vh] px-[16px] pb-[16px] rounded-t-2xl">
           <div className="my-4">
-            <h3 className="text-xl font-bold text-center">{title}</h3>
+            <h3 className="text-xl font-extrabold text-center text-slate-900">{title}</h3>
           </div>
           <CurrencyList />
         </DrawerContent>
@@ -158,7 +158,7 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-4 md:pt-5 md:pl-5 md:pr-0 md:pb-0" align="end">
+      <PopoverContent className="w-80 h-80 p-4 md:pl-6 md:pt-4 md:pr-0 md:pb-0" align="end">
         <CurrencyList />
       </PopoverContent>
     </Popover>
