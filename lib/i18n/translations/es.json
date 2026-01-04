@@ -627,10 +627,5 @@
     "submit": "Enviar",
     "ratingRequiredTitle": "Calificación requerida",
     "ratingRequiredDescription": "Por favor, selecciona una calificación de estrellas antes de enviar."
-  },
-  "verification": {
-    "verificationExpired": "Verificación vencida",
-    "identityVerificationExpired": "Verificación de identidad vencida",
-    "addressVerificationExpired": "Verificación de dirección vencida"
   }
 }

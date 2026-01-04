@@ -662,10 +662,5 @@
     "submit": "Отправить",
     "ratingRequiredTitle": "Требуется оценка",
     "ratingRequiredDescription": "Пожалуйста, выберите звездную оценку перед отправкой."
-  },
-  "verification": {
-    "verificationExpired": "Срок верификации истек",
-    "identityVerificationExpired": "Срок верификации личности истек",
-    "addressVerificationExpired": "Срок верификации адреса истек"
   }
 }

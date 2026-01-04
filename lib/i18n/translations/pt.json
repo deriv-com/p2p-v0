@@ -609,10 +609,5 @@
     "submit": "Enviar",
     "ratingRequiredTitle": "Avaliação necessária",
     "ratingRequiredDescription": "Por favor, selecione uma avaliação em estrelas antes de enviar."
-  },
-  "verification": {
-    "verificationExpired": "Verificação expirada",
-    "identityVerificationExpired": "Verificação de identidade expirada",
-    "addressVerificationExpired": "Verificação de endereço expirada"
   }
 }
