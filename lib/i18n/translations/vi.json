@@ -627,7 +627,12 @@
     "setupProfile": "Thiết lập hồ sơ của bạn",
     "proofOfIdentity": "Chứng minh danh tính",
     "proofOfAddress": "Chứng minh địa chỉ",
-    "phoneNumber": "Số điện thoại"
+    "phoneNumber": "Số điện thoại",
+    "resubmitIdentityAndAddress": "Gửi lại chứng minh danh tính và địa chỉ của bạn để tiếp tục sử dụng P2P.",
+    "resubmitIdentity": "Gửi lại chứng minh danh tính của bạn để tiếp tục sử dụng P2P.",
+    "resubmitAddress": "Gửi lại chứng minh địa chỉ của bạn để tiếp tục sử dụng P2P.",
+    "unverified": "Chưa xác minh",
+    "resubmitNow": "Gửi lại ngay"
   },
   "status": {
     "refunded": "Đã hoàn tiền",
