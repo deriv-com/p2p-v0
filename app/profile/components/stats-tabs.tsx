@@ -45,6 +45,8 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
     locale != "en"
       ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
       : `https://trade.deriv.com/help-centre/deriv-p2p`
+  const isPoiExpired = useUserDataStore((state) => state.isPoiExpired)
+  const isPoaExpired = useUserDataStore((state) => state.isPoaExpired)
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
@@ -99,11 +101,11 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setShowAddPaymentPanel(true)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = "Verification expired"
-      else if(isPoiExpired) title = "Identity verification expired"
-      else if(isPoaExpired) title = "Address verification expired"
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
