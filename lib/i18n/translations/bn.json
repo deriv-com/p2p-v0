@@ -584,7 +584,12 @@
     "setupProfile": "আপনার প্রোফাইল সেট আপ করুন",
     "proofOfIdentity": "পরিচয়ের প্রমাণ",
     "proofOfAddress": "ঠিকানার প্রমাণ",
-    "phoneNumber": "ফোন নম্বর"
+    "phoneNumber": "ফোন নম্বর",
+    "resubmitIdentityAndAddress": "P2P ব্যবহার চালিয়ে যেতে আপনার পরিচয় এবং ঠিকানার প্রমাণ পুনরায় জমা দিন।",
+    "resubmitIdentity": "P2P ব্যবহার চালিয়ে যেতে আপনার পরিচয়ের প্রমাণ পুনরায় জমা দিন।",
+    "resubmitAddress": "P2P ব্যবহার চালিয়ে যেতে আপনার ঠিকানার প্রমাণ পুনরায় জমা দিন।",
+    "unverified": "অযাচাইকৃত",
+    "resubmitNow": "এখনই পুনরায় জমা দিন"
   },
   "status": {
     "refunded": "ফেরত দেওয়া হয়েছে",

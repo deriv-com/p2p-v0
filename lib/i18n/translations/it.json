@@ -591,7 +591,12 @@
     "setupProfile": "Configura il tuo profilo",
     "proofOfIdentity": "Prova d'identità",
     "proofOfAddress": "Prova di residenza",
-    "phoneNumber": "Numero di telefono"
+    "phoneNumber": "Numero di telefono",
+    "resubmitIdentityAndAddress": "Invia nuovamente la prova d'identità e di residenza per continuare a utilizzare P2P.",
+    "resubmitIdentity": "Invia nuovamente la prova d'identità per continuare a utilizzare P2P.",
+    "resubmitAddress": "Invia nuovamente la prova di residenza per continuare a utilizzare P2P.",
+    "unverified": "Non verificato",
+    "resubmitNow": "Invia ora"
   },
   "status": {
     "refunded": "Rimborsato",
