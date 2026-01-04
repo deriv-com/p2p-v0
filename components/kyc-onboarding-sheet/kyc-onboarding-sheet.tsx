@@ -90,9 +90,9 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
 
   const getDescription = () => {
     if(hasExpiredSteps){
-      if(isPoiExpired && isPoaExpired) return "Resubmit your proof of identity and address to continue using P2P."
-      else if(isPoiExpired) return "Resubmit your proof of identity to continue using P2P."
-      else if(isPoaExpired) return "Resubmit your proof of address to continue using P2P."
+      if(isPoiExpired && isPoaExpired) return t("kyc.resubmitIdentityAndAddress")
+      else if(isPoiExpired) return t("kyc.resubmitIdentity")
+      else if(isPoaExpired) return t("kyc.resubmitAddress")
     } 
 
     return t("kyc.accessP2PMessage")
