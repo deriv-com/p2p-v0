@@ -602,7 +602,12 @@
     "setupProfile": "Richten Sie Ihr Profil ein",
     "proofOfIdentity": "Identitätsnachweis",
     "proofOfAddress": "Adressnachweis",
-    "phoneNumber": "Telefonnummer"
+    "phoneNumber": "Telefonnummer",
+    "resubmitIdentityAndAddress": "Reichen Sie Ihren Identitäts- und Adressnachweis erneut ein, um P2P weiterhin zu nutzen.",
+    "resubmitIdentity": "Reichen Sie Ihren Identitätsnachweis erneut ein, um P2P weiterhin zu nutzen.",
+    "resubmitAddress": "Reichen Sie Ihren Adressnachweis erneut ein, um P2P weiterhin zu nutzen.",
+    "unverified": "Nicht verifiziert",
+    "resubmitNow": "Jetzt erneut einreichen"
   },
   "status": {
     "refunded": "Erstattet",
