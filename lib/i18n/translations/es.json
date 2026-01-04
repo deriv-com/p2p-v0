@@ -605,7 +605,12 @@
     "setupProfile": "Configura tu perfil",
     "proofOfIdentity": "Prueba de identidad",
     "proofOfAddress": "Prueba de domicilio",
-    "phoneNumber": "Número de teléfono"
+    "phoneNumber": "Número de teléfono",
+    "resubmitIdentityAndAddress": "Vuelve a enviar tu prueba de identidad y domicilio para continuar usando P2P.",
+    "resubmitIdentity": "Vuelve a enviar tu prueba de identidad para continuar usando P2P.",
+    "resubmitAddress": "Vuelve a enviar tu prueba de domicilio para continuar usando P2P.",
+    "unverified": "No verificado",
+    "resubmitNow": "Reenviar ahora"
   },
   "status": {
     "refunded": "Reembolsado",
