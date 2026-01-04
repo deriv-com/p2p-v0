@@ -6,7 +6,11 @@ import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-function KycOnboardingSheet() {
+interface KycOnboardingSheetProps {
+  route?: "markets" | "profile" | "wallets" | "ads"
+}
+
+function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const { t } = useTranslations()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
@@ -23,13 +27,32 @@ function KycOnboardingSheet() {
   const isPoaExpired = userId && !isPoaCompleted
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
+  const getFromParam = () => {
+    if (!route) return "from=p2p"
+
+    switch (route) {
+      case "markets":
+        return "from=p2p"
+      case "profile":
+        return "from=p2p-profile"
+      case "wallets":
+        return "from=p2p-wallet"
+      case "ads":
+        return "from=p2p-ads"
+      default:
+        return "from=p2p"
+    }
+  }
+
+  const fromParam = getFromParam()
+
   const allVerificationSteps = [
     {
       id: "profile",
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "poi",
@@ -37,7 +60,7 @@ function KycOnboardingSheet() {
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
       expired: isPoiExpired,
-      link: getHomeUrl(isV1Signup, "poi"),
+      link: getHomeUrl(isV1Signup, "poi", fromParam),
     },
     {
       id: "poa",
@@ -45,14 +68,14 @@ function KycOnboardingSheet() {
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
       expired: isPoiExpired,
-      link: getHomeUrl(isV1Signup, "poa"),
+      link: getHomeUrl(isV1Signup, "poa", fromParam),
     },
     {
       id: "phone",
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
     },
   ]
 

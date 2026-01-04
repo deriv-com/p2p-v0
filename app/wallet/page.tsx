@@ -10,6 +10,9 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useRouter } from "next/navigation"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Balance {
   wallet_id: string
@@ -20,6 +23,8 @@ interface Balance {
 
 export default function WalletPage() {
   const router = useRouter()
+  const { t } = useTranslations()
+  const { showAlert } = useAlertDialog()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -29,6 +34,7 @@ export default function WalletPage() {
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
   const [hasBalance, setHasBalance] = useState(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -71,6 +77,32 @@ export default function WalletPage() {
   }, [])
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      showAlert({
+        title: t("wallet.gettingStartedWithP2P"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="wallets" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
+      })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
+
+  useEffect(() => {
     if (userData?.signup === "v1") {
       router.push("/")
     } else {
@@ -79,12 +111,10 @@ export default function WalletPage() {
   }, [userData?.signup, router])
 
   useEffect(() => {
-    loadBalanceData()
-  }, [loadBalanceData])
-
-  if (userData?.signup === "v1") {
-    return null
-  }
+    if (hasCheckedSignup && !userData?.signup) {
+      loadBalanceData()
+    }
+  }, [hasCheckedSignup, userData?.signup, loadBalanceData])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
@@ -97,6 +127,10 @@ export default function WalletPage() {
     setSelectedCurrency(null)
     setTotalBalance(null)
     loadBalanceData()
+  }
+
+  if (userData?.signup === "v1") {
+    return null
   }
 
   if (isDisabled) {

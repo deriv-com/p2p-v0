@@ -17,12 +17,12 @@ interface PriceTypeSelectorProps {
   value: PriceType
   onChange: (value: PriceType) => void
   disabled?: boolean
+  isFloatingRateEnabled?: boolean
 }
 
-export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false }: PriceTypeSelectorProps) {
+export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false, isFloatingRateEnabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
-  const isFloatingRateEnabled = process.env.NEXT_PUBLIC_FLOATING_RATE_ENABLED == 1
 
   const handleSelect = (newValue: PriceType) => {
     onChange(newValue)
@@ -33,7 +33,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <Button
       variant="outline"
       disabled={disabled}
-      className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal"
+      className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
     >
       <span className="text-grayscale-600">{value === "fixed" ? "Fixed" : "Floating"}</span>
       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />

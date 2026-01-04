@@ -46,12 +46,21 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
-  const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
       const title = t("profile.gettingStarted")
 
       if(isPoiExpired && isPoaExpired) title = "Verification expired"
@@ -62,12 +71,21 @@ export default function AdsPage() {
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="ads" />
           </div>
         ),
         confirmText: undefined,
         cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
       })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
+
+  const handleCreateAd = () => {
+    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
+      setShowKycPopup(true)
       return
     }
     router.push("/ads/create")

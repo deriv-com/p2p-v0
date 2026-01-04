@@ -109,7 +109,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="profile" />
           </div>
         ),
         confirmText: undefined,

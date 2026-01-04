@@ -100,7 +100,7 @@ export default function WalletSummary({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -124,7 +124,7 @@ export default function WalletSummary({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -150,7 +150,7 @@ export default function WalletSummary({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,

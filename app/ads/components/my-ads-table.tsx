@@ -222,7 +222,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="ads" />
           </div>
         ),
         confirmText: undefined,
@@ -305,7 +305,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   if (ads.length === 0) {
-    return <EmptyState title={t("myAds.noAdsTitle")} description={t("myAds.noAdsDescription")} redirectToAds={true} />
+    return (
+      <EmptyState
+        title={t("myAds.noAdsTitle")}
+        description={t("myAds.noAdsDescription")}
+        redirectToAds={true}
+        route="ads"
+      />
+    )
   }
 
   if (showShareView && adToShare) {
