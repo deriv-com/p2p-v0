@@ -161,6 +161,7 @@ export default function BuySellPage() {
       }
     }
 
+
     if (currencyParam) {
       setSelectedAccountCurrency(currencyParam.toUpperCase())
     }
@@ -307,11 +308,11 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      let title = t("profile.gettingStarted")
+      const title = t("profile.gettingStarted")
 
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
 
       showAlert({
         title,
@@ -332,11 +333,11 @@ export default function BuySellPage() {
       setIsOrderSidebarOpen(true)
       setError(null)
     } else {
-      let title = t("profile.gettingStarted")
+      const title = t("profile.gettingStarted")
 
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
 
       showAlert({
         title,

@@ -96,17 +96,14 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    const isPoiExpired = false; // Placeholder for actual logic
-    const isPoaExpired = false; // Placeholder for actual logic
-
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setShowAddPaymentPanel(true)
     } else {
-      let title = t("profile.gettingStarted")
+      const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
 
       showAlert({
         title,
