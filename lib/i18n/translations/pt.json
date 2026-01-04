@@ -587,7 +587,12 @@
     "setupProfile": "Configure seu perfil",
     "proofOfIdentity": "Prova de identidade",
     "proofOfAddress": "Prova de endereço",
-    "phoneNumber": "Número de telefone"
+    "phoneNumber": "Número de telefone",
+    "resubmitIdentityAndAddress": "Reenvie sua prova de identidade e endereço para continuar usando P2P.",
+    "resubmitIdentity": "Reenvie sua prova de identidade para continuar usando P2P.",
+    "resubmitAddress": "Reenvie sua prova de endereço para continuar usando P2P.",
+    "unverified": "Não verificado",
+    "resubmitNow": "Reenviar agora"
   },
   "status": {
     "refunded": "Reembolsado",
