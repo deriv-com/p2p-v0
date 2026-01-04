@@ -67,7 +67,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
-      expired: isPoaExpired,
+      expired: isPoiExpired,
       link: getHomeUrl(isV1Signup, "poa", fromParam),
     },
     {
@@ -90,9 +90,9 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
 
   const getDescription = () => {
     if(hasExpiredSteps){
-      if(isPoiExpired && isPoaExpired) return t("kyc.resubmitIdentityAndAddress")
-      else if(isPoiExpired) return t("kyc.resubmitIdentity")
-      else if(isPoaExpired) return t("kyc.resubmitAddress")
+      if(isPoiExpired && isPoaExpired) return "Resubmit your proof of identity and address to continue using P2P."
+      else if(isPoiExpired) return "Resubmit your proof of identity to continue using P2P."
+      else if(isPoaExpired) return "Resubmit your proof of address to continue using P2P."
     } 
 
     return t("kyc.accessP2PMessage")
@@ -147,7 +147,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
               )}
               {step.expired && (
                 <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
-                  {t("kyc.unverified")}
+                  Unverified
                 </div>
               )}
             </div>
@@ -155,7 +155,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
           </div>
         ))}
       </div>
-      {hasExpiredSteps && <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>}
+      {hasExpiredSteps && <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>Resubmit now</Button>}
     </div>
   )
 }

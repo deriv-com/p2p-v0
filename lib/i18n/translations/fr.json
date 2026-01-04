@@ -603,12 +603,7 @@
     "setupProfile": "Configurez votre profil",
     "proofOfIdentity": "Preuve d'identité",
     "proofOfAddress": "Preuve d'adresse",
-    "phoneNumber": "Numéro de téléphone",
-    "resubmitIdentityAndAddress": "Soumettez à nouveau votre preuve d'identité et d'adresse pour continuer à utiliser P2P.",
-    "resubmitIdentity": "Soumettez à nouveau votre preuve d'identité pour continuer à utiliser P2P.",
-    "resubmitAddress": "Soumettez à nouveau votre preuve d'adresse pour continuer à utiliser P2P.",
-    "unverified": "Non vérifié",
-    "resubmitNow": "Soumettre maintenant"
+    "phoneNumber": "Numéro de téléphone"
   },
   "status": {
     "refunded": "Remboursé",
