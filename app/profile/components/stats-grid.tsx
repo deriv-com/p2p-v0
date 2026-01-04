@@ -20,7 +20,13 @@ function StatCard({ tab, title, value }: StatCardProps) {
         {title === "Trade partners" && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+              <Image
+                src="/icons/info-circle.svg"
+                alt="Info"
+                width={24}
+                height={24}
+                className="ml-1 cursor-pointer flex-shrink-0"
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white">Total number of users you've successfully traded with.</p>
@@ -31,7 +37,13 @@ function StatCard({ tab, title, value }: StatCardProps) {
         {title === "Trade volume" && tab === "lifetime" && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+               <Image
+                src="/icons/info-circle.svg"
+                alt="Info"
+                width={24}
+                height={24}
+                className="ml-1 cursor-pointer flex-shrink-0"
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white">The total value of all trades completed in your lifetime.</p>
@@ -42,7 +54,13 @@ function StatCard({ tab, title, value }: StatCardProps) {
         {title === "Trade volume" && tab === "last30days" && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+              <Image
+                src="/icons/info-circle.svg"
+                alt="Info"
+                width={24}
+                height={24}
+                className="ml-1 cursor-pointer flex-shrink-0"
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white">The total value of all completed trades in the last 30 days.</p>

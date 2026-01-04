@@ -34,7 +34,9 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData, userId, verificationStatus } = useUserDataStore()
+  const { userData, userId, onboardingStatus, verificationStatus } = useUserDataStore()
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
@@ -59,10 +61,16 @@ export default function AdsPage() {
 
   useEffect(() => {
     if (showKycPopup) {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+      
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet route="ads" />
           </div>
         ),
@@ -76,7 +84,7 @@ export default function AdsPage() {
   }, [showKycPopup, showAlert, t])
 
   const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified) {
+    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
       setShowKycPopup(true)
       return
     }

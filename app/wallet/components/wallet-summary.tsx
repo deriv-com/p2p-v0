@@ -47,7 +47,10 @@ export default function WalletSummary({
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus) // Added verificationStatus from userDataStore to check phone_verified
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -69,7 +72,7 @@ export default function WalletSummary({
           code,
           name: data.label,
           logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-          label: data.label, // Added label field to currencyList
+          label: data.label,
         }))
         setCurrencies(currencyList)
       }
@@ -83,14 +86,20 @@ export default function WalletSummary({
   }, [])
 
   const handleDepositClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet route="wallets" />
           </div>
         ),
@@ -101,14 +110,20 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet route="wallets" />
           </div>
         ),
@@ -121,14 +136,20 @@ export default function WalletSummary({
   const handleTransferClick = () => {
     if (!hasBalance) return
 
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoaExpired) title = "Address verification expired"
+
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
+          <div className="space-y-4 my-2">
             <KycOnboardingSheet route="wallets" />
           </div>
         ),
