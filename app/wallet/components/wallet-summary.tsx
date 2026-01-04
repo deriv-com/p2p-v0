@@ -94,7 +94,7 @@ export default function WalletSummary({
 
       if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = "Address verification expired"
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -118,7 +118,7 @@ export default function WalletSummary({
 
       if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = "Address verification expired"
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
