@@ -215,7 +215,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       const title = t("profile.gettingStarted")
 
       if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = "Identity verification expired"
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
       else if(isPoaExpired) title = "Address verification expired"
       
       showAlert({
