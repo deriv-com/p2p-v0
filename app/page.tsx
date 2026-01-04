@@ -35,14 +35,9 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import MarketTabs from "./components/market-tabs"
-import MarketFilters from "./components/market-filters"
-import MarketTable from "./components/market-table"
-import { AdvertisementsAPI } from "@/services/api"
-import type { Advertisement, FilterState, RateTypeFilter } from "./types/market"
-import { CurrencySelector } from "./components/currency-selector"
 
-const ALL_COUNTRIES = "ALL"
+type Ad = Advertisement
+type AdType = "buy" | "sell"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -77,18 +72,6 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
-  const [inputAmount, setInputAmount] = useState("")
-  const [filters, setFilters] = useState<FilterState>({
-    exchangeRates: {
-      type: "all" as RateTypeFilter,
-      from: "",
-      to: "",
-    },
-    following: false,
-    sortBy: "rate",
-    paymentMethods: [],
-    countries: [ALL_COUNTRIES],
-  })
 
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
@@ -100,9 +83,23 @@ export default function BuySellPage() {
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
+  const { showAlert } = useAlertDialog()
+  const isMobile = useIsMobile()
+
+  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
+
+  const redirectToHelpCentre = () => {
+    const helpCentreUrl =
+      locale != "en"
+        ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+        : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+
+    window.open(helpCentreUrl, "_blank")
+  }
+
+  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
-  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -399,130 +396,6 @@ export default function BuySellPage() {
   }, [])
 
   useEffect(() => {
-    const fetchAdvertisements = useCallback(async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-
-        const amount = inputAmount ? Number.parseFloat(inputAmount) : undefined
-        const paymentMethodIds = filters.paymentMethods.length > 0 ? filters.paymentMethods : undefined
-        const sortBy = filters.sortBy === "recommended" ? undefined : filters.sortBy
-        const shouldFilterCounterparty = filters.following ? 1 : 0
-
-        const selectedCountries = filters.countries?.includes(ALL_COUNTRIES) ? undefined : filters.countries
-
-        const fetchedAds = await AdvertisementsAPI.getAdvertisements(
-          activeTab === "buy" ? "sell" : "buy",
-          currency.local,
-          currency.crypto,
-          amount,
-          paymentMethodIds,
-          sortBy,
-          shouldFilterCounterparty,
-          undefined,
-          selectedCountries,
-        )
-
-        setAdverts(fetchedAds)
-      } catch (err) {
-        setError(t("market.loadingAds"))
-        setAdverts([])
-      } finally {
-        setIsLoading(false)
-      }
-    }, [activeTab, currency.local, currency.crypto, inputAmount, filters, t])
-
-    fetchAdvertisements()
-  }, [fetchAdvertisements])
-
-  const handleTabChange = (tab: "buy" | "sell") => {
-    setActiveTab(tab)
-  }
-
-  const handleAmountChange = (value: string) => {
-    setInputAmount(value)
-  }
-
-  const handleFilterChange = (newFilters: FilterState) => {
-    setFilters(newFilters)
-  }
-
-  const handleCurrencyChange = (type: "local" | "crypto", value: string) => {
-    setCurrency((prev) => ({
-      ...prev,
-      [type]: value,
-    }))
-  }
-
-  const handleBuyClick = (ad: Advertisement) => {
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      setSelectedAd(ad)
-      setIsOrderSidebarOpen(true)
-      setError(null)
-    } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
-    }
-  }
-
-  const handleOrderClick = (ad: Advertisement) => {
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      setSelectedAd(ad)
-      setIsOrderSidebarOpen(true)
-      setError(null)
-    } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
-    }
-  }
-
-  const redirectToHelpCentre = () => {
-    const helpCentreUrl =
-      locale != "en"
-        ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-        : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-
-    window.open(helpCentreUrl, "_blank")
-  }
-
-  useEffect(() => {
-    const advertType = searchParams.get("advertType")
-    if (advertType === "buy" || advertType === "sell") {
-      setActiveTab(advertType)
-    }
-  }, [searchParams])
-
-  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
-
-  useEffect(() => {
     if (isConnected && selectedAccountCurrency && currency && activeTab) {
       joinAdvertsChannel(selectedAccountCurrency, currency, activeTab)
 
@@ -576,11 +449,28 @@ export default function BuySellPage() {
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
-                  <MarketTabs value={activeTab} onValueChange={handleTabChange} />
+                  <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+                    <TabsList className="w-auto bg-transparent p-0 gap-4">
+                      <TabsTrigger
+                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
+                        value="sell"
+                        variant="underline"
+                      >
+                        {t("market.buyTab")}
+                      </TabsTrigger>
+                      <TabsTrigger
+                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
+                        value="buy"
+                        variant="underline"
+                      >
+                        {t("market.sellTab")}
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
                 </div>
                 {currencies.length > 0 && (
                   <div>
-                    <CurrencySelector
+                    <CurrencyFilter
                       currencies={currencies}
                       selectedCurrency={currency}
                       onCurrencySelect={handleCurrencySelect}
