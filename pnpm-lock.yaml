@@ -28,7 +28,7 @@ importers:
         version: 3.3.3
       '@hookform/resolvers':
         specifier: ^3.9.1
-        version: 3.9.1(react-hook-form@7.69.0(react@19.0.0))
+        version: 3.9.1(react-hook-form@7.70.0(react@19.0.0))
       '@novu/nextjs':
         specifier: latest
         version: 3.11.2(next@15.4.10(@babel/core@7.28.4)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -193,10 +193,10 @@ importers:
         version: 19.0.0(react@19.0.0)
       react-hook-form:
         specifier: latest
-        version: 7.69.0(react@19.0.0)
+        version: 7.70.0(react@19.0.0)
       react-resizable-panels:
         specifier: latest
-        version: 4.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 4.2.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       recharts:
         specifier: latest
         version: 3.6.0(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react-is@18.3.1)(react@19.0.0)(redux@5.0.1)
@@ -1043,6 +1043,9 @@ packages:
 
   '@emnapi/runtime@1.7.1':
     resolution: {integrity: sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==}
+
+  '@emnapi/runtime@1.8.1':
+    resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
 
   '@emnapi/wasi-threads@1.0.2':
     resolution: {integrity: sha512-5n3nTJblwRi8LlXkJ9eBzu+kZR8Yxcc7ubakyQTFzPMtIhFpUBRbsnc2Dv88IZDIbCDlBiWrknhB4Lsz7mg6BA==}
@@ -5527,8 +5530,8 @@ packages:
     peerDependencies:
       react: ^19.0.0
 
-  react-hook-form@7.69.0:
-    resolution: {integrity: sha512-yt6ZGME9f4F6WHwevrvpAjh42HMvocuSnSIHUGycBqXIJdhqGSPQzTpGF+1NLREk/58IdPxEMfPcFCjlMhclGw==}
+  react-hook-form@7.70.0:
+    resolution: {integrity: sha512-COOMajS4FI3Wuwrs3GPpi/Jeef/5W1DRR84Yl5/ShlT3dKVFUfoGiEZ/QE6Uw8P4T2/CLJdcTVYKvWBMQTEpvw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -5574,8 +5577,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-resizable-panels@4.2.0:
-    resolution: {integrity: sha512-X/WbnyT/bgx09KEGvtJvaTr3axRrcBGcJdELIoGXZipCxc2hPwFsH/pfpVgwNVq5LpQxF/E5pPXGTQdjBnidPw==}
+  react-resizable-panels@4.2.1:
+    resolution: {integrity: sha512-UYyiZNjd3P12BqQYihojqdVs4ovMBWFO68RQp/O1HGiUKdltNu9hacZEm4PVD/UpYpz5p9V+YBtOZo+CvGKmkQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -7418,6 +7421,11 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@emnapi/runtime@1.8.1':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
   '@emnapi/wasi-threads@1.0.2':
     dependencies:
       tslib: 2.8.1
@@ -7656,9 +7664,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.9': {}
 
-  '@hookform/resolvers@3.9.1(react-hook-form@7.69.0(react@19.0.0))':
+  '@hookform/resolvers@3.9.1(react-hook-form@7.70.0(react@19.0.0))':
     dependencies:
-      react-hook-form: 7.69.0(react@19.0.0)
+      react-hook-form: 7.70.0(react@19.0.0)
 
   '@humanfs/core@0.19.1': {}
 
@@ -7822,7 +7830,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.33.5':
     dependencies:
-      '@emnapi/runtime': 1.7.1
+      '@emnapi/runtime': 1.8.1
     optional: true
 
   '@img/sharp-wasm32@0.34.5':
@@ -12289,7 +12297,7 @@ snapshots:
       react: 19.0.0
       scheduler: 0.25.0
 
-  react-hook-form@7.69.0(react@19.0.0):
+  react-hook-form@7.70.0(react@19.0.0):
     dependencies:
       react: 19.0.0
 
@@ -12327,7 +12335,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.0.0
 
-  react-resizable-panels@4.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  react-resizable-panels@4.2.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
