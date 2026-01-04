@@ -263,7 +263,7 @@
     "gettingStarted": "P2P দিয়ে শুরু করা",
     "verificationExpired": "যাচাইকরণ মেয়াদ শেষ",
     "identityVerificationExpired": "পরিচয় যাচাইকরণ মেয়াদ শেষ",
-    "addressVerificationExpired": "ঠিকানা যাচাইকরণ মেয়াদ শেষ"
+    "addressVerificationExpired": "ঠিকানা যাচাইকরণ মেয়াদ শেষ",
     "errorLoadingProfile": "ব্যবহারকারী ডেটা লোড করতে ব্যর্থ",
     "noUserData": "কোন ব্যবহারকারী ডেটা পাওয়া যায়নি",
     "followsCount": "অনুসরণ ({count})",
