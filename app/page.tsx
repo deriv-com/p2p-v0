@@ -335,7 +335,7 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = "Verification expired"
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if(isPoiExpired) title = "Identity verification expired"
       else if(isPoaExpired) title = "Address verification expired"
 
