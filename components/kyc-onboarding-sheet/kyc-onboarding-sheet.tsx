@@ -147,7 +147,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
               )}
               {step.expired && (
                 <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
-                  Unverified
+                  {t("kyc.unverified")}
                 </div>
               )}
             </div>
@@ -155,7 +155,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
           </div>
         ))}
       </div>
-      {hasExpiredSteps && <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>Resubmit now</Button>}
+      {hasExpiredSteps && <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>}
     </div>
   )
 }
