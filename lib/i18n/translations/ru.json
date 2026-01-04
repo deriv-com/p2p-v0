@@ -262,6 +262,9 @@
     "lessThanOneMin": "< 1 мин",
     "mins": "мин",
     "gettingStarted": "Начало работы с P2P",
+    "verificationExpired": "Срок верификации истек",
+    "identityVerificationExpired": "Срок верификации личности истек",
+    "addressVerificationExpired": "Срок верификации адреса истек",
     "errorLoadingProfile": "Не удалось загрузить данные пользователя",
     "noUserData": "Данные пользователя не найдены",
     "followsCount": "Подписки ({count})",
@@ -603,7 +606,12 @@
     "setupProfile": "Настроить свой профиль",
     "proofOfIdentity": "Подтверждение личности",
     "proofOfAddress": "Подтверждение адреса",
-    "phoneNumber": "Номер телефона"
+    "phoneNumber": "Номер телефона",
+    "resubmitIdentityAndAddress": "Повторно отправьте подтверждение личности и адреса, чтобы продолжить использовать P2P.",
+    "resubmitIdentity": "Повторно отправьте подтверждение личности, чтобы продолжить использовать P2P.",
+    "resubmitAddress": "Повторно отправьте подтверждение адреса, чтобы продолжить использовать P2P.",
+    "unverified": "Не подтверждено",
+    "resubmitNow": "Отправить сейчас"
   },
   "status": {
     "refunded": "Возвращено",

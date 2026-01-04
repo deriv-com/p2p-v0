@@ -281,6 +281,9 @@
     "lessThanOneMin": "< 1 min",
     "mins": "mins",
     "gettingStarted": "Démarrer avec P2P",
+    "verificationExpired": "Vérification expirée",
+    "identityVerificationExpired": "Vérification d'identité expirée",
+    "addressVerificationExpired": "Vérification d'adresse expirée",
     "errorLoadingProfile": "Échec du chargement des données utilisateur",
     "noUserData": "Aucune donnée utilisateur trouvée",
     "followsCount": "Suivis ({count})",
@@ -600,7 +603,12 @@
     "setupProfile": "Configurez votre profil",
     "proofOfIdentity": "Preuve d'identité",
     "proofOfAddress": "Preuve d'adresse",
-    "phoneNumber": "Numéro de téléphone"
+    "phoneNumber": "Numéro de téléphone",
+    "resubmitIdentityAndAddress": "Soumettez à nouveau votre preuve d'identité et d'adresse pour continuer à utiliser P2P.",
+    "resubmitIdentity": "Soumettez à nouveau votre preuve d'identité pour continuer à utiliser P2P.",
+    "resubmitAddress": "Soumettez à nouveau votre preuve d'adresse pour continuer à utiliser P2P.",
+    "unverified": "Non vérifié",
+    "resubmitNow": "Soumettre maintenant"
   },
   "status": {
     "refunded": "Remboursé",

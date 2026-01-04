@@ -261,6 +261,9 @@
     "lessThanOneMin": "< ১ মিনিট",
     "mins": "মিনিট",
     "gettingStarted": "P2P দিয়ে শুরু করা",
+    "verificationExpired": "যাচাইকরণ মেয়াদ শেষ",
+    "identityVerificationExpired": "পরিচয় যাচাইকরণ মেয়াদ শেষ",
+    "addressVerificationExpired": "ঠিকানা যাচাইকরণ মেয়াদ শেষ",
     "errorLoadingProfile": "ব্যবহারকারী ডেটা লোড করতে ব্যর্থ",
     "noUserData": "কোন ব্যবহারকারী ডেটা পাওয়া যায়নি",
     "followsCount": "অনুসরণ ({count})",
@@ -581,7 +584,12 @@
     "setupProfile": "আপনার প্রোফাইল সেট আপ করুন",
     "proofOfIdentity": "পরিচয়ের প্রমাণ",
     "proofOfAddress": "ঠিকানার প্রমাণ",
-    "phoneNumber": "ফোন নম্বর"
+    "phoneNumber": "ফোন নম্বর",
+    "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
+    "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
+    "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
+    "unverified": "Unverified",
+    "resubmitNow": "Resubmit now"
   },
   "status": {
     "refunded": "ফেরত দেওয়া হয়েছে",

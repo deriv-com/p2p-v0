@@ -258,6 +258,9 @@
     "lessThanOneMin": "< 1 min",
     "mins": "Min.",
     "gettingStarted": "Erste Schritte mit P2P",
+    "verificationExpired": "Verifizierung abgelaufen",
+    "identityVerificationExpired": "Identitätsverifizierung abgelaufen",
+    "addressVerificationExpired": "Adressverifizierung abgelaufen",
     "errorLoadingProfile": "Nutzerdaten konnten nicht geladen werden",
     "noUserData": "Keine Nutzerdaten gefunden",
     "followsCount": "Folge ich ({count})",
@@ -599,7 +602,12 @@
     "setupProfile": "Richten Sie Ihr Profil ein",
     "proofOfIdentity": "Identitätsnachweis",
     "proofOfAddress": "Adressnachweis",
-    "phoneNumber": "Telefonnummer"
+    "phoneNumber": "Telefonnummer",
+    "resubmitIdentityAndAddress": "Reichen Sie Ihren Identitäts- und Adressnachweis erneut ein, um P2P weiterhin zu nutzen.",
+    "resubmitIdentity": "Reichen Sie Ihren Identitätsnachweis erneut ein, um P2P weiterhin zu nutzen.",
+    "resubmitAddress": "Reichen Sie Ihren Adressnachweis erneut ein, um P2P weiterhin zu nutzen.",
+    "unverified": "Nicht verifiziert",
+    "resubmitNow": "Jetzt erneut einreichen"
   },
   "status": {
     "refunded": "Erstattet",

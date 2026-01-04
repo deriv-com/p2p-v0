@@ -513,7 +513,7 @@ export async function createAd(
                 "The floating rate you entered is higher than the allowed limit. Lower the rate to continue."
               break
             default:
-              errorMessage = "Please try again or contact support."
+              errorMessage = `${errorCode}: Please try again or contact support.`
           }
         } else if (responseData.errors[0].message) {
           errorMessage = responseData.errors[0].message
