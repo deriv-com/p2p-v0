@@ -636,5 +636,10 @@
     "submit": "জমা দিন",
     "ratingRequiredTitle": "রেটিং প্রয়োজন",
     "ratingRequiredDescription": "জমা দেওয়ার আগে একটি স্টার রেটিং নির্বাচন করুন।"
+  },
+  "verification": {
+    "verificationExpired": "যাচাইকরণ মেয়াদ শেষ",
+    "identityVerificationExpired": "পরিচয় যাচাইকরণ মেয়াদ শেষ",
+    "addressVerificationExpired": "ঠিকানা যাচাইকরণ মেয়াদ শেষ"
   }
 }
