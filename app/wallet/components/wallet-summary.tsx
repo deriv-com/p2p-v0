@@ -216,7 +216,7 @@ export default function WalletSummary({
                 height={92}
                 className="w-18 h-18 md:w-24 md:h-24"
               />) :   
-              (<>
+              (<div className="flex-shrink-0 relative w-7 h-7">
                 <Image src="/icons/p2p-black.png" alt="P2P" width={28} height={28} className="w-7 h-7 rounded-full" />
                 <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
                   <Image
@@ -227,7 +227,7 @@ export default function WalletSummary({
                     className="w-3 h-3"
                   />
                 </div>
-              </>)}
+              </div>)}
             </div>
 
             <div className={cn("flex flex-col", isMobile && "items-center")}>
