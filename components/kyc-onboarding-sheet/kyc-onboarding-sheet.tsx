@@ -60,7 +60,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
       expired: isPoiExpired,
-      link: getHomeUrl(isV1Signup, "poi", fromParam),
+      link: getHomeUrl(isV1Signup, "poi", false, fromParam),
     },
     {
       id: "poa",
@@ -68,7 +68,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
       expired: isPoiExpired,
-      link: getHomeUrl(isV1Signup, "poa", fromParam),
+      link: getHomeUrl(isV1Signup, "poa", false, fromParam),
     },
     {
       id: "phone",
