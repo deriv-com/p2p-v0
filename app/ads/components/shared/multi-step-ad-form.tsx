@@ -654,14 +654,16 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               </div>
             </div>
           ) : (
-            <div className="hidden md:flex justify-end mt-8 px-6 md:sticky md:bottom-6">
-              <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
-                {isSubmitting ? (
-                  <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                ) : (
-                  getButtonText()
-                )}
-              </Button>
+            <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-6">
+              <div className="flex justify-end px-6 pt-6">
+                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                  {isSubmitting ? (
+                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                  ) : (
+                    getButtonText()
+                  )}
+                </Button>
+              </div>
             </div>
           )}
         </div>
