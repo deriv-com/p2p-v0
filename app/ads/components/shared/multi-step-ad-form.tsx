@@ -654,7 +654,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               </div>
             </div>
           ) : (
-            <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-6">
+            <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
               <div className="flex justify-end px-6 pt-6">
                 <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
                   {isSubmitting ? (
