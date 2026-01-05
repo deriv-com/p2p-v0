@@ -221,7 +221,7 @@ export default function WalletSummary({
                 <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
                   <Image
                     src={currencyLogo}
-                    alt={}`${externalSelectedCurrency} Logo`}
+                    alt={`${externalSelectedCurrency} Logo`}
                     width={!isBalancesView ? 12 : 92}
                     height={!isBalancesView ? 12 : 92}
                     className={cn(!isBalancesView ? "w-3 h-3" : "w-18 h-18 md:w-24 md:h-24")}
