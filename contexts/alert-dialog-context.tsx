@@ -18,6 +18,7 @@ interface AlertDialogProviderProps {
 export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [config, setConfig] = useState<AlertDialogConfig>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
@@ -32,7 +33,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
   const handleConfirm = useCallback(async () => {
     if (config.onConfirm) {
+      setIsSubmitting(true)
       await config.onConfirm()
+      setIsSubmitting(false)
     }
     hideAlert()
   }, [config.onConfirm, hideAlert])
@@ -81,7 +84,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             </Button>
           )}
           {config.type && (
-            <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+            <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
               {config.confirmText || "Continue"}
             </Button>
           )}
@@ -111,7 +114,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             </Button>
           )}
           {config.type && (
-            <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+            <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
               {config.confirmText || "Continue"}
             </Button>
           )}

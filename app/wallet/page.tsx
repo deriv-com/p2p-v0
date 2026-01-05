@@ -111,10 +111,8 @@ export default function WalletPage() {
   }, [userData?.signup, router])
 
   useEffect(() => {
-    if (hasCheckedSignup && !userData?.signup) {
-      loadBalanceData()
-    }
-  }, [hasCheckedSignup, userData?.signup, loadBalanceData])
+    loadBalanceData()
+  }, [loadBalanceData])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
