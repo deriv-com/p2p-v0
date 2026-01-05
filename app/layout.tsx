@@ -9,7 +9,7 @@ import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
 import { DatadogRumInit } from "@/components/datadog-rum-init"
 import { LanguageSync } from "@/lib/i18n/language-sync"
-import LoadingIndicator from "@/components/loading-indicator/loading-indicator"
+import { LoadingIndicator } from "@/components/loading-indicator"
 
 const inter = Inter({ subsets: ["latin"] })
 
