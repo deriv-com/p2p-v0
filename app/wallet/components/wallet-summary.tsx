@@ -214,9 +214,9 @@ export default function WalletSummary({
                 <Image
                   src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/dp2p-wallet.png"}
                   alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
-                  width={!isBalancesView ? 64 : 92}
-                  height={!isBalancesView ? 64 : 92}
-                  className={cn(!isBalancesView ? "w-16 h-16" : "w-18 h-18 md:w-24 md:h-24")}
+                  width={!isBalancesView ? 12 : 92}
+                  height={!isBalancesView ? 12 : 92}
+                  className={cn(!isBalancesView ? "w-3 h-3" : "w-18 h-18 md:w-24 md:h-24")}
                 />
               </div>
             </div>
