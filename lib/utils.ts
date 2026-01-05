@@ -455,10 +455,6 @@ export function preventSwipeNavigation(): () => void {
   }
 }
 
-export const currencyWalletLogoMapper = {
-  USD: "/icons/p2p-black.png",
-}
-
 export const currencyLogoMapper = {
   USD: "/icons/usd-flag.png",
   BTC: "/icons/bitcoin-logo.png",
