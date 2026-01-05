@@ -250,7 +250,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     name: walletName,
                     balance: balance.balance,
                     currency: balance.currency,
-                    icon: "/icons/usd-flag.png",
+                    icon: "/icons/p2p-black.png",
                     type: wallet.type,
                   })
                 }
