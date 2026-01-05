@@ -187,7 +187,7 @@ export default function WalletSummary({
     setCurrentStep("chooseCurrency")
   }
 
-  const currencyLogo = currencyWalletLogoMapper[displayCurrency as keyof typeof currencyLogoMapper]
+  const currencyLogo = currencyWalletLogoMapper[displayCurrency as keyof typeof currencyWalletLogoMapper]
 
   return (
     <>
