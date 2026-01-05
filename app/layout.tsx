@@ -9,6 +9,7 @@ import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
 import { DatadogRumInit } from "@/components/datadog-rum-init"
 import { LanguageSync } from "@/lib/i18n/language-sync"
+import LoadingIndicator from "@/components/loading-indicator"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -43,7 +44,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
             <Toaster />
-            <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+            <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
               <Main>{children}</Main>
             </Suspense>
           </AlertDialogProvider>
