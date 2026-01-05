@@ -42,16 +42,11 @@ export default function WalletPage() {
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
     try {
-      console.log("[v0] Fetching currencies...")
       const currenciesResponse = await getCurrencies()
       const currencies = currenciesResponse?.data || {}
       setCurrenciesData(currencies)
-      console.log("[v0] Currencies fetched:", Object.keys(currencies).length, "currencies")
 
-      console.log("[v0] Fetching total balance...")
       const data = await getTotalBalance()
-      console.log("[v0] getTotalBalance response:", data)
-      
       const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
       if (p2pWallet) {
@@ -71,33 +66,12 @@ export default function WalletPage() {
           }))
           setP2pBalances(balancesList)
         }
-      } else {
-        console.warn("[v0] No P2P wallet found in response or unexpected response structure")
-        if (data.balance !== undefined) {
-          console.log("[v0] Using direct balance/currency format")
-          setTotalBalance(String(data.balance))
-          setBalanceCurrency(data.currency)
-          setHasBalance(Number(data.balance) > 0)
-          setP2pBalances([{
-            wallet_id: "p2p",
-            amount: String(data.balance),
-            currency: data.currency,
-            label: currencies[data.currency]?.label || data.currency,
-          }])
-        } else {
-          setTotalBalance("0.00")
-          setBalanceCurrency("USD")
-          setHasBalance(false)
-          setP2pBalances([])
-        }
       }
     } catch (error) {
-      console.error("[v0] Error fetching P2P wallet balance:", error)
+      console.error("Error fetching P2P wallet balance:", error)
       setTotalBalance("0.00")
       setHasBalance(false)
-      setP2pBalances([])
     } finally {
-      console.log("[v0] Setting isLoading to false")
       setIsLoading(false)
     }
   }, [])
@@ -137,7 +111,7 @@ export default function WalletPage() {
   }, [userData?.signup, router])
 
   useEffect(() => {
-    if (hasCheckedSignup && !userData?.signup) {
+    if (hasCheckedSignup) {
       loadBalanceData()
     }
   }, [hasCheckedSignup, userData?.signup, loadBalanceData])
