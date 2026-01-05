@@ -227,7 +227,7 @@ export default function WalletSummary({
                     className=""w-3 h-3""
                   />
                 </div>
-              </>)
+              </>)}
             </div>
 
             <div className={cn("flex flex-col", isMobile && "items-center")}>
