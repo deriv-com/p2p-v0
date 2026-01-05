@@ -11,6 +11,7 @@ import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import { LoadingIndicator } from "@/components/loading-indicator"
 import "./globals.css"
 
 export default function Main({
@@ -168,7 +169,7 @@ export default function Main({
   if (!isReady) {
     return (
       <div className="h-screen flex items-center justify-center">
-        Loading...
+        <LoadingIndicator />
       </div>
     )
   }
