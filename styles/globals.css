@@ -129,7 +129,6 @@ body {
 
 .animate-wave {
   animation: wave 1.2s ease-in-out infinite;
-  transform-origin: bottom;
 }
 
 .animate-wave:nth-child(1) { animation-delay: 0s; }
