@@ -1,3 +1,5 @@
+"use client"
+
 export default function LoadingIndicator() {
   return (
     <div className="flex items-center justify-center gap-1">
