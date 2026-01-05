@@ -510,8 +510,11 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
       url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "poa") {
-    if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
-    else url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}`
+    if (isV1Signup) {
+      url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfAddress" : "https://staging-hub.deriv.com/Accounts/ProofOfAddress "
+    } else {
+      url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}`
+    }
   } else if (section === "home") {
     if (isV1Signup) {
       url = `https://${baseUrl}`
