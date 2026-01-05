@@ -216,15 +216,15 @@ export default function WalletSummary({
                 height={92}
                 className="w-18 h-18 md:w-24 md:h-24"
               />) :   
-              (<div className="flex-shrink-0 relative w-7 h-7">
-                <Image src="/icons/p2p-black.png" alt="P2P" width={28} height={28} className="w-7 h-7 rounded-full" />
+              (<div className="flex-shrink-0 relative w-16 h-16">
+                <Image src="/icons/p2p-black.png" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
                 <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
                   <Image
                     src={currencyLogo}
                     alt={`${externalSelectedCurrency} Logo`}
-                    width={12}
-                    height={12}
-                    className="w-3 h-3"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
                   />
                 </div>
               </div>)}
