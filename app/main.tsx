@@ -166,7 +166,7 @@ export default function Main({
     )
   }
 
-  if (!isReady) {
+  if (isReady) {
     return (
       <div className="h-screen flex items-center justify-center">
         <LoadingIndicator />
