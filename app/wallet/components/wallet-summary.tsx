@@ -209,16 +209,25 @@ export default function WalletSummary({
         <div className={cn("flex items-center justify-between", isMobile && "flex-col gap-4")}>
           <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
             <div className="flex-shrink-0">
-              <Image src="/icons/p2p-black.png" alt="P2P" width={28} height={28} className="w-7 h-7 rounded-full" />
-              <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
-                <Image
-                  src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/dp2p-wallet.png"}
-                  alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
-                  width={!isBalancesView ? 12 : 92}
-                  height={!isBalancesView ? 12 : 92}
-                  className={cn(!isBalancesView ? "w-3 h-3" : "w-18 h-18 md:w-24 md:h-24")}
-                />
-              </div>
+              {isBalancesView ? (<Image
+                src={"/icons/dp2p-wallet.png"}
+                alt={"P2P Logo"}
+                width={92}
+                height={92}
+                className="w-18 h-18 md:w-24 md:h-24"
+              />) :   
+              (<>
+                <Image src="/icons/p2p-black.png" alt="P2P" width={28} height={28} className="w-7 h-7 rounded-full" />
+                <div class="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                  <Image
+                    src={currencyLogo}
+                    alt={}`${externalSelectedCurrency} Logo`}
+                    width={!isBalancesView ? 12 : 92}
+                    height={!isBalancesView ? 12 : 92}
+                    className={cn(!isBalancesView ? "w-3 h-3" : "w-18 h-18 md:w-24 md:h-24")}
+                  />
+                </div>
+              </>)
             </div>
 
             <div className={cn("flex flex-col", isMobile && "items-center")}>
