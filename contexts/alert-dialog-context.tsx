@@ -18,6 +18,7 @@ interface AlertDialogProviderProps {
 export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [config, setConfig] = useState<AlertDialogConfig>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
@@ -32,7 +33,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
   const handleConfirm = useCallback(async () => {
     if (config.onConfirm) {
+      setIsSubmitting(true)
       await config.onConfirm()
+      setIsSubmitting(false)
     }
     hideAlert()
   }, [config.onConfirm, hideAlert])
