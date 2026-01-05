@@ -118,10 +118,12 @@ body {
 
 @keyframes wave {
   0%, 100% {
-    transform: scaleY(0.3);
+    height: 18px;
+    opacity: 0.6;
   }
   50% {
-    transform: scaleY(1.4);
+    height: 42px;            /* extended height */
+    opacity: 1;
   }
 }
 
