@@ -118,10 +118,10 @@ body {
 
 @keyframes wave {
   0%, 100% {
-    transform: scaleY(0.5);
+    transform: scaleY(0.3);
   }
   50% {
-    transform: scaleY(1);
+    transform: scaleY(1.4);
   }
 }
 
