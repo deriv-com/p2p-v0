@@ -492,7 +492,7 @@ export const currencyFlagMapper = {
   TND: "/icons/flag-tunisia.png",
 }
 
-export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
+export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "",
     url = ""
