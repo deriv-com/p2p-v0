@@ -492,7 +492,7 @@ export const currencyFlagMapper = {
   TND: "/icons/flag-tunisia.png",
 }
 
-export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
+export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "",
     url = ""
@@ -505,10 +505,10 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
 
   if (section === "poi") {
     if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
-    else url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true`
+    else url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}`
   } else if (section === "poa") {
     if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
-    else url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true`
+    else url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}`
   } else if (section === "home") {
     if (isV1Signup) {
       url = `https://${baseUrl}`
