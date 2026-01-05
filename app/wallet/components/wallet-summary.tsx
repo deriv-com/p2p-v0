@@ -224,7 +224,7 @@ export default function WalletSummary({
                     alt={`${externalSelectedCurrency} Logo`}
                     width={12}
                     height={12}
-                    className=""w-3 h-3""
+                    className=""w-3 h-3"
                   />
                 </div>
               </>)}
