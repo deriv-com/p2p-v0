@@ -88,7 +88,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               {isSubmitting ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
-                {config.confirmText || "Continue"}
+                config.confirmText || "Continue"
               )}
             </Button>
           )}
@@ -122,7 +122,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               {isSubmitting ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
-                {config.confirmText || "Continue"}
+                config.confirmText || "Continue"
               )}
             </Button>
           )}
