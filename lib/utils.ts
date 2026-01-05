@@ -511,7 +511,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
     }
   } else if (section === "poa") {
     if (isV1Signup) {
-      url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfAddress" : "https://staging-hub.deriv.com/Accounts/ProofOfAddress "
+      url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfAddress" : "https://staging-hub.deriv.com/Accounts/ProofOfAddress"
     } else {
       url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}`
     }
