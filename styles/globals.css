@@ -122,7 +122,7 @@ body {
     opacity: 0.6;
   }
   50% {
-    height: 42px;            /* extended height */
+    height: 42px; 
     opacity: 1;
   }
 }
