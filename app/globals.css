@@ -167,3 +167,38 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* Added loading indicator wave animations */
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.75);
+  }
+  50% {
+    transform: scaleY(1.25);
+  }
+}
+
+.animate-wave-1 {
+  animation: wave 1.2s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.animate-wave-2 {
+  animation: wave 1.2s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.animate-wave-3 {
+  animation: wave 1.2s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.animate-wave-4 {
+  animation: wave 1.2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.animate-wave-5 {
+  animation: wave 1.2s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
