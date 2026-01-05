@@ -119,11 +119,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           )}
           {config.type && (
             <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-              {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-              ) : (
-                config.confirmText || "Continue"
-              )}
+              {config.confirmText || "Continue"}
             </Button>
           )}
         </div>)}
