@@ -12,6 +12,7 @@ interface KycOnboardingSheetProps {
 
 function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const { t } = useTranslations()
+  const { isWalletAccount } = useUserDataStore()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
