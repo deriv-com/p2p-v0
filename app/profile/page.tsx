@@ -21,10 +21,10 @@ export default function ProfilePage() {
   const isDisabled = user?.status === "disabled"
   const { t } = useTranslations()
   const [showKycPopup, setShowKycPopup] = useState(false)
+  const searchParams = new URLSearchParams(window.location.search)
+  const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
     if (shouldShowKyc) {
       setShowKycPopup(true)
     }
@@ -183,7 +183,7 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} activeTab={showKycPopup ? "payment": "stats"}/>
+            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment": "stats"}/>
           </div>
         </div>
       </div>
