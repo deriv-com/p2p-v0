@@ -9,7 +9,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function MobileSidebarTrigger() {
   const { t } = useTranslations()
-  const { isWalletAccount, userData } = useUserDataStore()
+  const { userData } = useUserDataStore()
   const [isV1Signup, setIsV1Signup] = useState(() => {
     const cached = getCachedSignup()
     if (cached !== null) return cached === "v1"
@@ -30,7 +30,7 @@ export function MobileSidebarTrigger() {
       size="sm"
       className="md:hidden px-4 bg-[#ffffff0a] text-white text-sm gap-[6px] hover:bg-[#ffffff0a] hover:text-white"
       onClick={() => {
-        const homeUrl = getHomeUrl(isV1Signup, "home", isWalletAccount)
+        const homeUrl = getHomeUrl(isV1Signup, "home")
         window.location.href = homeUrl
       }}
     >
