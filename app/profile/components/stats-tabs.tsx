@@ -20,10 +20,11 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface StatsTabsProps {
   stats?: any
-  isLoading?: boolean
+  isLoading?: boolean,
+  activeTab: string
 }
 
-export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
+export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
@@ -304,7 +305,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             </div>
           </div>
         ) : (
-          <Tabs defaultValue="stats">
+          <Tabs defaultValue={activeTab}>
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (
