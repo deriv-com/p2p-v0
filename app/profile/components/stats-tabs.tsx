@@ -21,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 interface StatsTabsProps {
   stats?: any
   isLoading?: boolean,
-  activeTab?: string
+  activeTab: string
 }
 
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
