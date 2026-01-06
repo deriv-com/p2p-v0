@@ -305,7 +305,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </div>
           </div>
         ) : (
-          <Tabs defaultValue="stats">
+          <Tabs defaultValue={activeTab}>
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (
