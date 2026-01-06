@@ -183,7 +183,7 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} />
+            <StatsTabs stats={userData} isLoading={isLoading} activeTab={showKycPopup ? "payment": "stats"}/>
           </div>
         </div>
       </div>
