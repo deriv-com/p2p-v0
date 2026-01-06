@@ -3,6 +3,7 @@
 import Image from "next/image"
 import BalanceItem from "./balance-item"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import EmptyState from "@/components/empty-state"
 
 interface Balance {
   amount: string
