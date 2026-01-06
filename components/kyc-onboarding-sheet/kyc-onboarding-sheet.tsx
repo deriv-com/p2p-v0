@@ -68,7 +68,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
-      expired: isPoiExpired,
+      expired: isPoaExpired,
       link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam),
     },
     {
