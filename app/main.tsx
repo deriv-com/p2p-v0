@@ -89,7 +89,6 @@ export default function Main({
 
             if (isMountedRef.current && !abortController.signal.aborted) {
               setVerificationStatus({
-                email_verified: onboardingStatus.verification.email_verified,
                 phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
                 kyc_verified:
                   onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
