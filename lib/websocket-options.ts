@@ -3,5 +3,4 @@ export interface WebSocketOptions {
   onMessage?: (data: any, socket: WebSocket) => void
   onClose?: (event: CloseEvent, socket: WebSocket) => void
   onError?: (error: Event, socket: WebSocket) => void
-  onMaxReconnectAttemptsReached?: () => void
 }

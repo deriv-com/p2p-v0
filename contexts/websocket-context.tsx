@@ -5,22 +5,11 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import type { WebSocketMessage } from "@/lib/websocket-message"
 import type { WebSocketOptions } from "@/lib/websocket-options"
 
-const HEARTBEAT_INTERVAL = 30000 // 30 seconds
-const MAX_RECONNECT_ATTEMPTS = 10
-const INITIAL_RECONNECT_DELAY = 1000 // 1 second
-const MAX_RECONNECT_DELAY = 30000 // 30 seconds
-const RECONNECT_BACKOFF_MULTIPLIER = 1.5
-
 export class WebSocketClient {
   private socket: WebSocket | null = null
   private options: WebSocketOptions
   private isConnecting = false
   private currentToken: string | null = null
-  private heartbeatTimer: NodeJS.Timeout | null = null
-  private reconnectTimer: NodeJS.Timeout | null = null
-  private reconnectAttempts = 0
-  private shouldReconnect = true
-  private isManualDisconnect = false
 
   constructor(options: WebSocketOptions = {}) {
     this.options = options
@@ -31,67 +20,6 @@ export class WebSocketClient {
     return useUserDataStore.getState().socketToken
   }
 
-  private startHeartbeat(): void {
-    this.stopHeartbeat()
-    this.heartbeatTimer = setInterval(() => {
-      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-        console.log("[v0] Sending heartbeat ping")
-        // Send a ping message to keep the connection alive
-        const pingMessage: WebSocketMessage = {
-          action: "ping",
-          payload: {},
-        }
-        this.send(pingMessage)
-      }
-    }, HEARTBEAT_INTERVAL)
-  }
-
-  private stopHeartbeat(): void {
-    if (this.heartbeatTimer) {
-      clearInterval(this.heartbeatTimer)
-      this.heartbeatTimer = null
-    }
-  }
-
-  private scheduleReconnect(): void {
-    if (!this.shouldReconnect || this.isManualDisconnect) {
-      console.log("[v0] Skipping reconnect - manual disconnect or disabled")
-      return
-    }
-
-    if (this.reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
-      console.error("[v0] Max reconnection attempts reached")
-      if (this.options.onMaxReconnectAttemptsReached) {
-        this.options.onMaxReconnectAttemptsReached()
-      }
-      return
-    }
-
-    // Calculate delay with exponential backoff
-    const delay = Math.min(
-      INITIAL_RECONNECT_DELAY * Math.pow(RECONNECT_BACKOFF_MULTIPLIER, this.reconnectAttempts),
-      MAX_RECONNECT_DELAY,
-    )
-
-    console.log(`[v0] Scheduling reconnect attempt ${this.reconnectAttempts + 1} in ${delay}ms`)
-
-    this.reconnectTimer = setTimeout(() => {
-      this.reconnectAttempts++
-      console.log(`[v0] Attempting reconnect ${this.reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`)
-      this.connect().catch((error) => {
-        console.error("[v0] Reconnection failed:", error)
-        this.scheduleReconnect()
-      })
-    }, delay)
-  }
-
-  private cancelReconnect(): void {
-    if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer)
-      this.reconnectTimer = null
-    }
-  }
-
   public connect(): Promise<WebSocket> {
     const socketToken = this.getSocketToken()
 
@@ -100,7 +28,7 @@ export class WebSocketClient {
     }
 
     if (this.socket) {
-      this.disconnect(false)
+      this.disconnect()
     }
 
     if (this.isConnecting) {
@@ -108,7 +36,6 @@ export class WebSocketClient {
     }
 
     this.isConnecting = true
-    this.isManualDisconnect = false
 
     return new Promise((resolve, reject) => {
       try {
@@ -119,10 +46,6 @@ export class WebSocketClient {
 
         this.socket.onopen = () => {
           this.isConnecting = false
-          this.reconnectAttempts = 0
-          this.cancelReconnect()
-          this.startHeartbeat()
-          console.log("[v0] WebSocket connected successfully")
           if (this.options.onOpen) {
             this.options.onOpen(this.socket!)
           }
@@ -132,10 +55,6 @@ export class WebSocketClient {
         this.socket.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data)
-            if (data.action === "pong") {
-              console.log("[v0] Received heartbeat pong")
-              return
-            }
             if (this.options.onMessage) {
               this.options.onMessage(data, this.socket!)
             }
@@ -146,7 +65,6 @@ export class WebSocketClient {
 
         this.socket.onerror = (event) => {
           this.isConnecting = false
-          console.error("[v0] WebSocket error:", event)
           if (this.options.onError) {
             this.options.onError(event, this.socket!)
           }
@@ -156,20 +74,12 @@ export class WebSocketClient {
         this.socket.onclose = (event) => {
           this.isConnecting = false
           this.currentToken = null
-          this.stopHeartbeat()
-          console.log(`[v0] WebSocket closed - Code: ${event.code}, Reason: ${event.reason}, Clean: ${event.wasClean}`)
-          
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
-          }
-
-          if (!this.isManualDisconnect && this.shouldReconnect) {
-            this.scheduleReconnect()
           }
         }
       } catch (error) {
         this.isConnecting = false
-        console.error("[v0] Error creating WebSocket:", error)
         reject(error)
       }
     })
@@ -266,13 +176,7 @@ export class WebSocketClient {
     this.send(getChatHistoryMessage)
   }
 
-  public disconnect(manual: boolean = true): void {
-    this.isManualDisconnect = manual
-    this.shouldReconnect = !manual
-    
-    this.stopHeartbeat()
-    this.cancelReconnect()
-    
+  public disconnect(): void {
     if (this.socket) {
       if (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN) {
         this.socket.close()
@@ -280,11 +184,6 @@ export class WebSocketClient {
       this.socket = null
       this.isConnecting = false
       this.currentToken = null
-    }
-    
-    if (manual) {
-      console.log("[v0] Manual disconnect - reconnection disabled")
-      this.reconnectAttempts = 0
     }
   }
 
@@ -295,11 +194,6 @@ export class WebSocketClient {
   public hasValidToken(): boolean {
     const token = this.getSocketToken()
     return token !== null && token.trim() !== ""
-  }
-
-  public enableReconnection(): void {
-    this.shouldReconnect = true
-    this.isManualDisconnect = false
   }
 
   public subscribeToUserUpdates(): void {
@@ -406,10 +300,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         console.error("WebSocket error:", error)
         setIsConnected(false)
       },
-      onMaxReconnectAttemptsReached: () => {
-        console.error("[v0] Failed to reconnect after maximum attempts")
-        // Optionally show user notification here
-      },
     })
 
     wsClientRef.current = wsClient
@@ -424,7 +314,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         if (userData?.signup === "v1") {
           wsClientRef.current.unsubscribeFromUserUpdates()
         }
-        wsClientRef.current.disconnect(true)
+        wsClientRef.current.disconnect()
       }
     }
   }, [])
@@ -450,8 +340,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
   const reconnect = () => {
     if (wsClientRef.current) {
-      wsClientRef.current.enableReconnection()
-      wsClientRef.current.disconnect(false)
+      wsClientRef.current.disconnect()
       wsClientRef.current.connect().catch((error) => {
         console.error("Failed to reconnect WebSocket:", error)
       })
