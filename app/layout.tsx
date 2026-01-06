@@ -45,7 +45,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        height="0" width="0" style={{display:'none', visibility:'hidden'}}></iframe></noscript>
         <DatadogRumInit />
         <Suspense fallback={null}>
           <LanguageSync />
