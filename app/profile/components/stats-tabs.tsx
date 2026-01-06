@@ -20,10 +20,11 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface StatsTabsProps {
   stats?: any
-  isLoading?: boolean
+  isLoading?: boolean,
+  activeTab?: string
 }
 
-export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
+export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
