@@ -508,7 +508,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
       if(isWalletAccount) {
         url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfIdentityStatus" : "https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus"
       } else {
-        url = isProduction ? "https://staging-app.deriv.com/account/proof-of-address" : "https://staging-app.deriv.com/account/proof-of-identity"
+        url = isProduction ? "https://app.deriv.com/account/proof-of-identity" : "https://staging-app.deriv.com/account/proof-of-identity"
       }
     } else {
       url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}`
