@@ -107,8 +107,8 @@ export default function MarketFilterDropdown({
             onCheckedChange={(checked) => handleFilterChange("isPrivate", checked as boolean)}
             className="data-[state=checked]:bg-black border-2 border-grayscale-text-muted"
           />
-          <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
-            {t("filter.adsFromFollowing")}
+          <label htmlFor="is-private" className="text-sm text-grayscale-600 cursor-pointer">
+            Ads from closed group only
           </label>
         </div>
       </div>
