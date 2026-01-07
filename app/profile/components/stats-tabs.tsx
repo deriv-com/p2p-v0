@@ -255,7 +255,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             )}
              {userData.trade_band === "diamond" && (
               <>
-              <Divider className="ml-[60px]" /><div
+              <Divider className="ml-[60px]" />
+              <div
                 onClick={() => {
                   setShowClosedGroupSidebar(true)
                 }}
