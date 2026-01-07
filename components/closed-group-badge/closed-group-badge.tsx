@@ -34,9 +34,9 @@ export function ClosedGroupBadge({ tradeBand, showLearnMore = false, size = 18, 
         <TooltipTrigger asChild>
           <Image
             src="/icons/closed-group.svg"
-            alt={config.alt}
-            width={size}
-            height={size}
+            alt="Closed Group"
+            width={20}
+            height={20}
             className="cursor-pointer"
           />
         </TooltipTrigger>
