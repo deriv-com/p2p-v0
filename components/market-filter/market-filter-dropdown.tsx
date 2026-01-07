@@ -100,6 +100,17 @@ export default function MarketFilterDropdown({
             {t("filter.adsFromFollowing")}
           </label>
         </div>
+        <div className="flex items-center space-x-3">
+          <Checkbox
+            id="is-private"
+            checked={filters.isPrivate}
+            onCheckedChange={(checked) => handleFilterChange("isPrivate", checked as boolean)}
+            className="data-[state=checked]:bg-black border-2 border-grayscale-text-muted"
+          />
+          <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
+            {t("filter.adsFromFollowing")}
+          </label>
+        </div>
       </div>
       <div className="mb-2">
         <div className="border-t border-gray-200 pt-2">
