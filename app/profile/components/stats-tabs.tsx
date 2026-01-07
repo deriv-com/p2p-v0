@@ -254,7 +254,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             )}
             <Divider className="ml-[60px]" />
-             <div
+             {userData.trade_band === "diamond" && (<div
               onClick={() => {
                 setShowClosedGroupSidebar(true)
               }}
@@ -269,8 +269,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 height={20}
                 className="justify-self-end"
               />
-            </div>
-            {showClosedGroupSidebar && (
+            </div>)}
+            {userData.trade_band === "diamond" && showClosedGroupSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
