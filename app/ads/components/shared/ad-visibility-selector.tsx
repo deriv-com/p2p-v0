@@ -21,8 +21,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
           value === "everyone"
             ? "border-black"
-            : "border-grayscale-500"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+            : "border-grayscale-500"}`}
       >
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Everyone</div>
