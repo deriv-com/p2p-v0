@@ -6,7 +6,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 
 export function ClosedGroupBadge() {
-  const { t, locale } = useTranslations()
+  const { t } = useTranslations()
 
   return (
     <TooltipProvider>
