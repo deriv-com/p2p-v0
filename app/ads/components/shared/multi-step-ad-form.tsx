@@ -654,7 +654,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
+                          <p className="text-white">Choose who can see and interact with your ads on the marketplace.</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
