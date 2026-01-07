@@ -23,12 +23,8 @@ export default function ClosedGroupTab() {
   const fetchClosedGroups = useCallback(async () => {
     try {
       setIsLoading(true)
-      // TODO: Replace with actual API call when endpoint is available
-      // const data = await getClosedGroups()
-      // setClosedGroups(data)
-
-      // Mock data for now
-      setClosedGroups([])
+      const data = await getClosedGroup()
+      setClosedGroups(data
     } catch (err) {
       console.error("Failed to fetch closed groups:", err)
       setClosedGroups([])
