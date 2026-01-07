@@ -68,6 +68,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
+  console.log(userData.trade_band)
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
