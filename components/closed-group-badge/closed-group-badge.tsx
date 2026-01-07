@@ -15,8 +15,8 @@ export function ClosedGroupBadge() {
           <Image
             src="/icons/closed-group.svg"
             alt="Closed Group"
-            width={20}
-            height={20}
+            width={32}
+            height={32}
             className="cursor-pointer"
           />
         </TooltipTrigger>
