@@ -37,7 +37,7 @@ export function ClosedGroupBadge({ tradeBand, showLearnMore = false, size = 18, 
             alt={config.alt}
             width={size}
             height={size}
-            className={`cursor-pointer ${className}`}
+            className="cursor-pointer"
           />
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
