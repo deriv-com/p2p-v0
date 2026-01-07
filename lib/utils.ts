@@ -490,7 +490,7 @@ export const currencyFlagMapper = {
   OMR: "/icons/flag-oman.png",
   VES: "/icons/flag-venezuela.png",
   TND: "/icons/flag-tunisia.png",
-  CNY: "",
+  CNY: "/icons/flag-tunisia.png",
   DOP: "",
   EUR: "",
   HTG: "",
