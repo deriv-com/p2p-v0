@@ -310,7 +310,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           temp_ban_until: tempBanUntil,
           balances: [balances],
           status: status,
-          tradeBand: tradeBand,
+          trade_band: tradeBand,
         })
       }
     } else {
