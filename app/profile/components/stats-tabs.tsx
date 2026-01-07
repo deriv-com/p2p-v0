@@ -263,7 +263,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
               >
                 <Image src="/icons/profile-blocks.svg" width={20} height={20} />
-                <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.closedGroup")}</span>
+                <span className="text-sm font-normal text-gray-900 ml-4">Closed group</span>
                 <Image
                   src="/icons/chevron-right-gray.png"
                   alt="Chevron right"
