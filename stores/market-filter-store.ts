@@ -1,7 +1,8 @@
 import { create } from "zustand"
 
 export interface MarketFilterOptions {
-  fromFollowing: boolean
+  fromFollowing: boolean,
+  isPrivate: boolean
 }
 
 interface MarketFilterState {
