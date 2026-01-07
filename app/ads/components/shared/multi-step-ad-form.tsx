@@ -318,6 +318,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+          is_private: is_private,
         }
 
         const result = await AdsAPI.createAd(payload)
