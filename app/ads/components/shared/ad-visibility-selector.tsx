@@ -22,7 +22,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
             ? "border-black"
             : "border-grayscale-500"}`}
       >
-        <Image src="/icons/global.svg" alt="Everyone" width={20} height={20} />
+        <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Everyone</div>
           <div className="text-xs text-grayscale-text-muted">
@@ -40,7 +40,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
             : "border-grayscale-500"
         }`}
       >
-        <Image src="/icons/closed-group.svg" alt="Closed Group" width={20} height={20} />
+        <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Closed group</div>
           <div className="text-xs text-grayscale-text-muted">
