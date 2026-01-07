@@ -17,7 +17,7 @@ export function ClosedGroupBadge() {
             alt="Closed Group"
             width={32}
             height={32}
-            className="cursor-pointer"
+            className="cursor-pointer mr-1"
           />
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
