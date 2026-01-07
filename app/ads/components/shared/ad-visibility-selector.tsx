@@ -25,9 +25,9 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base mb-1 text-slate-1200">Fixed</div>
+          <div className="text-base mb-1 text-slate-1200">Everyone</div>
           <div className="text-xs text-grayscale-text-muted">
-            Set a constant price, unaffected by market fluctuations.
+            Your ad will be visible to everyone on the marketplace.
           </div>
         </div>
         <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ml-4 h-6 w-6" />
