@@ -508,7 +508,7 @@ export async function getClosedGrouo(): Promise<[]> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/user-blocks`, {
+    const response = await fetch(`${API.baseUrl}/user-group/members`, {
       headers,
       credentials: "include",
     })
