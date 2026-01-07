@@ -39,7 +39,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
           value === "closed-group"
             ? "border-black"
             : "border-grayscale-500"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+        }`}
       >
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Closed group</div>
