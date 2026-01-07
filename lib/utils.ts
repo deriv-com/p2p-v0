@@ -490,6 +490,16 @@ export const currencyFlagMapper = {
   OMR: "/icons/flag-oman.png",
   VES: "/icons/flag-venezuela.png",
   TND: "/icons/flag-tunisia.png",
+  CNY: "/icons/flag-china.svg",
+  DOP: "/icons/flag-dominican-republic.svg",
+  EUR: "/icons/flag-andorra.svg",
+  HTG: "/icons/flag-haiti.svg",
+  KZT: "/icons/flag-kazakhstan.svg",
+  LRD: "/icons/flag-liberia.svg",
+  MNT: "/icons/flag-mongolia.svg",
+  SLL: "/icons/flag-sierra-leone.svg",
+  TRY: "/icons/flag-turkey.svg",
+  XCD: "/icons/flag-dominica.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
