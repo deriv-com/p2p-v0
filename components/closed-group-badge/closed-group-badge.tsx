@@ -22,9 +22,7 @@ export function ClosedGroupBadge() {
           />
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-          <>
-            <p className="font-bold text-white mb-2">{t(config.titleKey)}</p>
-          </>
+          <p className="text-white"></p>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
       </Tooltip>
