@@ -5,39 +5,12 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-interface TradeBandBadgeProps {
+interface ClosedGroupBadgeProps {
   tradeBand: string
   showLearnMore?: boolean
   size?: number
   className?: string
 }
-
-const TRADE_BAND_CONFIG = {
-  bronze: {
-    icon: "/icons/bronze.png",
-    alt: "Bronze",
-    titleKey: "profile.bronzeTier",
-    descriptionKey: "profile.bronzeTierDescription",
-  },
-  silver: {
-    icon: "/icons/silver.svg",
-    alt: "Silver",
-    titleKey: "profile.silverTier",
-    descriptionKey: "profile.silverTierDescription",
-  },
-  gold: {
-    icon: "/icons/gold.svg",
-    alt: "Gold",
-    titleKey: "profile.goldTier",
-    descriptionKey: "profile.goldTierDescription",
-  },
-  diamond: {
-    icon: "/icons/diamond.svg",
-    alt: "Diamond",
-    titleKey: "profile.diamondTier",
-    descriptionKey: "profile.diamondTierDescription",
-  },
-} as const
 
 export function ClosedGroupBadge({ tradeBand, showLearnMore = false, size = 18, className = "" }: ClosedGroupBadgeProps) {
   const { t, locale } = useTranslations()
@@ -60,7 +33,7 @@ export function ClosedGroupBadge({ tradeBand, showLearnMore = false, size = 18, 
       <Tooltip disableHoverableContent={false}>
         <TooltipTrigger asChild>
           <Image
-            src={config.icon || "/placeholder.svg"}
+            src="/icons/closed-group.svg"
             alt={config.alt}
             width={size}
             height={size}
