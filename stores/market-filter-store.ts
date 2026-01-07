@@ -25,7 +25,7 @@ const initialState = {
   activeTab: "sell" as const,
   currency: "",
   sortBy: "exchange_rate",
-  filterOptions: { fromFollowing: false },
+  filterOptions: { fromFollowing: false, isPrivate: false },
   selectedPaymentMethods: [] as string[],
   selectedAccountCurrency: "USD",
 }
