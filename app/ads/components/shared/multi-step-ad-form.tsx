@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import cn from "classnames"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -63,6 +64,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
+  const [adVisibility, setAdVisibility] = useState<"everyone" | "closed_group">("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
 
   const formDataRef = useRef({})
@@ -198,6 +200,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             if (data.available_countries) {
               setSelectedCountries(data.available_countries)
             }
+
+            if (data.ad_visibility) {
+              setAdVisibility(data.ad_visibility)
+            }
           }
 
           setIsLoadingInitialData(false)
@@ -310,6 +316,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           is_active: 1,
           order_expiry_period: orderTimeLimit,
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+          ad_visibility: adVisibility,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -342,6 +349,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           order_expiry_period: orderTimeLimit,
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           description: finalData.instructions || "",
+          ad_visibility: adVisibility,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -415,7 +423,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             title: t("adForm.amountExceedsBalanceTitle"),
             message: t("adForm.amountExceedsBalanceMessage"),
             type: "error",
-            actionButtonText: t("adForm.updateAd"),
+            actionButtonText: t("common.ok"),
           }
         } else if (error.name === "AdvertActiveCountExceeded") {
           errorInfo = {
@@ -630,6 +638,87 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       countries={countries}
                       isLoading={isLoadingCountries}
                     />
+                  </div>
+                </div>
+
+                <div className="w-full md:w-[100%]">
+                  <div className="flex gap-[4px] items-center mb-4">
+                    <h3 className="text-base font-bold">{t("adForm.adVisibility")}</h3>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.svg"
+                            alt="Info"
+                            width={24}
+                            height={24}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-white">{t("adForm.adVisibilityTooltip")}</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="space-y-3">
+                    {/* Everyone option */}
+                    <button
+                      type="button"
+                      onClick={() => setAdVisibility("everyone")}
+                      className={cn(
+                        "w-full p-4 rounded-lg border-2 transition-all text-left",
+                        adVisibility === "everyone"
+                          ? "border-black bg-white"
+                          : "border-gray-200 bg-white hover:border-gray-300"
+                      )}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-1">
+                          <Image
+                            src="/globe-icon.png"
+                            alt="Everyone"
+                            width={24}
+                            height={24}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-base font-bold mb-1">{t("adForm.everyone")}</h4>
+                          <p className="text-sm text-gray-600">{t("adForm.everyoneDescription")}</p>
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Closed group option */}
+                    <button
+                      type="button"
+                      onClick={() => setAdVisibility("closed_group")}
+                      className={cn(
+                        "w-full p-4 rounded-lg border-2 transition-all text-left",
+                        adVisibility === "closed_group"
+                          ? "border-black bg-white"
+                          : "border-gray-200 bg-white hover:border-gray-300"
+                      )}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-1">
+                          <Image
+                            src="/icons/star-custom.png"
+                            alt="Closed group"
+                            width={24}
+                            height={24}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-base font-bold mb-1">{t("adForm.closedGroup")}</h4>
+                          <p className="text-sm text-gray-600">
+                            {t("adForm.closedGroupDescription")}{" "}
+                            <span className="text-blue-600 underline">{t("adForm.editList")}</span>
+                          </p>
+                        </div>
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>
