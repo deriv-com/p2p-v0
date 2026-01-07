@@ -639,6 +639,29 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                     />
                   </div>
                 </div>
+                <div>
+                  <div className="flex gap-[4px] items-center mb-4">
+                    <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.svg"
+                            alt="Info"
+                            width={24}
+                            height={24}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                </div>
               </div>
             )}
           </div>
