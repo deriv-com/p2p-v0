@@ -42,9 +42,9 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base text-slate-1200 mb-1">Floating</div>
+          <div className="text-base text-slate-1200 mb-1">Closed group</div>
           <div className="text-xs text-grayscale-text-muted">
-            Set a rate that changes with market movements.
+            Your ad will be visible only to users in your close group list.
           </div>
         </div>
         <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
