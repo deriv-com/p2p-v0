@@ -644,7 +644,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                     />
                   </div>
                 </div>
-                {userData.trade_band && (<div>
+                {userData.trade_band === "diamond" && (<div>
                   <div className="flex gap-[4px] items-center mb-4">
                     <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
                     <TooltipProvider>
