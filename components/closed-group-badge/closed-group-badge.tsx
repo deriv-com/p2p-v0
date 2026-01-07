@@ -5,14 +5,8 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-interface ClosedGroupBadgeProps {
-  tradeBand: string
-  showLearnMore?: boolean
-  size?: number
-  className?: string
-}
 
-export function ClosedGroupBadge({ tradeBand, showLearnMore = false, size = 18, className = "" }: ClosedGroupBadgeProps) {
+export function ClosedGroupBadge() {
   const { t, locale } = useTranslations()
 
   const config = TRADE_BAND_CONFIG[tradeBand as keyof typeof TRADE_BAND_CONFIG]
