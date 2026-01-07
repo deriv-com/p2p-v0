@@ -281,6 +281,10 @@ export default function BuySellPage() {
         params.favourites_only = 1
       }
 
+      if (filterOptions.isPrivate) {
+        params.is_private = 1
+      }
+
       const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
 
       if (!abortController.signal.aborted) {
