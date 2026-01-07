@@ -44,7 +44,7 @@ export default function MarketFilterDropdown({
 
   const handleReset = () => {
     setSortBy("exchange_rate")
-    onApply({ fromFollowing: false }, "exchange_rate")
+    onApply({ fromFollowing: false, isPrivate: false }, "exchange_rate")
     setIsOpen(false)
     onOpenChangeProp?.(false)
   }
