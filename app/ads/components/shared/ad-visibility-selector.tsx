@@ -19,21 +19,6 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
   const [isOpen, setIsOpen] = useState(false)
   const { t } = useTranslations()
 
-  const TIME_LIMIT_OPTIONS = [
-    { value: 15, label: t("adForm.timeLimit15Minutes") },
-    { value: 30, label: t("adForm.timeLimit30Minutes") },
-    { value: 45, label: t("adForm.timeLimit45Minutes") },
-    { value: 60, label: t("adForm.timeLimit60Minutes") },
-  ]
-
-  const selectedOption = TIME_LIMIT_OPTIONS.find((option) => option.value === value)
-  const hasValue = !!selectedOption
-
-  const handleSelect = (selectedValue: number) => {
-    onValueChange(selectedValue)
-    setIsOpen(false)
-  }
-
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
