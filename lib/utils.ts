@@ -493,7 +493,7 @@ export const currencyFlagMapper = {
   CNY: "/icons/flag-china.png",
   DOP: "/icons/flag-dominican-republic.png",
   EUR: "/icons/flag-tunisia.png",
-  HTG: "/icons/flag-tunisia.png",
+  HTG: "/icons/flag-haiti.png",
   KZT: "/icons/flag-tunisia.png",
   LRD: "/icons/flag-tunisia.png",
   MNT: "/icons/flag-tunisia.png",
