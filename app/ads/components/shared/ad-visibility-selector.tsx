@@ -14,60 +14,40 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
   const { t } = useTranslations()
 
   return (
-    <div className="space-y-3">
-    <Button
-      type="button"
-      onClick={() => setAdVisibility("everyone")}
-      className={cn(
-        "w-full p-4 rounded-lg border-2 transition-all text-left",
-        adVisibility === "everyone"
-          ? "border-black bg-white"
-          : "border-gray-200 bg-white hover:border-gray-300"
-      )}
-    >
-      <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 mt-1">
-          <Image
-            src="/globe-icon.png"
-            alt="Everyone"
-            width={24}
-            height={24}
-          />
+    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
+      <Label
+        htmlFor="fixed"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
+          value === "fixed"
+            ? "border-black"
+            : "border-grayscale-500"
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      >
+        <div className="text-left flex-1">
+          <div className="text-base mb-1 text-slate-1200">Fixed</div>
+          <div className="text-xs text-grayscale-text-muted">
+            Set a constant price, unaffected by market fluctuations.
+          </div>
         </div>
-        <div className="flex-1">
-          <h4 className="text-base font-bold mb-1">{t("adForm.everyone")}</h4>
-          <p className="text-sm text-gray-600">{t("adForm.everyoneDescription")}</p>
+        <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
+      </Label>
+
+      <Label
+        htmlFor="float"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
+          value === "float"
+            ? "border-black"
+            : "border-grayscale-500"
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      >
+        <div className="text-left flex-1">
+          <div className="text-base text-slate-1200 mb-1">Floating</div>
+          <div className="text-xs text-grayscale-text-muted">
+            Set a rate that changes with market movements.
+          </div>
         </div>
-      </div>
-    </Button>
-    <button
-      type="button"
-      onClick={() => setAdVisibility("closed_group")}
-      className={cn(
-        "w-full p-4 rounded-lg border-2 transition-all text-left",
-        adVisibility === "closed_group"
-          ? "border-black bg-white"
-          : "border-gray-200 bg-white hover:border-gray-300"
-      )}
-    >
-      <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 mt-1">
-          <Image
-            src="/icons/star-custom.png"
-            alt="Closed group"
-            width={24}
-            height={24}
-          />
-        </div>
-        <div className="flex-1">
-          <h4 className="text-base font-bold mb-1">{t("adForm.closedGroup")}</h4>
-          <p className="text-sm text-gray-600">
-            {t("adForm.closedGroupDescription")}{" "}
-            <span className="text-blue-600 underline">{t("adForm.editList")}</span>
-          </p>
-        </div>
-      </div>
-    </button>
-  </div>
+        <RadioGroupItem value="float" id="float" className="hidden mt-1 ml-4 h-6 w-6" />
+      </Label>
+    </RadioGroup>
   )
 }
