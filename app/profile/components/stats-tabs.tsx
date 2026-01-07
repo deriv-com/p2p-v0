@@ -417,6 +417,11 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 <FollowsTab />
               </div>
             </TabsContent>
+             <TabsContent value="closed-group" className="mt-4">
+              <div className="relative">
+                <ClosedGroupTab />
+              </div>
+            </TabsContent>
 
             <TabsContent value="blocked" className="mt-4">
               <div className="relative">
