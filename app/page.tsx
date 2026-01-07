@@ -98,7 +98,7 @@ export default function BuySellPage() {
     window.open(helpCentreUrl, "_blank")
   }
 
-  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+  const hasActiveFilters = filterOptions.fromFollowing !== false || filterOptions.isPrivate !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const hasFilteredPaymentMethods =
