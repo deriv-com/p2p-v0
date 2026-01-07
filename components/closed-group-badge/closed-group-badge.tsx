@@ -9,19 +9,6 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 export function ClosedGroupBadge() {
   const { t, locale } = useTranslations()
 
-  const config = TRADE_BAND_CONFIG[tradeBand as keyof typeof TRADE_BAND_CONFIG]
-
-  if (!config) {
-    return null
-  }
-
-  const redirectToHelpCentre = () => {
-    const url = locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-      : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-    window.open(url, "_blank", "noopener,noreferrer")
-  }
-
   return (
     <TooltipProvider>
       <Tooltip disableHoverableContent={false}>
