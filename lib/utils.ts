@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx"
+svgimport { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -493,13 +493,13 @@ export const currencyFlagMapper = {
   CNY: "/icons/flag-china.svg",
   DOP: "/icons/flag-dominican-republic.svg",
   EUR: "/icons/flag-andorra.svg",
-  HTG: "/icons/flag-haiti.png",
+  HTG: "/icons/flag-haiti.svg",
   KZT: "/icons/flag-kazakhstan.svg",
-  LRD: "/icons/flag-liberia.png",
-  MNT: "/icons/flag-mongolia.png",
-  SLL: "/icons/flag-sierra-leone.png",
-  TRY: "/icons/flag-turkey.png",
-  XCD: "/icons/flag-dominica.png",
+  LRD: "/icons/flag-liberia.svg",
+  MNT: "/icons/flag-mongolia.svg",
+  SLL: "/icons/flag-sierra-leone.svg",
+  TRY: "/icons/flag-turkey.svg",
+  XCD: "/icons/flag-dominica.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
