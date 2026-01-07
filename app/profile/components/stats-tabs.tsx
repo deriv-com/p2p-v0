@@ -40,6 +40,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const { userData } = useUserDataStore()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
