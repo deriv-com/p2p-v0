@@ -1,7 +1,6 @@
 "use client"
 
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
