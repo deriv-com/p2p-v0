@@ -15,7 +15,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
 
   return (
     <div className="space-y-3">
-    <button
+    <Button
       type="button"
       onClick={() => setAdVisibility("everyone")}
       className={cn(
@@ -39,7 +39,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
           <p className="text-sm text-gray-600">{t("adForm.everyoneDescription")}</p>
         </div>
       </div>
-    </button>
+    </Button>
     <button
       type="button"
       onClick={() => setAdVisibility("closed_group")}
