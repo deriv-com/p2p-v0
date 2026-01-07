@@ -14,11 +14,11 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
   const { t } = useTranslations()
 
   return (
-    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
+    <RadioGroup value={value} onValueChange={onValueChange}>
       <Label
-        htmlFor="fixed"
+        htmlFor="everyone"
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
-          value === "fixed"
+          value === "everyone"
             ? "border-black"
             : "border-grayscale-500"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -29,13 +29,13 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
             Set a constant price, unaffected by market fluctuations.
           </div>
         </div>
-        <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
 
       <Label
-        htmlFor="float"
+        htmlFor="closed-group"
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
-          value === "float"
+          value === "closed-group"
             ? "border-black"
             : "border-grayscale-500"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -46,7 +46,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
             Set a rate that changes with market movements.
           </div>
         </div>
-        <RadioGroupItem value="float" id="float" className="hidden mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
     </RadioGroup>
   )
