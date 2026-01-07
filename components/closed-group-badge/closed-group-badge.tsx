@@ -21,7 +21,7 @@ export function ClosedGroupBadge() {
           />
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-          <p className="text-white"></p>
+          <p className="text-white">This user is in your group list.</p>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
       </Tooltip>
