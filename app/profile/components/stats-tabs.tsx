@@ -253,6 +253,41 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             )}
             <Divider className="ml-[60px]" />
+             <div
+              onClick={() => {
+                setShowClosedGroupSidebar(true)
+              }}
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <Image src="/icons/profile-blocks.svg" width={20} height={20} />
+              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.closedGroup")}</span>
+              <Image
+                src="/icons/chevron-right-gray.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
+            </div>
+            {showClosedGroupSidebar && (
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+                <div className="flex items-center gap-4 px-4 py-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowClosedGroupSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                </div>
+                <div className="m-4 flex-1 overflow-auto">
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.closedGroup")}</h2>
+                  <ClosedGroupTab />
+                </div>
+              </div>
+            )}
+            <Divider className="ml-[60px]" />
             <div
               onClick={() => {
                 setShowBlockedSidebar(true)
