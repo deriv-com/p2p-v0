@@ -701,6 +701,9 @@ export default function BuySellPage() {
                                   className="mr-1"
                                 />
                               )}
+                              {ad.is_private && (
+                                <ClosedGroupBadge />
+                              )}
                               {ad.user?.is_favourite && (
                                 <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                   {t("market.following")}
