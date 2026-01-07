@@ -17,7 +17,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
     <RadioGroup value={value} onValueChange={onValueChange}>
       <Label
         htmlFor="everyone"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
+        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
           value === "everyone"
             ? "border-black"
             : "border-grayscale-500"}`}
@@ -34,7 +34,7 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
 
       <Label
         htmlFor="closed-group"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
+        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
           value === "closed-group"
             ? "border-black"
             : "border-grayscale-500"
