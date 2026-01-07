@@ -445,7 +445,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
-                    {is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />}
+                    {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />}
                   </TableCell>
                   <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
