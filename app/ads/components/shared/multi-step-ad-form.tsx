@@ -199,6 +199,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             if (data.available_countries) {
               setSelectedCountries(data.available_countries)
             }
+
+            if (data.is_private) {
+              setIsPrivate(data.is_private)
+            }
           }
 
           setIsLoadingInitialData(false)
