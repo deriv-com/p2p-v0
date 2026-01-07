@@ -202,7 +202,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             }
 
             if (data.is_private) {
-              setIsPrivate(data.is_private)
+              setAdVisibility("closed-group")
+            } else {
+              setAdVisibility("everyone")
             }
           }
 
