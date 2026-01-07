@@ -34,6 +34,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
   const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
+  const [showClosedGroupSidebar, setShowClosedGroupSidebar] = useState(false)
   const { toast } = useToast()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
