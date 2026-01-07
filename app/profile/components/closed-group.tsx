@@ -24,7 +24,7 @@ export default function ClosedGroupTab() {
     try {
       setIsLoading(true)
       const data = await getClosedGroup()
-      setClosedGroups(data
+      setClosedGroups(data)
     } catch (err) {
       console.error("Failed to fetch closed groups:", err)
       setClosedGroups([])
