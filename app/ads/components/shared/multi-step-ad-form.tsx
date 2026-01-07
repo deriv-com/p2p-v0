@@ -1,4 +1,4 @@
-"use client"
+adVisibility"use client"
 
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -354,7 +354,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
-          is_private: ad_visiblity === "closed-group": 1 : 0,
+          is_private: adVisibility === "closed-group": 1 : 0,
         }
 
         const updateResult = await AdsAPI.updateAd(finalData.id, payload)
