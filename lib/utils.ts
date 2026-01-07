@@ -497,7 +497,7 @@ export const currencyFlagMapper = {
   KZT: "/icons/flag-kazakhstan.png",
   LRD: "/icons/flag-liberia.png",
   MNT: "/icons/flag-mongolia.png",
-  SLL: "/icons/flag-tunisia.png",
+  SLL: "/icons/flag-sierra-leone.png",
   TRY: "/icons/flag-tunisia.png",
   XCD: "/icons/flag-tunisia.png",
 }
