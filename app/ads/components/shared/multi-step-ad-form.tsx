@@ -663,7 +663,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       </Tooltip>
                     </TooltipProvider>
                   </div>
-                  <AdVisibilitySelector value={is_private} onValueChange={setIsPrivate} />
+                  <AdVisibilitySelector value={adVisibility} onValueChange={setAdVisibility} />
                 </div>
               </div>
             )}
