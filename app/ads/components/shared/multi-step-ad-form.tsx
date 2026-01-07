@@ -660,7 +660,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       </Tooltip>
                     </TooltipProvider>
                   </div>
-                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                  <AdVisibilitySelector value={is_private} onValueChange={setIsPrivate} />
                 </div>
               </div>
             )}
