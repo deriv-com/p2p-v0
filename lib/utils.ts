@@ -499,7 +499,7 @@ export const currencyFlagMapper = {
   MNT: "/icons/flag-mongolia.png",
   SLL: "/icons/flag-sierra-leone.png",
   TRY: "/icons/flag-tunisia.png",
-  XCD: "/icons/flag-tunisia.png",
+  XCD: "/icons/flag-turkey.png",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
