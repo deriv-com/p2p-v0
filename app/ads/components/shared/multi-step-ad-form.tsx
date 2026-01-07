@@ -64,7 +64,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
-  const [isPrivate, setIsPrivate] = useState<boolean>(false)
+  const [adVisibility, setAdVisibility] = useState<string>("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
 
   const formDataRef = useRef({})
