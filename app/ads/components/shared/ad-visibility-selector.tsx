@@ -7,8 +7,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 
 interface AdVisibilitySelectorProps {
-  value: number
-  onValueChange: (value: number) => void
+  value: string
+  onValueChange: (value: string) => void
 }
 
 export default function AdVisibilitySelector({ value, onValueChange }: AdVisibilitySelectorProps) {
