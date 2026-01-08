@@ -12,7 +12,6 @@ import { getClosedGroup } from "@/services/api/api-profile"
 interface ClosedGroup {
   id: number
   nickname: string
-  description?: string
 }
 
 export default function ClosedGroupTab() {
