@@ -37,7 +37,7 @@ export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgePr
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
           <>
-            <p className="font-bold text-white mb-2">{t(config.titleKey)}</p>
+            <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
             <p className={`text-white ${showLearnMore ? "mb-4" : ""}`}>{t(config.descriptionKey)}</p>
             {showLearnMore && (
               <Button
