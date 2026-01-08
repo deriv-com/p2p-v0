@@ -19,6 +19,7 @@ interface FollowDropdownProps {
   onUnfollow: () => void
   onAddToClosedGroup: () => void
   onRemoveFromClosedGroup: () => void
+  nickname: string
 }
 
 export default function FollowDropdown({
@@ -27,7 +28,8 @@ export default function FollowDropdown({
   isLoading,
   onUnfollow,
   onAddToClosedGroup,
-  onRemoveFromClosedGroup
+  onRemoveFromClosedGroup,
+  nickname
 }: FollowDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useIsMobile()
