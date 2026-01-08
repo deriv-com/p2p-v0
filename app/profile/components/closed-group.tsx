@@ -40,7 +40,7 @@ export default function ClosedGroupTab() {
   const filteredClosedGroups = useMemo(() => {
     if (!searchQuery.trim()) return closedGroups
 
-    return closedGroups.filter((group) => group.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    return closedGroups.filter((group) => group.nickname.toLowerCase().includes(searchQuery.toLowerCase()))
   }, [closedGroups, searchQuery])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
