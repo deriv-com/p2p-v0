@@ -53,10 +53,10 @@ export default function ClosedGroupTab() {
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
-          {group.name?.charAt(0).toUpperCase()}
+          {group.nickname?.charAt(0).toUpperCase()}
         </div>
         <div>
-          <div className="font-medium">{group.name}</div>
+          <div className="font-medium">{group.nickname}</div>
           {group.description && (
             <div className="text-sm text-gray-600">{group.description}</div>
           )}
