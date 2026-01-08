@@ -360,6 +360,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           className="mr-1"
                         />
                       )}
+                      <ClosedGroupBadge />
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">
