@@ -308,6 +308,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
+        setIsGroupMember(false)
       }else {
         console.error("Failed to remove from closed group")
       }
