@@ -21,7 +21,6 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 
 interface AdvertiserProfile {
   id: string | number
@@ -186,20 +185,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     } finally {
       setIsFollowLoading(false)
     }
-  }
-
-  const handleAddToClosedGroup = () => {
-    // TODO: Implement add to closed group functionality
-    toast({
-      description: (
-        <div className="flex items-center gap-2">
-          <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-          <span>Added to closed group</span>
-        </div>
-      ),
-      className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-      duration: 2500,
-    })
   }
 
   const handleBlockClick = () => {
