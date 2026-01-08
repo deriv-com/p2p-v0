@@ -30,8 +30,7 @@
     "learnMore": "Learn More",
     "verifiedBadge": {
       "title": "Verified account",
-      "descriptionSelf": "You have completed all required verification steps, including email, phone number, identity (KYC), and address verification.",
-      "descriptionOther": "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."
+      "descriptionOther": "Email, phone, identity, and address checks are complete. This helps you trade with more confidence."
     }
   },
   "navigation": {
