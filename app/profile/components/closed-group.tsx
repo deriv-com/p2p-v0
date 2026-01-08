@@ -54,7 +54,7 @@ export default function ClosedGroupTab() {
         <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
-        <div className="font-medium">{group.nickname}</div>
+        <div className="text-slate-1200">{group.nickname}</div>
       </div>
     </div>
   )
