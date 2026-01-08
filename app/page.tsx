@@ -705,7 +705,13 @@ export default function BuySellPage() {
                                 />
                               )}
                               {userId != ad.user.id && ad.is_private && (
-                                <ClosedGroupBadge />
+                                <Image
+                                  src="/icons/closed-group.svg"
+                                  alt="Closed Group"
+                                  width={32}
+                                  height={32}
+                                  className="cursor-pointer mr-1"
+                                />
                               )}
                               {ad.user?.is_favourite && (
                                 <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
