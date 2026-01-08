@@ -35,6 +35,10 @@ export default function ClosedGroupTab() {
     }
   }, [])
 
+  const toggleGroupMember = () => {
+    
+  }
+
   useEffect(() => {
     fetchClosedGroups()
   }, [fetchClosedGroups])
