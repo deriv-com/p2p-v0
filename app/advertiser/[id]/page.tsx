@@ -267,16 +267,262 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   const handleAddToClosedGroup = () => {
     const result = await addToClosedGoup(profile.id)
-    toast({
-      description: (
-        <div className="flex items-center gap-2">
-          <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-          <span>Successfully added to closed group.</span>
-        </div>
-      ),
-      className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-      duration: 2500,
-    })
+    "use client"
+
+export const runtime = "edge"
+
+import { useState, useEffect, useRef } from "react"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { BuySellAPI } from "@/services/api"
+import type { Advertisement } from "@/services/api/api-buy-sell"
+import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
+import { formatPaymentMethodName } from "@/lib/utils"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import OrderSidebar from "@/components/buy-sell/order-sidebar"
+import EmptyState from "@/components/empty-state"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
+import { useToast } from "@/hooks/use-toast"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
+import { useTranslations } from "@/lib/i18n/use-translations"
+import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
+
+interface AdvertiserProfile {
+  id: string | number
+  nickname: string
+  brand: string
+  country_code: string
+  created_at: number
+  adverts_are_listed: boolean
+  blocked_by_user_count: number
+  favourited_by_user_count: number
+  is_blocked: boolean
+  is_favourite: boolean
+  is_online?: boolean
+  temp_ban_until: number | null
+  trade_band: string
+  order_count_lifetime: number
+  order_amount_lifetime: string
+  partner_count_lifetime: number
+  rating_average_lifetime: number
+  recommend_average_lifetime: number
+  recommend_count_lifetime: number
+  buy_amount_30day: string
+  buy_count_30day: number
+  buy_time_average_30day: number
+  sell_amount_30day: string
+  sell_count_30day: number
+  release_time_average_30day: number
+  rating_average_30day: number
+  completion_average_30day: number
+}
+
+interface AdvertiserProfilePageProps {
+  onBack?: () => void
+}
+
+export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
+  const router = useRouter()
+  const { id } = useParams() as { id: string }
+  const searchParams = useSearchParams()
+  const adIdParam = searchParams.get("adId")
+  const { toast } = useToast()
+  const isMobile = useIsMobile()
+  const { showAlert } = useAlertDialog()
+  const userId = useUserDataStore((state) => state.userId)
+  const { userData } = useUserDataStore()
+  const tempBanUntil = userData?.temp_ban_until
+  const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
+  const [adverts, setAdverts] = useState<Advertisement[]>([])
+  const [isFollowing, setIsFollowing] = useState(false)
+  const [isBlocked, setIsBlocked] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [isFollowLoading, setIsFollowLoading] = useState(false)
+  const [isBlockLoading, setIsBlockLoading] = useState(false)
+  const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
+  const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
+  const { t } = useTranslations()
+
+  const abortControllerRef = useRef<AbortController | null>(null)
+
+  const fetchAdvertiserData = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const advertiserData = await BuySellAPI.getAdvertiserById(id)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
+      setProfile(advertiserData.data)
+      setIsFollowing(advertiserData.data.is_favourite || false)
+      setIsBlocked(advertiserData.data.is_blocked || false)
+
+      const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
+      setAdverts(advertiserAds)
+    } catch (err) {
+      if (!abortController.signal.aborted) {
+        setError("Failed to load the advertiser profile.")
+        setProfile(null)
+        setAdverts([])
+      }
+    } finally {
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      fetchAdvertiserData()
+    } else {
+      router.push("/")
+    }
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [id])
+
+  useEffect(() => {
+    if (adIdParam && adverts.length > 0 && !isBlocked) {
+      const ad = adverts.find((a) => a.id == adIdParam)
+      if (ad) {
+        handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      } else {
+        showAlert({
+          title: "This ad is unavailable",
+          description: "It's either deleted or no longer active.",
+          confirmText: "OK",
+          type: "warning",
+        })
+      }
+    }
+  }, [adIdParam, adverts, isBlocked])
+
+  const toggleFollow = async () => {
+    if (!profile) return
+
+    setIsFollowLoading(true)
+    try {
+      const result = await toggleFavouriteAdvertiser(profile.id, !isFollowing)
+
+      if (result.success) {
+        setIsFollowing(!isFollowing)
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+              {isFollowing ? (
+                <span>{t("advertiser.successfullyUnfollowed")}</span>
+              ) : (
+                <span>{t("advertiser.successfullyFollowed")}</span>
+              )}
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      } else {
+        console.error("Failed to toggle follow status:", result.message)
+      }
+    } catch (error) {
+      console.error("Error toggling follow status:", error)
+    } finally {
+      setIsFollowLoading(false)
+    }
+  }
+
+  const handleBlockClick = () => {
+    if (!isBlocked) {
+      showAlert({
+        title: t("advertiser.blockUser", { nickname: profile?.nickname }),
+        description: t("advertiser.blockDescription", { nickname: profile?.nickname }),
+        confirmText: t("advertiser.block"),
+        cancelText: t("common.cancel"),
+        type: "warning",
+        onConfirm: async () => {
+          if (!profile) return
+
+          setIsBlockLoading(true)
+          try {
+            const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
+
+            if (result.success) {
+              setIsBlocked(!isBlocked)
+
+              toast({
+                description: (
+                  <div className="flex items-center gap-2">
+                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                    <span>
+                      {isBlocked
+                        ? t("advertiser.userUnblocked", { nickname: profile?.nickname })
+                        : t("advertiser.userBlocked", { nickname: profile?.nickname })}
+                    </span>
+                  </div>
+                ),
+                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                duration: 2500,
+              })
+            } else {
+              console.error("Failed to toggle block status:", result.message)
+            }
+          } catch (error) {
+            console.error("Error toggling block status:", error)
+          } finally {
+            setIsBlockLoading(false)
+          }
+        },
+      })
+    } else {
+      handleUnblock()
+    }
+  }
+
+  const handleUnblock = async () => {
+    if (!profile) return
+
+    setIsBlockLoading(true)
+    try {
+      const result = await toggleBlockAdvertiser(profile.id, false)
+
+      if (result.success) {
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>Successfully added to closed group.</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
+      })
+    }
   }
 
   const handleOrderClick = (ad: Advertisement, type: "buy" | "sell") => {
