@@ -704,7 +704,7 @@ export default function BuySellPage() {
                                   size={18}
                                 />
                               )}
-                              {ad.is_private && (
+                              {userId != ad.user.id && ad.is_private && (
                                 <ClosedGroupBadge />
                               )}
                               {ad.user?.is_favourite && (
