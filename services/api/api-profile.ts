@@ -502,7 +502,7 @@ export async function getBlockedUsers(): Promise<[]> {
   }
 }
 
-export async function getClosedGrouo(): Promise<[]> {
+export async function getClosedGroup(): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
