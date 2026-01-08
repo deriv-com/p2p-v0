@@ -96,7 +96,7 @@ export default function FollowDropdown({
           <div className="space-y-4">
             <Button
               onClick={handleAddToClosedGroup}
-              className="w-full gap-3 py-3 text-left font-normal flex justify-start"
+              className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
               variant="ghost"
             >
               <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
