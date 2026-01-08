@@ -555,3 +555,35 @@ export async function addToClosedGoup(advertiserId): Promise<[]> {
     throw error
   }
 }
+
+export async function removeFromClosedGoup(advertiserId): Promise<[]> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const body = JSON.stringify({
+      data: {
+        user_id: advertiserId,
+      },
+    })
+    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+      method: "POST",
+      headers,
+      credentials: "include",
+      body
+    })
+
+    if (!response.ok) {
+      return {
+        success: false
+      }
+    }
+
+    return {
+      success: true
+    }
+  } catch (error) {
+    throw error
+  }
+}
