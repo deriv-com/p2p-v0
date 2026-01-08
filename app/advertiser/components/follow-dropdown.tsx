@@ -93,6 +93,9 @@ export default function FollowDropdown({
       </Button>
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent side="bottom" className="h-auto p-6 rounded-t-2xl">
+          <DrawerHeader>
+            <DrawerTitle className="font-bold text-xl">{nickname}</DrawerTitle>
+          </DrawerHeader>
           <div>
             <Button
               onClick={handleAddToClosedGroup}
