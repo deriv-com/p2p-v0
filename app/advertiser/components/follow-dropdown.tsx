@@ -93,7 +93,7 @@ export default function FollowDropdown({
       </Button>
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent side="bottom" className="h-auto p-6 rounded-t-2xl">
-          <div className="space-y-4">
+          <div>
             <Button
               onClick={handleAddToClosedGroup}
               className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
