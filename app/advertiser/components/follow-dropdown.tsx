@@ -109,7 +109,7 @@ export default function FollowDropdown({
             </Button>
             <Button
               onClick={handleUnfollow}
-              className="w-full gap-3 py-3 text-left font-normal flex justify-start"
+              className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
               variant="ghost"
             >
               <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={20} />
