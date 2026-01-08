@@ -1,36 +1,30 @@
 "use client"
 
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-interface VerifiedBadgeProps {
-  isCurrentUser?: boolean
-}
-
-export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgeProps) {
-  const { showAlert } = useAlertDialog()
+export default function VerifiedBadge() {
   const { t } = useTranslations()
 
-  const handleClick = () => {
-    showAlert({
-      title: t("common.verifiedBadge.title"),
-      description: isCurrentUser
-        ? t("common.verifiedBadge.descriptionSelf")
-        : t("common.verifiedBadge.descriptionOther"),
-      confirmText: "OK",
-      type: "info",
-    })
-  }
-
   return (
-    <Image
-      onClick={handleClick}
-      src="/icons/verified-badge.png"
-      className="cursor-pointer"
-      alt="Verified"
-      width={32}
-      height={32}
-    />
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Image
+            src="/icons/verified-badge.png"
+            className="cursor-pointer"
+            alt="Verified"
+            width={32}
+            height={32}
+          />
+        </TooltipTrigger>
+        <TooltipContent align="start" side="bottom" className="max-w-[340px] text-wrap">
+            <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
+            <p className="text-white">{t("common.verifiedBadge.description")}</p>
+          <TooltipArrow className="fill-black" />
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
