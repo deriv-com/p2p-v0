@@ -562,16 +562,11 @@ export async function removeFromClosedGoup(advertiserId): Promise<[]> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const body = JSON.stringify({
-      data: {
-        user_id: advertiserId,
-      },
-    })
-    const response = await fetch(`${API.baseUrl}/user-group/members`, {
-      method: "POST",
+
+    const response = await fetch(`${API.baseUrl}/user-group/members/${advertiserId}`, {
+      method: "DELETE",
       headers,
       credentials: "include",
-      body
     })
 
     if (!response.ok) {
