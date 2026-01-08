@@ -282,7 +282,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     }
   }
 
-
   const handleOrderClick = (ad: Advertisement, type: "buy" | "sell") => {
     setSelectedAd(ad)
     setOrderType(type)
