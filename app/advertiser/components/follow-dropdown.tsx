@@ -60,7 +60,7 @@ export default function FollowDropdown({
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleUnfollow}
-            className="flex items-center gap-2 py-3 px-2 cursor-pointer"
+            className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
             <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={20} />
             <span className="text-base text-grayscale-600">Unfollow</span>
