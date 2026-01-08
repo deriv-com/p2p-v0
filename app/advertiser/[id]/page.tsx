@@ -266,6 +266,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   const handleAddToClosedGroup = () => {
+    const result = await addToClosedGoup(profile.id)
     toast({
       description: (
         <div className="flex items-center gap-2">
