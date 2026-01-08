@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { TradeBandBadge } from "@/components/trade-band-badge"
+import { ClosedGroupBadge } from "@/components/closed-group-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 
