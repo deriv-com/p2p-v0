@@ -55,14 +55,14 @@ export default function FollowDropdown({
             onClick={handleAddToClosedGroup}
             className="flex items-center gap-3 py-3 px-2 cursor-pointer"
           >
-            <Image src="/icons/star-icon.jpg" alt="Add to closed group" width={24} height={24} />
+            <Image src="/icons/star.svg" alt="Add to closed group" width={24} height={24} />
             <span className="text-base">Add to closed group</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleUnfollow}
             className="flex items-center gap-3 py-3 px-2 cursor-pointer"
           >
-            <Image src="/icons/user-minus-icon.jpg" alt="Unfollow" width={24} height={24} />
+            <Image src="/icons/unfollow.svg" alt="Unfollow" width={24} height={24} />
             <span className="text-base">Unfollow</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
