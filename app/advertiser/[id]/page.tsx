@@ -284,8 +284,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
+        setIsGroupMember(true)
       }else {
         console.error("Failed to add to closed group")
+        setIsGroupMember(true)
       }
     } catch (error) {
       console.error("Failed to add to closed group:", error)
