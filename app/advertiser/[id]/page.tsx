@@ -290,6 +290,30 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     }
   }
 
+   const handleRemoveFromClosedGroup = async () => {
+    try {
+      const result = await addToClosedGoup(profile.id)
+
+      if (result.success) {
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+              <span>Successfully added to closed group.</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      }else {
+        console.error("Failed to add to closed group")
+      }
+    } catch (error) {
+      console.error("Failed to add to closed group:", error)
+    }
+  }
+
+
   const handleOrderClick = (ad: Advertisement, type: "buy" | "sell") => {
     setSelectedAd(ad)
     setOrderType(type)
