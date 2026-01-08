@@ -11,7 +11,7 @@ import { getClosedGroup } from "@/services/api/api-profile"
 
 interface ClosedGroup {
   id: number
-  name: string
+  nickname: string
   description?: string
 }
 
