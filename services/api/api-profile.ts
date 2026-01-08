@@ -531,6 +531,7 @@ export async function addToClosedGoup(): Promise<[]> {
       "Content-Type": "application/json",
     }
     const response = await fetch(`${API.baseUrl}/user-group/members`, {
+      method: "POST",
       headers,
       credentials: "include",
     })
