@@ -21,6 +21,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 
 interface AdvertiserProfile {
   id: string | number
