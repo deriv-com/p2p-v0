@@ -52,11 +52,11 @@ export default function FollowDropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="p-2">
           {isGroupMember ? (<DropdownMenuItem
-            onClick={handleAddToClosedGroup}
+            onClick={handleRemoveFromClosedGroup}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
             <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
-            <span className="text-base text-grayscale-600">Add to closed group</span>
+            <span className="text-base text-grayscale-600">Remove from closed group</span>
           </DropdownMenuItem>) : (<DropdownMenuItem
             onClick={handleAddToClosedGroup}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
