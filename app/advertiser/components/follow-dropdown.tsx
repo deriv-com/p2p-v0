@@ -50,7 +50,7 @@ export default function FollowDropdown({
             Following
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[240px] p-2">
+        <DropdownMenuContent align="end" className="w-[280px] p-2">
           <DropdownMenuItem
             onClick={handleAddToClosedGroup}
             className="flex items-center gap-3 py-3 px-2 cursor-pointer"
