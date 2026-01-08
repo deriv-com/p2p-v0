@@ -9,19 +9,7 @@ interface VerifiedBadgeProps {
 }
 
 export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgeProps) {
-  const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
-
-  const handleClick = () => {
-    showAlert({
-      title: t("common.verifiedBadge.title"),
-      description: isCurrentUser
-        ? t("common.verifiedBadge.descriptionSelf")
-        : t("common.verifiedBadge.descriptionOther"),
-      confirmText: "OK",
-      type: "info",
-    })
-  }
 
   return (
     <TooltipProvider>
