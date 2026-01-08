@@ -42,6 +42,7 @@ export default function FollowDropdown({
     return null
   }
 
+  // Desktop version - Dropdown Menu
   if (!isMobile) {
     return (
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
