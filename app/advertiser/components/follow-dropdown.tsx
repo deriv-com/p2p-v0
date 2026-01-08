@@ -26,6 +26,7 @@ export default function FollowDropdown({
   isLoading,
   onUnfollow,
   onAddToClosedGroup,
+  onRemoveFromClosedGroup
 }: FollowDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useIsMobile()
