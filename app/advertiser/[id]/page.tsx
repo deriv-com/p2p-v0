@@ -274,6 +274,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       const result = await addToClosedGoup(profile.id)
 
       if (result.success) {
+        setIsGroupMember(true)
         toast({
           description: (
             <div className="flex items-center gap-2">
@@ -284,7 +285,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
-        setIsGroupMember(true)
       }else {
         console.error("Failed to add to closed group")
       }
