@@ -53,7 +53,7 @@ export default function FollowDropdown({
         <DropdownMenuContent align="end" className="p-2">
           <DropdownMenuItem
             onClick={handleAddToClosedGroup}
-            className="flex items-center gap-2 py-3 px-2 cursor-pointer"
+            className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
             <Image src="/icons/star.svg" alt="Add to closed group" width={24} height={24} />
             <span className="text-base">Add to closed group</span>
