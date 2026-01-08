@@ -26,8 +26,7 @@
     "learnMore": "Saiba mais",
     "verifiedBadge": {
       "title": "Conta totalmente verificada",
-      "descriptionSelf": "Você concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço.",
-      "descriptionOther": "Este usuário concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço. Você pode negociar com confiança sabendo que esta conta está verificada."
+      "description": "Este usuário concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço. Você pode negociar com confiança sabendo que esta conta está verificada."
     }
   },
   "navigation": {
