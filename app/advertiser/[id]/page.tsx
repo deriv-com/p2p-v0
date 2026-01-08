@@ -357,7 +357,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           tradeBand={profile.trade_band}
                           showLearnMore={true}
                           size={18}
-                          className="mr-1"
                         />
                       )}
                       {profile.is_group_member &&
