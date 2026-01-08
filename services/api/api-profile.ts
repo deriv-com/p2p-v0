@@ -530,10 +530,16 @@ export async function addToClosedGoup(): Promise<[]> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
+    const body = JSON.stringify({
+      data: {
+        user_id: advertiserId,
+      },
+    })
     const response = await fetch(`${API.baseUrl}/user-group/members`, {
       method: "POST",
       headers,
       credentials: "include",
+      body
     })
 
     if (!response.ok) {
