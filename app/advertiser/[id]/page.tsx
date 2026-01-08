@@ -433,6 +433,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                               onUnfollow={toggleFollow}
                               onAddToClosedGroup={handleAddToClosedGroup}
                               onRemoveFromClosedGroup={handleRemoveFromClosedGroup}
+                              nickname={profile?.nickname}
                             />
                           ) : (
                             <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
