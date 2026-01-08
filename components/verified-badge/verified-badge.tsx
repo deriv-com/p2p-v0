@@ -9,7 +9,7 @@ export default function VerifiedBadge() {
 
   return (
     <TooltipProvider>
-      <Tooltip disableHoverableContent={false}>
+      <Tooltip>
         <TooltipTrigger asChild>
           <Image
             src="/icons/verified-badge.png"
@@ -19,7 +19,7 @@ export default function VerifiedBadge() {
             height={32}
           />
         </TooltipTrigger>
-        <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+        <TooltipContent align="start" className="max-w-[340px] text-wrap">
             <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
             <p className="text-white">{t("common.verifiedBadge.description")}</p>
           <TooltipArrow className="fill-black" />
