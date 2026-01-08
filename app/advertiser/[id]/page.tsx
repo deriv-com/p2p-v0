@@ -387,7 +387,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           size={18}
                         />
                       )}
-                      {profile.is_group_member &&
+                      {isGroupMember &&
                         <ClosedGroupBadge />
                       }
                     </div>
