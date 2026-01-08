@@ -56,14 +56,14 @@ export default function FollowDropdown({
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
             <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
-            <span className="text-base">Add to closed group</span>
+            <span className="text-base text-grayscale-600">Add to closed group</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleUnfollow}
             className="flex items-center gap-3 py-3 px-2 cursor-pointer"
           >
             <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={20} />
-            <span className="text-base">Unfollow</span>
+            <span className="text-base text-grayscale-600">Unfollow</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -84,7 +84,7 @@ export default function FollowDropdown({
               variant="ghost"
             >
               <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
-              <span className="text-base">Add to closed group</span>
+              <span className="text-base text-grayscale-600">Add to closed group</span>
             </Button>
             <Button
               onClick={handleUnfollow}
@@ -92,7 +92,7 @@ export default function FollowDropdown({
               variant="ghost"
             >
               <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={20} />
-              <span className="text-base">Unfollow</span>
+              <span className="text-base text-grayscale-600">Unfollow</span>
             </Button>
           </div>
         </DrawerContent>
