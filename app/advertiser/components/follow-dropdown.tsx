@@ -42,6 +42,11 @@ export default function FollowDropdown({
     setIsOpen(false)
   }
 
+  const handleRemoveFromClosedGroup = () => {
+    onRemoveFromClosedGroup()
+    setIsOpen(false)
+  }
+
   if (!isFollowing) {
     return null
   }
