@@ -281,8 +281,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           duration: 2500,
         })
       }else {
-        console.error("Failed to add to closed group", result.message)
+        console.error("Failed to add to closed group")
       }
+    } catch (error) {
+      console.error("Failed to add to closed group:", error)
     }
   }
 
