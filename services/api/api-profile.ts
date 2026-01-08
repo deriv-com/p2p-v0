@@ -524,7 +524,7 @@ export async function getClosedGrouo(): Promise<[]> {
   }
 }
 
-export async function addToClosedGoup(): Promise<[]> {
+export async function addToClosedGoup(advertiserId): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
@@ -543,7 +543,7 @@ export async function addToClosedGoup(): Promise<[]> {
     })
 
     if (!response.ok) {
-      throw new Error(`Error fetching blocked users: ${response.statusText}`)
+      throw new Error(`Error adding to closed group: ${response.statusText}`)
     }
 
     const result = await response.json()
