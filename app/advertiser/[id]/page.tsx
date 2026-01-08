@@ -400,9 +400,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           {isFollowing ? (
                             <FollowDropdown
                               isFollowing={isFollowing}
+                              isGroupMember={isGroupMember}
                               isLoading={isFollowLoading}
                               onUnfollow={toggleFollow}
                               onAddToClosedGroup={handleAddToClosedGroup}
+                              onRemoveFromClosedGroup={handleRemoveFromClosedGroup}
                             />
                           ) : (
                             <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
