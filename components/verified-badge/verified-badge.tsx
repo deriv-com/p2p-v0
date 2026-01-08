@@ -13,7 +13,7 @@ export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgePr
 
   return (
     <TooltipProvider>
-      <Tooltip disableHoverableContent={false}>
+      <Tooltip>
         <TooltipTrigger asChild>
             <Image
               src="/icons/verified-badge.png"
