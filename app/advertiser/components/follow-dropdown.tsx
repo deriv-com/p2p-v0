@@ -42,7 +42,6 @@ export default function FollowDropdown({
     return null
   }
 
-  // Desktop version - Dropdown Menu
   if (!isMobile) {
     return (
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -79,20 +78,20 @@ export default function FollowDropdown({
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent side="bottom" className="h-auto p-6 rounded-t-2xl">
           <div className="space-y-4">
-            <button
+            <Button
               onClick={handleAddToClosedGroup}
               className="w-full flex items-center gap-3 py-3 text-left"
             >
               <Image src="/icons/star-icon.jpg" alt="Add to closed group" width={24} height={24} />
               <span className="text-base">Add to closed group</span>
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleUnfollow}
               className="w-full flex items-center gap-3 py-3 text-left"
             >
               <Image src="/icons/user-minus-icon.jpg" alt="Unfollow" width={24} height={24} />
               <span className="text-base">Unfollow</span>
-            </button>
+            </Button>
           </div>
         </DrawerContent>
       </Drawer>
