@@ -18,6 +18,7 @@ interface FollowDropdownProps {
   isLoading: boolean
   onUnfollow: () => void
   onAddToClosedGroup: () => void
+  onRemoveFromClosedGroup: () => void
 }
 
 export default function FollowDropdown({
