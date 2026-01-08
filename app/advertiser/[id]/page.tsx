@@ -287,7 +287,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         setIsGroupMember(true)
       }else {
         console.error("Failed to add to closed group")
-        setIsGroupMember(true)
       }
     } catch (error) {
       console.error("Failed to add to closed group:", error)
