@@ -8,6 +8,7 @@ import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { getFavouriteUsers } from "@/services/api/api-profile"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface ClosedGroup {
   id: number
