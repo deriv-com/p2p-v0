@@ -265,7 +265,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     }
   }
 
-  const handleAddToClosedGroup = () => {
+  const handleAddToClosedGroup = async () => {
     try {
       const result = await addToClosedGoup(profile.id)
 
