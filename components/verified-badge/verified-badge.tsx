@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface VerifiedBadgeProps {
@@ -9,19 +8,7 @@ interface VerifiedBadgeProps {
 }
 
 export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgeProps) {
-  const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
-
-  const handleClick = () => {
-    showAlert({
-      title: t("common.verifiedBadge.title"),
-      description: isCurrentUser
-        ? t("common.verifiedBadge.descriptionSelf")
-        : t("common.verifiedBadge.descriptionOther"),
-      confirmText: "OK",
-      type: "info",
-    })
-  }
 
   return (
     <TooltipProvider>
@@ -36,12 +23,10 @@ export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgePr
           />
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-          <>
             <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
             <p className="text-white">{isCurrentUser
         ? t("common.verifiedBadge.descriptionSelf")
         : t("common.verifiedBadge.descriptionOther")}</p>
-          </>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
       </Tooltip>
