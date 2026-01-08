@@ -37,8 +37,10 @@ export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgePr
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
           <>
-            <p className="font-bold text-white mb-2">{t(config.titleKey)}</p>
-            <p className="text-white">{t(config.descriptionKey)}</p>
+            <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
+            <p className="text-white">{isCurrentUser
+        ? t("common.verifiedBadge.descriptionSelf")
+        : t("common.verifiedBadge.descriptionOther")}</p>
           </>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
