@@ -38,24 +38,7 @@ export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgePr
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
           <>
             <p className="font-bold text-white mb-2">{t(config.titleKey)}</p>
-            <p className={`text-white ${showLearnMore ? "mb-4" : ""}`}>{t(config.descriptionKey)}</p>
-            {showLearnMore && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={redirectToHelpCentre}
-                className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
-              >
-                {t("common.learnMore")}
-                <Image
-                  src="/icons/chevron-right-white.png"
-                  alt="Arrow"
-                  width={8}
-                  height={18}
-                  className="ml-2 cursor-pointer"
-                />
-              </Button>
-            )}
+            <p className="text-white">{t(config.descriptionKey)}</p>
           </>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
