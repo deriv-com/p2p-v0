@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 
 interface FollowDropdownProps {
   isFollowing: boolean
+  isGroupMember: boolean
   isLoading: boolean
   onUnfollow: () => void
   onAddToClosedGroup: () => void
@@ -21,6 +22,7 @@ interface FollowDropdownProps {
 
 export default function FollowDropdown({
   isFollowing,
+  isGroupMember,
   isLoading,
   onUnfollow,
   onAddToClosedGroup,
