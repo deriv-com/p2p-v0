@@ -12,6 +12,7 @@ import { getFavouriteUsers } from "@/services/api/api-profile"
 interface ClosedGroup {
   id: number
   nickname: string
+  is_group_member: boolean
 }
 
 export default function ClosedGroupTab() {
