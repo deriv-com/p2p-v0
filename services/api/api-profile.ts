@@ -544,13 +544,13 @@ export async function addToClosedGoup(advertiserId): Promise<[]> {
 
     if (!response.ok) {
       return {
-        success: false,
-        message: "`Error adding to closed group"
+        success: false
       }
     }
 
-    const result = await response.json()
-    return result.data || []
+    return {
+      success: true
+    }
   } catch (error) {
     throw error
   }
