@@ -78,7 +78,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.nickname) queryParams.append("nickname", params.nickname)
       if (params.sortBy) queryParams.append("sort_by", params.sortBy)
       if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
-      if (params.private_only) queryParams.append("is_private", params.is_private.toString())
+      if (params.is_private) queryParams.append("private_only", params.is_private.toString())
     }
 
     const auth_country_code = useUserDataStore.getState().residenceCountry
