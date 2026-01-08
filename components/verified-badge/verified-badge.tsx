@@ -4,11 +4,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-interface VerifiedBadgeProps {
-  isCurrentUser?: boolean
-}
-
-export default function VerifiedBadge({ isCurrentUser = false }: VerifiedBadgeProps) {
+export default function VerifiedBadge() {
   const { t } = useTranslations()
 
   return (
