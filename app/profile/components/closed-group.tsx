@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getClosedGroup } from "@/services/api/api-profile"
+import { getFavouriteUsers } from "@/services/api/api-profile"
 
 interface ClosedGroup {
   id: number
@@ -23,7 +23,7 @@ export default function ClosedGroupTab() {
   const fetchClosedGroups = useCallback(async () => {
     try {
       setIsLoading(true)
-      const data = await getClosedGroup()
+      const data = await getFavouriteUsers()
       setClosedGroups(data)
     } catch (err) {
       console.error("Failed to fetch closed groups:", err)
