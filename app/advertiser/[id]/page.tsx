@@ -107,6 +107,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setProfile(advertiserData.data)
       setIsFollowing(advertiserData.data.is_favourite || false)
       setIsBlocked(advertiserData.data.is_blocked || false)
+      setIsGroupMember(advertiserData.data.is_group_member || false)
 
       const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
 
