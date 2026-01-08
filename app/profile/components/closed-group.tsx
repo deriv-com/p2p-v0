@@ -52,7 +52,7 @@ export default function ClosedGroupTab() {
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-1 items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
