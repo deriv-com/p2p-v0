@@ -14,7 +14,6 @@ import { useIsMobile } from "@/hooks/use-mobile"
 
 interface FollowDropdownProps {
   isFollowing: boolean
-  isGroupMember: boolean
   isLoading: boolean
   onUnfollow: () => void
   onAddToClosedGroup: () => void
@@ -22,7 +21,6 @@ interface FollowDropdownProps {
 
 export default function FollowDropdown({
   isFollowing,
-  isGroupMember,
   isLoading,
   onUnfollow,
   onAddToClosedGroup,
@@ -53,13 +51,20 @@ export default function FollowDropdown({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="p-2">
-          <DropdownMenuItem
+          {isGroupMember ? (<DropdownMenuItem
+            onClick={handleAddToClosedGroup}
+            className="flex items-center gap-2 py-3 px-4 cursor-pointer"
+          >
+            <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
+            <span className="text-base text-grayscale-600">Add to closed group</span>
+          </DropdownMenuItem>) : (<DropdownMenuItem
             onClick={handleAddToClosedGroup}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
             <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
             <span className="text-base text-grayscale-600">Add to closed group</span>
           </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={handleUnfollow}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
