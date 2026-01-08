@@ -35,10 +35,6 @@ export default function ClosedGroupTab() {
     }
   }, [])
 
-  const toggleGroupMember = () => {
-    
-  }
-
   useEffect(() => {
     fetchClosedGroups()
   }, [fetchClosedGroups])
@@ -61,7 +57,7 @@ export default function ClosedGroupTab() {
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
         <div className="text-slate-1200">{group.nickname}</div>
-        <Checkbox checked={group.is_group_member} className="self-end" onCheckedChange={() => { toggleGroupMember(group.is_group_member) }}/>
+        <Checkbox checked={group.is_group_member} className="self-end" />
       </div>
     </div>
   )
