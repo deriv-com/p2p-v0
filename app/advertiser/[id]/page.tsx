@@ -73,6 +73,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isFollowing, setIsFollowing] = useState(false)
+  const [isGroupMember, setIsGroupMember] = useState(false)
   const [isBlocked, setIsBlocked] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
