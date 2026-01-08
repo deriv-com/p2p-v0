@@ -57,7 +57,7 @@ export default function ClosedGroupTab() {
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
         <div className="text-slate-1200 flex-1">{group.nickname}</div>
-        <Checkbox checked={group.is_group_member} />
+        <Checkbox checked={group.is_group_member} className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]" />
       </div>
     </div>
   )
