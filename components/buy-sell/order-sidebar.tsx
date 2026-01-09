@@ -280,7 +280,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
             confirmText: "View order",
             type: "warning",
             onConfirm: () => {
-              router.push("/orders/" + order.errors.detail.order_id)
+              router.push("/orders/" + order.errors[0].detail.order_id)
             },
             onCancel: () => {
               handleClose()
