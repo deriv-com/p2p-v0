@@ -671,7 +671,7 @@ export default function BuySellPage() {
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
                       <TableRow
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                         key={ad.id}
                       >
                         <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
