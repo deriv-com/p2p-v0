@@ -612,7 +612,7 @@ export default function BuySellPage() {
                     {[...Array(2)].map((_, index) => (
                       <TableRow
                         key={index}
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
                       >
                         <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                           <div className="flex items-center">
