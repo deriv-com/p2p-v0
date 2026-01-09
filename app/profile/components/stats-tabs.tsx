@@ -422,12 +422,12 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 <FollowsTab />
               </div>
             </TabsContent>
-            {userData.trade_band === "diamond" && (
-            <TabsContent value="closed-group" className="mt-4">
+         
+            <TabsContent value="closed-group" className={cn("mt-4", userData.trade_band !== "diamond" && "hidden")}>
               <div className="relative">
                 <ClosedGroupTab />
               </div>
-            </TabsContent>)}
+            </TabsContent>
 
             <TabsContent value="blocked" className="mt-4">
               <div className="relative">
