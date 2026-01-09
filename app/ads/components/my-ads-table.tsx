@@ -264,7 +264,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             {Array.from({ length: 3 }).map((_, index) => (
               <TableRow
                 key={index}
-                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
               >
                 <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
                   <div className="space-y-2">
@@ -353,7 +353,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 <TableRow
                   key={index}
                   className={cn(
-                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0",
+                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0",
                   )}
                 >
                   <TableCell

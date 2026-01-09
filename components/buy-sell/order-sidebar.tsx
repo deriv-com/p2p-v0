@@ -274,13 +274,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
           showAlert({
-            title: "Existing order in progress",
+            title: "Active order detected",
             description: t("order.orderExists"),
-            confirmText: "Go to Market",
+            cancelText: "Try different ad",
+            confirmText: "View order",
             type: "warning",
             onConfirm: () => {
-              handleClose()
+              router.push("/orders/" + order.errors[0].detail.order_id)
             },
+            onCancel: () => {
+              handleClose()
+            }
           })
         } else if (errorCode === "OrderFloatRateSlippage") {
           showAlert({
