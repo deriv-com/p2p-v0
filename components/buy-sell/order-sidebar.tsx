@@ -272,6 +272,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
+        console.log(order.errors[0])
         if (errorCode === "OrderExists") {
           showAlert({
             title: "Active order detected",
