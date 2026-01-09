@@ -3,6 +3,7 @@
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function VerifiedBadge() {
   const { t } = useTranslations()
