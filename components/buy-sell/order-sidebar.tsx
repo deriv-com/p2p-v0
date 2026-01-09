@@ -276,8 +276,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           showAlert({
             title: "Active order detected",
             description: t("order.orderExists"),
-            cancelText: "Try different ad",
-            confirmText: "View order",
+            cancelText: "View order",
+            confirmText: "Try different ad",
             type: "warning",
             onConfirm: () => {
               router.push("/orders/" + order.errors[0].detail.order_id)
