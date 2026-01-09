@@ -202,25 +202,24 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      {filteredPaymentMethods.length > 0 && (
-        <div className="flex items-center space-x-3 mb-4">
-          <Checkbox
-            id="select-all"
-            checked={isAllSelected}
-            ref={(el) => {
-              if (el) el.indeterminate = isIndeterminate
-            }}
-            onCheckedChange={handleSelectAll}
-            className="data-[state=checked]:bg-black "
-            disabled={isLoading || filteredPaymentMethods.length === 0}
-          />
-          <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
-            {t("paymentMethod.allPaymentMethod")}
-          </label>
-        </div>
-      )}
-
       <div ref={scrollContainerRef} className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
+        {filteredPaymentMethods.length > 0 && (
+          <div className="flex items-center space-x-3 mb-4">
+            <Checkbox
+              id="select-all"
+              checked={isAllSelected}
+              ref={(el) => {
+                if (el) el.indeterminate = isIndeterminate
+              }}
+              onCheckedChange={handleSelectAll}
+              className="data-[state=checked]:bg-black "
+              disabled={isLoading || filteredPaymentMethods.length === 0}
+            />
+            <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
+              {t("paymentMethod.allPaymentMethod")}
+            </label>
+          </div>
+        )}
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">{t("paymentMethod.loadingPaymentMethods")}</div>
         ) : filteredPaymentMethods.length === 0 ? (
