@@ -282,6 +282,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
             onConfirm: () => {
               router.push("/orders/" + order.errors.detail.order_id)
             },
+            onCancel: () => {
+              handleClose()
+            }
           })
         } else if (errorCode === "OrderFloatRateSlippage") {
           showAlert({
