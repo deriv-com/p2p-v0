@@ -26,6 +26,7 @@ export default function ClosedGroupTab() {
     try {
       setIsLoading(true)
       const data = await getFavouriteUsers()
+      console.log(data)
       setClosedGroups(data)
     } catch (err) {
       console.error("Failed to fetch closed groups:", err)
