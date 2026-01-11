@@ -91,7 +91,7 @@ export function VisibilityStatusDialog({
 
   const content = (
     <div className="space-y-4">
-      {reasons.includes("advertiser_no_private_groups" ? (
+      {reasons.includes("advertiser_no_private_groups") ? (
         <ul className="space-y-3 mt-2">
           <li key={index} className="flex flex-col">
             <p className="text-base text-grayscale-600">{getReasonContent("advertiser_no_private_groups", t).description}</p>
