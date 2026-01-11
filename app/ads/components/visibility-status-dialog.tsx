@@ -95,21 +95,21 @@ export function VisibilityStatusDialog({
         {reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           const actionInfo = getReasonAction(reason, t)
-          return (
-            <li key={index} className="flex flex-col">
-              <p className="text-base text-grayscale-600">{reasonContent.description}</p>
-              {reasons.length == 1 && actionInfo && (
-                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                  {actionInfo.label}
-                </Button>
-              )}
-              {reasons.length > 1 && reason == "advertiser_no_private_groups" && (
-                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                  {actionInfo.label}
-                </Button>
-              )}
-            </li>
-          )
+
+          if(reasons.include("advertiser_no_private_groups")) {
+
+          } else {
+            return (
+              <li key={index} className="flex flex-col">
+                <p className="text-base text-grayscale-600">{reasonContent.description}</p>
+                {reasons.length == 1 && actionInfo && (
+                  <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                    {actionInfo.label}
+                  </Button>
+                )}
+              </li>
+            )
+          }
         })}
       </ul>
     </div>
