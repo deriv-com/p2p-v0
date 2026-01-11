@@ -99,6 +99,11 @@ export function VisibilityStatusDialog({
                   {actionInfo.label}
                 </Button>
               )}
+              {reasons.length > 1 && reason == "advertiser_no_private_groups" && (
+                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                  {actionInfo.label}
+                </Button>
+              )}
             </li>
           )
         })}
