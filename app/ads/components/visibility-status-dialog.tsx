@@ -92,7 +92,9 @@ export function VisibilityStatusDialog({
   const content = (
     <div className="space-y-4">
       <ul className="space-y-3 mt-2">
-        {reasons.map((reason, index) => {
+        {reasons.include("advertiser_no_private_groups") ? 
+        
+        : reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           const actionInfo = getReasonAction(reason, t)
           return (
@@ -105,7 +107,8 @@ export function VisibilityStatusDialog({
                 )}
               </li>
             )
-        })}
+        })
+        }
       </ul>
     </div>
   )
