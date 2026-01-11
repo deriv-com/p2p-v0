@@ -95,11 +95,7 @@ export function VisibilityStatusDialog({
         {reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           const actionInfo = getReasonAction(reason, t)
-
-          if(reasons.include("advertiser_no_private_groups")) {
-
-          } else {
-            return (
+          return (
               <li key={index} className="flex flex-col">
                 <p className="text-base text-grayscale-600">{reasonContent.description}</p>
                 {reasons.length == 1 && actionInfo && (
@@ -109,7 +105,6 @@ export function VisibilityStatusDialog({
                 )}
               </li>
             )
-          }
         })}
       </ul>
     </div>
