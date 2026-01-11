@@ -237,6 +237,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const handleVisibilityStatusClick = (ad: Ad) => {
     if (ad.visibility_status && ad.visibility_status.length > 0) {
       setSelectedVisibilityReasons(ad.visibility_status)
+      setSelectedAd(ad)
       setVisibilityDialogOpen(true)
     }
   }
