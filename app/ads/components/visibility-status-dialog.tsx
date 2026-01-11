@@ -9,6 +9,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useRouter } from "next/navigation"
 
 interface VisibilityStatusDialogProps {
+  id: string
   open: boolean
   onOpenChange: (open: boolean) => void
   reasons: string[]
