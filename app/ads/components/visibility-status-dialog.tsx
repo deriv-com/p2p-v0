@@ -67,6 +67,7 @@ const getReasonAction = (reason: string, t: (key: string) => string) => {
 }
 
 export function VisibilityStatusDialog({
+  id,
   open,
   onOpenChange,
   reasons,
