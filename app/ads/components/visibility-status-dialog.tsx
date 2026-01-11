@@ -96,8 +96,8 @@ export function VisibilityStatusDialog({
           <li key={index} className="flex flex-col">
             <p className="text-base text-grayscale-600">{getReasonContent("advertiser_no_private_groups", t).description}</p>
             {reasons.length == 1 && actionInfo && (
-              <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                {actionInfo.label}
+              <Button onClick={() => handleAction(getReasonContent("advertiser_no_private_groups", t).action)} className="w-full mt-8" variant="default">
+                {getReasonContent("advertiser_no_private_groups", t).label}
               </Button>
             )}
           </li>
