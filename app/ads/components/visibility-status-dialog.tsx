@@ -97,14 +97,14 @@ export function VisibilityStatusDialog({
           const actionInfo = getReasonAction(reason, t)
 
           return (
-              <li key={index} className="flex flex-col">
-                <p className="text-base text-grayscale-600">{reasonContent.description}</p>
-                {reasons.length == 1 && actionInfo && (
-                  <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                    {actionInfo.label}
-                  </Button>
-                )}
-              </li>
+            <li key={index} className="flex flex-col">
+              <p className="text-base text-grayscale-600">{reasonContent.description}</p>
+              {reasons.length == 1 && actionInfo && (
+                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                  {actionInfo.label}
+                </Button>
+              )}
+            </li>
             )
           })
         }
