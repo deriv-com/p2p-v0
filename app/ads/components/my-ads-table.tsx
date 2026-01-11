@@ -533,6 +533,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       </Drawer>
 
       <VisibilityStatusDialog
+        id={selectedAd.id}
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
         reasons={selectedVisibilityReasons}
