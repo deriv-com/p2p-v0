@@ -92,14 +92,12 @@ export function VisibilityStatusDialog({
   const content = (
     <div className="space-y-4">
       {reasons.includes("advertiser_no_private_groups") ? (
-        <ul className="space-y-3 mt-2">
-          <li key={0} className="flex flex-col">
-            <p className="text-base text-grayscale-600">{getReasonContent("advertiser_no_private_groups", t).description}</p>
-            <Button onClick={() => handleAction(getReasonAction("advertiser_no_private_groups", t).action)} className="w-full mt-8" variant="default">
-              {getReasonAction("advertiser_no_private_groups", t).label}
-            </Button>
-          </li>
-        </ul>
+        <div className="space-y-3 mt-2">
+          <p className="text-base text-grayscale-600">{getReasonContent("advertiser_no_private_groups", t).description}</p>
+          <Button onClick={() => handleAction(getReasonAction("advertiser_no_private_groups", t).action)} className="w-full mt-8" variant="default">
+            {getReasonAction("advertiser_no_private_groups", t).label}
+          </Button>
+        </div>
       ) : (
         <ul className="space-y-3 mt-2">
           {reasons.map((reason, index) => {
