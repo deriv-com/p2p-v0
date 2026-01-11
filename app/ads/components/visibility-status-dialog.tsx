@@ -82,6 +82,7 @@ export function VisibilityStatusDialog({
         break
       case "view_profile":
         onOpenChange(false)
+        router.push(`/ads/edit/${id}`)
         break
       default:
          onOpenChange(false)
