@@ -57,7 +57,7 @@ const getReasonAction = (reason: string, t: (key: string) => string) => {
     advertiser_status: { label: t("visibilityStatus.actions.contactSupport"), action: "close" },
     advertiser_schedule_unavailable: { label: t("visibilityStatus.actions.editSchedule"), action: "view_profile" },
     advertiser_temp_ban: { label: t("visibilityStatus.actions.viewProfile"), action: "close" },
-    advertiser_no_private_groups: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
+    advertiser_no_private_groups: { label: t("visibilityStatus.actions.editAd"), action: "edit_ad_visibility" },
     advert_float_rate_disabled: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advert_no_payment_methods: { label: t("visibilityStatus.actions.addPaymentMethod"), action: "add_payment" },
   }
