@@ -80,6 +80,7 @@ export function VisibilityStatusDialog({
       case "edit":
       case "edit_schedule":
       case "edit_ad_visibility":
+        router.push(`/ads/edit/${ad.id}`)
         onOpenChange(false)
         break
       case "view_profile":
