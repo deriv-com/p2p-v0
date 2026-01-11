@@ -91,26 +91,37 @@ export function VisibilityStatusDialog({
 
   const content = (
     <div className="space-y-4">
-      {reasons.includes("advertiser_no_private_groups" ? : (
-      <ul className="space-y-3 mt-2">
-        {reasons.map((reason, index) => {
-          const reasonContent = getReasonContent(reason, t)
-          const actionInfo = getReasonAction(reason, t)
+      {reasons.includes("advertiser_no_private_groups" (
+        <ul className="space-y-3 mt-2">
+          <li key={index} className="flex flex-col">
+            <p className="text-base text-grayscale-600">{getReasonContent("advertiser_no_private_groups", t).description}</p>
+            {reasons.length == 1 && actionInfo && (
+              <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                {actionInfo.label}
+              </Button>
+            )}
+          </li>
+        </ul>
+      ) ? : (
+        <ul className="space-y-3 mt-2">
+          {reasons.map((reason, index) => {
+            const reasonContent = getReasonContent(reason, t)
+            const actionInfo = getReasonAction(reason, t)
 
-          return (
-            <li key={index} className="flex flex-col">
-              <p className="text-base text-grayscale-600">{reasonContent.description}</p>
-              {reasons.length == 1 && actionInfo && (
-                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                  {actionInfo.label}
-                </Button>
-              )}
-            </li>
-            )
-          })
-        }
-      </ul>
-    )}
+            return (
+              <li key={index} className="flex flex-col">
+                <p className="text-base text-grayscale-600">{reasonContent.description}</p>
+                {reasons.length == 1 && actionInfo && (
+                  <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                    {actionInfo.label}
+                  </Button>
+                )}
+              </li>
+              )
+            })
+          }
+        </ul>
+      )}
     </div>
   )
 
