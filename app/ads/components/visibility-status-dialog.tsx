@@ -115,7 +115,7 @@ export function VisibilityStatusDialog({
                   </Button>
                 )}
               </li>
-              )
+            )
           })
         </ul>
       )}
