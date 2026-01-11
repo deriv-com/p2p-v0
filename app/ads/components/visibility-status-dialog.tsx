@@ -93,21 +93,32 @@ export function VisibilityStatusDialog({
     <div className="space-y-4">
       <ul className="space-y-3 mt-2">
         {reasons.include("advertiser_no_private_groups") ? 
-        
-        : reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
-          const actionInfo = getReasonAction(reason, t)
+            const actionInfo = getReasonAction(reason, t)
           return (
-              <li key={index} className="flex flex-col">
-                <p className="text-base text-grayscale-600">{reasonContent.description}</p>
-                {reasons.length == 1 && actionInfo && (
-                  <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                    {actionInfo.label}
-                  </Button>
-                )}
-              </li>
-            )
-        })
+            <li key={index} className="flex flex-col">
+              <p className="text-base text-grayscale-600">{reasonContent.description}</p>
+              {reasons.length == 1 && actionInfo && (
+                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                  {actionInfo.label}
+                </Button>
+              )}
+            </li>
+          )
+        : reasons.map((reason, index) => {
+            const reasonContent = getReasonContent(reason, t)
+            const actionInfo = getReasonAction(reason, t)
+            return (
+                <li key={index} className="flex flex-col">
+                  <p className="text-base text-grayscale-600">{reasonContent.description}</p>
+                  {reasons.length == 1 && actionInfo && (
+                    <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                      {actionInfo.label}
+                    </Button>
+                  )}
+                </li>
+              )
+          })
         }
       </ul>
     </div>
