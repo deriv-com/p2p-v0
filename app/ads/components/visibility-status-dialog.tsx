@@ -73,6 +73,7 @@ export function VisibilityStatusDialog({
 }: VisibilityStatusDialogProps) {
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const router = useRouter()
 
   const handleAction = (actionType: string) => {
     switch (actionType) {
