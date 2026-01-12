@@ -503,7 +503,7 @@ export const currencyFlagMapper = {
   DZD: "/icons/flag-algeria.svg", 
   LAK: "/icons/flag-laos.svg", 
   MWK: "/icons/flag-malawi.svg", 
-  WST: ""
+  WST: "/icons/flag-samoa.svg"
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
