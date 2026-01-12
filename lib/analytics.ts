@@ -7,7 +7,7 @@ export const initializeAnalytics = async () => {
     return
   }
 
-  const remoteConfigURL = process.env.NEXT_PUBLIC_REMOTE_CONFIG_URL;
+  const remoteConfigURL = process.env.NEXT_PUBLIC_REMOTE_CONFIG_URL
   let flags = {
     tracking_rudderstack: true,
     tracking_posthog: true
@@ -16,7 +16,7 @@ export const initializeAnalytics = async () => {
   if (remoteConfigURL) {
       flags = await fetch(remoteConfigURL)
           .then(res => res.json())
-          .catch(() => FIREBASE_INIT_DATA);
+          .catch(() => FIREBASE_INIT_DATA)
   }
 
   const hasRudderStack = !!(process.env.NEXT_PUBLIC_RUDDERSTACK_KEY && flags.tracking_rudderstack)
