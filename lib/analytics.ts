@@ -2,7 +2,7 @@
 
 import { Analytics } from "@deriv-com/analytics"
 
-export const initializeAnalytics = () => {
+export const initializeAnalytics = async () => {
   if (typeof window === "undefined") {
     return
   }
