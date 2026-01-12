@@ -12,6 +12,7 @@
   "dependencies": {
     "@datadog/browser-logs": "latest",
     "@datadog/browser-rum": "latest",
+    "@deriv-com/analytics": "1.33.0",
     "@eslint/eslintrc": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@novu/nextjs": "latest",
