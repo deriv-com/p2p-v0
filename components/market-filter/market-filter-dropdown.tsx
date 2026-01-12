@@ -39,6 +39,7 @@ export default function MarketFilterDropdown({
   const [sortBy, setSortBy] = useState(initialSortBy)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const { userData } = useUserDataStore()
 
   useEffect(() => {
     setFilters(initialFilters)
