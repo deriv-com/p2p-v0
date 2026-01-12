@@ -105,7 +105,7 @@ export default function MarketFilterDropdown({
             id="is-private"
             checked={filters.isPrivate}
             onCheckedChange={(checked) => handleFilterChange("isPrivate", checked as boolean)}
-            className="data-[state=checked]:bg-black border-2 border-grayscale-text-muted"
+            className={cn("data-[state=checked]:bg-black border-2 border-grayscale-text-muted")}
           />
           <label htmlFor="is-private" className="text-sm text-grayscale-600 cursor-pointer">
             Ads from closed group only
