@@ -28,24 +28,9 @@ export const initializeAnalytics = async () => {
   const hasPostHog = !!(process.env.NEXT_PUBLIC_POSTHOG_KEY && flags.tracking_posthog)
 
   const config = {
-    ...flags.tracking_rudderstack && rudderstackKey: process.env.NEXT_PUBLIC_RUDDERSTACK_KEY,
-    ...flags.tracking_posthog && posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY,
-    ...flags.tracking_posthog && posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST
+    ...hasRudderStack && rudderstackKey: process.env.NEXT_PUBLIC_RUDDERSTACK_KEY,
+    ...hasPostHog && posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    ...hasPostHog && posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST
   }
-  if (hasRudderStack) {
-      const config: {
-          rudderstackKey: string;
-          posthogKey?: string;
-          posthogHost?: string;
-      } = {
-          rudderstackKey: process.env.NEXT_PUBLIC_RUDDERSTACK_KEY!,
-      }
-
-      if (hasPostHog) {
-          config.posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
-          config.posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
-      }
-
-      await Analytics?.initialise(config)
-  }
+   await Analytics?.initialise(config)
 }
