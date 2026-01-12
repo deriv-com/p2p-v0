@@ -10,6 +10,7 @@ import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
 import { DatadogRumInit } from "@/components/datadog-rum-init"
 import { LanguageSync } from "@/lib/i18n/language-sync"
 import { LoadingIndicator } from "@/components/loading-indicator"
+import { AnalyticsInit } from "@/components/analytics-init"
 import Script from "next/script"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -53,6 +54,7 @@ export default function RootLayout({
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
         height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
         <DatadogRumInit />
+        <AnalyticsInit />
         <Suspense fallback={null}>
           <LanguageSync />
         </Suspense>
