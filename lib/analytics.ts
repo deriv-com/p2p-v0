@@ -7,7 +7,7 @@ export const initializeAnalytics = () => {
     return
   }
 
-  const { rudderstackKey, growthbookKey, growthbookDecryptionKey, isProduction } = analyticsConfig
+  const { rudderstackKey } = analyticsConfig
 
   if (!rudderstackKey) {
     console.warn("[Analytics] Rudderstack key is not configured. Analytics tracking will be disabled.")
