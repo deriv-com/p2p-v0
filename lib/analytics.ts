@@ -14,14 +14,14 @@ export const initializeAnalytics = async () => {
   }
 
   if (remoteConfigURL) {
-      flags = await fetch(remoteConfigURL)
-          .then(res => res.json())
-          .catch(() => {
-            return {
-              tracking_rudderstack: true,
-              tracking_posthog: true
-            }
-          })
+    flags = await fetch(remoteConfigURL)
+        .then(res => res.json())
+        .catch(() => {
+          return {
+            tracking_rudderstack: true,
+            tracking_posthog: true
+          }
+        })
   }
 
   const hasRudderStack = !!(process.env.NEXT_PUBLIC_RUDDERSTACK_KEY && flags.tracking_rudderstack)
