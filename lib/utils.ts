@@ -500,6 +500,10 @@ export const currencyFlagMapper = {
   SLL: "/icons/flag-seirraleone.svg",
   TRY: "/icons/flag-turkey.svg",
   XCD: "/icons/flag-dominica.svg",
+  DZD: "/icons/flag-algeria.svg", 
+  LAK: "/icons/flag-laos.svg", 
+  MWK: "/icons/flag-malawi.svg", 
+  WST: "/icons/flag-samoa.svg"
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
