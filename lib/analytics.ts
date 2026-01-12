@@ -11,7 +11,8 @@ export const initializeAnalytics = () => {
   let flags = {
     tracking_rudderstack: true,
     tracking_posthog: true
-  };
+  }
+
   if (remoteConfigURL) {
       flags = await fetch(remoteConfigURL)
           .then(res => res.json())
