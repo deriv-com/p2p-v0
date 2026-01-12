@@ -27,6 +27,11 @@ export const initializeAnalytics = async () => {
   const hasRudderStack = !!(process.env.NEXT_PUBLIC_RUDDERSTACK_KEY && flags.tracking_rudderstack)
   const hasPostHog = !!(process.env.NEXT_PUBLIC_POSTHOG_KEY && flags.tracking_posthog)
 
+  const config = {
+    ...flags.tracking_rudderstack && rudderstackKey: process.env.NEXT_PUBLIC_RUDDERSTACK_KEY,
+    ...flags.tracking_posthog && posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    ...flags.tracking_posthog && posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST
+  }
   if (hasRudderStack) {
       const config: {
           rudderstackKey: string;
