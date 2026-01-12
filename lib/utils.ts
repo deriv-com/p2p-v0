@@ -501,8 +501,8 @@ export const currencyFlagMapper = {
   TRY: "/icons/flag-turkey.svg",
   XCD: "/icons/flag-dominica.svg",
   DZD: "/icons/flag-algeria.svg", 
-  LAK: "", 
-  MWK: "", 
+  LAK: "/icons/flag-laos.svg", 
+  MWK: "/icons/flag-malawi.svg", 
   WST: ""
 }
 
