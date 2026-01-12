@@ -103,7 +103,7 @@ export default function MarketFilterDropdown({
             {t("filter.adsFromFollowing")}
           </label>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className={cn("flex items-center space-x-3", , userData.trade_band !== "diamond" && "hidden")}>
           <Checkbox
             id="is-private"
             checked={filters.isPrivate}
