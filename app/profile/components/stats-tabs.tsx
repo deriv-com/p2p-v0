@@ -58,7 +58,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     { id: "stats", label: t("profile.stats") },
     { id: "payment", label: t("profile.paymentMethods") },
     { id: "follows", label: t("profile.follows") },
-    userData.trade_band === "diamond" && { id: "closed-group", label: "Closed group" },
+    ...{userData.trade_band === "diamond" && { id: "closed-group", label: "Closed group" }},
     { id: "blocked", label: t("profile.blocked") },
   ]
 
