@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import type { MarketFilterOptions } from "./types"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface MarketFilterDropdownProps {
   activeTab?: string
