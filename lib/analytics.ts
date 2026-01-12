@@ -7,8 +7,16 @@ export const initializeAnalytics = () => {
     return
   }
 
-  const hasRudderStack = !!(process.env.RUDDERSTACK_KEY && flags.tracking_rudderstack);
-  const hasPostHog = !!(process.env.POSTHOG_KEY && flags.tracking_posthog);
+  const remoteConfigURL = process.env.NEXT_PUBLIC_REMOTE_CONFIG_URL;
+  let flags = FIREBASE_INIT_DATA;
+  if (remoteConfigURL) {
+      flags = await fetch(remoteConfigURL)
+          .then(res => res.json())
+          .catch(() => FIREBASE_INIT_DATA);
+  }
+
+  const hasRudderStack = !!(process.env.NEXT_PUBLIC_RUDDERSTACK_KEY && flags.tracking_rudderstack);
+  const hasPostHog = !!(process.env.NEXT_PUBLIC_POSTHOG_KEY && flags.tracking_posthog);
 
   if (hasRudderStack) {
       const config: {
@@ -16,12 +24,12 @@ export const initializeAnalytics = () => {
           posthogKey?: string;
           posthogHost?: string;
       } = {
-          rudderstackKey: process.env.RUDDERSTACK_KEY!,
+          rudderstackKey: process.env.NEXT_PUBLIC_RUDDERSTACK_KEY!,
       };
 
       if (hasPostHog) {
-          config.posthogKey = process.env.POSTHOG_KEY;
-          config.posthogHost = process.env.POSTHOG_HOST;
+          config.posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+          config.posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
       }
 
       await Analytics?.initialise(config);
