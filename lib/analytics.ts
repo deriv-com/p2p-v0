@@ -36,5 +36,6 @@ export const initializeAnalytics = async () => {
       posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     }),
   }
-   await Analytics?.initialise(config)
+  
+  await Analytics?.initialise(config)
 }
