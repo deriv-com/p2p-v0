@@ -2,10 +2,6 @@
 
 import { Analytics } from "@deriv-com/analytics"
 
-/**
- * Initialize @deriv-com/analytics with Rudderstack and Growthbook
- * This should be called once on app initialization
- */
 export const initializeAnalytics = () => {
   if (typeof window === "undefined") {
     return
@@ -40,7 +36,6 @@ export const initializeAnalytics = () => {
       },
     })
 
-    // Set initial attributes
     Analytics?.setAttributes({
       user_language: navigator.language || "en",
       device_language: navigator.language,
@@ -54,24 +49,6 @@ export const initializeAnalytics = () => {
       console.log("[Analytics] Initialized successfully")
     }
   } catch (error) {
-    console.error("[Analytics] Failed to initialize:", error)
-  }
-}
-
-/**
- * Utility to get the analytics instance
- */
-export const getAnalyticsInstance = () => {
-  return Analytics
-}
-
-/**
- * Make analytics ID available globally for debugging
- */
-if (typeof window !== "undefined") {
-  ;(window as any).getMyId = () => {
-    const id = Analytics?.getId()
-    console.log("[Analytics] User ID:", id)
-    return id
+    console.error("Failed to initialize:", error)
   }
 }
