@@ -42,9 +42,6 @@ export const initializeAnalytics = () => {
       device_type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? "mobile" : "desktop",
     })
 
-    // Track initial page view
-    Analytics?.pageView()
-
     if (!isProduction) {
       console.log("[Analytics] Initialized successfully")
     }
