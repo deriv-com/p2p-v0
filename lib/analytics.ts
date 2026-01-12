@@ -19,8 +19,8 @@ export const initializeAnalytics = async () => {
           .catch(() => FIREBASE_INIT_DATA);
   }
 
-  const hasRudderStack = !!(process.env.NEXT_PUBLIC_RUDDERSTACK_KEY && flags.tracking_rudderstack);
-  const hasPostHog = !!(process.env.NEXT_PUBLIC_POSTHOG_KEY && flags.tracking_posthog);
+  const hasRudderStack = !!(process.env.NEXT_PUBLIC_RUDDERSTACK_KEY && flags.tracking_rudderstack)
+  const hasPostHog = !!(process.env.NEXT_PUBLIC_POSTHOG_KEY && flags.tracking_posthog)
 
   if (hasRudderStack) {
       const config: {
@@ -29,13 +29,13 @@ export const initializeAnalytics = async () => {
           posthogHost?: string;
       } = {
           rudderstackKey: process.env.NEXT_PUBLIC_RUDDERSTACK_KEY!,
-      };
-
-      if (hasPostHog) {
-          config.posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-          config.posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
       }
 
-      await Analytics?.initialise(config);
+      if (hasPostHog) {
+          config.posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
+          config.posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
+      }
+
+      await Analytics?.initialise(config)
   }
 }
