@@ -8,7 +8,10 @@ export const initializeAnalytics = () => {
   }
 
   const remoteConfigURL = process.env.NEXT_PUBLIC_REMOTE_CONFIG_URL;
-  let flags = FIREBASE_INIT_DATA;
+  let flags = {
+    tracking_rudderstack: true,
+    tracking_posthog: true
+  };
   if (remoteConfigURL) {
       flags = await fetch(remoteConfigURL)
           .then(res => res.json())
