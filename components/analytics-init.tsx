@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { initDatadog } from "@/lib/analytics"
 
-export function initializeAnalytics() {
+export function Analyticsinit() {
 
   useEffect(() => {
     initDatadog()
