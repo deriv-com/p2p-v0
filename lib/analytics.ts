@@ -9,10 +9,26 @@ export const initializeAnalytics = () => {
 
   const { rudderstackKey } = analyticsConfig
 
-  if (!rudderstackKey) {
-    console.warn("[Analytics] Rudderstack key is not configured. Analytics tracking will be disabled.")
-    return
-  }
+  const hasRudderStack = !!(process.env.RUDDERSTACK_KEY && flags.tracking_rudderstack);
+    const hasPostHog = !!(process.env.POSTHOG_KEY && flags.tracking_posthog);
+
+    // RudderStack key is required by the Analytics package
+    if (hasRudderStack) {
+        const config: {
+            rudderstackKey: string;
+            posthogKey?: string;
+            posthogHost?: string;
+        } = {
+            rudderstackKey: process.env.RUDDERSTACK_KEY!,
+        };
+
+        if (hasPostHog) {
+            config.posthogKey = process.env.POSTHOG_KEY;
+            config.posthogHost = process.env.POSTHOG_HOST;
+        }
+
+        await Analytics?.initialise(config);
+    }
 
   try {
     Analytics?.initialise({
