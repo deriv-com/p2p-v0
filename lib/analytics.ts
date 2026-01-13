@@ -38,4 +38,7 @@ export const initializeAnalytics = async () => {
   }
   
   await Analytics?.initialise(config)
+
+  const externalId = useUserDataStore.getState().externalId
+  if(externalId) Analytics.identifyEvent(externalId)
 }
