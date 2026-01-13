@@ -34,6 +34,7 @@ interface UserDataState {
   socketToken: string | null
   isWalletAccount: boolean
   setUserData: (data: UserData) => void
+  setExternalId: (id: string) => void
   setUserId: (id: string) => void
   setClientId: (id: string) => void
   setResidenceCountry: (country: string) => void
