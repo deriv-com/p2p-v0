@@ -1,6 +1,7 @@
 "use client"
 
 import { Analytics } from "@deriv-com/analytics"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export const initializeAnalytics = async () => {
   if (typeof window === "undefined") {
