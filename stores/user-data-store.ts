@@ -91,6 +91,8 @@ export const useUserDataStore = create<UserDataState>((set) => ({
     set({ userData: data })
   },
 
+  setExternalId: (id) => set({ externalId: id }),
+
   setUserId: (id) => set({ userId: id }),
 
   setClientId: (id) => set({ clientId: id }),
