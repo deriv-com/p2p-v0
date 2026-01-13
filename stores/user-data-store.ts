@@ -25,6 +25,7 @@ export interface VerificationStatus {
 interface UserDataState {
   userData: UserData | null
   userId: string | null
+  externalId: string | null
   clientId: string | null
   residenceCountry: string | null
   brandClientId: string | null
