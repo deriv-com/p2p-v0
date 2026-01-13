@@ -214,6 +214,8 @@ export async function getSession(): Promise<boolean> {
     })
 
     const result = await response.json()
+    const externalId = result?.data?.identity?.external_id
+    useUserDataStore.getState().setExternalId(externalId)
 
     return response.status === 200
   } catch (error) {
