@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import type { OnboardingStatusResponse } from "@/services/api/api-auth"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface UserData {
   adverts_are_listed?: boolean
