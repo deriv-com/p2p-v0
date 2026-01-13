@@ -34,8 +34,6 @@ export default function RateChangeConfirmation({
   const newTotal = (Number.parseFloat(amount) * newRate)
   const buySellLabel = isBuy ? "selling" : "buying"
 
-  console.log('hellio');
-
   const content = (
     <div className="flex flex-col gap-8">
       <div className="space-y-4">
