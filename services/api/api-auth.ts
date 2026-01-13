@@ -213,6 +213,8 @@ export async function getSession(): Promise<boolean> {
       credentials: "include",
     })
 
+    const result = await response.json()
+
     return response.status === 200
   } catch (error) {
     return false
