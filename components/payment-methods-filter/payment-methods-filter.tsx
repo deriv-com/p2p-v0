@@ -71,19 +71,19 @@ export default function PaymentMethodsFilter({
   }, [filteredPaymentMethods])
 
   const isAllSelected =
-    filteredPaymentMethods.length > 0 &&
-    filteredPaymentMethods.every((method) => tempSelectedMethods.includes(method.method))
+    paymentMethods.length > 0 &&
+    paymentMethods.every((method) => tempSelectedMethods.includes(method.method))
 
   const isIndeterminate =
-    filteredPaymentMethods.some((method) => tempSelectedMethods.includes(method.method)) && !isAllSelected
+    paymentMethods.some((method) => tempSelectedMethods.includes(method.method)) && !isAllSelected
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      const newSelection = [...new Set([...tempSelectedMethods, ...filteredPaymentMethods.map((m) => m.method)])]
+      const newSelection = [...new Set([...tempSelectedMethods, ...paymentMethods.map((m) => m.method)])]
       setTempSelectedMethods(newSelection)
     } else {
-      const filteredMethodIds = filteredPaymentMethods.map((m) => m.method)
-      const newSelection = tempSelectedMethods.filter((id) => !filteredMethodIds.includes(id))
+      const allMethodIds = paymentMethods.map((method) => method.method)
+      const newSelection = tempSelectedMethods.filter((id) => !allMethodIds.includes(id))
       setTempSelectedMethods(newSelection)
     }
   }
