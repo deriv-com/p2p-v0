@@ -53,6 +53,7 @@ const initialState = {
   userData: null,
   userId: null,
   clientId: null,
+  externalId: null,
   residenceCountry: null,
   brandClientId: null,
   brand: null,
