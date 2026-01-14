@@ -16,7 +16,7 @@ export function IntercomProvider({ appId }: { appId: string }) {
   useEffect(() => {
     // Load Intercom script
     const script = document.createElement("script")
-    script.src = `https://widget.intercom.io/widget/${appId}`
+    script.src = `https://widget.intercom.io/widget/rfwdy059`
     script.async = true
     document.body.appendChild(script)
 
