@@ -86,6 +86,7 @@ export default function Main({
           window.location.href = getLoginUrl(userData?.signup === "v1")
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
+          console.log('fetchUserIdAndStore')
 
           try {
             const onboardingStatus = await AuthAPI.getOnboardingStatus()
