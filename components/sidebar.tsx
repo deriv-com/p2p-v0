@@ -21,7 +21,9 @@ import ProfileIcon from "@/public/icons/profile-icon.svg"
 import ProfileSelectedIcon from "@/public/icons/profile-icon-red.svg"
 import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
-import { Button } from "@/components/ui/button"
+import HomeIcon from "@/public/icons/ic-home.svg"
+import LiveChatIcon from "@/public/icons/ic-guide.svg"
+import { ChevronRight } from "lucide-react"
 
 interface SidebarProps {
   className?: string
@@ -61,9 +63,12 @@ export default function Sidebar({ className }: SidebarProps) {
       ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
+  const liveChatUrl = "https://deriv.com/livechat"
+
   const navItems = [
     ...(!isDisabled
       ? [
+          { name: t("navigation.home"), href: homeUrl, icon: HomeIcon, selectedIcon: HomeIcon },
           { name: t("navigation.market"), href: "/", icon: MarketIcon, selectedIcon: MarketSelectedIcon },
           { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon, selectedIcon: OrdersSelectedIcon },
           { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon, selectedIcon: AdsSelectedIcon },
@@ -71,23 +76,29 @@ export default function Sidebar({ className }: SidebarProps) {
             ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, selectedIcon: WalletSelectedIcon }]
             : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, selectedIcon: ProfileSelectedIcon },
-          {
-            name: t("navigation.p2pHelpCentre"),
-            href: helpCentreUrl,
-            icon: GuideIcon,
-            selectedIcon: GuideSelectedIcon,
-          },
+          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, selectedIcon: GuideSelectedIcon },
+          { name: t("navigation.talkToAgent"), href: liveChatUrl, icon: LiveChatIcon, selectedIcon: LiveChatIcon },
         ]
       : []),
   ]
 
   const hideOnMobile = [
+    t("navigation.home"),
     t("navigation.market"),
     t("navigation.orders"),
     t("navigation.myAds"),
     t("navigation.wallet"),
     t("navigation.profile"),
+    t("navigation.talkToAgent"),
   ]
+
+  const getInitials = (name: string) => {
+    const words = name.split(" ")
+    if (words.length >= 2) {
+      return (words[0][0] + words[1][0]).toUpperCase()
+    }
+    return name.slice(0, 2).toUpperCase()
+  }
 
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
@@ -102,42 +113,64 @@ export default function Sidebar({ className }: SidebarProps) {
       <nav className="flex-1 px-4">
         <ul>
           {navItems.map((item) => {
-            const isActive =
+            const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.talkToAgent")
+            const isActive = !isExternal && (
               item.href === "/"
                 ? pathname === "/" || pathname.startsWith("/advertiser")
                 : pathname.startsWith(item.href)
+            )
+
+            const linkContent = (
+              <>
+                <div className="h-5 w-5 flex items-center justify-center">
+                  <SvgIcon src={isActive ? item.selectedIcon : item.icon} fill={isActive ? "#FF444F" : "#181C25"} />
+                </div>
+                {item.name}
+              </>
+            )
 
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
-                {item.name === t("navigation.p2pHelpCentre") && <div className="my-3 border-b border-grayscale-200"></div>}
-                <Link
-                  prefetch
-                  href={item.href}
-                  className={cn("flex items-center gap-3 rounded-md py-4 text-sm", isActive ? "text-primary" : "")}
-                >
-                  <div className="h-5 w-5 flex items-center justify-center">
-                    <SvgIcon src={isActive ? item.selectedIcon : item.icon} fill={isActive ? "#FF444F" : "#181C25"} />
-                  </div>
-                  {item.name}
-                </Link>
+                {(item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.market")) && <div className="my-3 border-b border-grayscale-200"></div>}
+                {isExternal ? (
+                  <a
+                    href={item.href}
+                    className="flex items-center gap-3 rounded-md py-4 text-sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {linkContent}
+                  </a>
+                ) : (
+                  <Link
+                    prefetch
+                    href={item.href}
+                    className={cn("flex items-center gap-3 rounded-md py-4 text-sm", isActive ? "text-primary" : "")}
+                  >
+                    {linkContent}
+                  </Link>
+                )}
               </li>
             )
           })}
         </ul>
       </nav>
-      <div className="flex flex-row items-center gap-4 p-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="px-4 bg-grayscale-500 text-slate-1200 text-xs gap-4 hover:bg-grayscale-500 hover:slate-1200"
-          onClick={() => {
-            window.location.href = homeUrl
-          }}
-        >
-          <Image src="/icons/home-logo-dark.svg" alt="Home" width={14} height={22} />
-          <span>{t("navigation.backToHome")}</span>
-        </Button>
-      </div>
+      {userName && (
+        <div className="border-t border-grayscale-200 p-4">
+          <Link
+            href="/profile"
+            className="flex items-center justify-between gap-3 rounded-md py-2 text-sm hover:bg-grayscale-100 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-medium text-slate-700">
+                {getInitials(userName)}
+              </div>
+              <span className="text-sm font-medium text-slate-900">{userName}</span>
+            </div>
+            <ChevronRight className="w-5 h-5 text-slate-400" />
+          </Link>
+        </div>
+      )}
     </div>
   )
 }
