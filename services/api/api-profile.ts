@@ -501,3 +501,84 @@ export async function getBlockedUsers(): Promise<[]> {
     throw error
   }
 }
+
+export async function getClosedGroup(): Promise<[]> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error fetching blocked users: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data || []
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function addToClosedGoup(advertiserId): Promise<[]> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const body = JSON.stringify({
+      data: {
+        user_id: advertiserId,
+      },
+    })
+    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+      method: "POST",
+      headers,
+      credentials: "include",
+      body
+    })
+
+    if (!response.ok) {
+      return {
+        success: false
+      }
+    }
+
+    return {
+      success: true
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function removeFromClosedGoup(advertiserId): Promise<[]> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+
+    const response = await fetch(`${API.baseUrl}/user-group/members/${advertiserId}`, {
+      method: "DELETE",
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      return {
+        success: false
+      }
+    }
+
+    return {
+      success: true
+    }
+  } catch (error) {
+    throw error
+  }
+}

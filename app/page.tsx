@@ -97,7 +97,7 @@ export default function BuySellPage() {
     window.open(helpCentreUrl, "_blank")
   }
 
-  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+  const hasActiveFilters = filterOptions.fromFollowing !== false || filterOptions.isPrivate !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const hasFilteredPaymentMethods =
@@ -278,6 +278,10 @@ export default function BuySellPage() {
 
       if (filterOptions.fromFollowing) {
         params.favourites_only = 1
+      }
+
+      if (filterOptions.isPrivate) {
+        params.is_private = 1
       }
 
       const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
@@ -697,11 +701,19 @@ export default function BuySellPage() {
                                   tradeBand={ad.user.trade_band}
                                   showLearnMore={true}
                                   size={18}
-                                  className="mr-1"
+                                />
+                              )}
+                              {userId != ad.user.id && ad.is_private && (
+                                <Image
+                                  src="/icons/closed-group.svg"
+                                  alt="Closed Group"
+                                  width={32}
+                                  height={32}
+                                  className="cursor-pointer mr-1"
                                 />
                               )}
                               {ad.user?.is_favourite && (
-                                <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                   {t("market.following")}
                                 </span>
                               )}

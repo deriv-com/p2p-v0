@@ -289,6 +289,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const tempBanUntil = result?.data?.temp_ban_until
     const balances = result?.data?.total_account_value
     const status = result?.data?.status
+    const tradeBand = result?.data?.trade_band
 
     if (userId) {
       useUserDataStore.getState().setUserId(userId.toString())
@@ -309,6 +310,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           temp_ban_until: tempBanUntil,
           balances: [balances],
           status: status,
+          trade_band: tradeBand,
         })
       }
     } else {

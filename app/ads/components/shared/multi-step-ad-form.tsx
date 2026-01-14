@@ -11,6 +11,7 @@ import { ProgressSteps } from "./progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
+import AdVisibilitySelector from "./ad-visibility-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import CountrySelection from "./country-selection"
@@ -19,6 +20,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -63,7 +65,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
+  const [adVisibility, setAdVisibility] = useState<string>("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
+  const { userData } = useUserDataStore()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
@@ -198,6 +202,12 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             if (data.available_countries) {
               setSelectedCountries(data.available_countries)
             }
+
+            if (data.is_private) {
+              setAdVisibility("closed-group")
+            } else {
+              setAdVisibility("everyone")
+            }
           }
 
           setIsLoadingInitialData(false)
@@ -313,6 +323,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+          is_private: adVisibility === "closed-group"? 1 : 0,
         }
 
         const result = await AdsAPI.createAd(payload)
@@ -345,6 +356,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+          is_private: adVisibility === "closed-group"? 1 : 0,
         }
 
         const updateResult = await AdsAPI.updateAd(finalData.id, payload)
@@ -632,6 +644,29 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                     />
                   </div>
                 </div>
+                {userData.trade_band === "diamond" && (<div>
+                  <div className="flex gap-[4px] items-center mb-4">
+                    <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.svg"
+                            alt="Info"
+                            width={24}
+                            height={24}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-white">Choose who can see and interact with your ads on the marketplace.</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <AdVisibilitySelector value={adVisibility} onValueChange={setAdVisibility} />
+                </div>)}
               </div>
             )}
           </div>

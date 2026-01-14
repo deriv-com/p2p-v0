@@ -237,6 +237,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const handleVisibilityStatusClick = (ad: Ad) => {
     if (ad.visibility_status && ad.visibility_status.length > 0) {
       setSelectedVisibilityReasons(ad.visibility_status)
+      setSelectedAd(ad)
       setVisibilityDialogOpen(true)
     }
   }
@@ -443,8 +444,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   >
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
+                    {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
                   </TableCell>
                   <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
@@ -532,6 +534,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       </Drawer>
 
       <VisibilityStatusDialog
+        id={selectedAd?.id}
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
         reasons={selectedVisibilityReasons}
