@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useMarketFilterStore } from "@/stores/market-filter-store"
 
 export interface LoginRequest {
   email: string
@@ -291,7 +292,14 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const status = result?.data?.status
 
     if (userId) {
-      useUserDataStore.getState().setUserId(userId.toString())
+      const newUserId = userId.toString()
+      const previousUserId = useUserDataStore.getState().userId
+
+      // Reset market filters if a different user logged in
+      if (previousUserId && previousUserId !== newUserId) {
+        useMarketFilterStore.getState().resetFilters()
+        useUserDataStore.getState().setUserId(newUserId)
+      }
 
       if (brandClientId) {
         useUserDataStore.getState().setBrandClientId(brandClientId)
