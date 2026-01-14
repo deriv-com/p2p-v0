@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import type { OnboardingStatusResponse } from "@/services/api/api-auth"
 
 export interface UserData {
@@ -83,49 +84,57 @@ const cacheWalletAccount = (isWallet: boolean) => {
   localStorage.setItem("is_wallet_account", isWallet.toString())
 }
 
-export const useUserDataStore = create<UserDataState>((set) => ({
-  ...initialState,
+export const useUserDataStore = create<UserDataState>()(
+  persist(
+    (set: (partial: Partial<UserDataState> | ((state: UserDataState) => Partial<UserDataState>)) => void) => ({
+      ...initialState,
 
-  setUserData: (data) => {
-    cacheSignup(data.signup)
-    set({ userData: data })
-  },
+      setUserData: (data: UserData) => {
+        cacheSignup(data.signup)
+        set({ userData: data })
+      },
 
-  setUserId: (id) => set({ userId: id }),
+      setUserId: (id: string) => set({ userId: id }),
 
-  setClientId: (id) => set({ clientId: id }),
+      setClientId: (id: string) => set({ clientId: id }),
 
-  setResidenceCountry: (country) => set({ residenceCountry: country }),
+      setResidenceCountry: (country: string) => set({ residenceCountry: country }),
 
-  setBrandClientId: (id) => set({ brandClientId: id }),
+      setBrandClientId: (id: string) => set({ brandClientId: id }),
 
-  setBrand: (brand) => set({ brand }),
+      setBrand: (brand: string) => set({ brand }),
 
-  updateUserData: (data) =>
-    set((state) => {
-      const newUserData = state.userData ? { ...state.userData, ...data } : data
-      cacheSignup(newUserData.signup)
-      return { userData: newUserData }
+      updateUserData: (data: Partial<UserData>) =>
+        set((state: UserDataState) => {
+          const newUserData = state.userData ? { ...state.userData, ...data } : data
+          cacheSignup(newUserData.signup)
+          return { userData: newUserData }
+        }),
+
+      setVerificationStatus: (status: VerificationStatus) => set({ verificationStatus: status }),
+
+      setOnboardingStatus: (status: OnboardingStatusResponse) => set({ onboardingStatus: status }),
+
+      setSocketToken: (token: string | null) => set({ socketToken: token }),
+
+      setIsWalletAccount: (isWallet: boolean) => {
+        cacheWalletAccount(isWallet)
+        set({ isWalletAccount: isWallet })
+      },
+
+      clearUserData: () => {
+        cacheSignup(undefined)
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("is_wallet_account")
+        }
+        set(initialState)
+      },
     }),
-
-  setVerificationStatus: (status) => set({ verificationStatus: status }),
-
-  setOnboardingStatus: (status) => set({ onboardingStatus: status }),
-
-  setSocketToken: (token) => set({ socketToken: token }),
-
-  setIsWalletAccount: (isWallet) => {
-    cacheWalletAccount(isWallet)
-    set({ isWalletAccount: isWallet })
-  },
-
-  clearUserData: () => {
-    cacheSignup(undefined)
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("is_wallet_account")
+    {
+      name: "user-data-storage",
+      partialize: (state: UserDataState) => ({ userId: state.userId }),
     }
-    set(initialState)
-  },
-}))
+  )
+)
 
 export { getCachedSignup }
