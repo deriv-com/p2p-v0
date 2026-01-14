@@ -91,7 +91,6 @@ export default function Sidebar({ className }: SidebarProps) {
     t("navigation.wallet"),
     t("navigation.profile"),
     t("navigation.talkToAgent"),
-    t("navigation.homeProfile"),
   ]
 
   const getInitials = (name: string) => {
