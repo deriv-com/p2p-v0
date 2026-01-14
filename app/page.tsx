@@ -208,7 +208,7 @@ export default function BuySellPage() {
         }
       } catch (error) {
         console.error("Error fetching advert statistics:", error)
-        if (currencies.length > 0) {
+        if (currencies.length > 0 && (currency === '' || currency === null)) {
           setCurrency(currencies[0]?.code)
         }
       }
