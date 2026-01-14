@@ -414,7 +414,7 @@ export default function OrderDetailsPage() {
         <Navigation
           isBackBtnVisible={false}
           isVisible={false}
-          title={`${orderType} ${order?.advert?.account_currency}`}
+          title=""
           redirectUrl={"/orders"}
         />
       )}
@@ -473,8 +473,8 @@ export default function OrderDetailsPage() {
                 <div
                   className={cn(
                     `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
-                    order.status === "pending_release" ? "flex-col items-start" :
-                      order.status === "pending_payment"
+                    order.status === "pending_release" && isMobile ? "flex-col items-start" :
+                      order.status === "pending_payment" || order.status === "pending_release"
                         ? "justify-between"
                         : "justify-center",
                   )}
@@ -570,7 +570,7 @@ export default function OrderDetailsPage() {
                                     <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
                                   </AccordionContent>
                                 </AccordionItem>
-                                {index !== order.payment_method_details.length - 1 && <div className="m-4 border-b border-grayscale-200"></div>}
+                                {index !== order.payment_method_details.length - 1 && <div className="mx-4 border-b border-grayscale-200"></div>}
                               </div>
                             ))}
                           </Accordion>
