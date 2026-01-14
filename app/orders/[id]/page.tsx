@@ -519,7 +519,7 @@ export default function OrderDetailsPage() {
                               setShowChat(true)
                               setIsChatVisible(true)
                             }}
-                            className="text-slate-500 hover:text-slate-700"
+                            className="text-slate-500 hover:text-slate-700 pr-0"
                             variant="ghost"
                             size="sm"
                           >
@@ -558,7 +558,7 @@ export default function OrderDetailsPage() {
                             {order.payment_method_details.map((method, index) => (
                               <div key={index}>
                                 <AccordionItem value={`payment-method-${index}`} className="border-b-0">
-                                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                                  <AccordionTrigger className="p-4 hover:no-underline">
                                     <div className="flex items-center gap-3">
                                       <div
                                         className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
@@ -570,7 +570,7 @@ export default function OrderDetailsPage() {
                                     <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
                                   </AccordionContent>
                                 </AccordionItem>
-                                {index !== order.payment_method_details.length - 1 && <div className="my-4 border-b border-grayscale-200"></div>}
+                                {index !== order.payment_method_details.length - 1 && <div className="m-4 border-b border-grayscale-200"></div>}
                               </div>
                             ))}
                           </Accordion>
