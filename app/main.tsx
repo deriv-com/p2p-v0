@@ -57,8 +57,6 @@ export default function Main({
       const abortController = new AbortController()
       abortControllerRef.current = abortController
 
-      console.log('userId', userId);
-
       try {
         const token = searchParams.get("token")
         if (token) {
