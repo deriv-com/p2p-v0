@@ -64,9 +64,9 @@ export default function ClosedGroupTab() {
   )
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-full">
       {(filteredClosedGroups.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[50%]">
             <Image
               src="/icons/search-icon-custom.png"
@@ -96,23 +96,25 @@ export default function ClosedGroupTab() {
         </div>
       )}
 
-      <div className="space-y-0 divide-y divide-gray-100">
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading users...</p>
-          </div>
-        ) : filteredClosedGroups.length > 0 ? (
-          filteredClosedGroups.map((group) => <GroupCard key={group.id} group={group} />)
-        ) : (
-          <EmptyState
-            title={searchQuery ? "No matching name" : "No followed users yet"}
-            description={
-              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
-            }
-            redirectToAds={false}
-          />
-        )}
+      <div className="flex-1 overflow-y-auto max-h-[calc(100vh-300px)]">
+        <div className="space-y-0 divide-y divide-gray-100">
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+              <p className="mt-2 text-slate-600">Loading users...</p>
+            </div>
+          ) : filteredClosedGroups.length > 0 ? (
+            filteredClosedGroups.map((group) => <GroupCard key={group.id} group={group} />)
+          ) : (
+            <EmptyState
+              title={searchQuery ? "No matching name" : "No followed users yet"}
+              description={
+                searchQuery ? t("profile.noResultFor", { query: searchQuery }) : "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
+              }
+              redirectToAds={false}
+            />
+          )}
+        </div>
       </div>
     </div>
   )
