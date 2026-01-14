@@ -9,7 +9,6 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
@@ -32,7 +31,6 @@ export default function Main({
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false);
-  const resetMarketFilters = useMarketFilterStore((state) => state.resetFilters)
 
   const isDisabled = userData?.status === "disabled"
 
@@ -58,6 +56,8 @@ export default function Main({
       const abortController = new AbortController()
       abortControllerRef.current = abortController
 
+      console.log('userId', userId);
+
       try {
         const token = searchParams.get("token")
         if (token) {
@@ -82,11 +82,9 @@ export default function Main({
 
         if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
-          resetMarketFilters()
           window.location.href = getLoginUrl(userData?.signup === "v1")
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
-          console.log('fetchUserIdAndStore')
 
           try {
             const onboardingStatus = await AuthAPI.getOnboardingStatus()
@@ -142,7 +140,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus, resetMarketFilters])
+  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
