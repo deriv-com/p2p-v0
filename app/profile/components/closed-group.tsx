@@ -108,7 +108,7 @@ export default function ClosedGroupTab() {
           <EmptyState
             title={searchQuery ? "No matching name" : "No followed users yet"}
             description={
-              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : t("profile.closedGroupsAppear")
+              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
             }
             redirectToAds={false}
           />
