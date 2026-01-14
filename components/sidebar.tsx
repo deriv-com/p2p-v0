@@ -170,7 +170,7 @@ export default function Sidebar({ className }: SidebarProps) {
               <span className="text-sm font-extrabold text-slate-1000">{userName}</span>
             </div>
             <ChevronRight className="w-6 h-6 text-slate-1000" />
-          </Link>
+          </a>
         </div>
       )}
     </div>
