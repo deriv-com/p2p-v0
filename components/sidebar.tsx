@@ -57,6 +57,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }, [userData?.signup])
 
   const homeUrl = getHomeUrl(isV1Signup, "home")
+  const homeProfileUrl = getHomeUrl(isV1Signup, "homeProfile")
 
   const helpCentreUrl =
     locale != "en"
@@ -90,6 +91,7 @@ export default function Sidebar({ className }: SidebarProps) {
     t("navigation.wallet"),
     t("navigation.profile"),
     t("navigation.talkToAgent"),
+    t("navigation.homeProfile"),
   ]
 
   const getInitials = (name: string) => {
@@ -156,18 +158,18 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       {userName && (
-        <div className="border-t border-grayscale-200 p-4">
+        <div className="p-4">
           <Link
-            href="/profile"
-            className="flex items-center justify-between gap-3 rounded-md py-2 text-sm hover:bg-grayscale-100 transition-colors"
+            href={homeProfileUrl}
+            className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-medium text-slate-700">
+              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700">
                 {getInitials(userName)}
               </div>
-              <span className="text-sm font-medium text-slate-900">{userName}</span>
+              <span className="text-sm font-extrabold text-slate-1000">{userName}</span>
             </div>
-            <ChevronRight className="w-5 h-5 text-slate-400" />
+            <ChevronRight className="w-6 h-6 text-slate-1000" />
           </Link>
         </div>
       )}
