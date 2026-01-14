@@ -426,7 +426,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
          
-            {userData.trade_band === "diamond" && (<TabsContent value="closed-group" className="mt-4">
+            {userData.trade_band === "diamond" && (<TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
               <div className="relative">
                 <ClosedGroupTab />
               </div>
