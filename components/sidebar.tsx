@@ -43,7 +43,9 @@ export default function Sidebar({ className }: SidebarProps) {
     return userData?.signup === "v1"
   })
 
-  const userName = userData?.nickname ?? userData?.email
+  const firstName = userData?.first_name
+  const lastName = userData?.last_name
+  const fullName = firstName && lastName ? `${firstName} ${lastName}` : null
   const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
@@ -93,12 +95,10 @@ export default function Sidebar({ className }: SidebarProps) {
     t("navigation.talkToAgent"),
   ]
 
-  const getInitials = (name: string) => {
-    const words = name.split(" ")
-    if (words.length >= 2) {
-      return (words[0][0] + words[1][0]).toUpperCase()
-    }
-    return name.slice(0, 2).toUpperCase()
+  const getInitials = () => {
+    const firstInitial = firstName?.[0] ?? ""
+    const lastInitial = lastName?.[0] ?? ""
+    return (firstInitial + lastInitial).toUpperCase()
   }
 
   return (
@@ -156,7 +156,7 @@ export default function Sidebar({ className }: SidebarProps) {
           })}
         </ul>
       </nav>
-      {userName && (
+      {fullName && (
         <div className="p-4">
           <a
             className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
@@ -164,9 +164,9 @@ export default function Sidebar({ className }: SidebarProps) {
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700">
-                {getInitials(userName)}
+                {getInitials()}
               </div>
-              <span className="text-sm font-extrabold text-slate-1000">{userName}</span>
+              <span className="text-sm font-extrabold text-slate-1000">{fullName}</span>
             </div>
             <ChevronRight className="w-6 h-6 text-slate-1000" />
           </a>
