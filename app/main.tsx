@@ -12,6 +12,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
+import { IntercomProvider } from "@/components/intercom-provider"
 import "./globals.css"
 
 export default function Main({
@@ -55,6 +56,8 @@ export default function Main({
 
       const abortController = new AbortController()
       abortControllerRef.current = abortController
+
+      console.log('userId', userId);
 
       try {
         const token = searchParams.get("token")
@@ -175,6 +178,9 @@ export default function Main({
 
   return (
     <WebSocketProvider>
+      {process.env.NEXT_PUBLIC_INTERCOM_APP_ID && (
+        <IntercomProvider appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID} />
+      )}
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
