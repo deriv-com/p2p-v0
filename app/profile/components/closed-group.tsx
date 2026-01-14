@@ -100,7 +100,7 @@ export default function ClosedGroupTab() {
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">{t("profile.loadingGroups")}</p>
+            <p className="mt-2 text-slate-600">Loading users...</p>
           </div>
         ) : filteredClosedGroups.length > 0 ? (
           filteredClosedGroups.map((group) => <GroupCard key={group.id} group={group} />)
