@@ -106,7 +106,7 @@ export default function ClosedGroupTab() {
           filteredClosedGroups.map((group) => <GroupCard key={group.id} group={group} />)
         ) : (
           <EmptyState
-            title={searchQuery ? t("profile.noMatchingGroup") : t("profile.noClosedGroups")}
+            title={searchQuery ? "No matching name" : "No followed users yet"}
             description={
               searchQuery ? t("profile.noResultFor", { query: searchQuery }) : t("profile.closedGroupsAppear")
             }
