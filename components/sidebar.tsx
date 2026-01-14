@@ -21,8 +21,8 @@ import ProfileIcon from "@/public/icons/profile-icon.svg"
 import ProfileSelectedIcon from "@/public/icons/profile-icon-red.svg"
 import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
-import HomeIcon from "@/public/icons/ic-house.svg"
-import LiveChatIcon from "@/public/icons/ic-livechat.svg"
+import HomeIcon from "@/public/icons/ic-home.svg"
+import LiveChatIcon from "@/public/icons/ic-guide.svg"
 import { ChevronRight } from "lucide-react"
 
 interface SidebarProps {
@@ -101,6 +101,12 @@ export default function Sidebar({ className }: SidebarProps) {
     return (firstInitial + lastInitial).toUpperCase()
   }
 
+  const handleTalkToAgent = () => {
+    if (window.Intercom) {
+      window.Intercom("show")
+    }
+  }
+
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
@@ -133,7 +139,14 @@ export default function Sidebar({ className }: SidebarProps) {
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
                 {(item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.market")) && <div className="my-3 border-b border-grayscale-200"></div>}
-                {isExternal ? (
+                {item.name === t("navigation.talkToAgent") ? (
+                  <button
+                    onClick={handleTalkToAgent}
+                    className="flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
+                  >
+                    {linkContent}
+                  </button>
+                ) : isExternal ? (
                   <a
                     href={item.href}
                     className="flex items-center gap-3 rounded-md py-4 text-sm"
