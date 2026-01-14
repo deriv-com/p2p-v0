@@ -473,9 +473,10 @@ export default function OrderDetailsPage() {
                 <div
                   className={cn(
                     `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
-                    order.status === "pending_payment" || order.status === "pending_release"
-                      ? "justify-between"
-                      : "justify-center",
+                    order.status === "pending_release" ? "flex-col items-start" :
+                      order.status === "pending_payment"
+                        ? "justify-between"
+                        : "justify-center",
                   )}
                 >
                   <div className="flex items-center">
@@ -484,7 +485,7 @@ export default function OrderDetailsPage() {
                     </span>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
-                    <div className="flex items-center">
+                    <div className={cn("flex items-center", order.status === "pending_release" && "text-sm")}>
                       <span>{t("orderDetails.timeLeft")}&nbsp;</span>
                       <span className="font-bold">{timeLeft}</span>
                     </div>
@@ -498,11 +499,11 @@ export default function OrderDetailsPage() {
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-                          <p className="font-bold">
+                          <p className="font-bold text-sm">
                             {formatAmount(order.payment_amount)} {order?.payment_currency}
                           </p>
                         </div>
-                        <button className="flex items-center text-sm" onClick={showOrderDetails}>
+                        <button className="flex items-center text-xs" onClick={showOrderDetails}>
                           {t("orderDetails.viewOrderDetails")}
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
@@ -510,7 +511,7 @@ export default function OrderDetailsPage() {
                       <div className="flex justify-between items-end">
                         <div>
                           <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                          <p className="font-bold">{counterpartyNickname}</p>
+                          <p className="font-bold text-sm">{counterpartyNickname}</p>
                         </div>
                         {isMobile && (
                           <Button
@@ -555,19 +556,22 @@ export default function OrderDetailsPage() {
                         <div className="bg-white border rounded-lg mt-6">
                           <Accordion type="single" collapsible className="w-full">
                             {order.payment_method_details.map((method, index) => (
-                              <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
-                                <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                                  <div className="flex items-center gap-3">
-                                    <div
-                                      className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
-                                    ></div>
-                                    <span className="text-sm">{method.display_name}</span>
-                                  </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="px-4 pb-4">
-                                  <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
-                                </AccordionContent>
-                              </AccordionItem>
+                              <div key={index}>
+                                <AccordionItem value={`payment-method-${index}`} className="border-b-0">
+                                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                                    <div className="flex items-center gap-3">
+                                      <div
+                                        className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
+                                      ></div>
+                                      <span className="text-sm">{method.display_name}</span>
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="px-4 pb-4">
+                                    <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
+                                  </AccordionContent>
+                                </AccordionItem>
+                                {index !== order.payment_method_details.length - 1 && <div className="my-4 border-b border-grayscale-200"></div>}
+                              </div>
                             ))}
                           </Accordion>
                         </div>
