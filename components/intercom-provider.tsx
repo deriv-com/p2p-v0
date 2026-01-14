@@ -19,6 +19,7 @@ export function IntercomProvider({ appId }: { appId: string }) {
     script.src = `https://widget.intercom.io/widget/rfwdy059`
     script.async = true
     document.body.appendChild(script)
+    console.log("intercom useeffect")
 
     // Initialize Intercom
     window.intercomSettings = {
@@ -32,8 +33,11 @@ export function IntercomProvider({ appId }: { appId: string }) {
     }
 
     if (window.Intercom) {
+      console.log("has intercom")
       window.Intercom("reattach_activator")
       window.Intercom("update", window.intercomSettings)
+    } else {
+      console.log("no intercom")
     }
 
     return () => {
