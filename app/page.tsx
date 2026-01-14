@@ -198,10 +198,12 @@ export default function BuySellPage() {
             }
           }
 
-          setCurrency(currencyToSet)
+          if(currency === '' || currency === null) {
+            setCurrency(currencyToSet)
 
-          if (shouldSetSellTab) {
-            setActiveTab("sell")
+            if (shouldSetSellTab) {
+              setActiveTab("sell")
+            }
           }
         }
       } catch (error) {
@@ -216,7 +218,7 @@ export default function BuySellPage() {
   }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency])
 
   useEffect(() => {
-    if (currencies.length > 0) {
+    if (currencies.length > 0 && (currency === '' || currency === null)) {
       setCurrency(currencies[0]?.code)
     }
   }, [currencies])
