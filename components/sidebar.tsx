@@ -21,7 +21,7 @@ import ProfileIcon from "@/public/icons/profile-icon.svg"
 import ProfileSelectedIcon from "@/public/icons/profile-icon-red.svg"
 import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
-import HomeIcon from "@/public/icons/ic-home.svg"
+import HomeIcon from "@/public/icons/ic-house.svg"
 import LiveChatIcon from "@/public/icons/ic-livechat.svg"
 import { ChevronRight } from "lucide-react"
 
