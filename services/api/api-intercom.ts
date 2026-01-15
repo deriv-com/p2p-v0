@@ -18,7 +18,7 @@ interface IntercomTokenResponse {
  */
 export async function getIntercomToken(): Promise<{ token: string; id?: string } | null> {
   try {
-    const url = `${API.baseUrl}/service/token/helpcentre`
+    const url = `${API.coreUrl}/service/token/helpcentre`
     
     const response = await fetch(url, {
       method: "GET",
