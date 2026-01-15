@@ -176,10 +176,10 @@ export default function Main({
 
   return (
     <WebSocketProvider>
-      {process.env.NEXT_PUBLIC_INTERCOM_APP_ID && (
+      {/* {process.env.NEXT_PUBLIC_INTERCOM_APP_ID && (
         <IntercomProvider appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID} />
-      )}
-      {/* <IntercomProvider appId="rfwdy059" /> */}
+      )} */}
+      <IntercomProvider appId="rfwdy059" />
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
