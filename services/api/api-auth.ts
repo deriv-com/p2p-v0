@@ -295,7 +295,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     // Derive user's local currency from /settings.countries using /users/me country_code.
     // Fallback to the first country currency if no match.
     // Skip if we already have a persisted value.
-    if (!useUserDataStore.getState().localCurrency) {
+    // if (!useUserDataStore.getState().localCurrency) {
       try {
         const settings = await getSettings()
         const countries = settings?.countries || []
@@ -320,7 +320,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       } catch (error) {
         console.error("Error deriving local currency from settings:", error)
       }
-    }
+    // }
 
     if (userId) {
       const newUserId = userId.toString()
