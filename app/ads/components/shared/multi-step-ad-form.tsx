@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -45,6 +46,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
 
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
@@ -138,6 +140,21 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
     fetchCountries()
   }, [])
+
+  // Default "Paying with" currency to user's local currency for new ads (without overriding user edits).
+  useEffect(() => {
+    if (mode !== "create") return
+    if (!localCurrency) return
+    if (formData?.forCurrency) return
+    if (currencies.length === 0) return
+    if (!currencies.some((c: { code: string }) => c.code === localCurrency)) return
+
+    setFormData((prev: any) => {
+      const next = { ...prev, forCurrency: localCurrency }
+      formDataRef.current = { ...formDataRef.current, forCurrency: localCurrency }
+      return next
+    })
+  }, [mode, localCurrency, currencies, formData?.forCurrency])
 
   useEffect(() => {
     if (mode === "edit" && adId) {
