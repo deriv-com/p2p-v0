@@ -16,18 +16,26 @@ export function IntercomProvider({ appId }: { appId: string }) {
   const [intercomHash, setIntercomHash] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  console.log("IntercomProvider mounted", { appId, userId, userEmail: userData?.email })
+
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
-      if (!userId) {
+      // Only fetch token if we have both userId and user email (indicating full authentication)
+      if (!userId || !userData?.email) {
+        console.log("Skipping Intercom token fetch - user not fully authenticated", { userId, hasEmail: !!userData?.email })
         setIsLoading(false)
         return
       }
 
+      console.log("Fetching Intercom token...")
       try {
         const result = await getIntercomToken("web")
         if (result?.token) {
+          console.log("Intercom token received successfully")
           setIntercomHash(result.token)
+        } else {
+          console.warn("Intercom token not received, continuing without hash")
         }
       } catch (error) {
         console.error("Failed to fetch Intercom token:", error)
@@ -37,7 +45,7 @@ export function IntercomProvider({ appId }: { appId: string }) {
     }
 
     fetchToken()
-  }, [userId])
+  }, [userId, userData?.email])
 
   // Initialize Intercom
   useEffect(() => {
