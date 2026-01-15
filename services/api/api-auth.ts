@@ -285,11 +285,36 @@ export async function fetchUserIdAndStore(): Promise<void> {
     }
 
     const userId = result?.data?.id
+    const userCountryCode = result?.data?.country_code
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
     const balances = result?.data?.total_account_value
     const status = result?.data?.status
+
+    // Derive user's local currency from /settings.countries using /users/me country_code.
+    // Fallback to the first country currency if no match.
+    // Skip if we already have a persisted value.
+    if (!useUserDataStore.getState().localCurrency) {
+      try {
+        const settings = await getSettings()
+        const countries = settings?.countries || []
+        const normalizedUserCountryCode = typeof userCountryCode === "string" ? userCountryCode.toLowerCase() : ""
+
+        const matchedCountry = normalizedUserCountryCode
+          ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedUserCountryCode)
+          : null
+
+        const derivedLocalCurrency =
+          (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+          (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+          null
+
+        useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
+      } catch (error) {
+        console.error("Error deriving local currency from settings:", error)
+      }
+    }
 
     if (userId) {
       const newUserId = userId.toString()
