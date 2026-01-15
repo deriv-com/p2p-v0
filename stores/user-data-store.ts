@@ -28,6 +28,7 @@ interface UserDataState {
   userId: string | null
   clientId: string | null
   residenceCountry: string | null
+  localCurrency: string | null
   brandClientId: string | null
   brand: string | null
   verificationStatus: VerificationStatus | null
@@ -38,6 +39,7 @@ interface UserDataState {
   setUserId: (id: string) => void
   setClientId: (id: string) => void
   setResidenceCountry: (country: string) => void
+  setLocalCurrency: (currency: string | null) => void
   setBrandClientId: (id: string) => void
   setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
@@ -53,6 +55,7 @@ const initialState = {
   userId: null,
   clientId: null,
   residenceCountry: null,
+  localCurrency: null,
   brandClientId: null,
   brand: null,
   verificationStatus: null,
@@ -100,6 +103,8 @@ export const useUserDataStore = create<UserDataState>()(
 
       setResidenceCountry: (country: string) => set({ residenceCountry: country }),
 
+      setLocalCurrency: (currency: string | null) => set({ localCurrency: currency }),
+
       setBrandClientId: (id: string) => set({ brandClientId: id }),
 
       setBrand: (brand: string) => set({ brand }),
@@ -132,7 +137,7 @@ export const useUserDataStore = create<UserDataState>()(
     }),
     {
       name: "user-data-storage",
-      partialize: (state: UserDataState) => ({ userId: state.userId }),
+      partialize: (state: UserDataState) => ({ userId: state.userId, localCurrency: state.localCurrency }),
     }
   )
 )
