@@ -1,45 +1,158 @@
-import { API } from "@/lib/local-variables"
+"use client"
 
-const getAuthHeader = () => ({
-  "Content-Type": "application/json",
-})
+import { useEffect, useMemo, useState } from "react"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { getIntercomToken } from "@/services/api/api-intercom"
+import { useLanguageStore } from "@/stores/language-store"
 
-interface IntercomTokenResponse {
-  data: {
-    token: string
-    attributes?: {
-      id: string
-    }
+declare global {
+  interface Window {
+    Intercom: any
+    intercomSettings: any
+    __intercomBooted?: boolean
   }
 }
 
-/**
- * Get Intercom token for user authentication
- */
-export async function getIntercomToken(platform: string = "web"): Promise<{ token: string; id?: string } | null> {
-  try {
-    const response = await fetch(
-      `${API.coreUrl}/service/token/helpcentre`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: getAuthHeader(),
+export function IntercomProvider({ appId }: { appId: string }) {
+  const { userData, userId } = useUserDataStore()
+  const locale = useLanguageStore((s) => s.locale)
+  const [intercomJwt, setIntercomJwt] = useState<string | null>(null)
+  const [intercomUserId, setIntercomUserId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  
+  console.log("IntercomProvider mounted", {
+    appId,
+    userId,
+    userEmail: userData?.email,
+    locale,
+  })
+
+  // Fetch Intercom token
+  useEffect(() => {
+    const fetchToken = async () => {
+      // Only fetch token if we have both userId and user email (indicating full authentication)
+      if (!userId || !userData?.email) {
+        console.log("Skipping Intercom token fetch - user not fully authenticated", {
+          userId,
+          hasEmail: !!userData?.email,
+        })
+        setIsLoading(false)
+        return
       }
-    )
 
-    if (!response.ok) {
-      console.error("Failed to fetch Intercom token:", response.statusText)
-      return null
+      console.log("Fetching Intercom token...", { platform: "web" })
+      try {
+        const result = await getIntercomToken()
+        if (result?.token) {
+          // This endpoint returns an Intercom Identity Verification token (JWT).
+          // When Intercom "Messenger Security" is enabled, you must pass this as `intercom_user_jwt`,
+          // not `user_hash` (HMAC).
+          setIntercomJwt(result.token)
+          setIntercomUserId(result.id ?? userId)
+          console.log("Intercom token received successfully", {
+            intercom_user_jwt: result.token,
+            intercom_user_id: result.id ?? userId,
+          })
+        } else {
+          setIntercomUserId(userId)
+          console.warn("Intercom token not received, continuing without JWT", {
+            intercom_user_id: userId,
+          })
+        }
+      } catch (error) {
+        console.error("Failed to fetch Intercom token:", error)
+        setIntercomUserId(userId)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    const result: IntercomTokenResponse = await response.json()
+    fetchToken()
+  }, [userId, userData?.email])
 
+  const intercomBaseSettings = useMemo(() => {
+    // Mirrors the other team's "Base setting" approach.
+    // Note: With Messenger Security enforced, Intercom requires `intercom_user_jwt` for logged-in users.
     return {
-      token: result.data.token,
-      id: result.data.attributes?.id,
+      api_base: "https://api-iam.intercom.io",
+      app_id: appId,
+      language_override: locale,
+      hide_default_launcher: true,
+      ...(intercomJwt ? { intercom_user_jwt: intercomJwt } : {}),
+      ...(intercomUserId ? { user_id: intercomUserId } : {}),
+      // Optional: you can also pass these if you want Intercom user profile info
+      ...(userData?.email ? { email: userData.email } : {}),
+      ...(userData?.first_name && userData?.last_name ? { name: `${userData.first_name} ${userData.last_name}` } : {}),
     }
-  } catch (error) {
-    console.error("Error fetching Intercom token:", error)
-    return null
+  }, [appId, intercomJwt, intercomUserId, locale, userData?.email, userData?.first_name, userData?.last_name])
+
+  const ensureIntercomScript = () => {
+    // If the real Intercom function already exists, nothing to do.
+    if (typeof window.Intercom === "function") return
+
+    // If we already inserted the script, nothing to do.
+    const existing = document.querySelector(`script[src="https://widget.intercom.io/widget/${appId}"]`)
+    if (existing) return
+
+    // Create the stub queue function if needed (matches Intercom recommended snippet).
+    const i = function () {
+      // eslint-disable-next-line prefer-rest-params
+      i.c(arguments)
+    } as any
+    i.q = []
+    i.c = function (args: any) {
+      i.q.push(args)
+    }
+    window.Intercom = i
+
+    const intercomScript = document.createElement("script")
+    intercomScript.async = true
+    intercomScript.src = `https://widget.intercom.io/widget/${appId}`
+    document.head.appendChild(intercomScript)
   }
+
+  const bootOrUpdateIntercom = () => {
+    window.intercomSettings = intercomBaseSettings
+
+    if (typeof window.Intercom !== "function") {
+      return
+    }
+
+    if (!window.__intercomBooted) {
+      console.log("Intercom boot", window.intercomSettings)
+      window.Intercom("boot", window.intercomSettings)
+      window.__intercomBooted = true
+      return
+    }
+
+    console.log("Intercom update", window.intercomSettings)
+    window.Intercom("update", window.intercomSettings)
+  }
+
+  // Initialize Intercom (other-team style)
+  useEffect(() => {
+    // Don't initialize until we have the token result (or confirmed we can't/shouldn't fetch it yet)
+    if (isLoading) return
+
+    ensureIntercomScript()
+
+    // Boot/update now (queue-safe even if script isn't ready yet)
+    bootOrUpdateIntercom()
+
+    // Auto-open if live_chat=true
+    if (typeof window !== "undefined" && window.location.search.includes("live_chat=true")) {
+      console.log("Intercom live_chat=true detected; will show when ready")
+      const interval = window.setInterval(() => {
+        if (typeof window.Intercom === "function") {
+          // Ensure boot happened before show
+          bootOrUpdateIntercom()
+          window.Intercom("show")
+          window.clearInterval(interval)
+        }
+      }, 200)
+      return () => window.clearInterval(interval)
+    }
+  }, [isLoading, intercomBaseSettings])
+
+  return null
 }
