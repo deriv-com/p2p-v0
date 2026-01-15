@@ -19,28 +19,16 @@ export function IntercomProvider({ appId }: { appId: string }) {
   const [intercomJwt, setIntercomJwt] = useState<string | null>(null)
   const [intercomUserId, setIntercomUserId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  
-  console.log("IntercomProvider mounted", {
-    appId,
-    userId,
-    userEmail: userData?.email,
-    locale,
-  })
 
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
       // Only fetch token if we have both userId and user email (indicating full authentication)
       if (!userId || !userData?.email) {
-        console.log("Skipping Intercom token fetch - user not fully authenticated", {
-          userId,
-          hasEmail: !!userData?.email,
-        })
         setIsLoading(false)
         return
       }
 
-      console.log("Fetching Intercom token...", { platform: "web" })
       try {
         const result = await getIntercomToken()
         if (result?.token) {
@@ -49,10 +37,6 @@ export function IntercomProvider({ appId }: { appId: string }) {
           // not `user_hash` (HMAC).
           setIntercomJwt(result.token)
           setIntercomUserId(result.id ?? userId)
-          console.log("Intercom token received successfully", {
-            intercom_user_jwt: result.token,
-            intercom_user_id: result.id ?? userId,
-          })
         } else {
           setIntercomUserId(userId)
           console.warn("Intercom token not received, continuing without JWT", {
@@ -119,13 +103,11 @@ export function IntercomProvider({ appId }: { appId: string }) {
     }
 
     if (!window.__intercomBooted) {
-      console.log("Intercom boot", window.intercomSettings)
       window.Intercom("boot", window.intercomSettings)
       window.__intercomBooted = true
       return
     }
 
-    console.log("Intercom update", window.intercomSettings)
     window.Intercom("update", window.intercomSettings)
   }
 
@@ -141,7 +123,6 @@ export function IntercomProvider({ appId }: { appId: string }) {
 
     // Auto-open if live_chat=true
     if (typeof window !== "undefined" && window.location.search.includes("live_chat=true")) {
-      console.log("Intercom live_chat=true detected; will show when ready")
       const interval = window.setInterval(() => {
         if (typeof window.Intercom === "function") {
           // Ensure boot happened before show
