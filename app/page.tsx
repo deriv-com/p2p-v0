@@ -74,11 +74,13 @@ export default function BuySellPage() {
   const [showKycPopup, setShowKycPopup] = useState(false)
 
   const fetchedForRef = useRef<string | null>(null)
+  const autoCurrencySetRef = useRef(false)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
@@ -183,6 +185,9 @@ export default function BuySellPage() {
           let currencyToSet = currencies[0]?.code
           let shouldSetSellTab = false
 
+          if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
+            currencyToSet = localCurrency
+          } else {
           const currencyWithSellCount = filteredStatistics.find((stat: any) => stat.sell_count > 0)
 
           if (currencyWithSellCount) {
@@ -197,9 +202,11 @@ export default function BuySellPage() {
               }
             }
           }
+          }
 
           if(currency === '' || currency === null) {
             setCurrency(currencyToSet)
+            autoCurrencySetRef.current = true
 
             if (shouldSetSellTab) {
               setActiveTab("sell")
@@ -209,19 +216,48 @@ export default function BuySellPage() {
       } catch (error) {
         console.error("Error fetching advert statistics:", error)
         if (currencies.length > 0 && (currency === '' || currency === null)) {
-          setCurrency(currencies[0]?.code)
+          const validCurrencyCodes = currencies.map((c) => c.code)
+          if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
+            setCurrency(localCurrency)
+            autoCurrencySetRef.current = true
+          } else {
+            setCurrency(currencies[0]?.code)
+            autoCurrencySetRef.current = true
+          }
         }
       }
     }
 
     fetchAdvertStatistics()
-  }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency])
+  }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency, localCurrency, currency])
 
   useEffect(() => {
     if (currencies.length > 0 && (currency === '' || currency === null)) {
-      setCurrency(currencies[0]?.code)
+      const validCurrencyCodes = currencies.map((c) => c.code)
+      if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
+        setCurrency(localCurrency)
+        autoCurrencySetRef.current = true
+      } else {
+        setCurrency(currencies[0]?.code)
+        autoCurrencySetRef.current = true
+      }
     }
-  }, [currencies])
+  }, [currencies, localCurrency, currency, setCurrency])
+
+  // If we auto-selected a default currency before localCurrency was available,
+  // update it once localCurrency is resolved (but don't override user selection).
+  useEffect(() => {
+    if (!localCurrency || currencies.length === 0) return
+    if (!currencies.some((c) => c.code === localCurrency)) return
+
+    const shouldOverride =
+      currency === "" || (autoCurrencySetRef.current && currency !== localCurrency)
+
+    if (shouldOverride) {
+      setCurrency(localCurrency)
+      autoCurrencySetRef.current = true
+    }
+  }, [localCurrency, currencies, currency, setCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -356,6 +392,7 @@ export default function BuySellPage() {
 
   const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
     setCurrency(currencyCode)
+    autoCurrencySetRef.current = false
   }
 
   const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue?: string) => {
