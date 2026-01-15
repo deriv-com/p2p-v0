@@ -305,10 +305,16 @@ export async function fetchUserIdAndStore(): Promise<void> {
           ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedUserCountryCode)
           : null
 
+        console.log("normalizedUserCountryCode", normalizedUserCountryCode)
+        console.log("matchedCountry", matchedCountry)
+        console.log("countries", countries)
+
         const derivedLocalCurrency =
           (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
           (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
           null
+
+        console.log("derivedLocalCurrency", derivedLocalCurrency)
 
         useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
       } catch (error) {
