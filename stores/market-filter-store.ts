@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 export interface MarketFilterOptions {
   fromFollowing: boolean
@@ -29,14 +30,29 @@ const initialState = {
   selectedAccountCurrency: "USD",
 }
 
-export const useMarketFilterStore = create<MarketFilterState>((set) => ({
-  ...initialState,
+export const useMarketFilterStore = create<MarketFilterState>()(
+  persist(
+    (set: (partial: Partial<MarketFilterState>) => void) => ({
+      ...initialState,
 
-  setActiveTab: (tab) => set({ activeTab: tab }),
-  setCurrency: (currency) => set({ currency }),
-  setSortBy: (sortBy) => set({ sortBy }),
-  setFilterOptions: (options) => set({ filterOptions: options }),
-  setSelectedPaymentMethods: (methods) => set({ selectedPaymentMethods: methods }),
-  setSelectedAccountCurrency: (currency) => set({ selectedAccountCurrency: currency }),
-  resetFilters: () => set(initialState),
-}))
+      setActiveTab: (tab: "buy" | "sell") => set({ activeTab: tab }),
+      setCurrency: (currency: string) => set({ currency }),
+      setSortBy: (sortBy: string) => set({ sortBy }),
+      setFilterOptions: (options: MarketFilterOptions) => set({ filterOptions: options }),
+      setSelectedPaymentMethods: (methods: string[]) => set({ selectedPaymentMethods: methods }),
+      setSelectedAccountCurrency: (currency: string) => set({ selectedAccountCurrency: currency }),
+      resetFilters: () => set(initialState),
+    }),
+    {
+      name: "market-filter-storage",
+      partialize: (state: MarketFilterState) => ({
+        activeTab: state.activeTab,
+        currency: state.currency,
+        sortBy: state.sortBy,
+        filterOptions: state.filterOptions,
+        selectedPaymentMethods: state.selectedPaymentMethods,
+        selectedAccountCurrency: state.selectedAccountCurrency,
+      }),
+    }
+  )
+)
