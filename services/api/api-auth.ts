@@ -257,6 +257,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       credentials: "include",
       headers: getAuthHeader(),
     })
+    console.log("users/me response: ", response)
 
 
     const result = await response.json()
@@ -317,9 +318,12 @@ export async function fetchUserIdAndStore(): Promise<void> {
     if (userId) {
       const newUserId = userId.toString()
       const previousUserId = useUserDataStore.getState().userId
+      console.log("userId: ", newUserId)
+      console.log("previousUserId: ", previousUserId)
 
       // Reset market filters if a different user logged in
       if (previousUserId && previousUserId !== newUserId) {
+        console.log("reset filters")
         useMarketFilterStore.getState().resetFilters()
         useUserDataStore.getState().setUserId(newUserId)
       }
