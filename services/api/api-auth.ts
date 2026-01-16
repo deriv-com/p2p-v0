@@ -321,10 +321,14 @@ export async function fetchUserIdAndStore(): Promise<void> {
       console.log("userId: ", newUserId)
       console.log("previousUserId: ", previousUserId)
 
-      // Reset market filters if a different user logged in
+      // Always store the userId once we have it (first load previousUserId is often null).
+      // Only reset filters when the user actually changes between sessions.
       if (previousUserId && previousUserId !== newUserId) {
-        console.log("reset filters")
         useMarketFilterStore.getState().resetFilters()
+      }
+
+      if (previousUserId !== newUserId) {
+        console.log("new id set")
         useUserDataStore.getState().setUserId(newUserId)
       }
 
