@@ -257,7 +257,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
       credentials: "include",
       headers: getAuthHeader(),
     })
-    console.log("users/me response: ", response)
 
 
     const result = await response.json()
@@ -318,8 +317,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     if (userId) {
       const newUserId = userId.toString()
       const previousUserId = useUserDataStore.getState().userId
-      console.log("userId: ", newUserId)
-      console.log("previousUserId: ", previousUserId)
 
       // Always store the userId once we have it (first load previousUserId is often null).
       // Only reset filters when the user actually changes between sessions.
@@ -328,7 +325,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
 
       if (previousUserId !== newUserId) {
-        console.log("new id set")
         useUserDataStore.getState().setUserId(newUserId)
       }
 
