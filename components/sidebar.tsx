@@ -80,7 +80,7 @@ export default function Sidebar({ className }: SidebarProps) {
             : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, selectedIcon: ProfileSelectedIcon },
           { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, selectedIcon: GuideSelectedIcon },
-          { name: t("navigation.talkToAgent"), href: liveChatUrl, icon: LiveChatIcon, selectedIcon: LiveChatIcon },
+          { name: t("navigation.liveChat"), href: liveChatUrl, icon: LiveChatIcon, selectedIcon: LiveChatIcon },
         ]
       : []),
   ]
@@ -92,7 +92,7 @@ export default function Sidebar({ className }: SidebarProps) {
     t("navigation.myAds"),
     t("navigation.wallet"),
     t("navigation.profile"),
-    t("navigation.talkToAgent"),
+    t("navigation.liveChat"),
   ]
 
   const getInitials = () => {
@@ -101,7 +101,7 @@ export default function Sidebar({ className }: SidebarProps) {
     return (firstInitial + lastInitial).toUpperCase()
   }
 
-  const handleTalkToAgent = () => {
+  const handleLiveChat = () => {
     if (window.Intercom) {
       window.Intercom("show")
     }
@@ -120,7 +120,7 @@ export default function Sidebar({ className }: SidebarProps) {
       <nav className="flex-1 px-4">
         <ul>
           {navItems.map((item) => {
-            const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.talkToAgent")
+            const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.liveChat")
             const isActive = !isExternal && (
               item.href === "/"
                 ? pathname === "/" || pathname.startsWith("/advertiser")
@@ -139,9 +139,9 @@ export default function Sidebar({ className }: SidebarProps) {
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
                 {(item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.market")) && <div className="my-3 border-b border-grayscale-200"></div>}
-                {item.name === t("navigation.talkToAgent") ? (
+                {item.name === t("navigation.liveChat") ? (
                   <button
-                    onClick={handleTalkToAgent}
+                    onClick={handleLiveChat}
                     className="flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
                   >
                     {linkContent}
