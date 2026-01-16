@@ -544,7 +544,11 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
       url = `https://${baseUrl}/dashboard/home`
     }
   } else if (section === "homeProfile") {
-    url = `https://${baseUrl}/dashboard/profile`
+    if(isV1Signup) {
+      url = `https://${baseUrl}/account/personal-details`
+    } else {
+      url = `https://${baseUrl}/dashboard/profile`
+    }
   } else {
     url = baseUrl
   }
