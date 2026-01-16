@@ -20,25 +20,18 @@ export function IntercomProvider({ appId }: { appId: string }) {
   const [intercomUserId, setIntercomUserId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  console.log("Inside of IntercomProvider");
-  console.log("userData", userData)
-  console.log("userId", userId)
-
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
-      console.log("Fetching token")
       // Only fetch token if we have both userId and user email (indicating full authentication)
       if (!userId || !userData?.email) {
         setIsLoading(false)
-        console.log("no user id, no userdata")
         return
       }
 
       try {
         const result = await getIntercomToken()
         if (result?.token) {
-          console.log("Result: ", result)
           // This endpoint returns an Intercom Identity Verification token (JWT).
           // When Intercom "Messenger Security" is enabled, you must pass this as `intercom_user_jwt`,
           // not `user_hash` (HMAC).
