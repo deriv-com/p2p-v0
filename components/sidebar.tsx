@@ -150,7 +150,6 @@ export default function Sidebar({ className }: SidebarProps) {
                   <a
                     href={item.href}
                     className="flex items-center gap-3 rounded-md py-4 text-sm"
-                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     {linkContent}
