@@ -4,7 +4,7 @@ export const runtime = "edge"
 
 import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Info } from 'lucide-react'
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -488,13 +488,7 @@ export default function OrderDetailsPage() {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={20}
-                                height={20}
-                                className="ml-1 cursor-pointer"
-                              />
+                              <Info className="ml-1 h-5 w-5 cursor-pointer text-yellow-50" aria-label="Info" />
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
