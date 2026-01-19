@@ -490,7 +490,7 @@ export default function OrderDetailsPage() {
                             <TooltipTrigger asChild>
                               <Info className="ml-1 h-5 w-5 cursor-pointer text-yellow-50" aria-label="Info" />
                             </TooltipTrigger>
-                            <TooltipContent className="p-[12px] side="bottom" avoidCollisions={false}>
+                            <TooltipContent className="p-3 side="bottom" avoidCollisions={false}>
                               <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
                               <TooltipArrow className="fill-black" />
                             </TooltipContent>
