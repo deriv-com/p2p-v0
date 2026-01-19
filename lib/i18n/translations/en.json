@@ -232,6 +232,7 @@
     "proofOfTransferSubmitted": "Proof of transfer submitted",
     "textCopiedToClipboard": "The text has been copied to your clipboard.",
     "ratingDeadline": "You have until {deadline} to rate this transaction.",
+    "awaitingPaymentTooltip": "Wait for the buyer to complete their payment.",
     "loadingOrderDetails": "Loading order details...",
     "failedToLoadOrderDetails": "Failed to load order details. Please try again.",
     "tryAgain": "Try Again",
