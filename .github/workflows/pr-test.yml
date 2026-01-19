@@ -1,0 +1,27 @@
+name: Run Octomind on PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  octomind:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build Vercel preview URL
+        id: build
+        run: |
+          BRANCH="${{ github.head_ref }}"
+
+          PREVIEW_URL="https://${BRANCH}.deriv.com"
+
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+
+      - name: Run Octomind
+        uses: OctoMind-dev/automagically-action-execute@v2
+        with:
+          url: ${{ steps.build.outputs.preview_url }}
+          token: ${{ secrets.OCTOMIND_API_KEY }}
+          testTargetId: ${{ secrets.OCTOMIND_TEST_TARGET_ID }}
+          blocking: false
