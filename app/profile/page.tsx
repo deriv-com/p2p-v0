@@ -51,38 +51,13 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`
-        const headers = {
-          "Content-Type": "application/json",
-        }
-
-        const response = await fetch(url, {
-          credentials: "include",
-          headers,
-        })
-
-        const responseData = await response.json()
+        // Import the API function dynamically to avoid circular dependencies
+        const { getCurrentUser } = await import("@/services/api/api-profile")
+        
+        const data = await getCurrentUser()
         setIsLoading(false)
-        if (responseData.errors && responseData.errors.length > 0) {
-          const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if (
-            responseData.errors[0].status != 401 &&
-            responseData.errors[0].status != 403 &&
-            responseData.errors[0].status != 404
-          ) {
-            showWarningDialog({
-              title: t("common.error"),
-              description: errorMessage,
-            })
-          }
-
-          return
-        }
-
-        if (responseData && responseData.data) {
-          const data = responseData.data
-
+        if (data) {
           const joinDate = new Date(data.registered_at)
           const now = new Date()
           const diff = now.getTime() - joinDate.getTime()
@@ -139,17 +114,22 @@ export default function ProfilePage() {
           })
         }
       } catch (error) {
+        setIsLoading(false)
         const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
-        showWarningDialog({
-          title: t("common.error"),
-          description: errorMessage,
-        })
+        
+        // Don't show error dialog for 401/403/404 errors
+        if (!(error instanceof Error && (error.message.includes("401") || error.message.includes("403") || error.message.includes("404")))) {
+          showWarningDialog({
+            title: t("common.error"),
+            description: errorMessage,
+          })
+        }
         console.error("Error fetching user data:", error)
       }
     }
 
     fetchUserData()
-  }, [t])
+  }, [t, showWarningDialog])
 
   if (isDisabled) {
     return (
