@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { getAdvertStatistics } from "@/services/api/api-auth"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -74,7 +73,6 @@ export default function BuySellPage() {
   const [showKycPopup, setShowKycPopup] = useState(false)
 
   const fetchedForRef = useRef<string | null>(null)
-  const autoCurrencySetRef = useRef(false)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -170,94 +168,17 @@ export default function BuySellPage() {
   }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
-    const fetchAdvertStatistics = async () => {
-      try {
-        const statistics = await getAdvertStatistics(selectedAccountCurrency)
-
-        if (currencies.length > 0) {
-          const validCurrencyCodes = currencies.map((c) => c.code)
-          const filteredStatistics =
-            statistics?.data?.filter(
-              (stat: any) => stat.payment_currency && validCurrencyCodes.includes(stat.payment_currency),
-            ) || []
-
-          const operation = searchParams.get("operation")
-          let currencyToSet = currencies[0]?.code
-          let shouldSetSellTab = false
-
-          if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
-            currencyToSet = localCurrency
-          } else {
-          const currencyWithSellCount = filteredStatistics.find((stat: any) => stat.sell_count > 0)
-
-          if (currencyWithSellCount) {
-            currencyToSet = currencyWithSellCount.payment_currency
-          } else {
-            const currencyWithBuyCount = filteredStatistics.find((stat: any) => stat.buy_count > 0)
-
-            if (currencyWithBuyCount) {
-              currencyToSet = currencyWithBuyCount.payment_currency
-              if (!operation) {
-                shouldSetSellTab = true
-              }
-            }
-          }
-          }
-
-          if(currency === '' || currency === null) {
-            setCurrency(currencyToSet)
-            autoCurrencySetRef.current = true
-
-            if (shouldSetSellTab) {
-              setActiveTab("sell")
-            }
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching advert statistics:", error)
-        if (currencies.length > 0 && (currency === '' || currency === null)) {
-          const validCurrencyCodes = currencies.map((c) => c.code)
-          if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
-            setCurrency(localCurrency)
-            autoCurrencySetRef.current = true
-          } else {
-            setCurrency(currencies[0]?.code)
-            autoCurrencySetRef.current = true
-          }
-        }
-      }
-    }
-
-    fetchAdvertStatistics()
-  }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency, localCurrency, currency])
-
-  useEffect(() => {
-    if (currencies.length > 0 && (currency === '' || currency === null)) {
+    // Currency init: if store has no currency yet, default to user's local currency (or first available).
+    // If user already picked a currency, do not override it.
+    if (currencies.length > 0 && (currency === "" || currency === null)) {
       const validCurrencyCodes = currencies.map((c) => c.code)
       if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
         setCurrency(localCurrency)
-        autoCurrencySetRef.current = true
       } else {
         setCurrency(currencies[0]?.code)
-        autoCurrencySetRef.current = true
       }
     }
   }, [currencies, localCurrency, currency, setCurrency])
-
-  // If we auto-selected a default currency before localCurrency was available,
-  // update it once localCurrency is resolved (but don't override user selection).
-  useEffect(() => {
-    if (!localCurrency || currencies.length === 0) return
-    if (!currencies.some((c) => c.code === localCurrency)) return
-
-    const shouldOverride =
-      currency === "" || (autoCurrencySetRef.current && currency !== localCurrency)
-
-    if (shouldOverride) {
-      setCurrency(localCurrency)
-      autoCurrencySetRef.current = true
-    }
-  }, [localCurrency, currencies, currency, setCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -390,9 +311,8 @@ export default function BuySellPage() {
     }
   }
 
-  const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
+  const handleCurrencySelect = (currencyCode: string) => {
     setCurrency(currencyCode)
-    autoCurrencySetRef.current = false
   }
 
   const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue?: string) => {
