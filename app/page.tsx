@@ -773,6 +773,24 @@ export default function BuySellPage() {
                           <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
                             ad.actual_maximum_order_amount || "N/A"
                           }  ${ad.account_currency}`}</div>
+                          {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                    <span>
+                                      {ad.order_expiry_period} {t("market.min")}
+                                    </span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                  <TooltipArrow className="fill-black" />
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>}
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                           <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
