@@ -25,6 +25,7 @@ export interface VerificationStatus {
 interface UserDataState {
   userData: UserData | null
   userId: string | null
+  externalId: string | null
   clientId: string | null
   residenceCountry: string | null
   brandClientId: string | null
@@ -34,6 +35,7 @@ interface UserDataState {
   socketToken: string | null
   isWalletAccount: boolean
   setUserData: (data: UserData) => void
+  setExternalId: (id: string) => void
   setUserId: (id: string) => void
   setClientId: (id: string) => void
   setResidenceCountry: (country: string) => void
@@ -51,6 +53,7 @@ const initialState = {
   userData: null,
   userId: null,
   clientId: null,
+  externalId: null,
   residenceCountry: null,
   brandClientId: null,
   brand: null,
@@ -90,6 +93,8 @@ export const useUserDataStore = create<UserDataState>((set) => ({
     cacheSignup(data.signup)
     set({ userData: data })
   },
+
+  setExternalId: (id) => set({ externalId: id }),
 
   setUserId: (id) => set({ userId: id }),
 
