@@ -5,7 +5,6 @@ export const runtime = "edge"
 import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
-import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
