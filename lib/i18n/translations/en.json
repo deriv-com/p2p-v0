@@ -422,7 +422,7 @@
     "status": "Status",
     "active": "Active",
     "inactive": "Inactive",
-    "adId": "Ad Id",
+    "adId": "ID",
     "rate": "Rate",
     "limit": "Limit",
     "manageAds": "Manage ads",
