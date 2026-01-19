@@ -379,11 +379,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          {!isMobile && (
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
-                              {t("myAds.adId")}:
-                            </span>
-                          )}
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
+                            {t("myAds.adId")}:
+                          </span>
                           <span className="text-xs leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (
