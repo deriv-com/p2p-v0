@@ -5,6 +5,7 @@ export const runtime = "edge"
 import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
+import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -411,6 +412,14 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
+      {order?.type && (
+        <Navigation
+          isBackBtnVisible={false}
+          isVisible={false}
+          title=""
+          redirectUrl={"/orders"}
+        />
+      )}
       <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
           <div className="flex flex-row gap-6">
