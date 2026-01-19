@@ -148,7 +148,7 @@ export default function ProfilePage() {
       }
     }
 
-    fetchUserData()
+    //fetchUserData()
   }, [t])
 
   if (isDisabled) {
