@@ -112,4 +112,5 @@ jobs:
                 url: https://staging-home.deriv.com/dashboard
                 token: ${{ secrets.OCTOMIND_API_KEY }}
                 testTargetId: ${{ secrets.OCTOMIND_TEST_TARGET_ID }}
+                tags: 'Smoke'
                 blocking: false
