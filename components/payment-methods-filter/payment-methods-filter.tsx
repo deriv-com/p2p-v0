@@ -44,7 +44,7 @@ export default function PaymentMethodsFilter({
   const isMobile = useIsMobile()
   const { t } = useTranslations()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const scrollPositionRef = useRef<number>(0)
+  const scrollPositionRef = useRef<number | null>(null)
 
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
@@ -78,6 +78,10 @@ export default function PaymentMethodsFilter({
     paymentMethods.some((method) => tempSelectedMethods.includes(method.method)) && !isAllSelected
 
   const handleSelectAll = (checked: boolean) => {
+    if (scrollContainerRef.current) {
+      scrollPositionRef.current = scrollContainerRef.current.scrollTop
+    }
+
     if (checked) {
       const newSelection = [...new Set([...tempSelectedMethods, ...paymentMethods.map((m) => m.method)])]
       setTempSelectedMethods(newSelection)
@@ -258,9 +262,11 @@ export default function PaymentMethodsFilter({
   )
 
   useEffect(() => {
-    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
-      scrollContainerRef.current.scrollTop = scrollPositionRef.current
-    }
+    if (!scrollContainerRef.current) return
+    if (scrollPositionRef.current === null) return
+
+    scrollContainerRef.current.scrollTop = scrollPositionRef.current
+    scrollPositionRef.current = null
   }, [tempSelectedMethods])
 
   const enhancedTrigger = cloneElement(trigger, {
