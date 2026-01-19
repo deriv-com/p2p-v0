@@ -87,7 +87,7 @@ export default function WalletPage() {
   useEffect(() => {
     if (showKycPopup) {
       showAlert({
-        title: t("wallet.gettingStarted"),
+        title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet route="wallets" />
