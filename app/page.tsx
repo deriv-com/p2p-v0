@@ -759,7 +759,7 @@ export default function BuySellPage() {
                           </div>
                           }
                         </TableCell>
-                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                        <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
                           <div className="font-bold text-base flex items-center">
                             {ad.effective_rate_display
                               ? ad.effective_rate_display.toLocaleString(undefined, {
