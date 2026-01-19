@@ -24,19 +24,19 @@ importers:
     dependencies:
       '@datadog/browser-logs':
         specifier: latest
-        version: 6.25.1(@datadog/browser-rum@6.25.1)
+        version: 6.25.4(@datadog/browser-rum@6.25.4)
       '@datadog/browser-rum':
         specifier: latest
-        version: 6.25.1(@datadog/browser-logs@6.25.1)
+        version: 6.25.4(@datadog/browser-logs@6.25.4)
       '@eslint/eslintrc':
         specifier: latest
         version: 3.3.3
       '@hookform/resolvers':
         specifier: ^3.9.1
-        version: 3.10.0(react-hook-form@7.70.0(react@19.0.0))
+        version: 3.10.0(react-hook-form@7.71.1(react@19.0.0))
       '@novu/nextjs':
         specifier: latest
-        version: 3.11.2(next@15.4.10(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 3.12.0(next@15.4.10(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-accordion':
         specifier: latest
         version: 1.2.12(@types/react-dom@19.0.0)(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -198,10 +198,10 @@ importers:
         version: 19.0.0(react@19.0.0)
       react-hook-form:
         specifier: latest
-        version: 7.70.0(react@19.0.0)
+        version: 7.71.1(react@19.0.0)
       react-resizable-panels:
         specifier: latest
-        version: 4.2.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 4.4.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       recharts:
         specifier: latest
         version: 3.6.0(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react-is@18.3.1)(react@19.0.0)(redux@5.0.1)
@@ -228,7 +228,7 @@ importers:
         version: 3.25.76
       zustand:
         specifier: latest
-        version: 5.0.9(@types/react@19.0.0)(immer@11.1.3)(react@19.0.0)(use-sync-external-store@1.6.0(react@19.0.0))
+        version: 5.0.10(@types/react@19.0.0)(immer@11.1.3)(react@19.0.0)(use-sync-external-store@1.6.0(react@19.0.0))
     devDependencies:
       '@cloudflare/next-on-pages':
         specifier: ^1.13.14
@@ -995,24 +995,24 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@datadog/browser-core@6.25.1':
-    resolution: {integrity: sha512-Mir/4g/EjtknQaP4QIOFNWwd6rnjvmw5SJKaFNUAQ94d59RKsbAy8hu2sfMSOaQ5TmHjf/6Qmrd0LfRK1FTt+Q==}
+  '@datadog/browser-core@6.25.4':
+    resolution: {integrity: sha512-5QLyCwSDmFQrEqIAQqR0xSIvCLDSOa8gxN9VBPsu3+Q+JzQdnpSCzKoBRcCA5zsCndMON/y2WazUWyd19LxTOA==}
 
-  '@datadog/browser-logs@6.25.1':
-    resolution: {integrity: sha512-mhwoYPFM60WVEEtJ6AgDsTdbhhaECqUCsBsmRrJX2IVjEGAiGoah4sF1mQ0w51chZbIwICV7jBNGap9vjam2zQ==}
+  '@datadog/browser-logs@6.25.4':
+    resolution: {integrity: sha512-qci3AoiJ6E/8LBqyM7GnQ2fyBdEWNsRfC/sxSw3NaMQzjMDnZUTvhZf4fz3CZWp33xFQc1XXskONHL7jNSWkTQ==}
     peerDependencies:
-      '@datadog/browser-rum': 6.25.1
+      '@datadog/browser-rum': 6.25.4
     peerDependenciesMeta:
       '@datadog/browser-rum':
         optional: true
 
-  '@datadog/browser-rum-core@6.25.1':
-    resolution: {integrity: sha512-xt867A7cZTnO2DvSKUD7QrnMGfS8rXm777x//uq6PbliuPa2+/B23OhTot14riUWV2kXiJ+dzQC08Ibj9i0Xwg==}
+  '@datadog/browser-rum-core@6.25.4':
+    resolution: {integrity: sha512-VfjyY2GZdFSvAJklo58zVHwqACiD8N+h4XJtkXwttk1aYJml+zqqyPHsbQoUvfiVX7hDBQ/sDGl0USQAe/oADQ==}
 
-  '@datadog/browser-rum@6.25.1':
-    resolution: {integrity: sha512-8yx8++wSZZ0RkrTT2VzF9V639veGvnStnrZRsVS2kXWht4ZLQ7fxk3RXIGEUB9fHC4B0XIn9U3uod/Z+qCrSQw==}
+  '@datadog/browser-rum@6.25.4':
+    resolution: {integrity: sha512-Ll8KYGBbeiqZN86Re8ku9slwnzbbxYXE74Hy+wVmUBgGu5Y/1MO6uwsAmnA7IT79Ij95Rv2dgpVKdc/8K/943A==}
     peerDependencies:
-      '@datadog/browser-logs': 6.25.1
+      '@datadog/browser-logs': 6.25.4
     peerDependenciesMeta:
       '@datadog/browser-logs':
         optional: true
@@ -1043,8 +1043,14 @@ packages:
   '@emnapi/core@1.8.0':
     resolution: {integrity: sha512-ryJnSmj4UhrGLZZPJ6PKVb4wNPAIkW6iyLy+0TRwazd3L1u0wzMe8RfqevAh2HbcSkoeLiSYnOVDOys4JSGYyg==}
 
+  '@emnapi/core@1.8.1':
+    resolution: {integrity: sha512-AvT9QFpxK0Zd8J0jopedNm+w/2fIzvtPKPjqyw9jwvBaReTTqPBk9Hixaz7KbjimP+QNz605/XnjFcDAL2pqBg==}
+
   '@emnapi/runtime@1.7.1':
     resolution: {integrity: sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==}
+
+  '@emnapi/runtime@1.8.1':
+    resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
 
   '@emnapi/wasi-threads@1.1.0':
     resolution: {integrity: sha512-WI0DdZ8xFSbgMjR1sFsKABJ/C5OnRrjT06JXbZKexJGrDuPTzZdDYfFlsgcCXCyf+suG5QU2e/y1Wo2V/OapLQ==}
@@ -1932,11 +1938,11 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
-  '@novu/js@3.11.2':
-    resolution: {integrity: sha512-fe9QIlvalUBWvHkpPTYdfJfFk/U+DMojkXE2DjdDVnpnViPYffh/MwuJm2GzCAouCAUV6paZcf/pg0OR3ww4KQ==}
+  '@novu/js@3.12.0':
+    resolution: {integrity: sha512-FGb2IwP/y7qTkZPmEijMxsVWaJqO6EyJlNlSfz+dL9xcvvMtRWEONiQcyL0jLjkhDilO1v5WI6WaRo66rgyPIQ==}
 
-  '@novu/nextjs@3.11.2':
-    resolution: {integrity: sha512-gQ0AEQPQ4AtucyjZ0G61BX/1lFqiBMqYyNiK9cv31gk/91QEDWmvePgm3RJqJCHCD79jzXTde04Mpl0lZeKI8Q==}
+  '@novu/nextjs@3.12.0':
+    resolution: {integrity: sha512-i3+uS+wmVggxTXhzLbqeeFHj1VDFi7lKriHDhUqOr9yFn662PXeZ3h/dikOfpSa2lVfh+FAm5rZG4EZ3JT/8Jg==}
     peerDependencies:
       next: '>=13.5.2 || ^14.0.0 || ^15.0.0'
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -1945,8 +1951,8 @@ packages:
       react-dom:
         optional: true
 
-  '@novu/react@3.11.2':
-    resolution: {integrity: sha512-IIwYRJQP90pn7R/9EHf/AaKRPjls9JVinLGNheeHAMYVcKN2M4R2yMAVWADJ5TcAQ55ZRIBfpwI/4qCy1wLaMg==}
+  '@novu/react@3.12.0':
+    resolution: {integrity: sha512-SkoA5+Zp8TVISLko2/m+GO+yldLHbD4kikiy1a4egmkpzam41yXZDzwyQRLAXtzYW8yaZSVQoVJWQb9ZiJ9kPw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -2707,53 +2713,45 @@ packages:
     resolution: {integrity: sha512-Nky8Q2cxyKVkEETntrvcmlzNir5khQbDfX3PflHPbZY7XVZalllRqw7+MW5vn+jTsk5BfKVeLsvrF4344IU55g==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.52':
     resolution: {integrity: sha512-V48oDR84feRU2KRuzpALp594Uqlx27+zFsT6+BgTcXOtu7dWy350J1G28ydoCwKB+oxwsRPx2e7aeQnmd3YJbQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rolldown/binding-linux-arm64-musl@1.0.0-beta.35':
     resolution: {integrity: sha512-8aHpWVSfZl3Dy2VNFG9ywmlCPAJx45g0z+qdOeqmYceY7PBAT4QGzii9ig1hPb1pY8K45TXH44UzQwr2fx352Q==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rolldown/binding-linux-arm64-musl@1.0.0-beta.52':
     resolution: {integrity: sha512-ENLmSQCWqSA/+YN45V2FqTIemg7QspaiTjlm327eUAMeOLdqmSOVVyrQexJGNTQ5M8sDYCgVAig2Kk01Ggmqaw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rolldown/binding-linux-x64-gnu@1.0.0-beta.35':
     resolution: {integrity: sha512-1r1Ac/vTcm1q4kRiX/NB6qtorF95PhjdCxKH3Z5pb+bWMDZnmcz18fzFlT/3C6Qpj/ZqUF+EUrG4QEDXtVXGgg==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rolldown/binding-linux-x64-gnu@1.0.0-beta.52':
     resolution: {integrity: sha512-klahlb2EIFltSUubn/VLjuc3qxp1E7th8ukayPfdkcKvvYcQ5rJztgx8JsJSuAKVzKtNTqUGOhy4On71BuyV8g==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rolldown/binding-linux-x64-musl@1.0.0-beta.35':
     resolution: {integrity: sha512-AFl1LnuhUBDfX2j+cE6DlVGROv4qG7GCPDhR1kJqi2+OuXGDkeEjqRvRQOFErhKz1ckkP/YakvN7JheLJ2PKHQ==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rolldown/binding-linux-x64-musl@1.0.0-beta.52':
     resolution: {integrity: sha512-UuA+JqQIgqtkgGN2c/AQ5wi8M6mJHrahz/wciENPTeI6zEIbbLGoth5XN+sQe2pJDejEVofN9aOAp0kaazwnVg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rolldown/binding-openharmony-arm64@1.0.0-beta.35':
     resolution: {integrity: sha512-Tuwb8vPs+TVJlHhyLik+nwln/burvIgaPDgg6wjNZ23F1ttjZi0w0rQSZfAgsX4jaUbylwCETXQmTp3w6vcJMw==}
@@ -2998,6 +2996,9 @@ packages:
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+
+  '@swc/helpers@0.5.18':
+    resolution: {integrity: sha512-TXTnIcNJQEKwThMMqBXsZ4VGAza6bvN4pa41Rkqoio6QBKMvo+5lexeTMScGCIxtzgQJzElcvIltani+adC5PQ==}
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -5636,8 +5637,8 @@ packages:
     peerDependencies:
       react: ^19.0.0
 
-  react-hook-form@7.70.0:
-    resolution: {integrity: sha512-COOMajS4FI3Wuwrs3GPpi/Jeef/5W1DRR84Yl5/ShlT3dKVFUfoGiEZ/QE6Uw8P4T2/CLJdcTVYKvWBMQTEpvw==}
+  react-hook-form@7.71.1:
+    resolution: {integrity: sha512-9SUJKCGKo8HUSsCO+y0CtqkqI5nNuaDqTxyqPsZPqIwudpj4rCrAz/jZV+jn57bx5gtZKOh3neQu94DXMc+w5w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -5683,8 +5684,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-resizable-panels@4.2.1:
-    resolution: {integrity: sha512-UYyiZNjd3P12BqQYihojqdVs4ovMBWFO68RQp/O1HGiUKdltNu9hacZEm4PVD/UpYpz5p9V+YBtOZo+CvGKmkQ==}
+  react-resizable-panels@4.4.1:
+    resolution: {integrity: sha512-dpM9oI6rGlAq7VYDeafSRA1JmkJv8aNuKySR+tZLQQLfaeqTnQLSM52EcoI/QdowzsjVUCk6jViKS0xHWITVRQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -6598,8 +6599,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zustand@5.0.9:
-    resolution: {integrity: sha512-ALBtUj0AfjJt3uNRQoL1tL2tMvj6Gp/6e39dnfT6uzpelGru8v1tPOGBzayOWbPJvujM8JojDk3E1LxeFisBNg==}
+  zustand@5.0.10:
+    resolution: {integrity: sha512-U1AiltS1O9hSy3rul+Ub82ut2fqIAefiSuwECWt6jlMVUGejvf+5omLcRBSzqbRagSM3hQZbtzdeRc6QVScXTg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=18.0.0'
@@ -7495,24 +7496,24 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@datadog/browser-core@6.25.1': {}
+  '@datadog/browser-core@6.25.4': {}
 
-  '@datadog/browser-logs@6.25.1(@datadog/browser-rum@6.25.1)':
+  '@datadog/browser-logs@6.25.4(@datadog/browser-rum@6.25.4)':
     dependencies:
-      '@datadog/browser-core': 6.25.1
+      '@datadog/browser-core': 6.25.4
     optionalDependencies:
-      '@datadog/browser-rum': 6.25.1(@datadog/browser-logs@6.25.1)
+      '@datadog/browser-rum': 6.25.4(@datadog/browser-logs@6.25.4)
 
-  '@datadog/browser-rum-core@6.25.1':
+  '@datadog/browser-rum-core@6.25.4':
     dependencies:
-      '@datadog/browser-core': 6.25.1
+      '@datadog/browser-core': 6.25.4
 
-  '@datadog/browser-rum@6.25.1(@datadog/browser-logs@6.25.1)':
+  '@datadog/browser-rum@6.25.4(@datadog/browser-logs@6.25.4)':
     dependencies:
-      '@datadog/browser-core': 6.25.1
-      '@datadog/browser-rum-core': 6.25.1
+      '@datadog/browser-core': 6.25.4
+      '@datadog/browser-rum-core': 6.25.4
     optionalDependencies:
-      '@datadog/browser-logs': 6.25.1(@datadog/browser-rum@6.25.1)
+      '@datadog/browser-logs': 6.25.4(@datadog/browser-rum@6.25.4)
 
   '@date-fns/tz@1.4.1': {}
 
@@ -7534,7 +7535,18 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@emnapi/core@1.8.1':
+    dependencies:
+      '@emnapi/wasi-threads': 1.1.0
+      tslib: 2.8.1
+    optional: true
+
   '@emnapi/runtime@1.7.1':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
+  '@emnapi/runtime@1.8.1':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -7762,9 +7774,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
-  '@hookform/resolvers@3.10.0(react-hook-form@7.70.0(react@19.0.0))':
+  '@hookform/resolvers@3.10.0(react-hook-form@7.71.1(react@19.0.0))':
     dependencies:
-      react-hook-form: 7.70.0(react@19.0.0)
+      react-hook-form: 7.71.1(react@19.0.0)
 
   '@humanfs/core@0.19.1': {}
 
@@ -7928,7 +7940,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.33.5':
     dependencies:
-      '@emnapi/runtime': 1.7.1
+      '@emnapi/runtime': 1.8.1
     optional: true
 
   '@img/sharp-wasm32@0.34.5':
@@ -7953,11 +7965,11 @@ snapshots:
 
   '@internationalized/date@3.10.1':
     dependencies:
-      '@swc/helpers': 0.5.15
+      '@swc/helpers': 0.5.18
 
   '@internationalized/number@3.6.5':
     dependencies:
-      '@swc/helpers': 0.5.15
+      '@swc/helpers': 0.5.18
 
   '@isaacs/balanced-match@4.0.1': {}
 
@@ -8290,8 +8302,8 @@ snapshots:
 
   '@napi-rs/wasm-runtime@1.1.1':
     dependencies:
-      '@emnapi/core': 1.8.0
-      '@emnapi/runtime': 1.7.1
+      '@emnapi/core': 1.8.1
+      '@emnapi/runtime': 1.8.1
       '@tybys/wasm-util': 0.10.1
     optional: true
 
@@ -8339,7 +8351,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@novu/js@3.11.2':
+  '@novu/js@3.12.0':
     dependencies:
       '@floating-ui/dom': 1.7.4
       '@kobalte/core': 0.13.11(solid-js@1.9.10)
@@ -8359,9 +8371,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@novu/nextjs@3.11.2(next@15.4.10(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@novu/nextjs@3.12.0(next@15.4.10(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@novu/react': 3.11.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@novu/react': 3.12.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next: 15.4.10(@babel/core@7.28.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optionalDependencies:
@@ -8371,9 +8383,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@novu/react@3.11.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@novu/react@3.12.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@novu/js': 3.11.2
+      '@novu/js': 3.12.0
       react: 19.0.0
     optionalDependencies:
       react-dom: 19.0.0(react@19.0.0)
@@ -9396,6 +9408,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@swc/helpers@0.5.18':
+    dependencies:
+      tslib: 2.8.1
+
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -9715,7 +9731,7 @@ snapshots:
       is-buffer: 2.0.5
       is-node-process: 1.2.0
       throttleit: 2.1.0
-      undici: 7.14.0
+      undici: 7.18.2
 
   '@vercel/build-utils@13.2.4': {}
 
@@ -9910,7 +9926,7 @@ snapshots:
       ts-node: 10.9.1(@types/node@16.18.11)(typescript@4.9.5)
       typescript: 4.9.5
       typescript5: typescript@5.9.3
-      undici: 7.14.0
+      undici: 7.18.2
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -12546,7 +12562,7 @@ snapshots:
       react: 19.0.0
       scheduler: 0.25.0
 
-  react-hook-form@7.70.0(react@19.0.0):
+  react-hook-form@7.71.1(react@19.0.0):
     dependencies:
       react: 19.0.0
 
@@ -12584,7 +12600,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.0.0
 
-  react-resizable-panels@4.2.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  react-resizable-panels@4.4.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -13763,7 +13779,7 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zustand@5.0.9(@types/react@19.0.0)(immer@11.1.3)(react@19.0.0)(use-sync-external-store@1.6.0(react@19.0.0)):
+  zustand@5.0.10(@types/react@19.0.0)(immer@11.1.3)(react@19.0.0)(use-sync-external-store@1.6.0(react@19.0.0)):
     optionalDependencies:
       '@types/react': 19.0.0
       immer: 11.1.3
