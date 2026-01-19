@@ -14,6 +14,7 @@ import OrderChat from "@/components/order-chat"
 import OrderChatSkeleton from "@/components/order-chat-skeleton"
 import { useToast } from "@/hooks/use-toast"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   cn,
   formatAmount,
@@ -380,6 +381,7 @@ export default function OrderDetailsPage() {
       : order?.advert.user.id == userId
         ? "seller"
         : "buyer"
+  const isBuyer = counterpartyLabel === t("orderDetails.seller")
 
   if (isMobile && showChat && order) {
     const counterpartyOnlineStatus =
@@ -471,9 +473,28 @@ export default function OrderDetailsPage() {
                   )}
                 >
                   <div className="flex items-center">
-                    <span className="font-bold">
-                      {formatStatus(true, order.status, counterpartyLabel === t("orderDetails.seller"), t)}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold">{formatStatus(true, order.status, isBuyer, t)}</span>
+                      {order.status === "pending_payment" && !isBuyer && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={20}
+                                height={20}
+                                className="ml-1 cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
                     <div className={cn("flex items-center", order.status === "pending_release" && "text-sm")}>
