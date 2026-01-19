@@ -4,7 +4,7 @@ export const runtime = "edge"
 
 import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
-import { ChevronRight, Info } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -36,6 +36,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import InfoCircleIcon from "@/public/icons/info-circle.svg"
 
 export default function OrderDetailsPage() {
   const { t } = useTranslations()
@@ -488,7 +489,13 @@ export default function OrderDetailsPage() {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Info className="ml-1 h-5 w-5 cursor-pointer text-yellow-50" aria-label="Info" />
+                              <span
+                                className="ml-1 inline-flex cursor-pointer text-yellow-50"
+                                aria-label="Info"
+                                role="img"
+                              >
+                                <InfoCircleIcon className="h-6 w-6 [&>path]:fill-current" aria-hidden />
+                              </span>
                             </TooltipTrigger>
                             <TooltipContent className="p-3" side="bottom" avoidCollisions={false}>
                               <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
