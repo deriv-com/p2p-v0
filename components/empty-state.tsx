@@ -66,18 +66,18 @@ export default function EmptyState({
   }
 
   return (
-    <div className={cn("flex flex-col items-center justify-center py-8 text-center w-max justify-self-center", className)}>
+    <div className={cn("flex flex-col items-center justify-center py-8 text-center w-max", className)}>
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
       {title && <p className="text-base text-slate-1200 mt-2 font-bold">{title}</p>}
       {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
-      <div className="flex">
+      <div className="flex w-full gap-2">
         {redirectToMarket && (
-          <Button onClick={browseMarket} className="mt-4" variant="outline">
+          <Button onClick={browseMarket} className="mt-4 w-full" variant="outline">
             {t("market.browseMarket")}
           </Button>
         )}
         {redirectToAds && (
-          <Button onClick={createAd} className="mt-4">
+          <Button onClick={createAd} className="mt-4 w-full">
             {t("myAds.createAd")}
           </Button>
         )}
