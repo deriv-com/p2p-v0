@@ -671,7 +671,7 @@
   },
   "kyc": {
     "accessP2PMessage": "To access P2P, complete your profile and verification.",
-    "setupProfile": "Profile details",
+    "setupProfile": "Set up your profile",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
     "phoneNumber": "Phone number",
