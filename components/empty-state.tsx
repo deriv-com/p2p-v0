@@ -71,14 +71,14 @@ export default function EmptyState({
       {title && <p className="text-base text-slate-1200 mt-2 font-bold">{title}</p>}
       {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
       {redirectToAds || redirectToMarket && <div className="flex">
-        {redirectToAds && (
-          <Button onClick={createAd} className="mt-4">
-            {t("myAds.createAd")}
-          </Button>
-        )}
         {redirectToMarket && (
           <Button onClick={browseMarket} className="mt-4" variant="ghost">
             {t("market.browseMarket")}
+          </Button>
+        )}
+        {redirectToAds && (
+          <Button onClick={createAd} className="mt-4">
+            {t("myAds.createAd")}
           </Button>
         )}
       </div>}
