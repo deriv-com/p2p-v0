@@ -79,10 +79,9 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.sortBy) queryParams.append("sort_by", params.sortBy)
       if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
     }
-    const onboardingStatus = useUserDataStore.getState().onboardingStatus
-    const isP2PUser = onboardingStatus?.p2p?.allowed ?? false
+
     const auth_country_code = useUserDataStore.getState().residenceCountry
-    if (auth_country_code && !isP2PUser) {
+    if (auth_country_code) {
       queryParams.append("auth_country_code", auth_country_code)
     }
 
