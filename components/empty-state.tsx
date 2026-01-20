@@ -72,12 +72,12 @@ export default function EmptyState({
       {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
       <div className="flex w-full gap-2 justify-center flex-wrap-reverse">
         {redirectToMarket && (
-          <Button onClick={browseMarket} className={cn("mt-4", redirectToMarket && redirectToAds && "w-full")} variant="outline">
+          <Button onClick={browseMarket} className={cn("mt-4 basis-auto grow shrink", redirectToMarket && redirectToAds && "w-full")} variant="outline">
             {t("market.browseMarket")}
           </Button>
         )}
         {redirectToAds && (
-          <Button onClick={createAd} className={cn("mt-4", redirectToMarket && redirectToAds && "w-full")}>
+          <Button onClick={createAd} className={cn("mt-4 basis-auto grow shrink"", redirectToMarket && redirectToAds && "w-full")}>
             {t("myAds.createAd")}
           </Button>
         )}
