@@ -358,7 +358,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 >
                   <TableCell
                     className={cn(
-                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap text-slate-1200",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
