@@ -14,6 +14,7 @@ interface EmptyStateProps {
   description?: string
   className?: string
   redirectToAds?: boolean
+  redirectToMarket?: boolean
   onAddPaymentMethod?: () => void
   route?: string | null
 }
@@ -24,6 +25,7 @@ export default function EmptyState({
   description,
   className,
   redirectToAds = false,
+  redirectToMarket = false,
   onAddPaymentMethod,
   route,
 }: EmptyStateProps) {
