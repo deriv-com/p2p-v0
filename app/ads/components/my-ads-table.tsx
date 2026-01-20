@@ -372,7 +372,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType.toLowerCase() === "buy" ? t("common.buy") : t("common.sell")}
                         </span>
-                        <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
+                        <span className="text-base font-bold leading-6 ml-1">
                           {" "}
                           {ad.account_currency}
                         </span>
