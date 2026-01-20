@@ -15,6 +15,7 @@ interface EmptyStateProps {
   className?: string
   redirectToAds?: boolean
   onAddPaymentMethod?: () => void
+  route?: string | null
 }
 
 export default function EmptyState({
@@ -24,22 +25,32 @@ export default function EmptyState({
   className,
   redirectToAds = false,
   onAddPaymentMethod,
+  route,
 }: EmptyStateProps) {
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
 
   const createAd = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push("/ads/create")
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
-        title: t("profile.gettingStarted"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route={route || "ads"} />
           </div>
         ),
         confirmText: undefined,

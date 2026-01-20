@@ -26,8 +26,7 @@
     "learnMore": "Scopri di più",
     "verifiedBadge": {
       "title": "Account completamente verificato",
-      "descriptionSelf": "Hai completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo.",
-      "descriptionOther": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
+      "description": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
     }
   },
   "navigation": {
@@ -266,6 +265,9 @@
     "lessThanOneMin": "< 1 min",
     "mins": "min",
     "gettingStarted": "Iniziare con P2P",
+    "verificationExpired": "Verifica scaduta",
+    "identityVerificationExpired": "Verifica dell'identità scaduta",
+    "addressVerificationExpired": "Verifica dell'indirizzo scaduta",
     "errorLoadingProfile": "Impossibile caricare i dati utente",
     "noUserData": "Nessun dato utente trovato",
     "followsCount": "Seguiti ({count})",
@@ -323,7 +325,7 @@
     "amount": "Importo",
     "loadingAssets": "Caricamento risorse...",
     "noAssetsTitle": "Nessuna risorsa ancora",
-    "noAssetsDescription": "Effettua il tuo primo deposito e inizia il tuo viaggio di trading oggi",
+    "noAssetsDescription": "Effettua il tuo primo deposito e inizia il tuo viaggio di trading oggi.",
     "transactions": "Transazioni",
     "all": "Tutte",
     "today": "Oggi",
@@ -501,7 +503,7 @@
     "timeLimit60Minutes": "60 minuti",
     "chooseYourAudience": "Scegli il tuo pubblico",
     "audienceTooltip": "Puoi filtrare chi interagisce con i tuoi annunci in base alla loro posizione o cronologia P2P. Filtri più rigidi possono ridurre la visibilità dell'annuncio.",
-    "instructions": "Istruzioni (Opzionale)",
+    "sellerInstructions": "Istruzioni (opzionale)",
     "instructionsDisclaimer": "Queste informazioni saranno visibili a tutti. Non condividere il tuo numero di telefono o dettagli personali.",
     "totalAmountRequired": "L'importo totale è obbligatorio",
     "totalAmountGreaterThanZero": "L'importo totale deve essere maggiore di 0",
@@ -588,7 +590,12 @@
     "setupProfile": "Configura il tuo profilo",
     "proofOfIdentity": "Prova d'identità",
     "proofOfAddress": "Prova di residenza",
-    "phoneNumber": "Numero di telefono"
+    "phoneNumber": "Numero di telefono",
+    "resubmitIdentityAndAddress": "Invia nuovamente la prova d'identità e di residenza per continuare a utilizzare P2P.",
+    "resubmitIdentity": "Invia nuovamente la prova d'identità per continuare a utilizzare P2P.",
+    "resubmitAddress": "Invia nuovamente la prova di residenza per continuare a utilizzare P2P.",
+    "unverified": "Non verificato",
+    "resubmitNow": "Invia ora"
   },
   "status": {
     "refunded": "Rimborsato",

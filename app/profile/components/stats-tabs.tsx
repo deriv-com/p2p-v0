@@ -20,10 +20,11 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface StatsTabsProps {
   stats?: any
-  isLoading?: boolean
+  isLoading?: boolean,
+  activeTab: string
 }
 
-export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
+export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
@@ -38,7 +39,10 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved" 
   const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
   const helpCentreUrl =
@@ -96,14 +100,20 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setShowAddPaymentPanel(true)
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
-        title: t("profile.gettingStarted"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="profile" />
           </div>
         ),
         confirmText: undefined,
@@ -295,7 +305,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             </div>
           </div>
         ) : (
-          <Tabs defaultValue="stats">
+          <Tabs defaultValue={activeTab}>
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (

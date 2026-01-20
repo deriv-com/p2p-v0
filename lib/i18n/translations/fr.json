@@ -26,8 +26,7 @@
     "learnMore": "En savoir plus",
     "verifiedBadge": {
       "title": "Compte entièrement vérifié",
-      "descriptionSelf": "Vous avez complété toutes les étapes de vérification requises, y compris l'email, le numéro de téléphone, l'identité (KYC) et la vérification d'adresse.",
-      "descriptionOther": "Cet utilisateur a complété toutes les étapes de vérification requises, y compris l'email, le numéro de téléphone, l'identité (KYC) et la vérification d'adresse. Vous pouvez trader en toute confiance en sachant que ce compte est vérifié."
+      "description": "Cet utilisateur a complété toutes les étapes de vérification requises, y compris l'email, le numéro de téléphone, l'identité (KYC) et la vérification d'adresse. Vous pouvez trader en toute confiance en sachant que ce compte est vérifié."
     }
   },
   "navigation": {
@@ -281,6 +280,9 @@
     "lessThanOneMin": "< 1 min",
     "mins": "mins",
     "gettingStarted": "Démarrer avec P2P",
+    "verificationExpired": "Vérification expirée",
+    "identityVerificationExpired": "Vérification d'identité expirée",
+    "addressVerificationExpired": "Vérification d'adresse expirée",
     "errorLoadingProfile": "Échec du chargement des données utilisateur",
     "noUserData": "Aucune donnée utilisateur trouvée",
     "followsCount": "Suivis ({count})",
@@ -335,7 +337,7 @@
     "amount": "Montant",
     "loadingAssets": "Chargement des actifs...",
     "noAssetsTitle": "Pas encore d'actifs",
-    "noAssetsDescription": "Effectuez votre premier dépôt et commencez votre parcours de trading aujourd'hui",
+    "noAssetsDescription": "Effectuez votre premier dépôt et commencez votre parcours de trading aujourd'hui.",
     "transactions": "Transactions",
     "all": "Toutes",
     "today": "Aujourd'hui",
@@ -513,7 +515,7 @@
     "timeLimit60Minutes": "60 minutes",
     "chooseYourAudience": "Choisissez votre public",
     "audienceTooltip": "Vous pouvez filtrer qui interagit avec vos annonces en fonction de leur emplacement ou de leur historique P2P. Des filtres plus stricts peuvent réduire la visibilité de l'annonce.",
-    "instructions": "Instructions (Facultatif)",
+    "sellerInstructions": "Instructions (facultatif)",
     "instructionsDisclaimer": "Ces informations seront visibles par tous. Ne partagez pas votre numéro de téléphone ou vos informations personnelles.",
     "totalAmountRequired": "Le montant total est requis",
     "totalAmountGreaterThanZero": "Le montant total doit être supérieur à 0",
@@ -600,7 +602,12 @@
     "setupProfile": "Configurez votre profil",
     "proofOfIdentity": "Preuve d'identité",
     "proofOfAddress": "Preuve d'adresse",
-    "phoneNumber": "Numéro de téléphone"
+    "phoneNumber": "Numéro de téléphone",
+    "resubmitIdentityAndAddress": "Soumettez à nouveau votre preuve d'identité et d'adresse pour continuer à utiliser P2P.",
+    "resubmitIdentity": "Soumettez à nouveau votre preuve d'identité pour continuer à utiliser P2P.",
+    "resubmitAddress": "Soumettez à nouveau votre preuve d'adresse pour continuer à utiliser P2P.",
+    "unverified": "Non vérifié",
+    "resubmitNow": "Soumettre maintenant"
   },
   "status": {
     "refunded": "Remboursé",

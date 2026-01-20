@@ -11,6 +11,7 @@ import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import { LoadingIndicator } from "@/components/loading-indicator"
 import "./globals.css"
 
 export default function Main({
@@ -29,6 +30,7 @@ export default function Main({
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
+  const [isReady, setIsReady] = useState(false);
 
   const isDisabled = userData?.status === "disabled"
 
@@ -87,8 +89,7 @@ export default function Main({
 
             if (isMountedRef.current && !abortController.signal.aborted) {
               setVerificationStatus({
-                email_verified: onboardingStatus.verification.email_verified,
-                phone_verified: onboardingStatus.verification.phone_verified,
+                phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
                 kyc_verified:
                   onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
                 p2p_allowed: onboardingStatus.p2p?.allowed,
@@ -122,6 +123,10 @@ export default function Main({
           return
         }
         console.error("Error fetching session data:", error)
+      } finally {
+        if (isMountedRef.current) {
+          setIsReady(true)
+        }
       }
     }
 
@@ -157,6 +162,14 @@ export default function Main({
           </main>
         </div>
       </>
+    )
+  }
+
+  if (!isReady) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <LoadingIndicator />
+      </div>
     )
   }
 

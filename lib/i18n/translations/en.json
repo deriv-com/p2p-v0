@@ -29,9 +29,8 @@
     "ok": "OK",
     "learnMore": "Learn More",
     "verifiedBadge": {
-      "title": "Fully verified account",
-      "descriptionSelf": "You have completed all required verification steps, including email, phone number, identity (KYC), and address verification.",
-      "descriptionOther": "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."
+      "title": "Verified account",
+      "description": "Email, phone, identity, and address checks are complete. This helps you trade with more confidence."
     }
   },
   "navigation": {
@@ -89,7 +88,7 @@
     "sellersInstructions": "Seller's instructions",
     "insufficientBalance": "Insufficient balance. Add funds to your wallet before creating an order.",
     "orderLimitError": "Order limit: {min} - {max} {currency}",
-    "orderExists": "You can only have one active order per ad. Complete your existing order to continue.",
+    "orderExists": "You already have an active order for this ad. Complete the existing order before placing a new one.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
     "unableToCreateOrder": "Unable to create an order"
   },
@@ -275,6 +274,9 @@
     "lessThanOneMin": "< 1 min",
     "mins": "mins",
     "gettingStarted": "Getting started with P2P",
+    "verificationExpired": "Verification expired",
+    "identityVerificationExpired": "Identity verification expired",
+    "addressVerificationExpired": "Address verification expired",
     "errorLoadingProfile": "Failed to load user data",
     "noUserData": "No user data found",
     "followsCount": "Follows ({count})",
@@ -333,7 +335,7 @@
     "amount": "Amount",
     "loadingAssets": "Loading assets...",
     "noAssetsTitle": "No assets yet",
-    "noAssetsDescription": "Make your first deposit and begin your trading journey today",
+    "noAssetsDescription": "Make your first deposit and begin your trading journey today.",
     "transactions": "Transactions",
     "all": "All",
     "today": "Today",
@@ -420,9 +422,9 @@
     "status": "Status",
     "active": "Active",
     "inactive": "Inactive",
-    "adId": "Ad Id",
+    "adId": "ID",
     "rate": "Rate",
-    "limit": "Limit",
+    "limit": "Order limit",
     "manageAds": "Manage ads",
     "edit": "Edit",
     "share": "Share",
@@ -587,7 +589,8 @@
     "timeLimit60Minutes": "60 minutes",
     "chooseYourAudience": "Choose your audience",
     "audienceTooltip": "You can filter who interacts with your ads based on their location or P2P history. Stricter filters may reduce ad visibility.",
-    "instructions": "Seller's instructions (Optional)",
+    "sellerInstructions": "Instructions for seller (optional)",
+    "buyerInstructions": "Instructions for buyer (optional)",
     "instructionsDisclaimer": "This information will be visible to everyone. Don't share your phone number or personal details.",
     "totalAmountRequired": "Total amount is required.",
     "totalAmountGreaterThanZero": "Total amount must be greater than 0.",
@@ -671,7 +674,12 @@
     "setupProfile": "Set up your profile",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
-    "phoneNumber": "Phone number"
+    "phoneNumber": "Phone number",
+    "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
+    "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
+    "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
+    "unverified": "Unverified",
+    "resubmitNow": "Resubmit now"
   },
   "status": {
     "refunded": "Refunded",
