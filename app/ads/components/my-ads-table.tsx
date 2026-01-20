@@ -358,7 +358,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 >
                   <TableCell
                     className={cn(
-                      "px-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      "px-2 py-0 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -402,7 +402,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "px-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs whitespace-nowrap",
+                      "px-2 py-0 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -435,16 +435,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "px-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
+                      "px-2 py-0 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
-                  <TableCell className="px-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                  <TableCell className="px-2 py-0 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
                   </TableCell>
-                  <TableCell className="px-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="px-2 py-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
                       {hasVisibilityStatus && (
                         <Button
