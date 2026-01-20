@@ -77,7 +77,7 @@ export default function EmptyState({
           </Button>
         )}
         {redirectToAds && (
-          <Button onClick={createAd} className={cn("basis-auto grow shrink", redirectToMarket && redirectToAds && "w-full")}>
+          <Button onClick={createAd} className="basis-auto grow shrink">
             {t("myAds.createAd")}
           </Button>
         )}
