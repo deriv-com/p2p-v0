@@ -65,7 +65,8 @@
     "noAdsTitle": "No ads for this currency",
     "noAdsDescription": "You can post your own ad for others to respond.",
     "following": "Following",
-    "verified": "Verified"
+    "verified": "Verified",
+    "browseMarket": "Browse market"
   },
   "order": {
     "placeOrder": "Place order",
@@ -521,8 +522,8 @@
     "checkPreviousOrders": "Check previous orders",
     "previousOrders": "Previous orders",
     "loadingOrders": "Loading orders...",
-    "noActiveOrders": "No active orders",
-    "noActiveOrdersDescription": "View and manage your active orders here.",
+    "noActiveOrders": "No active orders yet",
+    "noActiveOrdersDescription": "Buy or sell from the market, or create an ad to start receiving orders.",
     "noPastOrders": "No past orders",
     "noPastOrdersDescription": "View and manage your past orders here.",
     "date": "Date",

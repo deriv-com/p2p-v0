@@ -469,7 +469,7 @@ export default function OrdersPage() {
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
               {activeTab === "active" ? (
-                <EmptyState title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} />
+                <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} redirectToAds={true} redirectToMarket={true} />
               ) : (
                 <EmptyState title={t("orders.noPastOrders")} description={t("orders.noPastOrdersDescription")} />
               )}
