@@ -77,7 +77,7 @@ export default function EmptyState({
           </Button>
         )}
         {redirectToMarket && (
-          <Button onClick={browseMarket} className="mt-4">
+          <Button onClick={browseMarket} className="mt-4" variant="ghost">
             {t("market.browseMarket")}
           </Button>
         )}
