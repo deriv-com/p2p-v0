@@ -59,6 +59,10 @@ export default function EmptyState({
     }
   }
 
+  const browseMarket = () => {
+    router.push("/")
+  }
+
   return (
     <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
