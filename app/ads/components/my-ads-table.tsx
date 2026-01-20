@@ -386,10 +386,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         </div>
                         {!isMobile && (
                           <div className="flex items-center justify-between md:justify-normal gap-1">
-                            <span className="text-xs leading-5 text-slate-600">
+                            <span className="text-xs leading-5">
                               {t("myAds.rate")}:
                             </span>
-                            <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                            <span className="text-xs md:text-sm font-bold leading-5">{rate} {ad.payment_currency}</span>
                             {exchangeRateType == "float" && ad.exchange_rate != 0 && (
                               <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
                                 {exchangeRate}
