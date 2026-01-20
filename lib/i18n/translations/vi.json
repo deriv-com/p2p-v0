@@ -26,8 +26,7 @@
     "learnMore": "Tìm hiểu thêm",
     "verifiedBadge": {
       "title": "Tài khoản đã xác minh đầy đủ",
-      "descriptionSelf": "Bạn đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ.",
-      "descriptionOther": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
+      "description": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
     }
   },
   "navigation": {
@@ -495,7 +494,7 @@
     "timeLimit60Minutes": "60 phút",
     "chooseYourAudience": "Chọn đối tượng của bạn",
     "audienceTooltip": "Bạn có thể lọc người tương tác với quảng cáo của mình dựa trên vị trí hoặc lịch sử P2P của họ. Bộ lọc nghiêm ngặt hơn có thể giảm khả năng hiển thị quảng cáo.",
-    "instructions": "Hướng dẫn (Tùy chọn)",
+    "sellerInstructions": "Hướng dẫn (tùy chọn)",
     "instructionsDisclaimer": "Thông tin này sẽ hiển thị cho mọi người. Đừng chia sẻ số điện thoại hoặc chi tiết cá nhân của bạn.",
     "totalAmountRequired": "Tổng số tiền là bắt buộc",
     "totalAmountGreaterThanZero": "Tổng số tiền phải lớn hơn 0",
@@ -627,7 +626,12 @@
     "setupProfile": "Thiết lập hồ sơ của bạn",
     "proofOfIdentity": "Chứng minh danh tính",
     "proofOfAddress": "Chứng minh địa chỉ",
-    "phoneNumber": "Số điện thoại"
+    "phoneNumber": "Số điện thoại",
+    "resubmitIdentityAndAddress": "Gửi lại chứng minh danh tính và địa chỉ của bạn để tiếp tục sử dụng P2P.",
+    "resubmitIdentity": "Gửi lại chứng minh danh tính của bạn để tiếp tục sử dụng P2P.",
+    "resubmitAddress": "Gửi lại chứng minh địa chỉ của bạn để tiếp tục sử dụng P2P.",
+    "unverified": "Chưa xác minh",
+    "resubmitNow": "Gửi lại ngay"
   },
   "status": {
     "refunded": "Đã hoàn tiền",

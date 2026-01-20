@@ -34,7 +34,9 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData, userId, verificationStatus } = useUserDataStore()
+  const { userData, userId, onboardingStatus, verificationStatus } = useUserDataStore()
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
@@ -44,22 +46,46 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const [showKycPopup, setShowKycPopup] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
-  const handleCreateAd = () => {
-    if (!userId || !verificationStatus?.phone_verified) {
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="ads" />
           </div>
         ),
         confirmText: undefined,
         cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
       })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
+
+  const handleCreateAd = () => {
+    if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
+      setShowKycPopup(true)
       return
     }
     router.push("/ads/create")

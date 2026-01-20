@@ -433,8 +433,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                             >
                               <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
                                 <div className="font-bold">
-                                  {ad.exchange_rate
-                                    ? ad.exchange_rate.toLocaleString(undefined, {
+                                  {ad.effective_rate_display
+                                    ? ad.effective_rate_display.toLocaleString(undefined, {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
                                       })

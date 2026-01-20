@@ -47,7 +47,10 @@ export default function WalletSummary({
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus) // Added verificationStatus from userDataStore to check phone_verified
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -69,7 +72,7 @@ export default function WalletSummary({
           code,
           name: data.label,
           logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-          label: data.label, // Added label field to currencyList
+          label: data.label,
         }))
         setCurrencies(currencyList)
       }
@@ -83,15 +86,21 @@ export default function WalletSummary({
   }, [])
 
   const handleDepositClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -101,15 +110,21 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -121,15 +136,21 @@ export default function WalletSummary({
   const handleTransferClick = () => {
     if (!hasBalance) return
 
-    if (userId && verificationStatus?.phone_verified) {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
+      const title = t("profile.gettingStarted")
+
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title,
         description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="wallets" />
           </div>
         ),
         confirmText: undefined,
@@ -188,13 +209,25 @@ export default function WalletSummary({
         <div className={cn("flex items-center justify-between", isMobile && "flex-col gap-4")}>
           <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
             <div className="flex-shrink-0">
-              <Image
-                src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/dp2p-wallet.png"}
-                alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
-                width={!isBalancesView ? 64 : 92}
-                height={!isBalancesView ? 64 : 92}
-                className={cn(!isBalancesView ? "w-16 h-16" : "w-18 h-18 md:w-24 md:h-24")}
-              />
+              {isBalancesView ? (<Image
+                src="/icons/dp2p-wallet.png"
+                alt="P2P Logo"
+                width={92}
+                height={92}
+                className="w-18 h-18 md:w-24 md:h-24"
+              />) :   
+              (<div className="flex-shrink-0 relative w-16 h-16">
+                <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
+                <div class="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
+                  <Image
+                    src={currencyLogo}
+                    alt={`${externalSelectedCurrency} Logo`}
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 rounded-full bg-white p-[2px]"
+                  />
+                </div>
+              </div>)}
             </div>
 
             <div className={cn("flex flex-col", isMobile && "items-center")}>

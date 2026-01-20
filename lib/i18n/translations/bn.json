@@ -26,8 +26,7 @@
     "learnMore": "আরও জানুন",
     "verifiedBadge": {
       "title": "সম্পূর্ণ যাচাইকৃত অ্যাকাউন্ট",
-      "descriptionSelf": "আপনি ইমেল, ফোন নম্বর, পরিচয় (KYC), এবং ঠিকানা যাচাইকরণ সহ সমস্ত প্রয়োজনীয় যাচাইকরণ পদক্ষেপ সম্পন্ন করেছেন।",
-      "descriptionOther": "এই ব্যবহারকারী ইমেল, ফোন নম্বর, পরিচয় (KYC), এবং ঠিকানা যাচাইকরণ সহ সমস্ত প্রয়োজনীয় যাচাইকরণ পদক্ষেপ সম্পন্ন করেছেন। আপনি আত্মবিশ্বাসের সাথে ব্যবসা করতে পারেন কারণ এই অ্যাকাউন্টটি যাচাইকৃত।"
+      "description": "এই ব্যবহারকারী ইমেল, ফোন নম্বর, পরিচয় (KYC), এবং ঠিকানা যাচাইকরণ সহ সমস্ত প্রয়োজনীয় যাচাইকরণ পদক্ষেপ সম্পন্ন করেছেন। আপনি আত্মবিশ্বাসের সাথে ব্যবসা করতে পারেন কারণ এই অ্যাকাউন্টটি যাচাইকৃত।"
     }
   },
   "navigation": {
@@ -261,6 +260,9 @@
     "lessThanOneMin": "< ১ মিনিট",
     "mins": "মিনিট",
     "gettingStarted": "P2P দিয়ে শুরু করা",
+    "verificationExpired": "যাচাইকরণ মেয়াদ শেষ",
+    "identityVerificationExpired": "পরিচয় যাচাইকরণ মেয়াদ শেষ",
+    "addressVerificationExpired": "ঠিকানা যাচাইকরণ মেয়াদ শেষ",
     "errorLoadingProfile": "ব্যবহারকারী ডেটা লোড করতে ব্যর্থ",
     "noUserData": "কোন ব্যবহারকারী ডেটা পাওয়া যায়নি",
     "followsCount": "অনুসরণ ({count})",
@@ -315,7 +317,7 @@
     "amount": "পরিমাণ",
     "loadingAssets": "সম্পদ লোড হচ্ছে...",
     "noAssetsTitle": "এখনো কোন সম্পদ নেই",
-    "noAssetsDescription": "আপনার প্রথম জমা করুন এবং আজ আপনার ট্রেডিং যাত্রা শুরু করুন",
+    "noAssetsDescription": "আপনার প্রথম জমা করুন এবং আজ আপনার ট্রেডিং যাত্রা শুরু করুন.",
     "transactions": "লেনদেন",
     "all": "সব",
     "today": "আজ",
@@ -492,7 +494,7 @@
     "timeLimit60Minutes": "৬০ মিনিট",
     "chooseYourAudience": "আপনার দর্শক চয়ন করুন",
     "audienceTooltip": "আপনি তাদের অবস্থান বা P2P ইতিহাসের উপর ভিত্তি করে আপনার বিজ্ঞাপনের সাথে কে ইন্টারঅ্যাক্ট করবে তা ফিল্টার করতে পারেন। কঠোর ফিল্টার বিজ্ঞাপন দৃশ্যমানতা হ্রাস করতে পারে।",
-    "instructions": "নির্দেশনা (ঐচ্ছিক)",
+    "sellerInstructions": "নির্দেশনা (ঐচ্ছিক)",
     "instructionsDisclaimer": "এই তথ্য সবার কাছে দৃশ্যমান হবে। আপনার ফোন নম্বর বা ব্যক্তিগত বিবরণ শেয়ার করবেন না।",
     "totalAmountRequired": "মোট পরিমাণ প্রয়োজন",
     "totalAmountGreaterThanZero": "মোট পরিমাণ ০ এর চেয়ে বেশি হতে হবে",
@@ -581,7 +583,12 @@
     "setupProfile": "আপনার প্রোফাইল সেট আপ করুন",
     "proofOfIdentity": "পরিচয়ের প্রমাণ",
     "proofOfAddress": "ঠিকানার প্রমাণ",
-    "phoneNumber": "ফোন নম্বর"
+    "phoneNumber": "ফোন নম্বর",
+    "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
+    "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
+    "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
+    "unverified": "Unverified",
+    "resubmitNow": "Resubmit now"
   },
   "status": {
     "refunded": "ফেরত দেওয়া হয়েছে",

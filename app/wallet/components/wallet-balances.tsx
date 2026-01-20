@@ -3,6 +3,7 @@
 import Image from "next/image"
 import BalanceItem from "./balance-item"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import EmptyState from "@/components/empty-state"
 
 interface Balance {
   amount: string
@@ -30,31 +31,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
 
   if (balances.length === 0) {
     return (
-      <div className="flex flex-col items-center p-6 md:mt-6 mr-6 md:mr-0">
-        <Image src="/icons/magnifier.png" alt="No assets" width={86} height={86} />
-        <div className="h-2" />
-        <p
-          style={{
-            color: "#181C25",
-            textAlign: "center",
-            fontSize: "16px",
-            fontWeight: 700,
-          }}
-        >
-          {t("wallet.noAssetsTitle")}
-        </p>
-        <div className="h-1" />
-        <p
-          style={{
-            color: "#000000B8",
-            textAlign: "center",
-            fontSize: "14px",
-            fontWeight: 400,
-          }}
-        >
-          {t("wallet.noAssetsDescription")}
-        </p>
-      </div>
+      <EmptyState title={t("wallet.noAssetsTitle")} description={t("wallet.noAssetsDescription")} />
     )
   }
 

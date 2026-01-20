@@ -85,7 +85,7 @@ const PaymentSelectionContent = ({
                     />
                     <div className="flex- flex-col">
                       <span className="text-base text-slate-1200">{getCategoryDisplayName(method.type)}</span>
-                      <div className="font-normal text-grayscale-text-muted text-xs">{`${formatPaymentMethodName(method.display_name)} - ${maskAccountNumber(method.fields.account.value)}`}</div>
+                      <div className="font-normal text-grayscale-text-muted text-xs">{`${formatPaymentMethodName(method.display_name)} - ${method.fields.account.value}`}</div>
                     </div>
                   </div>
                 </div>
@@ -274,13 +274,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
           showAlert({
-            title: "Existing order in progress",
+            title: "Active order detected",
             description: t("order.orderExists"),
-            confirmText: "Go to Market",
+            cancelText: "View order",
+            confirmText: "Try different ad",
             type: "warning",
             onConfirm: () => {
               handleClose()
             },
+            onCancel: () => {
+              router.push("/orders/" + order.errors[0].detail.order_id)
+            }
           })
         } else if (errorCode === "OrderFloatRateSlippage") {
           showAlert({

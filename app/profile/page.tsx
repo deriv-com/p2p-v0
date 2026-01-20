@@ -9,16 +9,44 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const { showWarningDialog } = useAlertDialog()
+  const { showWarningDialog, showAlert } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
   const isDisabled = user?.status === "disabled"
   const { t } = useTranslations()
+  const [showKycPopup, setShowKycPopup] = useState(false)
+  const searchParams = new URLSearchParams(window.location.search)
+  const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+
+  useEffect(() => {
+    if (shouldShowKyc) {
+      setShowKycPopup(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showKycPopup) {
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet route="profile" />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onConfirm: () => setShowKycPopup(false),
+        onCancel: () => setShowKycPopup(false),
+      })
+      setShowKycPopup(false)
+    }
+  }, [showKycPopup, showAlert, t])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,12 +66,16 @@ export default function ProfilePage() {
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if (responseData.errors[0].status != 401 && responseData.errors[0].status != 403 && responseData.errors[0].status != 404) {
+          if (
+            responseData.errors[0].status != 401 &&
+            responseData.errors[0].status != 403 &&
+            responseData.errors[0].status != 404
+          ) {
             showWarningDialog({
-            title: t("common.error"),
-            description: errorMessage,
+              title: t("common.error"),
+              description: errorMessage,
             })
-          } 
+          }
 
           return
         }
@@ -151,7 +183,7 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} />
+            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment": "stats"}/>
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ interface AlertDialogProviderProps {
 export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [config, setConfig] = useState<AlertDialogConfig>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
@@ -32,7 +33,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
   const handleConfirm = useCallback(async () => {
     if (config.onConfirm) {
+      setIsSubmitting(true)
       await config.onConfirm()
+      setIsSubmitting(false)
     }
     hideAlert()
   }, [config.onConfirm, hideAlert])
@@ -54,10 +57,10 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     if (config.content) {
       return (
         <div className="overflow-y-auto">
-          <div className="flex justify-between px-8 pt-6">
-            {config.title && <div className="mb-4 font-bold text-2xl">{config.title}</div>}
-            <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
+          <div className="flex justify-between px-8 pt-6 items-center mb-4">
+            {config.title && <div className="font-bold text-2xl">{config.title}</div>}
+            <Button onClick={hideAlert} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
             </Button>
           </div>
           <div className="px-8 pb-6">{config.content}</div>
@@ -67,25 +70,25 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     return (
       <div className="px-8 py-6 overflow-y-auto">
-        <div className="flex justify-between">
-          {config.title && <div className="mb-8 font-bold text-2xl mr-2">{config.title}</div>}
-          <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
-            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
+        <div className="flex justify-between items-center mb-8">
+          {config.title && <div className="font-bold text-2xl mr-2">{config.title}</div>}
+          <Button onClick={hideAlert} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
-        {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
-        <div className="flex flex-col gap-2 mt-6">
+        {config.description && <div className="text-grayscale-100">{config.description}</div>}
+        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-6">
           {config.cancelText && (
             <Button onClick={handleCancel} variant="primary" className="w-full">
               {config.cancelText}
             </Button>
           )}
           {config.type && (
-            <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+            <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
               {config.confirmText || "Continue"}
             </Button>
           )}
-        </div>
+        </div>)}
       </div>
     )
   }
@@ -104,18 +107,18 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="p-6 overflow-y-auto">
         {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
         {config.description && <div className="text-grayscale-100">{config.description}</div>}
-        <div className="flex flex-col gap-2 mt-8">
+        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-8">
           {config.cancelText && (
             <Button onClick={handleCancel} variant="primary" className="w-full">
               {config.cancelText}
             </Button>
           )}
           {config.type && (
-            <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+            <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
               {config.confirmText || "Continue"}
             </Button>
           )}
-        </div>
+        </div>)}
       </div>
     )
   }

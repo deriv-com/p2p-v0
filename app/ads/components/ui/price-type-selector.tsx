@@ -17,12 +17,12 @@ interface PriceTypeSelectorProps {
   value: PriceType
   onChange: (value: PriceType) => void
   disabled?: boolean
+  isFloatingRateEnabled?: boolean
 }
 
-export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false }: PriceTypeSelectorProps) {
+export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false, isFloatingRateEnabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
-  const isFloatingRateEnabled = process.env.NEXT_PUBLIC_FLOATING_RATE_ENABLED == 1
 
   const handleSelect = (newValue: PriceType) => {
     onChange(newValue)
@@ -33,7 +33,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <Button
       variant="outline"
       disabled={disabled}
-      className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal"
+      className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
     >
       <span className="text-grayscale-600">{value === "fixed" ? "Fixed" : "Floating"}</span>
       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
@@ -87,7 +87,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+                  <Image
+                    src="/icons/info-circle.svg"
+                    alt="Info"
+                    width={24}
+                    height={24}
+                    className="ml-1 cursor-pointer flex-shrink-0"
+                  />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-white">Set a constant price, unaffected by market fluctuations.</p>
