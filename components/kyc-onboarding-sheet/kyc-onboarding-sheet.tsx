@@ -28,7 +28,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const isPoaExpired = userId && !isPoaCompleted
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
-  const getFromParam = () => { 
+  const getFromParam = () => {
     if (!route) return "from=p2p"
 
     switch (route) {
