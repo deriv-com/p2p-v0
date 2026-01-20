@@ -532,25 +532,27 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
         <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
-          <Navigation
-            isBackBtnVisible={currentStep != 0}
-            isVisible={false}
-            onBack={() => {
-              const updatedStep = currentStep - 1
-              setCurrentStep(updatedStep)
-            }}
-            onClose={handleClose}
-            title=""
-          />
-          <ProgressSteps
-            currentStep={currentStep}
-            steps={steps}
-            className="px-6 my-6"
-            title={{
-              label: getPageTitle(),
-              stepTitle: steps[currentStep].title,
-            }}
-          />
+          <div className="sticky top-0 z-10 bg-white">
+            <Navigation
+              isBackBtnVisible={currentStep != 0}
+              isVisible={false}
+              onBack={() => {
+                const updatedStep = currentStep - 1
+                setCurrentStep(updatedStep)
+              }}
+              onClose={handleClose}
+              title=""
+            />
+            <ProgressSteps
+              currentStep={currentStep}
+              steps={steps}
+              className="px-6 my-6"
+              title={{
+                label: getPageTitle(),
+                stepTitle: steps[currentStep].title,
+              }}
+            />
+          </div>
 
           <div className="relative mb-16 md:mb-0 mx-6">
             {currentStep === 0 ? (
