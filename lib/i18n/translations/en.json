@@ -65,7 +65,8 @@
     "noAdsTitle": "No ads for this currency",
     "noAdsDescription": "You can post your own ad for others to respond.",
     "following": "Following",
-    "verified": "Verified"
+    "verified": "Verified",
+    "browseMarket": "Browse market"
   },
   "order": {
     "placeOrder": "Place order",
