@@ -70,14 +70,14 @@ export default function EmptyState({
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
       {title && <p className="text-base text-slate-1200 mt-2 font-bold">{title}</p>}
       {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
-      <div className="flex w-full gap-2 justify-center flex-wrap-reverse">
+      <div className="flex w-full gap-2 justify-center flex-wrap-reverse mt-4">
         {redirectToMarket && (
-          <Button onClick={browseMarket} className={cn("mt-4 basis-auto grow shrink", redirectToMarket && redirectToAds && "w-full")} variant="outline">
+          <Button onClick={browseMarket} className={cn("basis-auto grow shrink", redirectToMarket && redirectToAds && "w-full")} variant="outline">
             {t("market.browseMarket")}
           </Button>
         )}
         {redirectToAds && (
-          <Button onClick={createAd} className={cn("mt-4 basis-auto grow shrink", redirectToMarket && redirectToAds && "w-full")}>
+          <Button onClick={createAd} className={cn("basis-auto grow shrink", redirectToMarket && redirectToAds && "w-full")}>
             {t("myAds.createAd")}
           </Button>
         )}
