@@ -353,12 +353,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 <TableRow
                   key={index}
                   className={cn(
-                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0",
+                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0 text-slate-1200 gap-2",
                   )}
                 >
                   <TableCell
                     className={cn(
-                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      "px-2 py-0 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -372,26 +372,24 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType.toLowerCase() === "buy" ? t("common.buy") : t("common.sell")}
                         </span>
-                        <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
+                        <span className="text-base font-bold leading-6 ml-1">
                           {" "}
                           {ad.account_currency}
                         </span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          {!isMobile && (
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
-                              {t("myAds.adId")}:
-                            </span>
-                          )}
+                          <span className="text-xs leading-5 text-slate-500">
+                            {t("myAds.adId")}:
+                          </span>
                           <span className="text-xs leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (
                           <div className="flex items-center justify-between md:justify-normal gap-1">
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
+                            <span className="text-xs leading-5">
                               {t("myAds.rate")}:
                             </span>
-                            <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                            <span className="text-xs font-bold leading-5">{rate} {ad.payment_currency}</span>
                             {exchangeRateType == "float" && ad.exchange_rate != 0 && (
                               <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
                                 {exchangeRate}
@@ -404,7 +402,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap",
+                      "px-2 py-0 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -419,11 +417,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     </div>
                     {isMobile && (
                       <div className="flex items-center justify-between gap-1">
-                        <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
+                        <span className="text-xs leading-5">{t("myAds.rate")}:</span>
                         <div>
-                          <span className="text-xs leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                          <span className="text-xs leading-5 text-gray-900 font-bold">{rate} {ad.payment_currency}</span>
                           {exchangeRateType == "float" && ad.exchange_rate != 0 && (
-                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-2">
                               {exchangeRate}
                             </span>
                           )}
@@ -437,16 +435,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
+                      "px-2 py-0 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                  <TableCell className="px-2 py-0 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
                   </TableCell>
-                  <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
                       {hasVisibilityStatus && (
                         <Button
