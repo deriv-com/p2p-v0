@@ -63,7 +63,7 @@ export default function EmptyState({
     <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
       {title && <p className="text-base text-slate-1200 mt-2 font-bold">{title}</p>}
-      {description && <p className="text-base font-normal text-grayscale-text-muted mb-2">{description}</p>}
+      {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
       {redirectToAds && (
         <Button onClick={createAd} className="mt-4">
           {t("myAds.createAd")}
