@@ -42,7 +42,7 @@ export default function EmptyState({
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push("/ads/create")
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
