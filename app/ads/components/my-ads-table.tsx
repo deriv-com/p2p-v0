@@ -419,7 +419,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs leading-5">{t("myAds.rate")}:</span>
                         <div>
-                          <span className="text-xs leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                          <span className="text-xs leading-5 text-gray-900 font-bold">{rate} {ad.payment_currency}</span>
                           {exchangeRateType == "float" && ad.exchange_rate != 0 && (
                             <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
                               {exchangeRate}
