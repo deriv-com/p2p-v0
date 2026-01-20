@@ -353,12 +353,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 <TableRow
                   key={index}
                   className={cn(
-                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0",
+                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0 text-slate-1200",
                   )}
                 >
                   <TableCell
                     className={cn(
-                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap text-slate-1200",
+                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -402,7 +402,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap",
+                      "p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
