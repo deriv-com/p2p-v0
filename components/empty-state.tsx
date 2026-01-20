@@ -77,7 +77,7 @@ export default function EmptyState({
           </Button>
         )}
         {redirectToAds && (
-          <Button onClick={createAd} className="mt-4 w-full">
+          <Button onClick={createAd} className={cn("mt-4", redirectToMarket && redirectToAds && "w-full")}>
             {t("myAds.createAd")}
           </Button>
         )}
