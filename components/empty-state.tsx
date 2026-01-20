@@ -70,7 +70,7 @@ export default function EmptyState({
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
       {title && <p className="text-base text-slate-1200 mt-2 font-bold">{title}</p>}
       {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
-      <div>
+      {redirectToAds || redirectToMarket && <div>
         {redirectToAds && (
           <Button onClick={createAd} className="mt-4">
             {t("myAds.createAd")}
@@ -81,7 +81,7 @@ export default function EmptyState({
             {t("market.browseMarket")}
           </Button>
         )}
-      </div>
+      </div>}
       {onAddPaymentMethod && (
         <Button onClick={onAddPaymentMethod} className="mt-4">
           {t("profile.addPaymentMethod")}
