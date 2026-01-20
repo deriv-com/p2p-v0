@@ -444,7 +444,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   <TableCell className="px-2 py-0 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
                   </TableCell>
-                  <TableCell className="px-2 py-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
                       {hasVisibilityStatus && (
                         <Button
