@@ -69,6 +69,11 @@ export default function EmptyState({
           {t("myAds.createAd")}
         </Button>
       )}
+      {redirectToMarket && (
+        <Button onClick={browseMarket} className="mt-4">
+          {t("market.browseMarket")}
+        </Button>
+      )}
       {onAddPaymentMethod && (
         <Button onClick={onAddPaymentMethod} className="mt-4">
           {t("profile.addPaymentMethod")}
