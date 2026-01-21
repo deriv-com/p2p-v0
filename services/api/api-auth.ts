@@ -219,7 +219,7 @@ export async function getSession(): Promise<boolean> {
 
     const verifiableAddresses = result?.data?.identity?.verifiable_addresses || []
     const emailVerified = verifiableAddresses.some(
-      (addr: { via: string; verified: boolean }) => addr.via === "email" && addr.verified === true
+      (addr: { via: string; verified: boolean }) => addr.via === "email" && addr.verified == true
     )
     useUserDataStore.getState().setOryEmailVerified(emailVerified)
 
