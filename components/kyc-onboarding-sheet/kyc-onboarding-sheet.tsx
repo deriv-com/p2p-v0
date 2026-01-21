@@ -18,10 +18,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const userData = useUserDataStore((state) => state.userData)
   const isV1Signup = userData?.signup === "v1"
 
-  const isProfileCompleted =
-    (onboardingStatus?.p2p?.criteria?.find((c) => c.code === "deposit_enabled")?.passed &&
-      onboardingStatus?.p2p?.criteria?.find((c) => c.code === "withdraw_enabled")?.passed) ||
-    false
+  const isProfileCompleted = onboardingStatus?.profile?.status === "complete"
   const isPoiCompleted = onboardingStatus?.kyc?.poi_status === "approved"
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
   const isPoiExpired = userId && !isPoiCompleted
