@@ -356,6 +356,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
         signup: "v2",
       })
       useUserDataStore.getState().setUserId("")
+      useMarketFilterStore.getState().resetFilters()
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
