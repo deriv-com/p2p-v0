@@ -5,6 +5,7 @@ export const runtime = "edge"
 import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
+import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -412,6 +413,14 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
+      {order?.type && (
+        <Navigation
+          isBackBtnVisible={false}
+          isVisible={false}
+          title={`${orderType} ${order?.advert?.account_currency}`}
+          redirectUrl={"/orders"}
+        />
+      )}
       <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
           <div className="flex flex-row gap-6">
@@ -466,7 +475,7 @@ export default function OrderDetailsPage() {
               <div className="w-full lg:w-1/2 rounded-lg">
                 <div
                   className={cn(
-                    `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
+                    `${getStatusBadgeStyle(order.status, isBuyer)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
                     order.status === "pending_release" && isBuyer && isMobile ? "flex-col items-start" :
                       order.status === "pending_payment" || order.status === "pending_release"
                         ? "justify-between"
@@ -481,7 +490,7 @@ export default function OrderDetailsPage() {
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <span
-                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, order.type)}`}
+                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
                                 aria-label="Info"
                                 role="img"
                               >
