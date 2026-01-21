@@ -180,6 +180,7 @@ const config: Config = {
         },
         red: {
           withdraw: "#E6190E",
+          50: "#e6190e14",
         },
       },
       borderRadius: {
