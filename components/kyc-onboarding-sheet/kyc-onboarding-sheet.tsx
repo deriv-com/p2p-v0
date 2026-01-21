@@ -161,7 +161,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
                 </div>
               )}
               {step.rejected && (
-                <div className="text-xs text-error-DEFAULT bg-red-50 rounded-sm px-4 py-1">
+                <div className="text-xs text-error-text bg-red-50 rounded-sm px-4 py-1">
                   {t("kyc.failed")}
                 </div>
               )}
