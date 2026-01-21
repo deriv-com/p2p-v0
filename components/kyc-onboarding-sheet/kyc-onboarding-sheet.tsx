@@ -52,21 +52,21 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     {
       id: "profile",
       title: t("kyc.setupProfile"),
-      icon: "/icons/account-profile.png",
+      icon: "/icons/account-profile.svg",
       completed: isProfileCompleted,
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "phone",
       title: t("kyc.phoneNumber"),
-      icon: "/icons/pnv.png",
+      icon: "/icons/pnv.svg",
       completed: isPhoneCompleted,
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "poi",
       title: t("kyc.proofOfIdentity"),
-      icon: "/icons/poi.png",
+      icon: "/icons/poi.svg",
       completed: isPoiCompleted,
       rejected: isPoiRejected,
       inReview: isPoiInReview,
@@ -76,7 +76,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     {
       id: "poa",
       title: t("kyc.proofOfAddress"),
-      icon: "/icons/poa.png",
+      icon: "/icons/poa.svg",
       completed: isPoaCompleted,
       rejected: isPoaRejected,
       inReview: isPoaInReview,
