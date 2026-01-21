@@ -36,7 +36,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import InfoCircleIcon from "@/public/icons/info-circle.svg"
+import InfoCircleIcon from "@/public/icons/info-circle-bold.svg"
 
 export default function OrderDetailsPage() {
   const { t } = useTranslations()
@@ -497,7 +497,7 @@ export default function OrderDetailsPage() {
                                 <InfoCircleIcon className="h-6 w-6 [&>path]:fill-current" aria-hidden />
                               </span>
                             </TooltipTrigger>
-                            <TooltipContent side="bottom" avoidCollisions={false}>
+                            <TooltipContent className='p-3' side="bottom" avoidCollisions={false}>
                               <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
                               <TooltipArrow className="fill-black" />
                             </TooltipContent>
