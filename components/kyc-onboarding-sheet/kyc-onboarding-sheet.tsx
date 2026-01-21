@@ -116,7 +116,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     <div className="w-full">
       <h2 className="text-grayscale-600 text-base font-normal mb-6">{getDescription()}</h2>
 
-      <div className="space-y-6">
+      <div className="space-y-6 mb-6">
         {verificationSteps.map((step, index) => (
           <div key={step.id}>
             <div
