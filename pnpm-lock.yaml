@@ -39,7 +39,7 @@ importers:
         version: 3.3.3
       '@hookform/resolvers':
         specifier: ^3.9.1
-        version: 3.9.1(react-hook-form@7.71.1(react@19.0.0))
+        version: 3.10.0(react-hook-form@7.71.1(react@19.0.0))
       '@novu/nextjs':
         specifier: latest
         version: 3.12.0(next@15.4.10(@babel/core@7.28.6)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1429,8 +1429,8 @@ packages:
     resolution: {integrity: sha512-x3sK6Lff4BVusIzcdBeHZqA3B4kLs3kM/pJ7vvLTJwb6N/+Yn99EF1yc0XU6cfDVqFq6uFkvIFhMwDWUaKD73g==}
     engines: {node: '>=10'}
 
-  '@hookform/resolvers@3.9.1':
-    resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
+  '@hookform/resolvers@3.10.0':
+    resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
     peerDependencies:
       react-hook-form: ^7.0.0
 
@@ -3290,8 +3290,8 @@ packages:
   '@vercel/node@5.5.23':
     resolution: {integrity: sha512-dDJtroLF4D/H9vRMt/x/qI2bKujMOPbk6aIqRKI9WXddngjKziuHxsjcF3zEm5YXGUYDSC2lEVEFrXPbbP+hhw==}
 
-  '@vercel/python@6.2.1':
-    resolution: {integrity: sha512-RJS24xtf8gOXxoogEOcvs0AiLGyxE4aBUCK2Nb5Od/gpqrA/BJTIwngm9ILueOYTUyWeird9eyNnUGC0GbK3Nw==}
+  '@vercel/python@6.1.6':
+    resolution: {integrity: sha512-4N9doC1i97rx6nh8h05GiDWfnAIRZLVjKKg+hJmxBO5aVWr8uyXrM337KFC4NF6rxutMHsXAp5DBe/M+dOJDKg==}
 
   '@vercel/redwood@2.4.9':
     resolution: {integrity: sha512-U7bYIuWfMEFMIcKKbX7lTT8pFNjig9Q3vLeCYRYQUrKVP8xLoUBXSEfW3ijtWJBUV8GmbZCDI30A16uUfNhN+g==}
@@ -9800,7 +9800,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/python@6.2.1': {}
+  '@vercel/python@6.1.6': {}
 
   '@vercel/redwood@2.4.9':
     dependencies:
@@ -12499,7 +12499,7 @@ snapshots:
       clsx: 2.1.1
       decimal.js-light: 2.5.1
       es-toolkit: 1.44.0
-      eventemitter3: 5.0.1
+      eventemitter3: 5.0.4
       immer: 10.2.0
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
