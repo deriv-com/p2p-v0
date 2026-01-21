@@ -98,9 +98,9 @@ export default function StatsGrid({ stats }) {
       <div className="bg-transparent rounded-lg px-2 md:px-0">
         <div>
           <Tabs defaultValue="last30days">
-            <TabsList>
-              <TabsTrigger value="last30days">{t("profile.last30Days")}</TabsTrigger>
-              <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
+            <TabsList className="w-full md:w-auto">
+              <TabsTrigger value="last30days" className="flex-1 md:flex-none md:w-32">{t("profile.last30Days")}</TabsTrigger>
+              <TabsTrigger value="lifetime" className="flex-1 md:flex-none md:w-32">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-0 md:px-0   bg-transparent">
               <div className="flex flex-col divide-y divide-black/[0.08]">
