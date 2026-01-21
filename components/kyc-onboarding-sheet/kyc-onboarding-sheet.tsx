@@ -121,9 +121,6 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
           <div key={step.id}>
             <div
               className={cn("flex items-center gap-3", !step.completed && "hover:cursor-pointer")}
-              onClick={() => {
-                if (!step.completed) handleStepClick(step.link)
-              }}
             >
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                 <Image
