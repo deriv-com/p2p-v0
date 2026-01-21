@@ -166,7 +166,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
                 </div>
               )}
               {step.inReview && (
-                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
+                <div className="text-xs text-grayscale-600 bg-orange-50 rounded-sm px-4 py-1">
                   {t("kyc.inReview")}
                 </div>
               )}
