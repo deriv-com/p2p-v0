@@ -282,12 +282,15 @@ export async function fetchUserIdAndStore(): Promise<void> {
     }
 
     if (!response.ok) {
+    console.log("response not ok")
       useUserDataStore.getState().updateUserData({
         balances: [{ amount: "0" }],
         signup: "v2",
       })
       return
     }
+
+    console.log(result?.data?.id)
 
     const userId = result?.data?.id
     const userCountryCode = result?.data?.country_code
