@@ -683,7 +683,8 @@
     "failed": "Failed",
     "inReview": "In Review",
     "unverified": "Unverified",
-    "resubmitNow": "Resubmit now"
+    "resubmitNow": "Resubmit now",
+    "email": "Email"
   },
   "status": {
     "refunded": "Refunded",
