@@ -153,7 +153,10 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
           </div>
         ))}
       </div>
-      {hasExpiredSteps ? <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button> : <Button className="w-full mt-6" onClick={() => {})}>{t("profile.gettingStarted")}</Button>}
+      {hasExpiredSteps ? (
+      <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
+      <Button className="w-full mt-6" onClick={() => {})}>{t("profile.gettingStarted")}</Button>)
+      }
     </div>
   )
 }
