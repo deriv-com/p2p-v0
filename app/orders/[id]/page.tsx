@@ -485,7 +485,7 @@ export default function OrderDetailsPage() {
                   <div className="flex items-center">
                     <div className="flex items-center gap-1">
                       <span className="font-bold">{formatStatus(true, order.status, isBuyer, t)}</span>
-                      {order.status === "pending_payment" && !isBuyer && order.type === "buy" && (
+                      {order.status === "pending_payment" && !isBuyer && (
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
