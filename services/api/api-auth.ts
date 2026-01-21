@@ -359,6 +359,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
         signup: "v2",
       })
       useUserDataStore.getState().setUserId("")
+      useUserDataStore.getState().setLocalCurrency(null)
       useMarketFilterStore.getState().resetFilters()
     }
   } catch (error) {
