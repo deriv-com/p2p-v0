@@ -150,6 +150,11 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
                   />
                 </div>
               )}
+              {step.completed && step.id !== "profile" && (
+                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
+                  {t("kyc.verified")}
+                </div>
+              )}
               {step.expired && (
                 <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
                   {t("kyc.unverified")}
