@@ -679,6 +679,7 @@
     "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
     "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
     "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
+    "verified": "Verified",
     "unverified": "Unverified",
     "resubmitNow": "Resubmit now"
   },
