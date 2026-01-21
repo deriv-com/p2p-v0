@@ -355,6 +355,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
         balances: [{ amount: "0" }],
         signup: "v2",
       })
+      useUserDataStore.getState().setUserId("")
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
