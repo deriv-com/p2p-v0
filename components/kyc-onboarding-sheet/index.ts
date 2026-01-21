@@ -1,1 +1,4 @@
-export { KycOnboardingSheet } from "./kyc-onboarding-sheet"
+import KycOnboardingSheet from "./kyc-onboarding-sheet"
+
+export { KycOnboardingSheet }
+export default KycOnboardingSheet
