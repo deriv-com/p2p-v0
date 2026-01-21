@@ -57,6 +57,13 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
+      id: "email",
+      title: t("kyc.email"),
+      icon: "/icons/email.svg",
+      completed: isEmailVerified,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
+    },
+    {
       id: "phone",
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.svg",
