@@ -5,7 +5,6 @@ export const runtime = "edge"
 import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
-import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -36,7 +35,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import InfoCircleIcon from "@/public/icons/info-circle-bold.svg"
+import InfoCircleIcon from "@/public/icons/info-circle.svg"
 
 export default function OrderDetailsPage() {
   const { t } = useTranslations()
@@ -413,14 +412,6 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
-      {order?.type && (
-        <Navigation
-          isBackBtnVisible={false}
-          isVisible={false}
-          title=""
-          redirectUrl={"/orders"}
-        />
-      )}
       <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
           <div className="flex flex-row gap-6">
@@ -476,7 +467,7 @@ export default function OrderDetailsPage() {
                 <div
                   className={cn(
                     `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
-                    order.status === "pending_release" && isMobile ? "flex-col items-start" :
+                    order.status === "pending_release" && isBuyer && isMobile ? "flex-col items-start" :
                       order.status === "pending_payment" || order.status === "pending_release"
                         ? "justify-between"
                         : "justify-center",
@@ -485,19 +476,19 @@ export default function OrderDetailsPage() {
                   <div className="flex items-center">
                     <div className="flex items-center gap-1">
                       <span className="font-bold">{formatStatus(true, order.status, isBuyer, t)}</span>
-                      {order.status === "pending_payment" && !isBuyer && (
+                      {order.status === "pending_payment" && !isBuyer && order.type === "buy" && (
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <span
-                                className="ml-1 inline-flex cursor-pointer text-yellow-50"
+                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, order.type)}`}
                                 aria-label="Info"
                                 role="img"
                               >
-                                <InfoCircleIcon className="h-6 w-6 text-yellow-50" aria-hidden />
+                                <InfoCircleIcon className="h-6 w-6 [&>path]:fill-current" aria-hidden />
                               </span>
                             </TooltipTrigger>
-                            <TooltipContent className="p-3" side="bottom" avoidCollisions={false}>
+                            <TooltipContent side="bottom" avoidCollisions={false}>
                               <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
                               <TooltipArrow className="fill-black" />
                             </TooltipContent>
