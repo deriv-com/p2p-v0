@@ -156,22 +156,22 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
                 </div>
               )}
               {step.completed && step.id !== "profile" && (
-                <div className="text-xs text-success-text bg-green-100 rounded-sm px-4 py-1">
+                <div className="text-xs text-success-text bg-green-100 rounded-sm px-2 py-1">
                   {t("kyc.verified")}
                 </div>
               )}
               {step.rejected && (
-                <div className="text-xs text-error-text bg-red-50 rounded-sm px-4 py-1">
+                <div className="text-xs text-error-text bg-red-50 rounded-sm px-2 py-1">
                   {t("kyc.failed")}
                 </div>
               )}
               {step.inReview && (
-                <div className="text-xs text-orange-100 bg-orange-50 rounded-sm px-4 py-1">
+                <div className="text-xs text-orange-100 bg-orange-50 rounded-sm px-2 py-1">
                   {t("kyc.inReview")}
                 </div>
               )}
               {step.expired && (
-                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
+                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-2 py-1">
                   {t("kyc.unverified")}
                 </div>
               )}
