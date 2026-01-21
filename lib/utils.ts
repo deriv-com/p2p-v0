@@ -187,12 +187,13 @@ export function formatStatus(
   }
 }
 
-export function getStatusBadgeStyle(status: string, type: string): string {
+
+export function getStatusBadgeStyle(status: string, isBuyer: boolean): string {
   switch (status) {
     case "pending_payment":
-      return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
+      return isBuyer ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
     case "pending_release":
-      return type === "buy" ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
+      return isBuyer ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
     case "completed":
       return "bg-green-50 text-buy"
     case "cancelled":
@@ -542,6 +543,12 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
       url = `https://${baseUrl}`
     } else {
       url = `https://${baseUrl}/dashboard/home`
+    }
+  } else if (section === "homeProfile") {
+    if(isV1Signup) {
+      url = `https://${baseUrl}/account/personal-details`
+    } else {
+      url = `https://${baseUrl}/dashboard/profile`
     }
   } else {
     url = baseUrl

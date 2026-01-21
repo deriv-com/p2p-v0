@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { getAdvertStatistics } from "@/services/api/api-auth"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -79,6 +78,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
@@ -168,58 +168,17 @@ export default function BuySellPage() {
   }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
-    const fetchAdvertStatistics = async () => {
-      try {
-        const statistics = await getAdvertStatistics(selectedAccountCurrency)
-
-        if (currencies.length > 0) {
-          const validCurrencyCodes = currencies.map((c) => c.code)
-          const filteredStatistics =
-            statistics?.data?.filter(
-              (stat: any) => stat.payment_currency && validCurrencyCodes.includes(stat.payment_currency),
-            ) || []
-
-          const operation = searchParams.get("operation")
-          let currencyToSet = currencies[0]?.code
-          let shouldSetSellTab = false
-
-          const currencyWithSellCount = filteredStatistics.find((stat: any) => stat.sell_count > 0)
-
-          if (currencyWithSellCount) {
-            currencyToSet = currencyWithSellCount.payment_currency
-          } else {
-            const currencyWithBuyCount = filteredStatistics.find((stat: any) => stat.buy_count > 0)
-
-            if (currencyWithBuyCount) {
-              currencyToSet = currencyWithBuyCount.payment_currency
-              if (!operation) {
-                shouldSetSellTab = true
-              }
-            }
-          }
-
-          setCurrency(currencyToSet)
-
-          if (shouldSetSellTab) {
-            setActiveTab("sell")
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching advert statistics:", error)
-        if (currencies.length > 0) {
-          setCurrency(currencies[0]?.code)
-        }
+    // Currency init: if store has no currency yet, default to user's local currency (or first available).
+    // If user already picked a currency, do not override it.
+    if (currencies.length > 0 && (currency === "" || currency === null)) {
+      const validCurrencyCodes = currencies.map((c) => c.code)
+      if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
+        setCurrency(localCurrency)
+      } else {
+        setCurrency(currencies[0]?.code)
       }
     }
-
-    fetchAdvertStatistics()
-  }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency])
-
-  useEffect(() => {
-    if (currencies.length > 0) {
-      setCurrency(currencies[0]?.code)
-    }
-  }, [currencies])
+  }, [currencies, localCurrency, currency, setCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -352,7 +311,7 @@ export default function BuySellPage() {
     }
   }
 
-  const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
+  const handleCurrencySelect = (currencyCode: string) => {
     setCurrency(currencyCode)
   }
 
