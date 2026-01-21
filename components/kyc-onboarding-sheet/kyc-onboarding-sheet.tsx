@@ -156,6 +156,11 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
                   {t("kyc.verified")}
                 </div>
               )}
+              {step.rejected && (
+                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
+                  {t("kyc.rejected")}
+                </div>
+              )}
               {step.expired && (
                 <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-4 py-1">
                   {t("kyc.unverified")}
