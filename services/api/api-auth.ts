@@ -286,6 +286,8 @@ export async function fetchUserIdAndStore(): Promise<void> {
         balances: [{ amount: "0" }],
         signup: "v2",
       })
+      useUserDataStore.getState().setUserId("")
+      useMarketFilterStore.getState().resetFilters()
       return
     }
 
