@@ -104,8 +104,16 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     else window.location.href = getHomeUrl(isV1Signup, "poa")
   }
 
-  const handleStepClick = (link) => {
+  const handleStepClick = (link: string) => {
     window.location.href = link
+  }
+
+  const handleCompleteVerification = () => {
+    // Find the first incomplete step and redirect to its link
+    const firstIncompleteStep = verificationSteps.find((step) => !step.completed)
+    if (firstIncompleteStep) {
+      window.location.href = firstIncompleteStep.link
+    }
   }
 
   if (!onboardingStatus) {
@@ -155,7 +163,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       </div>
       {hasExpiredSteps ? (
       <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
-      <Button className="w-full mt-6" onClick={() => {}}>{t("profile.gettingStarted")}</Button>)
+      <Button className="w-full mt-6" onClick={handleCompleteVerification}>{t("profile.gettingStarted")}</Button>)
       }
     </div>
   )
