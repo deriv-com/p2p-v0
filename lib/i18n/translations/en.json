@@ -672,7 +672,7 @@
   },
   "kyc": {
     "accessP2PMessage": "To continue, complete the remaining steps:",
-    "setupProfile": "Set up your profile",
+    "setupProfile": "Profile details",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
     "phoneNumber": "Phone number",
