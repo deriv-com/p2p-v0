@@ -56,6 +56,13 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
+      id: "phone",
+      title: t("kyc.phoneNumber"),
+      icon: "/icons/pnv.png",
+      completed: isPhoneCompleted,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
+    },
+    {
       id: "poi",
       title: t("kyc.proofOfIdentity"),
       icon: "/icons/poi.png",
@@ -70,13 +77,6 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       completed: isPoaCompleted,
       expired: isPoaExpired,
       link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam),
-    },
-    {
-      id: "phone",
-      title: t("kyc.phoneNumber"),
-      icon: "/icons/pnv.png",
-      completed: isPhoneCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
     },
   ]
 
