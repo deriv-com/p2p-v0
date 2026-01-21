@@ -23,6 +23,8 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
   const isPoiRejected = onboardingStatus?.kyc?.poi_status === "rejected"
   const isPoaRejected = onboardingStatus?.kyc?.poa_status === "rejected"
+  const isPoiInReview = onboardingStatus?.kyc?.poi_status === "pending"
+  const isPoaInReview = onboardingStatus?.kyc?.poa_status === "pending"
   const isPoiExpired = userId && !isPoiCompleted
   const isPoaExpired = userId && !isPoaCompleted
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
