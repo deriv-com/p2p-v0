@@ -176,7 +176,7 @@ export default function ProfilePage() {
               tradeBand={userData?.trade_band}
             />
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
-            <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
+            <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4 px-3 md:px-0">
               <TradeLimits
                 buyLimit={userData?.tradeLimits?.buy}
                 sellLimit={userData?.tradeLimits?.sell}
