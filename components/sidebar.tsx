@@ -183,7 +183,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 {email && <span className="text-xs text-grayscale-600 truncate whitespace-pre wrap-anywhere">{email}</span>}
               </div>
             </div>
-            <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={128} height={24} />
+            <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={24} height={24} />
           </a>
         </div>
       )}
