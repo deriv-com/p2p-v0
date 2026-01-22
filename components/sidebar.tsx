@@ -46,6 +46,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const firstName = userData?.first_name
   const lastName = userData?.last_name
   const fullName = firstName && lastName ? `${firstName} ${lastName}` : null
+  const email = userData?.email
   const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
@@ -175,10 +176,13 @@ export default function Sidebar({ className }: SidebarProps) {
             href={homeProfileUrl}
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700">
+              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
                 {getInitials()}
               </div>
-              <span className="text-sm font-extrabold text-slate-1000">{fullName}</span>
+              <div className="flex flex-col min-w-0">
+                <span className="text-sm font-extrabold text-slate-1000 truncate">{fullName}</span>
+                {email && <span className="text-xs text-grayscale-600 truncate">{email}</span>}
+              </div>
             </div>
             <ChevronRight className="w-6 h-6 text-slate-1000" />
           </a>
