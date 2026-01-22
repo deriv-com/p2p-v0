@@ -178,8 +178,8 @@ export default function Sidebar({ className }: SidebarProps) {
               {getInitials()}
             </div>
             <div className="flex flex-col min-w-0 gap-1">
-              <span className="text-sm font-extrabold text-slate-1200 whitespace-pre wrap-anywhere">{fullName}</span>
-              {email && <span className="text-xs text-slate-1200 whitespace-pre wrap-anywhere">{email}</span>}
+              <span className="text-sm font-extrabold text-slate-1200 whitespace-pre-wrap wrap-anywhere">{fullName}</span>
+              {email && <span className="text-xs text-slate-1200 whitespace-pre-wrap wrap-anywhere">{email}</span>}
             </div>
           </div>
           <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={14} height={24} />
