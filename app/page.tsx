@@ -402,8 +402,8 @@ export default function BuySellPage() {
 
   return (
     <>
-      <div className="flex flex-col h-[100dvh] overflow-hidden px-3">
-        <div className="flex-shrink-0 flex-grow-0">
+      <div className="flex flex-col h-[100dvh] overflow-hidden">
+        <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-10 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
@@ -548,7 +548,7 @@ export default function BuySellPage() {
             </div>
           </div>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
           <div className="h-full">
             {isLoading ? (
               <div className="md:block">
