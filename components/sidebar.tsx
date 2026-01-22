@@ -98,7 +98,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const getInitials = () => {
     const firstInitial = firstName?.[0] ?? ""
     const lastInitial = lastName?.[0] ?? ""
-    return firstName && lastName ? (firstInitial + lastInitial).toUpperCase() : email?.[0].toUpperCase()
+    return (firstName && lastName) ? (firstInitial + lastInitial).toUpperCase() : email?.[0].toUpperCase()
   }
 
   const handleLiveChat = () => {
