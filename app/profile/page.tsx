@@ -161,7 +161,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <div className="px-3 pt-3 md:pt-0 overflow-x-hidden overflow-y-auto h-full">
+      <div className="md:px-3 overflow-x-hidden overflow-y-auto h-full">
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1 h-full">
             <UserInfo
