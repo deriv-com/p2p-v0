@@ -402,7 +402,7 @@ export default function BuySellPage() {
 
   return (
     <>
-      <div className="flex flex-col h-screen overflow-hidden px-3">
+      <div className="flex flex-col h-full overflow-hidden px-3">
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -787,10 +787,6 @@ export default function BuySellPage() {
               </div>
             )}
           </div>
-        </div>
-
-        <div className="flex-shrink-0">
-          <MobileFooterNav />
         </div>
 
         <OrderSidebar
