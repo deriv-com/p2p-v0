@@ -179,7 +179,7 @@ export default function Sidebar({ className }: SidebarProps) {
               <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
                 {getInitials()}
               </div>
-              <div className="flex flex-col min-w-0">
+              <div className="flex flex-col min-w-0 gap-1">
                 <span className="text-sm font-extrabold text-slate-1000 truncate whitespace-pre wrap-anywhere">{fullName}</span>
                 {email && <span className="text-xs text-grayscale-600 truncate whitespace-pre wrap-anywhere">{email}</span>}
               </div>
