@@ -98,7 +98,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const getInitials = () => {
     const firstInitial = firstName?.[0] ?? ""
     const lastInitial = lastName?.[0] ?? ""
-    return (firstInitial + lastInitial).toUpperCase() ?? email.toUpperCase()
+    return (firstInitial + lastInitial).toUpperCase() ?? email?.[0].toUpperCase()
   }
 
   const handleLiveChat = () => {
@@ -173,7 +173,7 @@ export default function Sidebar({ className }: SidebarProps) {
           className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
           href={homeProfileUrl}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
               {getInitials()}
             </div>
