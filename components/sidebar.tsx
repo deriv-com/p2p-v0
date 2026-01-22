@@ -23,7 +23,6 @@ import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
 import HomeIcon from "@/public/icons/ic-house.svg"
 import LiveChatIcon from "@/public/icons/ic-livechat.svg"
-import { ChevronRight } from "lucide-react"
 
 interface SidebarProps {
   className?: string
@@ -46,6 +45,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const firstName = userData?.first_name
   const lastName = userData?.last_name
   const fullName = firstName && lastName ? `${firstName} ${lastName}` : null
+  const email = userData?.email
   const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const getInitials = () => {
     const firstInitial = firstName?.[0] ?? ""
     const lastInitial = lastName?.[0] ?? ""
-    return (firstInitial + lastInitial).toUpperCase()
+    return (firstInitial + lastInitial).toUpperCase() ?? email?.[0].toUpperCase()
   }
 
   const handleLiveChat = () => {
@@ -168,22 +168,23 @@ export default function Sidebar({ className }: SidebarProps) {
           })}
         </ul>
       </nav>
-      {fullName && (
-        <div className="p-4">
-          <a
-            className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
-            href={homeProfileUrl}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700">
-                {getInitials()}
-              </div>
-              <span className="text-sm font-extrabold text-slate-1000">{fullName}</span>
+      <div className="p-4">
+        <a
+          className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
+          href={homeProfileUrl}
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
+              {getInitials()}
             </div>
-            <ChevronRight className="w-6 h-6 text-slate-1000" />
-          </a>
-        </div>
-      )}
+            <div className="flex flex-col min-w-0 gap-1">
+              <span className="text-sm font-extrabold text-slate-1200 whitespace-pre-wrap wrap-anywhere">{fullName}</span>
+              {email && <span className="text-xs text-slate-1200 whitespace-pre-wrap wrap-anywhere">{email}</span>}
+            </div>
+          </div>
+          <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={14} height={24} />
+        </a>
+      </div>
     </div>
   )
 }
