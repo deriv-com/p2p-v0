@@ -23,7 +23,6 @@ import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
 import HomeIcon from "@/public/icons/ic-house.svg"
 import LiveChatIcon from "@/public/icons/ic-livechat.svg"
-import { ChevronRight } from "lucide-react"
 
 interface SidebarProps {
   className?: string
