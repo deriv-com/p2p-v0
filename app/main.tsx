@@ -156,7 +156,7 @@ export default function Main({
             </div>
           </div>
         </div>
-        <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
+        <div className="md:hidden flex flex-col h-screen overflow-hidden">
           {isHeaderVisible && <Header className="flex-shrink-0" />}
           <main className="flex-1 overflow-hidden px-3">
             <P2PAccessRemoved />
@@ -185,9 +185,9 @@ export default function Main({
           <div className="container mx-auto">{children}</div>
         </div>
       </div>
-      <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
+      <div className="md:hidden flex flex-col h-screen overflow-hidden">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <main className="flex-1 overflow-hidden">{children}</main>
+        <main className="flex-1 overflow-hidden pb-20">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
     </WebSocketProvider>
