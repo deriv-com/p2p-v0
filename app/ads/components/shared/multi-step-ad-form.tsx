@@ -559,7 +559,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               }}
               onClose={handleClose}
               title=""
-              className="h-16 pt-8"
+              className="md:h-16 md:pt-8"
             />
             <ProgressSteps
               currentStep={currentStep}
