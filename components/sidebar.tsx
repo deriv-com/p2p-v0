@@ -168,25 +168,23 @@ export default function Sidebar({ className }: SidebarProps) {
           })}
         </ul>
       </nav>
-      {fullName && (
-        <div className="p-4">
-          <a
-            className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
-            href={homeProfileUrl}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
-                {getInitials()}
-              </div>
-              <div className="flex flex-col min-w-0 gap-1">
-                <span className="text-sm font-extrabold text-slate-1000 truncate whitespace-pre wrap-anywhere">{fullName}</span>
-                {email && <span className="text-xs text-grayscale-600 truncate whitespace-pre wrap-anywhere">{email}</span>}
-              </div>
+      <div className="p-4">
+        <a
+          className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
+          href={homeProfileUrl}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
+              {getInitials()}
             </div>
-            <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={24} height={24} />
-          </a>
-        </div>
-      )}
+            <div className="flex flex-col min-w-0 gap-1">
+              <span className="text-sm font-extrabold text-slate-1000 truncate whitespace-pre wrap-anywhere">{fullName}</span>
+              {email && <span className="text-xs text-grayscale-600 truncate whitespace-pre wrap-anywhere">{email}</span>}
+            </div>
+          </div>
+          <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={24} height={24} />
+        </a>
+      </div>
     </div>
   )
 }
