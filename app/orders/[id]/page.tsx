@@ -576,7 +576,12 @@ export default function OrderDetailsPage() {
 
                       {order?.payment_method_details && order.payment_method_details.length > 0 && (
                         <div className="bg-white border rounded-lg mt-6">
-                          <Accordion type="single" collapsible className="w-full">
+                          <Accordion 
+                            type="single" 
+                            collapsible 
+                            className="w-full"
+                            defaultValue={order.payment_method_details.length === 1 ? "payment-method-0" : undefined}
+                          >
                             {order.payment_method_details.map((method, index) => (
                               <div key={index}>
                                 <AccordionItem value={`payment-method-${index}`} className="border-b-0">
