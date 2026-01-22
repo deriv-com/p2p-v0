@@ -19,6 +19,11 @@ body {
     text-wrap: balance;
   }
 
+  .wrap-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   .w-1\/7 {
     width: 14.285%;
   }
