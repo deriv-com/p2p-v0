@@ -181,7 +181,7 @@ export default function Sidebar({ className }: SidebarProps) {
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-sm font-extrabold text-slate-1000 truncate">{fullName}</span>
-                {email && <span className="text-xs text-grayscale-600 truncate whitespace-pre">{email}</span>}
+                {email && <span className="text-xs text-grayscale-600 truncate whitespace-pre wrap-anywhere">{email}</span>}
               </div>
             </div>
             <ChevronRight className="w-6 h-6 text-slate-1000" />
