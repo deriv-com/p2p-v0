@@ -402,8 +402,8 @@ export default function BuySellPage() {
 
   return (
     <>
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <div className="flex-shrink-0">
+      <div className="flex flex-col h-[100dvh] overflow-hidden px-3">
+        <div className="flex-shrink-0 flex-grow-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
