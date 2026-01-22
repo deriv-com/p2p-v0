@@ -14,7 +14,7 @@ export function TradeTypeSelector({ value, onChange }: TradeTypeSelectorProps) {
   return (
     <Tabs
       className="w-full"
-      defaultValue={value}
+      value={value}
       onValueChange={(type) => onChange(type as "buy" | "sell")}
     >
       <TabsList className="w-full">
