@@ -449,7 +449,7 @@ export default function BuySellPage() {
                               alt={`${currency} logo`}
                               width={26}
                               height={16}
-                              className="mr-1 rounded object-cover"
+                              className="mr-1 object-cover"
                             />
                           )}
                           <span>{currency}</span>
