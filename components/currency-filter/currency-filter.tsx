@@ -124,10 +124,21 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                  "px-4 h-12 flex items-center gap-2 rounded-sm cursor-pointer transition-colors text-base font-normal",
                   selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
               >
+                {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                  <Image
+                    src={
+                      currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                    }
+                    alt={`${currency.code} logo`}
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 rounded object-cover"
+                  />
+                )}
                 {currency.code} - {currency.name}
               </div>
             ))}
