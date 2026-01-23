@@ -12,7 +12,12 @@ body {
   background: rgb(var(--background-rgb));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+
+  @media (max-width: 767px) {
+    body {
+      overflow: hidden;
+    }
+  }
 }
 
 @layer utilities {
