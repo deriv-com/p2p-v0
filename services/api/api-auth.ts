@@ -351,6 +351,15 @@ export async function fetchUserIdAndStore(): Promise<void> {
           temp_ban_until: tempBanUntil,
           balances: [balances],
           status: status,
+          // Store full profile data
+          id: result.data.id,
+          registered_at: result.data.registered_at,
+          statistics_lifetime: result.data.statistics_lifetime,
+          completion_average_30day: result.data.completion_average_30day,
+          buy_time_average_30day: result.data.buy_time_average_30day,
+          daily_limits: result.data.daily_limits,
+          daily_limits_remaining: result.data.daily_limits_remaining,
+          trade_band: result.data.trade_band,
         })
       }
     } else {
