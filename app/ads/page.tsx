@@ -101,6 +101,9 @@ export default function AdsPage() {
       return
     }
 
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     try {
       setLoading(true)
       setError(null)
