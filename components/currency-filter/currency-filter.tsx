@@ -139,7 +139,7 @@ export function CurrencyFilter({
                     className="w-6 h-6 rounded object-cover"
                   />
                 )}
-                {currency.code} - {currency.name}
+                <span>{currency.code} - {currency.name}</span>
               </div>
             ))}
           </div>
