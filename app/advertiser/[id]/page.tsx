@@ -303,7 +303,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   return (
-    <div>
+    <div className="h-full overflow-y-auto">
       <div className="p-6 md:px-2 md:py-0">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
