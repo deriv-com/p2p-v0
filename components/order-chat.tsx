@@ -301,7 +301,7 @@ export default function OrderChat({
           {t("chat.conversationClosed")}
         </div>
       ) : (
-        <div className="p-4 border-t bg-slate-75 flex-shrink-0">
+        <div className="p-4 border-t bg-slate-75">
           <div className="space-y-2">
             <div className="relative">
               <Input
