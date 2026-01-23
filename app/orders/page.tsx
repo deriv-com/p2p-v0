@@ -390,7 +390,7 @@ export default function OrdersPage() {
         : selectedOrder?.advert?.user?.last_online_at
 
     return (
-      <div className="h-full md:h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+      <div className="h-full md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
           <OrderChat
             orderId={selectedOrder.id}
