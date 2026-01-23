@@ -297,7 +297,7 @@ export default function OrderChat({
       </div>
 
       {isClosed ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75 flex-shrink-0">
+        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">
           {t("chat.conversationClosed")}
         </div>
       ) : (
