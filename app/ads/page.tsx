@@ -47,6 +47,7 @@ export default function AdsPage() {
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
+   const abortControllerRef = useRef<AbortController | null>(null)
 
   const isMobile = useIsMobile()
   const router = useRouter()
