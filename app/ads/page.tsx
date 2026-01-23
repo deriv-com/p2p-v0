@@ -115,13 +115,15 @@ export default function AdsPage() {
       
       setAds(userAdverts)
     } catch (err) {
-      setError(t("myAds.errorLoadingAds"))
-      setAds([])
-      setErrorModal({
-        show: true,
-        title: t("myAds.errorLoadingAdsTitle"),
-        message: err instanceof Error ? err.message : t("myAds.errorLoadingAdsMessage"),
-      })
+      if (!abortController.signal.aborted) {
+        setError(t("myAds.errorLoadingAds"))
+        setAds([])
+        setErrorModal({
+          show: true,
+          title: t("myAds.errorLoadingAdsTitle"),
+          message: err instanceof Error ? err.message : t("myAds.errorLoadingAdsMessage"),
+        })
+      }
     } finally {
       setLoading(false)
     }
