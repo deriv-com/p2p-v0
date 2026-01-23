@@ -123,6 +123,12 @@ export default function AdsPage() {
       fetchAds()
       hasFetchedRef.current = true
     }
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
   }, [userId])
 
   useEffect(() => {
