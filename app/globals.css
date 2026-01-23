@@ -14,9 +14,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 767px) {
-    body {
-      overflow: hidden;
-    }
+    overflow: hidden;
   }
 }
 
