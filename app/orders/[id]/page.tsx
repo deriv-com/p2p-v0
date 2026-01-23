@@ -690,19 +690,20 @@ export default function OrderDetailsPage() {
                 )}
               </div>
               <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
-                <OrderChat
-                  orderId={orderId}
-                  counterpartyName={counterpartyNickname || "User"}
-                  counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-                  isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
-                  counterpartyOnlineStatus={
-                    order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
-                  }
-                  counterpartyLastOnlineAt={
-                    order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
-                  }
-                  onNavigateToOrderDetails={() => {}}
-                />
+                
+                  <OrderChat
+                    orderId={orderId}
+                    counterpartyName={counterpartyNickname || "User"}
+                    counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                    isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+                    counterpartyOnlineStatus={
+                      order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+                    }
+                    counterpartyLastOnlineAt={
+                      order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
+                    }
+                  />
+                
               </div>
             </div>
           </div>
