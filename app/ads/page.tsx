@@ -93,6 +93,9 @@ export default function AdsPage() {
   }
 
   const fetchAds = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
     if (!userId) {
       setLoading(false)
       return
