@@ -109,6 +109,10 @@ export default function AdsPage() {
       setError(null)
       const userAdverts = await AdsAPI.getUserAdverts(true)
 
+      if (abortController.signal.aborted) {
+        return
+      }
+      
       setAds(userAdverts)
     } catch (err) {
       setError(t("myAds.errorLoadingAds"))
