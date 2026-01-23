@@ -412,7 +412,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
+    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white overflow-y-auto">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}
@@ -421,7 +421,7 @@ export default function OrderDetailsPage() {
           redirectUrl={"/orders"}
         />
       )}
-      <div className="container mx-auto px-[24px] mt-4">
+      <div className="container mx-auto px-[24px] mt-4 pb-6">
         {isLoading ? (
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
