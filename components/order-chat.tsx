@@ -171,7 +171,7 @@ export default function OrderChat({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2 p-4 border-b flex-shrink-0">
+      <div className="flex items-center p-4 border-b">
         {onNavigateToOrderDetails && (
           <Button
             variant="ghost"
