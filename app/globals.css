@@ -12,6 +12,12 @@ body {
   background: rgb(var(--background-rgb));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 767px) {
+    body {
+      overflow: hidden;
+    }
+  }
 }
 
 @layer utilities {
@@ -39,6 +45,7 @@ body {
   .scrollbar-custom {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .scrollbar-custom::-webkit-scrollbar {
