@@ -170,7 +170,7 @@ export default function OrderChat({
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-full">
       <div className="flex items-center gap-2 p-4 border-b flex-shrink-0">
         {onNavigateToOrderDetails && (
           <Button
