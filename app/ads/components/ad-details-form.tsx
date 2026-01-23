@@ -199,7 +199,6 @@ export default function AdDetailsForm({
   }, [isLoadingInitialData, buyCurrency, forCurrency])
 
   useEffect(() => {
-    if (isLoadingInitialData) return
     if (initialData) {
       if (initialData.type) setType(initialData.type as "buy" | "sell")
       if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
@@ -211,7 +210,7 @@ export default function AdDetailsForm({
       if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
       if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
     }
-  }, [initialData, isLoadingInitialData]) 
+  }, [initialData]) 
 
   useEffect(() => {
     const errors: ValidationErrors = {}

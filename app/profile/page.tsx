@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
@@ -10,7 +10,6 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import * as AuthAPI from "@/services/api/api-auth"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
@@ -63,7 +62,7 @@ export default function ProfilePage() {
         })
 
         const responseData = await response.json()
-        
+        setIsLoading(false)
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
@@ -77,13 +76,12 @@ export default function ProfilePage() {
               description: errorMessage,
             })
           }
-          setIsLoading(false)
+
           return
         }
 
         if (responseData && responseData.data) {
           const data = responseData.data
-
           const joinDate = new Date(data.registered_at)
           const now = new Date()
           const diff = now.getTime() - joinDate.getTime()
@@ -146,8 +144,6 @@ export default function ProfilePage() {
           description: errorMessage,
         })
         console.error("Error fetching user data:", error)
-      } finally {
-        setIsLoading(false)
       }
     }
 

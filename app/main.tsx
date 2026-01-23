@@ -83,7 +83,6 @@ export default function Main({
           setIsHeaderVisible(false)
           window.location.href = getLoginUrl(userData?.signup === "v1")
         } else if (isAuthenticated) {
-          const previousUserId = useUserDataStore.getState().userId
           await AuthAPI.fetchUserIdAndStore()
 
           try {
@@ -100,7 +99,7 @@ export default function Main({
               setOnboardingStatus(onboardingStatus)
 
               const currentUserId = useUserDataStore.getState().userId
-              if (!previousUserId && !currentUserId && onboardingStatus.p2p?.allowed) {
+              if (!currentUserId && onboardingStatus.p2p?.allowed) {
                 try {
                   await AuthAPI.createP2PUser()
                   await AuthAPI.fetchUserIdAndStore()
