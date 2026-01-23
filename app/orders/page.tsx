@@ -263,7 +263,7 @@ export default function OrdersPage() {
 
   const DesktopOrderTable = () => (
     <div className="relative">
-      <div className="overflow-auto max-h-[calc(100vh-200px)]">
+      <div className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
