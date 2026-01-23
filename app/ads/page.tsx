@@ -125,7 +125,9 @@ export default function AdsPage() {
         })
       }
     } finally {
-      setLoading(false)
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
     }
   }
 
