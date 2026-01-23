@@ -377,7 +377,7 @@ export default function OrderDetailsPage() {
         : t("orderDetails.youPay")
   const complainType =
     order?.type === "sell"
-      ? order?.advert.user.id == userId 
+      ? order?.advert.user.id == userId
         ? "buyer"
         : "seller"
       : order?.advert.user.id == userId
