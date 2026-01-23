@@ -441,6 +441,17 @@ export default function BuySellPage() {
                           size="sm"
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                         >
+                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
+                            <Image
+                              src={
+                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                              }
+                              alt={`${currency} logo`}
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 rounded object-cover"
+                            />
+                          )}
                           <span>{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
