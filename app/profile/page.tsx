@@ -10,6 +10,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import * as AuthAPI from "@/services/api/api-auth"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
@@ -62,7 +63,7 @@ export default function ProfilePage() {
         })
 
         const responseData = await response.json()
-        setIsLoading(false)
+        
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
@@ -76,7 +77,7 @@ export default function ProfilePage() {
               description: errorMessage,
             })
           }
-
+          setIsLoading(false)
           return
         }
 
@@ -145,11 +146,53 @@ export default function ProfilePage() {
           description: errorMessage,
         })
         console.error("Error fetching user data:", error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchUserData()
-  }, [t])
+  }, [t, showWarningDialog])
+
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <div className="md:px-3 overflow-x-hidden overflow-y-auto h-full">
+        <div className="flex flex-col md:flex-row gap-6 h-full">
+          <div className="flex-1 order-1 h-full">
+            <UserInfo
+              username={userData?.username}
+              email={userEmail}
+              rating={userData?.rating}
+              recommendation={userData?.recommendation}
+              joinDate={userData?.joinDate}
+              realName={userData?.realName}
+              isVerified={userData?.isVerified}
+              isLoading={isLoading}
+              tradeBand={userData?.trade_band}
+            />
+            {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+            <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4 px-3 md:px-0">
+              <TradeLimits
+                buyLimit={userData?.tradeLimits?.buy}
+                sellLimit={userData?.tradeLimits?.sell}
+                userData={userData}
+              />
+            </div>
+            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment": "stats"}/>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 
   if (isDisabled) {
     return (
