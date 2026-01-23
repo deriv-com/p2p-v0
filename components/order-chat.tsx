@@ -203,7 +203,7 @@ export default function OrderChat({
           </div>
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">
+      <div className="overflow-auto">
         <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px] flex-shrink-0">
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">
