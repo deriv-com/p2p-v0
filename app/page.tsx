@@ -611,7 +611,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block">
+              <div className="md:block overflow-auto max-h-[calc(100vh-260px)] pb-20 md:pb-0">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
