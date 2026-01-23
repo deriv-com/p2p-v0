@@ -392,7 +392,7 @@ export default function OrderDetailsPage() {
       order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
 
     return (
-      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+      <div className="relative h-screen md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
             <OrderChat
               orderId={orderId}
@@ -412,7 +412,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white overflow-y-auto">
+    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}
