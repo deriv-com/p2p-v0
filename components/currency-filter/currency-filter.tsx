@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
+import { cn, currencyFlagMapper } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -124,11 +124,22 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                  "px-4 h-12 flex items-center gap-2 rounded-sm cursor-pointer transition-colors text-base font-normal",
                   selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
               >
-                {currency.code} - {currency.name}
+                {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                  <Image
+                    src={
+                      currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                    }
+                    alt={`${currency.code} logo`}
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 rounded object-cover"
+                  />
+                )}
+                <span>{currency.code} - {currency.name}</span>
               </div>
             ))}
           </div>

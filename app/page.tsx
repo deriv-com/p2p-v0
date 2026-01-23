@@ -17,7 +17,7 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
@@ -441,6 +441,17 @@ export default function BuySellPage() {
                           size="sm"
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                         >
+                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
+                            <Image
+                              src={
+                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                              }
+                              alt={`${currency} logo`}
+                              width={26}
+                              height={16}
+                              className="mr-1 rounded object-cover"
+                            />
+                          )}
                           <span>{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
@@ -611,7 +622,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block">
+              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
