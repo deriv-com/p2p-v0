@@ -269,9 +269,9 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -294,9 +294,9 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -447,7 +447,7 @@ export default function BuySellPage() {
                                 currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                               }
                               alt={`${currency} logo`}
-                              width={26}
+                              width={24}
                               height={16}
                               className="mr-1 object-cover"
                             />
@@ -649,9 +649,8 @@ export default function BuySellPage() {
                             <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
-                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                }`}
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                  }`}
                               />
                             </div>
                             <div className="flex items-center gap-1">
@@ -740,9 +739,8 @@ export default function BuySellPage() {
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                           </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
-                            ad.actual_maximum_order_amount || "N/A"
-                          }  ${ad.account_currency}`}</div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                            }  ${ad.account_currency}`}</div>
                           {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
                               <Tooltip>
@@ -769,8 +767,8 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                        ? "bg-paymentMethod-bank"
-                                        : "bg-paymentMethod-ewallet"
+                                      ? "bg-paymentMethod-bank"
+                                      : "bg-paymentMethod-ewallet"
                                       }`}
                                   ></div>
                                 )}
