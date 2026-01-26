@@ -406,7 +406,6 @@ export default function AdDetailsForm({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                     disabled
                   >
                     {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
@@ -422,7 +421,7 @@ export default function AdDetailsForm({
                     )}
                     <span>{buyCurrency}</span>
                     <Image
-                      src="/icons/chevron-down-white.png"
+                      src="/icons/chevron-down.png"
                       alt="Arrow"
                       width={24}
                       height={24}
@@ -443,7 +442,6 @@ export default function AdDetailsForm({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                   >
                     {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
                       <Image
@@ -458,7 +456,7 @@ export default function AdDetailsForm({
                     )}
                     <span>{forCurrency}</span>
                     <Image
-                      src="/icons/chevron-down-white.png"
+                      src="/icons/chevron-down.png"
                       alt="Arrow"
                       width={24}
                       height={24}
