@@ -405,21 +405,23 @@ export default function AdDetailsForm({
                 trigger={
                   <Button
                     variant="outline"
-                    size="sm"
+                    className="min-h-[48px] gap-2 min-w-[96px] w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
                     disabled
                   >
-                    {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
-                      <Image
-                        src={
-                          currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
-                        }
-                        alt={`${buyCurrency} logo`}
-                        width={24}
-                        height={16}
-                        className="mr-1 object-cover"
-                      />
-                    )}
-                    <span>{buyCurrency}</span>
+                    <div className="flex items-center gap-2">
+                      {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
+                        <Image
+                          src={
+                            currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                          }
+                          alt={`${buyCurrency} logo`}
+                          width={24}
+                          height={16}
+                          className="mr-1 object-cover"
+                        />
+                      )}
+                      <span>{buyCurrency}</span>
+                    </div>
                     <Image
                       src="/icons/chevron-down.png"
                       alt="Arrow"
@@ -441,20 +443,22 @@ export default function AdDetailsForm({
                 trigger={
                   <Button
                     variant="outline"
-                    size="sm"
+                    className="min-h-[48px] gap-2 min-w-[96px] w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
                   >
-                    {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
-                      <Image
-                        src={
-                          currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
-                        }
-                        alt={`${forCurrency} logo`}
-                        width={24}
-                        height={16}
-                        className="mr-1 object-cover"
-                      />
-                    )}
-                    <span>{forCurrency}</span>
+                    <div className="flex items-center gap-2">
+                      {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
+                        <Image
+                          src={
+                            currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                          }
+                          alt={`${forCurrency} logo`}
+                          width={24}
+                          height={16}
+                          className="mr-1 object-cover"
+                        />
+                      )}
+                      <span>{forCurrency}</span>
+                    </div>
                     <Image
                       src="/icons/chevron-down.png"
                       alt="Arrow"
