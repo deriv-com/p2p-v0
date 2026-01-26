@@ -135,8 +135,8 @@ export function CurrencyFilter({
                     }
                     alt={`${currency.code} logo`}
                     width={24}
-                    height={24}
-                    className="w-6 h-6 rounded object-cover"
+                    height={16}
+                    className="object-cover"
                   />
                 )}
                 <span>{currency.code} - {currency.name}</span>
