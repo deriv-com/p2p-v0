@@ -407,6 +407,7 @@ export default function AdDetailsForm({
                     variant="outline"
                     size="sm"
                     className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                    disabled
                   >
                     {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
                       <Image
