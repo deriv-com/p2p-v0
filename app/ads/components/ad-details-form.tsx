@@ -18,7 +18,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { AdDetailsFormSkeleton } from "./ui/ad-details-form-skeleton"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -406,6 +406,8 @@ export default function AdDetailsForm({
                   <DrawerTrigger asChild>
                     <Button
                       type="button"
+                      variant="outline"
+                      size="sm"
                       disabled
                       className="w-full h-14 rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background flex items-center justify-between disabled:cursor-not-allowed disabled:opacity-50"
                     >
@@ -421,7 +423,13 @@ export default function AdDetailsForm({
                         )}
                         <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
                       </div>
-                      <ChevronDown className="h-4 w-4 opacity-50" />
+                      <Image
+                        src="/icons/chevron-down-white.png"
+                        alt="Arrow"
+                        width={24}
+                        height={24}
+                        className="ml-2 transition-transform duration-200"
+                      />
                     </Button>
                   </DrawerTrigger>
                   <DrawerContent side="bottom" className="h-[70vh] px-4 pb-4 rounded-t-2xl">
@@ -505,8 +513,10 @@ export default function AdDetailsForm({
               {isMobile ? (
                 <Drawer open={forCurrencyOpen} onOpenChange={setForCurrencyOpen}>
                   <DrawerTrigger asChild>
-                    <button
+                    <Button
                       type="button"
+                      variant="outline"
+                      size="sm"
                       disabled={isEditMode}
                       className="w-full h-14 rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background flex items-center justify-between disabled:cursor-not-allowed disabled:opacity-50"
                     >
@@ -522,8 +532,14 @@ export default function AdDetailsForm({
                         )}
                         <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
                       </div>
-                      <ChevronDown className="h-4 w-4 opacity-50" />
-                    </button>
+                      <Image
+                        src="/icons/chevron-down-white.png"
+                        alt="Arrow"
+                        width={24}
+                        height={24}
+                        className="ml-2 transition-transform duration-200"
+                      />
+                    </Button>
                   </DrawerTrigger>
                   <DrawerContent side="bottom" className="h-[70vh] px-4 pb-4 rounded-t-2xl">
                     <div className="my-4">
