@@ -39,7 +39,7 @@ export default function UserInfo({
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
         </div>
         <div className="flex flex-col flex-1 gap-1">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             {displayName ? (
               <h2 className="text-base text-white font-bold">{displayName}</h2>
             ) : (

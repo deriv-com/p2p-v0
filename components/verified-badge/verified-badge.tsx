@@ -14,16 +14,16 @@ export default function VerifiedBadge() {
       <Tooltip>
         <TooltipTrigger asChild>
           <Image
-            src="/icons/verified-badge.png"
+            src="/icons/verified-badge.svg"
             className="cursor-pointer"
             alt="Verified"
-            width={32}
-            height={32}
+            width={20}
+            height={30}
           />
         </TooltipTrigger>
         <TooltipContent align={isMobile ? "middle" : "start"} side="bottom" className="max-w-[328px] text-wrap">
-            <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
-            <p className="text-white">{t("common.verifiedBadge.description")}</p>
+          <p className="font-bold text-white mb-2">{t("common.verifiedBadge.title")}</p>
+          <p className="text-white">{t("common.verifiedBadge.description")}</p>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
       </Tooltip>

@@ -29,6 +29,7 @@ export interface Country {
   code: string
   name: string
   currency?: string
+  currency_name?: string
 }
 
 export interface CountriesResponse {
@@ -216,7 +217,7 @@ export async function getSession(): Promise<boolean> {
 
     const result = await response.json()
     const externalId = result?.data?.identity?.external_id
-    if(externalId) useUserDataStore.getState().setExternalId(externalId)
+    if (externalId) useUserDataStore.getState().setExternalId(externalId)
 
     return response.status === 200
   } catch (error) {

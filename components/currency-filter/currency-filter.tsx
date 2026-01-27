@@ -16,6 +16,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function CurrencyFilter({
   currencies,
+  isTitleVisible = true,
   selectedCurrency,
   onCurrencySelect,
   title,
@@ -118,7 +119,7 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-0 md:pr-2">
-            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{title}</div>}
+            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{isTitleVisible && title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
@@ -158,7 +159,7 @@ export function CurrencyFilter({
         <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] px-[16px] pb-[16px] rounded-t-2xl">
           <div className="my-4">
-            <h3 className="text-xl font-extrabold text-center text-slate-900">{title}</h3>
+            <h3 className="text-xl font-extrabold text-center text-slate-1200">{title}</h3>
           </div>
           <CurrencyList />
         </DrawerContent>
