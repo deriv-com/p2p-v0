@@ -362,6 +362,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           status: status,
         })
       }
+      useUserDataStore.getState().setIsUserDataLoaded(true)
     } else {
       useUserDataStore.getState().updateUserData({
         balances: [{ amount: "0" }],
@@ -370,6 +371,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       useUserDataStore.getState().setUserId("")
       useUserDataStore.getState().setLocalCurrency(null)
       useMarketFilterStore.getState().resetFilters()
+      useUserDataStore.getState().setIsUserDataLoaded(true)
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)

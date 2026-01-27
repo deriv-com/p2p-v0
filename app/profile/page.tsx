@@ -14,8 +14,8 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const { showWarningDialog, showAlert } = useAlertDialog()
-  const { userData: user } = useUserDataStore()
+  const { showAlert } = useAlertDialog()
+  const { userData: user, isUserDataLoaded } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
   const isDisabled = user?.status === "disabled"
@@ -49,7 +49,7 @@ export default function ProfilePage() {
   }, [showKycPopup, showAlert, t])
 
   useEffect(() => {
-    if (user) {
+    if (user && isUserDataLoaded) {
       const joinDate = new Date(user.registered_at)
       const now = new Date()
       const diff = now.getTime() - joinDate.getTime()
@@ -101,7 +101,7 @@ export default function ProfilePage() {
       })
       setIsLoading(false)
     }
-  }, [user, t])
+  }, [user, isUserDataLoaded])
 
   if (isDisabled) {
     return (
