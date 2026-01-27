@@ -397,8 +397,12 @@ export default function AdDetailsForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div>
+              <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
+              </label>
               <CurrencyFilter
                 currencies={accountCurrencies}
+                isTitleVisible={isMobile}
                 selectedCurrency={buyCurrency}
                 onCurrencySelect={setBuyCurrency}
                 title={type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
@@ -435,8 +439,12 @@ export default function AdDetailsForm({
             </div>
 
             <div>
+              <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                {type === "buy" ? "Paying with" : "Receive in"}
+              </label>
               <CurrencyFilter
                 currencies={currenciesProp}
+                isTitleVisible={isMobile}
                 selectedCurrency={forCurrency}
                 onCurrencySelect={setForCurrency}
                 title={type === "buy" ? "Paying with" : "Receive in"}

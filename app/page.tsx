@@ -653,7 +653,7 @@ export default function BuySellPage() {
                                   }`}
                               />
                             </div>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <button
                                 onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                 className="hover:underline cursor-pointer"
