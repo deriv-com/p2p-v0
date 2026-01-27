@@ -219,6 +219,13 @@ export async function getSession(): Promise<boolean> {
     const externalId = result?.data?.identity?.external_id
     if (externalId) useUserDataStore.getState().setExternalId(externalId)
 
+    const verifiableAddresses = result?.identity?.verifiable_addresses || []
+    const emailVerified = verifiableAddresses.some(
+      (addr: { via: string; verified: boolean }) => addr.via === "email" && addr.verified == true
+    )
+    
+    useUserDataStore.getState().setOryEmailVerified(emailVerified)
+
     return response.status === 200
   } catch (error) {
     return false

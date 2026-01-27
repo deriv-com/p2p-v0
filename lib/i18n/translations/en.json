@@ -276,7 +276,7 @@
     "tradeVolume30DaysTooltip": "The total value of all completed trades in the last 30 days.",
     "lessThanOneMin": "< 1 min",
     "mins": "mins",
-    "gettingStarted": "Getting started with P2P",
+    "gettingStarted": "Complete verification",
     "verificationExpired": "Verification expired",
     "identityVerificationExpired": "Identity verification expired",
     "addressVerificationExpired": "Address verification expired",
@@ -673,16 +673,20 @@
     "userUnblocked": "{nickname} unblocked."
   },
   "kyc": {
-    "accessP2PMessage": "To access P2P, complete your profile and verification.",
-    "setupProfile": "Set up your profile",
+    "accessP2PMessage": "To continue, complete the remaining steps:",
+    "setupProfile": "Profile details",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
     "phoneNumber": "Phone number",
     "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
     "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
     "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
+    "verified": "Verified",
+    "failed": "Failed",
+    "inReview": "In Review",
     "unverified": "Unverified",
-    "resubmitNow": "Resubmit now"
+    "resubmitNow": "Resubmit now",
+    "email": "Email address"
   },
   "status": {
     "refunded": "Refunded",
