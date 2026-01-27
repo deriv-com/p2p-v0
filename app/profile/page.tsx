@@ -12,7 +12,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog, showAlert } = useAlertDialog()
   const { userData: user, isUserDataLoaded } = useUserDataStore()
@@ -111,6 +111,18 @@ export default function ProfilePage() {
     )
   }
 
+  if (!isUserDataLoaded || !userData) {
+    return (
+      <div className="md:px-3 overflow-x-hidden overflow-y-auto h-full">
+        <div className="flex flex-col md:flex-row gap-6 h-full">
+          <div className="flex-1 order-1 h-full">
+            <UserInfo isLoading={true} />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="md:px-3 overflow-x-hidden overflow-y-auto h-full">
@@ -124,7 +136,7 @@ export default function ProfilePage() {
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}
-              isLoading={isLoading}
+              isLoading={false}
               tradeBand={userData?.trade_band}
             />
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
@@ -135,7 +147,7 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment": "stats"}/>
+            <StatsTabs stats={userData} isLoading={false} activeTab={shouldShowKyc ? "payment": "stats"}/>
           </div>
         </div>
       </div>
