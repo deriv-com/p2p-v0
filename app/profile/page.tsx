@@ -108,9 +108,9 @@ export default function ProfilePage() {
             recommendation:
               data.statistics_lifetime?.recommend_average !== null
                 ? t("profile.recommendedBy", {
-                    count: data.statistics_lifetime.recommend_count,
-                    plural: data.statistics_lifetime.recommend_count === 1 ? "" : "s",
-                  })
+                  count: data.statistics_lifetime.recommend_count,
+                  plural: data.statistics_lifetime.recommend_count === 1 ? "" : "s",
+                })
                 : t("profile.notRecommendedYet"),
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
@@ -149,7 +149,7 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  }, [t])
+  }, [])
 
   if (isDisabled) {
     return (
@@ -183,7 +183,7 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment": "stats"}/>
+            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment" : "stats"} />
           </div>
         </div>
       </div>
