@@ -3,7 +3,6 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -480,12 +479,21 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
                     <div
-                      className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                      className="border border-gray-200 rounded-lg px-4 cursor-pointer hover:bg-gray-50 transition-colors flex items-center h-[56px]"
                       onClick={handleShowPaymentSelection}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
+                      <div className="flex items-center justify-between flex-1">
+                        <div className="flex flex-col gap-[1px]">
+                          {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>}
+                          <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
+                        </div>
+                        <Image
+                          src="/icons/chevron-down.png"
+                          alt="Arrow"
+                          width={24}
+                          height={24}
+                          className="ml-2 transition-transform duration-200"
+                        />
                       </div>
                     </div>
                   </div>
