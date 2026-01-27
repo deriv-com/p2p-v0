@@ -36,6 +36,7 @@ interface UserDataState {
   onboardingStatus: OnboardingStatusResponse | null
   socketToken: string | null
   isWalletAccount: boolean
+  oryEmailVerified: boolean
   isUserDataLoaded: boolean
   setUserData: (data: UserData) => void
   setExternalId: (id: string) => void
@@ -50,6 +51,7 @@ interface UserDataState {
   setOnboardingStatus: (status: OnboardingStatusResponse) => void
   setSocketToken: (token: string | null) => void
   setIsWalletAccount: (isWallet: boolean) => void
+  setOryEmailVerified: (verified: boolean) => void
   setIsUserDataLoaded: (loaded: boolean) => void
   clearUserData: () => void
 }
@@ -67,6 +69,7 @@ const initialState = {
   onboardingStatus: null,
   socketToken: null,
   isWalletAccount: typeof window !== "undefined" ? localStorage.getItem("is_wallet_account") === "true" : false,
+  oryEmailVerified: false,
   isUserDataLoaded: false,
 }
 
@@ -135,6 +138,7 @@ export const useUserDataStore = create<UserDataState>()(
         set({ isWalletAccount: isWallet })
       },
 
+      setOryEmailVerified: (verified) => set({ oryEmailVerified: verified }),
       setIsUserDataLoaded: (loaded: boolean) => set({ isUserDataLoaded: loaded }),
 
       clearUserData: () => {
