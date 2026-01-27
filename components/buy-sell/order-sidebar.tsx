@@ -482,8 +482,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                       className="border border-gray-200 rounded-lg px-4 cursor-pointer hover:bg-gray-50 transition-colors flex items-center h-[56px]"
                       onClick={handleShowPaymentSelection}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-col">
+                      <div className="flex items-center justify-between flex-1">
+                        <div className="flex flex-col gap-[1px]">
                           {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>}
                           <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
                         </div>
