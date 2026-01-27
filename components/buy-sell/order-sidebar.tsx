@@ -518,13 +518,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                 </div>
 
-                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
+                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex flex-col">
                   <h3 className="text-grayscale-text-muted flex-1">
                     {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-4 overflow-y-auto max-h-[120px] md:max-h-[80px] mt-2">
                     {ad.payment_methods?.map((method, index) => (
-                      <div key={index} className="flex items-center">
+                      <div key={index} className="flex items-center flex-shrink-0">
                         <div
                           className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                             }`}
