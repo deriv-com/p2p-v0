@@ -223,7 +223,7 @@ export async function getSession(): Promise<boolean> {
     const emailVerified = verifiableAddresses.some(
       (addr: { via: string; verified: boolean }) => addr.via === "email" && addr.verified == true
     )
-    
+
     useUserDataStore.getState().setOryEmailVerified(emailVerified)
 
     return response.status === 200
@@ -353,6 +353,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       const { userData } = useUserDataStore.getState()
       if (userData) {
         useUserDataStore.getState().updateUserData({
+          ...result.data,
           adverts_are_listed: result.data.adverts_are_listed,
           signup: result.data.signup,
           wallet_id: result.data.wallet_id,
