@@ -109,13 +109,9 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     else window.location.href = getHomeUrl(isV1Signup, "poa")
   }
 
-  const handleStepClick = (link: string) => {
-    window.location.href = link
-  }
-
   const handleCompleteVerification = () => {
     const firstIncompleteStep = verificationSteps.find((step) => !step.completed)
-    if (firstIncompleteStep) {
+    if (firstIncompleteStep?.link) {
       window.location.href = firstIncompleteStep.link
     }
   }
