@@ -357,7 +357,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               )}
             </TabsContent>
 
-            <TabsContent value="payment" className="mt-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <TabsContent value="payment" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
               <div className="relative">
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
@@ -375,13 +375,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
 
-            <TabsContent value="follows" className="mt-4">
+            <TabsContent value="follows" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
               <div className="relative">
                 <FollowsTab />
               </div>
             </TabsContent>
 
-            <TabsContent value="blocked" className="mt-4">
+            <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
               <div className="relative">
                 <BlockedTab />
               </div>
