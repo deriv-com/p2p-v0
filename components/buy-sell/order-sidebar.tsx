@@ -479,14 +479,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
                     <div
-                      className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                      className="border border-gray-200 rounded-lg px-4 cursor-pointer hover:bg-gray-50 transition-colors flex items-center h-[56px]"
                       onClick={handleShowPaymentSelection}
                     >
-                      {selectedPaymentMethods.length > 0 && (<div className="flex items-center justify-between">
-                        <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>
-                      </div>)}
                       <div className="flex items-center justify-between">
-                        <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
+                        <div className="flex flex-col">
+                          {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>}
+                          <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
+                        </div>
                         <Image
                           src="/icons/chevron-down.png"
                           alt="Arrow"
