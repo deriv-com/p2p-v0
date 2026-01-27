@@ -354,6 +354,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           ...result.data,
         })
       }
+      useUserDataStore.getState().setIsUserDataLoaded(true)
     } else {
       useUserDataStore.getState().updateUserData({
         balances: [{ amount: "0" }],
@@ -361,6 +362,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       })
       useUserDataStore.getState().setUserId("")
       useUserDataStore.getState().setLocalCurrency(null)
+      useUserDataStore.getState().setIsUserDataLoaded(true)
       useMarketFilterStore.getState().resetFilters()
     }
   } catch (error) {
