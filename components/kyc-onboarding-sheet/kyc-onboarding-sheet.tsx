@@ -28,7 +28,6 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const isPoiExpired = userId && !isPoiCompleted
   const isPoaExpired = userId && !isPoaCompleted
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
-  const isEmailVerified = useUserDataStore((state) => state.oryEmailVerified)
 
   const getFromParam = () => {
     if (!route) return "from=p2p"
@@ -56,13 +55,6 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       icon: "/icons/account-profile.svg",
       completed: isProfileCompleted,
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
-    },
-    {
-      id: "email",
-      title: t("kyc.email"),
-      icon: "/icons/email.svg",
-      completed: isEmailVerified,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "phone",
@@ -96,24 +88,24 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   const hasExpiredSteps = isPoiExpired || isPoaExpired
   const verificationSteps = hasExpiredSteps
     ? allVerificationSteps.filter((step) => {
-        if (isPoiExpired && step.id === "poi") return true
-        if (isPoaExpired && step.id === "poa") return true
-        return false
-      })
+      if (isPoiExpired && step.id === "poi") return true
+      if (isPoaExpired && step.id === "poa") return true
+      return false
+    })
     : allVerificationSteps
 
   const getDescription = () => {
-    if(hasExpiredSteps){
-      if(isPoiExpired && isPoaExpired) return t("kyc.resubmitIdentityAndAddress")
-      else if(isPoiExpired) return t("kyc.resubmitIdentity")
-      else if(isPoaExpired) return t("kyc.resubmitAddress")
-    } 
+    if (hasExpiredSteps) {
+      if (isPoiExpired && isPoaExpired) return t("kyc.resubmitIdentityAndAddress")
+      else if (isPoiExpired) return t("kyc.resubmitIdentity")
+      else if (isPoaExpired) return t("kyc.resubmitAddress")
+    }
 
     return t("kyc.accessP2PMessage")
   }
 
   const handlePoiPoaExpiredLink = () => {
-    if(isPoiExpired) window.location.href = getHomeUrl(isV1Signup, "poi")
+    if (isPoiExpired) window.location.href = getHomeUrl(isV1Signup, "poi")
     else window.location.href = getHomeUrl(isV1Signup, "poa")
   }
 
@@ -184,13 +176,13 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
                 </div>
               )}
             </div>
-            
+
           </div>
         ))}
       </div>
       {hasExpiredSteps ? (
-      <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
-      <Button className="w-full mt-6" onClick={handleCompleteVerification}>{t("profile.gettingStarted")}</Button>)
+        <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
+        <Button className="w-full mt-6" onClick={handleCompleteVerification}>{t("profile.gettingStarted")}</Button>)
       }
     </div>
   )
