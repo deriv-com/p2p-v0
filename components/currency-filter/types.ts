@@ -7,7 +7,6 @@ export interface Currency {
 
 export interface CurrencyFilterProps {
   currencies: Currency[]
-  isTitleVisible?: boolean
   selectedCurrency: string
   onCurrencySelect: (currencyCode: string) => void
   trigger: ReactNode

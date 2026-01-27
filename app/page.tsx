@@ -17,7 +17,7 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
@@ -269,9 +269,9 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -294,9 +294,9 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -441,17 +441,6 @@ export default function BuySellPage() {
                           size="sm"
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                         >
-                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
-                            <Image
-                              src={
-                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
-                              }
-                              alt={`${currency} logo`}
-                              width={24}
-                              height={16}
-                              className="mr-1 object-cover"
-                            />
-                          )}
                           <span>{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
@@ -622,7 +611,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
+              <div className="md:block">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
@@ -649,11 +638,12 @@ export default function BuySellPage() {
                             <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                  }`}
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
+                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                }`}
                               />
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1">
                               <button
                                 onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                 className="hover:underline cursor-pointer"
@@ -666,6 +656,7 @@ export default function BuySellPage() {
                                   tradeBand={ad.user.trade_band}
                                   showLearnMore={true}
                                   size={18}
+                                  className="mr-1"
                                 />
                               )}
                               {ad.user?.is_favourite && (
@@ -738,8 +729,9 @@ export default function BuySellPage() {
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                           </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
-                            }  ${ad.account_currency}`}</div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
+                            ad.actual_maximum_order_amount || "N/A"
+                          }  ${ad.account_currency}`}</div>
                           {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
                               <Tooltip>
@@ -766,8 +758,8 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                      ? "bg-paymentMethod-bank"
-                                      : "bg-paymentMethod-ewallet"
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
                                       }`}
                                   ></div>
                                 )}

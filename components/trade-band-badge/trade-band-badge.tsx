@@ -14,7 +14,7 @@ interface TradeBandBadgeProps {
 
 const TRADE_BAND_CONFIG = {
   bronze: {
-    icon: "/icons/bronze.svg",
+    icon: "/icons/bronze.png",
     alt: "Bronze",
     titleKey: "profile.bronzeTier",
     descriptionKey: "profile.bronzeTierDescription",

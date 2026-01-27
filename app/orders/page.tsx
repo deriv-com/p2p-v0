@@ -263,7 +263,7 @@ export default function OrdersPage() {
 
   const DesktopOrderTable = () => (
     <div className="relative">
-      <div className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
+      <div className="overflow-auto max-h-[calc(100vh-200px)]">
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
@@ -390,7 +390,7 @@ export default function OrdersPage() {
         : selectedOrder?.advert?.user?.last_online_at
 
     return (
-      <div className="h-screen md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
+      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
           <OrderChat
             orderId={selectedOrder.id}

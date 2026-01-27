@@ -185,7 +185,7 @@ export default function Main({
           <div className="container mx-auto">{children}</div>
         </div>
       </div>
-      <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
+      <div className="md:hidden flex flex-col h-screen overflow-hidden">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className="flex-1 overflow-hidden pb-20">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />

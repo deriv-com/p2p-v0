@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -74,11 +75,6 @@ const PaymentSelectionContent = ({
                 ? "opacity-30 cursor-not-allowed hover:bg-white"
                 : ""
                 }`}
-              onClick={() => {
-                if (!(!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3)) {
-                  handlePaymentMethodToggle(method.id)
-                }
-              }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -97,7 +93,7 @@ const PaymentSelectionContent = ({
                   checked={selectedPMs?.includes(method.id)}
                   onCheckedChange={() => handlePaymentMethodToggle(method.id)}
                   disabled={!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3}
-                  className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed pointer-events-none"
+                  className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -479,21 +475,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
                     <div
-                      className="border border-gray-200 rounded-lg px-4 cursor-pointer hover:bg-gray-50 transition-colors flex items-center h-[56px]"
+                      className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
                     >
-                      <div className="flex items-center justify-between flex-1">
-                        <div className="flex flex-col gap-[1px]">
-                          {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>}
-                          <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
-                        </div>
-                        <Image
-                          src="/icons/chevron-down.png"
-                          alt="Arrow"
-                          width={24}
-                          height={24}
-                          className="ml-2 transition-transform duration-200"
-                        />
+                      <div className="flex items-center justify-between">
+                        <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
+                        <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </div>
                   </div>

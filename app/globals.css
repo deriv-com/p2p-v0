@@ -39,7 +39,6 @@ body {
   .scrollbar-custom {
     -ms-overflow-style: none;
     scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
   }
 
   .scrollbar-custom::-webkit-scrollbar {

@@ -62,7 +62,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
-  const [currencies, setCurrencies] = useState<Array<{ code: string, name: string }>>([])
+  const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const { leaveExchangeRatesChannel } = useWebSocketContext()
@@ -119,15 +119,16 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         const countriesData = response.countries || []
         setCountries(countriesData)
 
-        const uniqueCurrencies = countriesData
-          .filter((c: Country) => c.currency)
-          .reduce((acc, country) => {
-            if (!acc.some(c => c.code === country.currency)) {
-              acc.push({ code: country.currency, name: country.currency_name });
-            }
-            return acc;
-          }, [] as { code: string; name: string }[])
-          .sort((a, b) => a.code.localeCompare(b.code));
+        const uniqueCurrencies = Array.from(
+          new Set(
+            countriesData
+              .map((country: Country) => country.currency)
+              .filter((currency): currency is string => !!currency),
+          ),
+        )
+          .map((code) => ({ code }))
+          .sort((a, b) => a.code.localeCompare(b.code))
+
         setCurrencies(uniqueCurrencies)
       } catch (error) {
         setCountries([])
@@ -547,7 +548,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
-        <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
+        <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 md:mt-8 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
           <div className="sticky top-0 z-10 bg-white">
             <Navigation
               isBackBtnVisible={currentStep != 0}
