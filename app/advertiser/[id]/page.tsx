@@ -331,7 +331,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           tradeBand={profile.trade_band}
                           showLearnMore={true}
                           size={18}
-                          className="mr-1"
                         />
                       )}
                     </div>
@@ -466,8 +465,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                     <div key={index} className="flex items-center">
                                       <div
                                         className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                            ? "bg-paymentMethod-bank"
-                                            : "bg-paymentMethod-ewallet"
+                                          ? "bg-paymentMethod-bank"
+                                          : "bg-paymentMethod-ewallet"
                                           }`}
                                       ></div>
                                       <span className="text-xs">{formatPaymentMethodName(method)}</span>

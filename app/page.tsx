@@ -666,7 +666,6 @@ export default function BuySellPage() {
                                   tradeBand={ad.user.trade_band}
                                   showLearnMore={true}
                                   size={18}
-                                  className="mr-1"
                                 />
                               )}
                               {ad.user?.is_favourite && (
