@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -45,6 +46,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
 
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
@@ -60,7 +62,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
-  const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
+  const [currencies, setCurrencies] = useState<Array<{ code: string, name: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const { leaveExchangeRatesChannel } = useWebSocketContext()
@@ -117,16 +119,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         const countriesData = response.countries || []
         setCountries(countriesData)
 
-        const uniqueCurrencies = Array.from(
-          new Set(
-            countriesData
-              .map((country: Country) => country.currency)
-              .filter((currency): currency is string => !!currency),
-          ),
-        )
-          .map((code) => ({ code }))
-          .sort((a, b) => a.code.localeCompare(b.code))
-
+        const uniqueCurrencies = countriesData
+          .filter((c: Country) => c.currency)
+          .reduce((acc, country) => {
+            if (!acc.some(c => c.code === country.currency)) {
+              acc.push({ code: country.currency, name: country.currency_name });
+            }
+            return acc;
+          }, [] as { code: string; name: string }[])
+          .sort((a, b) => a.code.localeCompare(b.code));
         setCurrencies(uniqueCurrencies)
       } catch (error) {
         setCountries([])
@@ -138,6 +139,21 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
     fetchCountries()
   }, [])
+
+  // Default "Paying with" currency to user's local currency for new ads (without overriding user edits).
+  useEffect(() => {
+    if (mode !== "create") return
+    if (!localCurrency) return
+    if (formData?.forCurrency) return
+    if (currencies.length === 0) return
+    if (!currencies.some((c: { code: string }) => c.code === localCurrency)) return
+
+    setFormData((prev: any) => {
+      const next = { ...prev, forCurrency: localCurrency }
+      formDataRef.current = { ...formDataRef.current, forCurrency: localCurrency }
+      return next
+    })
+  }, [mode, localCurrency, currencies, formData?.forCurrency])
 
   useEffect(() => {
     if (mode === "edit" && adId) {
@@ -201,7 +217,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           }
 
           setIsLoadingInitialData(false)
-        } catch (error) {}
+        } catch (error) { }
       }
 
       loadInitialData()
@@ -445,7 +461,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         confirmText: errorInfo.actionButtonText,
         type: errorInfo.type,
         onConfirm: () => {
-          if(errorInfo.onConfirm) {
+          if (errorInfo.onConfirm) {
             errorInfo.onConfirm()
           } else {
             setCurrentStep(0)
@@ -530,27 +546,30 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
-          <Navigation
-            isBackBtnVisible={currentStep != 0}
-            isVisible={false}
-            onBack={() => {
-              const updatedStep = currentStep - 1
-              setCurrentStep(updatedStep)
-            }}
-            onClose={handleClose}
-            title=""
-          />
-          <ProgressSteps
-            currentStep={currentStep}
-            steps={steps}
-            className="px-6 my-6"
-            title={{
-              label: getPageTitle(),
-              stepTitle: steps[currentStep].title,
-            }}
-          />
+      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
+        <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
+          <div className="sticky top-0 z-10 bg-white">
+            <Navigation
+              isBackBtnVisible={currentStep != 0}
+              isVisible={false}
+              onBack={() => {
+                const updatedStep = currentStep - 1
+                setCurrentStep(updatedStep)
+              }}
+              onClose={handleClose}
+              title=""
+              className="md:h-16 md:pt-8"
+            />
+            <ProgressSteps
+              currentStep={currentStep}
+              steps={steps}
+              className="px-6 my-6"
+              title={{
+                label: getPageTitle(),
+                stepTitle: steps[currentStep].title,
+              }}
+            />
+          </div>
 
           <div className="relative mb-16 md:mb-0 mx-6">
             {currentStep === 0 ? (
@@ -654,18 +673,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               </div>
             </div>
           ) : (
-            <div className="hidden md:block"></div>
+            <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
+              <div className="flex justify-end px-6 pt-6">
+                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                  {isSubmitting ? (
+                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                  ) : (
+                    getButtonText()
+                  )}
+                </Button>
+              </div>
+            </div>
           )}
-
-          <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
-              {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-              ) : (
-                getButtonText()
-              )}
-            </Button>
-          </div>
         </div>
       </div>
     </form>

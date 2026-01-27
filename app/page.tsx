@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { getAdvertStatistics } from "@/services/api/api-auth"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -18,7 +17,7 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
@@ -79,6 +78,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
@@ -168,58 +168,17 @@ export default function BuySellPage() {
   }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
-    const fetchAdvertStatistics = async () => {
-      try {
-        const statistics = await getAdvertStatistics(selectedAccountCurrency)
-
-        if (currencies.length > 0) {
-          const validCurrencyCodes = currencies.map((c) => c.code)
-          const filteredStatistics =
-            statistics?.data?.filter(
-              (stat: any) => stat.payment_currency && validCurrencyCodes.includes(stat.payment_currency),
-            ) || []
-
-          const operation = searchParams.get("operation")
-          let currencyToSet = currencies[0]?.code
-          let shouldSetSellTab = false
-
-          const currencyWithSellCount = filteredStatistics.find((stat: any) => stat.sell_count > 0)
-
-          if (currencyWithSellCount) {
-            currencyToSet = currencyWithSellCount.payment_currency
-          } else {
-            const currencyWithBuyCount = filteredStatistics.find((stat: any) => stat.buy_count > 0)
-
-            if (currencyWithBuyCount) {
-              currencyToSet = currencyWithBuyCount.payment_currency
-              if (!operation) {
-                shouldSetSellTab = true
-              }
-            }
-          }
-
-          setCurrency(currencyToSet)
-
-          if (shouldSetSellTab) {
-            setActiveTab("sell")
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching advert statistics:", error)
-        if (currencies.length > 0) {
-          setCurrency(currencies[0]?.code)
-        }
+    // Currency init: if store has no currency yet, default to user's local currency (or first available).
+    // If user already picked a currency, do not override it.
+    if (currencies.length > 0 && (currency === "" || currency === null)) {
+      const validCurrencyCodes = currencies.map((c) => c.code)
+      if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
+        setCurrency(localCurrency)
+      } else {
+        setCurrency(currencies[0]?.code)
       }
     }
-
-    fetchAdvertStatistics()
-  }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency])
-
-  useEffect(() => {
-    if (currencies.length > 0) {
-      setCurrency(currencies[0]?.code)
-    }
-  }, [currencies])
+  }, [currencies, localCurrency, currency, setCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -310,9 +269,9 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -335,9 +294,9 @@ export default function BuySellPage() {
     } else {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -352,7 +311,7 @@ export default function BuySellPage() {
     }
   }
 
-  const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
+  const handleCurrencySelect = (currencyCode: string) => {
     setCurrency(currencyCode)
   }
 
@@ -443,8 +402,8 @@ export default function BuySellPage() {
 
   return (
     <>
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <div className="flex-shrink-0">
+      <div className="flex flex-col h-full overflow-hidden">
+        <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
@@ -482,6 +441,17 @@ export default function BuySellPage() {
                           size="sm"
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                         >
+                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
+                            <Image
+                              src={
+                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                              }
+                              alt={`${currency} logo`}
+                              width={24}
+                              height={16}
+                              className="mr-1 object-cover"
+                            />
+                          )}
                           <span>{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
@@ -589,8 +559,8 @@ export default function BuySellPage() {
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
-          <div>
+        <div className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
+          <div className="h-full">
             {isLoading ? (
               <div className="md:block">
                 <Table>
@@ -652,7 +622,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block">
+              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
@@ -679,12 +649,11 @@ export default function BuySellPage() {
                             <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
-                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                }`}
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                  }`}
                               />
                             </div>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <button
                                 onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                 className="hover:underline cursor-pointer"
@@ -697,7 +666,6 @@ export default function BuySellPage() {
                                   tradeBand={ad.user.trade_band}
                                   showLearnMore={true}
                                   size={18}
-                                  className="mr-1"
                                 />
                               )}
                               {ad.user?.is_favourite && (
@@ -770,9 +738,8 @@ export default function BuySellPage() {
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                           </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
-                            ad.actual_maximum_order_amount || "N/A"
-                          }  ${ad.account_currency}`}</div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                            }  ${ad.account_currency}`}</div>
                           {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
                               <Tooltip>
@@ -799,8 +766,8 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                        ? "bg-paymentMethod-bank"
-                                        : "bg-paymentMethod-ewallet"
+                                      ? "bg-paymentMethod-bank"
+                                      : "bg-paymentMethod-ewallet"
                                       }`}
                                   ></div>
                                 )}

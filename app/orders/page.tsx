@@ -263,7 +263,7 @@ export default function OrdersPage() {
 
   const DesktopOrderTable = () => (
     <div className="relative">
-      <div className="overflow-auto max-h-[calc(100vh-200px)]">
+      <div className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
@@ -283,12 +283,15 @@ export default function OrdersPage() {
             </TableRow>
           </TableHeader>
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
-            {orders.map((order) => (
-              <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
-                key={order.id}
-                onClick={() => navigateToOrderDetails(order.id)}
-              >
+            {orders.map((order) => {
+              const isBuyer = getPayReceiveLabel(order) === t("orders.youPay")
+
+              return (
+                <TableRow
+                  className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
+                  key={order.id}
+                  onClick={() => navigateToOrderDetails(order.id)}
+                >
                 {activeTab === "past" && (
                   <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
@@ -319,9 +322,9 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-0 px-4 align-top row-start-1">
                   <div
-                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
+                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, isBuyer)}`}
                   >
-                    {formatStatus(false, order.status, getPayReceiveLabel(order) === t("orders.youPay"), t)}
+                    {formatStatus(false, order.status, isBuyer, t)}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
@@ -365,8 +368,9 @@ export default function OrdersPage() {
                     </div>
                   </div>
                 </TableCell>
-              </TableRow>
-            ))}
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
@@ -386,7 +390,7 @@ export default function OrdersPage() {
         : selectedOrder?.advert?.user?.last_online_at
 
     return (
-      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+      <div className="h-screen md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
           <OrderChat
             orderId={selectedOrder.id}
@@ -467,7 +471,7 @@ export default function OrdersPage() {
           {isLoading ? (
             <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
-            <div className="mt-[40%] md:mt-0">
+            <div>
               {activeTab === "active" ? (
                 <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} redirectToAds={true} redirectToMarket={true} />
               ) : (

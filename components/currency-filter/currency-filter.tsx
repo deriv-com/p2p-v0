@@ -9,13 +9,14 @@ import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
+import { cn, currencyFlagMapper } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function CurrencyFilter({
   currencies,
+  isTitleVisible = true,
   selectedCurrency,
   onCurrencySelect,
   title,
@@ -51,8 +52,8 @@ export function CurrencyFilter({
   }, [currencies, searchQuery, selectedCurrency])
 
   const handleCurrencySelect = useCallback(
-    (currencyCode: string, currencyName: string) => {
-      onCurrencySelect(currencyCode, currencyName)
+    (currencyCode: string) => {
+      onCurrencySelect(currencyCode)
       setIsOpen(false)
       setSearchQuery("")
     },
@@ -118,17 +119,28 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-0 md:pr-2">
-            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{title}</div>}
+            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{isTitleVisible && title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
-                onClick={() => handleCurrencySelect(currency.code, currency.name)}
+                onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 h-12 flex items-center rounded-sm cursor-pointer transition-colors text-base font-normal",
+                  "px-4 h-12 flex items-center gap-2 rounded-sm cursor-pointer transition-colors text-base font-normal",
                   selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
               >
-                {currency.code} - {currency.name}
+                {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
+                  <Image
+                    src={
+                      currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                    }
+                    alt={`${currency.code} logo`}
+                    width={24}
+                    height={16}
+                    className="object-cover"
+                  />
+                )}
+                <span>{currency.code} - {currency.name}</span>
               </div>
             ))}
           </div>
@@ -147,7 +159,7 @@ export function CurrencyFilter({
         <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] px-[16px] pb-[16px] rounded-t-2xl">
           <div className="my-4">
-            <h3 className="text-xl font-extrabold text-center text-slate-900">{title}</h3>
+            <h3 className="text-xl font-extrabold text-center text-slate-1200">{title}</h3>
           </div>
           <CurrencyList />
         </DrawerContent>

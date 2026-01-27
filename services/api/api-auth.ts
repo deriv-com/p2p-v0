@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useMarketFilterStore } from "@/stores/market-filter-store"
 
 export interface LoginRequest {
   email: string
@@ -28,6 +29,7 @@ export interface Country {
   code: string
   name: string
   currency?: string
+  currency_name?: string
 }
 
 export interface CountriesResponse {
@@ -215,7 +217,7 @@ export async function getSession(): Promise<boolean> {
 
     const result = await response.json()
     const externalId = result?.data?.identity?.external_id
-    if(externalId) useUserDataStore.getState().setExternalId(externalId)
+    if (externalId) useUserDataStore.getState().setExternalId(externalId)
 
     const verifiableAddresses = result?.identity?.verifiable_addresses || []
     const emailVerified = verifiableAddresses.some(
@@ -268,6 +270,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       headers: getAuthHeader(),
     })
 
+
     const result = await response.json()
 
     if (response.status === 403) {
@@ -291,18 +294,54 @@ export async function fetchUserIdAndStore(): Promise<void> {
         balances: [{ amount: "0" }],
         signup: "v2",
       })
+      useUserDataStore.getState().setUserId("")
+      useUserDataStore.getState().setLocalCurrency(null)
+      useMarketFilterStore.getState().resetFilters()
       return
     }
 
     const userId = result?.data?.id
+    const userCountryCode = result?.data?.country_code
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
     const balances = result?.data?.total_account_value
     const status = result?.data?.status
 
+    // Derive user's local currency from /settings.countries using /users/me country_code.
+    // Fallback to the first country currency if no match.
+    try {
+      const settings = await getSettings()
+      const countries = settings?.countries || []
+      const normalizedUserCountryCode = typeof userCountryCode === "string" ? userCountryCode.toLowerCase() : ""
+
+      const matchedCountry = normalizedUserCountryCode
+        ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedUserCountryCode)
+        : null
+
+      const derivedLocalCurrency =
+        (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+        (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+        null
+
+      useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
+    } catch (error) {
+      console.error("Error deriving local currency from settings:", error)
+    }
+
     if (userId) {
-      useUserDataStore.getState().setUserId(userId.toString())
+      const newUserId = userId.toString()
+      const previousUserId = useUserDataStore.getState().userId
+
+      // Always store the userId once we have it (first load previousUserId is often null).
+      // Only reset filters when the user actually changes between sessions.
+      if (previousUserId && previousUserId !== newUserId) {
+        useMarketFilterStore.getState().resetFilters()
+      }
+
+      if (previousUserId !== newUserId) {
+        useUserDataStore.getState().setUserId(newUserId)
+      }
 
       if (brandClientId) {
         useUserDataStore.getState().setBrandClientId(brandClientId)
@@ -327,6 +366,9 @@ export async function fetchUserIdAndStore(): Promise<void> {
         balances: [{ amount: "0" }],
         signup: "v2",
       })
+      useUserDataStore.getState().setUserId("")
+      useUserDataStore.getState().setLocalCurrency(null)
+      useMarketFilterStore.getState().resetFilters()
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)

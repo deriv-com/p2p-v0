@@ -303,7 +303,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   return (
-    <div>
+    <div className="h-full overflow-y-auto">
       <div className="p-6 md:px-2 md:py-0">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
@@ -317,14 +317,13 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
                       <div
-                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
-                          profile?.is_online ? "bg-buy" : "bg-gray-400"
-                        }`}
+                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${profile?.is_online ? "bg-buy" : "bg-gray-400"
+                          }`}
                       />
                     </div>
                   </div>
                   <div className="flex-1">
-                    <div className="flex gap-1 items-center">
+                    <div className="flex gap-2 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                       <VerifiedBadge />
                       {profile.trade_band && (
@@ -332,7 +331,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           tradeBand={profile.trade_band}
                           showLearnMore={true}
                           size={18}
-                          className="mr-1"
                         />
                       )}
                     </div>
@@ -349,9 +347,9 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <span className="mr-[8px]">
                           {profile?.statistics_lifetime?.recommend_count > 0
                             ? t("advertiser.recommendedBy", {
-                                count: profile?.statistics_lifetime?.recommend_count,
-                                plural: profile?.statistics_lifetime?.recommend_count === 1 ? "" : "s",
-                              })
+                              count: profile?.statistics_lifetime?.recommend_count,
+                              plural: profile?.statistics_lifetime?.recommend_count === 1 ? "" : "s",
+                            })
                             : t("profile.notRecommendedYet")}
                         </span>
                       </div>
@@ -435,9 +433,9 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 <div className="font-bold">
                                   {ad.effective_rate_display
                                     ? ad.effective_rate_display.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                      })
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    })
                                     : ""}{" "}
                                   {ad.payment_currency}
                                   <span className="text-xs font-normal text-black opacity-[0.48]">
@@ -466,11 +464,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
                                       <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${
-                                          method.toLowerCase().includes("bank")
-                                            ? "bg-paymentMethod-bank"
-                                            : "bg-paymentMethod-ewallet"
-                                        }`}
+                                        className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                          ? "bg-paymentMethod-bank"
+                                          : "bg-paymentMethod-ewallet"
+                                          }`}
                                       ></div>
                                       <span className="text-xs">{formatPaymentMethodName(method)}</span>
                                     </div>

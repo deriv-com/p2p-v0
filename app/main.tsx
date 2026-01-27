@@ -12,6 +12,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
+import { IntercomProvider } from "@/components/intercom-provider"
 import "./globals.css"
 
 export default function Main({
@@ -155,7 +156,7 @@ export default function Main({
             </div>
           </div>
         </div>
-        <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
+        <div className="md:hidden flex flex-col h-screen overflow-hidden">
           {isHeaderVisible && <Header className="flex-shrink-0" />}
           <main className="flex-1 overflow-hidden px-3">
             <P2PAccessRemoved />
@@ -175,15 +176,18 @@ export default function Main({
 
   return (
     <WebSocketProvider>
+      {process.env.NEXT_PUBLIC_INTERCOM_APP_ID && (
+        <IntercomProvider appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID} />
+      )}
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
           <div className="container mx-auto">{children}</div>
         </div>
       </div>
-      <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
+      <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <main className="flex-1 overflow-hidden">{children}</main>
+        <main className="flex-1 overflow-hidden pb-20">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
     </WebSocketProvider>

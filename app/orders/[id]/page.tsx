@@ -15,6 +15,7 @@ import OrderChat from "@/components/order-chat"
 import OrderChatSkeleton from "@/components/order-chat-skeleton"
 import { useToast } from "@/hooks/use-toast"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   cn,
   formatAmount,
@@ -35,6 +36,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import InfoCircleIcon from "@/public/icons/info-circle-bold.svg"
 
 export default function OrderDetailsPage() {
   const { t } = useTranslations()
@@ -381,6 +383,7 @@ export default function OrderDetailsPage() {
       : order?.advert.user.id == userId
         ? "seller"
         : "buyer"
+  const isBuyer = counterpartyLabel === t("orderDetails.seller")
 
   if (isMobile && showChat && order) {
     const counterpartyOnlineStatus =
@@ -389,7 +392,7 @@ export default function OrderDetailsPage() {
       order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
 
     return (
-      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+      <div className="relative h-screen md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
             <OrderChat
               orderId={orderId}
@@ -409,16 +412,16 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
+    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}
           isVisible={false}
-          title={`${orderType} ${order?.advert?.account_currency}`}
+          title=""
           redirectUrl={"/orders"}
         />
       )}
-      <div className="container mx-auto px-[24px] mt-4">
+      <div className="container mx-auto px-[24px] mt-4 pb-6">
         {isLoading ? (
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
@@ -472,19 +475,39 @@ export default function OrderDetailsPage() {
               <div className="w-full lg:w-1/2 rounded-lg">
                 <div
                   className={cn(
-                    `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
-                    order.status === "pending_payment" || order.status === "pending_release"
-                      ? "justify-between"
-                      : "justify-center",
+                    `${getStatusBadgeStyle(order.status, isBuyer)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
+                    order.status === "pending_release" && isBuyer && isMobile ? "flex-col items-start" :
+                      order.status === "pending_payment" || order.status === "pending_release"
+                        ? "justify-between"
+                        : "justify-center",
                   )}
                 >
                   <div className="flex items-center">
-                    <span className="font-bold">
-                      {formatStatus(true, order.status, counterpartyLabel === t("orderDetails.seller"), t)}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold">{formatStatus(true, order.status, isBuyer, t)}</span>
+                      {order.status === "pending_payment" && !isBuyer && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span
+                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                                aria-label="Info"
+                                role="img"
+                              >
+                                <InfoCircleIcon className="h-6 w-6 [&>path]:fill-current" aria-hidden />
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent className='p-3' side="bottom" avoidCollisions={false}>
+                              <p className="text-white">{t("orderDetails.awaitingPaymentTooltip")}</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
-                    <div className="flex items-center">
+                    <div className={cn("flex items-center", order.status === "pending_release" && "text-sm")}>
                       <span>{t("orderDetails.timeLeft")}&nbsp;</span>
                       <span className="font-bold">{timeLeft}</span>
                     </div>
@@ -498,11 +521,11 @@ export default function OrderDetailsPage() {
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-                          <p className="font-bold">
+                          <p className="font-bold text-sm">
                             {formatAmount(order.payment_amount)} {order?.payment_currency}
                           </p>
                         </div>
-                        <button className="flex items-center text-sm" onClick={showOrderDetails}>
+                        <button className="flex items-center text-xs" onClick={showOrderDetails}>
                           {t("orderDetails.viewOrderDetails")}
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
@@ -510,7 +533,7 @@ export default function OrderDetailsPage() {
                       <div className="flex justify-between items-end">
                         <div>
                           <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                          <p className="font-bold">{counterpartyNickname}</p>
+                          <p className="font-bold text-sm">{counterpartyNickname}</p>
                         </div>
                         {isMobile && (
                           <Button
@@ -518,7 +541,7 @@ export default function OrderDetailsPage() {
                               setShowChat(true)
                               setIsChatVisible(true)
                             }}
-                            className="text-slate-500 hover:text-slate-700"
+                            className="text-slate-500 hover:text-slate-700 pr-0"
                             variant="ghost"
                             size="sm"
                           >
@@ -553,21 +576,29 @@ export default function OrderDetailsPage() {
 
                       {order?.payment_method_details && order.payment_method_details.length > 0 && (
                         <div className="bg-white border rounded-lg mt-6">
-                          <Accordion type="single" collapsible className="w-full">
+                          <Accordion 
+                            type="single" 
+                            collapsible 
+                            className="w-full"
+                            defaultValue={order.payment_method_details.length === 1 ? "payment-method-0" : undefined}
+                          >
                             {order.payment_method_details.map((method, index) => (
-                              <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
-                                <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                                  <div className="flex items-center gap-3">
-                                    <div
-                                      className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
-                                    ></div>
-                                    <span className="text-sm">{method.display_name}</span>
-                                  </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="px-4 pb-4">
-                                  <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
-                                </AccordionContent>
-                              </AccordionItem>
+                              <div key={index}>
+                                <AccordionItem value={`payment-method-${index}`} className="border-b-0">
+                                  <AccordionTrigger className="p-4 hover:no-underline">
+                                    <div className="flex items-center gap-3">
+                                      <div
+                                        className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
+                                      ></div>
+                                      <span className="text-sm">{method.display_name}</span>
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="px-4 pb-4">
+                                    <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
+                                  </AccordionContent>
+                                </AccordionItem>
+                                {index !== order.payment_method_details.length - 1 && <div className="mx-4 border-b border-grayscale-200"></div>}
+                              </div>
                             ))}
                           </Accordion>
                         </div>

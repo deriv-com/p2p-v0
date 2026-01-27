@@ -123,7 +123,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   }
 
   return (
-    <div className="relative">
+    <div className="relative px-3 md:px-0">
       <div className="mb-[64px] md:mb-6">
         {isMobile ? (
           <div className="mx-[-12px]">
