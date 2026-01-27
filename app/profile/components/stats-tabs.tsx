@@ -357,7 +357,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               )}
             </TabsContent>
 
-            <TabsContent value="payment" className="mt-4">
+            <TabsContent value="payment" className="mt-4 max-h-[calc(100vh-200px)] overflow-y-auto">
               <div className="relative">
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
