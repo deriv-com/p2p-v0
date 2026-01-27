@@ -17,8 +17,8 @@ export default function VerifiedBadge() {
             src="/icons/verified-badge.svg"
             className="cursor-pointer"
             alt="Verified"
-            width={32}
-            height={32}
+            width={20}
+            height={30}
           />
         </TooltipTrigger>
         <TooltipContent align={isMobile ? "middle" : "start"} side="bottom" className="max-w-[328px] text-wrap">
