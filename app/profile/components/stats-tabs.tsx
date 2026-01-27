@@ -39,10 +39,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
-  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved" 
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
   const helpCentreUrl =
@@ -105,9 +105,9 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     } else {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
@@ -357,7 +357,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               )}
             </TabsContent>
 
-            <TabsContent value="payment" className="mt-4">
+            <TabsContent value="payment" className="mt-4 max-h-[calc(100vh-200px)] overflow-y-auto">
               <div className="relative">
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
