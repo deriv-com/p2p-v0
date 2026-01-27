@@ -375,13 +375,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
 
-            <TabsContent value="follows" className="mt-4">
+            <TabsContent value="follows" className="mt-4 max-h-[calc(100vh-200px)] overflow-y-auto">
               <div className="relative">
                 <FollowsTab />
               </div>
             </TabsContent>
 
-            <TabsContent value="blocked" className="mt-4">
+            <TabsContent value="blocked" className="mt-4 max-h-[calc(100vh-200px)] overflow-y-auto">
               <div className="relative">
                 <BlockedTab />
               </div>
