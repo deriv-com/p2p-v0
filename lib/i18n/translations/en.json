@@ -686,7 +686,10 @@
     "inReview": "In Review",
     "unverified": "Unverified",
     "resubmitNow": "Resubmit now",
-    "email": "Email address"
+    "email": "Email address",
+    "gotIt": "Got it",
+    "checkProofOfIdentity": "Check proof of identity",
+    "checkProofOfAddress": "Check proof of address"
   },
   "status": {
     "refunded": "Refunded",

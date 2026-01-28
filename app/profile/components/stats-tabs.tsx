@@ -26,7 +26,7 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -103,7 +103,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setShowAddPaymentPanel(true)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -113,7 +113,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="profile" />
+            <KycOnboardingSheet route="profile" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,

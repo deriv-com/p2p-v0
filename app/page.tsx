@@ -83,7 +83,7 @@ export default function BuySellPage() {
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
@@ -267,7 +267,7 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -277,7 +277,7 @@ export default function BuySellPage() {
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -292,7 +292,7 @@ export default function BuySellPage() {
       setIsOrderSidebarOpen(true)
       setError(null)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -302,7 +302,7 @@ export default function BuySellPage() {
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -391,7 +391,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -692,7 +692,7 @@ export default function BuySellPage() {
                             )}
                             {ad.user.order_count_lifetime > 0 && (
                               <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
                                 <span>
                                   {ad.user.order_count_lifetime} {t("market.orders")}
                                 </span>
