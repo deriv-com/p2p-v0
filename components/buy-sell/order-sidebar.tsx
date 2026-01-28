@@ -340,10 +340,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
       if (response.success) {
         await fetchUserPaymentMethods()
-        if (response.data?.id) {
-          setSelectedPaymentMethods((prev) => [...prev, response.data.id])
-          setTempSelectedPaymentMethods((prev) => [...prev, response.data.id])
-        }
         setShowAddPaymentPanel(false)
       } else {
         let title = t("paymentMethod.unableToAdd")
