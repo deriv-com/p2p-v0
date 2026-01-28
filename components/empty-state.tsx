@@ -68,8 +68,8 @@ export default function EmptyState({
   return (
     <div className={cn("flex flex-col items-center justify-center py-8 text-center px-3 md:px-0 justify-self-center", className)}>
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
-      {title && <p className="text-base text-slate-1200 mt-2 font-bold whitespace-pre-wrap wrap-anywhere">{title}</p>}
-      {description && <p className="text-base font-normal text-grayscale-600 mb-2">{description}</p>}
+      {title && <p className="text-base text-slate-1200 mt-2 mb-1 font-bold whitespace-pre-wrap wrap-anywhere">{title}</p>}
+      {description && <p className="text-base font-normal text-grayscale-600">{description}</p>}
       <div className="flex w-full gap-2 justify-center flex-wrap-reverse mt-4">
         {redirectToMarket && (
           <Button onClick={browseMarket} className={cn("basis-auto shrink", redirectToMarket && redirectToAds && "grow")} variant="outline">

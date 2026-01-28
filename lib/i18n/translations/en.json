@@ -63,8 +63,8 @@
     "min": "min",
     "orderLimits": "Order limits",
     "loadingAds": "Loading ads...",
-    "noAdsTitle": "No ads for this currency",
-    "noAdsDescription": "You can post your own ad for others to respond.",
+    "noAdsTitle": "No ads available for {currency}",
+    "noAdsDescription": "Create an {currency} ad to get started, or switch to another currency.",
     "following": "Following",
     "verified": "Verified",
     "browseMarket": "Browse market"
