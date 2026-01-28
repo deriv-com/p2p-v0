@@ -41,6 +41,7 @@ const PaymentSelectionContent = ({
   tempSelectedPaymentMethods,
   hideAlert,
   setSelectedPaymentMethods,
+  setTempSelectedPaymentMethods,
   handleAddPaymentMethodClick,
 }) => {
   const { t } = useTranslations()
@@ -119,6 +120,7 @@ const PaymentSelectionContent = ({
         disabled={selectedPMs.length == 0}
         onClick={() => {
           setSelectedPaymentMethods(selectedPMs)
+          setTempSelectedPaymentMethods(selectedPMs)
           hideAlert()
         }}
       >
@@ -238,6 +240,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
         />
       ),
     })
