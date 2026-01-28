@@ -113,6 +113,11 @@ export const PaymentReceivedConfirmationSidebar = ({
               onClose()
             }
           })
+        } else if (error.code === "OrderVerificationRateLimit") {
+          setOtpRequested(true)
+          const time = Math.floor(error.detail.next_request_at / 1000)
+          setResendTimer(time)
+          setError(error.message || "An error occurred. Please try again.")
         } else {
           setOtpRequested(false)
           setError(error.message || "An error occurred. Please try again.")
