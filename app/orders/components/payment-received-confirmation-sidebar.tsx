@@ -31,6 +31,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
   const [otpRequested, setOtpRequested] = useState(false)
+  const [hasActiveOtp, setHasActiveOtp] = useState(false)
   const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)
 
@@ -105,6 +106,11 @@ export const PaymentReceivedConfirmationSidebar = ({
               onClose()
             },
           })
+        } else if (error.code === "OtpAlreadyActive" || error.code === "VerificationCodeAlreadySent") {
+          setOtpRequested(true)
+          setResendTimer(59)
+          setHasActiveOtp(true)
+          setError(null)
         } else {
           setOtpRequested(false)
           setError(error.message || "An error occurred. Please try again.")
@@ -112,6 +118,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       } else {
         setOtpRequested(true)
         setResendTimer(59)
+        setHasActiveOtp(false)
         setError(null)
       }
     } catch (err: any) {
@@ -121,7 +128,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   }
 
   const handleResendCode = async () => {
-    if (resendTimer > 0) return
+    if (resendTimer > 0 || hasActiveOtp) return
     await handleRequestOtp()
   }
 
