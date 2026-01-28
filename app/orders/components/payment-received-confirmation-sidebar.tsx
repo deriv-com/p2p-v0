@@ -8,6 +8,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { OrdersAPI } from "@/services/api"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { cn } from "@/lib/utils"
 
 interface PaymentReceivedConfirmationSidebarProps {
   isOpen: boolean
@@ -158,12 +159,12 @@ export const PaymentReceivedConfirmationSidebar = ({
             <div className="space-y-4">
               <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading}>
                 <InputOTPGroup className="gap-2">
-                  <InputOTPSlot index={0} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
-                  <InputOTPSlot index={1} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
-                  <InputOTPSlot index={2} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
-                  <InputOTPSlot index={3} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
-                  <InputOTPSlot index={4} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
-                  <InputOTPSlot index={5} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
+                  <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
+                  <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
+                  <InputOTPSlot index={2} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
+                  <InputOTPSlot index={3} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
+                  <InputOTPSlot index={4} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
+                  <InputOTPSlot index={5} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
                 </InputOTPGroup>
               </InputOTP>
 
@@ -178,7 +179,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               )}
             </div>
 
-            {otpRequested && (
+            {otpRequested && !warning && (
               <div className="space-y-2">
                 <p className="text-sm text-gray-600">{t("orders.didntReceiveCode")}</p>
                 {resendTimer > 0 ? (
