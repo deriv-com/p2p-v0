@@ -46,7 +46,7 @@ const PaymentSelectionContent = ({
   handleAddPaymentMethodClick,
 }) => {
   const { t } = useTranslations()
-  const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
+  const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods || [])
 
   const handlePaymentMethodToggle = (methodId: string) => {
     setSelectedPMs((prev) => {
@@ -226,6 +226,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }, [amount, ad, orderType, p2pBalance, t, marketRate])
 
   const handleShowPaymentSelection = () => {
+    setTempSelectedPaymentMethods(selectedPaymentMethods)
     showAlert({
       title: t("paymentMethod.title"),
       description: (
@@ -238,6 +239,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
         />
       ),
+      onCancel: () => {
+        setTempSelectedPaymentMethods([])
+      },
     })
   }
 
