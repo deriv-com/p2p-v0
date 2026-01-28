@@ -47,6 +47,13 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     hideAlert()
   }, [config.onCancel, hideAlert])
 
+  const handleClose = useCallback(() => {
+    if (config.onClose) {
+      config.onClose()
+    }
+    hideAlert()
+  }, [config.onClose, hideAlert])
+
   const contextValue: AlertDialogContextType = {
     showAlert,
     hideAlert,
@@ -59,7 +66,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <div className="overflow-y-auto">
           <div className="flex justify-between px-8 pt-6 items-center mb-4">
             {config.title && <div className="font-bold text-2xl">{config.title}</div>}
-            <Button onClick={hideAlert} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+            <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
               <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
             </Button>
           </div>
@@ -72,7 +79,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="px-8 py-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           {config.title && <div className="font-bold text-2xl mr-2">{config.title}</div>}
-          <Button onClick={hideAlert} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+          <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
@@ -128,7 +135,10 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
 
       {isMobile ? (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <Drawer open={isOpen} onOpenChange={(open) => {
+          setIsOpen(open)
+          if (!open) config.onClose?.()
+        }}>
           <DrawerContent side="bottom" className="p-0 rounded-t-[16px]">
             {renderMobileContent()}
           </DrawerContent>

@@ -39,9 +39,9 @@ interface PaymentMethod {
 const PaymentSelectionContent = ({
   userPaymentMethods,
   tempSelectedPaymentMethods,
-  setTempSelectedPaymentMethods,
   hideAlert,
   setSelectedPaymentMethods,
+  setTempSelectedPaymentMethods,
   handleAddPaymentMethodClick,
 }) => {
   const { t } = useTranslations()
@@ -55,7 +55,6 @@ const PaymentSelectionContent = ({
           ? [...prev, methodId]
           : prev
 
-      setTempSelectedPaymentMethods(newSelection)
       return newSelection
     })
   }
@@ -121,6 +120,7 @@ const PaymentSelectionContent = ({
         disabled={selectedPMs.length == 0}
         onClick={() => {
           setSelectedPaymentMethods(selectedPMs)
+          setTempSelectedPaymentMethods(selectedPMs)
           hideAlert()
         }}
       >
@@ -237,10 +237,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         <PaymentSelectionContent
           userPaymentMethods={userPaymentMethods}
           tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
         />
       ),
     })

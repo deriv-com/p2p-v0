@@ -63,6 +63,7 @@ export default function OrderDetailsPage() {
   const [isChatLoading, setIsChatLoading] = useState(true)
   const [orderVerificationEnabled, setOrderVerificationEnabled] = useState<boolean>(true)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
+  const [otpRequested, setOtpRequested] = useState(false)
 
   useEffect(() => {
     fetchOrderDetails()
@@ -394,18 +395,18 @@ export default function OrderDetailsPage() {
     return (
       <div className="relative h-screen md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
-            <OrderChat
-              orderId={orderId}
-              counterpartyName={counterpartyNickname || "User"}
-              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-              isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
-              counterpartyOnlineStatus={counterpartyOnlineStatus}
-              counterpartyLastOnlineAt={counterpartyLastOnlineAt}
-              onNavigateToOrderDetails={() => {
-                setShowChat(false)
-                setIsChatVisible(false)
-              }}
-            />
+          <OrderChat
+            orderId={orderId}
+            counterpartyName={counterpartyNickname || "User"}
+            counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+            isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+            counterpartyOnlineStatus={counterpartyOnlineStatus}
+            counterpartyLastOnlineAt={counterpartyLastOnlineAt}
+            onNavigateToOrderDetails={() => {
+              setShowChat(false)
+              setIsChatVisible(false)
+            }}
+          />
         </div>
       </div>
     )
@@ -427,38 +428,38 @@ export default function OrderDetailsPage() {
             <div className="w-full lg:w-1/2 rounded-lg">
               <Skeleton className="h-[60px] w-full rounded-lg mb-6 bg-grayscale-500" />
               <div className="border rounded-lg p-4 mb-6">
-              
+
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[80px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[200px] bg-grayscale-500" />
                 </div>
-              
+
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[120px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[150px] bg-grayscale-500" />
                 </div>
-                
+
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[100px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[180px] bg-grayscale-500" />
                 </div>
-                
+
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[100px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[180px] bg-grayscale-500" />
                 </div>
-                
+
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[90px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[220px] bg-grayscale-500" />
                 </div>
-                
+
                 <div>
                   <Skeleton className="h-[14px] w-[60px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[140px] bg-grayscale-500" />
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <Skeleton className="h-[24px] w-[200px] bg-grayscale-500" />
                 <Skeleton className="h-[80px] w-full rounded-2xl bg-grayscale-500" />
@@ -576,9 +577,9 @@ export default function OrderDetailsPage() {
 
                       {order?.payment_method_details && order.payment_method_details.length > 0 && (
                         <div className="bg-white border rounded-lg mt-6">
-                          <Accordion 
-                            type="single" 
-                            collapsible 
+                          <Accordion
+                            type="single"
+                            collapsible
                             className="w-full"
                             defaultValue={order.payment_method_details.length === 1 ? "payment-method-0" : undefined}
                           >
@@ -609,15 +610,15 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
-                  <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                    <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder}>
-                      {t("orderDetails.cancelOrder")}
-                    </Button>
-                    <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
-                      {t("orderDetails.ivePaid")}
-                    </Button>
-                  </div>
-                )}
+                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                      <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder}>
+                        {t("orderDetails.cancelOrder")}
+                      </Button>
+                      <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
+                        {t("orderDetails.ivePaid")}
+                      </Button>
+                    </div>
+                  )}
                 {((order.type === "buy" &&
                   (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
                   order.advert.user.id == userId) ||
@@ -626,20 +627,20 @@ export default function OrderDetailsPage() {
                       order.status === "timed_out" ||
                       order.status === "disputed") &&
                     order.user.id == userId)) && (
-                  <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
-                    <Button
-                      className="flex-1"
-                      onClick={handlePaymentReceived}
-                      disabled={isConfirmLoading}
-                    >
-                      {isConfirmLoading ? (
-                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                      ) : (
-                        t("orderDetails.iveReceivedPayment")
-                      )}
-                    </Button>
-                  </div>
-                )}
+                    <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                      <Button
+                        className="flex-1"
+                        onClick={handlePaymentReceived}
+                        disabled={isConfirmLoading}
+                      >
+                        {isConfirmLoading ? (
+                          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                        ) : (
+                          t("orderDetails.iveReceivedPayment")
+                        )}
+                      </Button>
+                    </div>
+                  )}
                 {order.status === "completed" && order.is_reviewable && !order.disputed_at && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
@@ -690,20 +691,20 @@ export default function OrderDetailsPage() {
                 )}
               </div>
               <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
-                
-                  <OrderChat
-                    orderId={orderId}
-                    counterpartyName={counterpartyNickname || "User"}
-                    counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-                    isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
-                    counterpartyOnlineStatus={
-                      order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
-                    }
-                    counterpartyLastOnlineAt={
-                      order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
-                    }
-                  />
-                
+
+                <OrderChat
+                  orderId={orderId}
+                  counterpartyName={counterpartyNickname || "User"}
+                  counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                  isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+                  counterpartyOnlineStatus={
+                    order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+                  }
+                  counterpartyLastOnlineAt={
+                    order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
+                  }
+                />
+
               </div>
             </div>
           </div>
@@ -743,6 +744,8 @@ export default function OrderDetailsPage() {
         }}
         orderId={orderId}
         isLoading={isConfirmLoading}
+        otpRequested={otpRequested}
+        setOtpRequested={setOtpRequested}
       />
     </div>
   )
