@@ -15,6 +15,8 @@ interface PaymentReceivedConfirmationSidebarProps {
   onConfirm: () => void
   orderId: string
   isLoading?: boolean
+  otpRequested: boolean
+  setOtpRequested: (value: boolean) => void
 }
 
 export const PaymentReceivedConfirmationSidebar = ({
@@ -23,6 +25,8 @@ export const PaymentReceivedConfirmationSidebar = ({
   onConfirm,
   orderId,
   isLoading = false,
+  otpRequested,
+  setOtpRequested,
 }: PaymentReceivedConfirmationSidebarProps) => {
   const { t } = useTranslations()
   const [otpValue, setOtpValue] = useState("")
@@ -30,7 +34,6 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
-  const [otpRequested, setOtpRequested] = useState(false)
   const [hasActiveOtp, setHasActiveOtp] = useState(false)
   const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)

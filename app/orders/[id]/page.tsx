@@ -62,6 +62,7 @@ export default function OrderDetailsPage() {
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(true)
   const [orderVerificationEnabled, setOrderVerificationEnabled] = useState<boolean>(true)
+  const [otpRequested, setOtpRequested] = useState(false)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
@@ -743,6 +744,8 @@ export default function OrderDetailsPage() {
         }}
         orderId={orderId}
         isLoading={isConfirmLoading}
+        otpRequested={otpRequested}
+        setOtpRequested={setOtpRequested}
       />
     </div>
   )
