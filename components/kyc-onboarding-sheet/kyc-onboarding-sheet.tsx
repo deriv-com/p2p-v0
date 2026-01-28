@@ -8,9 +8,10 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface KycOnboardingSheetProps {
   route?: "markets" | "profile" | "wallets" | "ads"
+  onClose?: () => void
 }
 
-function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
+function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const { t } = useTranslations()
   const { isWalletAccount } = useUserDataStore()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -109,16 +110,20 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     else window.location.href = getHomeUrl(isV1Signup, "poa")
   }
 
+  const allStepsVerifiedOrInReview = verificationSteps.every(
+    (step) => step.completed || step.inReview
+  )
+
   const handleCompleteVerification = () => {
+    if (allStepsVerifiedOrInReview) {
+      onClose?.()
+      return
+    }
     const firstIncompleteStep = verificationSteps.find((step) => !step.completed && step.inReview !== true)
     if (firstIncompleteStep?.link) {
       window.location.href = firstIncompleteStep.link
     }
   }
-
-  const allStepsVerifiedOrInReview = verificationSteps.every(
-    (step) => step.completed || step.inReview
-  )
 
   const getButtonLabel = () => {
     if (allStepsVerifiedOrInReview) {

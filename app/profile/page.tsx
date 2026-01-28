@@ -32,11 +32,14 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (showKycPopup) {
+      const closeDialog = () => {
+        setShowKycPopup(false)
+      }
       showAlert({
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="profile" />
+            <KycOnboardingSheet route="profile" onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,
