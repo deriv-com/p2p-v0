@@ -56,7 +56,6 @@ const PaymentSelectionContent = ({
           ? [...prev, methodId]
           : prev
 
-      setTempSelectedPaymentMethods(newSelection)
       return newSelection
     })
   }
