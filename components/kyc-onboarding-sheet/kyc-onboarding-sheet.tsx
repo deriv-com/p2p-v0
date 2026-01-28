@@ -8,9 +8,10 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface KycOnboardingSheetProps {
   route?: "markets" | "profile" | "wallets" | "ads"
+  onClose?: () => void
 }
 
-function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
+function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const { t } = useTranslations()
   const { isWalletAccount } = useUserDataStore()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -109,11 +110,51 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     else window.location.href = getHomeUrl(isV1Signup, "poa")
   }
 
+  const allStepsVerifiedOrInReview = verificationSteps.every(
+    (step) => step.completed || step.inReview
+  )
+
   const handleCompleteVerification = () => {
-    const firstIncompleteStep = verificationSteps.find((step) => !step.completed)
+    if (allStepsVerifiedOrInReview) {
+      onClose?.()
+      return
+    }
+    if (failedStep?.link) {
+      window.location.href = failedStep.link
+      return
+    }
+    const firstIncompleteStep = verificationSteps.find((step) => !step.completed && step.inReview !== true)
     if (firstIncompleteStep?.link) {
       window.location.href = firstIncompleteStep.link
     }
+  }
+
+  const getFailedPoiOrPoaStep = () => {
+    const completedOrInReviewSteps = verificationSteps.filter(
+      (step) => step.completed || step.inReview
+    )
+    const failedStep = verificationSteps.find((step) => step.rejected)
+
+    if (completedOrInReviewSteps.length === verificationSteps.length - 1 && failedStep) {
+      return failedStep
+    }
+    return null
+  }
+
+  const failedStep = getFailedPoiOrPoaStep()
+
+  const getButtonLabel = () => {
+    if (allStepsVerifiedOrInReview) {
+      return t("kyc.gotIt")
+    }
+    if (failedStep) {
+      if (failedStep.id === "poi") {
+        return t("kyc.checkProofOfIdentity")
+      } else if (failedStep.id === "poa") {
+        return t("kyc.checkProofOfAddress")
+      }
+    }
+    return t("profile.gettingStarted")
   }
 
   if (!onboardingStatus) {
@@ -178,7 +219,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       </div>
       {hasExpiredSteps ? (
         <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
-        <Button className="w-full mt-6" onClick={handleCompleteVerification}>{t("profile.gettingStarted")}</Button>)
+        <Button className="w-full mt-6" onClick={handleCompleteVerification}>{getButtonLabel()}</Button>)
       }
     </div>
   )

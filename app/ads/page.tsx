@@ -44,7 +44,7 @@ export default function AdsPage() {
     title: "Error",
     message: "",
   })
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
 
@@ -63,15 +63,15 @@ export default function AdsPage() {
     if (showKycPopup) {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
-      
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet route="ads" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,

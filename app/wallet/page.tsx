@@ -24,7 +24,7 @@ interface Balance {
 export default function WalletPage() {
   const router = useRouter()
   const { t } = useTranslations()
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -90,7 +90,7 @@ export default function WalletPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="wallets" />
+            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,

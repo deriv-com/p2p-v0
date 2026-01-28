@@ -83,7 +83,7 @@ export default function BuySellPage() {
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
@@ -277,7 +277,7 @@ export default function BuySellPage() {
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -302,7 +302,7 @@ export default function BuySellPage() {
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -391,7 +391,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,

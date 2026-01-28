@@ -14,7 +14,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const { showWarningDialog, showAlert } = useAlertDialog()
+  const { hideAlert, showWarningDialog, showAlert } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
@@ -36,7 +36,7 @@ export default function ProfilePage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="profile" />
+            <KycOnboardingSheet route="profile" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,

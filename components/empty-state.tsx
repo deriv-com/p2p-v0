@@ -35,7 +35,7 @@ export default function EmptyState({
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const { t } = useTranslations()
 
   const createAd = () => {
@@ -52,7 +52,7 @@ export default function EmptyState({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route={route || "ads"} />
+            <KycOnboardingSheet route={route || "ads"} onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,

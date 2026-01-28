@@ -214,15 +214,15 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
       const title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
-      
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet route="ads" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
