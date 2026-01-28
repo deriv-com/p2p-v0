@@ -53,6 +53,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
+      status: isProfileCompleted ? "approved" : "pending",
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
@@ -60,6 +61,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       title: t("kyc.proofOfIdentity"),
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
+      status: onboardingStatus?.kyc?.poi_status || "pending",
       expired: isPoiExpired,
       link: getHomeUrl(isV1Signup, "poi", isWalletAccount, fromParam),
     },
@@ -68,6 +70,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
+      status: onboardingStatus?.kyc?.poa_status || "pending",
       expired: isPoaExpired,
       link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam),
     },
@@ -76,6 +79,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
+      status: isPhoneCompleted ? "approved" : "pending",
       link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
     },
   ]
@@ -88,6 +92,17 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
         return false
       })
     : allVerificationSteps
+
+  // Find the first incomplete step that is not in review
+  const getFirstIncompleteStep = () => {
+    return allVerificationSteps.find((step) => {
+      if (step.completed) return false
+      if (step.status === "in_review") return false
+      return true
+    })
+  }
+
+  const firstIncompleteStep = getFirstIncompleteStep()
 
   const getDescription = () => {
     if(hasExpiredSteps){
