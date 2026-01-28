@@ -39,7 +39,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
-    if (isOpen && !otpRequested) {
+    if (isOpen && !otpRequested && resendTimer <= 0) {
       handleRequestOtp()
       setOtpValue("")
       setError(null)
@@ -166,12 +166,12 @@ export const PaymentReceivedConfirmationSidebar = ({
             <div className="space-y-4">
               <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading || !!warning}>
                 <InputOTPGroup className="gap-2">
-                  <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
-                  <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
-                  <InputOTPSlot index={2} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
-                  <InputOTPSlot index={3} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
-                  <InputOTPSlot index={4} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
-                  <InputOTPSlot index={5} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={2} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={3} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={4} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={5} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
                 </InputOTPGroup>
               </InputOTP>
 
