@@ -616,8 +616,8 @@ export default function BuySellPage() {
               <div className="text-center py-8">{error}</div>
             ) : adverts.length === 0 ? (
               <EmptyState
-                title={t("market.noAdsTitle")}
-                description={t("market.noAdsDescription")}
+                title={t("market.noAdsTitle", { currency: currency })}
+                description={t("market.noAdsDescription", { currency: currency })}
                 redirectToAds={true}
                 route="markets"
               />
