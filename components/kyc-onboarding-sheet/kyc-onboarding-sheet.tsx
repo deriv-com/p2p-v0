@@ -119,15 +119,40 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       onClose?.()
       return
     }
+    if (failedStep?.link) {
+      window.location.href = failedStep.link
+      return
+    }
     const firstIncompleteStep = verificationSteps.find((step) => !step.completed && step.inReview !== true)
     if (firstIncompleteStep?.link) {
       window.location.href = firstIncompleteStep.link
     }
   }
 
+  const getFailedPoiOrPoaStep = () => {
+    const completedOrInReviewSteps = verificationSteps.filter(
+      (step) => step.completed || step.inReview
+    )
+    const failedStep = verificationSteps.find((step) => step.rejected)
+
+    if (completedOrInReviewSteps.length === verificationSteps.length - 1 && failedStep) {
+      return failedStep
+    }
+    return null
+  }
+
+  const failedStep = getFailedPoiOrPoaStep()
+
   const getButtonLabel = () => {
     if (allStepsVerifiedOrInReview) {
       return t("kyc.gotIt")
+    }
+    if (failedStep) {
+      if (failedStep.id === "poi") {
+        return t("kyc.checkProofOfIdentity")
+      } else if (failedStep.id === "poa") {
+        return t("kyc.checkProofOfAddress")
+      }
     }
     return t("profile.gettingStarted")
   }
