@@ -39,7 +39,6 @@ interface PaymentMethod {
 const PaymentSelectionContent = ({
   userPaymentMethods,
   tempSelectedPaymentMethods,
-  setTempSelectedPaymentMethods,
   hideAlert,
   setSelectedPaymentMethods,
   handleAddPaymentMethodClick,
@@ -55,7 +54,6 @@ const PaymentSelectionContent = ({
           ? [...prev, methodId]
           : prev
 
-      setTempSelectedPaymentMethods(newSelection)
       return newSelection
     })
   }
@@ -237,13 +235,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         <PaymentSelectionContent
           userPaymentMethods={userPaymentMethods}
           tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
         />
       ),
-      onClose: () => setSelectedPaymentMethods(tempSelectedPaymentMethods),
     })
   }
 
