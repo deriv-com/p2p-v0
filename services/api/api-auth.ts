@@ -223,7 +223,7 @@ export async function getSession(): Promise<boolean> {
     const emailVerified = verifiableAddresses.some(
       (addr: { via: string; verified: boolean }) => addr.via === "email" && addr.verified == true
     )
-    
+
     useUserDataStore.getState().setOryEmailVerified(emailVerified)
 
     return response.status === 200
