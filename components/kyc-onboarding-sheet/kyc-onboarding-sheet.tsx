@@ -110,7 +110,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
   }
 
   const handleCompleteVerification = () => {
-    const firstIncompleteStep = verificationSteps.find((step) => !step.completed)
+    const firstIncompleteStep = verificationSteps.find((step) => !step.completed && step.inReview !== true)
     if (firstIncompleteStep?.link) {
       window.location.href = firstIncompleteStep.link
     }
