@@ -169,7 +169,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
         {verificationSteps.map((step, index) => (
           <div key={step.id}>
             <div
-              className={cn("flex items-center gap-3", !step.completed && "hover:cursor-pointer")}
+              className={cn("flex items-center gap-3")}
             >
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                 <Image
