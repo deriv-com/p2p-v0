@@ -178,7 +178,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               )}
             </div>
 
-            {otpRequested && (
+            {otpRequested && !warning && (
               <div className="space-y-2">
                 <p className="text-sm text-gray-600">{t("orders.didntReceiveCode")}</p>
                 {resendTimer > 0 ? (

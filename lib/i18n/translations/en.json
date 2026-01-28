@@ -554,7 +554,7 @@
     "confirmPaymentReceived": "Confirm payment received",
     "otpSentTo": "Enter the 6-digit code sent to {email}. This step verifies your identity before releasing payment to the other party.",
     "incorrectCode": "Incorrect code. You have {attempts} attempt{plural} left.",
-    "maxAttemptsReached": "Max attempts reached.",
+    "maxAttemptsReached": "Max attempts reached. Try again in 10 minutes.",
     "tooManyAttempts": "Too many failed attempts",
     "tooManyAttemptsDescription": "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
     "gotIt": "Got it",
