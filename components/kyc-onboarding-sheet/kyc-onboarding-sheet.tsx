@@ -114,6 +114,20 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
     (step) => step.completed || step.inReview
   )
 
+  const getFailedPoiOrPoaStep = () => {
+    const completedOrInReviewSteps = verificationSteps.filter(
+      (step) => step.completed || step.inReview
+    )
+    const failedStep = verificationSteps.find((step) => step.rejected)
+
+    if (completedOrInReviewSteps.length === verificationSteps.length - 1 && failedStep) {
+      return failedStep
+    }
+    return null
+  }
+
+  const failedStep = getFailedPoiOrPoaStep()
+
   const handleCompleteVerification = () => {
     if (allStepsVerifiedOrInReview) {
       onClose?.()
@@ -128,20 +142,6 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       window.location.href = firstIncompleteStep.link
     }
   }
-
-  const getFailedPoiOrPoaStep = () => {
-    const completedOrInReviewSteps = verificationSteps.filter(
-      (step) => step.completed || step.inReview
-    )
-    const failedStep = verificationSteps.find((step) => step.rejected)
-
-    if (completedOrInReviewSteps.length === verificationSteps.length - 1 && failedStep) {
-      return failedStep
-    }
-    return null
-  }
-
-  const failedStep = getFailedPoiOrPoaStep()
 
   const getButtonLabel = () => {
     if (allStepsVerifiedOrInReview) {
