@@ -65,7 +65,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       if (result.errors && result.errors.length > 0) {
         const error = result.errors[0]
 
-        if (error.code === "InvalidOrExpiredVerificationCode") {
+        if (error.code === "InvalidOrExpiredVerificationCode" || error.code === "OrderVerificationCodeInvalid") {
           const attemptsLeft = error.detail?.attempts_left || 0
           setError(
             t("orders.incorrectCode", {
@@ -73,7 +73,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               plural: attemptsLeft !== 1 ? "s" : "",
             }),
           )
-        } else if (error.code === "OrderCompleteVerificationTempLock") {
+        } else if (error.code === "OrderCompleteVerificationTempLock" || error.code === "OrderVerificationTempLock") {
           setWarning(t("orders.maxAttemptsReached"))
         } else {
           setError(error.message || "An error occurred. Please try again.")
@@ -94,7 +94,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       const result = await OrdersAPI.requestOrderCompletionOtp(orderId)
       if (result.errors && result.errors.length > 0) {
         const error = result.errors[0]
-        if (error.code === "OrderCompleteVerificationTempLock") {
+        if (error.code === "OrderVerificationTempLock") {
           setOtpRequested(false)
           showAlert({
             title: t("orders.tooManyAttempts"),
@@ -147,10 +147,10 @@ export const PaymentReceivedConfirmationSidebar = ({
 
           <div className="flex-1 p-6 space-y-6">
             <div>
-              <SheetTitle className="text-2xl font-bold mb-4 text-slate-1200">
+              <SheetTitle className="text-2xl font-bold mb-2 text-slate-1200">
                 {t("orders.confirmPaymentReceived")}
               </SheetTitle>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-grayscale-600">
                 {t("orders.otpSentTo", { email: userData?.email || "your email" })}
               </p>
             </div>
@@ -158,17 +158,17 @@ export const PaymentReceivedConfirmationSidebar = ({
             <div className="space-y-4">
               <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading}>
                 <InputOTPGroup className="gap-2">
-                  <InputOTPSlot index={0} className="w-12 h-12 text-lg bg-transparent" />
-                  <InputOTPSlot index={1} className="w-12 h-12 text-lg bg-transparent" />
-                  <InputOTPSlot index={2} className="w-12 h-12 text-lg bg-transparent" />
-                  <InputOTPSlot index={3} className="w-12 h-12 text-lg bg-transparent" />
-                  <InputOTPSlot index={4} className="w-12 h-12 text-lg bg-transparent" />
-                  <InputOTPSlot index={5} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={0} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
+                  <InputOTPSlot index={1} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
+                  <InputOTPSlot index={2} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
+                  <InputOTPSlot index={3} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
+                  <InputOTPSlot index={4} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
+                  <InputOTPSlot index={5} className="w-12 h-12 text-lg bg-transparent rounded-lg" />
                 </InputOTPGroup>
               </InputOTP>
 
-              {error && <p className="text-error text-sm">{error}</p>}
-              {warning && <p className="text-gray-600 text-sm">{warning}</p>}
+              {error && <p className="text-error text-xs mx-4">{error}</p>}
+              {warning && <p className="text-grayscale-600 text-sm">{warning}</p>}
 
               {isVerifying && (
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
