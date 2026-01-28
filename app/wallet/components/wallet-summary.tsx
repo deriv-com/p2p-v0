@@ -218,7 +218,7 @@ export default function WalletSummary({
               />) :
                 (<div className="flex-shrink-0 relative w-16 h-16">
                   <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
-                  <div class="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
+                  <div className="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
                     <Image
                       src={currencyLogo}
                       alt={`${externalSelectedCurrency} Logo`}
