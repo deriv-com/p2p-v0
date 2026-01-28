@@ -157,7 +157,7 @@ export const PaymentReceivedConfirmationSidebar = ({
             </div>
 
             <div className="space-y-4">
-              <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading}>
+              <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading || !!warning}>
                 <InputOTPGroup className="gap-2">
                   <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
                   <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
