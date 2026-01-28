@@ -16,6 +16,8 @@ interface PaymentReceivedConfirmationSidebarProps {
   onConfirm: () => void
   orderId: string
   isLoading?: boolean
+  otpRequested: boolean,
+  setOtpRequested: (value: boolean) => void
 }
 
 export const PaymentReceivedConfirmationSidebar = ({
@@ -24,6 +26,8 @@ export const PaymentReceivedConfirmationSidebar = ({
   onConfirm,
   orderId,
   isLoading = false,
+  otpRequested,
+  setOtpRequested,
 }: PaymentReceivedConfirmationSidebarProps) => {
   const { t } = useTranslations()
   const [otpValue, setOtpValue] = useState("")
@@ -31,12 +35,11 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
-  const [otpRequested, setOtpRequested] = useState(false)
   const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !otpRequested) {
       handleRequestOtp()
       setOtpValue("")
       setError(null)
@@ -50,6 +53,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       setResendTimer((prev) => {
         if (prev <= 1) {
           clearInterval(timer)
+          setOtpRequested(false)
           return 0
         }
         return prev - 1
@@ -105,6 +109,9 @@ export const PaymentReceivedConfirmationSidebar = ({
             onConfirm: () => {
               onClose()
             },
+            onClose: () => {
+              onClose()
+            }
           })
         } else {
           setOtpRequested(false)
@@ -159,12 +166,12 @@ export const PaymentReceivedConfirmationSidebar = ({
             <div className="space-y-4">
               <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading || !!warning}>
                 <InputOTPGroup className="gap-2">
-                  <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
-                  <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
-                  <InputOTPSlot index={2} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
-                  <InputOTPSlot index={3} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
-                  <InputOTPSlot index={4} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
-                  <InputOTPSlot index={5} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg", warning && "border-error")} />
+                  <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={2} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={3} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={4} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
+                  <InputOTPSlot index={5} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:border-black", error && "border-error")} />
                 </InputOTPGroup>
               </InputOTP>
 
@@ -181,14 +188,14 @@ export const PaymentReceivedConfirmationSidebar = ({
 
             {otpRequested && !warning && (
               <div className="space-y-2">
-                <p className="text-sm text-gray-600">{t("orders.didntReceiveCode")}</p>
+                <p className="text-sm text-grayscale-600">{t("orders.didntReceiveCode")}</p>
                 {resendTimer > 0 ? (
-                  <p className="text-sm text-gray-600">{t("orders.resendCodeTimer", { seconds: resendTimer })}</p>
+                  <p className="text-sm text-grayscale-600">{t("orders.resendCodeTimer", { seconds: resendTimer })}</p>
                 ) : (
                   <Button
                     variant="ghost"
                     onClick={handleResendCode}
-                    className="p-0 hover:bg-transparent underline font-normal text-gray-600"
+                    className="p-0 hover:bg-transparent underline font-normal text-grayscale-600"
                     size="sm"
                   >
                     {t("orders.resendCode")}
