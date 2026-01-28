@@ -61,7 +61,7 @@ export default function AdsPage() {
 
   useEffect(() => {
     if (showKycPopup) {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")

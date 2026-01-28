@@ -212,7 +212,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleOpenDrawer = (ad: Ad) => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")

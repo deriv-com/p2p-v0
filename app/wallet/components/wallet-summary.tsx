@@ -90,7 +90,7 @@ export default function WalletSummary({
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -114,7 +114,7 @@ export default function WalletSummary({
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -140,7 +140,7 @@ export default function WalletSummary({
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")

@@ -267,7 +267,7 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -292,7 +292,7 @@ export default function BuySellPage() {
       setIsOrderSidebarOpen(true)
       setError(null)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
       if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
       else if (isPoiExpired) title = t("profile.identityVerificationExpired")
@@ -692,7 +692,7 @@ export default function BuySellPage() {
                             )}
                             {ad.user.order_count_lifetime > 0 && (
                               <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
                                 <span>
                                   {ad.user.order_count_lifetime} {t("market.orders")}
                                 </span>
