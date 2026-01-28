@@ -116,6 +116,17 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
     }
   }
 
+  const allStepsVerifiedOrInReview = verificationSteps.every(
+    (step) => step.completed || step.inReview
+  )
+
+  const getButtonLabel = () => {
+    if (allStepsVerifiedOrInReview) {
+      return t("kyc.gotIt")
+    }
+    return t("profile.gettingStarted")
+  }
+
   if (!onboardingStatus) {
     return null
   }
@@ -178,7 +189,7 @@ function KycOnboardingSheet({ route }: KycOnboardingSheetProps) {
       </div>
       {hasExpiredSteps ? (
         <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
-        <Button className="w-full mt-6" onClick={handleCompleteVerification}>{t("profile.gettingStarted")}</Button>)
+        <Button className="w-full mt-6" onClick={handleCompleteVerification}>{getButtonLabel()}</Button>)
       }
     </div>
   )
