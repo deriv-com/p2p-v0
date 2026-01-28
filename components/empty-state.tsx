@@ -48,11 +48,13 @@ export default function EmptyState({
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
       else if(isPoaExpired) title = t("profile.addressVerificationExpired")
 
+      const closeDialog = () => {}
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route={route || "ads"} />
+            <KycOnboardingSheet route={route || "ads"} onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,

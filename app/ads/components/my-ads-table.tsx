@@ -218,11 +218,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
       else if(isPoaExpired) title = t("profile.addressVerificationExpired")
       
+      const closeDialog = () => {}
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet route="ads" onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,

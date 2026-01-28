@@ -67,11 +67,15 @@ export default function AdsPage() {
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
       else if(isPoaExpired) title = t("profile.addressVerificationExpired")
       
+      const closeDialog = () => {
+        setShowKycPopup(false)
+      }
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet route="ads" onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,

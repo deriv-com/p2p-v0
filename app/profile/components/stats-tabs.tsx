@@ -109,11 +109,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       else if(isPoiExpired) title = t("profile.identityVerificationExpired")
       else if(isPoaExpired) title = t("profile.addressVerificationExpired")
 
+      const closeDialog = () => {}
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="profile" />
+            <KycOnboardingSheet route="profile" onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,

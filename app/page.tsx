@@ -387,11 +387,15 @@ export default function BuySellPage() {
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
     if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
+      const closeDialog = () => {
+        setShowKycPopup(false)
+      }
+
       showAlert({
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,

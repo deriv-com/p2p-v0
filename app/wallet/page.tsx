@@ -86,11 +86,15 @@ export default function WalletPage() {
 
   useEffect(() => {
     if (showKycPopup) {
+      const closeDialog = () => {
+        setShowKycPopup(false)
+      }
+
       showAlert({
         title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="wallets" />
+            <KycOnboardingSheet route="wallets" onClose={closeDialog} />
           </div>
         ),
         confirmText: undefined,
