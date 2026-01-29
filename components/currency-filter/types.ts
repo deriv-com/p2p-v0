@@ -6,6 +6,7 @@ export interface Currency {
 }
 
 export interface CurrencyFilterProps {
+  contentClassName?: string
   currencies: Currency[]
   isTitleVisible?: boolean
   selectedCurrency: string
