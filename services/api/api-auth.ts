@@ -260,8 +260,18 @@ export async function logout(): Promise<void> {
 /**
  * Fetch user data and store user_id in localStorage
  */
+let lastFetchTime = 0
+const FETCH_DEBOUNCE_MS = 5000 // 5 second debounce
+
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
+    // Skip refetch if called within debounce window
+    const now = Date.now()
+    if (now - lastFetchTime < FETCH_DEBOUNCE_MS) {
+      return
+    }
+    lastFetchTime = now
+
     await getClientProfile()
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
