@@ -37,7 +37,7 @@ jobs:
               run: pnpm install
 
             - name: Build
-              run: pnpm run build
+              run: pnpm run build --webpack
               env:
                 NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
                 NEXT_PUBLIC_CORE_URL: ${{ vars.NEXT_PUBLIC_CORE_URL }}
