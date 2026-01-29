@@ -46,13 +46,13 @@ export default function ProfilePage() {
       is_online: user.is_online ?? true,
       rating:
         user.statistics_lifetime?.rating_average !== null
-          ? `${user.statistics_lifetime.rating_average}/5`
+          ? `${user.statistics_lifetime?.rating_average}/5`
           : t("profile.notRatedYet"),
       recommendation:
         user.statistics_lifetime?.recommend_average !== null
           ? t("profile.recommendedBy", {
-            count: user.statistics_lifetime.recommend_count,
-            plural: user.statistics_lifetime.recommend_count === 1 ? "" : "s",
+            count: user.statistics_lifetime?.recommend_count,
+            plural: user.statistics_lifetime?.recommend_count === 1 ? "" : "s",
           })
           : t("profile.notRecommendedYet"),
       completionRate: user.completion_average_30day ? `${user.completion_average_30day}%` : "-",
@@ -88,7 +88,7 @@ export default function ProfilePage() {
         ),
         confirmText: undefined,
         cancelText: undefined,
-        onConfirm: () => {},
+        onConfirm: () => { },
         onCancel: () => hideAlert(),
       })
     }
