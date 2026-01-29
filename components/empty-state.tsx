@@ -42,7 +42,8 @@ export default function EmptyState({
 
   const createAd = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      router.push(`/ads/create?operation=${adType}`)
+      const operation = adType === "buy" ? "sell" : "buy"
+      router.push(`/ads/create?operation=${operation}`)
     } else {
       let title = t("profile.gettingStarted")
 
