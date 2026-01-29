@@ -619,6 +619,7 @@ export default function BuySellPage() {
                 title={t("market.noAdsTitle", { currency: currency })}
                 description={t("market.noAdsDescription", { currency: currency })}
                 redirectToAds={true}
+                adType={activeTab}
                 route="markets"
               />
             ) : (
