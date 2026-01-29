@@ -265,11 +265,13 @@ const FETCH_DEBOUNCE_MS = 5000 // 5 second debounce
 
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
-    // Skip refetch if called within debounce window
+    const { userData, userId: id } = useUserDataStore.getState()
     const now = Date.now()
-    if (now - lastFetchTime < FETCH_DEBOUNCE_MS) {
+
+    if (userData && id && (now - lastFetchTime < FETCH_DEBOUNCE_MS)) {
       return
     }
+
     lastFetchTime = now
 
     await getClientProfile()
@@ -369,7 +371,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
           temp_ban_until: tempBanUntil,
           balances: [balances],
           status: status,
-          // Store complete user data for profile page
           ...result.data,
         })
       }
