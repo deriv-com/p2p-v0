@@ -436,7 +436,7 @@ export async function deletePaymentMethod(
   }
 }
 
-export async function getFavouriteUsers(): Promise<[]> {
+export async function getFavouriteUsers(signal?: AbortSignal): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
@@ -445,6 +445,7 @@ export async function getFavouriteUsers(): Promise<[]> {
     const response = await fetch(`${API.baseUrl}/user-favourites`, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {
@@ -458,7 +459,7 @@ export async function getFavouriteUsers(): Promise<[]> {
   }
 }
 
-export async function getFollowers(): Promise<[]> {
+export async function getFollowers(signal?: AbortSignal): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
@@ -467,6 +468,7 @@ export async function getFollowers(): Promise<[]> {
     const response = await fetch(`${API.baseUrl}/user-favourited-by`, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {
@@ -480,7 +482,7 @@ export async function getFollowers(): Promise<[]> {
   }
 }
 
-export async function getBlockedUsers(): Promise<[]> {
+export async function getBlockedUsers(signal?: AbortSignal): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
@@ -489,6 +491,7 @@ export async function getBlockedUsers(): Promise<[]> {
     const response = await fetch(`${API.baseUrl}/user-blocks`, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {

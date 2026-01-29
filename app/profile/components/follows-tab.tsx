@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useEffect, useMemo, useRef } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFavouriteUsers, getFollowers } from "@/services/api/api-profile"
@@ -29,34 +29,67 @@ export default function FollowsTab() {
   const [activeTab, setActiveTab] = useState("follows")
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}`)
   }
 
   const fetchFollowing = useCallback(async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     try {
       setIsLoadingFollowing(true)
-      const data = await getFavouriteUsers()
+      const data = await getFavouriteUsers(abortController.signal)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
       setFollowing(data)
     } catch (err) {
-      console.error("Failed to fetch favourite users:", err)
-      setFollowing([])
+      if (!abortController.signal.aborted) {
+        console.error("Failed to fetch favourite users:", err)
+        setFollowing([])
+      }
     } finally {
-      setIsLoadingFollowing(false)
+      if (!abortController.signal.aborted) {
+        setIsLoadingFollowing(false)
+      }
     }
   }, [])
 
   const fetchFollowers = useCallback(async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     try {
       setIsLoadingFollowers(true)
-      const data = await getFollowers()
+      const data = await getFollowers(abortController.signal)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
       setFollowers(data)
     } catch (err) {
-      console.error("Failed to fetch followers:", err)
-      setFollowers([])
+      if (!abortController.signal.aborted) {
+        console.error("Failed to fetch followers:", err)
+        setFollowers([])
+      }
     } finally {
-      setIsLoadingFollowers(false)
+      if (!abortController.signal.aborted) {
+        setIsLoadingFollowers(false)
+      }
     }
   }, [])
 

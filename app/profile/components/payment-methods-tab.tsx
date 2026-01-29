@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
@@ -39,6 +39,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
   const { showDeleteDialog, showAlert } = useAlertDialog()
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -47,6 +48,13 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
   const [isEditing, setIsEditing] = useState(false)
 
   const fetchPaymentMethods = useCallback(async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     try {
       setIsLoading(true)
       setError(null)
@@ -57,7 +65,12 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         headers,
         credentials: "include",
         cache: "no-store",
+        signal: abortController.signal,
       })
+
+      if (abortController.signal.aborted) {
+        return
+      }
 
       if (!response.ok) {
         if (response.status == 401) {
@@ -110,12 +123,18 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         }
       })
 
-      setPaymentMethods(transformedMethods)
-      onPaymentMethodsCountChange?.(transformedMethods.length)
+      if (!abortController.signal.aborted) {
+        setPaymentMethods(transformedMethods)
+        onPaymentMethodsCountChange?.(transformedMethods.length)
+      }
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to load payment methods")
+      if (!abortController.signal.aborted) {
+        setError(error instanceof Error ? error.message : "Failed to load payment methods")
+      }
     } finally {
-      setIsLoading(false)
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
     }
   }, [onPaymentMethodsCountChange])
 

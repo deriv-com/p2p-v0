@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
@@ -23,6 +23,7 @@ export default function ProfilePage() {
   const [showKycPopup, setShowKycPopup] = useState(false)
   const searchParams = new URLSearchParams(window.location.search)
   const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     if (shouldShowKyc) {
@@ -50,6 +51,13 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+
+      const abortController = new AbortController()
+      abortControllerRef.current = abortController
+
       try {
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`
         const headers = {
@@ -59,7 +67,12 @@ export default function ProfilePage() {
         const response = await fetch(url, {
           credentials: "include",
           headers,
+          signal: abortController.signal,
         })
+
+        if (abortController.signal.aborted) {
+          return
+        }
 
         const responseData = await response.json()
         setIsLoading(false)
@@ -133,23 +146,31 @@ export default function ProfilePage() {
             },
           }))
         } else {
-          showWarningDialog({
-            title: t("common.error"),
-            description: t("profile.noUserData"),
-          })
+          if (!abortController.signal.aborted) {
+            showWarningDialog({
+              title: t("common.error"),
+              description: t("profile.noUserData"),
+            })
+          }
         }
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
-        showWarningDialog({
-          title: t("common.error"),
-          description: errorMessage,
-        })
-        console.error("Error fetching user data:", error)
+        if (!abortController.signal.aborted) {
+          const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
+          showWarningDialog({
+            title: t("common.error"),
+            description: errorMessage,
+          })
+          console.error("Error fetching user data:", error)
+        }
+      } finally {
+        if (!abortController.signal.aborted) {
+          setIsLoading(false)
+        }
       }
     }
 
     fetchUserData()
-  }, [t])
+  }, [t, showWarningDialog])
 
   if (isDisabled) {
     return (

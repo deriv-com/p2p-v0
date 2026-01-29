@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useEffect, useMemo, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -26,17 +26,34 @@ export default function BlockedTab() {
   const [isLoading, setIsLoading] = useState(true)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   const fetchBlockedUsers = useCallback(async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     try {
       setIsLoading(true)
-      const data = await getBlockedUsers()
+      const data = await getBlockedUsers(abortController.signal)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
       setBlockedUsers(data)
     } catch (err) {
-      console.error("Failed to fetch blocked users:", err)
-      setBlockedUsers([])
+      if (!abortController.signal.aborted) {
+        console.error("Failed to fetch blocked users:", err)
+        setBlockedUsers([])
+      }
     } finally {
-      setIsLoading(false)
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
     }
   }, [])
 
