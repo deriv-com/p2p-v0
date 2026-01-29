@@ -21,7 +21,7 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({
-  adType = "buy",
+  adType = "sell",
   icon,
   title = "No ads available",
   description,
