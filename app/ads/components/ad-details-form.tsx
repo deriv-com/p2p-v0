@@ -462,7 +462,7 @@ export default function AdDetailsForm({
                     </div>
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="w-[var(--radix-select-trigger-width)]">
                   {currenciesProp.map((currency) => (
                     <SelectItem key={currency.code} value={currency.code}>
                       <div className="flex items-center gap-2">
