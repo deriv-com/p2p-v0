@@ -35,12 +35,11 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
-  const [requestInProgress, setRequestInProgress] = useState(false)
   const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
-    if (isOpen && !otpRequested && resendTimer <= 0 && !requestInProgress) {
+    if (isOpen && !otpRequested && resendTimer <= 0) {
       handleRequestOtp()
       setOtpValue("")
       setError(null)
@@ -96,10 +95,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   }
 
   const handleRequestOtp = async () => {
-    if (requestInProgress) return
-    
     try {
-      setRequestInProgress(true)
       const result = await OrdersAPI.requestOrderCompletionOtp(orderId)
       if (result.errors && result.errors.length > 0) {
         const error = result.errors[0]
@@ -119,7 +115,7 @@ export const PaymentReceivedConfirmationSidebar = ({
           })
         } else if (error.code === "OrderVerificationRateLimit") {
           setOtpRequested(true)
-          const time = error.detail.next_request_at || 60
+          const time = Math.floor(error.detail.next_request_at / 1000)
           setResendTimer(time)
           setError(error.message || "An error occurred. Please try again.")
         } else {
@@ -134,8 +130,6 @@ export const PaymentReceivedConfirmationSidebar = ({
     } catch (err: any) {
       setOtpRequested(false)
       setError("An error occurred. Please try again.")
-    } finally {
-      setRequestInProgress(false)
     }
   }
 
