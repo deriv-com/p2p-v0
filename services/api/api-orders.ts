@@ -64,7 +64,7 @@ export interface ChatMessage {
   isRead: boolean
 }
 
-export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
+export async function getOrders(filters?: OrderFilters, signal?: AbortSignal): Promise<Order[]> {
   try {
     const queryParams = new URLSearchParams()
 
@@ -86,6 +86,7 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
     const response = await fetch(url, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {

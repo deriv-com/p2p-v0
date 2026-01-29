@@ -58,7 +58,7 @@ export interface PaymentMethod {
 /**
  * Get all available advertisements
  */
-export async function getAdvertisements(params?: SearchParams): Promise<Advertisement[]> {
+export async function getAdvertisements(params?: SearchParams, signal?: AbortSignal): Promise<Advertisement[]> {
   try {
     const queryParams = new URLSearchParams()
     if (params) {
@@ -90,6 +90,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const response = await fetch(url, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {
@@ -122,7 +123,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
 /**
  * Get advertiser profile by ID
  */
-export async function getAdvertiserById(id: string | number): Promise<any> {
+export async function getAdvertiserById(id: string | number, signal?: AbortSignal): Promise<any> {
   try {
     // First try to get user data from the users endpoint
     const url = `${API.baseUrl}${API.endpoints.advertisers}/${id}`
@@ -130,6 +131,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     const response = await fetch(url, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {
@@ -137,7 +139,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
       console.groupEnd()
 
       // If the user endpoint fails, try to get user data from their ads
-      return await getAdvertiserFromAds(id)
+      return await getAdvertiserFromAds(id, signal)
     }
 
     const responseText = await response.text()
@@ -162,10 +164,10 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
 /**
  * Fallback function to get advertiser info from their ads
  */
-async function getAdvertiserFromAds(advertiserId: string | number): Promise<any> {
+async function getAdvertiserFromAds(advertiserId: string | number, signal?: AbortSignal): Promise<any> {
   try {
     // Get the advertiser's ads
-    const ads = await getAdvertiserAds(advertiserId)
+    const ads = await getAdvertiserAds(advertiserId, signal)
 
     // If we have ads, extract the user info from the first ad
     if (ads && ads.length > 0 && ads[0].user) {
@@ -239,7 +241,7 @@ function createMockAdvertiser(id: string | number): any {
 /**
  * Get advertiser ads by advertiser ID
  */
-export async function getAdvertiserAds(advertiserId: string | number): Promise<Advertisement[]> {
+export async function getAdvertiserAds(advertiserId: string | number, signal?: AbortSignal): Promise<Advertisement[]> {
   try {
     const queryParams = new URLSearchParams({
       user_id: advertiserId.toString(),
@@ -255,6 +257,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
     const response = await fetch(url, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {

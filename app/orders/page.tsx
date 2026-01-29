@@ -142,7 +142,7 @@ export default function OrdersPage() {
         }
       }
 
-      const orders = await OrdersAPI.getOrders(filters)
+      const orders = await OrdersAPI.getOrders(filters, abortController.signal)
 
       if (abortController.signal.aborted) {
         return

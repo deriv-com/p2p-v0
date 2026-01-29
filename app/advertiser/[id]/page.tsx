@@ -94,7 +94,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     setError(null)
 
     try {
-      const advertiserData = await BuySellAPI.getAdvertiserById(id)
+      const advertiserData = await BuySellAPI.getAdvertiserById(id, abortController.signal)
 
       if (abortController.signal.aborted) {
         return
@@ -104,7 +104,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setIsFollowing(advertiserData.data.is_favourite || false)
       setIsBlocked(advertiserData.data.is_blocked || false)
 
-      const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
+      const advertiserAds = await BuySellAPI.getAdvertiserAds(id, abortController.signal)
 
       if (abortController.signal.aborted) {
         return
