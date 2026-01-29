@@ -9,6 +9,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface EmptyStateProps {
+  adType?: "buy" | "sell"
   icon?: string
   title?: string
   description?: string
@@ -20,6 +21,7 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({
+  adType = "buy",
   icon,
   title = "No ads available",
   description,
@@ -40,7 +42,8 @@ export default function EmptyState({
 
   const createAd = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      router.push("/ads/create")
+      const operation = adType === "buy" ? "sell" : "buy"
+      router.push(`/ads/create?operation=${operation}`)
     } else {
       let title = t("profile.gettingStarted")
 

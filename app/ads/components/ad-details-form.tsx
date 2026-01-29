@@ -401,6 +401,7 @@ export default function AdDetailsForm({
                 {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
               </label>
               <CurrencyFilter
+                contentClassName="w-[278px]"
                 currencies={accountCurrencies}
                 isTitleVisible={isMobile}
                 selectedCurrency={buyCurrency}
@@ -443,6 +444,7 @@ export default function AdDetailsForm({
                 {type === "buy" ? "Paying with" : "Receive in"}
               </label>
               <CurrencyFilter
+                contentClassName="w-[278px]"
                 currencies={currenciesProp}
                 isTitleVisible={isMobile}
                 selectedCurrency={forCurrency}

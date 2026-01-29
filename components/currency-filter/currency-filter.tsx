@@ -15,6 +15,7 @@ import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function CurrencyFilter({
+  contentClassName,
   currencies,
   isTitleVisible = true,
   selectedCurrency,
@@ -170,7 +171,7 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-4 md:pl-6 md:pt-4 md:pr-0 md:pb-0" align="end" side="bottom" avoidCollisions={false}>
+      <PopoverContent className={cn("w-80 h-80 p-4 md:pl-6 md:pt-4 md:pr-0 md:pb-0", contentClassName)} align="end" side="bottom" avoidCollisions={false}>
         <CurrencyList />
       </PopoverContent>
     </Popover>
