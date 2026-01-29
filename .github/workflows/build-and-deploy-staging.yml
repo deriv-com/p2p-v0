@@ -37,32 +37,7 @@ jobs:
               run: pnpm install
 
             - name: Build
-              run: pnpm run build --webpack
-              env:
-                NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
-                NEXT_PUBLIC_CORE_URL: ${{ vars.NEXT_PUBLIC_CORE_URL }}
-                NEXT_PUBLIC_SOCKET_URL: ${{ vars.NEXT_PUBLIC_SOCKET_URL }}
-                NEXT_PUBLIC_CASHIER_URL: ${{ vars.NEXT_PUBLIC_CASHIER_URL }}
-                NEXT_PUBLIC_DATADOG_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_DATADOG_APPLICATION_ID }}
-                NEXT_PUBLIC_DATADOG_CLIENT_TOKEN: ${{ vars.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN }}
-                NEXT_PUBLIC_DATADOG_ENV: ${{ vars.NEXT_PUBLIC_DATADOG_ENV }}
-                NEXT_PUBLIC_DATADOG_SERVICE: ${{ vars.NEXT_PUBLIC_DATADOG_SERVICE }}
-                NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ vars.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
-                NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE: ${{ vars.NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE }}
-                NEXT_PUBLIC_DATADOG_VERSION: ${{ vars.NEXT_PUBLIC_DATADOG_VERSION }}
-                NEXT_PUBLIC_DATA_SOURCE: ${{ vars.NEXT_PUBLIC_DATA_SOURCE }}
-                NEXT_PUBLIC_BRANCH: ${{ vars.NEXT_PUBLIC_BRANCH }}
-                NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID }}
-                NEXT_PUBLIC_NOTIFICATION_URL: ${{ vars.NEXT_PUBLIC_NOTIFICATION_URL }}
-                NEXT_PUBLIC_IS_ORY_ENABLED: ${{ vars.NEXT_PUBLIC_IS_ORY_ENABLED }}
-                NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL }}
-                NEXT_PUBLIC_FLOATING_RATE_ENABLED: ${{ vars.NEXT_PUBLIC_FLOATING_RATE_ENABLED }}
-                NEXT_PUBLIC_INTERCOM_APP_ID: ${{ vars.NEXT_PUBLIC_INTERCOM_APP_ID }}
-                NEXT_PUBLIC_NODE_ENV: staging
-                NODE_ENV: staging
-
-            - name: Generate Worker output with next-on-pages
-              run: pnpm run postbuild
+              run: pnpm run build --webpack && pnpm run postbuild
               env:
                 NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
                 NEXT_PUBLIC_CORE_URL: ${{ vars.NEXT_PUBLIC_CORE_URL }}
