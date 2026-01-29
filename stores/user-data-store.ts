@@ -14,6 +14,30 @@ export interface UserData {
   is_online?: boolean
   balances?: Array<{ amount: string; currency: string }>
   status?: string
+  // Profile page fields
+  id?: string
+  registered_at?: string
+  country_code?: string
+  brand_client_id?: string
+  brand?: string
+  statistics_lifetime?: {
+    rating_average: number | null
+    recommend_average: number | null
+    recommend_count: number
+  }
+  completion_average_30day?: number
+  buy_time_average_30day?: number
+  daily_limits?: {
+    buy: number
+    sell: number
+  }
+  daily_limits_remaining?: {
+    buy: number
+    sell: number
+  }
+  trade_band?: string
+  total_account_value?: Array<{ amount: string; currency: string }>
+  [key: string]: any
 }
 
 export interface VerificationStatus {

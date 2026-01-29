@@ -359,6 +359,8 @@ export async function fetchUserIdAndStore(): Promise<void> {
           temp_ban_until: tempBanUntil,
           balances: [balances],
           status: status,
+          // Store complete user data for profile page
+          ...result.data,
         })
       }
     } else {
