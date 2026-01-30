@@ -501,9 +501,9 @@ export const currencyFlagMapper = {
   SLL: "/icons/flag-seirraleone.svg",
   TRY: "/icons/flag-turkey.svg",
   XCD: "/icons/flag-dominica.svg",
-  DZD: "/icons/flag-algeria.svg", 
-  LAK: "/icons/flag-laos.svg", 
-  MWK: "/icons/flag-malawi.svg", 
+  DZD: "/icons/flag-algeria.svg",
+  LAK: "/icons/flag-laos.svg",
+  MWK: "/icons/flag-malawi.svg",
   WST: "/icons/flag-samoa.svg"
 }
 
@@ -520,23 +520,23 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
 
   if (section === "poi") {
     if (isV1Signup) {
-      if(isWalletAccount) {
+      if (isWalletAccount) {
         url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfIdentityStatus" : "https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus"
       } else {
         url = isProduction ? "https://app.deriv.com/account/proof-of-identity" : "https://staging-app.deriv.com/account/proof-of-identity"
       }
     } else {
-      url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}`
+      url = `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "poa") {
     if (isV1Signup) {
-      if(isWalletAccount) {
+      if (isWalletAccount) {
         url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfAddress" : "https://staging-hub.deriv.com/Accounts/ProofOfAddress"
       } else {
         url = isProduction ? "https://app.deriv.com/account/proof-of-address" : "https://staging-app.deriv.com/account/proof-of-address"
       }
     } else {
-      url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}`
+      url = `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "home") {
     if (isV1Signup) {
@@ -545,7 +545,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
       url = `https://${baseUrl}/dashboard/home`
     }
   } else if (section === "homeProfile") {
-    if(isV1Signup) {
+    if (isV1Signup) {
       url = `https://${baseUrl}/account/personal-details`
     } else {
       url = `https://${baseUrl}/dashboard/profile`

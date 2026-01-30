@@ -62,7 +62,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.svg",
       completed: isPhoneCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "poi",
