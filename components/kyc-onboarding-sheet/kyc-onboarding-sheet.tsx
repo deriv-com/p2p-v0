@@ -55,7 +55,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.svg",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
+      link: onboardingStatus?.profile?.status === "complete" ? `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/terms-of-use?is_from_p2p=true&${fromParam}` : `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "phone",
