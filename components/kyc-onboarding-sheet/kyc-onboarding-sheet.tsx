@@ -5,13 +5,15 @@ import Image from "next/image"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { OnboardingComplete } from "@/components/onboarding-complete"
 
 interface KycOnboardingSheetProps {
   route?: "markets" | "profile" | "wallets" | "ads"
   onClose?: () => void
+  showCompletionScreen?: boolean
 }
 
-function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
+function KycOnboardingSheet({ route, onClose, showCompletionScreen = false }: KycOnboardingSheetProps) {
   const { t } = useTranslations()
   const { isWalletAccount } = useUserDataStore()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -29,6 +31,10 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const isPoiExpired = userId && !isPoiCompleted
   const isPoaExpired = userId && !isPoaCompleted
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
+
+  // Check if all verifications are complete
+  const allVerificationsComplete =
+    isProfileCompleted && isPhoneCompleted && isPoiCompleted && isPoaCompleted
 
   const getFromParam = () => {
     if (!route) return "from=p2p"
@@ -159,6 +165,11 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
 
   if (!onboardingStatus) {
     return null
+  }
+
+  // Show completion screen when all verifications are complete
+  if (allVerificationsComplete && showCompletionScreen) {
+    return <OnboardingComplete onClose={onClose} />
   }
 
   return (
