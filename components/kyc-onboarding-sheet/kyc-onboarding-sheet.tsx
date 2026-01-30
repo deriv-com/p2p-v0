@@ -19,7 +19,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const userData = useUserDataStore((state) => state.userData)
   const isV1Signup = userData?.signup === "v1"
 
-  const isProfileCompleted = onboardingStatus?.profile?.status === "complete" && onboardingStatus?.tnc?.accepted
+  const isProfileCompleted = onboardingStatus?.profile?.status === "complete" && onboardingStatus?.tnc?.accepted === true
   const isPoiCompleted = onboardingStatus?.kyc?.poi_status === "approved"
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
   const isPoiRejected = onboardingStatus?.kyc?.poi_status === "rejected"
