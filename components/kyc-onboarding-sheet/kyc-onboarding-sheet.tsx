@@ -115,7 +115,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   )
 
   const allStepsVerified = verificationSteps.every(
-    (step) => (step.id === "profile" && onboardingStatus?.profile?.status === "complete") || step.completed
+    (step) => step.id === "profile" ? onboardingStatus?.profile?.status === "complete" : step.completed
   )
 
   const getFailedPoiOrPoaStep = () => {
