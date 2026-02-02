@@ -23,30 +23,29 @@ export function IntercomProvider({ appId }: { appId: string }) {
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
-      // For authenticated users, try to fetch JWT token
-      if (userId && userData?.email) {
-        try {
-          const result = await getIntercomToken()
-          if (result?.token) {
-            // This endpoint returns an Intercom Identity Verification token (JWT).
-            // When Intercom "Messenger Security" is enabled, you must pass this as `intercom_user_jwt`,
-            // not `user_hash` (HMAC).
-            setIntercomJwt(result.token)
-            setIntercomUserId(result.id ?? userId)
-          } else {
-            setIntercomUserId(userId)
-            console.warn("Intercom token not received, continuing without JWT", {
-              intercom_user_id: userId,
-            })
-          }
-        } catch (error) {
-          console.error("Failed to fetch Intercom token:", error)
+      try {
+        const result = await getIntercomToken()
+        if (result?.token) {
+          // This endpoint returns an Intercom Identity Verification token (JWT).
+          // When Intercom "Messenger Security" is enabled, you must pass this as `intercom_user_jwt`,
+          // not `user_hash` (HMAC).
+          setIntercomJwt(result.token)
+          setIntercomUserId(result.id ?? userId)
+        } else if (userId) {
+          setIntercomUserId(userId)
+          console.warn("Intercom token not received, continuing without JWT", {
+            intercom_user_id: userId,
+          })
+        } else {
+          // For unregistered users, still initialize Intercom without JWT
+          // This allows Intercom to collect visitor data and support unregistered users
+          setIntercomUserId(null)
+        }
+      } catch (error) {
+        console.error("Failed to fetch Intercom token:", error)
+        if (userId) {
           setIntercomUserId(userId)
         }
-      } else {
-        // For unregistered users, still initialize Intercom without JWT
-        // This allows Intercom to collect visitor data and support unregistered users
-        setIntercomUserId(null)
       }
       setIsLoading(false)
     }

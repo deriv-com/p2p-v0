@@ -538,7 +538,7 @@ export default function OrderDetailsPage() {
                         </div>
                         {isMobile && (
                           <Button
-                            onClick={(e) => {
+                            onClick={() => {
                               setShowChat(true)
                               setIsChatVisible(true)
                             }}
