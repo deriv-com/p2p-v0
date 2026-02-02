@@ -55,7 +55,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.svg",
       completed: isProfileCompleted,
-      link: onboardingStatus?.profile?.status === "complete" ? `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/terms-of-use?is_from_p2p=true&${fromParam}` : `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
+      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "phone",
@@ -114,6 +114,10 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
     (step) => step.completed || step.inReview
   )
 
+  const allStepsVerified = verificationSteps.every(
+    (step) => (step.id === "profile" && onboardingStatus?.profile?.status === "complete") || step.completed
+  )
+
   const getFailedPoiOrPoaStep = () => {
     const completedOrInReviewSteps = verificationSteps.filter(
       (step) => step.completed || step.inReview
@@ -129,6 +133,11 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const failedStep = getFailedPoiOrPoaStep()
 
   const handleCompleteVerification = () => {
+    if (allStepsVerified) {
+      window.location.href = `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/terms-of-use?is_from_p2p=true&${fromParam}`
+      return
+    }
+
     if (allStepsVerifiedOrInReview) {
       onClose?.()
       return
