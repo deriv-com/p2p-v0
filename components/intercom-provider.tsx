@@ -23,32 +23,32 @@ export function IntercomProvider({ appId }: { appId: string }) {
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
-      // Only fetch token if we have both userId and user email (indicating full authentication)
-      if (!userId || !userData?.email) {
-        setIsLoading(false)
-        return
-      }
-
-      try {
-        const result = await getIntercomToken()
-        if (result?.token) {
-          // This endpoint returns an Intercom Identity Verification token (JWT).
-          // When Intercom "Messenger Security" is enabled, you must pass this as `intercom_user_jwt`,
-          // not `user_hash` (HMAC).
-          setIntercomJwt(result.token)
-          setIntercomUserId(result.id ?? userId)
-        } else {
+      // For authenticated users, try to fetch JWT token
+      if (userId && userData?.email) {
+        try {
+          const result = await getIntercomToken()
+          if (result?.token) {
+            // This endpoint returns an Intercom Identity Verification token (JWT).
+            // When Intercom "Messenger Security" is enabled, you must pass this as `intercom_user_jwt`,
+            // not `user_hash` (HMAC).
+            setIntercomJwt(result.token)
+            setIntercomUserId(result.id ?? userId)
+          } else {
+            setIntercomUserId(userId)
+            console.warn("Intercom token not received, continuing without JWT", {
+              intercom_user_id: userId,
+            })
+          }
+        } catch (error) {
+          console.error("Failed to fetch Intercom token:", error)
           setIntercomUserId(userId)
-          console.warn("Intercom token not received, continuing without JWT", {
-            intercom_user_id: userId,
-          })
         }
-      } catch (error) {
-        console.error("Failed to fetch Intercom token:", error)
-        setIntercomUserId(userId)
-      } finally {
-        setIsLoading(false)
+      } else {
+        // For unregistered users, still initialize Intercom without JWT
+        // This allows Intercom to collect visitor data and support unregistered users
+        setIntercomUserId(null)
       }
+      setIsLoading(false)
     }
 
     fetchToken()
@@ -57,6 +57,7 @@ export function IntercomProvider({ appId }: { appId: string }) {
   const intercomBaseSettings = useMemo(() => {
     // Mirrors the other team's "Base setting" approach.
     // Note: With Messenger Security enforced, Intercom requires `intercom_user_jwt` for logged-in users.
+    // For unregistered users, Intercom will collect visitor data without authentication.
     return {
       api_base: "https://api-iam.intercom.io",
       app_id: appId,
