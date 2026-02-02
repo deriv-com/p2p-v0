@@ -168,24 +168,24 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   // Show completion screen when all steps are verified
   if (allStepsCompleted) {
     return (
-      <div className="w-full flex flex-col items-center justify-center py-12">
-        <div className="mb-8">
+      <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex flex-col items-center justify-center px-4">
+        <div className="mb-12">
           <Image
             src="/icons/kyc-success.png"
             alt="KYC Completed"
-            width={180}
-            height={180}
+            width={200}
+            height={200}
             className="object-contain"
           />
         </div>
-        <h2 className="text-center text-xl font-semibold text-slate-1200 mb-2">
-          {t("kyc.verificationComplete")}
-        </h2>
-        <p className="text-center text-sm text-slate-600 mb-8 max-w-sm">
-          {t("kyc.allStepsCompletedMessage")}
+        <h1 className="text-center text-3xl font-bold text-white mb-4">
+          {t("kyc.youreAllSet")}
+        </h1>
+        <p className="text-center text-base text-slate-300 mb-12 max-w-md">
+          {t("kyc.exploreMarketDescription")}
         </p>
         <Button 
-          className="w-full rounded-full bg-[#ff444f] hover:bg-[#e63844] text-white font-semibold py-3"
+          className="w-full max-w-sm rounded-full bg-[#ff444f] hover:bg-[#e63844] text-white font-semibold py-3 text-base"
           onClick={() => {
             onClose?.()
           }}

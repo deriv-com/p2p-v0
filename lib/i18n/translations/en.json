@@ -690,9 +690,9 @@
     "gotIt": "Got it",
     "checkProofOfIdentity": "Check proof of identity",
     "checkProofOfAddress": "Check proof of address",
-    "verificationComplete": "Verification complete",
-    "allStepsCompletedMessage": "Your account has been verified. You're now ready to trade on P2P.",
-    "goToMarket": "Go to Market"
+    "youreAllSet": "You're all set",
+    "exploreMarketDescription": "Explore the market to buy and sell currencies directly with other traders.",
+    "goToMarket": "Go to market"
   },
   "status": {
     "refunded": "Refunded",
