@@ -539,8 +539,6 @@ export default function OrderDetailsPage() {
                         {isMobile && (
                           <Button
                             onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
                               setShowChat(true)
                               setIsChatVisible(true)
                             }}

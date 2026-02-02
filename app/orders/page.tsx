@@ -357,8 +357,6 @@ export default function OrdersPage() {
                       <div className="flex items-center gap-2">
                         <Button
                           onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
                             handleChatClick(e, order)
                           }}
                           className="text-slate-500 hover:text-slate-700 z-auto p-0"
