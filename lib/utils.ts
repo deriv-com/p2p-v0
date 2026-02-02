@@ -507,7 +507,7 @@ export const currencyFlagMapper = {
   WST: "/icons/flag-samoa.svg"
 }
 
-export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
+export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "",
     url = ""
@@ -526,7 +526,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
         url = isProduction ? "https://app.deriv.com/account/proof-of-identity" : "https://staging-app.deriv.com/account/proof-of-identity"
       }
     } else {
-      url = `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
+      url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "poa") {
     if (isV1Signup) {
@@ -536,7 +536,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
         url = isProduction ? "https://app.deriv.com/account/proof-of-address" : "https://staging-app.deriv.com/account/proof-of-address"
       }
     } else {
-      url = `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
+      url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "home") {
     if (isV1Signup) {

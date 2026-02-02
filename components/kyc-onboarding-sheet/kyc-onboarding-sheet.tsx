@@ -19,7 +19,8 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const userData = useUserDataStore((state) => state.userData)
   const isV1Signup = userData?.signup === "v1"
 
-  const isProfileCompleted = onboardingStatus?.profile?.status === "complete" && onboardingStatus?.tnc?.accepted === true
+  const isTncAccepted = onboardingStatus?.tnc?.accepted === true
+  const isProfileCompleted = onboardingStatus?.profile?.status === "complete" && isTncAccepted
   const isPoiCompleted = onboardingStatus?.kyc?.poi_status === "approved"
   const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
   const isPoiRejected = onboardingStatus?.kyc?.poi_status === "rejected"
@@ -62,7 +63,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.svg",
       completed: isPhoneCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`,
+      link: isTncAccepted ? `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}` : `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`,
     },
     {
       id: "poi",
@@ -72,7 +73,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       rejected: isPoiRejected,
       inReview: isPoiInReview,
       expired: isPoiExpired,
-      link: getHomeUrl(isV1Signup, "poi", isWalletAccount, fromParam),
+      link: getHomeUrl(isV1Signup, "poi", isWalletAccount, fromParam, isTncAccepted),
     },
     {
       id: "poa",
@@ -82,7 +83,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       rejected: isPoaRejected,
       inReview: isPoaInReview,
       expired: isPoaExpired,
-      link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam),
+      link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam, isTncAccepted),
     },
   ]
 
@@ -114,10 +115,6 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
     (step) => step.completed || step.inReview
   )
 
-  const allStepsVerified = verificationSteps.every(
-    (step) => step.id === "profile" ? onboardingStatus?.profile?.status === "complete" : step.completed
-  )
-
   const getFailedPoiOrPoaStep = () => {
     const completedOrInReviewSteps = verificationSteps.filter(
       (step) => step.completed || step.inReview
@@ -133,11 +130,6 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const failedStep = getFailedPoiOrPoaStep()
 
   const handleCompleteVerification = () => {
-    if (allStepsVerified) {
-      window.location.href = `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/terms-of-use?is_from_p2p=true&${fromParam}`
-      return
-    }
-
     if (allStepsVerifiedOrInReview) {
       onClose?.()
       return
