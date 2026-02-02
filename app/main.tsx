@@ -9,7 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getLoginUrl } from "@/lib/utils"
+import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
@@ -187,7 +187,7 @@ export default function Main({
       </div>
       <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <main className="flex-1 overflow-hidden pb-20">{children}</main>
+        <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>
         {!pathname.startsWith("/profile") && <MobileFooterNav className="flex-shrink-0" />}
       </div>
     </WebSocketProvider>
