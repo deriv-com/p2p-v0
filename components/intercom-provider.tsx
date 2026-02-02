@@ -23,6 +23,7 @@ export function IntercomProvider({ appId }: { appId: string }) {
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
+      console.log("fetch token")
       try {
         const result = await getIntercomToken()
         if (result?.token) {
@@ -51,7 +52,7 @@ export function IntercomProvider({ appId }: { appId: string }) {
     }
 
     fetchToken()
-  }, [userId, userData?.email])
+  }, [])
 
   const intercomBaseSettings = useMemo(() => {
     // Mirrors the other team's "Base setting" approach.
