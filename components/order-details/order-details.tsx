@@ -124,7 +124,9 @@ export const OrderDetails = ({ order, setShowChat }) => {
         />
         {order.status === "completed" && isMobile && (
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
               setShowChat(true)
             }}
             className="text-slate-500 hover:text-slate-700"
