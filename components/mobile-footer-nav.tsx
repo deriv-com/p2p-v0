@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
-import { cn } from "@/lib/utils"
+import { cn, getHomeUrl } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { useState, useEffect } from "react"
@@ -27,12 +27,19 @@ export default function MobileFooterNav() {
     const cached = getCachedSignup()
     return cached !== "v1"
   })
+  const [isV1Signup, setIsV1Signup] = useState(() => {
+    const cached = getCachedSignup()
+    if (cached !== null) return cached === "v1"
+    return userData?.signup === "v1"
+  })
 
   useEffect(() => {
     if (userData?.signup === "v1") {
       setShowWallet(false)
+      setIsV1Signup(true)
     } else if (userData?.signup) {
       setShowWallet(true)
+      setIsV1Signup(false)
     }
   }, [userData?.signup])
 
@@ -58,7 +65,7 @@ export default function MobileFooterNav() {
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
       <div className={cn("grid grid-cols-4 min-h-16", showWallet && "grid-cols-5")}>
         <Link
-          href="/"
+          href={getHomeUrl(isV1Signup, "home")}
           className="flex flex-col items-center justify-center px-1 text-center max-w-full py-2 text-slate-1200"
         >
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
