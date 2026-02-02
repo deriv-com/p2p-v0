@@ -23,7 +23,6 @@ export function IntercomProvider({ appId }: { appId: string }) {
   // Fetch Intercom token
   useEffect(() => {
     const fetchToken = async () => {
-      console.log("fetch token")
       try {
         const result = await getIntercomToken()
         if (result?.token) {
