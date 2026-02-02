@@ -171,29 +171,29 @@ export default function OrderChat({
 
   return (
     <div className="flex flex-col h-full overflow-auto">
-      <div className="flex items-center p-4 border-b">
+      <div className="flex items-center p-3 sm:p-4 border-b gap-2 flex-shrink-0">
         {onNavigateToOrderDetails && (
           <Button
             variant="ghost"
             size="sm"
             onClick={onNavigateToOrderDetails}
-            className="mr-[16px] bg-grayscale-300 px-1"
+            className="mr-1 sm:mr-3 bg-grayscale-300 px-1 flex-shrink-0"
           >
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="sm:w-6 sm:h-6 w-5 h-5" />
           </Button>
         )}
-        <div className="relative w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
+        <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold text-sm sm:text-base flex-shrink-0">
           {counterpartyInitial}
           <div
-            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
+            className={`absolute bottom-0 right-0 h-2 w-2 sm:h-3 sm:w-3 rounded-full border border-white ${
               counterpartyOnlineStatus ? "bg-buy" : "bg-gray-400"
             }`}
           />
         </div>
-        <div>
-          <div className="font-medium">{counterpartyName}</div>
-          <div className="text-xs text-slate-500 flex items-center gap-1">
-            <span>
+        <div className="min-w-0 flex-1">
+          <div className="font-medium text-sm sm:text-base truncate">{counterpartyName}</div>
+          <div className="text-xs text-slate-500 flex items-center gap-1 truncate">
+            <span className="truncate">
               {counterpartyOnlineStatus
                 ? t("chat.online")
                 : counterpartyLastOnlineAt
@@ -204,16 +204,16 @@ export default function OrderChat({
         </div>
       </div>
       <div className="h-full overflow-auto">
-        <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
+        <div className="p-3 sm:p-4 m-3 sm:m-4 bg-orange-50 rounded-lg sm:rounded-2xl">
           <div className="space-y-3">
-            <div className="flex items-start gap-[8px]">
-              <div className="flex-shrink-0">
-                <Image src="/icons/warning-icon-new.png" className="-mt-[2px]" alt="Warning" width={24} height={24} />
+            <div className="flex items-start gap-2 sm:gap-3">
+              <div className="flex-shrink-0 pt-0.5">
+                <Image src="/icons/warning-icon-new.png" alt="Warning" width={20} height={20} className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div className="text-sm text-slate-1200">
+              <div className="text-xs sm:text-sm text-slate-1200 min-w-0">
                 <span className="font-bold">{t("chat.disclaimerImportant")}</span>
                 <span className="ml-1">{t("chat.disclaimerText")}</span>
-                <div className="mt-[16px]">
+                <div className="mt-2 sm:mt-3">
                   <span className="font-bold">{t("chat.disclaimerNote")}</span>
                   <span className="ml-1">{t("chat.disclaimerNoteText")}</span>
                 </div>
@@ -221,7 +221,7 @@ export default function OrderChat({
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4">
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
@@ -236,19 +236,19 @@ export default function OrderChat({
                     </div>
                   </div>
                   {dateMessages.map((msg) => (
-                    <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
-                      <div className="max-w-[80%] rounded-lg pb-[16px]">
+                    <div key={msg.id} className={`flex mb-2 ${msg.sender_is_self ? "justify-end" : "justify-start"} px-1 sm:px-0`}>
+                      <div className="max-w-[85%] sm:max-w-[80%] rounded-lg pb-2 sm:pb-4">
                         {msg.attachment && (
                           <div
-                            className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px]`}
+                            className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-3 sm:p-4 rounded-[8px]`}
                           >
                             {!msg.sender_is_self && (
-                              <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
+                              <div className="absolute left-0 top-3 sm:top-4 w-0 h-0 border-t-[6px] sm:border-t-[8px] border-t-transparent border-b-[6px] sm:border-b-[8px] border-b-transparent border-r-[6px] sm:border-r-[8px] border-r-slate-1700 -translate-x-full" />
                             )}
                             {msg.sender_is_self && (
-                              <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                              <div className="absolute right-0 top-3 sm:top-4 w-0 h-0 border-t-[6px] sm:border-t-[8px] border-t-transparent border-b-[6px] sm:border-b-[8px] border-b-transparent border-l-[6px] sm:border-l-[8px] border-l-slate-200 translate-x-full" />
                             )}
-                            <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
+                            <div className="bg-slate-75 p-2 sm:p-2 rounded-[4px] text-xs">
                               <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                                 {msg.attachment.name}
                               </a>
@@ -256,29 +256,29 @@ export default function OrderChat({
                           </div>
                         )}
                         {msg.message && (
-                          <div className="flex items-center">
+                          <div className="flex items-center gap-2">
                             <div
-                              className={`relative break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-slate-1700"} p-[16px] rounded-[8px] flex-1`}
+                              className={`relative break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-slate-1700"} p-3 sm:p-4 rounded-[8px] flex-1 text-sm`}
                             >
                               {!msg.sender_is_self && (
-                                <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
+                                <div className="absolute left-0 top-3 sm:top-4 w-0 h-0 border-t-[6px] sm:border-t-[8px] border-t-transparent border-b-[6px] sm:border-b-[8px] border-b-transparent border-r-[6px] sm:border-r-[8px] border-r-slate-1700 -translate-x-full" />
                               )}
                               {msg.sender_is_self && (
-                                <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                                <div className="absolute right-0 top-3 sm:top-4 w-0 h-0 border-t-[6px] sm:border-t-[8px] border-t-transparent border-b-[6px] sm:border-b-[8px] border-b-transparent border-l-[6px] sm:border-l-[8px] border-l-slate-200 translate-x-full" />
                               )}
                               {msg.message}
                             </div>
-                            {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
+                            {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={20} height={20} />}
                           </div>
                         )}
                         {msg.rejected && msg.tags ? (
-                          <div className="text-xs text-error-text mt-[4px]">
+                          <div className="text-xs text-error-text mt-2 px-1">
                             {t("chat.messageNotSent", { error: getChatErrorMessage(msg.tags, t) })}
                           </div>
                         ) : (
                           <div
                             className={cn(
-                              "text-xs mt-1 text-grayscale-text-muted justify-self-start",
+                              "text-xs mt-1 text-grayscale-text-muted px-1",
                               msg.sender_is_self && "justify-self-end",
                             )}
                           >
@@ -310,26 +310,26 @@ export default function OrderChat({
                 onKeyDown={handleKeyDown}
                 placeholder={t("chat.enterMessage")}
                 disabled={isSending}
-                className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                className="w-full rounded-[8px] pr-12 sm:pr-14 resize-none min-h-[40px] sm:min-h-[56px] placeholder:text[#0000003D]"
               />
               {message.trim() ? (
                 <Button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
                   onClick={handleSendMessage}
                   variant="ghost"
                   size="sm"
                   disabled={isSending}
                 >
-                  <Image src="/icons/send-message.png" alt="Send message" width={20} height={20} className="h-5 w-5" />
+                  <Image src="/icons/send-message.png" alt="Send message" width={16} height={16} className="sm:h-5 sm:w-5 h-4 w-4" />
                 </Button>
               ) : (
                 <Button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
                   onClick={() => fileInputRef.current?.click()}
                   variant="ghost"
                   size="sm"
                 >
-                  <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
+                  <Image src="/icons/paperclip-icon.png" alt="Attach file" width={16} height={16} className="sm:h-5 sm:w-5 h-4 w-4" />
                 </Button>
               )}
               <Input
@@ -340,9 +340,9 @@ export default function OrderChat({
                 accept="image/*,application/pdf"
               />
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center px-1">
               <div></div>
-              <div className="text-xs text-[#0000007A] mr-16px">
+              <div className="text-xs text-[#0000007A]">
                 {message.length}/{maxLength}
               </div>
             </div>
