@@ -31,6 +31,9 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const isPoaExpired = userId && !isPoaCompleted
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
+  // Check if all steps are completed
+  const allStepsCompleted = isProfileCompleted && isPhoneCompleted && isPoiCompleted && isPoaCompleted
+
   const getFromParam = () => {
     if (!route) return "from=p2p"
 
@@ -160,6 +163,37 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
 
   if (!onboardingStatus) {
     return null
+  }
+
+  // Show completion screen when all steps are verified
+  if (allStepsCompleted) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-12">
+        <div className="mb-8">
+          <Image
+            src="/icons/kyc-success.png"
+            alt="KYC Completed"
+            width={180}
+            height={180}
+            className="object-contain"
+          />
+        </div>
+        <h2 className="text-center text-xl font-semibold text-slate-1200 mb-2">
+          {t("kyc.verificationComplete")}
+        </h2>
+        <p className="text-center text-sm text-slate-600 mb-8 max-w-sm">
+          {t("kyc.allStepsCompletedMessage")}
+        </p>
+        <Button 
+          className="w-full rounded-full bg-[#ff444f] hover:bg-[#e63844] text-white font-semibold py-3"
+          onClick={() => {
+            onClose?.()
+          }}
+        >
+          {t("kyc.goToMarket")}
+        </Button>
+      </div>
+    )
   }
 
   return (

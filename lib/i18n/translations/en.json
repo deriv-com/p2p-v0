@@ -689,7 +689,10 @@
     "email": "Email address",
     "gotIt": "Got it",
     "checkProofOfIdentity": "Check proof of identity",
-    "checkProofOfAddress": "Check proof of address"
+    "checkProofOfAddress": "Check proof of address",
+    "verificationComplete": "Verification complete",
+    "allStepsCompletedMessage": "Your account has been verified. You're now ready to trade on P2P.",
+    "goToMarket": "Go to Market"
   },
   "status": {
     "refunded": "Refunded",
