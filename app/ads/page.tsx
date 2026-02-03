@@ -117,12 +117,21 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    setLoading(false)
     if (userId && !hasFetchedRef.current) {
       fetchAds()
       hasFetchedRef.current = true
     }
   }, [userId])
+
+  useEffect(() => {
+    // Refetch ads after successful creation/update
+    const searchParams = new URLSearchParams(window.location.search)
+    const success = searchParams.get("success")
+
+    if ((success === "create" || success === "update") && hasFetchedRef.current) {
+      fetchAds()
+    }
+  }, [])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -161,8 +170,6 @@ export default function AdsPage() {
         id,
         showStatusModal: true,
       })
-
-      fetchAds()
     }
   }, [showAlert, isMobile, t])
 
