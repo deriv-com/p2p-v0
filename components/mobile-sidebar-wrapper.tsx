@@ -16,7 +16,7 @@ export function MobileSidebarTrigger() {
         onClick={() => router.back()}
         variant="ghost"
         size="icon"
-        className="h-8 w-8"
+        className="h-8 w-8 rounded-full bg-[#ffffff0a]"
       >
         <Image src="/icons/arrow-back.svg" width={20} height={20} alt="Back" />
       </Button>
