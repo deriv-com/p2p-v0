@@ -204,7 +204,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     const loadWallets = async () => {
       try {
         const response = await fetchWalletsList()
-        console.log("[v0] Fetched wallets response:", response)
 
         if (response?.data?.wallets) {
           const processedWallets: ProcessedWallet[] = []
@@ -252,10 +251,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           })
 
           setWallets(processedWallets)
-          console.log("[v0] Processed wallets:", processedWallets)
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
-          console.log("[v0] P2P wallet found:", p2pWallet)
 
           if (p2pWallet) {
             setSourceWalletData({
@@ -272,7 +269,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
 
     loadWallets()
-  }, [selectedCurrency, currenciesData, currencies])
+  }, [selectedCurrency, currenciesData])
 
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
