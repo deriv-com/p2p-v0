@@ -7,6 +7,9 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
+import { useAdvertisements } from "@/lib/hooks/use-advertisements"
+import { usePaymentMethods } from "@/lib/hooks/use-payment-methods"
+import { useWalletBalance } from "@/lib/hooks/use-wallet-balance"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -58,24 +61,13 @@ export default function BuySellPage() {
     setSelectedAccountCurrency,
   } = useMarketFilterStore()
 
-  const [adverts, setAdverts] = useState<Advertisement[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
-  const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const [balance, setBalance] = useState<string>("0.00")
-  const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
 
-  const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
-  const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const localCurrency = useUserDataStore((state) => state.localCurrency)
@@ -87,6 +79,19 @@ export default function BuySellPage() {
   const isMobile = useIsMobile()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
+
+  // Use SWR hooks for data fetching with proper caching
+  const { adverts, isLoading, error } = useAdvertisements({
+    type: activeTab,
+    account_currency: selectedAccountCurrency,
+    currency: currency,
+    paymentMethod: selectedPaymentMethods,
+    sortBy: sortBy,
+    filterOptions: filterOptions,
+  })
+
+  const { paymentMethods, isLoading: isLoadingPaymentMethods } = usePaymentMethods()
+  const { balance, balanceCurrency, isLoading: isLoadingBalance } = useWalletBalance()
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -116,175 +121,13 @@ export default function BuySellPage() {
     return "v2"
   }, [isV1Signup, userData?.balances, userData?.signup])
 
-  const fetchBalance = useCallback(async () => {
-    if (!userData?.signup) {
-      return
-    }
-
-    if (isV1Signup && !userData?.balances) {
-      return
-    }
-
-    if (fetchedForRef.current === balancesKey) {
-      return
-    }
-
-    fetchedForRef.current = balancesKey
-    setIsLoadingBalance(true)
-
-    try {
-      const balances = userData?.balances || []
-      const firstBalance = balances[0] || {}
-      setBalance(firstBalance.amount || "0.00")
-      setBalanceCurrency(firstBalance.currency || "USD")
-    } catch (error) {
-      console.error("Failed to fetch balance:", error)
-      setBalance("0.00")
-      setBalanceCurrency("USD")
-    } finally {
-      setIsLoadingBalance(false)
-    }
-  }, [balancesKey, isV1Signup, userData])
-
-  useEffect(() => {
-    fetchBalance()
-  }, [fetchBalance])
-
-  useEffect(() => {
-    const operation = searchParams.get("operation")
-    const currencyParam = searchParams.get("currency")
-
-    if (operation && (operation === "buy" || operation === "sell")) {
-      if (operation === "buy") setActiveTab("sell")
-      else {
-        setActiveTab("buy")
-      }
-    }
-
-
-    if (currencyParam) {
-      setSelectedAccountCurrency(currencyParam.toUpperCase())
-    }
-  }, [searchParams, setActiveTab, setSelectedAccountCurrency])
-
-  useEffect(() => {
-    // Currency init: if store has no currency yet, default to user's local currency (or first available).
-    // If user already picked a currency, do not override it.
-    if (currencies.length > 0 && (currency === "" || currency === null)) {
-      const validCurrencyCodes = currencies.map((c) => c.code)
-      if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
-        setCurrency(localCurrency)
-      } else {
-        setCurrency(currencies[0]?.code)
-      }
-    }
-  }, [currencies, localCurrency, currency, setCurrency])
-
-  const paymentMethodsString = useMemo(
-    () => JSON.stringify(selectedPaymentMethods),
-    [selectedPaymentMethods]
-  )
-
-  const fetchAdverts = useCallback(async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-
-    const abortController = new AbortController()
-    abortControllerRef.current = abortController
-
-    setIsLoading(true)
-    setError(null)
-    try {
-      const params: BuySellAPI.SearchParams = {
-        type: activeTab,
-        account_currency: selectedAccountCurrency,
-        currency: currency,
-        paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
-        sortBy: sortBy,
-      }
-
-      if (filterOptions.fromFollowing) {
-        params.favourites_only = 1
-      }
-
-      const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
-
-      if (!abortController.signal.aborted) {
-        if (Array.isArray(data)) {
-          setAdverts(data)
-        } else {
-          console.error("API did not return an array:", data)
-          setAdverts([])
-          setError("Received invalid data format from server")
-        }
-      }
-    } catch (err) {
-      if (!abortController.signal.aborted) {
-        console.error("Error fetching adverts:", err)
-        setError("Failed to load advertisements. Please try again.")
-        setAdverts([])
-      }
-    } finally {
-      if (!abortController.signal.aborted) {
-        setIsLoading(false)
-      }
-    }
-  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions])
-
-  useEffect(() => {
-    if (paymentMethodsInitialized) {
-      fetchAdverts()
-    }
-  }, [fetchAdverts, paymentMethodsInitialized])
-
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      setIsLoadingPaymentMethods(true)
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods)
-        setSelectedPaymentMethods(methods.map((method) => method.method))
-        setPaymentMethodsInitialized(true)
-      } catch (error) {
-        console.error("Error fetching payment methods:", error)
-        setPaymentMethodsInitialized(true)
-      } finally {
-        setIsLoadingPaymentMethods(false)
-      }
-    }
-
-    fetchPaymentMethods()
-  }, [])
-
-  const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      router.push(`/advertiser/${advertiserId}`)
-    } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
-    }
-  }
-
-  const handleOrderClick = (ad: Advertisement) => {
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      setSelectedAd(ad)
-      setIsOrderSidebarOpen(true)
-      setError(null)
+  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+  const isV1Signup = userData?.signup === "v1"
+  const tempBanUntil = userData?.temp_ban_until
+  const hasFilteredPaymentMethods =
+    paymentMethods.length > 0 &&
+    selectedPaymentMethods.length < paymentMethods.length &&
+    selectedPaymentMethods.length > 0
     } else {
       let title = t("profile.gettingStarted")
 
