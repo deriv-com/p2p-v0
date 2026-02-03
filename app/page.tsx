@@ -6,7 +6,6 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
-import { BuySellAPI } from "@/services/api"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -25,7 +24,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
@@ -34,6 +32,7 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useAdvertisements, usePaymentMethods } from "@/hooks/use-api-queries"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
@@ -58,13 +57,37 @@ export default function BuySellPage() {
     setSelectedAccountCurrency,
   } = useMarketFilterStore()
 
-  const [adverts, setAdverts] = useState<Advertisement[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  // React Query hooks
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const paymentMethodsString = useMemo(
+    () => JSON.stringify(selectedPaymentMethods),
+    [selectedPaymentMethods]
+  )
+
+  const advertsParams = useMemo(() => {
+    return {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      paymentMethod: selectedPaymentMethods,
+      sortBy: sortBy,
+      ...(filterOptions.fromFollowing && { favourites_only: 1 }),
+    }
+  }, [activeTab, selectedAccountCurrency, currency, selectedPaymentMethods, sortBy, filterOptions])
+
+  const { data: advertisements = [], isLoading, error } = useAdvertisements(
+    advertsParams,
+    abortControllerRef.current?.signal
+  )
+
+  const {
+    data: paymentMethodsData = [],
+    isLoading: isLoadingPaymentMethods,
+    isSuccess: paymentMethodsInitialized,
+  } = usePaymentMethods()
+
+  // Local state for UI interactions
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
-  const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
@@ -75,7 +98,6 @@ export default function BuySellPage() {
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
-  const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const localCurrency = useUserDataStore((state) => state.localCurrency)
@@ -101,8 +123,8 @@ export default function BuySellPage() {
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const hasFilteredPaymentMethods =
-    paymentMethods.length > 0 &&
-    selectedPaymentMethods.length < paymentMethods.length &&
+    paymentMethodsData.length > 0 &&
+    selectedPaymentMethods.length < paymentMethodsData.length &&
     selectedPaymentMethods.length > 0
 
   const balancesKey = useMemo(() => {
@@ -180,82 +202,14 @@ export default function BuySellPage() {
     }
   }, [currencies, localCurrency, currency, setCurrency])
 
-  const paymentMethodsString = useMemo(
-    () => JSON.stringify(selectedPaymentMethods),
-    [selectedPaymentMethods]
-  )
-
-  const fetchAdverts = useCallback(async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-
-    const abortController = new AbortController()
-    abortControllerRef.current = abortController
-
-    setIsLoading(true)
-    setError(null)
-    try {
-      const params: BuySellAPI.SearchParams = {
-        type: activeTab,
-        account_currency: selectedAccountCurrency,
-        currency: currency,
-        paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
-        sortBy: sortBy,
-      }
-
-      if (filterOptions.fromFollowing) {
-        params.favourites_only = 1
-      }
-
-      const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
-
-      if (!abortController.signal.aborted) {
-        if (Array.isArray(data)) {
-          setAdverts(data)
-        } else {
-          console.error("API did not return an array:", data)
-          setAdverts([])
-          setError("Received invalid data format from server")
-        }
-      }
-    } catch (err) {
-      if (!abortController.signal.aborted) {
-        console.error("Error fetching adverts:", err)
-        setError("Failed to load advertisements. Please try again.")
-        setAdverts([])
-      }
-    } finally {
-      if (!abortController.signal.aborted) {
-        setIsLoading(false)
-      }
-    }
-  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions])
-
+  // Initialize payment methods selection
   useEffect(() => {
-    if (paymentMethodsInitialized) {
-      fetchAdverts()
-    }
-  }, [fetchAdverts, paymentMethodsInitialized])
-
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      setIsLoadingPaymentMethods(true)
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods)
-        setSelectedPaymentMethods(methods.map((method) => method.method))
-        setPaymentMethodsInitialized(true)
-      } catch (error) {
-        console.error("Error fetching payment methods:", error)
-        setPaymentMethodsInitialized(true)
-      } finally {
-        setIsLoadingPaymentMethods(false)
+    if (paymentMethodsInitialized && paymentMethodsData.length > 0) {
+      if (selectedPaymentMethods.length === 0) {
+        setSelectedPaymentMethods(paymentMethodsData.map((method) => method.method))
       }
     }
-
-    fetchPaymentMethods()
-  }, [])
+  }, [paymentMethodsInitialized, paymentMethodsData, selectedPaymentMethods, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
@@ -284,7 +238,6 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
-      setError(null)
     } else {
       let title = t("profile.gettingStarted")
 
@@ -316,9 +269,9 @@ export default function BuySellPage() {
 
   const getPaymentMethodsDisplayText = () => {
     if (
-      paymentMethods.length === 0 ||
+      paymentMethodsData.length === 0 ||
       selectedPaymentMethods.length === 0 ||
-      selectedPaymentMethods.length === paymentMethods.length
+      selectedPaymentMethods.length === paymentMethodsData.length
     ) {
       return t("market.paymentMethodAll")
     }
@@ -485,7 +438,7 @@ export default function BuySellPage() {
               )}
               <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
-                  paymentMethods={paymentMethods}
+                  paymentMethods={paymentMethodsData}
                   selectedMethods={selectedPaymentMethods}
                   onSelectionChange={setSelectedPaymentMethods}
                   isLoading={isLoadingPaymentMethods}
@@ -634,7 +587,7 @@ export default function BuySellPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {adverts.map((ad) => (
+                    {advertisements.map((ad) => (
                       <TableRow
                         className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                         key={ad.id}
