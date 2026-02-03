@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -107,9 +107,9 @@ export default function OrdersPage() {
         abortControllerRef.current.abort()
       }
     }
-  }, [activeTab, dateFilter, customDateRange])
+  }, [fetchOrders])
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
@@ -160,7 +160,7 @@ export default function OrdersPage() {
         setIsLoading(false)
       }
     }
-  }
+  }, [activeTab, dateFilter, customDateRange])
 
   const handleCheckPreviousOrders = () => {
     setShowPreviousOrders(true)
