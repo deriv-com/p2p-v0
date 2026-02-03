@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image"
+import type React from "react"
 
-export function P2PAccessRemoved() {
+export const P2PAccessRemoved: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6 py-12">
       <div className="flex flex-col items-center text-center">
