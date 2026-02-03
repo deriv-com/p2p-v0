@@ -13,6 +13,7 @@ import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
+import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import "./globals.css"
 
 export default function Main({
@@ -31,7 +32,8 @@ export default function Main({
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false)
+  const { data: onboardingStatus } = useOnboardingStatus()
 
   const isDisabled = userData?.status === "disabled"
 
@@ -85,35 +87,26 @@ export default function Main({
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
 
-          try {
-            const onboardingStatus = await AuthAPI.getOnboardingStatus()
+          if (onboardingStatus && isMountedRef.current && !abortController.signal.aborted) {
+            setVerificationStatus({
+              phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
+              kyc_verified:
+                onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
+              p2p_allowed: onboardingStatus.p2p?.allowed,
+            })
 
-            if (isMountedRef.current && !abortController.signal.aborted) {
-              setVerificationStatus({
-                phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
-                kyc_verified:
-                  onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
-                p2p_allowed: onboardingStatus.p2p?.allowed,
-              })
+            setOnboardingStatus(onboardingStatus)
 
-              setOnboardingStatus(onboardingStatus)
-
-              const currentUserId = useUserDataStore.getState().userId
-              if (!currentUserId && onboardingStatus.p2p?.allowed) {
-                try {
-                  await AuthAPI.createP2PUser()
-                  await AuthAPI.fetchUserIdAndStore()
-                } catch (error) {
-                  console.error("Error creating P2P user:", error)
-                }
-              }
-
-              if (isMountedRef.current && !abortController.signal.aborted) {
-                router.push(pathname)
+            const currentUserId = useUserDataStore.getState().userId
+            if (!currentUserId && onboardingStatus.p2p?.allowed) {
+              try {
+                await AuthAPI.createP2PUser()
+                await AuthAPI.fetchUserIdAndStore()
+              } catch (error) {
+                console.error("Error creating P2P user:", error)
               }
             }
-          } catch (error) {
-            console.error("Error fetching onboarding status:", error)
+
             if (isMountedRef.current && !abortController.signal.aborted) {
               router.push(pathname)
             }
