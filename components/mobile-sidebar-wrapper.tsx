@@ -10,10 +10,18 @@ export function MobileSidebarTrigger() {
   const router = useRouter()
   const isProfilePage = pathname === "/profile" || pathname.startsWith("/profile/")
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back()
+    } else {
+      router.push("/market")
+    }
+  }
+
   if (isProfilePage) {
     return (
       <Button
-        onClick={() => router.back()}
+        onClick={handleBack}
         variant="ghost"
         size="icon"
         className="h-8 w-8 rounded-full bg-[#ffffff0a]"
