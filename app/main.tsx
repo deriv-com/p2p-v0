@@ -46,30 +46,6 @@ export default function Main({
   }, [searchParams, setIsWalletAccount])
 
   useEffect(() => {
-    if (onboardingStatus && userId) {
-      setVerificationStatus({
-        phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
-        kyc_verified:
-          onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
-        p2p_allowed: onboardingStatus.p2p?.allowed,
-      })
-
-      setOnboardingStatus(onboardingStatus)
-
-      const currentUserId = useUserDataStore.getState().userId
-      if (!currentUserId && onboardingStatus.p2p?.allowed) {
-        try {
-          AuthAPI.createP2PUser().then(() => {
-            AuthAPI.fetchUserIdAndStore()
-          })
-        } catch (error) {
-          console.error("Error creating P2P user:", error)
-        }
-      }
-    }
-  }, [onboardingStatus, userId, setVerificationStatus, setOnboardingStatus])
-
-  useEffect(() => {
     isMountedRef.current = true
 
     const PUBLIC_ROUTES = ["/login"]
