@@ -1,6 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { cachedFetch, invalidateCache } from "@/lib/cache-manager"
 
 // Define the Advertisement interface directly in this file
 export interface Advertisement {
@@ -57,90 +56,63 @@ export interface PaymentMethod {
 }
 
 /**
- * Get all available advertisements with caching
+ * Get all available advertisements
  */
-export async function getAdvertisements(params?: SearchParams, signal?: AbortSignal): Promise<Advertisement[]> {
+export async function getAdvertisements(params?: SearchParams): Promise<Advertisement[]> {
   try {
-    // Generate cache key based on parameters
-    const cacheKey = params
-      ? `advertisements:${JSON.stringify({
-          type: params.type,
-          currency: params.currency,
-          account_currency: params.account_currency,
-          paymentMethod: params.paymentMethod,
-          sortBy: params.sortBy,
-          favourites_only: params.favourites_only,
-        })}`
-      : "advertisements"
-
-    // Check if request is being aborted - skip cache for cancelled requests
-    if (signal?.aborted) {
-      return []
+    const queryParams = new URLSearchParams()
+    if (params) {
+      if (params.type) queryParams.append("advert_type", params.type)
+      if (params.currency) queryParams.append("payment_currency", params.currency)
+      if (params.account_currency) queryParams.append("account_currency", params.account_currency)
+      if (params.paymentMethod) {
+        if (params.paymentMethod.length === 0) {
+          queryParams.append("payment_methods", JSON.stringify([]))
+        } else {
+          params.paymentMethod.forEach((method) => {
+            queryParams.append("payment_methods[]", method)
+          })
+        }
+      }
+      if (params.amount) queryParams.append("amount", params.amount.toString())
+      if (params.nickname) queryParams.append("nickname", params.nickname)
+      if (params.sortBy) queryParams.append("sort_by", params.sortBy)
+      if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
     }
 
-    // Try to use cached data (5 minute TTL)
-    const cached = await cachedFetch(
-      cacheKey,
-      async () => {
-        const queryParams = new URLSearchParams()
-        if (params) {
-          if (params.type) queryParams.append("advert_type", params.type)
-          if (params.currency) queryParams.append("payment_currency", params.currency)
-          if (params.account_currency) queryParams.append("account_currency", params.account_currency)
-          if (params.paymentMethod) {
-            if (params.paymentMethod.length === 0) {
-              queryParams.append("payment_methods", JSON.stringify([]))
-            } else {
-              params.paymentMethod.forEach((method) => {
-                queryParams.append("payment_methods[]", method)
-              })
-            }
-          }
-          if (params.amount) queryParams.append("amount", params.amount.toString())
-          if (params.nickname) queryParams.append("nickname", params.nickname)
-          if (params.sortBy) queryParams.append("sort_by", params.sortBy)
-          if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
-        }
+    const auth_country_code = useUserDataStore.getState().residenceCountry
+    if (auth_country_code) queryParams.append("auth_country_code", auth_country_code)
 
-        const auth_country_code = useUserDataStore.getState().residenceCountry
-        if (auth_country_code) queryParams.append("auth_country_code", auth_country_code)
+    const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
 
-        const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
+    const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
+    const headers = AUTH.getAuthHeader()
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
 
-        const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
-        const headers = AUTH.getAuthHeader()
-        const response = await fetch(url, {
-          headers,
-          credentials: "include",
-          signal,
-        })
+    if (!response.ok) {
+      console.error("Error Response:", response.status, response.statusText)
+      throw new Error(`Error fetching advertisements: ${response.statusText}`)
+    }
 
-        if (!response.ok) {
-          console.error("Error Response:", response.status, response.statusText)
-          throw new Error(`Error fetching advertisements: ${response.statusText}`)
-        }
+    const responseText = await response.text()
+    let data
 
-        const responseText = await response.text()
-        let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      data = { data: [] }
+    }
 
-        try {
-          data = JSON.parse(responseText)
-        } catch (e) {
-          data = { data: [] }
-        }
-
-        if (data && data.data && Array.isArray(data.data)) {
-          return data.data
-        } else if (Array.isArray(data)) {
-          return data
-        } else {
-          return []
-        }
-      },
-      5 * 60 * 1000, // 5 minute cache TTL
-    )
-
-    return cached
+    if (data && data.data && Array.isArray(data.data)) {
+      return data.data
+    } else if (Array.isArray(data)) {
+      return data
+    } else {
+      return []
+    }
   } catch (error) {
     console.log(error)
     return []
@@ -431,43 +403,37 @@ export async function toggleBlockAdvertiser(
 }
 
 /**
- * Get all available payment methods with caching
+ * Get all available payment methods
  */
 export async function getPaymentMethods(): Promise<PaymentMethod[]> {
   try {
-    return await cachedFetch(
-      "paymentMethods",
-      async () => {
-        const url = `${API.baseUrl}${API.endpoints.availablePaymentMethods}`
-        const headers = AUTH.getAuthHeader()
+    const url = `${API.baseUrl}${API.endpoints.availablePaymentMethods}`
+    const headers = AUTH.getAuthHeader()
 
-        const response = await fetch(url, {
-          headers,
-          credentials: "include",
-        })
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
 
-        if (!response.ok) {
-          console.error("Error Response:", response.status, response.statusText)
-          throw new Error(`Error fetching payment methods: ${response.statusText}`)
-        }
+    if (!response.ok) {
+      console.error("Error Response:", response.status, response.statusText)
+      throw new Error(`Error fetching payment methods: ${response.statusText}`)
+    }
 
-        const responseText = await response.text()
-        let data
+    const responseText = await response.text()
+    let data
 
-        try {
-          data = JSON.parse(responseText)
-        } catch (e) {
-          data = { data: [] }
-        }
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      data = { data: [] }
+    }
 
-        if (data && data.data && Array.isArray(data.data)) {
-          return data.data
-        } else if (Array.isArray(data)) {
-          return data
-        } else return []
-      },
-      30 * 60 * 1000, // 30 minute cache TTL - payment methods change less frequently
-    )
+    if (data && data.data && Array.isArray(data.data)) {
+      return data.data
+    } else if (Array.isArray(data)) {
+      return data
+    } else return []
   } catch (error) {
     // Return empty array on error to prevent map errors
     return []
