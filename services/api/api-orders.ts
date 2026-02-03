@@ -1,4 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
+import { cachedFetch, invalidateCache } from "@/lib/cache-manager"
 
 // Type definitions
 export interface Order {
@@ -64,44 +65,60 @@ export interface ChatMessage {
   isRead: boolean
 }
 
-export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
+export async function getOrders(filters?: OrderFilters): Promise<any> {
   try {
-    const queryParams = new URLSearchParams()
+    // Generate cache key based on filters
+    const cacheKey = filters
+      ? `orders:${JSON.stringify({
+          is_open: filters.is_open,
+          date_from: filters.date_from,
+          date_to: filters.date_to,
+          status: filters.status,
+        })}`
+      : "orders"
 
-    if (filters) {
-      if (filters.status) queryParams.append("status", filters.status)
-      if (filters.type) queryParams.append("type", filters.type)
-      if (filters.is_open !== undefined) queryParams.append("is_open", filters.is_open.toString())
-      if (filters.date_from) queryParams.append("date_from", filters.date_from)
-      if (filters.date_to) queryParams.append("date_to", filters.date_to)
-    }
+    return await cachedFetch(
+      cacheKey,
+      async () => {
+        const queryParams = new URLSearchParams()
 
-    const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
-    const url = `${API.baseUrl}${API.endpoints.orders}${queryString}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
-    }
+        if (filters) {
+          if (filters.status) queryParams.append("status", filters.status)
+          if (filters.type) queryParams.append("type", filters.type)
+          if (filters.is_open !== undefined) queryParams.append("is_open", filters.is_open.toString())
+          if (filters.date_from) queryParams.append("date_from", filters.date_from)
+          if (filters.date_to) queryParams.append("date_to", filters.date_to)
+        }
 
-    const response = await fetch(url, {
-      headers,
-      credentials: "include",
-    })
+        const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
+        const url = `${API.baseUrl}${API.endpoints.orders}${queryString}`
+        const headers = {
+          ...AUTH.getAuthHeader(),
+          "Content-Type": "application/json",
+        }
 
-    if (!response.ok) {
-      throw new Error(`Error fetching orders: ${response.statusText}`)
-    }
+        const response = await fetch(url, {
+          headers,
+          credentials: "include",
+        })
 
-    const responseText = await response.text()
-    let data
+        if (!response.ok) {
+          throw new Error(`Error fetching orders: ${response.statusText}`)
+        }
 
-    try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = []
-    }
+        const responseText = await response.text()
+        let data
 
-    return data
+        try {
+          data = JSON.parse(responseText)
+        } catch (e) {
+          data = []
+        }
+
+        return data
+      },
+      2 * 60 * 1000, // 2 minute cache TTL for active orders
+    )
   } catch (error) {
     throw error
   }
@@ -109,31 +126,37 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
 
 export async function getOrderById(id: string): Promise<Order> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.orders}/${id}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
-    }
+    return await cachedFetch(
+      `order:${id}`,
+      async () => {
+        const url = `${API.baseUrl}${API.endpoints.orders}/${id}`
+        const headers = {
+          ...AUTH.getAuthHeader(),
+          "Content-Type": "application/json",
+        }
 
-    const response = await fetch(url, {
-      headers,
-      credentials: "include",
-    })
+        const response = await fetch(url, {
+          headers,
+          credentials: "include",
+        })
 
-    if (!response.ok) {
-      throw new Error(`Error fetching order: ${response.statusText}`)
-    }
+        if (!response.ok) {
+          throw new Error(`Error fetching order: ${response.statusText}`)
+        }
 
-    const responseText = await response.text()
-    let data
+        const responseText = await response.text()
+        let data
 
-    try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = {}
-    }
+        try {
+          data = JSON.parse(responseText)
+        } catch (e) {
+          data = {}
+        }
 
-    return data
+        return data
+      },
+      1 * 60 * 1000, // 1 minute cache TTL for individual orders
+    )
   } catch (error) {
     throw error
   }
