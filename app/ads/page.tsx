@@ -124,16 +124,6 @@ export default function AdsPage() {
   }, [userId])
 
   useEffect(() => {
-    // Refetch ads after successful creation/update
-    const searchParams = new URLSearchParams(window.location.search)
-    const success = searchParams.get("success")
-
-    if ((success === "create" || success === "update") && hasFetchedRef.current) {
-      fetchAds()
-    }
-  }, [])
-
-  useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
       setHiddenAdverts(!userData.adverts_are_listed)
     }
