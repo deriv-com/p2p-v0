@@ -63,7 +63,7 @@ export default function MobileFooterNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
-      <div className={cn("grid grid-cols-4 min-h-16", showWallet && "grid-cols-5")}>
+      <div className={cn("grid grid-cols-4 min-h-16 relative", showWallet && "grid-cols-5")}>
         <Link
           href={getHomeUrl(isV1Signup, "home")}
           className="flex flex-col items-center justify-center px-1 text-center max-w-full py-2 text-slate-1200"
@@ -75,14 +75,14 @@ export default function MobileFooterNav() {
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.home")}</span>
         </Link>
-        <div className="w-px bg-slate-200 h-8 my-auto"></div>
         <Link
           href="/"
-          className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
+          className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2 relative", {
             "text-primary": isMarketActive,
             "text-slate-1200": !isMarketActive,
           })}
         >
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-px bg-slate-200"></div>
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
             <SvgIcon
               src={isMarketActive ? MarketSelectedIcon : MarketIcon}
