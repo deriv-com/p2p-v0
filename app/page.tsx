@@ -6,7 +6,6 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
-import { BuySellAPI } from "@/services/api"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -33,7 +32,6 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 type Ad = Advertisement
@@ -83,8 +81,6 @@ export default function BuySellPage() {
   const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
-  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
-
   // Build advertisement search params
   const advertsParams = {
     type: activeTab,
@@ -95,7 +91,7 @@ export default function BuySellPage() {
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
   }
 
-  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(advertsParams)
+  const { data: fetchedAdverts = [], isLoading } = useAdvertisements(advertsParams)
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
