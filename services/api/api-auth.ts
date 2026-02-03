@@ -295,7 +295,33 @@ export async function fetchUserIdAndStore(): Promise<void> {
         signup: "v2",
       })
       useUserDataStore.getState().setUserId("")
-      useUserDataStore.getState().setLocalCurrency(null)
+
+      // Set local currency from residence country if available
+      try {
+        const residenceCountry = useUserDataStore.getState().residenceCountry
+        if (residenceCountry) {
+          const settings = await getSettings()
+          const countries = settings?.countries || []
+          const normalizedResidenceCode = typeof residenceCountry === "string" ? residenceCountry.toLowerCase() : ""
+
+          const matchedCountry = normalizedResidenceCode
+            ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedResidenceCode)
+            : null
+
+          const derivedCurrency =
+            (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+            (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+            null
+
+          useUserDataStore.getState().setLocalCurrency(derivedCurrency)
+        } else {
+          useUserDataStore.getState().setLocalCurrency(null)
+        }
+      } catch (error) {
+        console.error("Error deriving local currency from residence:", error)
+        useUserDataStore.getState().setLocalCurrency(null)
+      }
+
       useMarketFilterStore.getState().resetFilters()
       return
     }
