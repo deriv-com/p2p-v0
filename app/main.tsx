@@ -45,6 +45,8 @@ export default function Main({
 
   useEffect(() => {
     isMountedRef.current = true
+    // Set ready immediately for fast initial render
+    setIsReady(true)
 
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
@@ -124,10 +126,6 @@ export default function Main({
           return
         }
         console.error("Error fetching session data:", error)
-      } finally {
-        if (isMountedRef.current) {
-          setIsReady(true)
-        }
       }
     }
 
