@@ -1,44 +1,49 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { BuySellAPI } from '@/services/api'
-import { OrdersAPI } from '@/services/api'
+import * as BuySellAPI from '@/services/api/api-buy-sell'
+import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 
 // Query Keys
+const ALL_KEYS = ['api'] as const
+const AUTH_KEYS = [...ALL_KEYS, 'auth'] as const
+const BUY_SELL_KEYS = [...ALL_KEYS, 'buy-sell'] as const
+const ORDERS_KEYS = [...ALL_KEYS, 'orders'] as const
+
 export const queryKeys = {
-  all: ['api'] as const,
+  all: ALL_KEYS,
   
   // Auth queries
   auth: {
-    all: [...queryKeys.all, 'auth'] as const,
-    session: () => [...queryKeys.auth.all, 'session'] as const,
-    kycStatus: () => [...queryKeys.auth.all, 'kyc-status'] as const,
-    onboardingStatus: () => [...queryKeys.auth.all, 'onboarding-status'] as const,
-    totalBalance: () => [...queryKeys.auth.all, 'total-balance'] as const,
-    userBalance: () => [...queryKeys.auth.all, 'user-balance'] as const,
-    settings: () => [...queryKeys.auth.all, 'settings'] as const,
-    clientProfile: () => [...queryKeys.auth.all, 'client-profile'] as const,
-    socketToken: () => [...queryKeys.auth.all, 'socket-token'] as const,
-    advertStats: (currency: string) => [...queryKeys.auth.all, 'advert-stats', currency] as const,
+    all: AUTH_KEYS,
+    session: () => [...AUTH_KEYS, 'session'] as const,
+    kycStatus: () => [...AUTH_KEYS, 'kyc-status'] as const,
+    onboardingStatus: () => [...AUTH_KEYS, 'onboarding-status'] as const,
+    totalBalance: () => [...AUTH_KEYS, 'total-balance'] as const,
+    userBalance: () => [...AUTH_KEYS, 'user-balance'] as const,
+    settings: () => [...AUTH_KEYS, 'settings'] as const,
+    clientProfile: () => [...AUTH_KEYS, 'client-profile'] as const,
+    socketToken: () => [...AUTH_KEYS, 'socket-token'] as const,
+    advertStats: (currency: string) => [...AUTH_KEYS, 'advert-stats', currency] as const,
   },
   
   // Buy/Sell queries
   buySell: {
-    all: [...queryKeys.all, 'buy-sell'] as const,
-    advertisements: () => [...queryKeys.buySell.all, 'advertisements'] as const,
-    advertisementsByParams: (params: BuySellSearchParams) => [...queryKeys.buySell.advertisements(), params] as const,
-    paymentMethods: () => [...queryKeys.buySell.all, 'payment-methods'] as const,
-    advertiser: (id: string | number) => [...queryKeys.buySell.all, 'advertiser', id] as const,
-    advertiserAds: (id: string | number) => [...queryKeys.buySell.all, 'advertiser-ads', id] as const,
+    all: BUY_SELL_KEYS,
+    advertisements: () => [...BUY_SELL_KEYS, 'advertisements'] as const,
+    advertisementsByParams: (params: BuySellSearchParams) => [...BUY_SELL_KEYS, 'advertisements', params] as const,
+    paymentMethods: () => [...BUY_SELL_KEYS, 'payment-methods'] as const,
+    advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
+    advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
   },
   
   // Orders queries
   orders: {
-    all: [...queryKeys.all, 'orders'] as const,
-    list: () => [...queryKeys.orders.all, 'list'] as const,
-    listByFilters: (filters: OrderFilters | undefined) => [...queryKeys.orders.list(), filters] as const,
-    detail: (id: string) => [...queryKeys.orders.all, 'detail', id] as const,
+    all: ORDERS_KEYS,
+    list: () => [...ORDERS_KEYS, 'list'] as const,
+    listByFilters: (filters: OrderFilters | undefined) => [...ORDERS_KEYS, 'list', filters] as const,
+    detail: (id: string) => [...ORDERS_KEYS, 'detail', id] as const,
   },
 }
 
