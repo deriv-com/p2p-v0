@@ -100,7 +100,7 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(true)
+      const userAdverts = await AdsAPI.getMyAds({ status: undefined })
 
       setAds(userAdverts)
     } catch (err) {
@@ -118,10 +118,10 @@ export default function AdsPage() {
 
   useEffect(() => {
     if (userId && !hasFetchedRef.current) {
-      fetchAds()
       hasFetchedRef.current = true
+      fetchAds()
     }
-  }, [userId])
+  }, [userId, t])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
