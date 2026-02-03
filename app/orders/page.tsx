@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -64,6 +64,7 @@ export default function OrdersPage() {
   const tempBanUntil = userData?.temp_ban_until
 
   const abortControllerRef = useRef<AbortController | null>(null)
+  const isMountedRef = useRef(false)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -98,16 +99,6 @@ export default function OrdersPage() {
       setShowCheckPreviousOrdersButton(false)
     }
   }, [userData?.signup])
-
-  useEffect(() => {
-    fetchOrders()
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [activeTab, dateFilter, customDateRange])
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
@@ -161,6 +152,25 @@ export default function OrdersPage() {
       }
     }
   }
+
+  useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true
+      fetchOrders()
+    }
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isMountedRef.current) {
+      fetchOrders()
+    }
+  }, [activeTab, dateFilter, customDateRange])
 
   const handleCheckPreviousOrders = () => {
     setShowPreviousOrders(true)
