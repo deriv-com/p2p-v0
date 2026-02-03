@@ -1,49 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
-import { getSettings } from "@/services/api/api-auth"
+import { useCurrencies } from "@/hooks/use-api-queries"
 
 export function useCurrencyData(currency = "USD") {
-  const [currencies, setCurrencies] = useState<Currency[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { data, isLoading, error } = useCurrencies()
 
-  useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        setIsLoading(true)
-        const response = await getSettings()
-
-        const countries = response.countries || []
-
-        const currencyList: Currency[] = countries
-          .map((country: { currency: string; currency_name: string }) => ({
-            code: country.currency,
-            name: country.currency_name,
-          }))
-          .reduce((acc: Currency[], curr: Currency) => {
-            // Remove duplicates
-            if (!acc.find((c) => c.code === curr.code)) {
-              acc.push(curr)
-            }
-            return acc
-          }, [])
-          .sort((a, b) => a.code.localeCompare(b.code))
-
-        setCurrencies(currencyList)
-        setError(null)
-      } catch (err) {
-        console.error("Error fetching currencies:", err)
-        setError("Failed to load currencies")
-        setCurrencies([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchCurrencies()
-  }, [currency])
+  // Transform the API response into currency list
+  const currencies: Currency[] = data
+    ? Object.keys(data)
+        .map((code) => ({
+          code,
+          name: code,
+        }))
+        .sort((a, b) => a.code.localeCompare(b.code))
+    : []
 
   const getCurrencyByCode = (code: string): Currency | undefined => {
     return currencies.find((currency) => currency.code === code)
@@ -59,6 +30,6 @@ export function useCurrencyData(currency = "USD") {
     getCurrencyByCode,
     getCurrencyName: getCurrencyNameByCode,
     isLoading,
-    error,
+    error: error ? "Failed to load currencies" : null,
   }
 }
