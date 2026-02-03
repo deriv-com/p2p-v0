@@ -148,6 +148,57 @@ export function useUserAdverts(showInactive?: boolean) {
   })
 }
 
+export function useCreateAd() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: any) => AdsAPI.createAd(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+    },
+  })
+}
+
+export function useUpdateAd() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, adData }: { id: string; adData: any }) => AdsAPI.updateAd(id, adData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+    },
+  })
+}
+
+export function useDeleteAd() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => AdsAPI.deleteAd(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+    },
+  })
+}
+
+export function useToggleAdActiveStatus() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
+      AdsAPI.toggleAdActiveStatus(id, isActive),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+    },
+  })
+}
+
+export function useHideMyAds() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (hide: boolean) => AdsAPI.hideMyAds(hide),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+    },
+  })
+}
+
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
   const query = useQuery({
