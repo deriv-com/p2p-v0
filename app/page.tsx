@@ -180,43 +180,7 @@ export default function BuySellPage() {
     }
   }, [currencies, localCurrency, currency, setCurrency])
 
-  useEffect(() => {
-    if (paymentMethodsInitialized) {
-      fetchAdverts()
-    }
-  }, [
-    activeTab,
-    currency,
-    sortBy,
-    filterOptions,
-    selectedPaymentMethods,
-    selectedAccountCurrency,
-    paymentMethodsInitialized,
-  ])
-
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      setIsLoadingPaymentMethods(true)
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods)
-
-        if (selectedPaymentMethods.length === 0) {
-          setSelectedPaymentMethods(methods.map((method) => method.method))
-        }
-        setPaymentMethodsInitialized(true)
-      } catch (error) {
-        console.error("Error fetching payment methods:", error)
-        setPaymentMethodsInitialized(true)
-      } finally {
-        setIsLoadingPaymentMethods(false)
-      }
-    }
-
-    fetchPaymentMethods()
-  }, [selectedPaymentMethods.length, setSelectedPaymentMethods])
-
-  const fetchAdverts = async () => {
+  const fetchAdverts = useCallback(async () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
@@ -261,7 +225,35 @@ export default function BuySellPage() {
         setIsLoading(false)
       }
     }
-  }
+  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions])
+
+  useEffect(() => {
+    if (paymentMethodsInitialized) {
+      fetchAdverts()
+    }
+  }, [fetchAdverts, paymentMethodsInitialized])
+
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      setIsLoadingPaymentMethods(true)
+      try {
+        const methods = await BuySellAPI.getPaymentMethods()
+        setPaymentMethods(methods)
+
+        if (selectedPaymentMethods.length === 0) {
+          setSelectedPaymentMethods(methods.map((method) => method.method))
+        }
+        setPaymentMethodsInitialized(true)
+      } catch (error) {
+        console.error("Error fetching payment methods:", error)
+        setPaymentMethodsInitialized(true)
+      } finally {
+        setIsLoadingPaymentMethods(false)
+      }
+    }
+
+    fetchPaymentMethods()
+  }, [selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
