@@ -6,12 +6,14 @@ import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod 
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 
 // Query Keys
+const ALL_KEY = ['api'] as const
+
 export const queryKeys = {
-  all: ['api'] as const,
+  all: ALL_KEY,
   
   // Auth queries
   auth: {
-    all: [...queryKeys.all, 'auth'] as const,
+    all: [...ALL_KEY, 'auth'] as const,
     session: () => [...queryKeys.auth.all, 'session'] as const,
     kycStatus: () => [...queryKeys.auth.all, 'kyc-status'] as const,
     onboardingStatus: () => [...queryKeys.auth.all, 'onboarding-status'] as const,
@@ -25,7 +27,7 @@ export const queryKeys = {
   
   // Buy/Sell queries
   buySell: {
-    all: [...queryKeys.all, 'buy-sell'] as const,
+    all: [...ALL_KEY, 'buy-sell'] as const,
     advertisements: () => [...queryKeys.buySell.all, 'advertisements'] as const,
     advertisementsByParams: (params: BuySellSearchParams) => [...queryKeys.buySell.advertisements(), params] as const,
     paymentMethods: () => [...queryKeys.buySell.all, 'payment-methods'] as const,
@@ -35,7 +37,7 @@ export const queryKeys = {
   
   // Orders queries
   orders: {
-    all: [...queryKeys.all, 'orders'] as const,
+    all: [...ALL_KEY, 'orders'] as const,
     list: () => [...queryKeys.orders.all, 'list'] as const,
     listByFilters: (filters: OrderFilters | undefined) => [...queryKeys.orders.list(), filters] as const,
     detail: (id: string) => [...queryKeys.orders.all, 'detail', id] as const,
