@@ -126,7 +126,7 @@ export function useCurrencies() {
   return useQuery({
     queryKey: queryKeys.auth.currencies(),
     queryFn: () => AuthAPI.getCurrencies(),
-    staleTime: 1000 * 60 * 30, // 30 minutes
+    staleTime: 1000 * 60 * 2, // 2 minutes
   })
 }
 
