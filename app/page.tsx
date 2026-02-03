@@ -28,6 +28,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { usePaymentMethods } from "@/hooks/use-api-queries"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -62,15 +63,14 @@ export default function BuySellPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
-  const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
+  
+  const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
@@ -233,29 +233,14 @@ export default function BuySellPage() {
   }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions])
 
   useEffect(() => {
-    if (paymentMethodsInitialized) {
-      fetchAdverts()
-    }
-  }, [fetchAdverts, paymentMethodsInitialized])
+    fetchAdverts()
+  }, [fetchAdverts])
 
   useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      setIsLoadingPaymentMethods(true)
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods)
-        setSelectedPaymentMethods(methods.map((method) => method.method))
-        setPaymentMethodsInitialized(true)
-      } catch (error) {
-        console.error("Error fetching payment methods:", error)
-        setPaymentMethodsInitialized(true)
-      } finally {
-        setIsLoadingPaymentMethods(false)
-      }
+    if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
+      setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
     }
-
-    fetchPaymentMethods()
-  }, [])
+  }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
