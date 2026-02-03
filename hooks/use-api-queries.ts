@@ -130,7 +130,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
       const response = await (BuySellAPI.getAdvertisements as any)(params, signal)
       return response
     },
-    staleTime: Infinity,
+    staleTime: 1000 * 10, // 10 seconds
   })
   
   return {
