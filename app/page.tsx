@@ -180,6 +180,10 @@ export default function BuySellPage() {
     }
   }, [currencies, localCurrency, currency, setCurrency])
 
+  const paymentMethodsString = useMemo(
+  () => JSON.stringify(selectedPaymentMethods),
+  [selectedPaymentMethods]
+
   const fetchAdverts = useCallback(async () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
@@ -225,7 +229,7 @@ export default function BuySellPage() {
         setIsLoading(false)
       }
     }
-  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions])
+  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -239,10 +243,7 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
-
-        if (selectedPaymentMethods.length === 0) {
-          setSelectedPaymentMethods(methods.map((method) => method.method))
-        }
+        setSelectedPaymentMethods(methods.map((method) => method.method))
         setPaymentMethodsInitialized(true)
       } catch (error) {
         console.error("Error fetching payment methods:", error)
@@ -253,7 +254,7 @@ export default function BuySellPage() {
     }
 
     fetchPaymentMethods()
-  }, [selectedPaymentMethods.length, setSelectedPaymentMethods])
+  }, [])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
