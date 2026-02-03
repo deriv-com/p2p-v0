@@ -82,7 +82,7 @@ export default function MobileFooterNav() {
             "text-slate-1200": !isMarketActive,
           })}
         >
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-px bg-slate-200"></div>
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-px bg-grayscale-200"></div>
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
             <SvgIcon
               src={isMarketActive ? MarketSelectedIcon : MarketIcon}
