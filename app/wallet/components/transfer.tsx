@@ -164,7 +164,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }
   const toSuccess = () => setStep("success")
-  const toUnsuccessful = () => setStep("unsuccessful") 
+  const toUnsuccessful = () => setStep("unsuccessful")
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
@@ -199,7 +199,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
   useEffect(() => {
     if (!selectedCurrency) return
-    if (!currenciesData?.data) return
+    if (!currenciesData) return
 
     const loadWallets = async () => {
       try {
@@ -771,7 +771,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={wallet.icon}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -795,7 +795,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={wallet.icon}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -857,7 +857,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={getCurrencyImage(wallet.name, wallet.currency)}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -881,7 +881,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={getCurrencyImage(wallet.name, wallet.currency)}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -940,7 +940,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -953,7 +953,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -996,7 +996,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1150,7 +1150,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1625,11 +1625,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <span className="text-[#181C25] text-xs font-normal">
                     {transferFeeCalculation
                       ? `${formatAmountByCurrency(
-                          transferFeeCalculation.transferAmount,
-                          selectedAmountCurrency === "source"
-                            ? sourceWalletData?.currency || ""
-                            : destinationWalletData?.currency || "",
-                        )} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
+                        transferFeeCalculation.transferAmount,
+                        selectedAmountCurrency === "source"
+                          ? sourceWalletData?.currency || ""
+                          : destinationWalletData?.currency || "",
+                      )} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
                       : "-"}
                   </span>
                 </div>
