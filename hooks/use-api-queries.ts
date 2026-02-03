@@ -2,14 +2,17 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
+import * as AdsAPI from '@/services/api/api-my-ads'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
+import type { MyAd } from '@/services/api/api-my-ads'
 
 // Query Keys
 const ALL_KEYS = ['api'] as const
 const AUTH_KEYS = [...ALL_KEYS, 'auth'] as const
 const BUY_SELL_KEYS = [...ALL_KEYS, 'buy-sell'] as const
 const ORDERS_KEYS = [...ALL_KEYS, 'orders'] as const
+const ADS_KEYS = [...ALL_KEYS, 'ads'] as const
 
 export const queryKeys = {
   all: ALL_KEYS,
@@ -45,6 +48,12 @@ export const queryKeys = {
     list: () => [...ORDERS_KEYS, 'list'] as const,
     listByFilters: (filters: OrderFilters | undefined) => [...ORDERS_KEYS, 'list', filters] as const,
     detail: (id: string) => [...ORDERS_KEYS, 'detail', id] as const,
+  },
+
+  // Ads queries
+  ads: {
+    all: ADS_KEYS,
+    userAdverts: (showInactive?: boolean) => [...ADS_KEYS, 'user-adverts', showInactive] as const,
   },
 }
 
@@ -127,6 +136,15 @@ export function useCurrencies() {
     queryKey: queryKeys.auth.currencies(),
     queryFn: () => AuthAPI.getCurrencies(),
     staleTime: 1000 * 60 * 2, // 2 minutes
+  })
+}
+
+// Ads Hooks
+export function useUserAdverts(showInactive?: boolean) {
+  return useQuery({
+    queryKey: queryKeys.ads.userAdverts(showInactive),
+    queryFn: () => AdsAPI.getUserAdverts(showInactive),
+    staleTime: 1000 * 30, // 30 seconds
   })
 }
 
