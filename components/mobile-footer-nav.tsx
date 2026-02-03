@@ -75,6 +75,7 @@ export default function MobileFooterNav() {
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.home")}</span>
         </Link>
+        <div className="w-px bg-slate-200 h-8 my-auto"></div>
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
