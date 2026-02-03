@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getCurrencies } from "@/services/api/api-wallets"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import { currencyLogoMapper } from "@/lib/utils"
 
 interface WalletBalanceProps {
@@ -28,6 +28,7 @@ type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
   const userId = useUserDataStore((state) => state.userId)
+  const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -37,19 +38,14 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
 
-  const fetchCurrencies = async () => {
-    try {
-      const response = await getCurrencies()
-      if (response?.data) {
-        const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
-          code,
-          name: data.label,
-          logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-        }))
-        setCurrencies(currencyList)
-      }
-    } catch (error) {
-      console.error("Error fetching currencies:", error)
+  const fetchCurrencies = () => {
+    if (currenciesResponse?.data) {
+      const currencyList = Object.entries(currenciesResponse.data).map(([code, data]: [string, any]) => ({
+        code,
+        name: data.label,
+        logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+      }))
+      setCurrencies(currencyList)
     }
   }
 
@@ -91,7 +87,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   useEffect(() => {
     fetchBalance()
     fetchCurrencies()
-  }, [selectedCurrency])
+  }, [selectedCurrency, currenciesResponse])
 
   const handleRefresh = () => {
     fetchBalance()

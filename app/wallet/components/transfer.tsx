@@ -9,12 +9,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   fetchWalletsList,
   walletTransfer,
-  getCurrencies,
   fetchExchangeRate,
   walletExchangeTransfer,
   fetchTransactionByReferenceId,
 } from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
@@ -123,6 +123,7 @@ type CurrencyToggleType = "source" | "destination"
 
 export default function Transfer({ currencySelected, onClose, stepVal = "enterAmount" }: TransferProps) {
   const { t } = useTranslations()
+  const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
 
   const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
@@ -184,26 +185,17 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   useEffect(() => {
-    const loadCurrencies = async () => {
-      try {
-        const response = await getCurrencies()
-        if (response?.data) {
-          setCurrenciesData(response as CurrenciesResponse)
-          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
-            code,
-            name: data.label,
-            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-            label: data.label,
-          }))
-          setCurrencies(currencyList)
-        }
-      } catch (error) {
-        console.error("Error fetching currencies:", error)
-      }
-    }
+    if (!currenciesResponse?.data) return
 
-    loadCurrencies()
-  }, [])
+    const currencyList = Object.entries(currenciesResponse.data).map(([code, data]: [string, any]) => ({
+      code,
+      name: data.label,
+      logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+      label: data.label,
+    }))
+    setCurrencies(currencyList)
+    setCurrenciesData(currenciesResponse as CurrenciesResponse)
+  }, [currenciesResponse])
 
   useEffect(() => {
     if (!selectedCurrency) return
