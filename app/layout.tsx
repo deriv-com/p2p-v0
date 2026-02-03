@@ -12,6 +12,7 @@ import { AnalyticsInit } from "@/components/analytics-init"
 import { LanguageSync } from "@/lib/i18n/language-sync"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import Script from "next/script"
+import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -58,14 +59,16 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <LanguageSync />
         </Suspense>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AlertDialogProvider>
-            <Toaster />
-            <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
-              <Main>{children}</Main>
-            </Suspense>
-          </AlertDialogProvider>
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <AlertDialogProvider>
+              <Toaster />
+              <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
+                <Main>{children}</Main>
+              </Suspense>
+            </AlertDialogProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   )
