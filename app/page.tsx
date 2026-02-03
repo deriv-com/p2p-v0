@@ -181,8 +181,9 @@ export default function BuySellPage() {
   }, [currencies, localCurrency, currency, setCurrency])
 
   const paymentMethodsString = useMemo(
-  () => JSON.stringify(selectedPaymentMethods),
-  [selectedPaymentMethods]
+    () => JSON.stringify(selectedPaymentMethods),
+    [selectedPaymentMethods]
+  )
 
   const fetchAdverts = useCallback(async () => {
     if (abortControllerRef.current) {
