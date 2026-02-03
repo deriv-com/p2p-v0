@@ -210,22 +210,19 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
           response.data.wallets.forEach((wallet: any) => {
             if (!wallet.balances || wallet.balances.length === 0) {
-              currencies
-                .filter((currency) => currency.code === "USD")
-                .forEach((currency) => {
-                  const currencyLabel = currenciesData.data[currency.code]?.label || currency.code
-                  const walletName =
-                    (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
+              // Handle USD wallets with no balances
+              const currencyLabel = currenciesData.data["USD"]?.label || "USD"
+              const walletName =
+                (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
-                  processedWallets.push({
-                    wallet_id: wallet.wallet_id,
-                    name: walletName,
-                    balance: "0",
-                    currency: currency.code,
-                    icon: currency.logo,
-                    type: wallet.type,
-                  })
-                })
+              processedWallets.push({
+                wallet_id: wallet.wallet_id,
+                name: walletName,
+                balance: "0",
+                currency: "USD",
+                icon: currencyLogoMapper["USD"],
+                type: wallet.type,
+              })
             } else {
               wallet.balances.forEach((balance: any) => {
                 if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
