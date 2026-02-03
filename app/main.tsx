@@ -13,6 +13,7 @@ import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
+import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import "./globals.css"
 
 export default function Main({
@@ -32,6 +33,16 @@ export default function Main({
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Call useOnboardingStatus hook if user is authenticated
+  const onboardingStatusQuery = useOnboardingStatus()
+  
+  useEffect(() => {
+    if (isAuthenticated && onboardingStatusQuery.isSuccess) {
+      console.log("[v0] Onboarding status query executed:", onboardingStatusQuery.data)
+    }
+  }, [isAuthenticated, onboardingStatusQuery])
 
   const isDisabled = userData?.status === "disabled"
 
@@ -73,16 +84,20 @@ export default function Main({
           }
         }
 
-        const isAuthenticated = await AuthAPI.getSession()
+        const isAuthenticatedResult = await AuthAPI.getSession()
 
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
 
-        if (!isAuthenticated && !isPublic) {
+        if (isMountedRef.current && isAuthenticatedResult) {
+          setIsAuthenticated(true)
+        }
+
+        if (!isAuthenticatedResult && !isPublic) {
           setIsHeaderVisible(false)
           window.location.href = getLoginUrl(userData?.signup === "v1")
-        } else if (isAuthenticated) {
+        } else if (isAuthenticatedResult) {
           await AuthAPI.fetchUserIdAndStore()
 
           try {
