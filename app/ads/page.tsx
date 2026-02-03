@@ -5,8 +5,8 @@ import { TooltipTrigger } from "@/components/ui/tooltip"
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
-import { AdsAPI } from "@/services/api"
 import { hideMyAds } from "@/services/api/api-my-ads"
+import { useUserAdverts } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -30,8 +30,6 @@ interface StatusData {
 export default function AdsPage() {
   const { t } = useTranslations()
   const [ads, setAds] = useState<MyAd[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId, onboardingStatus, verificationStatus } = useUserDataStore()
@@ -50,6 +48,9 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+
+  // Use the React Query hook
+  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -93,36 +94,22 @@ export default function AdsPage() {
 
   const fetchAds = async () => {
     if (!userId) {
-      setLoading(false)
       return
     }
-
-    try {
-      setLoading(true)
-      setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(true)
-
-      setAds(userAdverts)
-    } catch (err) {
-      setError(t("myAds.errorLoadingAds"))
-      setAds([])
-      setErrorModal({
-        show: true,
-        title: t("myAds.errorLoadingAdsTitle"),
-        message: err instanceof Error ? err.message : t("myAds.errorLoadingAdsMessage"),
-      })
-    } finally {
-      setLoading(false)
-    }
+    // Data will be fetched automatically by the React Query hook
   }
 
   useEffect(() => {
-    setLoading(false)
-    if (userId && !hasFetchedRef.current) {
-      fetchAds()
-      hasFetchedRef.current = true
+    setAds(userAdverts)
+    
+    if (queryError) {
+      setErrorModal({
+        show: true,
+        title: t("myAds.errorLoadingAdsTitle"),
+        message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
+      })
     }
-  }, [userId])
+  }, [userAdverts, queryError, t])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -274,8 +261,8 @@ export default function AdsPage() {
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-          {error ? (
-            <div className="text-center py-8 text-red-500">{error}</div>
+          {queryError ? (
+            <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
             <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
           )}
