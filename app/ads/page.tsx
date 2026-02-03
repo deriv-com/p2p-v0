@@ -4,6 +4,8 @@ import { TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
+import { usePageCache } from "@/hooks/use-page-cache"
+import { cacheAPIResponse, getCachedAPIResponse, createCacheKey } from "@/lib/cache-utils"
 import MyAdsTable from "./components/my-ads-table"
 import { AdsAPI } from "@/services/api"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -31,6 +33,19 @@ export default function AdsPage() {
   const { t } = useTranslations()
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
+  
+  // Initialize page cache for ads page
+  const { scrollContainerRef, cachePageData } = usePageCache({
+    key: "ads-page",
+    duration: 4 * 60 * 1000, // 4 minutes
+    onDataRestore: (cachedData) => {
+      if (cachedData?.ads) {
+        setAds(cachedData.ads)
+        setLoading(false)
+      }
+    },
+    saveScrollPosition: true,
+  })
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
@@ -100,9 +115,25 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
+      
+      // Generate cache key based on userId
+      const cacheKey = createCacheKey("my-ads", userId || "guest")
+      
+      // Check if we have cached data
+      const cachedData = getCachedAPIResponse(cacheKey)
+      if (cachedData && Array.isArray(cachedData)) {
+        setAds(cachedData)
+        setLoading(false)
+        cachePageData({ ads: cachedData })
+        return
+      }
+
       const userAdverts = await AdsAPI.getUserAdverts(true)
 
       setAds(userAdverts)
+      // Cache the API response
+      cacheAPIResponse(cacheKey, userAdverts, 3 * 60 * 1000) // 3 minutes cache
+      cachePageData({ ads: userAdverts })
     } catch (err) {
       setError(t("myAds.errorLoadingAds"))
       setAds([])

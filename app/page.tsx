@@ -34,6 +34,8 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { usePageCache } from "@/hooks/use-page-cache"
+import { cacheAPIResponse, getCachedAPIResponse, createCacheKey } from "@/lib/cache-utils"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
@@ -61,6 +63,19 @@ export default function BuySellPage() {
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  
+  // Initialize page cache for buy/sell page
+  const { scrollContainerRef, cachePageData } = usePageCache({
+    key: "buy-sell-page",
+    duration: 5 * 60 * 1000, // 5 minutes
+    onDataRestore: (cachedData) => {
+      if (cachedData?.adverts) {
+        setAdverts(cachedData.adverts)
+        setIsLoading(false)
+      }
+    },
+    saveScrollPosition: true,
+  })
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
@@ -208,11 +223,26 @@ export default function BuySellPage() {
         params.favourites_only = 1
       }
 
+      // Generate cache key based on filter parameters
+      const cacheKey = createCacheKey("adverts", activeTab, selectedAccountCurrency, currency, JSON.stringify(selectedPaymentMethods), sortBy, filterOptions.fromFollowing ? "1" : "0")
+      
+      // Check if we have cached data for these filters
+      const cachedData = getCachedAPIResponse(cacheKey)
+      if (cachedData && Array.isArray(cachedData)) {
+        setAdverts(cachedData)
+        setIsLoading(false)
+        cachePageData({ adverts: cachedData })
+        return
+      }
+
       const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
 
       if (!abortController.signal.aborted) {
         if (Array.isArray(data)) {
           setAdverts(data)
+          // Cache the API response
+          cacheAPIResponse(cacheKey, data, 3 * 60 * 1000) // 3 minutes cache
+          cachePageData({ adverts: data })
         } else {
           console.error("API did not return an array:", data)
           setAdverts([])
@@ -230,7 +260,7 @@ export default function BuySellPage() {
         setIsLoading(false)
       }
     }
-  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions])
+  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions, cachePageData])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -397,7 +427,7 @@ export default function BuySellPage() {
   return (
     <>
       <div className="flex flex-col h-full overflow-hidden">
-        <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
+        <div ref={scrollContainerRef} className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">

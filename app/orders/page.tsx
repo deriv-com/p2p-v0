@@ -4,6 +4,8 @@ import type React from "react"
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
+import { usePageCache } from "@/hooks/use-page-cache"
+import { cacheAPIResponse, getCachedAPIResponse, createCacheKey } from "@/lib/cache-utils"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -51,6 +53,19 @@ export default function OrdersPage() {
   const { setIsChatVisible } = useChatVisibilityStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  
+  // Initialize page cache for orders page
+  const { scrollContainerRef, cachePageData } = usePageCache({
+    key: "orders-page",
+    duration: 3 * 60 * 1000, // 3 minutes for orders (more frequently changing)
+    onDataRestore: (cachedData) => {
+      if (cachedData?.orders) {
+        setOrders(cachedData.orders)
+        setIsLoading(false)
+      }
+    },
+    saveScrollPosition: true,
+  })
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
@@ -133,6 +148,18 @@ export default function OrdersPage() {
         }
       }
 
+      // Generate cache key based on filters
+      const cacheKey = createCacheKey("orders", activeTab, dateFilter, customDateRange.from?.toString() || "", customDateRange.to?.toString() || "")
+      
+      // Check if we have cached data for these filters
+      const cachedData = getCachedAPIResponse(cacheKey)
+      if (cachedData && Array.isArray(cachedData)) {
+        setOrders(cachedData)
+        setIsLoading(false)
+        cachePageData({ orders: cachedData })
+        return
+      }
+
       const orders = await OrdersAPI.getOrders(filters)
 
       if (abortController.signal.aborted) {
@@ -141,6 +168,9 @@ export default function OrdersPage() {
 
       const ordersArray = Array.isArray(orders.data) ? orders.data : []
       setOrders(ordersArray)
+      // Cache the API response
+      cacheAPIResponse(cacheKey, ordersArray, 2 * 60 * 1000) // 2 minutes cache
+      cachePageData({ orders: ordersArray })
     } catch (err) {
       if (!abortController.signal.aborted) {
         console.error("Error fetching orders:", err)
