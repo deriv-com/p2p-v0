@@ -546,8 +546,6 @@ export default function BuySellPage() {
                   </TableBody>
                 </Table>
               </div>
-            ) : error ? (
-              <div className="text-center py-8">{error}</div>
             ) : adverts.length === 0 ? (
               <EmptyState
                 title={t("market.noAdsTitle", { currency: currency })}
