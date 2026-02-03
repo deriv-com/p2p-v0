@@ -94,7 +94,7 @@ export default function BuySellPage() {
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
   }
 
-  const { data: fetchedAdverts = [], isLoading } = useAdvertisements(advertsParams)
+  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(advertsParams)
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -545,6 +545,10 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
+              </div>
+            ) : error ? (
+              <div className="text-center py-8 text-red-500">
+                {error.message || "Failed to load advertisements"}
               </div>
             ) : adverts.length === 0 ? (
               <EmptyState

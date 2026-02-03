@@ -123,7 +123,7 @@ export function useAdvertStats(currency: string, enabled = true) {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  return useQuery({
+  const query = useQuery({
     queryKey: queryKeys.buySell.advertisementsByParams(params || {}),
     queryFn: async () => {
       // Cast getAdvertisements to accept signal parameter if needed
@@ -132,6 +132,11 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
     },
     staleTime: 1000 * 30, // 30 seconds for dynamic data
   })
+  
+  return {
+    ...query,
+    error: query.error as Error | null,
+  }
 }
 
 export function usePaymentMethods() {
