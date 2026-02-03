@@ -26,6 +26,7 @@ export const queryKeys = {
     clientProfile: () => [...AUTH_KEYS, 'client-profile'] as const,
     socketToken: () => [...AUTH_KEYS, 'socket-token'] as const,
     advertStats: (currency: string) => [...AUTH_KEYS, 'advert-stats', currency] as const,
+    currencies: () => [...AUTH_KEYS, 'currencies'] as const,
   },
   
   // Buy/Sell queries
@@ -118,6 +119,14 @@ export function useAdvertStats(currency: string, enabled = true) {
     queryFn: () => AuthAPI.getAdvertStatistics(currency),
     staleTime: 1000 * 60 * 5,
     enabled,
+  })
+}
+
+export function useCurrencies() {
+  return useQuery({
+    queryKey: queryKeys.auth.currencies(),
+    queryFn: () => AuthAPI.getCurrencies(),
+    staleTime: 1000 * 60 * 30, // 30 minutes
   })
 }
 
