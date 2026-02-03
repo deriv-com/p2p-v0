@@ -10,7 +10,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { useClientProfile } from "@/hooks/use-api-queries"
+import { useClientProfile, useUserProfile } from "@/hooks/use-api-queries"
 
 export default function ProfilePage() {
   const { hideAlert, showWarningDialog, showAlert } = useAlertDialog()
@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const { t } = useTranslations()
   const [showKycPopup, setShowKycPopup] = useState(false)
   
-  const { data: profileData, isLoading, error } = useClientProfile()
+  const { data: profileData, isLoading, error } = useUserProfile()
   
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email

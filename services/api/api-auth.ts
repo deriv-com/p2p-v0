@@ -441,6 +441,26 @@ export async function getClientProfile(): Promise<void> {
   }
 }
 
+export async function getUserProfile(): Promise<any> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user profile: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching user profile:", error)
+    throw error
+  }
+}
+
 /**
  * Get websocket token
  */

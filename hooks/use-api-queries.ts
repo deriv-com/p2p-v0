@@ -99,6 +99,14 @@ export function useClientProfile() {
   })
 }
 
+export function useUserProfile() {
+  return useQuery({
+    queryKey: queryKeys.auth.clientProfile(),
+    queryFn: () => AuthAPI.getUserProfile(),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
 export function useSocketToken() {
   return useQuery({
     queryKey: queryKeys.auth.socketToken(),
