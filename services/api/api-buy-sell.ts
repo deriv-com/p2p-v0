@@ -115,8 +115,8 @@ export async function getAdvertisements(params?: SearchParams, signal?: AbortSig
       return []
     }
   } catch (error) {
-    console.log(error)
-    return []
+    console.error("Error fetching advertisements:", error)
+    throw error
   }
 }
 
