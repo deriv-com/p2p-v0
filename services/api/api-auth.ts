@@ -301,12 +301,20 @@ export async function fetchUserIdAndStore(): Promise<void> {
     }
 
     const userId = result?.data?.id
-    const userCountryCode = result?.data?.country_code
+    let userCountryCode = result?.data?.country_code
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
     const balances = result?.data?.total_account_value
     const status = result?.data?.status
+
+    // If userCountryCode is not available, fallback to residence from client profile
+    if (!userCountryCode) {
+      const residenceCountry = useUserDataStore.getState().residenceCountry
+      if (residenceCountry) {
+        userCountryCode = residenceCountry
+      }
+    }
 
     // Derive user's local currency from /settings.countries using /users/me country_code.
     // Fallback to the first country currency if no match.

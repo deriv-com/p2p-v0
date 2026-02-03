@@ -525,7 +525,7 @@
     "invalidValuesTitle": "অবৈধ মান",
     "invalidValuesMessage": "অনুগ্রহ করে আপনার ইনপুট মান পরীক্ষা করুন।",
     "amountExceedsBalanceTitle": "পরিমাণ ব্যালেন্স অতিক্রম করছে",
-    "amountExceedsBalanceMessage": "মোট পরিমাণ আপনার উপলব্ধ ব্যালেন্স অতিক্রম করে। অনুগ্রহ করে একটি ছোট পরিম���ণ লিখুন।",
+    "amountExceedsBalanceMessage": "মোট পরিমাণ আপনার উপলব্ধ ব্যালেন্স অতিক্রম করে। অনুগ্রহ করে একটি ছোট পরিমাণ লিখুন।",
     "selectPayment": "পেমেন্ট নির্বাচন করুন",
     "selected": "নির্বাচিত ({count})",
     "noPaymentMethodsFound": "কোন পেমেন্ট পদ্ধতি পাওয়া যায়নি",
