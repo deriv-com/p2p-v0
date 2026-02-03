@@ -238,7 +238,6 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
-      setError(null)
     } else {
       let title = t("profile.gettingStarted")
 
