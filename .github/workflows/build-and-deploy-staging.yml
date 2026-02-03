@@ -58,7 +58,7 @@ jobs:
                 NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL }}
                 NEXT_PUBLIC_FLOATING_RATE_ENABLED: ${{ vars.NEXT_PUBLIC_FLOATING_RATE_ENABLED }}
                 NEXT_PUBLIC_INTERCOM_APP_ID: ${{ vars.NEXT_PUBLIC_INTERCOM_APP_ID }}
-                NEXT_DISABLE_TURBOPACK: "1"
+                NEXT_DISABLE_TURBOPACK: 1
                 NEXT_PUBLIC_NODE_ENV: staging
                 NODE_ENV: staging
 
