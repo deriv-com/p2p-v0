@@ -504,7 +504,13 @@ export const currencyFlagMapper = {
   DZD: "/icons/flag-algeria.svg",
   LAK: "/icons/flag-laos.svg",
   MWK: "/icons/flag-malawi.svg",
-  WST: "/icons/flag-samoa.svg"
+  WST: "/icons/flag-samoa.svg",
+  BND: "/icons/flag-brunei.svg",
+  AWG: "/icons/flag-aruba.svg",
+  LYD: "/icons/flag-libya.svg",
+  GMD: "/icons/flag-gambia.svg",
+  AFN: "/icons/flag-afghanistan.svg",
+  BBD: "/icons/flag-barbados.svg"
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
