@@ -10,6 +10,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.28.0",
     "@datadog/browser-logs": "latest",
     "@datadog/browser-rum": "latest",
     "@deriv-com/analytics": "1.34.0",
