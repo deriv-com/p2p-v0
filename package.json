@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.28.0",
-    "@datadog/browser-logs": "latest",
-    "@datadog/browser-rum": "latest",
+    "@datadog/browser-logs": "^5.8.0",
+    "@datadog/browser-rum": "^5.8.0",
     "@deriv-com/analytics": "1.34.0",
     "@deriv-com/utils": "^0.0.42",
     "@eslint/eslintrc": "latest",
