@@ -28,6 +28,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useOrders } from "@/hooks/use-api-queries"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -49,8 +50,6 @@ export default function OrdersPage() {
   const { activeTab, setActiveTab, dateFilter, customDateRange, setDateFilter, setCustomDateRange } =
     useOrdersFilterStore()
   const { setIsChatVisible } = useChatVisibilityStore()
-  const [orders, setOrders] = useState<Order[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
@@ -63,8 +62,21 @@ export default function OrdersPage() {
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
-  const abortControllerRef = useRef<AbortController | null>(null)
-  const isMountedRef = useRef(false)
+  // Build filters for useOrders hook
+  const filters = {
+    is_open: activeTab === "active" ? true : false,
+    ...(activeTab === "past" &&
+      dateFilter !== "all" &&
+      customDateRange.from && {
+        date_from: format(startOfDay(customDateRange.from), "yyyy-MM-dd"),
+        date_to: customDateRange.to
+          ? format(endOfDay(customDateRange.to), "yyyy-MM-dd")
+          : format(endOfDay(customDateRange.from), "yyyy-MM-dd"),
+      }),
+  }
+
+  const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
+  const orders = Array.isArray(ordersResponse?.data) ? ordersResponse.data : []
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -99,78 +111,6 @@ export default function OrdersPage() {
       setShowCheckPreviousOrdersButton(false)
     }
   }, [userData?.signup])
-
-  const fetchOrders = async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-
-    const abortController = new AbortController()
-    abortControllerRef.current = abortController
-
-    setIsLoading(true)
-    try {
-      const filters: {
-        is_open?: boolean
-        date_from?: string
-        date_to?: string
-      } = {}
-
-      if (activeTab === "active") {
-        filters.is_open = true
-      } else {
-        filters.is_open = false
-
-        if (dateFilter !== "all") {
-          if (customDateRange.from) {
-            filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
-            if (customDateRange.to) {
-              filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
-            } else {
-              filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
-            }
-          }
-        }
-      }
-
-      const orders = await OrdersAPI.getOrders(filters)
-
-      if (abortController.signal.aborted) {
-        return
-      }
-
-      const ordersArray = Array.isArray(orders.data) ? orders.data : []
-      setOrders(ordersArray)
-    } catch (err) {
-      if (!abortController.signal.aborted) {
-        console.error("Error fetching orders:", err)
-        setOrders([])
-      }
-    } finally {
-      if (!abortController.signal.aborted) {
-        setIsLoading(false)
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (!isMountedRef.current) {
-      isMountedRef.current = true
-      fetchOrders()
-    }
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    if (isMountedRef.current) {
-      fetchOrders()
-    }
-  }, [activeTab, dateFilter, customDateRange])
 
   const handleCheckPreviousOrders = () => {
     setShowPreviousOrders(true)
@@ -208,7 +148,7 @@ export default function OrdersPage() {
   const handleRatingSubmit = () => {
     setIsRatingSidebarOpen(false)
     setSelectedOrderId(null)
-    fetchOrders()
+    refetch()
   }
 
   const getOrderType = (order) => {
