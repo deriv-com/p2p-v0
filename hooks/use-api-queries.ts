@@ -140,11 +140,12 @@ export function useCurrencies() {
 }
 
 // Ads Hooks
-export function useUserAdverts(showInactive?: boolean) {
+export function useUserAdverts(showInactive?: boolean, enabled = true) {
   return useQuery({
     queryKey: queryKeys.ads.userAdverts(showInactive),
     queryFn: () => AdsAPI.getUserAdverts(showInactive),
     staleTime: 1000 * 30, // 30 seconds
+    enabled,
   })
 }
 

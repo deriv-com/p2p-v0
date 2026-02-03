@@ -50,7 +50,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true)
+  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
