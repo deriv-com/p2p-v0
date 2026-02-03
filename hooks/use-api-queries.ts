@@ -59,11 +59,15 @@ export function useKycStatus() {
   })
 }
 
-export function useOnboardingStatus() {
+export function useOnboardingStatus(enabled = true) {
   return useQuery({
     queryKey: queryKeys.auth.onboardingStatus(),
     queryFn: () => AuthAPI.getOnboardingStatus(),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    gcTime: 1000 * 60 * 10, // 10 minutes garbage collection
+    refetchInterval: 1000 * 60 * 5, // Refetch every 5 minutes
+    refetchIntervalInBackground: true, // Continue refetching even when tab is not focused
+    enabled, // Only run when enabled
   })
 }
 

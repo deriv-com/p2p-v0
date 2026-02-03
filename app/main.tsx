@@ -36,7 +36,7 @@ export default function Main({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   // Call useOnboardingStatus hook if user is authenticated
-  const onboardingStatusQuery = useOnboardingStatus()
+  const onboardingStatusQuery = useOnboardingStatus(isAuthenticated)
 
   useEffect(() => {
     if (isAuthenticated && onboardingStatusQuery.isSuccess && onboardingStatusQuery.data) {
