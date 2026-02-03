@@ -26,7 +26,7 @@ export function MobileSidebarTrigger() {
         size="icon"
         className="h-8 w-8 rounded-full bg-[#ffffff0a]"
       >
-        <Image src="/icons/arrow-back.svg" width={20} height={20} alt="Back" />
+        <Image src="/icons/arrow-back.svg" width={24} height={24} alt="Back" />
       </Button>
     )
   }
