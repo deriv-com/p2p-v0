@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster"
 import Main from "./main"
 import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
+import { SWRProvider } from "@/lib/providers/swr-provider"
 import { DatadogRumInit } from "@/components/datadog-rum-init"
 import { AnalyticsInit } from "@/components/analytics-init"
 import { LanguageSync } from "@/lib/i18n/language-sync"
@@ -59,12 +60,14 @@ export default function RootLayout({
           <LanguageSync />
         </Suspense>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AlertDialogProvider>
-            <Toaster />
-            <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
-              <Main>{children}</Main>
-            </Suspense>
-          </AlertDialogProvider>
+          <SWRProvider>
+            <AlertDialogProvider>
+              <Toaster />
+              <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
+                <Main>{children}</Main>
+              </Suspense>
+            </AlertDialogProvider>
+          </SWRProvider>
         </ThemeProvider>
       </body>
     </html>
