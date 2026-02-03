@@ -13,6 +13,7 @@ import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
+import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import "./globals.css"
 
 export default function Main({
@@ -31,7 +32,8 @@ export default function Main({
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false)
+  const { data: onboardingStatus } = useOnboardingStatus()
 
   const isDisabled = userData?.status === "disabled"
 
