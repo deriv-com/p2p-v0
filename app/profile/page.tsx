@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
@@ -10,25 +10,28 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useClientProfile } from "@/hooks/use-api-queries"
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
   const { hideAlert, showWarningDialog, showAlert } = useAlertDialog()
   const { userData: user } = useUserDataStore()
+  const { t } = useTranslations()
+  const [showKycPopup, setShowKycPopup] = useState(false)
+  
+  const { data: profileData, isLoading, error } = useClientProfile()
+  
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
   const isDisabled = user?.status === "disabled"
-  const { t } = useTranslations()
-  const [showKycPopup, setShowKycPopup] = useState(false)
-  const searchParams = new URLSearchParams(window.location.search)
-  const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+  
+  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null
+  const shouldShowKyc = searchParams?.get("show_kyc_popup") === "true"
 
   useEffect(() => {
     if (shouldShowKyc) {
       setShowKycPopup(true)
     }
-  }, [])
+  }, [shouldShowKyc])
 
   useEffect(() => {
     if (showKycPopup) {
@@ -46,110 +49,71 @@ export default function ProfilePage() {
       })
       setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [showKycPopup, showAlert, hideAlert, t])
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`
-        const headers = {
-          "Content-Type": "application/json",
-        }
+    if (error) {
+      const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
+      showWarningDialog({
+        title: t("common.error"),
+        description: errorMessage,
+      })
+    }
+  }, [error, t, showWarningDialog])
 
-        const response = await fetch(url, {
-          credentials: "include",
-          headers,
-        })
+  // Transform API data to match component expectations
+  const userData = profileData ? (() => {
+    const data = profileData
+    const joinDate = new Date(data.registered_at)
+    const now = new Date()
+    const diff = now.getTime() - joinDate.getTime()
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
 
-        const responseData = await response.json()
-        setIsLoading(false)
-        if (responseData.errors && responseData.errors.length > 0) {
-          const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
-
-          if (
-            responseData.errors[0].status != 401 &&
-            responseData.errors[0].status != 403 &&
-            responseData.errors[0].status != 404
-          ) {
-            showWarningDialog({
-              title: t("common.error"),
-              description: errorMessage,
-            })
-          }
-
-          return
-        }
-
-        if (responseData && responseData.data) {
-          const data = responseData.data
-
-          const joinDate = new Date(data.registered_at)
-          const now = new Date()
-          const diff = now.getTime() - joinDate.getTime()
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-          let joinDateString
-          if (days === 0) {
-            joinDateString = t("profile.joinedToday")
-          } else if (days === 1) {
-            joinDateString = t("profile.joinedYesterday")
-          } else {
-            joinDateString = t("profile.joinedDaysAgo", { days })
-          }
-
-          setUserData(() => ({
-            ...data,
-            username: data.nickname,
-            is_online: data.is_online ?? true,
-            rating:
-              data.statistics_lifetime.rating_average !== null
-                ? `${data.statistics_lifetime.rating_average}/5`
-                : t("profile.notRatedYet"),
-            recommendation:
-              data.statistics_lifetime?.recommend_average !== null
-                ? t("profile.recommendedBy", {
-                  count: data.statistics_lifetime.recommend_count,
-                  plural: data.statistics_lifetime.recommend_count === 1 ? "" : "s",
-                })
-                : t("profile.notRecommendedYet"),
-            completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
-            buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
-            sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
-            joinDate: joinDateString,
-            tradeLimits: {
-              buy: {
-                current: data.daily_limits_remaining?.buy || 0,
-                max: data.daily_limits?.buy || 0,
-              },
-              sell: {
-                current: data.daily_limits_remaining?.sell || 0,
-                max: data.daily_limits?.sell || 0,
-              },
-            },
-            isVerified: {
-              id: true,
-              address: true,
-              phone: true,
-            },
-          }))
-        } else {
-          showWarningDialog({
-            title: t("common.error"),
-            description: t("profile.noUserData"),
-          })
-        }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
-        showWarningDialog({
-          title: t("common.error"),
-          description: errorMessage,
-        })
-        console.error("Error fetching user data:", error)
-      }
+    let joinDateString
+    if (days === 0) {
+      joinDateString = t("profile.joinedToday")
+    } else if (days === 1) {
+      joinDateString = t("profile.joinedYesterday")
+    } else {
+      joinDateString = t("profile.joinedDaysAgo", { days })
     }
 
-    fetchUserData()
-  }, [t])
+    return {
+      ...data,
+      username: data.nickname,
+      is_online: data.is_online ?? true,
+      rating:
+        data.statistics_lifetime?.rating_average !== null
+          ? `${data.statistics_lifetime.rating_average}/5`
+          : t("profile.notRatedYet"),
+      recommendation:
+        data.statistics_lifetime?.recommend_average !== null
+          ? t("profile.recommendedBy", {
+            count: data.statistics_lifetime.recommend_count,
+            plural: data.statistics_lifetime.recommend_count === 1 ? "" : "s",
+          })
+          : t("profile.notRecommendedYet"),
+      completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
+      buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
+      sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
+      joinDate: joinDateString,
+      tradeLimits: {
+        buy: {
+          current: data.daily_limits_remaining?.buy || 0,
+          max: data.daily_limits?.buy || 0,
+        },
+        sell: {
+          current: data.daily_limits_remaining?.sell || 0,
+          max: data.daily_limits?.sell || 0,
+        },
+      },
+      isVerified: {
+        id: true,
+        address: true,
+        phone: true,
+      },
+    }
+  })() : {}
 
   if (isDisabled) {
     return (
