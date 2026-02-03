@@ -28,7 +28,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { usePaymentMethods } from "@/hooks/use-api-queries"
+import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -60,8 +60,6 @@ export default function BuySellPage() {
   } = useMarketFilterStore()
 
   const [adverts, setAdverts] = useState<Advertisement[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
@@ -75,7 +73,6 @@ export default function BuySellPage() {
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
-  const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const localCurrency = useUserDataStore((state) => state.localCurrency)
@@ -87,6 +84,18 @@ export default function BuySellPage() {
   const isMobile = useIsMobile()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
+
+  // Build advertisement search params
+  const advertsParams = {
+    type: activeTab,
+    account_currency: selectedAccountCurrency,
+    currency: currency,
+    paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
+    sortBy: sortBy,
+    ...(filterOptions.fromFollowing && { favourites_only: 1 }),
+  }
+
+  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(advertsParams)
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -185,56 +194,12 @@ export default function BuySellPage() {
     [selectedPaymentMethods]
   )
 
-  const fetchAdverts = useCallback(async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-
-    const abortController = new AbortController()
-    abortControllerRef.current = abortController
-
-    setIsLoading(true)
-    setError(null)
-    try {
-      const params: BuySellAPI.SearchParams = {
-        type: activeTab,
-        account_currency: selectedAccountCurrency,
-        currency: currency,
-        paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
-        sortBy: sortBy,
-      }
-
-      if (filterOptions.fromFollowing) {
-        params.favourites_only = 1
-      }
-
-      const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
-
-      if (!abortController.signal.aborted) {
-        if (Array.isArray(data)) {
-          setAdverts(data)
-        } else {
-          console.error("API did not return an array:", data)
-          setAdverts([])
-          setError("Received invalid data format from server")
-        }
-      }
-    } catch (err) {
-      if (!abortController.signal.aborted) {
-        console.error("Error fetching adverts:", err)
-        setError("Failed to load advertisements. Please try again.")
-        setAdverts([])
-      }
-    } finally {
-      if (!abortController.signal.aborted) {
-        setIsLoading(false)
-      }
-    }
-  }, [activeTab, selectedAccountCurrency, currency, paymentMethods, paymentMethodsString, sortBy, filterOptions])
-
+  // Sync hook data to local state for websocket updates
   useEffect(() => {
-    fetchAdverts()
-  }, [fetchAdverts])
+    if (Array.isArray(fetchedAdverts)) {
+      setAdverts(fetchedAdverts)
+    }
+  }, [fetchedAdverts])
 
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
@@ -269,7 +234,6 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
-      setError(null)
     } else {
       let title = t("profile.gettingStarted")
 
@@ -325,14 +289,6 @@ export default function BuySellPage() {
       }
     }
   }, [isFilterPopupOpen])
-
-  useEffect(() => {
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [])
 
   useEffect(() => {
     if (isConnected && selectedAccountCurrency && currency && activeTab) {
