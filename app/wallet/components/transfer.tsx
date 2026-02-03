@@ -200,6 +200,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   useEffect(() => {
     if (!selectedCurrency) return
     if (!currenciesData?.data) return
+    if (currencies.length === 0) return
 
     const loadWallets = async () => {
       try {
@@ -269,7 +270,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
 
     loadWallets()
-  }, [selectedCurrency, currenciesData])
+  }, [selectedCurrency, currenciesData, currencies])
 
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
