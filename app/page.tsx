@@ -34,6 +34,7 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useOnboardingStatus } from "@/hooks/use-api-queries"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
@@ -80,7 +81,7 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
   const localCurrency = useUserDataStore((state) => state.localCurrency)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
-  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const { data: onboardingStatus } = useOnboardingStatus()
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { hideAlert, showAlert } = useAlertDialog()
