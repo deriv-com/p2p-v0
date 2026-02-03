@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getCurrencies } from "@/services/api/api-wallets"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
@@ -51,6 +51,7 @@ export default function WalletSummary({
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
+  const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -64,26 +65,21 @@ export default function WalletSummary({
   const formattedBalance = formatAmountWithDecimals(propBalance)
   const displayCurrencyLabel = currencies.find((c) => c.code === displayCurrency)?.label || displayCurrency
 
-  const fetchCurrencies = async () => {
-    try {
-      const response = await getCurrencies()
-      if (response?.data) {
-        const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
-          code,
-          name: data.label,
-          logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-          label: data.label,
-        }))
-        setCurrencies(currencyList)
-      }
-    } catch (error) {
-      console.error("Error fetching currencies:", error)
+  const fetchCurrencies = () => {
+    if (currenciesResponse?.data) {
+      const currencyList = Object.entries(currenciesResponse.data).map(([code, data]: [string, any]) => ({
+        code,
+        name: data.label,
+        logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+        label: data.label,
+      }))
+      setCurrencies(currencyList)
     }
   }
 
   useEffect(() => {
     fetchCurrencies()
-  }, [])
+  }, [currenciesResponse])
 
   const handleDepositClick = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {

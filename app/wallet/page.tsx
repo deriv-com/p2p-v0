@@ -5,7 +5,7 @@ import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
 import { getTotalBalance } from "@/services/api/api-auth"
-import { getCurrencies } from "@/services/api/api-wallets"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
@@ -25,6 +25,7 @@ export default function WalletPage() {
   const router = useRouter()
   const { t } = useTranslations()
   const { hideAlert, showAlert } = useAlertDialog()
+  const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -42,7 +43,6 @@ export default function WalletPage() {
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
     try {
-      const currenciesResponse = await getCurrencies()
       const currencies = currenciesResponse?.data || {}
       setCurrenciesData(currencies)
 
@@ -74,7 +74,7 @@ export default function WalletPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [currenciesResponse])
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
