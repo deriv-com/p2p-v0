@@ -24,7 +24,7 @@ export default function Header() {
   if (pathname.startsWith("/advertiser") || pathname.match(/^\/orders\/[^/]+$/)) return null
 
   return (
-    <header className="flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0">
+    <header className="flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
       <div className="md:hidden">
         <MobileSidebarTrigger />
       </div>
