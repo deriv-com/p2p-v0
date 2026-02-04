@@ -200,7 +200,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
   useEffect(() => {
     if (!selectedCurrency) return
-    if (!currenciesData) return
 
     const loadWallets = async () => {
       setWalletsLoading(true)
@@ -213,7 +212,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           response.data.wallets.forEach((wallet: any) => {
             if (!wallet.balances || wallet.balances.length === 0) {
               // Handle USD wallets with no balances
-              const currencyLabel = currenciesData.data["USD"]?.label || "USD"
+              const currencyLabel = currenciesData?.data["USD"]?.label || "USD"
               const walletName =
                 (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
@@ -231,7 +230,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   return
                 }
 
-                const currencyLabel = currenciesData.data[balance.currency]?.label || balance.currency
+                const currencyLabel = currenciesData?.data[balance.currency]?.label || balance.currency
 
                 const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
@@ -270,7 +269,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
 
     loadWallets()
-  }, [selectedCurrency, currenciesData])
+  }, [selectedCurrency])
 
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
