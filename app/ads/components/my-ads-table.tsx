@@ -252,7 +252,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
-  if (isLoading) {
+  if (isLoading || deleteAdMutation.isPending || toggleStatusMutation.isPending) {
     return (
       <div className="w-full">
         <Table>
