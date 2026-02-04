@@ -342,7 +342,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full relative">
+        {loadingAdId && (
+          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center rounded">
+            <div className="w-8 h-8 border-3 border-grayscale-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
@@ -466,17 +471,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {getStatusBadge(isActive)}
                   </TableCell>
                   <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
-                    <div className="flex items-end justify-end gap-2">
-                      {loadingAdId === ad.id && (
-                        <div className="w-6 h-6 border-2 border-grayscale-600 border-t-transparent rounded-full animate-spin" />
-                      )}
+                    <div className="flex items-end justify-end">
                       {hasVisibilityStatus && (
                         <Button
                           variant="ghost"
                           size="sm"
                           className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           onClick={() => handleVisibilityStatusClick(ad)}
-                          disabled={loadingAdId === ad.id}
                         >
                           <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
                         </Button>
@@ -502,13 +503,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                             </Button>
                           ) : (
-                            <DropdownMenu open={dropdownOpen && loadingAdId !== ad.id} onOpenChange={setDropdownOpen}>
+                            <DropdownMenu open={dropdownOpen && loadingAdId === null} onOpenChange={setDropdownOpen}>
                               <DropdownMenuTrigger asChild>
                                 <Button
                                   variant="ghost"
                                   size="sm"
                                   className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                  disabled={loadingAdId === ad.id}
+                                  disabled={loadingAdId !== null}
                                 >
                                   <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                                 </Button>
