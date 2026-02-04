@@ -29,7 +29,7 @@ export default function ProfilePage() {
     if (shouldShowKyc) {
       setShowKycPopup(true)
     }
-  }, [])
+  }, [shouldShowKyc])
 
   useEffect(() => {
     if (showKycPopup) {
@@ -45,9 +45,8 @@ export default function ProfilePage() {
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
       })
-      setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [showKycPopup, showAlert, hideAlert, t])
 
   useEffect(() => {
     if (error) {
