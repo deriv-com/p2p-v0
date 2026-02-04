@@ -25,6 +25,7 @@ export default function Main({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
@@ -33,7 +34,7 @@ export default function Main({
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
-  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus()
+  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
 
   const isDisabled = userData?.status === "disabled"
 
@@ -75,42 +76,18 @@ export default function Main({
           }
         }
 
-        const isAuthenticated = await AuthAPI.getSession()
+        const sessionAuth = await AuthAPI.getSession()
+        setIsAuthenticated(sessionAuth)
 
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
 
-        if (!isAuthenticated && !isPublic) {
+        if (!sessionAuth && !isPublic) {
           setIsHeaderVisible(false)
           window.location.href = getLoginUrl(userData?.signup === "v1")
-        } else if (isAuthenticated) {
+        } else if (sessionAuth) {
           await AuthAPI.fetchUserIdAndStore()
-
-          if (onboardingStatus && isMountedRef.current && !abortController.signal.aborted) {
-            setVerificationStatus({
-              phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
-              kyc_verified:
-                onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
-              p2p_allowed: onboardingStatus.p2p?.allowed,
-            })
-
-            setOnboardingStatus(onboardingStatus)
-
-            const currentUserId = useUserDataStore.getState().userId
-            if (!currentUserId && onboardingStatus.p2p?.allowed) {
-              try {
-                await AuthAPI.createP2PUser()
-                await AuthAPI.fetchUserIdAndStore()
-              } catch (error) {
-                console.error("Error creating P2P user:", error)
-              }
-            }
-
-            if (isMountedRef.current && !abortController.signal.aborted) {
-              router.push(pathname)
-            }
-          }
         }
       } catch (error) {
         if (abortController.signal.aborted || !isMountedRef.current) {
@@ -124,9 +101,7 @@ export default function Main({
       }
     }
 
-    if (!isOnboardingLoading) {
-      fetchSessionData()
-    }
+    fetchSessionData()
 
     return () => {
       isMountedRef.current = false
@@ -134,7 +109,34 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus, onboardingStatus, isOnboardingLoading])
+  }, [pathname, router, searchParams])
+
+  useEffect(() => {
+    if (!isAuthenticated || isOnboardingLoading || !onboardingStatus) {
+      return
+    }
+
+    setVerificationStatus({
+      phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
+      kyc_verified:
+        onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
+      p2p_allowed: onboardingStatus.p2p?.allowed,
+    })
+
+    setOnboardingStatus(onboardingStatus)
+
+    const currentUserId = useUserDataStore.getState().userId
+    if (!currentUserId && onboardingStatus.p2p?.allowed) {
+      ;(async () => {
+        try {
+          await AuthAPI.createP2PUser()
+          await AuthAPI.fetchUserIdAndStore()
+        } catch (error) {
+          console.error("Error creating P2P user:", error)
+        }
+      })()
+    }
+  }, [isAuthenticated, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
