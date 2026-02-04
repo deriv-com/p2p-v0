@@ -47,6 +47,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
@@ -136,6 +137,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleToggleStatus = async (ad: Ad) => {
     setDrawerOpen(false)
+    setDropdownOpen(false)
     const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
     const isListed = !isActive
 
@@ -488,7 +490,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                             </Button>
                           ) : (
-                            <DropdownMenu>
+                            <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                               <DropdownMenuTrigger asChild>
                                 <Button
                                   variant="ghost"
