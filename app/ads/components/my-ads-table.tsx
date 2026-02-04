@@ -247,7 +247,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   // Show skeleton loader when loading, during delete/toggle mutations, or during refetch after deletion
   const showSkeleton = isLoading || isFetching || deleteAdMutation.isPending || toggleStatusMutation.isPending
-  console.log("[v0] Table rendering - isLoading:", isLoading, "isFetching:", isFetching, "deleteAdMutation.isPending:", deleteAdMutation.isPending, "toggleStatusMutation.isPending:", toggleStatusMutation.isPending, "showSkeleton:", showSkeleton)
 
   if (showSkeleton) {
     return (
