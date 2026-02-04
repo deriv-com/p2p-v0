@@ -255,7 +255,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
-  if (isLoading) {
+  if (isLoading || toggleStatusMutation.isPending || deleteAdMutation.isPending) {
     return (
       <div className="w-full">
         <Table>
@@ -335,12 +335,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   return (
     <>
-      <div className="w-full relative">
-        {(toggleStatusMutation.isPending || deleteAdMutation.isPending) && (
-          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center rounded">
-            <div className="w-8 h-8 border-3 border-grayscale-600 border-t-transparent rounded-full animate-spin" />
-          </div>
-        )}
+      <div className="w-full">
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
