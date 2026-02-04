@@ -83,11 +83,12 @@ export function useKycStatus() {
   })
 }
 
-export function useOnboardingStatus() {
+export function useOnboardingStatus(enabled = true) {
   return useQuery({
     queryKey: queryKeys.auth.onboardingStatus(),
     queryFn: () => AuthAPI.getOnboardingStatus(),
     staleTime: 1000 * 60 * 5,
+    enabled,
   })
 }
 
