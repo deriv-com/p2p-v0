@@ -76,7 +76,7 @@ export default function ProfilePage() {
         joinDateString = t("profile.joinedDaysAgo", { days })
       }
 
-      setUserData(() => ({
+      setUserData({
         ...data,
         username: data.nickname,
         is_online: data.is_online ?? true,
@@ -110,7 +110,7 @@ export default function ProfilePage() {
           address: true,
           phone: true,
         },
-      }))
+      })
     }
   }, [meData, error, t, showWarningDialog])
 
