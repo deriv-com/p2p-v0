@@ -228,8 +228,11 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
+  // Create a stable, deterministic query key based on params values, not object reference
+  const queryKeyString = params ? JSON.stringify(params) : null
+  
   const query = useQuery({
-    queryKey: queryKeys.buySell.advertisementsByParams(params || {}),
+    queryKey: queryKeyString ? [...queryKeys.buySell.advertisements(), queryKeyString] : queryKeys.buySell.advertisements(),
     queryFn: async () => {
       // Cast getAdvertisements to accept signal parameter if needed
       const response = await (BuySellAPI.getAdvertisements as any)(params, signal)
@@ -237,6 +240,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
     },
     staleTime: 1000 * 10, // 10 seconds
     enabled: Boolean(params), // Only run query when params are provided
+    gcTime: 1000 * 60 * 5, // Keep cache for 5 minutes
   })
   
   return {
