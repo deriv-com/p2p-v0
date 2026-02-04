@@ -85,14 +85,26 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
   // Build advertisement search params - memoize to prevent duplicate API calls
-  const advertsParams = useMemo(() => ({
-    type: activeTab,
-    account_currency: selectedAccountCurrency,
-    currency: currency,
-    paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
-    sortBy: sortBy,
-    ...(filterOptions?.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, paymentMethods.length, selectedPaymentMethods, sortBy, filterOptions?.fromFollowing])
+  const advertsParams = useMemo(() => {
+    const params = {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      sortBy: sortBy,
+    }
+
+    // Only add paymentMethod if not all are selected
+    if (!areAllPaymentMethodsSelected) {
+      params.paymentMethod = selectedPaymentMethods
+    }
+
+    // Only add favourites_only if filter is active
+    if (filterOptions?.fromFollowing) {
+      params.favourites_only = 1
+    }
+
+    return params
+  }, [activeTab, selectedAccountCurrency, currency, sortBy, areAllPaymentMethodsSelected, selectedPaymentMethods, filterOptions?.fromFollowing])
 
   // Only fetch advertisements when we have the required params loaded
   const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
@@ -192,9 +204,16 @@ export default function BuySellPage() {
     }
   }, [currencies, localCurrency, currency, setCurrency])
 
+  // Memoize payment methods string to detect actual changes, not reference changes
   const paymentMethodsString = useMemo(
     () => JSON.stringify(selectedPaymentMethods),
     [selectedPaymentMethods]
+  )
+
+  // Memoize whether all payment methods are selected
+  const areAllPaymentMethodsSelected = useMemo(
+    () => selectedPaymentMethods.length === paymentMethods.length,
+    [selectedPaymentMethods.length, paymentMethods.length]
   )
 
   // Sync hook data to local state for websocket updates
