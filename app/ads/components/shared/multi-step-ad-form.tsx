@@ -20,6 +20,7 @@ import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useCreateAd, useUpdateAd } from "@/hooks/use-api-queries"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -66,6 +67,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const { leaveExchangeRatesChannel } = useWebSocketContext()
+  
+  // React Query mutations
+  const createAdMutation = useCreateAd()
+  const updateAdMutation = useUpdateAd()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
@@ -337,6 +342,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           const errorMessage = formatErrorMessage(result.errors)
           throw new Error(errorMessage)
         } else {
+          // Trigger mutation to refetch adverts
+          createAdMutation.mutate(payload)
           router.push("/ads")
           showAlert({
             title: t("myAds.adCreated"),
@@ -369,6 +376,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           const errorMessage = formatErrorMessage(updateResult.errors)
           throw new Error(errorMessage)
         } else {
+          // Trigger mutation to refetch adverts
+          updateAdMutation.mutate({ id: finalData.id, adData: payload })
           toast({
             description: (
               <div className="flex items-center gap-2">

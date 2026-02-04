@@ -23,6 +23,7 @@ import { VisibilityStatusDialog } from "./visibility-status-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useDeleteAd, useToggleAdActiveStatus } from "@/hooks/use-api-queries"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -46,6 +47,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
+  
+  // React Query mutations for delete and toggle status
+  const deleteAdMutation = useDeleteAd()
+  const toggleStatusMutation = useToggleAdActiveStatus()
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
@@ -138,6 +143,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       const result = await AdsAPI.toggleAdActiveStatus(ad.id, isListed)
 
       if (result.success) {
+        // Trigger the mutation to refetch adverts
+        toggleStatusMutation.mutate({ id: ad.id, isActive: isListed })
         if (onAdDeleted) {
           onAdDeleted()
         }
@@ -171,6 +178,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           const result = await AdsAPI.deleteAd(adId)
 
           if (result.success) {
+            // Trigger the mutation to refetch adverts
+            deleteAdMutation.mutate(adId)
             if (onAdDeleted) {
               onAdDeleted()
               toast({
