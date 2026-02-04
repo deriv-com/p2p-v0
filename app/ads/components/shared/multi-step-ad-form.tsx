@@ -335,8 +335,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
+        setIsSubmitting(true)
         createAdMutation.mutate(payload, {
           onSuccess: (result) => {
+            setIsSubmitting(false)
             router.push("/ads")
             showAlert({
               title: t("myAds.adCreated"),
@@ -346,11 +348,27 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             })
           },
           onError: (error: any) => {
+            setIsSubmitting(false)
             let errorMessage = t("adForm.genericProcessingErrorMessage")
-            if (error?.response?.data?.errors) {
+            let errorName = "GenericError"
+            
+            // Check if error is from createAd function with errors array
+            if (error?.errors && Array.isArray(error.errors)) {
+              errorMessage = formatErrorMessage(error.errors)
+              if (error.errors[0]?.code) {
+                errorName = error.errors[0].code
+              }
+            } else if (error?.response?.data?.errors) {
+              // Fallback for API response errors
               errorMessage = formatErrorMessage(error.response.data.errors)
+              if (error.response.data.errors[0]?.code) {
+                errorName = error.response.data.errors[0].code
+              }
             }
-            throw new Error(errorMessage)
+            
+            const customError = new Error(errorMessage)
+            customError.name = errorName
+            throw customError
           },
         })
       } else {
@@ -371,10 +389,12 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
+        setIsSubmitting(true)
         updateAdMutation.mutate(
           { id: finalData.id, adData: payload },
           {
             onSuccess: () => {
+              setIsSubmitting(false)
               toast({
                 description: (
                   <div className="flex items-center gap-2">
@@ -388,11 +408,27 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               router.push("/ads")
             },
             onError: (error: any) => {
+              setIsSubmitting(false)
               let errorMessage = t("adForm.genericProcessingErrorMessage")
-              if (error?.response?.data?.errors) {
+              let errorName = "GenericError"
+              
+              // Check if error is from updateAd function with errors array
+              if (error?.errors && Array.isArray(error.errors)) {
+                errorMessage = formatErrorMessage(error.errors)
+                if (error.errors[0]?.code) {
+                  errorName = error.errors[0].code
+                }
+              } else if (error?.response?.data?.errors) {
+                // Fallback for API response errors
                 errorMessage = formatErrorMessage(error.response.data.errors)
+                if (error.response.data.errors[0]?.code) {
+                  errorName = error.response.data.errors[0].code
+                }
               }
-              throw new Error(errorMessage)
+              
+              const customError = new Error(errorMessage)
+              customError.name = errorName
+              throw customError
             },
           }
         )

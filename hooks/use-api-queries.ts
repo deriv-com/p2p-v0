@@ -162,7 +162,15 @@ export function useUserAdverts(showInactive?: boolean, enabled = true) {
 export function useCreateAd() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (payload: any) => AdsAPI.createAd(payload),
+    mutationFn: async (payload: any) => {
+      const result = await AdsAPI.createAd(payload)
+      if (!result.success && result.errors && result.errors.length > 0) {
+        const error: any = new Error(result.errors[0].message || 'Failed to create ad')
+        error.errors = result.errors
+        throw error
+      }
+      return result
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
     },
@@ -172,7 +180,15 @@ export function useCreateAd() {
 export function useUpdateAd() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, adData }: { id: string; adData: any }) => AdsAPI.updateAd(id, adData),
+    mutationFn: async ({ id, adData }: { id: string; adData: any }) => {
+      const result = await AdsAPI.updateAd(id, adData)
+      if (!result.success && result.errors && result.errors.length > 0) {
+        const error: any = new Error(result.errors[0].message || 'Failed to update ad')
+        error.errors = result.errors
+        throw error
+      }
+      return result
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
     },
