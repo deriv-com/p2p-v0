@@ -1450,9 +1450,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     <div className="text-grayscale-600 text-sm font-normal">{getSourceWalletAmount()}</div>
                   </>
                 )}
-                {!sourceWalletData && (
-                  <div className="text-grayscale-text-muted text-sm font-normal">Select a wallet</div>
-                )}
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
@@ -1514,9 +1511,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     <div className="text-slate-1200 text-base font-bold">{destinationWalletData.name}</div>
                     <div className="text-grayscale-600 text-sm font-normal">{getDestinationWalletAmount()}</div>
                   </>
-                )}
-                {!destinationWalletData && (
-                  <div className="text-grayscale-text-muted text-sm font-normal">Select a wallet</div>
                 )}
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
