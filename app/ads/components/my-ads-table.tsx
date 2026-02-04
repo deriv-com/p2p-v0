@@ -48,7 +48,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [loadingAdId, setLoadingAdId] = useState<string | null>(null)
   
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
@@ -139,7 +138,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const handleToggleStatus = async (ad: Ad) => {
     setDrawerOpen(false)
     setDropdownOpen(false)
-    setLoadingAdId(ad.id)
     const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
     const isListed = !isActive
 
@@ -147,7 +145,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       { id: ad.id, isActive: isListed },
       {
         onError: (error: any) => {
-          setLoadingAdId(null)
           if (error?.response?.data?.errors?.length > 0) {
             const firstError = error.response.data.errors[0]
             if (firstError.code === "AdvertActiveCountExceeded") {
@@ -168,7 +165,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           }
         },
         onSuccess: () => {
-          setLoadingAdId(null)
           if (onAdDeleted) {
             onAdDeleted()
           }
@@ -186,10 +182,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       confirmText: t("common.delete"),
       cancelText: t("common.cancel"),
       onConfirm: () => {
-        setLoadingAdId(adId)
         deleteAdMutation.mutate(adId, {
           onSuccess: () => {
-            setLoadingAdId(null)
             if (onAdDeleted) {
               onAdDeleted("deleted")
             }
@@ -205,7 +199,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             })
           },
           onError: (error: any) => {
-            setLoadingAdId(null)
             let description = t("myAds.deleteAdError")
 
             if (error?.response?.data?.errors?.length > 0) {
@@ -343,7 +336,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   return (
     <>
       <div className="w-full relative">
-        {loadingAdId && (
+        {(toggleStatusMutation.isPending || deleteAdMutation.isPending) && (
           <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center rounded">
             <div className="w-8 h-8 border-3 border-grayscale-600 border-t-transparent rounded-full animate-spin" />
           </div>
@@ -503,13 +496,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                             </Button>
                           ) : (
-                            <DropdownMenu open={dropdownOpen && loadingAdId === null} onOpenChange={setDropdownOpen}>
+                            <DropdownMenu open={dropdownOpen && !toggleStatusMutation.isPending && !deleteAdMutation.isPending} onOpenChange={setDropdownOpen}>
                               <DropdownMenuTrigger asChild>
                                 <Button
                                   variant="ghost"
                                   size="sm"
                                   className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                  disabled={loadingAdId !== null}
+                                  disabled={toggleStatusMutation.isPending || deleteAdMutation.isPending}
                                 >
                                   <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                                 </Button>
