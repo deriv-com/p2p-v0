@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -51,7 +51,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true, !!userId)
+  const { data: userAdverts = [], isLoading: loading, error: queryError, refetch } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -92,12 +92,7 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  const fetchAds = async () => {
-    if (!userId) {
-      return
-    }
-    // Data will be fetched automatically by the React Query hook
-  }
+
 
   useEffect(() => {
     if (userAdverts.length > 0 || queryError) {
@@ -151,12 +146,12 @@ export default function AdsPage() {
         showStatusModal: true,
       })
 
-      fetchAds()
+      refetch()
     }
   }, [showAlert, isMobile, t])
 
   const handleAdUpdated = (status?: string) => {
-    fetchAds()
+    refetch()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
