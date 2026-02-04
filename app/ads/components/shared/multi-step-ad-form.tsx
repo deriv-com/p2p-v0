@@ -294,9 +294,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
 
       if (errorCodeMap[errors[0].code]) {
-        const error = new Error(errorCodeMap[errors[0].code])
-        error.name = errors[0].code
-        throw error
+        return errorCodeMap[errors[0].code]
       }
 
       return t("adForm.genericErrorCodeMessage", { code: errors[0].code })
@@ -335,7 +333,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
-        setIsSubmitting(true)
         createAdMutation.mutate(payload, {
           onSuccess: (result) => {
             setIsSubmitting(false)
@@ -395,7 +392,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
-        setIsSubmitting(true)
         updateAdMutation.mutate(
           { id: finalData.id, adData: payload },
           {
