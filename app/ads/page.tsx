@@ -61,29 +61,33 @@ export default function AdsPage() {
     }
   }, [])
 
+  const handleShowKycPopup = useCallback(() => {
+    let title = t("profile.gettingStarted")
+
+    if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+    else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+    else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
+    showAlert({
+      title,
+      description: (
+        <div className="space-y-4 my-2">
+          <KycOnboardingSheet route="ads" onClose={hideAlert} />
+        </div>
+      ),
+      confirmText: undefined,
+      cancelText: undefined,
+      onConfirm: () => setShowKycPopup(false),
+      onCancel: () => setShowKycPopup(false),
+    })
+    setShowKycPopup(false)
+  }, [t, isPoiExpired, isPoaExpired, showAlert, hideAlert])
+
   useEffect(() => {
     if (showKycPopup) {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-        onConfirm: () => setShowKycPopup(false),
-        onCancel: () => setShowKycPopup(false),
-      })
-      setShowKycPopup(false)
+      handleShowKycPopup()
     }
-  }, [showKycPopup])
+  }, [showKycPopup, handleShowKycPopup])
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
@@ -95,7 +99,15 @@ export default function AdsPage() {
 
   useEffect(() => {
     setAds(userAdverts)
-  }, [userAdverts])
+
+    if (queryError) {
+      setErrorModal({
+        show: true,
+        title: t("myAds.errorLoadingAdsTitle"),
+        message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
+      })
+    }
+  }, [userAdverts, queryError, t])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -172,7 +184,7 @@ export default function AdsPage() {
     } else if (!errorModal.show) {
       errorAlertShownRef.current = false
     }
-  }, [errorModal.show])
+  }, [errorModal.show, errorModal.title, errorModal.message, t, showAlert, handleCloseErrorModal])
 
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
