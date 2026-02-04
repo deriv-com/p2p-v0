@@ -162,11 +162,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             }
           }
         },
-        onSuccess: () => {
-          if (onAdDeleted) {
-            onAdDeleted()
-          }
-        },
       }
     )
   }
