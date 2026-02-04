@@ -154,7 +154,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [destinationMinAmount, setDestinationMinAmount] = useState<number>(0)
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [walletsLoading, setWalletsLoading] = useState(false)
 
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => {
@@ -202,7 +201,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     if (!selectedCurrency) return
 
     const loadWallets = async () => {
-      setWalletsLoading(true)
       try {
         const response = await fetchWalletsList()
 
@@ -263,8 +261,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         }
       } catch (error) {
         console.error("Error fetching wallets:", error)
-      } finally {
-        setWalletsLoading(false)
       }
     }
 
@@ -1454,10 +1450,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     <div className="text-grayscale-600 text-sm font-normal">{getSourceWalletAmount()}</div>
                   </>
                 )}
-                {!sourceWalletData && walletsLoading && (
-                  <div className="text-grayscale-text-muted text-sm font-normal">Loading...</div>
-                )}
-                {!sourceWalletData && !walletsLoading && (
+                {!sourceWalletData && (
                   <div className="text-grayscale-text-muted text-sm font-normal">Select a wallet</div>
                 )}
               </div>
@@ -1522,10 +1515,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     <div className="text-grayscale-600 text-sm font-normal">{getDestinationWalletAmount()}</div>
                   </>
                 )}
-                {!destinationWalletData && walletsLoading && (
-                  <div className="text-grayscale-text-muted text-sm font-normal">Loading...</div>
-                )}
-                {!destinationWalletData && !walletsLoading && (
+                {!destinationWalletData && (
                   <div className="text-grayscale-text-muted text-sm font-normal">Select a wallet</div>
                 )}
               </div>
