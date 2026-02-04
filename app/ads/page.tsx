@@ -51,7 +51,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true, !!userId)
+  const { data: userAdverts = [], isLoading: loading, error: queryError, refetch } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -93,24 +93,9 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  const fetchAds = async () => {
-    if (!userId) {
-      return
-    }
-    // Data will be fetched automatically by the React Query hook
-  }
-
   useEffect(() => {
     setAds(userAdverts)
-    
-    if (queryError) {
-      setErrorModal({
-        show: true,
-        title: t("myAds.errorLoadingAdsTitle"),
-        message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
-      })
-    }
-  }, [userAdverts, queryError, t])
+  }, [userAdverts])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -150,12 +135,12 @@ export default function AdsPage() {
         showStatusModal: true,
       })
 
-      fetchAds()
+      refetch()
     }
   }, [showAlert, isMobile, t])
 
   const handleAdUpdated = (status?: string) => {
-    fetchAds()
+    refetch()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
