@@ -176,8 +176,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       onConfirm: () => {
         deleteAdMutation.mutate(adId, {
           onSuccess: () => {
-            setShowDeletedBanner(true)
-            setTimeout(() => setShowDeletedBanner(false), 3000)
             toast({
               description: (
                 <div className="flex items-center gap-2">
