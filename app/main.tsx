@@ -9,6 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
@@ -27,11 +28,12 @@ export default function Main({
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
-  const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
+  const storeSetOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false)
+  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus()
 
   const isDisabled = userData?.status === "disabled"
 
@@ -85,10 +87,8 @@ export default function Main({
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
 
-          try {
-            const onboardingStatus = await AuthAPI.getOnboardingStatus()
-
-            if (isMountedRef.current && !abortController.signal.aborted) {
+          if (isMountedRef.current && !abortController.signal.aborted) {
+            if (onboardingStatus) {
               setVerificationStatus({
                 phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
                 kyc_verified:
@@ -96,7 +96,7 @@ export default function Main({
                 p2p_allowed: onboardingStatus.p2p?.allowed,
               })
 
-              setOnboardingStatus(onboardingStatus)
+              storeSetOnboardingStatus(onboardingStatus)
 
               const currentUserId = useUserDataStore.getState().userId
               if (!currentUserId && onboardingStatus.p2p?.allowed) {
@@ -112,11 +112,6 @@ export default function Main({
                 router.push(pathname)
               }
             }
-          } catch (error) {
-            console.error("Error fetching onboarding status:", error)
-            if (isMountedRef.current && !abortController.signal.aborted) {
-              router.push(pathname)
-            }
           }
         }
       } catch (error) {
@@ -131,7 +126,9 @@ export default function Main({
       }
     }
 
-    fetchSessionData()
+    if (!isOnboardingLoading) {
+      fetchSessionData()
+    }
 
     return () => {
       isMountedRef.current = false
@@ -139,7 +136,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
+  }, [pathname, router, searchParams, setVerificationStatus, storeSetOnboardingStatus, onboardingStatus, isOnboardingLoading])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
