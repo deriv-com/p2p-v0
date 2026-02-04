@@ -84,15 +84,15 @@ export default function BuySellPage() {
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
-  // Build advertisement search params
-  const advertsParams = {
+  // Build advertisement search params - memoize to prevent duplicate API calls
+  const advertsParams = useMemo(() => ({
     type: activeTab,
     account_currency: selectedAccountCurrency,
     currency: currency,
-    paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
+    paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
     sortBy: sortBy,
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }
+  }), [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
 
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(advertsParams)
 
