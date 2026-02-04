@@ -228,8 +228,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       return []
     }
 
-    return apiData.data
-    /* return apiData.data.map((advert: APIAdvert) => {
+    return apiData.data.map((advert: APIAdvert) => {
       const minAmount = advert.minimum_order_amount || 0
       const maxAmount = advert.maximum_order_amount || 0
       const exchangeRate = advert.exchange_rate || 0
@@ -270,7 +269,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         account_currency: accountCurrency,
         user: advert.user,
       }
-    }) */
+    })
   } catch (error) {
     return []
   }

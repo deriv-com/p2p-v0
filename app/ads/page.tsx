@@ -97,17 +97,17 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  useEffect(() => {
-    setAds(userAdverts)
-
-    if (queryError) {
-      setErrorModal({
-        show: true,
-        title: t("myAds.errorLoadingAdsTitle"),
-        message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
-      })
-    }
-  }, [userAdverts, queryError, t])
+  /*  useEffect(() => {
+     setAds(userAdverts)
+ 
+     if (queryError) {
+       setErrorModal({
+         show: true,
+         title: t("myAds.errorLoadingAdsTitle"),
+         message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
+       })
+     }
+   }, [userAdverts, queryError, t]) */
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -206,7 +206,7 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
-    const hasNoAds = ads.length > 0
+    const hasNoAds = userAdverts?.length > 0
     return (
       <div className="flex items-center justify-self-end self-end flex-shrink-0">
         <Switch
@@ -249,7 +249,7 @@ export default function AdsPage() {
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
-            {ads.length > 0 && (
+            {userAdverts?.length > 0 && (
               <Button
                 onClick={handleCreateAd}
                 size="sm"
