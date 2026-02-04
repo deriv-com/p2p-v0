@@ -81,9 +81,8 @@ export default function AdsPage() {
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
       })
-      setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [showKycPopup, showAlert, hideAlert, t, isPoiExpired, isPoaExpired])
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
@@ -101,7 +100,9 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    setAds(userAdverts)
+    if (userAdverts.length > 0 || queryError) {
+      setAds(userAdverts)
+    }
     
     if (queryError) {
       setErrorModal({
