@@ -34,21 +34,33 @@ export default function MarketFilterDropdown({
 }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
-  const [sortBy, setSortBy] = useState(initialSortBy)
+  const [sortBy, setSortBy] = useState<string>(initialSortBy || "exchange_rate")
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
+  // Initialize filters only once when component mounts, then let local state manage it
   useEffect(() => {
     setFilters(initialFilters)
-  }, [initialFilters])
+  }, [])
 
+  // Initialize sortBy only once when component mounts, then let local state manage it
   useEffect(() => {
     setSortBy(initialSortBy)
-  }, [initialSortBy])
+  }, [])
+
+  // Sync when dropdown opens to ensure we have latest values from store
+  useEffect(() => {
+    if (isOpen) {
+      setFilters(initialFilters)
+      setSortBy(initialSortBy)
+    }
+  }, [isOpen, initialFilters, initialSortBy])
 
   const handleReset = () => {
-    setSortBy("exchange_rate")
-    onApply({ fromFollowing: false }, "exchange_rate")
+    const resetSortBy = "exchange_rate"
+    setSortBy(resetSortBy)
+    setFilters({ fromFollowing: false })
+    onApply({ fromFollowing: false }, resetSortBy)
     setIsOpen(false)
     onOpenChangeProp?.(false)
   }
@@ -75,8 +87,10 @@ export default function MarketFilterDropdown({
     setFilters(newFilters)
   }
 
-  const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
-    setSortBy(value)
+  const handleSortByChange = (value: string) => {
+    if (value === "exchange_rate" || value === "user_rating_average_lifetime") {
+      setSortBy(value)
+    }
   }
 
   const FilterContent = () => (
