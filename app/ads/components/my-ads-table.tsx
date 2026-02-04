@@ -466,13 +466,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {getStatusBadge(isActive)}
                   </TableCell>
                   <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
-                    <div className="flex items-end justify-end">
+                    <div className="flex items-end justify-end gap-2">
+                      {loadingAdId === ad.id && (
+                        <div className="w-6 h-6 border-2 border-grayscale-600 border-t-transparent rounded-full animate-spin" />
+                      )}
                       {hasVisibilityStatus && (
                         <Button
                           variant="ghost"
                           size="sm"
                           className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           onClick={() => handleVisibilityStatusClick(ad)}
+                          disabled={loadingAdId === ad.id}
                         >
                           <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
                         </Button>
@@ -498,12 +502,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                             </Button>
                           ) : (
-                            <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+                            <DropdownMenu open={dropdownOpen && loadingAdId !== ad.id} onOpenChange={setDropdownOpen}>
                               <DropdownMenuTrigger asChild>
                                 <Button
                                   variant="ghost"
                                   size="sm"
                                   className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  disabled={loadingAdId === ad.id}
                                 >
                                   <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                                 </Button>
@@ -515,7 +520,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                                   onToggleStatus={handleToggleStatus}
                                   onDelete={handleDelete}
                                   onShare={handleShare}
-                                  isLoading={loadingAdId === ad.id}
                                 />
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -545,7 +549,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 onToggleStatus={handleToggleStatus}
                 onDelete={handleDelete}
                 onShare={handleShare}
-                isLoading={loadingAdId === selectedAd.id}
               />
             )}
           </div>

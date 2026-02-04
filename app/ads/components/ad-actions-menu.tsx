@@ -12,7 +12,6 @@ interface AdActionsMenuProps {
   onDelete: (adId: string) => void
   onShare?: (ad: Ad) => void
   variant?: "default" | "drawer"
-  isLoading?: boolean
 }
 
 export function AdActionsMenu({
@@ -22,7 +21,6 @@ export function AdActionsMenu({
   onDelete,
   onShare,
   variant = "default",
-  isLoading = false,
 }: AdActionsMenuProps) {
   const { t } = useTranslations()
   const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
@@ -51,15 +49,8 @@ export function AdActionsMenu({
         size="sm"
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onToggleStatus(ad)}
-        disabled={isLoading}
       >
-        {isLoading ? (
-          <>
-            <div className="mr-2 w-4 h-4 border-2 border-grayscale-600 border-t-transparent rounded-full animate-spin" />
-          </>
-        ) : (
-          <Image className="mr-2" src="/icons/deactivate.svg" alt="Toggle status" width={14} height={16} />
-        )}
+        <Image className="mr-2" src="/icons/deactivate.svg" alt="Toggle status" width={14} height={16} />
         {isActive ? t("myAds.deactivate") : t("myAds.activate")}
       </Button>
       <Button
@@ -67,15 +58,8 @@ export function AdActionsMenu({
         size="sm"
         className="hover:bg-transparent font-normal justify-start my-1"
         onClick={() => onDelete(ad.id)}
-        disabled={isLoading}
       >
-        {isLoading ? (
-          <>
-            <div className="mr-2 w-4 h-4 border-2 border-disputed-icon border-t-transparent rounded-full animate-spin" />
-          </>
-        ) : (
-          <Image className="mr-2" src="/icons/delete.svg" alt="Delete" width={14} height={16} />
-        )}
+        <Image className="mr-2" src="/icons/delete.svg" alt="Delete" width={14} height={16} />
         <span className="text-disputed-icon">{t("myAds.delete")}</span>
       </Button>
     </>
