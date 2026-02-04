@@ -184,7 +184,7 @@ export async function getCurrencies(): Promise<string[]> {
       credentials: "include",
     })
     await response.text()
-  } catch (error) {}
+  } catch (error) { }
 
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
   return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
@@ -228,7 +228,8 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       return []
     }
 
-    return apiData.data.map((advert: APIAdvert) => {
+    return apiData.data
+    /* return apiData.data.map((advert: APIAdvert) => {
       const minAmount = advert.minimum_order_amount || 0
       const maxAmount = advert.maximum_order_amount || 0
       const exchangeRate = advert.exchange_rate || 0
@@ -269,7 +270,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         account_currency: accountCurrency,
         user: advert.user,
       }
-    })
+    }) */
   } catch (error) {
     return []
   }
