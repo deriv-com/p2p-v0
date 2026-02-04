@@ -29,10 +29,11 @@ interface MyAdsTableProps {
   ads: Ad[]
   hiddenAdverts: boolean
   isLoading: boolean
+  isFetching?: boolean
   onAdDeleted?: (status?: string) => void
 }
 
-export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
+export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
@@ -244,7 +245,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
-  if (isLoading || deleteAdMutation.isPending || toggleStatusMutation.isPending) {
+  // Show skeleton loader when loading, during delete/toggle mutations, or during refetch after deletion
+  const showSkeleton = isLoading || isFetching || deleteAdMutation.isPending || toggleStatusMutation.isPending
+
+  if (showSkeleton) {
     return (
       <div className="w-full">
         <Table>

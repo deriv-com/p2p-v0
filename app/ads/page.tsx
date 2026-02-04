@@ -29,7 +29,6 @@ interface StatusData {
 
 export default function AdsPage() {
   const { t } = useTranslations()
-  const [ads, setAds] = useState<MyAd[]>([])
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId, onboardingStatus, verificationStatus } = useUserDataStore()
@@ -43,7 +42,6 @@ export default function AdsPage() {
     message: "",
   })
   const { hideAlert, showAlert } = useAlertDialog()
-  const hasFetchedRef = useRef(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
   const errorAlertShownRef = useRef(false)
 
@@ -51,7 +49,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, error: queryError, refetch } = useUserAdverts(true, !!userId)
+  const { data: userAdverts = [], isLoading: loading, isFetching, error: queryError, refetch } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -92,13 +90,7 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-
-
   useEffect(() => {
-    if (userAdverts.length > 0 || queryError) {
-      setAds(userAdverts)
-    }
-    
     if (queryError) {
       setErrorModal({
         show: true,
@@ -106,7 +98,7 @@ export default function AdsPage() {
         message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
       })
     }
-  }, [userAdverts, queryError, t])
+  }, [queryError, t])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -148,7 +140,7 @@ export default function AdsPage() {
 
       refetch()
     }
-  }, [showAlert, isMobile, t])
+  }, [showAlert, isMobile, t, refetch])
 
   const handleAdUpdated = (status?: string) => {
     if (status === "deleted") {
@@ -203,7 +195,7 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
-    const hasNoAds = ads.length > 0
+    const hasNoAds = userAdverts.length > 0
     return (
       <div className="flex items-center justify-self-end self-end flex-shrink-0">
         <Switch
@@ -246,7 +238,7 @@ export default function AdsPage() {
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
-            {ads.length > 0 && (
+            {userAdverts.length > 0 && (
               <Button
                 onClick={handleCreateAd}
                 size="sm"
@@ -265,7 +257,7 @@ export default function AdsPage() {
           {queryError ? (
             <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
+            <MyAdsTable ads={userAdverts} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} isFetching={isFetching} />
           )}
         </div>
 
