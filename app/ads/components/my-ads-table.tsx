@@ -48,6 +48,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isToggling, setIsToggling] = useState(false)
   
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
@@ -137,6 +138,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleToggleStatus = async (ad: Ad) => {
     setDrawerOpen(false)
+    setIsToggling(true)
     const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
     const isListed = !isActive
 
@@ -144,6 +146,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       { id: ad.id, isActive: isListed },
       {
         onError: (error: any) => {
+          setIsToggling(false)
           if (error?.response?.data?.errors?.length > 0) {
             const firstError = error.response.data.errors[0]
             if (firstError.code === "AdvertActiveCountExceeded") {
@@ -164,6 +167,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           }
         },
         onSuccess: () => {
+          setIsToggling(false)
           if (onAdDeleted) {
             onAdDeleted()
           }
@@ -256,7 +260,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
-  if (isLoading || isDeleting) {
+  if (isLoading || isDeleting || isToggling) {
     return (
       <div className="w-full">
         <Table>
