@@ -182,7 +182,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         deleteAdMutation.mutate(adId, {
           onSuccess: () => {
             if (onAdDeleted) {
-              onAdDeleted()
+              onAdDeleted("deleted")
             }
             toast({
               description: (

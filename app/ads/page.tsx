@@ -151,7 +151,7 @@ export default function AdsPage() {
   }, [showAlert, isMobile, t])
 
   const handleAdUpdated = (status?: string) => {
-    refetchAds()
+    refetch()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
