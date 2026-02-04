@@ -51,7 +51,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true, !!userId)
+  const { data: userAdverts = [], isLoading: loading, error: queryError, refetch } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -92,10 +92,9 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  const refetchAds = () => {
-    // React Query will automatically refetch when mutations complete
-    // No manual fetch needed - queries are invalidated by mutation hooks
-  }
+  const refetchAds = useCallback(() => {
+    refetch()
+  }, [refetch])
 
   useEffect(() => {
     if (userAdverts.length > 0 || queryError) {
