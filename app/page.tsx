@@ -89,10 +89,10 @@ export default function BuySellPage() {
     type: activeTab,
     account_currency: selectedAccountCurrency,
     currency: currency,
-    paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
+    paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
     sortBy: sortBy,
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, paymentMethods.length, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
+  }), [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
 
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(advertsParams)
 
