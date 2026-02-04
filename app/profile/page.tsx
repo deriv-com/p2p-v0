@@ -44,18 +44,19 @@ export default function ProfilePage() {
   }, [shouldShowKyc, showKycPopup, showAlert, hideAlert, t])
 
   useEffect(() => {
-    if (error) {
-      const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
-      if (!error.message?.includes("401") && !error.message?.includes("403") && !error.message?.includes("404")) {
-        showWarningDialog({
-          title: t("common.error"),
-          description: errorMessage,
-        })
-      }
-      return
-    }
+    /*  if (error) {
+       const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
+       if (!error.message?.includes("401") && !error.message?.includes("403") && !error.message?.includes("404")) {
+         showWarningDialog({
+           title: t("common.error"),
+           description: errorMessage,
+         })
+       }
+       return
+     } */
 
-    if (meData || error) {
+    console.log(meData)
+    if (meData) {
       const data = meData
       const joinDate = new Date(data.registered_at)
       const now = new Date()
