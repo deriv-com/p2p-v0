@@ -92,7 +92,7 @@ export default function BuySellPage() {
     paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
     sortBy: sortBy,
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
+  }), [activeTab, selectedAccountCurrency, currency, paymentMethods.length, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
 
   // Only fetch advertisements when we have the required params loaded
   const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
@@ -192,11 +192,6 @@ export default function BuySellPage() {
     }
   }, [currencies, localCurrency, currency, setCurrency])
 
-  const paymentMethodsString = useMemo(
-    () => JSON.stringify(selectedPaymentMethods),
-    [selectedPaymentMethods]
-  )
-
   // Sync hook data to local state for websocket updates
   useEffect(() => {
     if (Array.isArray(fetchedAdverts)) {
@@ -204,11 +199,12 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
+  // Initialize payment methods only once when they're first loaded
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
       setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
     }
-  }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
+  }, [paymentMethods.length, setSelectedPaymentMethods, selectedPaymentMethods.length])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
