@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -92,9 +92,7 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  const refetchAds = useCallback(() => {
-    refetch()
-  }, [refetch])
+
 
   useEffect(() => {
     if (userAdverts.length > 0 || queryError) {
@@ -148,7 +146,7 @@ export default function AdsPage() {
         showStatusModal: true,
       })
 
-      refetchAds()
+      refetch()
     }
   }, [showAlert, isMobile, t])
 
