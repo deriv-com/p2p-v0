@@ -45,6 +45,7 @@ export default function AdsPage() {
   const { hideAlert, showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
+  const errorAlertShownRef = useRef(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -171,14 +172,20 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    if (errorModal.show) {
+    if (errorModal.show && !errorAlertShownRef.current) {
+      errorAlertShownRef.current = true
       showAlert({
         title: errorModal.title,
         description: errorModal.message,
         confirmText: t("common.ok"),
-        onConfirm: handleCloseErrorModal,
+        onConfirm: () => {
+          handleCloseErrorModal()
+          errorAlertShownRef.current = false
+        },
         type: "warning",
       })
+    } else if (!errorModal.show) {
+      errorAlertShownRef.current = false
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t])
 
