@@ -92,7 +92,7 @@ export default function BuySellPage() {
     paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
     sortBy: sortBy,
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
+  }), [activeTab, selectedAccountCurrency, currency, paymentMethods.length, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
 
   // Only fetch advertisements when we have the required params loaded
   const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
