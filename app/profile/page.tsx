@@ -25,7 +25,7 @@ export default function ProfilePage() {
   const searchParams = new URLSearchParams(window.location.search)
   const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
       showAlert({
@@ -41,7 +41,7 @@ export default function ProfilePage() {
         onCancel: () => setShowKycPopup(false),
       })
     }
-  }, [shouldShowKyc, showKycPopup, showAlert, hideAlert, t])
+  }, [shouldShowKyc, showKycPopup, showAlert, hideAlert, t]) */
 
   useEffect(() => {
     if (error) {
