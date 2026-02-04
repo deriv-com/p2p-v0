@@ -238,23 +238,14 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  // Create a stable query key from params values instead of the object itself
-  const queryKey = useMemo(() => 
-    params ? queryKeys.buySell.advertisementsByParams(params) : undefined,
-    [
-      params?.type,
-      params?.currency,
-      params?.account_currency,
-      params?.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
-      params?.sortBy,
-      params?.favourites_only,
-    ]
-  )
+  // Create a stable query key from params values
+  const queryKey = params 
+    ? queryKeys.buySell.advertisementsByParams(params)
+    : undefined
 
   const query = useQuery({
     queryKey: queryKey || ['no-params'],
     queryFn: async () => {
-      // Cast getAdvertisements to accept signal parameter if needed
       const response = await (BuySellAPI.getAdvertisements as any)(params, signal)
       return response
     },
