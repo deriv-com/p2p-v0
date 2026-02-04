@@ -83,7 +83,7 @@ export default function AdsPage() {
       })
       setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [showKycPopup])
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
@@ -187,7 +187,7 @@ export default function AdsPage() {
     } else if (!errorModal.show) {
       errorAlertShownRef.current = false
     }
-  }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t, handleCloseErrorModal])
+  }, [errorModal.show])
 
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
