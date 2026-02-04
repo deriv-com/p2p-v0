@@ -45,6 +45,7 @@ export default function PaymentMethodsFilter({
   const { t } = useTranslations()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const scrollPositionRef = useRef<number | null>(null)
+  const isInitializingRef = useRef(false)
 
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
@@ -115,12 +116,15 @@ export default function PaymentMethodsFilter({
   }
 
   const handleOpenChange = (open: boolean) => {
+    if (open && !isInitializingRef.current) {
+      isInitializingRef.current = true
+      setTempSelectedMethods(selectedMethods)
+    }
     setIsOpen(open)
     onOpenChangeProp?.(open)
     if (!open) {
       setSearchQuery("")
-    } else {
-      setTempSelectedMethods(selectedMethods)
+      isInitializingRef.current = false
     }
   }
 
