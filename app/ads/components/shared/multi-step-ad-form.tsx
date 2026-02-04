@@ -347,10 +347,25 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           },
           onError: (error: any) => {
             let errorMessage = t("adForm.genericProcessingErrorMessage")
-            if (error?.response?.data?.errors) {
+            let errorName = "GenericError"
+            
+            // Check if error is from createAd function with errors array
+            if (error?.errors && Array.isArray(error.errors)) {
+              errorMessage = formatErrorMessage(error.errors)
+              if (error.errors[0]?.code) {
+                errorName = error.errors[0].code
+              }
+            } else if (error?.response?.data?.errors) {
+              // Fallback for API response errors
               errorMessage = formatErrorMessage(error.response.data.errors)
+              if (error.response.data.errors[0]?.code) {
+                errorName = error.response.data.errors[0].code
+              }
             }
-            throw new Error(errorMessage)
+            
+            const customError = new Error(errorMessage)
+            customError.name = errorName
+            throw customError
           },
         })
       } else {
