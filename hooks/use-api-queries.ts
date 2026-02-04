@@ -238,10 +238,11 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  // Create a stable query key from params values
-  const queryKey = params 
-    ? queryKeys.buySell.advertisementsByParams(params)
-    : undefined
+  // Memoize query key to prevent rebuilding on every render
+  const queryKey = useMemo(
+    () => (params ? queryKeys.buySell.advertisementsByParams(params) : undefined),
+    [params?.type, params?.currency, params?.account_currency, JSON.stringify(params?.paymentMethod), params?.sortBy, params?.favourites_only]
+  )
 
   const query = useQuery({
     queryKey: queryKey || ['no-params'],

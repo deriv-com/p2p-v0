@@ -70,6 +70,7 @@ export default function BuySellPage() {
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
   const fetchedForRef = useRef<string | null>(null)
+  const paymentMethodsInitializedRef = useRef(false)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const userId = useUserDataStore((state) => state.userId)
@@ -205,10 +206,11 @@ export default function BuySellPage() {
   }, [fetchedAdverts])
 
   useEffect(() => {
-    if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
+    if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0 && !paymentMethodsInitializedRef.current) {
+      paymentMethodsInitializedRef.current = true
       setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
     }
-  }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
+  }, [paymentMethods, selectedPaymentMethods, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
