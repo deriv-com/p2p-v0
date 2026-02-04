@@ -43,8 +43,6 @@ export default function PaymentMethodsFilter({
   const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const scrollPositionRef = useRef<number | null>(null)
 
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
@@ -77,11 +75,7 @@ export default function PaymentMethodsFilter({
   const isIndeterminate =
     paymentMethods.some((method) => tempSelectedMethods.includes(method.method)) && !isAllSelected
 
-  const handleSelectAll = (checked: boolean) => {
-    if (scrollContainerRef.current) {
-      scrollPositionRef.current = scrollContainerRef.current.scrollTop
-    }
-
+  const handleSelectAll = useCallback((checked: boolean) => {
     if (checked) {
       const newSelection = [...new Set([...tempSelectedMethods, ...paymentMethods.map((m) => m.method)])]
       setTempSelectedMethods(newSelection)
@@ -90,18 +84,14 @@ export default function PaymentMethodsFilter({
       const newSelection = tempSelectedMethods.filter((id) => !allMethodIds.includes(id))
       setTempSelectedMethods(newSelection)
     }
-  }
+  }, [tempSelectedMethods, paymentMethods])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
   }, [])
 
-  const handleMethodToggle = (methodId: string) => {
-    if (scrollContainerRef.current) {
-      scrollPositionRef.current = scrollContainerRef.current.scrollTop
-    }
-
+  const handleMethodToggle = useCallback((methodId: string) => {
     if (isAllSelected) {
       setTempSelectedMethods([methodId])
       return
@@ -112,7 +102,7 @@ export default function PaymentMethodsFilter({
     } else {
       setTempSelectedMethods([...tempSelectedMethods, methodId])
     }
-  }
+  }, [tempSelectedMethods, isAllSelected])
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
@@ -206,7 +196,7 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      <div ref={scrollContainerRef} className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
+      <div className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
         {filteredPaymentMethods.length > 0 && (
           <div className="flex items-center space-x-3 mb-4">
             <Checkbox
@@ -261,13 +251,8 @@ export default function PaymentMethodsFilter({
     </div>
   )
 
-  useEffect(() => {
-    if (!scrollContainerRef.current) return
-    if (scrollPositionRef.current === null) return
-
-    scrollContainerRef.current.scrollTop = scrollPositionRef.current
-    scrollPositionRef.current = null
-  }, [tempSelectedMethods])
+  // Remove scroll position restoration effect to prevent re-render loops
+  // The scroll position will naturally reset when the drawer/popover opens
 
   const enhancedTrigger = cloneElement(trigger, {
     className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"),
