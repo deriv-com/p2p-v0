@@ -220,6 +220,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
       return response
     },
     staleTime: 1000 * 10, // 10 seconds
+    enabled: Boolean(params), // Only run query when params are provided
   })
   
   return {

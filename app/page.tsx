@@ -94,7 +94,11 @@ export default function BuySellPage() {
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
   }), [activeTab, selectedAccountCurrency, currency, paymentMethods, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
 
-  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(advertsParams)
+  // Only fetch advertisements when we have the required params loaded
+  const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
+  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
+    shouldFetchAdvertisements ? advertsParams : undefined
+  )
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
