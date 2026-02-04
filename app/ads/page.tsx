@@ -92,11 +92,9 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  const fetchAds = async () => {
-    if (!userId) {
-      return
-    }
-    // Data will be fetched automatically by the React Query hook
+  const refetchAds = () => {
+    // React Query will automatically refetch when mutations complete
+    // No manual fetch needed - queries are invalidated by mutation hooks
   }
 
   useEffect(() => {
@@ -151,12 +149,12 @@ export default function AdsPage() {
         showStatusModal: true,
       })
 
-      fetchAds()
+      refetchAds()
     }
   }, [showAlert, isMobile, t])
 
   const handleAdUpdated = (status?: string) => {
-    fetchAds()
+    refetchAds()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
