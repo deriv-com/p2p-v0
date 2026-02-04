@@ -38,9 +38,13 @@ export default function MarketFilterDropdown({
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
+  // Only sync filters when popover is closed to avoid infinite loops
   useEffect(() => {
-    setFilters(initialFilters)
-  }, [initialFilters])
+    if (!isOpen) {
+      setFilters(initialFilters)
+      setSortBy(initialSortBy)
+    }
+  }, [initialFilters, initialSortBy, isOpen])
 
   const handleReset = () => {
     setSortBy("exchange_rate")
