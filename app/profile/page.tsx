@@ -82,11 +82,11 @@ export default function ProfilePage() {
         username: data.nickname,
         is_online: data.is_online ?? true,
         rating:
-          data.statistics_lifetime.rating_average !== null
+          data.statistics_lifetime?.rating_average !== null && data.statistics_lifetime?.rating_average !== undefined
             ? `${data.statistics_lifetime.rating_average}/5`
             : t("profile.notRatedYet"),
         recommendation:
-          data.statistics_lifetime?.recommend_average !== null
+          data.statistics_lifetime?.recommend_average !== null && data.statistics_lifetime?.recommend_average !== undefined
             ? t("profile.recommendedBy", {
               count: data.statistics_lifetime.recommend_count,
               plural: data.statistics_lifetime.recommend_count === 1 ? "" : "s",
