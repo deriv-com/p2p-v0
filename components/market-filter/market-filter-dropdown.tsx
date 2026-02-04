@@ -38,13 +38,13 @@ export default function MarketFilterDropdown({
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
-  // Only sync filters when popover is closed to avoid infinite loops
+  // Sync filters when popover opens to reflect current store state
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
       setFilters(initialFilters)
       setSortBy(initialSortBy)
     }
-  }, [initialFilters, initialSortBy, isOpen])
+  }, [isOpen, initialFilters, initialSortBy])
 
   const handleReset = () => {
     setSortBy("exchange_rate")
@@ -73,18 +73,10 @@ export default function MarketFilterDropdown({
       [key]: value,
     }
     setFilters(newFilters)
-
-    if (!isMobile) {
-      onApply(newFilters, sortBy)
-    }
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
-
-    if (!isMobile) {
-      onApply(filters, value)
-    }
   }
 
   const FilterContent = () => (
