@@ -366,9 +366,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               }
             }
             
-            const customError = new Error(errorMessage)
-            customError.name = errorName
-            throw customError
+            showAlert({
+              title: t("adForm.failedToCreateAd"),
+              description: errorMessage,
+              confirmText: t("adForm.updateAd"),
+              type: "error",
+              onConfirm: () => {
+                setCurrentStep(0)
+              },
+            })
           },
         })
       } else {
@@ -426,9 +432,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 }
               }
               
-              const customError = new Error(errorMessage)
-              customError.name = errorName
-              throw customError
+              showAlert({
+                title: t("adForm.failedToUpdateAd"),
+                description: errorMessage,
+                confirmText: t("adForm.updateAd"),
+                type: "error",
+                onConfirm: () => {
+                  setCurrentStep(0)
+                },
+              })
             },
           }
         )
