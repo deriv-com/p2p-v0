@@ -68,7 +68,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   
-  // React Query mutations
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
 
@@ -306,7 +305,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     return t("adForm.genericProcessingErrorMessage")
   }
 
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = () => {
     const finalData = { ...formDataRef.current }
 
     setIsSubmitting(true)
@@ -336,22 +335,24 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
-        const result = await AdsAPI.createAd(payload)
-
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        } else {
-          // Trigger mutation to refetch adverts
-          createAdMutation.mutate(payload)
-          router.push("/ads")
-          showAlert({
-            title: t("myAds.adCreated"),
-            description: t("adForm.adCreatedSuccess", { type: result.data.type }),
-            confirmText: t("common.ok"),
-            type: "success",
-          })
-        }
+        createAdMutation.mutate(payload, {
+          onSuccess: (result) => {
+            router.push("/ads")
+            showAlert({
+              title: t("myAds.adCreated"),
+              description: t("adForm.adCreatedSuccess", { type: result.data.type }),
+              confirmText: t("common.ok"),
+              type: "success",
+            })
+          },
+          onError: (error: any) => {
+            let errorMessage = t("adForm.genericProcessingErrorMessage")
+            if (error?.response?.data?.errors) {
+              errorMessage = formatErrorMessage(error.response.data.errors)
+            }
+            throw new Error(errorMessage)
+          },
+        })
       } else {
         const exchangeRate =
           finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
@@ -370,28 +371,34 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
-        const updateResult = await AdsAPI.updateAd(finalData.id, payload)
-
-        if (updateResult.errors && updateResult.errors.length > 0) {
-          const errorMessage = formatErrorMessage(updateResult.errors)
-          throw new Error(errorMessage)
-        } else {
-          // Trigger mutation to refetch adverts
-          updateAdMutation.mutate({ id: finalData.id, adData: payload })
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                <span>{t("adForm.adUpdatedSuccess")}</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-        }
-        router.push("/ads")
+        updateAdMutation.mutate(
+          { id: finalData.id, adData: payload },
+          {
+            onSuccess: () => {
+              toast({
+                description: (
+                  <div className="flex items-center gap-2">
+                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                    <span>{t("adForm.adUpdatedSuccess")}</span>
+                  </div>
+                ),
+                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                duration: 2500,
+              })
+              router.push("/ads")
+            },
+            onError: (error: any) => {
+              let errorMessage = t("adForm.genericProcessingErrorMessage")
+              if (error?.response?.data?.errors) {
+                errorMessage = formatErrorMessage(error.response.data.errors)
+              }
+              throw new Error(errorMessage)
+            },
+          }
+        )
       }
     } catch (error) {
+      setIsSubmitting(false)
       let errorInfo = {
         title: mode === "create" ? t("adForm.failedToCreateAd") : t("adForm.failedToUpdateAd"),
         message: t("adForm.tryAgain"),
@@ -460,7 +467,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             actionButtonText: t("common.ok"),
           }
         } else {
-          errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.name })
+          errorInfo.message = error.message || t("adForm.genericErrorCodeMessage", { code: error.name })
         }
       }
 

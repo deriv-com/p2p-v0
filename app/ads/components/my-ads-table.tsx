@@ -136,34 +136,39 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleToggleStatus = async (ad: Ad) => {
     setDrawerOpen(false)
-    try {
-      const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
-      const isListed = !isActive
+    const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
+    const isListed = !isActive
 
-      const result = await AdsAPI.toggleAdActiveStatus(ad.id, isListed)
-
-      if (result.success) {
-        // Trigger the mutation to refetch adverts
-        toggleStatusMutation.mutate({ id: ad.id, isActive: isListed })
-        if (onAdDeleted) {
-          onAdDeleted()
-        }
-      } else if (result.errors?.length > 0 && result.errors[0].code === "AdvertActiveCountExceeded") {
-        showAlert({
-          title: t("adForm.adLimitReachedTitle"),
-          description: t("adForm.adLimitReachedMessage"),
-          confirmText: t("common.ok"),
-          type: "warning",
-        })
-      } else {
-        showAlert({
-          title: t("myAds.unableToUpdateAd"),
-          description: t("myAds.updateAdError"),
-          confirmText: t("common.ok"),
-          type: "warning",
-        })
+    toggleStatusMutation.mutate(
+      { id: ad.id, isActive: isListed },
+      {
+        onError: (error: any) => {
+          if (error?.response?.data?.errors?.length > 0) {
+            const firstError = error.response.data.errors[0]
+            if (firstError.code === "AdvertActiveCountExceeded") {
+              showAlert({
+                title: t("adForm.adLimitReachedTitle"),
+                description: t("adForm.adLimitReachedMessage"),
+                confirmText: t("common.ok"),
+                type: "warning",
+              })
+            } else {
+              showAlert({
+                title: t("myAds.unableToUpdateAd"),
+                description: t("myAds.updateAdError"),
+                confirmText: t("common.ok"),
+                type: "warning",
+              })
+            }
+          }
+        },
+        onSuccess: () => {
+          if (onAdDeleted) {
+            onAdDeleted()
+          }
+        },
       }
-    } catch (error) { }
+    )
   }
 
   const handleDelete = (adId: string) => {
@@ -173,31 +178,30 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       description: t("myAds.deleteAdDescription"),
       confirmText: t("common.delete"),
       cancelText: t("common.cancel"),
-      onConfirm: async () => {
-        try {
-          const result = await AdsAPI.deleteAd(adId)
-
-          if (result.success) {
-            // Trigger the mutation to refetch adverts
-            deleteAdMutation.mutate(adId)
+      onConfirm: () => {
+        deleteAdMutation.mutate(adId, {
+          onSuccess: () => {
             if (onAdDeleted) {
               onAdDeleted()
-              toast({
-                description: (
-                  <div className="flex items-center gap-2">
-                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    <span>{t("myAds.adDeleted")}</span>
-                  </div>
-                ),
-                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-                duration: 2500,
-              })
             }
-          } else {
+            toast({
+              description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <span>{t("myAds.adDeleted")}</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
+            })
+          },
+          onError: (error: any) => {
             let description = t("myAds.deleteAdError")
 
-            if (result.errors && result.errors.length > 0) {
-              const hasOpenOrdersError = result.errors.some((error) => error.code === "AdvertDeleteOpenOrders")
+            if (error?.response?.data?.errors?.length > 0) {
+              const hasOpenOrdersError = error.response.data.errors.some(
+                (err: any) => err.code === "AdvertDeleteOpenOrders"
+              )
               if (hasOpenOrdersError) {
                 description = t("myAds.deleteAdOpenOrders")
               }
@@ -211,10 +215,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 type: "warning",
               })
             }, 500)
-          }
-        } catch (error) {
-          console.log("Delete error:", error)
-        }
+          },
+        })
       },
     })
   }
