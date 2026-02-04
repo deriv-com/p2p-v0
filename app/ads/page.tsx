@@ -97,7 +97,7 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     setAds(userAdverts)
 
     if (queryError) {
@@ -107,7 +107,7 @@ export default function AdsPage() {
         message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
       })
     }
-  }, [userAdverts, queryError, t])
+  }, [userAdverts, queryError, t]) */
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
