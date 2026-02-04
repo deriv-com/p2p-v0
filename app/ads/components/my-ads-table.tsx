@@ -162,11 +162,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             }
           }
         },
-        onSuccess: () => {
-          if (onAdDeleted) {
-            onAdDeleted()
-          }
-        },
       }
     )
   }
@@ -181,9 +176,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       onConfirm: () => {
         deleteAdMutation.mutate(adId, {
           onSuccess: () => {
-            if (onAdDeleted) {
-              onAdDeleted("deleted")
-            }
             toast({
               description: (
                 <div className="flex items-center gap-2">
