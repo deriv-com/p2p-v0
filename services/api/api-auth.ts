@@ -258,6 +258,29 @@ export async function logout(): Promise<void> {
 }
 
 /**
+ * Fetch current user data from /users/me endpoint
+ */
+export async function getMe(): Promise<any> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user data: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching user data:", error)
+    throw error
+  }
+}
+
+/**
  * Fetch user data and store user_id in localStorage
  */
 export async function fetchUserIdAndStore(): Promise<void> {

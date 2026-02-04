@@ -21,6 +21,7 @@ export const queryKeys = {
   auth: {
     all: AUTH_KEYS,
     session: () => [...AUTH_KEYS, 'session'] as const,
+    me: () => [...AUTH_KEYS, 'me'] as const,
     kycStatus: () => [...AUTH_KEYS, 'kyc-status'] as const,
     onboardingStatus: () => [...AUTH_KEYS, 'onboarding-status'] as const,
     totalBalance: () => [...AUTH_KEYS, 'total-balance'] as const,
@@ -63,6 +64,14 @@ export function useSession() {
     queryKey: queryKeys.auth.session(),
     queryFn: () => AuthAPI.getSession(),
     staleTime: 1000 * 60 * 10, // 10 minutes
+  })
+}
+
+export function useMe() {
+  return useQuery({
+    queryKey: queryKeys.auth.me(),
+    queryFn: () => AuthAPI.getMe(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   })
 }
 
