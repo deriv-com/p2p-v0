@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { hideMyAds } from "@/services/api/api-my-ads"
 import { useUserAdverts } from "@/hooks/use-api-queries"
-import { useQueryClient } from "@tanstack/react-query"
-import { queryKeys } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -50,7 +48,6 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const queryClient = useQueryClient()
 
   // Use the React Query hook
   const { data: userAdverts = [], isLoading: loading, error: queryError, refetch } = useUserAdverts(true, !!userId)
