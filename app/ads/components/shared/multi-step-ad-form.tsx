@@ -337,7 +337,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
         createAdMutation.mutate(payload, {
           onSuccess: (result) => {
-            router.push("/ads")
+            setTimeout(() => {
+              router.push("/ads")
+            }, 100)
             showAlert({
               title: t("myAds.adCreated"),
               description: t("adForm.adCreatedSuccess", { type: result.data.type }),
@@ -385,7 +387,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
                 duration: 2500,
               })
-              router.push("/ads")
+              setTimeout(() => {
+                router.push("/ads")
+              }, 100)
             },
             onError: (error: any) => {
               let errorMessage = t("adForm.genericProcessingErrorMessage")
