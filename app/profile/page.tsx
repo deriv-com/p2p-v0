@@ -13,7 +13,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
-  const { hideAlert, showWarningDialog, showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const { data: meData, isLoading, error } = useMe()
   const tempBanUntil = user?.temp_ban_until
@@ -98,18 +98,6 @@ export default function ProfilePage() {
       })
     }
   }, [shouldShowKyc, showKycPopup, showAlert, hideAlert, t])
-
-  useEffect(() => {
-    if (error) {
-      const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
-      if (!error.message?.includes("401") && !error.message?.includes("403") && !error.message?.includes("404")) {
-        showWarningDialog({
-          title: t("common.error"),
-          description: errorMessage,
-        })
-      }
-    }
-  }, [error, t, showWarningDialog])
 
   if (isDisabled) {
     return (
