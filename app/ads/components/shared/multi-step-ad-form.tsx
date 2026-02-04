@@ -308,34 +308,292 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const handleFinalSubmit = () => {
     const finalData = { ...formDataRef.current }
 
+    if (isSubmitting) {
+      return
+    }
+
     setIsSubmitting(true)
 
-    try {
-      const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
+    const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
 
-      if (mode === "create") {
-        const exchangeRate =
-          finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+    if (mode === "create") {
+      const exchangeRate =
+        finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
 
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: finalData.buyCurrency,
-          payment_currency: finalData.forCurrency,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: orderTimeLimit,
-          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+      const payload = {
+        type: finalData.type || "buy",
+        account_currency: finalData.buyCurrency,
+        payment_currency: finalData.forCurrency,
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        available_amount: finalData.totalAmount || 0,
+        exchange_rate: exchangeRate || 0,
+        exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
+        description: finalData.instructions || "",
+        is_active: 1,
+        order_expiry_period: orderTimeLimit,
+        available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+      }
+
+      createAdMutation.mutate(payload, {
+        onSuccess: (result) => {
+          setIsSubmitting(false)
+          router.push("/ads")
+          showAlert({
+            title: t("myAds.adCreated"),
+            description: t("adForm.adCreatedSuccess", { type: result.data.type }),
+            confirmText: t("common.ok"),
+            type: "success",
+          })
+        },
+        onError: (error: any) => {
+          setIsSubmitting(false)
+          let errorMessage = t("adForm.genericProcessingErrorMessage")
+          let errorName = "GenericError"
+          
+          // Check if error is from createAd function with errors array
+          if (error?.errors && Array.isArray(error.errors)) {
+            errorMessage = formatErrorMessage(error.errors)
+            if (error.errors[0]?.code) {
+              errorName = error.errors[0].code
+            }
+          } else if (error?.response?.data?.errors) {
+            // Fallback for API response errors
+            errorMessage = formatErrorMessage(error.response.data.errors)
+            if (error.response.data.errors[0]?.code) {
+              errorName = error.response.data.errors[0].code
+            }
+          }
+          
+          // Handle specific error types
+          let errorInfo = {
+            title: t("adForm.failedToCreateAd"),
+            message: errorMessage,
+            type: "error" as "error" | "warning",
+            actionButtonText: t("adForm.updateAd"),
+          }
+
+          if (errorName === "AdvertExchangeRateDuplicate") {
+            errorInfo = {
+              title: t("adForm.duplicateRateTitle"),
+              message: t("adForm.duplicateRateMessage"),
+              type: "warning",
+              actionButtonText: t("adForm.updateAd"),
+            }
+          } else if (errorName === "AdvertOrderRangeOverlap") {
+            errorInfo = {
+              title: t("adForm.rangeOverlapTitle"),
+              message: t("adForm.rangeOverlapMessage"),
+              type: "warning",
+              actionButtonText: t("adForm.updateAd"),
+            }
+          } else if (errorName === "AdvertLimitReached" || errorMessage === "ad_limit_reached") {
+            errorInfo = {
+              title: t("adForm.adLimitReachedTitle"),
+              message: t("adForm.adLimitReachedMessage"),
+              type: "error",
+              actionButtonText: t("adForm.updateAd"),
+            }
+          } else if (errorName === "InsufficientBalance") {
+            errorInfo = {
+              title: t("adForm.insufficientBalanceTitle"),
+              message: t("adForm.insufficientBalanceMessage"),
+              type: "error",
+              actionButtonText: t("adForm.updateAd"),
+            }
+          } else if (errorName === "InvalidExchangeRate" || errorName === "InvalidOrderAmount") {
+            errorInfo = {
+              title: t("adForm.invalidValuesTitle"),
+              message: errorMessage,
+              type: "error",
+              actionButtonText: t("adForm.updateAd"),
+            }
+          } else if (errorName === "AdvertTotalAmountExceeded") {
+            errorInfo = {
+              title: t("adForm.amountExceedsBalanceTitle"),
+              message: t("adForm.amountExceedsBalanceMessage"),
+              type: "error",
+              actionButtonText: t("adForm.updateAd"),
+            }
+          } else if (errorName === "AdvertActiveCountExceeded") {
+            errorInfo = {
+              title: t("adForm.adLimitReachedTitle"),
+              message: t("adForm.adLimitReachedMessage"),
+              type: "error",
+              actionButtonText: "Go to my ads",
+              onConfirm: () => {
+                router.push("/ads")
+              }
+            }
+          } else if (errorName === "AdvertFloatRateMaximum") {
+            errorInfo = {
+              title: t("adForm.advertFloatRateMaximumTitle"),
+              message: t("adForm.advertFloatRateMaximumMessage"),
+              type: "error",
+              actionButtonText: t("common.ok"),
+            }
+          }
+
+          showAlert({
+            title: errorInfo.title,
+            description: errorInfo.message,
+            confirmText: errorInfo.actionButtonText,
+            type: errorInfo.type,
+            onConfirm: () => {
+              if (errorInfo.onConfirm) {
+                errorInfo.onConfirm()
+              } else {
+                setCurrentStep(0)
+              }
+            },
+          })
+        },
+      })
+    } else {
+      // Edit mode
+      const exchangeRate =
+        finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+
+      const payload = {
+        type: finalData.type || "buy",
+        account_currency: finalData.buyCurrency,
+        payment_currency: finalData.forCurrency,
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        available_amount: finalData.totalAmount || 0,
+        exchange_rate: exchangeRate || 0,
+        exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
+        description: finalData.instructions || "",
+        order_expiry_period: orderTimeLimit,
+        available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+      }
+
+      updateAdMutation.mutate(
+        { id: adId || "", adData: payload },
+        {
+          onSuccess: () => {
+            setIsSubmitting(false)
+            router.push("/ads")
+            showAlert({
+              title: t("myAds.adUpdated"),
+              description: t("adForm.adUpdatedSuccess"),
+              confirmText: t("common.ok"),
+              type: "success",
+            })
+          },
+          onError: (error: any) => {
+            setIsSubmitting(false)
+            let errorMessage = t("adForm.genericProcessingErrorMessage")
+            let errorName = "GenericError"
+            
+            // Check if error is from updateAd function with errors array
+            if (error?.errors && Array.isArray(error.errors)) {
+              errorMessage = formatErrorMessage(error.errors)
+              if (error.errors[0]?.code) {
+                errorName = error.errors[0].code
+              }
+            } else if (error?.response?.data?.errors) {
+              // Fallback for API response errors
+              errorMessage = formatErrorMessage(error.response.data.errors)
+              if (error.response.data.errors[0]?.code) {
+                errorName = error.response.data.errors[0].code
+              }
+            }
+            
+            // Handle specific error types
+            let errorInfo = {
+              title: t("adForm.failedToUpdateAd"),
+              message: errorMessage,
+              type: "error" as "error" | "warning",
+              actionButtonText: t("adForm.updateAd"),
+            }
+
+            if (errorName === "AdvertExchangeRateDuplicate") {
+              errorInfo = {
+                title: t("adForm.duplicateRateTitle"),
+                message: t("adForm.duplicateRateMessage"),
+                type: "warning",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertOrderRangeOverlap") {
+              errorInfo = {
+                title: t("adForm.rangeOverlapTitle"),
+                message: t("adForm.rangeOverlapMessage"),
+                type: "warning",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertLimitReached" || errorMessage === "ad_limit_reached") {
+              errorInfo = {
+                title: t("adForm.adLimitReachedTitle"),
+                message: t("adForm.adLimitReachedMessage"),
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "InsufficientBalance") {
+              errorInfo = {
+                title: t("adForm.insufficientBalanceTitle"),
+                message: t("adForm.insufficientBalanceMessage"),
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "InvalidExchangeRate" || errorName === "InvalidOrderAmount") {
+              errorInfo = {
+                title: t("adForm.invalidValuesTitle"),
+                message: errorMessage,
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertTotalAmountExceeded") {
+              errorInfo = {
+                title: t("adForm.amountExceedsBalanceTitle"),
+                message: t("adForm.amountExceedsBalanceMessage"),
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertActiveCountExceeded") {
+              errorInfo = {
+                title: t("adForm.adLimitReachedTitle"),
+                message: t("adForm.adLimitReachedMessage"),
+                type: "error",
+                actionButtonText: "Go to my ads",
+                onConfirm: () => {
+                  router.push("/ads")
+                }
+              }
+            } else if (errorName === "AdvertFloatRateMaximum") {
+              errorInfo = {
+                title: t("adForm.advertFloatRateMaximumTitle"),
+                message: t("adForm.advertFloatRateMaximumMessage"),
+                type: "error",
+                actionButtonText: t("common.ok"),
+              }
+            }
+
+            showAlert({
+              title: errorInfo.title,
+              description: errorInfo.message,
+              confirmText: errorInfo.actionButtonText,
+              type: errorInfo.type,
+              onConfirm: () => {
+                if (errorInfo.onConfirm) {
+                  errorInfo.onConfirm()
+                } else {
+                  setCurrentStep(0)
+                }
+              },
+            })
+          },
         }
+      )
+    }
+  }
 
-        setIsSubmitting(true)
         createAdMutation.mutate(payload, {
           onSuccess: (result) => {
             setIsSubmitting(false)
