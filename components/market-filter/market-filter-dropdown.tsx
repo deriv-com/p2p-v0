@@ -39,8 +39,11 @@ export default function MarketFilterDropdown({
   const { t } = useTranslations()
 
   useEffect(() => {
-    setFilters(initialFilters)
-  }, [initialFilters])
+    if (isOpen) {
+      setFilters(initialFilters)
+      setSortBy(initialSortBy)
+    }
+  }, [isOpen, initialFilters, initialSortBy])
 
   const handleReset = () => {
     setSortBy("exchange_rate")
