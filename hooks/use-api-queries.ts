@@ -38,7 +38,16 @@ export const queryKeys = {
   buySell: {
     all: BUY_SELL_KEYS,
     advertisements: () => [...BUY_SELL_KEYS, 'advertisements'] as const,
-    advertisementsByParams: (params: BuySellSearchParams) => [...BUY_SELL_KEYS, 'advertisements', params] as const,
+    advertisementsByParams: (params: BuySellSearchParams) => [
+      ...BUY_SELL_KEYS, 
+      'advertisements',
+      params.type,
+      params.currency,
+      params.account_currency,
+      params.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
+      params.sortBy,
+      params.favourites_only,
+    ] as const,
     paymentMethods: () => [...BUY_SELL_KEYS, 'payment-methods'] as const,
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
     advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
@@ -229,23 +238,14 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  // Create a stable query key from params values instead of the object itself
-  const queryKey = useMemo(() => 
-    params ? queryKeys.buySell.advertisementsByParams(params) : undefined,
-    [
-      params?.type,
-      params?.currency,
-      params?.account_currency,
-      params?.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
-      params?.sortBy,
-      params?.favourites_only,
-    ]
-  )
+  // Create a stable query key from params values
+  const queryKey = params 
+    ? queryKeys.buySell.advertisementsByParams(params)
+    : undefined
 
   const query = useQuery({
     queryKey: queryKey || ['no-params'],
     queryFn: async () => {
-      // Cast getAdvertisements to accept signal parameter if needed
       const response = await (BuySellAPI.getAdvertisements as any)(params, signal)
       return response
     },
