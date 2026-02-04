@@ -116,25 +116,47 @@ export default function Main({
       return
     }
 
-    setVerificationStatus({
-      phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
-      kyc_verified:
-        onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
-      p2p_allowed: onboardingStatus.p2p?.allowed,
-    })
+    let isMounted = true
+    const abortController = new AbortController()
 
-    setOnboardingStatus(onboardingStatus)
+    const processOnboardingData = async () => {
+      try {
+        setVerificationStatus({
+          phone_verified: onboardingStatus.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false,
+          kyc_verified:
+            onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
+          p2p_allowed: onboardingStatus.p2p?.allowed,
+        })
 
-    const currentUserId = useUserDataStore.getState().userId
-    if (!currentUserId && onboardingStatus.p2p?.allowed) {
-      ;(async () => {
-        try {
-          await AuthAPI.createP2PUser()
-          await AuthAPI.fetchUserIdAndStore()
-        } catch (error) {
-          console.error("Error creating P2P user:", error)
+        if (!isMounted || abortController.signal.aborted) {
+          return
         }
-      })()
+
+        setOnboardingStatus(onboardingStatus)
+
+        const currentUserId = useUserDataStore.getState().userId
+        if (!currentUserId && onboardingStatus.p2p?.allowed) {
+          await AuthAPI.createP2PUser()
+
+          if (!isMounted || abortController.signal.aborted) {
+            return
+          }
+
+          await AuthAPI.fetchUserIdAndStore()
+        }
+      } catch (error) {
+        if (abortController.signal.aborted) {
+          return
+        }
+        console.error("Error processing onboarding data:", error)
+      }
+    }
+
+    processOnboardingData()
+
+    return () => {
+      isMounted = false
+      abortController.abort()
     }
   }, [isAuthenticated, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
 
