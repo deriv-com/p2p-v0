@@ -16,7 +16,7 @@ const ADS_KEYS = [...ALL_KEYS, 'ads'] as const
 
 export const queryKeys = {
   all: ALL_KEYS,
-  
+
   // Auth queries
   auth: {
     all: AUTH_KEYS,
@@ -31,7 +31,7 @@ export const queryKeys = {
     advertStats: (currency: string) => [...AUTH_KEYS, 'advert-stats', currency] as const,
     currencies: () => [...AUTH_KEYS, 'currencies'] as const,
   },
-  
+
   // Buy/Sell queries
   buySell: {
     all: BUY_SELL_KEYS,
@@ -41,7 +41,7 @@ export const queryKeys = {
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
     advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
   },
-  
+
   // Orders queries
   orders: {
     all: ORDERS_KEYS,
@@ -140,12 +140,11 @@ export function useCurrencies() {
 }
 
 // Ads Hooks
-export function useUserAdverts(showInactive?: boolean, enabled = true) {
+export function useUserAdverts(showInactive?: boolean) {
   return useQuery({
     queryKey: queryKeys.ads.userAdverts(showInactive),
     queryFn: () => AdsAPI.getUserAdverts(showInactive),
     staleTime: 1000 * 30, // 30 seconds
-    enabled,
   })
 }
 
@@ -211,7 +210,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
     },
     staleTime: 1000 * 10, // 10 seconds
   })
-  
+
   return {
     ...query,
     error: query.error as Error | null,
