@@ -38,7 +38,16 @@ export const queryKeys = {
   buySell: {
     all: BUY_SELL_KEYS,
     advertisements: () => [...BUY_SELL_KEYS, 'advertisements'] as const,
-    advertisementsByParams: (params: BuySellSearchParams) => [...BUY_SELL_KEYS, 'advertisements', params] as const,
+    advertisementsByParams: (params: BuySellSearchParams) => [
+      ...BUY_SELL_KEYS, 
+      'advertisements',
+      params.type,
+      params.currency,
+      params.account_currency,
+      params.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
+      params.sortBy,
+      params.favourites_only,
+    ] as const,
     paymentMethods: () => [...BUY_SELL_KEYS, 'payment-methods'] as const,
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
     advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
