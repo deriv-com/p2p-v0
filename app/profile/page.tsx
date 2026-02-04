@@ -55,7 +55,7 @@ export default function ProfilePage() {
       return
     }
 
-    if (meData) {
+    if (meData && meData.nickname && meData.registered_at) {
       const data = meData
       const joinDate = new Date(data.registered_at)
       const now = new Date()
