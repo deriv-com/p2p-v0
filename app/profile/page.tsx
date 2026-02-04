@@ -26,13 +26,8 @@ export default function ProfilePage() {
   const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
 
   useEffect(() => {
-    if (shouldShowKyc) {
+    if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
-    }
-  }, [shouldShowKyc])
-
-  useEffect(() => {
-    if (showKycPopup) {
       showAlert({
         title: t("profile.gettingStarted"),
         description: (
@@ -46,7 +41,7 @@ export default function ProfilePage() {
         onCancel: () => setShowKycPopup(false),
       })
     }
-  }, [showKycPopup, showAlert, hideAlert, t])
+  }, [shouldShowKyc, showKycPopup, showAlert, hideAlert, t])
 
   useEffect(() => {
     if (error) {
