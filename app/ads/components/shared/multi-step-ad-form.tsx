@@ -366,9 +366,88 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               }
             }
             
-            const customError = new Error(errorMessage)
-            customError.name = errorName
-            throw customError
+            // Handle specific error types
+            let errorInfo = {
+              title: t("adForm.failedToCreateAd"),
+              message: errorMessage,
+              type: "error" as "error" | "warning",
+              actionButtonText: t("adForm.updateAd"),
+            }
+
+            if (errorName === "AdvertExchangeRateDuplicate") {
+              errorInfo = {
+                title: t("adForm.duplicateRateTitle"),
+                message: t("adForm.duplicateRateMessage"),
+                type: "warning",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertOrderRangeOverlap") {
+              errorInfo = {
+                title: t("adForm.rangeOverlapTitle"),
+                message: t("adForm.rangeOverlapMessage"),
+                type: "warning",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertLimitReached" || errorMessage === "ad_limit_reached") {
+              errorInfo = {
+                title: t("adForm.adLimitReachedTitle"),
+                message: t("adForm.adLimitReachedMessage"),
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "InsufficientBalance") {
+              errorInfo = {
+                title: t("adForm.insufficientBalanceTitle"),
+                message: t("adForm.insufficientBalanceMessage"),
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "InvalidExchangeRate" || errorName === "InvalidOrderAmount") {
+              errorInfo = {
+                title: t("adForm.invalidValuesTitle"),
+                message: errorMessage,
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertTotalAmountExceeded") {
+              errorInfo = {
+                title: t("adForm.amountExceedsBalanceTitle"),
+                message: t("adForm.amountExceedsBalanceMessage"),
+                type: "error",
+                actionButtonText: t("adForm.updateAd"),
+              }
+            } else if (errorName === "AdvertActiveCountExceeded") {
+              errorInfo = {
+                title: t("adForm.adLimitReachedTitle"),
+                message: t("adForm.adLimitReachedMessage"),
+                type: "error",
+                actionButtonText: "Go to my ads",
+                onConfirm: () => {
+                  router.push("/ads")
+                }
+              }
+            } else if (errorName === "AdvertFloatRateMaximum") {
+              errorInfo = {
+                title: t("adForm.advertFloatRateMaximumTitle"),
+                message: t("adForm.advertFloatRateMaximumMessage"),
+                type: "error",
+                actionButtonText: t("common.ok"),
+              }
+            }
+
+            showAlert({
+              title: errorInfo.title,
+              description: errorInfo.message,
+              confirmText: errorInfo.actionButtonText,
+              type: errorInfo.type,
+              onConfirm: () => {
+                if (errorInfo.onConfirm) {
+                  errorInfo.onConfirm()
+                } else {
+                  setCurrentStep(0)
+                }
+              },
+            })
           },
         })
       } else {
@@ -426,102 +505,92 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 }
               }
               
-              const customError = new Error(errorMessage)
-              customError.name = errorName
-              throw customError
+              // Handle specific error types
+              let errorInfo = {
+                title: t("adForm.failedToUpdateAd"),
+                message: errorMessage,
+                type: "error" as "error" | "warning",
+                actionButtonText: t("adForm.updateAd"),
+              }
+
+              if (errorName === "AdvertExchangeRateDuplicate") {
+                errorInfo = {
+                  title: t("adForm.duplicateRateTitle"),
+                  message: t("adForm.duplicateRateMessage"),
+                  type: "warning",
+                  actionButtonText: t("adForm.updateAd"),
+                }
+              } else if (errorName === "AdvertOrderRangeOverlap") {
+                errorInfo = {
+                  title: t("adForm.rangeOverlapTitle"),
+                  message: t("adForm.rangeOverlapMessage"),
+                  type: "warning",
+                  actionButtonText: t("adForm.updateAd"),
+                }
+              } else if (errorName === "AdvertLimitReached" || errorMessage === "ad_limit_reached") {
+                errorInfo = {
+                  title: t("adForm.adLimitReachedTitle"),
+                  message: t("adForm.adLimitReachedMessage"),
+                  type: "error",
+                  actionButtonText: t("adForm.updateAd"),
+                }
+              } else if (errorName === "InsufficientBalance") {
+                errorInfo = {
+                  title: t("adForm.insufficientBalanceTitle"),
+                  message: t("adForm.insufficientBalanceMessage"),
+                  type: "error",
+                  actionButtonText: t("adForm.updateAd"),
+                }
+              } else if (errorName === "InvalidExchangeRate" || errorName === "InvalidOrderAmount") {
+                errorInfo = {
+                  title: t("adForm.invalidValuesTitle"),
+                  message: errorMessage,
+                  type: "error",
+                  actionButtonText: t("adForm.updateAd"),
+                }
+              } else if (errorName === "AdvertTotalAmountExceeded") {
+                errorInfo = {
+                  title: t("adForm.amountExceedsBalanceTitle"),
+                  message: t("adForm.amountExceedsBalanceMessage"),
+                  type: "error",
+                  actionButtonText: t("adForm.updateAd"),
+                }
+              } else if (errorName === "AdvertActiveCountExceeded") {
+                errorInfo = {
+                  title: t("adForm.adLimitReachedTitle"),
+                  message: t("adForm.adLimitReachedMessage"),
+                  type: "error",
+                  actionButtonText: "Go to my ads",
+                  onConfirm: () => {
+                    router.push("/ads")
+                  }
+                }
+              } else if (errorName === "AdvertFloatRateMaximum") {
+                errorInfo = {
+                  title: t("adForm.advertFloatRateMaximumTitle"),
+                  message: t("adForm.advertFloatRateMaximumMessage"),
+                  type: "error",
+                  actionButtonText: t("common.ok"),
+                }
+              }
+
+              showAlert({
+                title: errorInfo.title,
+                description: errorInfo.message,
+                confirmText: errorInfo.actionButtonText,
+                type: errorInfo.type,
+                onConfirm: () => {
+                  if (errorInfo.onConfirm) {
+                    errorInfo.onConfirm()
+                  } else {
+                    setCurrentStep(0)
+                  }
+                },
+              })
             },
           }
         )
       }
-    } catch (error) {
-      setIsSubmitting(false)
-      let errorInfo = {
-        title: mode === "create" ? t("adForm.failedToCreateAd") : t("adForm.failedToUpdateAd"),
-        message: t("adForm.tryAgain"),
-        type: "error" as "error" | "warning",
-        actionButtonText: t("adForm.updateAd"),
-      }
-
-      if (error instanceof Error) {
-        if (error.name === "AdvertExchangeRateDuplicate") {
-          errorInfo = {
-            title: t("adForm.duplicateRateTitle"),
-            message: t("adForm.duplicateRateMessage"),
-            type: "warning",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertOrderRangeOverlap") {
-          errorInfo = {
-            title: t("adForm.rangeOverlapTitle"),
-            message: t("adForm.rangeOverlapMessage"),
-            type: "warning",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
-          errorInfo = {
-            title: t("adForm.adLimitReachedTitle"),
-            message: t("adForm.adLimitReachedMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "InsufficientBalance") {
-          errorInfo = {
-            title: t("adForm.insufficientBalanceTitle"),
-            message: t("adForm.insufficientBalanceMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
-          errorInfo = {
-            title: t("adForm.invalidValuesTitle"),
-            message: error.message || t("adForm.invalidValuesMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertTotalAmountExceeded") {
-          errorInfo = {
-            title: t("adForm.amountExceedsBalanceTitle"),
-            message: t("adForm.amountExceedsBalanceMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertActiveCountExceeded") {
-          errorInfo = {
-            title: t("adForm.adLimitReachedTitle"),
-            message: t("adForm.adLimitReachedMessage"),
-            type: "error",
-            actionButtonText: "Go to my ads",
-            onConfirm: () => {
-              router.push("/ads")
-            }
-          }
-        } else if (error.name === "AdvertFloatRateMaximum") {
-          errorInfo = {
-            title: t("adForm.advertFloatRateMaximumTitle"),
-            message: t("adForm.advertFloatRateMaximumMessage"),
-            type: "error",
-            actionButtonText: t("common.ok"),
-          }
-        } else {
-          errorInfo.message = error.message || t("adForm.genericErrorCodeMessage", { code: error.name })
-        }
-      }
-
-      showAlert({
-        title: errorInfo.title,
-        description: errorInfo.message,
-        confirmText: errorInfo.actionButtonText,
-        type: errorInfo.type,
-        onConfirm: () => {
-          if (errorInfo.onConfirm) {
-            errorInfo.onConfirm()
-          } else {
-            setCurrentStep(0)
-          }
-        },
-      })
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
