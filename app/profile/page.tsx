@@ -33,20 +33,23 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (showKycPopup) {
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="profile" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-        onConfirm: () => setShowKycPopup(false),
-        onCancel: () => setShowKycPopup(false),
-      })
+      const timer = setTimeout(() => {
+        showAlert({
+          title: t("profile.gettingStarted"),
+          description: (
+            <div className="space-y-4 mb-6 mt-2">
+              <KycOnboardingSheet route="profile" onClose={hideAlert} />
+            </div>
+          ),
+          confirmText: undefined,
+          cancelText: undefined,
+          onConfirm: () => setShowKycPopup(false),
+          onCancel: () => setShowKycPopup(false),
+        })
+      }, 0)
+      return () => clearTimeout(timer)
     }
-  }, [showKycPopup, showAlert, hideAlert, t])
+  }, [showKycPopup])
 
   useEffect(() => {
     if (error) {
