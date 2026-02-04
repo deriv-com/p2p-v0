@@ -92,7 +92,7 @@ export default function BuySellPage() {
     paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
     sortBy: sortBy,
     ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, paymentMethods.length, selectedPaymentMethods, sortBy, filterOptions.fromFollowing])
+  }), [activeTab, selectedAccountCurrency, currency, paymentMethods.length, selectedPaymentMethods.length, sortBy, filterOptions.fromFollowing])
 
   // Only fetch advertisements when we have the required params loaded
   const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
@@ -204,14 +204,15 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
-  const paymentMethodsToUse = useMemo(() => paymentMethods, [paymentMethods])
-
-  // Initialize payment methods only once when they first load
+  // Initialize payment methods only once when first loaded
+  const isPaymentMethodsInitialized = useRef(false)
+  
   useEffect(() => {
-    if (paymentMethodsToUse.length > 0 && selectedPaymentMethods.length === 0) {
-      setSelectedPaymentMethods(paymentMethodsToUse.map((method) => method.method))
+    if (paymentMethods.length > 0 && !isPaymentMethodsInitialized.current) {
+      isPaymentMethodsInitialized.current = true
+      setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
     }
-  }, [paymentMethodsToUse.length, selectedPaymentMethods.length, setSelectedPaymentMethods, paymentMethodsToUse])
+  }, [paymentMethods.length, setSelectedPaymentMethods, paymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {

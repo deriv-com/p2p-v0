@@ -66,25 +66,30 @@ export default function MarketFilterDropdown({
     [onOpenChangeProp],
   )
 
-  const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
-    const newFilters = {
-      ...filters,
-      [key]: value,
-    }
-    setFilters(newFilters)
+  const handleFilterChange = useCallback((key: keyof MarketFilterOptions, value: boolean) => {
+    setFilters((prev) => {
+      const newFilters = {
+        ...prev,
+        [key]: value,
+      }
+      // Only call onApply on desktop immediately, mobile waits for Apply button
+      if (!isMobile) {
+        onApply(newFilters, sortBy)
+      }
+      return newFilters
+    })
+  }, [isMobile, onApply, sortBy])
 
-    if (!isMobile) {
-      onApply(newFilters, sortBy)
-    }
-  }
-
-  const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
+  const handleSortByChange = useCallback((value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
-
+    // Only call onApply on desktop immediately, mobile waits for Apply button
     if (!isMobile) {
-      onApply(filters, value)
+      setFilters((prev) => {
+        onApply(prev, value)
+        return prev
+      })
     }
-  }
+  }, [isMobile, onApply])
 
   const FilterContent = () => (
     <div className="w-full h-full">
