@@ -199,21 +199,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }, [currenciesResponse])
 
   useEffect(() => {
-    if (!selectedCurrency) {
-      console.log("[v0] No selected currency yet")
-      return
-    }
-    if (!currenciesData) {
-      console.log("[v0] No currencies data yet")
-      return
-    }
+    if (!selectedCurrency) return
+    if (!currenciesData) return
 
     const loadWallets = async () => {
       setWalletsLoading(true)
       try {
-        console.log("[v0] Loading wallets for currency:", selectedCurrency)
         const response = await fetchWalletsList()
-        console.log("[v0] Wallets API response:", response)
 
         if (response?.data?.wallets) {
           const processedWallets: ProcessedWallet[] = []
@@ -257,11 +249,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             }
           })
 
-          console.log("[v0] Processed wallets:", processedWallets)
           setWallets(processedWallets)
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
-          console.log("[v0] P2P wallet found:", p2pWallet)
 
           if (p2pWallet) {
             setSourceWalletData({
@@ -271,11 +261,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               balance: p2pWallet.balance,
             })
           }
-        } else {
-          console.log("[v0] No wallets in response:", response)
         }
       } catch (error) {
-        console.error("[v0] Error fetching wallets:", error)
+        console.error("Error fetching wallets:", error)
       } finally {
         setWalletsLoading(false)
       }
