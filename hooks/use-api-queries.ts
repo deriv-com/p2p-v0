@@ -172,7 +172,7 @@ export function useCreateAd() {
       return result
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.all })
     },
   })
 }
@@ -190,7 +190,7 @@ export function useUpdateAd() {
       return result
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.all })
     },
   })
 }
@@ -200,7 +200,7 @@ export function useDeleteAd() {
   return useMutation({
     mutationFn: (id: string) => AdsAPI.deleteAd(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.all })
     },
   })
 }
@@ -211,7 +211,7 @@ export function useToggleAdActiveStatus() {
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
       AdsAPI.toggleAdActiveStatus(id, isActive),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts() })
+      queryClient.invalidateQueries({ queryKey: queryKeys.ads.all })
     },
   })
 }
