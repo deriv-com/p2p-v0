@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
 import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
@@ -228,15 +229,28 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
+  // Create a stable query key from params values instead of the object itself
+  const queryKey = useMemo(() => 
+    params ? queryKeys.buySell.advertisementsByParams(params) : undefined,
+    [
+      params?.type,
+      params?.currency,
+      params?.account_currency,
+      params?.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
+      params?.sortBy,
+      params?.favourites_only,
+    ]
+  )
+
   const query = useQuery({
-    queryKey: queryKeys.buySell.advertisementsByParams(params || {}),
+    queryKey: queryKey || ['no-params'],
     queryFn: async () => {
       // Cast getAdvertisements to accept signal parameter if needed
       const response = await (BuySellAPI.getAdvertisements as any)(params, signal)
       return response
     },
     staleTime: 1000 * 10, // 10 seconds
-    enabled: Boolean(params), // Only run query when params are provided
+    enabled: Boolean(params && queryKey), // Only run query when params are provided
   })
   
   return {
