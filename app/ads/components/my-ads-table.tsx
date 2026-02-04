@@ -175,6 +175,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleDelete = (adId: string) => {
     setDrawerOpen(false)
+    setDropdownOpen(false)
     showDeleteDialog({
       title: t("myAds.deleteAdTitle"),
       description: t("myAds.deleteAdDescription"),
