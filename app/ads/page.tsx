@@ -1,12 +1,13 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
-
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { hideMyAds } from "@/services/api/api-my-ads"
 import { useUserAdverts } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { queryKeys } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -49,9 +50,10 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, error: queryError } = useUserAdverts(true, !!userId)
+  const { data: userAdverts = [], isLoading: loading, error: queryError, refetch } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -96,7 +98,8 @@ export default function AdsPage() {
     if (!userId) {
       return
     }
-    // Data will be fetched automatically by the React Query hook
+    // Refetch the ads list from React Query
+    await refetch()
   }
 
   useEffect(() => {
