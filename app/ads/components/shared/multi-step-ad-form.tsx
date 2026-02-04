@@ -335,8 +335,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
+        setIsSubmitting(true)
         createAdMutation.mutate(payload, {
           onSuccess: (result) => {
+            setIsSubmitting(false)
             router.push("/ads")
             showAlert({
               title: t("myAds.adCreated"),
@@ -346,6 +348,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             })
           },
           onError: (error: any) => {
+            setIsSubmitting(false)
             let errorMessage = t("adForm.genericProcessingErrorMessage")
             let errorName = "GenericError"
             
@@ -386,10 +389,12 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
+        setIsSubmitting(true)
         updateAdMutation.mutate(
           { id: finalData.id, adData: payload },
           {
             onSuccess: () => {
+              setIsSubmitting(false)
               toast({
                 description: (
                   <div className="flex items-center gap-2">
@@ -403,6 +408,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               router.push("/ads")
             },
             onError: (error: any) => {
+              setIsSubmitting(false)
               let errorMessage = t("adForm.genericProcessingErrorMessage")
               let errorName = "GenericError"
               
