@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -44,6 +44,7 @@ export default function AdsPage() {
   })
   const { hideAlert, showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const errorModalShownRef = useRef(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
 
   const isMobile = useIsMobile()
@@ -82,7 +83,7 @@ export default function AdsPage() {
       })
       setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [showKycPopup, isPoiExpired, isPoaExpired, showAlert, hideAlert, t])
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
@@ -166,12 +167,13 @@ export default function AdsPage() {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
   }
 
-  const handleCloseErrorModal = () => {
+  const handleCloseErrorModal = useCallback(() => {
     setErrorModal((prev) => ({ ...prev, show: false }))
-  }
+  }, [])
 
   useEffect(() => {
-    if (errorModal.show) {
+    if (errorModal.show && !errorModalShownRef.current) {
+      errorModalShownRef.current = true
       showAlert({
         title: errorModal.title,
         description: errorModal.message,
@@ -179,8 +181,10 @@ export default function AdsPage() {
         onConfirm: handleCloseErrorModal,
         type: "warning",
       })
+    } else if (!errorModal.show) {
+      errorModalShownRef.current = false
     }
-  }, [errorModal.show, showAlert, t, handleCloseErrorModal])
+  }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t, handleCloseErrorModal])
 
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
