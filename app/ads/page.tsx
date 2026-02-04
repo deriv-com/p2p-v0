@@ -97,17 +97,19 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  /*  useEffect(() => {
-     setAds(userAdverts)
- 
-     if (queryError) {
-       setErrorModal({
-         show: true,
-         title: t("myAds.errorLoadingAdsTitle"),
-         message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
-       })
-     }
-   }, [userAdverts, queryError, t]) */
+  useEffect(() => {
+    if (userAdverts.length > 0 || queryError) {
+      setAds(userAdverts)
+    }
+
+    if (queryError) {
+      setErrorModal({
+        show: true,
+        title: t("myAds.errorLoadingAdsTitle"),
+        message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
+      })
+    }
+  }, [userAdverts, queryError, t])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
