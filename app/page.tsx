@@ -204,11 +204,14 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
+  const paymentMethodsToUse = useMemo(() => paymentMethods, [paymentMethods])
+
+  // Initialize payment methods only once when they first load
   useEffect(() => {
-    if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
-      setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
+    if (paymentMethodsToUse.length > 0 && selectedPaymentMethods.length === 0) {
+      setSelectedPaymentMethods(paymentMethodsToUse.map((method) => method.method))
     }
-  }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
+  }, [paymentMethodsToUse.length, selectedPaymentMethods.length, setSelectedPaymentMethods, paymentMethodsToUse])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
