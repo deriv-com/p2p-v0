@@ -42,6 +42,10 @@ export default function MarketFilterDropdown({
     setFilters(initialFilters)
   }, [initialFilters])
 
+  useEffect(() => {
+    setSortBy(initialSortBy)
+  }, [initialSortBy])
+
   const handleReset = () => {
     setSortBy("exchange_rate")
     onApply({ fromFollowing: false }, "exchange_rate")
@@ -69,18 +73,10 @@ export default function MarketFilterDropdown({
       [key]: value,
     }
     setFilters(newFilters)
-
-    if (!isMobile) {
-      onApply(newFilters, sortBy)
-    }
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
-
-    if (!isMobile) {
-      onApply(filters, value)
-    }
   }
 
   const FilterContent = () => (
@@ -135,6 +131,20 @@ export default function MarketFilterDropdown({
           <Button
             onClick={handleApply}
             className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
+            size="default"
+          >
+            {t("filter.apply")}
+          </Button>
+        </div>
+      )}
+      {!isMobile && (
+        <div className="flex flex-col gap-3 mt-6">
+          <Button variant="outline" onClick={handleReset} className="rounded-full w-full bg-transparent" size="default">
+            {t("filter.reset")}
+          </Button>
+          <Button
+            onClick={handleApply}
+            className={`w-full rounded-full text-white hover:bg-gray-800`}
             size="default"
           >
             {t("filter.apply")}
