@@ -180,7 +180,7 @@ export default function AdsPage() {
         type: "warning",
       })
     }
-  }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t])
+  }, [errorModal.show, showAlert, t, handleCloseErrorModal])
 
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
