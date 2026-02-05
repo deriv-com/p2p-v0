@@ -84,19 +84,20 @@ export default function BuySellPage() {
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
-  // Only fetch advertisements when we have the required params loaded
-  const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
+
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
-    shouldFetchAdvertisements ? {
+    {
       type: activeTab,
       account_currency: selectedAccountCurrency,
       currency: currency,
       paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
       sortBy: sortBy,
-      ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-    } : undefined
+      favourites_only: filterOptions.fromFollowing ? 1 : 0,
+    }
   )
 
+  console.log(sortBy)
+  console.log(filterOptions.fromFollowing)
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
       locale != "en"
