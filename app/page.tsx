@@ -96,8 +96,6 @@ export default function BuySellPage() {
     }
   )
 
-  console.log(sortBy)
-  console.log(filterOptions.fromFollowing)
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
       locale != "en"
