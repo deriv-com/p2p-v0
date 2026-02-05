@@ -1,49 +1,40 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useMemo } from "react"
 import type { Currency } from "@/components/currency-filter/types"
-import { getSettings } from "@/services/api/api-auth"
+import { useSettings } from "@/hooks/use-api-queries"
 
 export function useCurrencyData(currency = "USD") {
-  const [currencies, setCurrencies] = useState<Currency[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { data: response, isLoading, error: queryError } = useSettings()
 
-  useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        setIsLoading(true)
-        const response = await getSettings()
-
-        const countries = response.countries || []
-
-        const currencyList: Currency[] = countries
-          .map((country: { currency: string; currency_name: string }) => ({
-            code: country.currency,
-            name: country.currency_name,
-          }))
-          .reduce((acc: Currency[], curr: Currency) => {
-            // Remove duplicates
-            if (!acc.find((c) => c.code === curr.code)) {
-              acc.push(curr)
-            }
-            return acc
-          }, [])
-          .sort((a, b) => a.code.localeCompare(b.code))
-
-        setCurrencies(currencyList)
-        setError(null)
-      } catch (err) {
-        console.error("Error fetching currencies:", err)
-        setError("Failed to load currencies")
-        setCurrencies([])
-      } finally {
-        setIsLoading(false)
-      }
+  const { currencies, error } = useMemo(() => {
+    if (!response) {
+      return { currencies: [], error: null }
     }
 
-    fetchCurrencies()
-  }, [currency])
+    try {
+      const countries = response.countries || []
+
+      const currencyList: Currency[] = countries
+        .map((country: { currency: string; currency_name: string }) => ({
+          code: country.currency,
+          name: country.currency_name,
+        }))
+        .reduce((acc: Currency[], curr: Currency) => {
+          // Remove duplicates
+          if (!acc.find((c) => c.code === curr.code)) {
+            acc.push(curr)
+          }
+          return acc
+        }, [])
+        .sort((a, b) => a.code.localeCompare(b.code))
+
+      return { currencies: currencyList, error: null }
+    } catch (err) {
+      console.error("Error processing currencies:", err)
+      return { currencies: [], error: "Failed to process currencies" }
+    }
+  }, [response])
 
   const getCurrencyByCode = (code: string): Currency | undefined => {
     return currencies.find((currency) => currency.code === code)
@@ -54,11 +45,13 @@ export function useCurrencyData(currency = "USD") {
     return currency ? `${currency.code} - ${currency.name}` : code
   }
 
+  const finalError = error || (queryError ? "Failed to load currencies" : null)
+
   return {
     currencies,
     getCurrencyByCode,
     getCurrencyName: getCurrencyNameByCode,
     isLoading,
-    error,
+    error: finalError,
   }
 }
