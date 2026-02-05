@@ -66,7 +66,7 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
-  
+
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
   const fetchedForRef = useRef<string | null>(null)
@@ -84,20 +84,16 @@ export default function BuySellPage() {
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
-  // Build advertisement search params - memoize to prevent duplicate API calls
-  const advertsParams = useMemo(() => ({
-    type: activeTab,
-    account_currency: selectedAccountCurrency,
-    currency: currency,
-    paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
-    sortBy: sortBy,
-    ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, selectedPaymentMethods.length, paymentMethods.length, sortBy, filterOptions.fromFollowing])
 
-  // Only fetch advertisements when we have the required params loaded
-  const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
-    shouldFetchAdvertisements ? advertsParams : undefined
+    {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
+      sortBy: sortBy,
+      favourites_only: filterOptions.fromFollowing ? 1 : 0,
+    }
   )
 
   const redirectToHelpCentre = () => {
@@ -200,7 +196,12 @@ export default function BuySellPage() {
   // Sync hook data to local state for websocket updates
   useEffect(() => {
     if (Array.isArray(fetchedAdverts)) {
-      setAdverts(fetchedAdverts)
+      setAdverts((prev) => {
+        if (JSON.stringify(prev) === JSON.stringify(fetchedAdverts)) {
+          return prev
+        }
+        return fetchedAdverts
+      })
     }
   }, [fetchedAdverts])
 

@@ -17,7 +17,7 @@ const ADS_KEYS = [...ALL_KEYS, 'ads'] as const
 
 export const queryKeys = {
   all: ALL_KEYS,
-  
+
   // Auth queries
   auth: {
     all: AUTH_KEYS,
@@ -33,13 +33,13 @@ export const queryKeys = {
     advertStats: (currency: string) => [...AUTH_KEYS, 'advert-stats', currency] as const,
     currencies: () => [...AUTH_KEYS, 'currencies'] as const,
   },
-  
+
   // Buy/Sell queries
   buySell: {
     all: BUY_SELL_KEYS,
     advertisements: () => [...BUY_SELL_KEYS, 'advertisements'] as const,
     advertisementsByParams: (params: BuySellSearchParams) => [
-      ...BUY_SELL_KEYS, 
+      ...BUY_SELL_KEYS,
       'advertisements',
       params.type,
       params.currency,
@@ -52,7 +52,7 @@ export const queryKeys = {
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
     advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
   },
-  
+
   // Orders queries
   orders: {
     all: ORDERS_KEYS,
@@ -238,10 +238,12 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  // Create a stable query key from params values
-  const queryKey = params 
-    ? queryKeys.buySell.advertisementsByParams(params)
-    : undefined
+  // Memoize the query key to prevent infinite rerenders from changing object references
+  const queryKey = useMemo(() => {
+    return params
+      ? queryKeys.buySell.advertisementsByParams(params)
+      : undefined
+  }, [params?.type, params?.currency, params?.account_currency, params?.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined, params?.sortBy, params?.favourites_only])
 
   const query = useQuery({
     queryKey: queryKey || ['no-params'],
@@ -252,7 +254,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
     staleTime: 1000 * 10, // 10 seconds
     enabled: Boolean(params && queryKey), // Only run query when params are provided
   })
-  
+
   return {
     ...query,
     error: query.error as Error | null,
