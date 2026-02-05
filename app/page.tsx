@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 import { TradeBandBadge } from "@/components/trade-band-badge"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
