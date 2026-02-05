@@ -198,7 +198,12 @@ export default function BuySellPage() {
   // Sync hook data to local state for websocket updates
   useEffect(() => {
     if (Array.isArray(fetchedAdverts)) {
-      setAdverts(fetchedAdverts)
+      setAdverts((prev) => {
+        if (JSON.stringify(prev) === JSON.stringify(fetchedAdverts)) {
+          return prev
+        }
+        return fetchedAdverts
+      })
     }
   }, [fetchedAdverts])
 
