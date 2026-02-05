@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useCallback, useState, useEffect } from "react"
+import { useCallback, useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -30,18 +30,23 @@ export default function MarketFilterDropdown({
   initialSortBy,
   trigger,
   hasActiveFilters = false,
-  onOpenChange: onOpenChangeProp,
+  onOpenChangeProp,
 }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
   const [sortBy, setSortBy] = useState(initialSortBy)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const lastAppliedRef = useRef<{ filters: MarketFilterOptions; sortBy: string } | null>(null)
 
   useEffect(() => {
-    setFilters(initialFilters)
-    setSortBy(initialSortBy)
-  }, [initialFilters, initialSortBy])
+    // Only sync if the dropdown is closed (not actively being used)
+    if (!isOpen) {
+      setFilters(initialFilters)
+      setSortBy(initialSortBy)
+      lastAppliedRef.current = { filters: initialFilters, sortBy: initialSortBy }
+    }
+  }, [initialFilters, initialSortBy, isOpen])
 
   const handleReset = () => {
     setSortBy("exchange_rate")

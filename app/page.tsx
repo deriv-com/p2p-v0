@@ -209,7 +209,7 @@ export default function BuySellPage() {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
       setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
     }
-  }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
+  }, [paymentMethods.length])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
