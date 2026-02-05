@@ -135,6 +135,7 @@ export default function Main({
         setOnboardingStatus(onboardingStatus)
 
         const currentUserId = useUserDataStore.getState().userId
+        // Only create P2P user if one doesn't already exist and P2P is allowed
         if (!currentUserId && onboardingStatus.p2p?.allowed) {
           await AuthAPI.createP2PUser()
 
@@ -158,7 +159,7 @@ export default function Main({
       isMounted = false
       abortController.abort()
     }
-  }, [isAuthenticated, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
+  }, [isAuthenticated, userId, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
