@@ -85,6 +85,13 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
   // Build advertisement search params - memoize to prevent duplicate API calls
+  // Create a stable hash of selected payment methods for dependency tracking
+  const paymentMethodsHash = useMemo(() => {
+    return selectedPaymentMethods.length === paymentMethods.length
+      ? 'all'
+      : selectedPaymentMethods.sort().join(',')
+  }, [selectedPaymentMethods, paymentMethods.length])
+
   const advertsParams = useMemo(() => {
     if (!selectedAccountCurrency || !currency) return null
     
@@ -96,7 +103,7 @@ export default function BuySellPage() {
       sortBy: sortBy,
       ...(filterOptions.fromFollowing && { favourites_only: 1 }),
     }
-  }, [activeTab, selectedAccountCurrency, currency, selectedPaymentMethods, paymentMethods.length, sortBy, filterOptions.fromFollowing])
+  }, [activeTab, selectedAccountCurrency, currency, paymentMethodsHash, sortBy, filterOptions.fromFollowing])
 
   // Only fetch advertisements when we have the required params loaded
   const shouldFetchAdvertisements = Boolean(advertsParams)
