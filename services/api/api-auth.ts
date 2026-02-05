@@ -345,7 +345,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
         useUserDataStore.getState().setLocalCurrency(null)
       }
 
-      useMarketFilterStore.getState().resetFilters()
       return
     }
 
