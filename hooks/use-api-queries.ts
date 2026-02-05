@@ -238,10 +238,11 @@ export function useHideMyAds() {
 
 // Buy/Sell Hooks
 export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  // Create stable params reference to avoid unnecessary re-queries
-  const paramsKey = useMemo(() => {
-    if (!params) return null
-    return JSON.stringify({
+  // Create stable query key using only the necessary parameters
+  const queryKey = useMemo(() => {
+    if (!params) return undefined
+    
+    return queryKeys.buySell.advertisementsByParams({
       type: params.type,
       currency: params.currency,
       account_currency: params.account_currency,
@@ -249,13 +250,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
       sortBy: params.sortBy,
       favourites_only: params.favourites_only,
     })
-  }, [params?.type, params?.currency, params?.account_currency, params?.paymentMethod, params?.sortBy, params?.favourites_only])
-
-  const queryKey = useMemo(() => {
-    return params && paramsKey
-      ? queryKeys.buySell.advertisementsByParams(params)
-      : undefined
-  }, [params, paramsKey])
+  }, [params?.type, params?.currency, params?.account_currency, JSON.stringify(params?.paymentMethod), params?.sortBy, params?.favourites_only])
 
   const query = useQuery({
     queryKey: queryKey || ['no-params'],
