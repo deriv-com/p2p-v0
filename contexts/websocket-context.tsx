@@ -22,6 +22,12 @@ export class WebSocketClient {
 
   public connect(): Promise<WebSocket> {
     const socketToken = this.getSocketToken()
+    const userId = useUserDataStore.getState().userId
+
+    // Do not initialize websocket if user ID is empty
+    if (!userId || userId.trim() === "") {
+      return Promise.reject(new Error("User ID is not available. WebSocket connection cannot be established."))
+    }
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return Promise.resolve(this.socket)
@@ -279,6 +285,12 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
   useEffect(() => {
     if (hasInitializedRef.current) return
+
+    const userId = useUserDataStore.getState().userId
+    // Do not initialize websocket if user ID is empty
+    if (!userId || userId.trim() === "") {
+      return
+    }
 
     hasInitializedRef.current = true
 
