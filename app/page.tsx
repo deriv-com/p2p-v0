@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 import { TradeBandBadge } from "@/components/trade-band-badge"
-import { useState, useEffect, useRef, useCallback, useMemo } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -84,20 +84,17 @@ export default function BuySellPage() {
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
-  // Build advertisement search params - memoize to prevent duplicate API calls
-  const advertsParams = useMemo(() => ({
-    type: activeTab,
-    account_currency: selectedAccountCurrency,
-    currency: currency,
-    paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
-    sortBy: sortBy,
-    ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, selectedPaymentMethods.length, paymentMethods.length, sortBy, filterOptions.fromFollowing])
-
   // Only fetch advertisements when we have the required params loaded
   const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
-    shouldFetchAdvertisements ? advertsParams : undefined
+    shouldFetchAdvertisements ? {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
+      sortBy: sortBy,
+      ...(filterOptions.fromFollowing && { favourites_only: 1 }),
+    } : undefined
   )
 
   const redirectToHelpCentre = () => {
