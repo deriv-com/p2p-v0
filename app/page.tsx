@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 import { TradeBandBadge } from "@/components/trade-band-badge"
-import { useState, useEffect, useRef, useCallback, useMemo } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -24,7 +24,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
@@ -64,12 +63,11 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
 
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
-  const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const userId = useUserDataStore((state) => state.userId)
@@ -113,50 +111,16 @@ export default function BuySellPage() {
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
 
-  const balancesKey = useMemo(() => {
-    if (!userData?.signup) return null
-
-    if (isV1Signup) {
-      const balances = userData?.balances || []
-      if (balances.length === 0) return "v1-empty"
-      return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
-    }
-    return "v2"
-  }, [isV1Signup, userData?.balances, userData?.signup])
-
-  const fetchBalance = useCallback(async () => {
-    if (!userData?.signup) {
-      return
-    }
-
-    if (isV1Signup && !userData?.balances) {
-      return
-    }
-
-    if (fetchedForRef.current === balancesKey) {
-      return
-    }
-
-    fetchedForRef.current = balancesKey
-    setIsLoadingBalance(true)
-
-    try {
-      const balances = userData?.balances || []
-      const firstBalance = balances[0] || {}
-      setBalance(firstBalance.amount || "0.00")
-      setBalanceCurrency(firstBalance.currency || "USD")
-    } catch (error) {
-      console.error("Failed to fetch balance:", error)
-      setBalance("0.00")
-      setBalanceCurrency("USD")
-    } finally {
-      setIsLoadingBalance(false)
-    }
-  }, [balancesKey, isV1Signup, userData])
-
+  // Sync balance from userData state
   useEffect(() => {
-    fetchBalance()
-  }, [fetchBalance])
+    if (!userData?.signup) return
+    
+    const balances = userData?.balances || []
+    const firstBalance = balances[0] || {}
+    setBalance(firstBalance.amount || "0.00")
+    setBalanceCurrency(firstBalance.currency || "USD")
+    setIsLoadingBalance(false)
+  }, [userData?.balances, userData?.signup])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
