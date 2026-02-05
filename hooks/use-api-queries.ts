@@ -259,7 +259,7 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
       return response
     },
     staleTime: 1000 * 10, // 10 seconds
-    enabled: Boolean(params && queryKey), // Only run query when params are provided
+    enabled: Boolean(params && queryKey && params.currency && params.account_currency), // Only run query when params and required fields are provided
   })
 
   return {
