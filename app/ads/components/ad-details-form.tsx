@@ -9,7 +9,8 @@ import { PriceTypeSelector } from "./ui/price-type-selector"
 import { FloatingRateInput } from "./ui/floating-rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
-import { getAdvertStatistics, getSettings } from "@/services/api/api-auth"
+import { useSettings } from "@/hooks/use-api-queries"
+import { getAdvertStatistics } from "@/services/api/api-auth"
 import Image from "next/image"
 import { currencyFlagMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -74,6 +75,7 @@ export default function AdDetailsForm({
 
   const isMobile = useIsMobile()
   const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } = useWebSocketContext()
+  const { data: settings } = useSettings()
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -372,20 +374,10 @@ export default function AdDetailsForm({
   }, [type, totalAmount, fixedRate, floatingRate, minAmount, maxAmount, formErrors, priceType])
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const settings = await getSettings()
-        if (settings) {
-          setIsFloatingRateEnabled(settings.float_rate_enabled === true)
-        }
-      } catch (error) {
-        console.error("Error fetching settings:", error)
-        setIsFloatingRateEnabled(false)
-      }
+    if (settings) {
+      setIsFloatingRateEnabled(settings.float_rate_enabled === true)
     }
-
-    fetchSettings()
-  }, [])
+  }, [settings])
 
   if (isLoadingInitialData) return <AdDetailsFormSkeleton />
 
