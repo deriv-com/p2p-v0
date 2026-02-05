@@ -85,17 +85,21 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
   // Build advertisement search params - memoize to prevent duplicate API calls
-  const advertsParams = useMemo(() => ({
-    type: activeTab,
-    account_currency: selectedAccountCurrency,
-    currency: currency,
-    paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
-    sortBy: sortBy,
-    ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-  }), [activeTab, selectedAccountCurrency, currency, selectedPaymentMethods.length, paymentMethods.length, sortBy, filterOptions.fromFollowing])
+  const advertsParams = useMemo(() => {
+    if (!selectedAccountCurrency || !currency) return null
+    
+    return {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
+      sortBy: sortBy,
+      ...(filterOptions.fromFollowing && { favourites_only: 1 }),
+    }
+  }, [activeTab, selectedAccountCurrency, currency, selectedPaymentMethods, paymentMethods.length, sortBy, filterOptions.fromFollowing])
 
   // Only fetch advertisements when we have the required params loaded
-  const shouldFetchAdvertisements = Boolean(selectedAccountCurrency && currency)
+  const shouldFetchAdvertisements = Boolean(advertsParams)
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
     shouldFetchAdvertisements ? advertsParams : undefined
   )
@@ -192,10 +196,7 @@ export default function BuySellPage() {
     }
   }, [currencies, localCurrency, currency, setCurrency])
 
-  const paymentMethodsString = useMemo(
-    () => JSON.stringify(selectedPaymentMethods),
-    [selectedPaymentMethods]
-  )
+  const paymentMethodsLength = selectedPaymentMethods.length
 
   // Sync hook data to local state for websocket updates
   useEffect(() => {

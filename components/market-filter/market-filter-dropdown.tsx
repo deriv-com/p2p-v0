@@ -40,7 +40,8 @@ export default function MarketFilterDropdown({
 
   useEffect(() => {
     setFilters(initialFilters)
-  }, [initialFilters])
+    setSortBy(initialSortBy)
+  }, [initialFilters, initialSortBy])
 
   const handleReset = () => {
     setSortBy("exchange_rate")
@@ -71,7 +72,10 @@ export default function MarketFilterDropdown({
     setFilters(newFilters)
 
     if (!isMobile) {
-      onApply(newFilters, sortBy)
+      // Use a small timeout to batch state updates and prevent rapid consecutive calls
+      setTimeout(() => {
+        onApply(newFilters, sortBy)
+      }, 0)
     }
   }
 
@@ -79,7 +83,10 @@ export default function MarketFilterDropdown({
     setSortBy(value)
 
     if (!isMobile) {
-      onApply(filters, value)
+      // Use a small timeout to batch state updates and prevent rapid consecutive calls
+      setTimeout(() => {
+        onApply(filters, value)
+      }, 0)
     }
   }
 
