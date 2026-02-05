@@ -32,10 +32,6 @@ export interface Country {
   currency_name?: string
 }
 
-export interface CountriesResponse {
-  countries: Country[]
-}
-
 export interface CurrencyItem {
   code: string
   name: string
@@ -585,29 +581,6 @@ export async function getUserBalance(): Promise<{ amount: string; currency: stri
     }
   } catch (error) {
     console.error("Error fetching user balance:", error)
-    throw error
-  }
-}
-
-/**
- * Get list of available countries
- */
-export async function getCountries(): Promise<CountriesResponse> {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/countries`, {
-      method: "GET",
-      credentials: "include",
-      headers: getAuthHeader(),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch countries: ${response.statusText}`)
-    }
-
-    const result = await response.json()
-    return result.data
-  } catch (error) {
-    console.error("Error fetching countries:", error)
     throw error
   }
 }
