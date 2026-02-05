@@ -237,7 +237,37 @@ export function useHideMyAds() {
 }
 
 // Buy/Sell Hooks
-export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
+export function useAdvertisements(signal?: AbortSignal) {
+  // Import store hooks using dynamic import pattern to avoid circular dependencies
+  const { useMarketFilterStore } = require('@/stores/market-filter-store')
+  const { useUserDataStore } = require('@/stores/user-data-store')
+  
+  const store = useMarketFilterStore()
+  const userStore = useUserDataStore()
+
+  // Subscribe to store values directly
+  const activeTab = store.activeTab
+  const currency = store.currency
+  const sortBy = store.sortBy
+  const filterOptions = store.filterOptions
+  const selectedPaymentMethods = store.selectedPaymentMethods
+  const selectedAccountCurrency = store.selectedAccountCurrency
+  const localCurrency = userStore.localCurrency
+
+  // Build params from store values
+  const params: BuySellSearchParams | null = useMemo(() => {
+    if (!selectedAccountCurrency || !currency) return null
+    
+    return {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      paymentMethod: selectedPaymentMethods.length === 0 ? [] : selectedPaymentMethods,
+      sortBy: sortBy,
+      ...(filterOptions.fromFollowing && { favourites_only: 1 }),
+    }
+  }, [activeTab, currency, sortBy, selectedAccountCurrency, selectedPaymentMethods, filterOptions.fromFollowing])
+
   // Create a stable query key from params values
   const queryKey = params 
     ? queryKeys.buySell.advertisementsByParams(params)

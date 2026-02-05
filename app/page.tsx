@@ -85,31 +85,8 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
 
   // Build advertisement search params - memoize to prevent duplicate API calls
-  // Create a stable hash of selected payment methods for dependency tracking
-  const paymentMethodsHash = useMemo(() => {
-    return selectedPaymentMethods.length === paymentMethods.length
-      ? 'all'
-      : selectedPaymentMethods.sort().join(',')
-  }, [selectedPaymentMethods, paymentMethods.length])
-
-  const advertsParams = useMemo(() => {
-    if (!selectedAccountCurrency || !currency) return null
-    
-    return {
-      type: activeTab,
-      account_currency: selectedAccountCurrency,
-      currency: currency,
-      paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
-      sortBy: sortBy,
-      ...(filterOptions.fromFollowing && { favourites_only: 1 }),
-    }
-  }, [activeTab, selectedAccountCurrency, currency, paymentMethodsHash, sortBy, filterOptions.fromFollowing])
-
-  // Only fetch advertisements when we have the required params loaded
-  const shouldFetchAdvertisements = Boolean(advertsParams)
-  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
-    shouldFetchAdvertisements ? advertsParams : undefined
-  )
+  // Fetch advertisements - hook now reads from stores directly
+  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements()
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
