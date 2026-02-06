@@ -5,8 +5,7 @@ import { TooltipTrigger } from "@/components/ui/tooltip"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
-import { hideMyAds } from "@/services/api/api-my-ads"
-import { useUserAdverts } from "@/hooks/use-api-queries"
+import { useUserAdverts, useHideMyAds } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -175,12 +174,16 @@ export default function AdsPage() {
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t, handleCloseErrorModal])
 
+  const hideMyAdsMutation = useHideMyAds()
+
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
     setHiddenAdverts(value)
 
     try {
-      await hideMyAds(value)
+      await hideMyAdsMutation.mutateAsync(value)
+      // Update the user store with the new value after successful API call
+      useUserDataStore.getState().updateUserData({ adverts_are_listed: !value })
     } catch (error) {
       console.error("Failed to hide/show ads:", error)
       setHiddenAdverts(previousValue)
