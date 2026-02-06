@@ -227,8 +227,15 @@ export function useDeleteAd() {
 export function useToggleAdActiveStatus() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
-      AdsAPI.toggleAdActiveStatus(id, isActive),
+    mutationFn: async ({ id, isActive }: { id: string; isActive: boolean }) => {
+      const result = await AdsAPI.toggleAdActiveStatus(id, isActive)
+      if (!result.success && result.errors && result.errors.length > 0) {
+        const error: any = new Error(result.errors[0].message || 'Failed to update ad status')
+        error.errors = result.errors
+        throw error
+      }
+      return result
+    },
     retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts(true) })
