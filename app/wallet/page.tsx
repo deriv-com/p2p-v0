@@ -39,37 +39,37 @@ export default function WalletPage() {
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
-  const loadBalanceData = useCallback(() => {
-    try {
-      const currencies = currenciesResponse?.data || {}
-      setCurrenciesData(currencies)
+  const processBalanceData = useCallback(
+    (currencies: Record<string, any>, balance: any) => {
+      try {
+        const p2pWallet = balance?.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
-      const p2pWallet = balanceData?.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+        if (p2pWallet) {
+          setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
+          setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
 
-      if (p2pWallet) {
-        setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
-        setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
+          const hasAnyBalance =
+            p2pWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
+          setHasBalance(hasAnyBalance)
 
-        const hasAnyBalance =
-          p2pWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
-        setHasBalance(hasAnyBalance)
-
-        if (p2pWallet.balances) {
-          const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
-            wallet_id: p2pWallet.id,
-            amount: String(wallet.balance || "0"),
-            currency: wallet.currency,
-            label: currencies[wallet.currency]?.label || wallet.currency,
-          }))
-          setP2pBalances(balancesList)
+          if (p2pWallet.balances) {
+            const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
+              wallet_id: p2pWallet.id,
+              amount: String(wallet.balance || "0"),
+              currency: wallet.currency,
+              label: currencies[wallet.currency]?.label || wallet.currency,
+            }))
+            setP2pBalances(balancesList)
+          }
         }
+      } catch (error) {
+        console.error("Error processing P2P wallet balance:", error)
+        setTotalBalance("0.00")
+        setHasBalance(false)
       }
-    } catch (error) {
-      console.error("Error processing P2P wallet balance:", error)
-      setTotalBalance("0.00")
-      setHasBalance(false)
-    }
-  }, [currenciesResponse, balanceData])
+    },
+    []
+  )
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -106,8 +106,10 @@ export default function WalletPage() {
   }, [userData?.signup, router])
 
   useEffect(() => {
-    loadBalanceData()
-  }, [loadBalanceData])
+    const currencies = currenciesResponse?.data || {}
+    setCurrenciesData(currencies)
+    processBalanceData(currencies, balanceData)
+  }, [balanceData, currenciesResponse, processBalanceData])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
@@ -119,7 +121,6 @@ export default function WalletPage() {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setTotalBalance(null)
-    loadBalanceData()
   }
 
   if (userData?.signup === "v1") {
