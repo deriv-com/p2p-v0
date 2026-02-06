@@ -152,7 +152,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
               InvalidExchangeRate: t("adForm.invalidExchangeRateMessage"),
             }
 
-            let errorMessage = errorCodeMap[firstError.code] || t("myAds.updateAdError")
+            const errorMessage = errorCodeMap[firstError.code] || t("myAds.updateAdError")
 
             showAlert({
               title: t("myAds.unableToUpdateAd"),
