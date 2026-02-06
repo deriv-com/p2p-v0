@@ -4,8 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
-import { getTotalBalance } from "@/services/api/api-auth"
-import { useCurrencies } from "@/hooks/use-api-queries"
+import { useCurrencies, useTotalBalance } from "@/hooks/use-api-queries"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
@@ -26,12 +25,12 @@ export default function WalletPage() {
   const { t } = useTranslations()
   const { hideAlert, showAlert } = useAlertDialog()
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
+  const { data: balanceData, isLoading: isBalanceLoading } = useTotalBalance()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
   const [hasBalance, setHasBalance] = useState(false)
@@ -40,41 +39,37 @@ export default function WalletPage() {
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
-  const loadBalanceData = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      const currencies = currenciesResponse?.data || {}
-      setCurrenciesData(currencies)
+  const processBalanceData = useCallback(
+    (currencies: Record<string, any>, balance: any) => {
+      try {
+        const p2pWallet = balance?.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
-      const data = await getTotalBalance()
-      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+        if (p2pWallet) {
+          setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
+          setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
 
-      if (p2pWallet) {
-        setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
-        setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
+          const hasAnyBalance =
+            p2pWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
+          setHasBalance(hasAnyBalance)
 
-        const hasAnyBalance =
-          p2pWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
-        setHasBalance(hasAnyBalance)
-
-        if (p2pWallet.balances) {
-          const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
-            wallet_id: p2pWallet.id,
-            amount: String(wallet.balance || "0"),
-            currency: wallet.currency,
-            label: currencies[wallet.currency]?.label || wallet.currency,
-          }))
-          setP2pBalances(balancesList)
+          if (p2pWallet.balances) {
+            const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
+              wallet_id: p2pWallet.id,
+              amount: String(wallet.balance || "0"),
+              currency: wallet.currency,
+              label: currencies[wallet.currency]?.label || wallet.currency,
+            }))
+            setP2pBalances(balancesList)
+          }
         }
+      } catch (error) {
+        console.error("Error processing P2P wallet balance:", error)
+        setTotalBalance("0.00")
+        setHasBalance(false)
       }
-    } catch (error) {
-      console.error("Error fetching P2P wallet balance:", error)
-      setTotalBalance("0.00")
-      setHasBalance(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [currenciesResponse])
+    },
+    []
+  )
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -111,8 +106,10 @@ export default function WalletPage() {
   }, [userData?.signup, router])
 
   useEffect(() => {
-    loadBalanceData()
-  }, [loadBalanceData])
+    const currencies = currenciesResponse?.data || {}
+    setCurrenciesData(currencies)
+    processBalanceData(currencies, balanceData)
+  }, [balanceData, currenciesResponse, processBalanceData])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
@@ -124,7 +121,6 @@ export default function WalletPage() {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setTotalBalance(null)
-    loadBalanceData()
   }
 
   if (userData?.signup === "v1") {
@@ -149,7 +145,7 @@ export default function WalletPage() {
             onBack={handleBackToBalances}
             balance={totalBalance}
             currency={balanceCurrency}
-            isLoading={isLoading}
+            isLoading={isBalanceLoading}
             hasBalance={hasBalance}
           />
         </div>
@@ -160,7 +156,7 @@ export default function WalletPage() {
         )}
         <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
           {displayBalances ? (
-            <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
+            <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isBalanceLoading} />
           ) : (
             <TransactionsTab selectedCurrency={selectedCurrency} currencies={currenciesData} />
           )}
