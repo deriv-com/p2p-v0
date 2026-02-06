@@ -16,11 +16,11 @@ import Image from "next/image"
 import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
 import { useToast } from "@/hooks/use-toast"
-import { getSettings, type Country } from "@/services/api/api-auth"
+import { type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useCreateAd, useUpdateAd } from "@/hooks/use-api-queries"
+import { useCreateAd, useUpdateAd, useSettings } from "@/hooks/use-api-queries"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -62,7 +62,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
-  const [isLoadingCountries, setIsLoadingCountries] = useState(true)
   const [currencies, setCurrencies] = useState<Array<{ code: string, name: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
@@ -70,9 +69,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
+  const { data: settingsData, isLoading: isLoadingSettings } = useSettings()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
+
+  // Use settings loading state for countries
+  const isLoadingCountries = isLoadingSettings
 
   const steps = [
     { title: t("adForm.setTypeAndPrice"), completed: currentStep > 0 },
@@ -116,33 +119,27 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }, [])
 
   useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        setIsLoadingCountries(true)
-        const response = await getSettings()
-        const countriesData = response.countries || []
-        setCountries(countriesData)
+    if (!settingsData) return
 
-        const uniqueCurrencies = countriesData
-          .filter((c: Country) => c.currency)
-          .reduce((acc, country) => {
-            if (!acc.some(c => c.code === country.currency)) {
-              acc.push({ code: country.currency, name: country.currency_name });
-            }
-            return acc;
-          }, [] as { code: string; name: string }[])
-          .sort((a, b) => a.code.localeCompare(b.code));
-        setCurrencies(uniqueCurrencies)
-      } catch (error) {
-        setCountries([])
-        setCurrencies([])
-      } finally {
-        setIsLoadingCountries(false)
-      }
+    try {
+      const countriesData = settingsData.countries || []
+      setCountries(countriesData)
+
+      const uniqueCurrencies = countriesData
+        .filter((c: Country) => c.currency)
+        .reduce((acc, country) => {
+          if (!acc.some(c => c.code === country.currency)) {
+            acc.push({ code: country.currency, name: country.currency_name });
+          }
+          return acc;
+        }, [] as { code: string; name: string }[])
+        .sort((a, b) => a.code.localeCompare(b.code));
+      setCurrencies(uniqueCurrencies)
+    } catch (error) {
+      setCountries([])
+      setCurrencies([])
     }
-
-    fetchCountries()
-  }, [])
+  }, [settingsData])
 
   // Default "Paying with" currency to user's local currency for new ads (without overriding user edits).
   useEffect(() => {
