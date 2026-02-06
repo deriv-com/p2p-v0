@@ -120,7 +120,14 @@ export default function WalletPage() {
   const handleBackToBalances = () => {
     setDisplayBalances(true)
     setSelectedCurrency(null)
-    setTotalBalance(null)
+    // Restore the total balance from the p2p wallet
+    if (balanceData?.wallets?.items) {
+      const p2pWallet = balanceData.wallets.items.find((wallet: any) => wallet.type === "p2p")
+      if (p2pWallet?.total_balance?.approximate_total_balance) {
+        setTotalBalance(p2pWallet.total_balance.approximate_total_balance)
+        setBalanceCurrency(p2pWallet.total_balance.converted_to || "USD")
+      }
+    }
   }
 
   if (userData?.signup === "v1") {
