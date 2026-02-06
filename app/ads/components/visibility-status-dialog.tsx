@@ -6,8 +6,10 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useRouter } from "next/navigation"
 
 interface VisibilityStatusDialogProps {
+  id: string
   open: boolean
   onOpenChange: (open: boolean) => void
   reasons: string[]
@@ -57,7 +59,7 @@ const getReasonAction = (reason: string, t: (key: string) => string) => {
     advertiser_status: { label: t("visibilityStatus.actions.contactSupport"), action: "close" },
     advertiser_schedule_unavailable: { label: t("visibilityStatus.actions.editSchedule"), action: "view_profile" },
     advertiser_temp_ban: { label: t("visibilityStatus.actions.viewProfile"), action: "close" },
-    advertiser_no_private_groups: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
+    advertiser_no_private_groups: { label: t("visibilityStatus.actions.editAd"), action: "edit_ad_visibility" },
     advert_float_rate_disabled: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advert_no_payment_methods: { label: t("visibilityStatus.actions.addPaymentMethod"), action: "add_payment" },
   }
@@ -66,17 +68,23 @@ const getReasonAction = (reason: string, t: (key: string) => string) => {
 }
 
 export function VisibilityStatusDialog({
+  id,
   open,
   onOpenChange,
   reasons,
 }: VisibilityStatusDialogProps) {
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const router = useRouter()
 
   const handleAction = (actionType: string) => {
     switch (actionType) {
       case "edit":
       case "edit_schedule":
+      case "edit_ad_visibility":
+        router.push(`/ads/edit/${id}`)
+        onOpenChange(false)
+        break
       case "view_profile":
         onOpenChange(false)
         break
@@ -87,22 +95,32 @@ export function VisibilityStatusDialog({
 
   const content = (
     <div className="space-y-4">
-      <ul className="space-y-3 mt-2">
-        {reasons.map((reason, index) => {
-          const reasonContent = getReasonContent(reason, t)
-          const actionInfo = getReasonAction(reason, t)
-          return (
-            <li key={index} className="flex flex-col">
-              <p className="text-base text-grayscale-600">{reasonContent.description}</p>
-              {reasons.length == 1 && actionInfo && (
-                <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
-                  {actionInfo.label}
-                </Button>
-              )}
-            </li>
-          )
-        })}
-      </ul>
+      {reasons.includes("advertiser_no_private_groups") ? (
+        <div className="mt-2">
+          <p className="text-base text-grayscale-600">{getReasonContent("advertiser_no_private_groups", t).description}</p>
+          <Button onClick={() => handleAction(getReasonAction("advertiser_no_private_groups", t).action)} className="w-full mt-8" variant="default">
+            {getReasonAction("advertiser_no_private_groups", t).label}
+          </Button>
+        </div>
+      ) : (
+        <ul className="space-y-3 mt-2">
+          {reasons.map((reason, index) => {
+            const reasonContent = getReasonContent(reason, t)
+            const actionInfo = getReasonAction(reason, t)
+
+            return (
+              <li key={index} className="flex flex-col">
+                <p className="text-base text-grayscale-600">{reasonContent.description}</p>
+                {reasons.length == 1 && actionInfo && (
+                  <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
+                    {actionInfo.label}
+                  </Button>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 

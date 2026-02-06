@@ -1,9 +1,11 @@
 "use client"
 import { useState } from "react"
+import { cn } from "@/lib/utils"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import FollowsTab from "./follows-tab"
 import BlockedTab from "./blocked-tab"
+import ClosedGroupTab from "./closed-group"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
@@ -33,11 +35,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
   const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
+  const [showClosedGroupSidebar, setShowClosedGroupSidebar] = useState(false)
   const { toast } = useToast()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const { userData } = useUserDataStore()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -54,6 +58,9 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     { id: "stats", label: t("profile.stats") },
     { id: "payment", label: t("profile.paymentMethods") },
     { id: "follows", label: t("profile.follows") },
+    ...(userData.trade_band === "diamond"
+    ? [{ id: "closed-group", label: "Closed group" }]
+    : []),
     { id: "blocked", label: t("profile.blocked") },
   ]
 
@@ -250,6 +257,44 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
+             {userData.trade_band === "diamond" && (
+              <>
+              <Divider className="ml-[60px]" />
+              <div
+                onClick={() => {
+                  setShowClosedGroupSidebar(true)
+                }}
+                className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              >
+                <Image src="/icons/profile-blocks.svg" width={20} height={20} />
+                <span className="text-sm font-normal text-gray-900 ml-4">Closed group</span>
+                <Image
+                  src="/icons/chevron-right-gray.png"
+                  alt="Chevron right"
+                  width={20}
+                  height={20}
+                  className="justify-self-end"
+                />
+              </div>
+              </>)}
+            {userData.trade_band === "diamond" && showClosedGroupSidebar && (
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+                <div className="flex items-center gap-4 px-4 py-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowClosedGroupSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                </div>
+                <div className="m-4 flex-1 overflow-auto">
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.closedGroup")}</h2>
+                  <ClosedGroupTab />
+                </div>
+              </div>
+            )}
             <Divider className="ml-[60px]" />
             <div
               onClick={() => {
@@ -305,7 +350,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </div>
           </div>
         ) : (
-          <Tabs defaultValue={activeTab}>
+          <Tabs defaultValue={activeTab} className="h-full">
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (
@@ -380,6 +425,12 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 <FollowsTab />
               </div>
             </TabsContent>
+         
+            {userData.trade_band === "diamond" && (<TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
+              <div className="relative">
+                <ClosedGroupTab />
+              </div>
+            </TabsContent>)}
 
             <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
               <div className="relative">
