@@ -500,7 +500,7 @@ export default function BuySellPage() {
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
           <div className="h-full">
-            {isLoading ? (
+            {isLoading || (adverts.length === 0 && !currency) ? (
               <div className="md:block">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
