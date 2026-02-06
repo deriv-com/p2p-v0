@@ -524,7 +524,7 @@ export async function getClosedGroup(): Promise<[]> {
   }
 }
 
-export async function addToClosedGoup(advertiserId): Promise<[]> {
+export async function addToClosedGoup(advertiserId: string): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
@@ -556,7 +556,7 @@ export async function addToClosedGoup(advertiserId): Promise<[]> {
   }
 }
 
-export async function removeFromClosedGoup(advertiserId): Promise<[]> {
+export async function removeFromClosedGoup(advertiserId: string): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
