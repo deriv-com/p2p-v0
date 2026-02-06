@@ -182,7 +182,7 @@ export default function AdsPage() {
     try {
       await hideMyAds(value)
       // Update the user store with the new value after successful API call
-      useUserDataStore.setState({ userData: { ...userData, adverts_are_listed: !value } })
+      useUserDataStore.getState().updateUserData({ adverts_are_listed: !value })
     } catch (error) {
       console.error("Failed to hide/show ads:", error)
       setHiddenAdverts(previousValue)
