@@ -208,7 +208,13 @@ export function useUpdateAd() {
 export function useDeleteAd() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (id: string) => AdsAPI.deleteAd(id),
+    mutationFn: async (id: string) => {
+      const response = await AdsAPI.deleteAd(id)
+      if (!response.success) {
+        throw response
+      }
+      return response
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts(true) })
     },

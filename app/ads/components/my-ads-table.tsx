@@ -191,8 +191,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
           onError: (error: any) => {
             let description = t("myAds.deleteAdError")
 
-            if (error?.response?.data?.errors?.length > 0) {
-              const hasOpenOrdersError = error.response.data.errors.some(
+            if (error?.errors?.length > 0) {
+              const hasOpenOrdersError = error.errors.some(
                 (err: any) => err.code === "AdvertDeleteOpenOrders"
               )
               if (hasOpenOrdersError) {
