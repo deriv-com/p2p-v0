@@ -229,6 +229,7 @@ export function useToggleAdActiveStatus() {
   return useMutation({
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
       AdsAPI.toggleAdActiveStatus(id, isActive),
+    retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts(true) })
     },

@@ -161,6 +161,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                 type: "warning",
               })
             }
+          } else {
+            showAlert({
+              title: t("myAds.unableToUpdateAd"),
+              description: t("myAds.updateAdError"),
+              confirmText: t("common.ok"),
+              type: "warning",
+            })
           }
         },
       }
