@@ -111,9 +111,11 @@ const config: Config = {
         },
         orange: {
           50: "#ff9c1314",
+          100: "#C47D00",
         },
         green: {
           50: "#EAF3EB",
+          100: "#00883214",
         },
         slate: {
           50: "#f8fafc",
@@ -179,6 +181,7 @@ const config: Config = {
         },
         red: {
           withdraw: "#E6190E",
+          50: "#e6190e14",
         },
       },
       borderRadius: {

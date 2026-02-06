@@ -357,7 +357,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   return (
-    <div>
+    <div className="h-full overflow-y-auto">
       <div className="p-6 md:px-2 md:py-0">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
@@ -377,7 +377,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     </div>
                   </div>
                   <div className="flex-1">
-                    <div className="flex gap-1 items-center">
+                    <div className="flex gap-2 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                       <VerifiedBadge />
                       {profile.trade_band && (

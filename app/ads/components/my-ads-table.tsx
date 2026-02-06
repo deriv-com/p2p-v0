@@ -23,15 +23,17 @@ import { VisibilityStatusDialog } from "./visibility-status-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useDeleteAd, useToggleAdActiveStatus } from "@/hooks/use-api-queries"
 
 interface MyAdsTableProps {
   ads: Ad[]
   hiddenAdverts: boolean
   isLoading: boolean
+  isFetching?: boolean
   onAdDeleted?: (status?: string) => void
 }
 
-export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
+export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
@@ -46,6 +48,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
+  
+  // React Query mutations for delete and toggle status
+  const deleteAdMutation = useDeleteAd()
+  const toggleStatusMutation = useToggleAdActiveStatus()
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
@@ -131,32 +137,40 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleToggleStatus = async (ad: Ad) => {
     setDrawerOpen(false)
-    try {
-      const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
-      const isListed = !isActive
+    const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
+    const isListed = !isActive
 
-      const result = await AdsAPI.toggleAdActiveStatus(ad.id, isListed)
+    toggleStatusMutation.mutate(
+      { id: ad.id, isActive: isListed },
+      {
+        onError: (error: any) => {
+          if (error?.errors?.length > 0) {
+            const firstError = error.errors[0]
+            const errorCodeMap: Record<string, string> = {
+              AdvertActiveCountExceeded: t("adForm.adLimitReachedMessage"),
+              AdvertExchangeRateDuplicate: t("adForm.duplicateRateMessage"),
+              InvalidExchangeRate: t("adForm.invalidExchangeRateMessage"),
+            }
 
-      if (result.success) {
-        if (onAdDeleted) {
-          onAdDeleted()
-        }
-      } else if (result.errors?.length > 0 && result.errors[0].code === "AdvertActiveCountExceeded") {
-        showAlert({
-          title: t("adForm.adLimitReachedTitle"),
-          description: t("adForm.adLimitReachedMessage"),
-          confirmText: t("common.ok"),
-          type: "warning",
-        })
-      } else {
-        showAlert({
-          title: t("myAds.unableToUpdateAd"),
-          description: t("myAds.updateAdError"),
-          confirmText: t("common.ok"),
-          type: "warning",
-        })
+            const errorMessage = errorCodeMap[firstError.code] || t("myAds.updateAdError")
+
+            showAlert({
+              title: t("myAds.unableToUpdateAd"),
+              description: errorMessage,
+              confirmText: t("common.ok"),
+              type: "warning",
+            })
+          } else {
+            showAlert({
+              title: t("myAds.unableToUpdateAd"),
+              description: t("myAds.updateAdError"),
+              confirmText: t("common.ok"),
+              type: "warning",
+            })
+          }
+        },
       }
-    } catch (error) { }
+    )
   }
 
   const handleDelete = (adId: string) => {
@@ -166,29 +180,27 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       description: t("myAds.deleteAdDescription"),
       confirmText: t("common.delete"),
       cancelText: t("common.cancel"),
-      onConfirm: async () => {
-        try {
-          const result = await AdsAPI.deleteAd(adId)
-
-          if (result.success) {
-            if (onAdDeleted) {
-              onAdDeleted()
-              toast({
-                description: (
-                  <div className="flex items-center gap-2">
-                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    <span>{t("myAds.adDeleted")}</span>
-                  </div>
-                ),
-                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-                duration: 2500,
-              })
-            }
-          } else {
+      onConfirm: () => {
+        deleteAdMutation.mutate(adId, {
+          onSuccess: () => {
+            toast({
+              description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <span>{t("myAds.adDeleted")}</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
+            })
+          },
+          onError: (error: any) => {
             let description = t("myAds.deleteAdError")
 
-            if (result.errors && result.errors.length > 0) {
-              const hasOpenOrdersError = result.errors.some((error) => error.code === "AdvertDeleteOpenOrders")
+            if (error?.errors?.length > 0) {
+              const hasOpenOrdersError = error.errors.some(
+                (err: any) => err.code === "AdvertDeleteOpenOrders"
+              )
               if (hasOpenOrdersError) {
                 description = t("myAds.deleteAdOpenOrders")
               }
@@ -202,27 +214,25 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 type: "warning",
               })
             }, 500)
-          }
-        } catch (error) {
-          console.log("Delete error:", error)
-        }
+          },
+        })
       },
     })
   }
 
   const handleOpenDrawer = (ad: Ad) => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
-      
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet route="ads" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -242,7 +252,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     }
   }
 
-  if (isLoading) {
+  // Show skeleton loader when loading, during delete/toggle mutations, or during refetch after deletion
+  const showSkeleton = isLoading || isFetching || deleteAdMutation.isPending || toggleStatusMutation.isPending
+
+  if (showSkeleton) {
     return (
       <div className="w-full">
         <Table>
@@ -265,7 +278,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             {Array.from({ length: 3 }).map((_, index) => (
               <TableRow
                 key={index}
-                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
               >
                 <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
                   <div className="space-y-2">
@@ -354,12 +367,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 <TableRow
                   key={index}
                   className={cn(
-                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0",
+                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0 text-slate-1200 gap-2",
                   )}
                 >
                   <TableCell
                     className={cn(
-                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      "px-2 py-0 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -373,26 +386,24 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType.toLowerCase() === "buy" ? t("common.buy") : t("common.sell")}
                         </span>
-                        <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
+                        <span className="text-base font-bold leading-6 ml-1">
                           {" "}
                           {ad.account_currency}
                         </span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          {!isMobile && (
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
-                              {t("myAds.adId")}:
-                            </span>
-                          )}
+                          <span className="text-xs leading-5 text-slate-500">
+                            {t("myAds.adId")}:
+                          </span>
                           <span className="text-xs leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (
                           <div className="flex items-center justify-between md:justify-normal gap-1">
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
+                            <span className="text-xs leading-5">
                               {t("myAds.rate")}:
                             </span>
-                            <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                            <span className="text-xs font-bold leading-5">{rate} {ad.payment_currency}</span>
                             {exchangeRateType == "float" && ad.exchange_rate != 0 && (
                               <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
                                 {exchangeRate}
@@ -405,7 +416,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap",
+                      "px-2 py-0 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -420,11 +431,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     </div>
                     {isMobile && (
                       <div className="flex items-center justify-between gap-1">
-                        <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
+                        <span className="text-xs leading-5">{t("myAds.rate")}:</span>
                         <div>
-                          <span className="text-xs leading-5 text-gray-900">{rate} {ad.payment_currency}</span>
+                          <span className="text-xs leading-5 text-gray-900 font-bold">{rate} {ad.payment_currency}</span>
                           {exchangeRateType == "float" && ad.exchange_rate != 0 && (
-                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-2">
                               {exchangeRate}
                             </span>
                           )}
@@ -438,7 +449,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
+                      "px-2 py-0 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -448,7 +459,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {getStatusBadge(isActive)}
                     {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
                   </TableCell>
-                  <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
                       {hasVisibilityStatus && (
                         <Button

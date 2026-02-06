@@ -26,8 +26,7 @@
     "learnMore": "Mehr erfahren",
     "verifiedBadge": {
       "title": "Vollständig verifiziertes Konto",
-      "descriptionSelf": "Sie haben alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung.",
-      "descriptionOther": "Dieser Benutzer hat alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung. Sie können mit Vertrauen handeln, da dieses Konto verifiziert ist."
+      "description": "Dieser Benutzer hat alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung. Sie können mit Vertrauen handeln, da dieses Konto verifiziert ist."
     }
   },
   "navigation": {
@@ -49,7 +48,7 @@
     "yourePayingWith": "Sie zahlen mit",
     "youreReceiving": "Sie erhalten",
     "paymentMethod": "Zahlungsmethode",
-    "paymentMethodAll": "Zahlungsmethode (Alle)",
+    "paymentMethodAll": "Zahlungsmethode",
     "paymentMethodSelected": "Zahlungsmethode ({count})",
     "advertisers": "Inserenten",
     "rates": "Kurse",

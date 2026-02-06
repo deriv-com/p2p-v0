@@ -26,8 +26,7 @@
     "learnMore": "Scopri di più",
     "verifiedBadge": {
       "title": "Account completamente verificato",
-      "descriptionSelf": "Hai completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo.",
-      "descriptionOther": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
+      "description": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
     }
   },
   "navigation": {
@@ -49,7 +48,7 @@
     "yourePayingWith": "Stai pagando con",
     "youreReceiving": "Stai ricevendo",
     "paymentMethod": "Metodo di pagamento",
-    "paymentMethodAll": "Metodo di pagamento (Tutti)",
+    "paymentMethodAll": "Metodo di pagamento",
     "paymentMethodSelected": "Metodo di pagamento ({count})",
     "advertisers": "Inserzionisti",
     "rates": "Tassi",

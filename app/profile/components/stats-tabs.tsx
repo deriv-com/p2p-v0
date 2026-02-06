@@ -28,7 +28,7 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -43,10 +43,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const { userData } = useUserDataStore()
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
-  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved" 
+  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
   const helpCentreUrl =
@@ -110,17 +110,17 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setShowAddPaymentPanel(true)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="profile" />
+            <KycOnboardingSheet route="profile" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -130,8 +130,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   }
 
   return (
-    <div className="relative h-9/10">
-      <div className="mb-[64px] md:mb-6 h-full">
+    <div className="relative px-3 md:px-0">
+      <div className="mb-[64px] md:mb-6">
         {isMobile ? (
           <div className="mx-[-12px]">
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.aboutYou")}</div>
@@ -402,7 +402,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               )}
             </TabsContent>
 
-            <TabsContent value="payment" className="mt-4">
+            <TabsContent value="payment" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
               <div className="relative">
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
@@ -420,7 +420,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
 
-            <TabsContent value="follows" className="mt-4">
+            <TabsContent value="follows" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
               <div className="relative">
                 <FollowsTab />
               </div>
@@ -432,7 +432,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>)}
 
-            <TabsContent value="blocked" className="mt-4">
+            <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
               <div className="relative">
                 <BlockedTab />
               </div>

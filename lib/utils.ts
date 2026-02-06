@@ -187,12 +187,13 @@ export function formatStatus(
   }
 }
 
-export function getStatusBadgeStyle(status: string, type: string): string {
+
+export function getStatusBadgeStyle(status: string, isBuyer: boolean): string {
   switch (status) {
     case "pending_payment":
-      return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
+      return isBuyer ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
     case "pending_release":
-      return type === "buy" ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
+      return isBuyer ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
     case "completed":
       return "bg-green-50 text-buy"
     case "cancelled":
@@ -490,9 +491,29 @@ export const currencyFlagMapper = {
   OMR: "/icons/flag-oman.png",
   VES: "/icons/flag-venezuela.png",
   TND: "/icons/flag-tunisia.png",
+  CNY: "/icons/flag-china.svg",
+  DOP: "/icons/flag-dominican-republic.svg",
+  EUR: "/icons/flag-andorra.svg",
+  HTG: "/icons/flag-haiti.svg",
+  KZT: "/icons/flag-kazakhstan.svg",
+  LRD: "/icons/flag-liberia.svg",
+  MNT: "/icons/flag-mongolia.svg",
+  SLL: "/icons/flag-seirraleone.svg",
+  TRY: "/icons/flag-turkey.svg",
+  XCD: "/icons/flag-dominica.svg",
+  DZD: "/icons/flag-algeria.svg",
+  LAK: "/icons/flag-laos.svg",
+  MWK: "/icons/flag-malawi.svg",
+  WST: "/icons/flag-samoa.svg",
+  BND: "/icons/flag-brunei.svg",
+  AWG: "/icons/flag-aruba.svg",
+  LYD: "/icons/flag-libya.svg",
+  GMD: "/icons/flag-gambia.svg",
+  AFN: "/icons/flag-afghanistan.svg",
+  BBD: "/icons/flag-barbados.svg"
 }
 
-export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "") => {
+export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "",
     url = ""
@@ -505,29 +526,35 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
 
   if (section === "poi") {
     if (isV1Signup) {
-      if(isWalletAccount) {
+      if (isWalletAccount) {
         url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfIdentityStatus" : "https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus"
       } else {
         url = isProduction ? "https://app.deriv.com/account/proof-of-identity" : "https://staging-app.deriv.com/account/proof-of-identity"
       }
     } else {
-      url = `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}`
+      url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "poa") {
     if (isV1Signup) {
-      if(isWalletAccount) {
+      if (isWalletAccount) {
         url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfAddress" : "https://staging-hub.deriv.com/Accounts/ProofOfAddress"
       } else {
         url = isProduction ? "https://app.deriv.com/account/proof-of-address" : "https://staging-app.deriv.com/account/proof-of-address"
       }
     } else {
-      url = `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}`
+      url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
     }
   } else if (section === "home") {
     if (isV1Signup) {
       url = `https://${baseUrl}`
     } else {
       url = `https://${baseUrl}/dashboard/home`
+    }
+  } else if (section === "homeProfile") {
+    if (isV1Signup) {
+      url = `https://${baseUrl}/account/personal-details`
+    } else {
+      url = `https://${baseUrl}/dashboard/profile`
     }
   } else {
     url = baseUrl

@@ -26,8 +26,7 @@
     "learnMore": "Más información",
     "verifiedBadge": {
       "title": "Cuenta totalmente verificada",
-      "descriptionSelf": "Has completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección.",
-      "descriptionOther": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
+      "description": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
     }
   },
   "navigation": {
@@ -49,7 +48,7 @@
     "yourePayingWith": "Estás pagando con",
     "youreReceiving": "Estás recibiendo",
     "paymentMethod": "Método de pago",
-    "paymentMethodAll": "Método de pago (Todos)",
+    "paymentMethodAll": "Método de pago",
     "paymentMethodSelected": "Método de pago ({count})",
     "advertisers": "Anunciantes",
     "rates": "Tasas",

@@ -29,9 +29,8 @@
     "ok": "OK",
     "learnMore": "Learn More",
     "verifiedBadge": {
-      "title": "Fully verified account",
-      "descriptionSelf": "You have completed all required verification steps, including email, phone number, identity (KYC), and address verification.",
-      "descriptionOther": "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."
+      "title": "Verified account",
+      "description": "Email, phone, identity, and address checks are complete. This helps you trade with more confidence."
     }
   },
   "navigation": {
@@ -42,7 +41,8 @@
     "profile": "Profile",
     "backToHome": "Go to Home",
     "home": "Home",
-    "p2pHelpCentre": "P2P help centre"
+    "p2pHelpCentre": "P2P help centre",
+    "liveChat": "Live chat"
   },
   "market": {
     "title": "Market",
@@ -53,7 +53,7 @@
     "yourePayingWith": "You're paying with",
     "youreReceiving": "You're receiving",
     "paymentMethod": "Payment method",
-    "paymentMethodAll": "Payment method (All)",
+    "paymentMethodAll": "Payment method",
     "paymentMethodSelected": "Payment method ({count})",
     "advertisers": "Advertisers",
     "rates": "Rates",
@@ -63,10 +63,11 @@
     "min": "min",
     "orderLimits": "Order limits",
     "loadingAds": "Loading ads...",
-    "noAdsTitle": "No ads for this currency",
-    "noAdsDescription": "You can post your own ad for others to respond.",
+    "noAdsTitle": "No ads available for {currency}",
+    "noAdsDescription": "Create an {currency} ad to get started, or switch to another currency.",
     "following": "Following",
-    "verified": "Verified"
+    "verified": "Verified",
+    "browseMarket": "Browse market"
   },
   "order": {
     "placeOrder": "Place order",
@@ -89,7 +90,7 @@
     "sellersInstructions": "Seller's instructions",
     "insufficientBalance": "Insufficient balance. Add funds to your wallet before creating an order.",
     "orderLimitError": "Order limit: {min} - {max} {currency}",
-    "orderExists": "You can only have one active order per ad. Complete your existing order to continue.",
+    "orderExists": "You already have an active order for this ad. Complete the existing order before placing a new one.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
     "unableToCreateOrder": "Unable to create an order"
   },
@@ -232,6 +233,7 @@
     "proofOfTransferSubmitted": "Proof of transfer submitted",
     "textCopiedToClipboard": "The text has been copied to your clipboard.",
     "ratingDeadline": "You have until {deadline} to rate this transaction.",
+    "awaitingPaymentTooltip": "Wait for the buyer to complete their payment.",
     "loadingOrderDetails": "Loading order details...",
     "failedToLoadOrderDetails": "Failed to load order details. Please try again.",
     "tryAgain": "Try Again",
@@ -274,7 +276,7 @@
     "tradeVolume30DaysTooltip": "The total value of all completed trades in the last 30 days.",
     "lessThanOneMin": "< 1 min",
     "mins": "mins",
-    "gettingStarted": "Getting started with P2P",
+    "gettingStarted": "Complete verification",
     "verificationExpired": "Verification expired",
     "identityVerificationExpired": "Identity verification expired",
     "addressVerificationExpired": "Address verification expired",
@@ -423,9 +425,9 @@
     "status": "Status",
     "active": "Active",
     "inactive": "Inactive",
-    "adId": "Ad Id",
+    "adId": "ID",
     "rate": "Rate",
-    "limit": "Limit",
+    "limit": "Order limit",
     "manageAds": "Manage ads",
     "edit": "Edit",
     "share": "Share",
@@ -522,8 +524,8 @@
     "checkPreviousOrders": "Check previous orders",
     "previousOrders": "Previous orders",
     "loadingOrders": "Loading orders...",
-    "noActiveOrders": "No active orders",
-    "noActiveOrdersDescription": "View and manage your active orders here.",
+    "noActiveOrders": "No active orders yet",
+    "noActiveOrdersDescription": "Buy or sell from the market, or create an ad to start receiving orders.",
     "noPastOrders": "No past orders",
     "noPastOrdersDescription": "View and manage your past orders here.",
     "date": "Date",
@@ -552,7 +554,7 @@
     "confirmPaymentReceived": "Confirm payment received",
     "otpSentTo": "Enter the 6-digit code sent to {email}. This step verifies your identity before releasing payment to the other party.",
     "incorrectCode": "Incorrect code. You have {attempts} attempt{plural} left.",
-    "maxAttemptsReached": "Max attempts reached.",
+    "maxAttemptsReached": "Max attempts reached. Try again in 10 minutes.",
     "tooManyAttempts": "Too many failed attempts",
     "tooManyAttemptsDescription": "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
     "gotIt": "Got it",
@@ -671,16 +673,23 @@
     "userUnblocked": "{nickname} unblocked."
   },
   "kyc": {
-    "accessP2PMessage": "To access P2P, complete your profile and verification.",
-    "setupProfile": "Set up your profile",
+    "accessP2PMessage": "To continue, complete the remaining steps:",
+    "setupProfile": "Profile details",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
     "phoneNumber": "Phone number",
     "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
     "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
     "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
+    "verified": "Verified",
+    "failed": "Failed",
+    "inReview": "In Review",
     "unverified": "Unverified",
-    "resubmitNow": "Resubmit now"
+    "resubmitNow": "Resubmit now",
+    "email": "Email address",
+    "gotIt": "Got it",
+    "checkProofOfIdentity": "Check proof of identity",
+    "checkProofOfAddress": "Check proof of address"
   },
   "status": {
     "refunded": "Refunded",

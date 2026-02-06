@@ -6,8 +6,6 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
-import { BuySellAPI } from "@/services/api"
-import { getAdvertStatistics } from "@/services/api/api-auth"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -18,7 +16,7 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
@@ -29,6 +27,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -60,12 +59,7 @@ export default function BuySellPage() {
   } = useMarketFilterStore()
 
   const [adverts, setAdverts] = useState<Advertisement[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
-  const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
@@ -73,20 +67,34 @@ export default function BuySellPage() {
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
 
+  const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
+
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
-  const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
+
+
+  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
+    {
+      type: activeTab,
+      account_currency: selectedAccountCurrency,
+      currency: currency,
+      paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
+      sortBy: sortBy,
+      favourites_only: filterOptions.fromFollowing ? 1 : 0,
+    }
+  )
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -168,161 +176,56 @@ export default function BuySellPage() {
   }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
-    const fetchAdvertStatistics = async () => {
-      try {
-        const statistics = await getAdvertStatistics(selectedAccountCurrency)
-
-        if (currencies.length > 0) {
-          const validCurrencyCodes = currencies.map((c) => c.code)
-          const filteredStatistics =
-            statistics?.data?.filter(
-              (stat: any) => stat.payment_currency && validCurrencyCodes.includes(stat.payment_currency),
-            ) || []
-
-          const operation = searchParams.get("operation")
-          let currencyToSet = currencies[0]?.code
-          let shouldSetSellTab = false
-
-          const currencyWithSellCount = filteredStatistics.find((stat: any) => stat.sell_count > 0)
-
-          if (currencyWithSellCount) {
-            currencyToSet = currencyWithSellCount.payment_currency
-          } else {
-            const currencyWithBuyCount = filteredStatistics.find((stat: any) => stat.buy_count > 0)
-
-            if (currencyWithBuyCount) {
-              currencyToSet = currencyWithBuyCount.payment_currency
-              if (!operation) {
-                shouldSetSellTab = true
-              }
-            }
-          }
-
-          setCurrency(currencyToSet)
-
-          if (shouldSetSellTab) {
-            setActiveTab("sell")
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching advert statistics:", error)
-        if (currencies.length > 0) {
-          setCurrency(currencies[0]?.code)
-        }
+    // Currency init: if store has no currency yet, default to user's local currency (or first available).
+    // If user already picked a currency, do not override it.
+    if (currencies.length > 0 && (currency === "" || currency === null)) {
+      const validCurrencyCodes = currencies.map((c) => c.code)
+      if (localCurrency && validCurrencyCodes.includes(localCurrency)) {
+        setCurrency(localCurrency)
+      } else {
+        setCurrency(currencies[0]?.code)
       }
     }
+  }, [currencies, localCurrency, currency, setCurrency])
 
-    fetchAdvertStatistics()
-  }, [currencies, searchParams, setCurrency, setActiveTab, selectedAccountCurrency])
+  const paymentMethodsString = useMemo(
+    () => JSON.stringify(selectedPaymentMethods),
+    [selectedPaymentMethods]
+  )
+
+  // Sync hook data to local state for websocket updates
+  useEffect(() => {
+    if (Array.isArray(fetchedAdverts)) {
+      setAdverts((prev) => {
+        if (JSON.stringify(prev) === JSON.stringify(fetchedAdverts)) {
+          return prev
+        }
+        return fetchedAdverts
+      })
+    }
+  }, [fetchedAdverts])
 
   useEffect(() => {
-    if (currencies.length > 0) {
-      setCurrency(currencies[0]?.code)
+    if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
+      setSelectedPaymentMethods(paymentMethods.map((method) => method.method))
     }
-  }, [currencies])
-
-  useEffect(() => {
-    if (paymentMethodsInitialized) {
-      fetchAdverts()
-    }
-  }, [
-    activeTab,
-    currency,
-    sortBy,
-    filterOptions,
-    selectedPaymentMethods,
-    selectedAccountCurrency,
-    paymentMethodsInitialized,
-  ])
-
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      setIsLoadingPaymentMethods(true)
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods)
-
-        if (selectedPaymentMethods.length === 0) {
-          setSelectedPaymentMethods(methods.map((method) => method.method))
-        }
-        setPaymentMethodsInitialized(true)
-      } catch (error) {
-        console.error("Error fetching payment methods:", error)
-        setPaymentMethodsInitialized(true)
-      } finally {
-        setIsLoadingPaymentMethods(false)
-      }
-    }
-
-    fetchPaymentMethods()
-  }, [selectedPaymentMethods.length, setSelectedPaymentMethods])
-
-  const fetchAdverts = async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-
-    const abortController = new AbortController()
-    abortControllerRef.current = abortController
-
-    setIsLoading(true)
-    setError(null)
-    try {
-      const params: BuySellAPI.SearchParams = {
-        type: activeTab,
-        account_currency: selectedAccountCurrency,
-        currency: currency,
-        paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
-        sortBy: sortBy,
-      }
-
-      if (filterOptions.fromFollowing) {
-        params.favourites_only = 1
-      }
-
-      if (filterOptions.isPrivate) {
-        params.is_private = 1
-      }
-
-      const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
-
-      if (!abortController.signal.aborted) {
-        if (Array.isArray(data)) {
-          setAdverts(data)
-        } else {
-          console.error("API did not return an array:", data)
-          setAdverts([])
-          setError("Received invalid data format from server")
-        }
-      }
-    } catch (err) {
-      if (!abortController.signal.aborted) {
-        console.error("Error fetching adverts:", err)
-        setError("Failed to load advertisements. Please try again.")
-        setAdverts([])
-      }
-    } finally {
-      if (!abortController.signal.aborted) {
-        setIsLoading(false)
-      }
-    }
-  }
+  }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -335,19 +238,18 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
-      setError(null)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -356,7 +258,7 @@ export default function BuySellPage() {
     }
   }
 
-  const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
+  const handleCurrencySelect = (currencyCode: string) => {
     setCurrency(currencyCode)
   }
 
@@ -391,14 +293,6 @@ export default function BuySellPage() {
       }
     }
   }, [isFilterPopupOpen])
-
-  useEffect(() => {
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [])
 
   useEffect(() => {
     if (isConnected && selectedAccountCurrency && currency && activeTab) {
@@ -436,7 +330,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -447,8 +341,8 @@ export default function BuySellPage() {
 
   return (
     <>
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <div className="flex-shrink-0">
+      <div className="flex flex-col h-full overflow-hidden">
+        <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
@@ -486,6 +380,17 @@ export default function BuySellPage() {
                           size="sm"
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                         >
+                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
+                            <Image
+                              src={
+                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                              }
+                              alt={`${currency} logo`}
+                              width={24}
+                              height={16}
+                              className="mr-1 object-cover"
+                            />
+                          )}
                           <span>{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
@@ -593,9 +498,9 @@ export default function BuySellPage() {
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
-          <div>
-            {isLoading ? (
+        <div className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
+          <div className="h-full">
+            {isLoading || (adverts.length === 0 && !currency) ? (
               <div className="md:block">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
@@ -616,7 +521,7 @@ export default function BuySellPage() {
                     {[...Array(2)].map((_, index) => (
                       <TableRow
                         key={index}
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                       >
                         <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                           <div className="flex items-center">
@@ -647,16 +552,19 @@ export default function BuySellPage() {
                 </Table>
               </div>
             ) : error ? (
-              <div className="text-center py-8">{error}</div>
+              <div className="text-center py-8 text-red-500">
+                {error.message || "Failed to load advertisements"}
+              </div>
             ) : adverts.length === 0 ? (
               <EmptyState
-                title={t("market.noAdsTitle")}
-                description={t("market.noAdsDescription")}
+                title={t("market.noAdsTitle", { currency: currency })}
+                description={t("market.noAdsDescription", { currency: currency })}
                 redirectToAds={true}
+                adType={activeTab}
                 route="markets"
               />
             ) : (
-              <div className="md:block">
+              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
@@ -675,7 +583,7 @@ export default function BuySellPage() {
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
                       <TableRow
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                         key={ad.id}
                       >
                         <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
@@ -683,12 +591,11 @@ export default function BuySellPage() {
                             <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
-                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                }`}
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                  }`}
                               />
                             </div>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <button
                                 onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                 className="hover:underline cursor-pointer"
@@ -736,7 +643,7 @@ export default function BuySellPage() {
                             )}
                             {ad.user.order_count_lifetime > 0 && (
                               <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
                                 <span>
                                   {ad.user.order_count_lifetime} {t("market.orders")}
                                 </span>
@@ -751,7 +658,7 @@ export default function BuySellPage() {
                               </div>
                             )}
                           </div>
-                          <div className="flex items-center text-xs text-slate-500 mt-2">
+                          {!isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
@@ -769,8 +676,9 @@ export default function BuySellPage() {
                               </Tooltip>
                             </TooltipProvider>
                           </div>
+                          }
                         </TableCell>
-                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                        <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
                           <div className="font-bold text-base flex items-center">
                             {ad.effective_rate_display
                               ? ad.effective_rate_display.toLocaleString(undefined, {
@@ -781,9 +689,26 @@ export default function BuySellPage() {
                             {ad.payment_currency}
                             <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                           </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
-                            ad.actual_maximum_order_amount || "N/A"
-                          }  ${ad.account_currency}`}</div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                            }  ${ad.account_currency}`}</div>
+                          {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                    <span>
+                                      {ad.order_expiry_period} {t("market.min")}
+                                    </span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                  <TooltipArrow className="fill-black" />
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>}
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                           <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
@@ -792,8 +717,8 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                        ? "bg-paymentMethod-bank"
-                                        : "bg-paymentMethod-ewallet"
+                                      ? "bg-paymentMethod-bank"
+                                      : "bg-paymentMethod-ewallet"
                                       }`}
                                   ></div>
                                 )}

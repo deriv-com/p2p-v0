@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getCurrencies } from "@/services/api/api-wallets"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
@@ -47,10 +47,11 @@ export default function WalletSummary({
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus) 
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
   const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
+  const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -58,49 +59,44 @@ export default function WalletSummary({
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
 
   const displayCurrency = externalSelectedCurrency || propCurrency
   const formattedBalance = formatAmountWithDecimals(propBalance)
   const displayCurrencyLabel = currencies.find((c) => c.code === displayCurrency)?.label || displayCurrency
 
-  const fetchCurrencies = async () => {
-    try {
-      const response = await getCurrencies()
-      if (response?.data) {
-        const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
-          code,
-          name: data.label,
-          logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-          label: data.label,
-        }))
-        setCurrencies(currencyList)
-      }
-    } catch (error) {
-      console.error("Error fetching currencies:", error)
+  const fetchCurrencies = () => {
+    if (currenciesResponse?.data) {
+      const currencyList = Object.entries(currenciesResponse.data).map(([code, data]: [string, any]) => ({
+        code,
+        name: data.label,
+        logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+        label: data.label,
+      }))
+      setCurrencies(currencyList)
     }
   }
 
   useEffect(() => {
     fetchCurrencies()
-  }, [])
+  }, [currenciesResponse])
 
   const handleDepositClick = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" />
+            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -114,17 +110,17 @@ export default function WalletSummary({
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" />
+            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -140,17 +136,17 @@ export default function WalletSummary({
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
 
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" />
+            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -180,8 +176,8 @@ export default function WalletSummary({
     setIsIframeModalOpen(true)
   }
 
-  const handleSendTransferClick = () => {}
-  const handleReceiveTransferClick = () => {}
+  const handleSendTransferClick = () => { }
+  const handleReceiveTransferClick = () => { }
 
   const handleGoBackToCurrency = () => {
     setCurrentStep("chooseCurrency")
@@ -215,19 +211,19 @@ export default function WalletSummary({
                 width={92}
                 height={92}
                 className="w-18 h-18 md:w-24 md:h-24"
-              />) :   
-              (<div className="flex-shrink-0 relative w-16 h-16">
-                <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
-                <div class="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
-                  <Image
-                    src={currencyLogo}
-                    alt={`${externalSelectedCurrency} Logo`}
-                    width={24}
-                    height={24}
-                    className="w-6 h-6 rounded-full bg-white p-[2px]"
-                  />
-                </div>
-              </div>)}
+              />) :
+                (<div className="flex-shrink-0 relative w-16 h-16">
+                  <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
+                  <div className="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
+                    <Image
+                      src={currencyLogo}
+                      alt={`${externalSelectedCurrency} Logo`}
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 rounded-full bg-white p-[2px]"
+                    />
+                  </div>
+                </div>)}
             </div>
 
             <div className={cn("flex flex-col", isMobile && "items-center")}>

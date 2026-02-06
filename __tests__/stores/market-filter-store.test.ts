@@ -14,7 +14,7 @@ describe("useMarketFilterStore", () => {
     const { result } = renderHook(() => useMarketFilterStore())
 
     expect(result.current.activeTab).toBe("sell")
-    expect(result.current.currency).toBe("IDR")
+    expect(result.current.currency).toBe("")
     expect(result.current.sortBy).toBe("exchange_rate")
     expect(result.current.filterOptions).toEqual({ fromFollowing: false })
     expect(result.current.selectedPaymentMethods).toEqual([])
@@ -102,7 +102,7 @@ describe("useMarketFilterStore", () => {
 
     // Check all values are back to initial state
     expect(result.current.activeTab).toBe("sell")
-    expect(result.current.currency).toBe("IDR")
+    expect(result.current.currency).toBe("")
     expect(result.current.sortBy).toBe("exchange_rate")
     expect(result.current.filterOptions).toEqual({ fromFollowing: false })
     expect(result.current.selectedPaymentMethods).toEqual([])

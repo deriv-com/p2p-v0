@@ -2,11 +2,11 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
-import { AdsAPI } from "@/services/api"
 import { hideMyAds } from "@/services/api/api-my-ads"
+import { useUserAdverts } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -29,9 +29,6 @@ interface StatusData {
 
 export default function AdsPage() {
   const { t } = useTranslations()
-  const [ads, setAds] = useState<MyAd[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId, onboardingStatus, verificationStatus } = useUserDataStore()
@@ -44,12 +41,15 @@ export default function AdsPage() {
     title: "Error",
     message: "",
   })
-  const { showAlert } = useAlertDialog()
-  const hasFetchedRef = useRef(false)
+  const { hideAlert, showAlert } = useAlertDialog()
   const [showKycPopup, setShowKycPopup] = useState(false)
+  const errorAlertShownRef = useRef(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
+
+  // Use the React Query hook
+  const { data: userAdverts = [], isLoading: loading, isFetching, error: queryError, refetch } = useUserAdverts(true, !!userId)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -61,17 +61,17 @@ export default function AdsPage() {
 
   useEffect(() => {
     if (showKycPopup) {
-      const title = t("profile.gettingStarted")
+      let title = t("profile.gettingStarted")
 
-      if(isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if(isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if(isPoaExpired) title = t("profile.addressVerificationExpired")
-      
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
       showAlert({
         title,
         description: (
           <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" />
+            <KycOnboardingSheet route="ads" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -79,9 +79,8 @@ export default function AdsPage() {
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
       })
-      setShowKycPopup(false)
     }
-  }, [showKycPopup, showAlert, t])
+  }, [showKycPopup, showAlert, hideAlert, t, isPoiExpired, isPoaExpired])
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
@@ -91,38 +90,15 @@ export default function AdsPage() {
     router.push("/ads/create")
   }
 
-  const fetchAds = async () => {
-    if (!userId) {
-      setLoading(false)
-      return
-    }
-
-    try {
-      setLoading(true)
-      setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(true)
-
-      setAds(userAdverts)
-    } catch (err) {
-      setError(t("myAds.errorLoadingAds"))
-      setAds([])
+  useEffect(() => {
+    if (queryError) {
       setErrorModal({
         show: true,
         title: t("myAds.errorLoadingAdsTitle"),
-        message: err instanceof Error ? err.message : t("myAds.errorLoadingAdsMessage"),
+        message: queryError instanceof Error ? queryError.message : t("myAds.errorLoadingAdsMessage"),
       })
-    } finally {
-      setLoading(false)
     }
-  }
-
-  useEffect(() => {
-    setLoading(false)
-    if (userId && !hasFetchedRef.current) {
-      fetchAds()
-      hasFetchedRef.current = true
-    }
-  }, [userId])
+  }, [queryError, t])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -162,13 +138,11 @@ export default function AdsPage() {
         showStatusModal: true,
       })
 
-      fetchAds()
+      refetch()
     }
-  }, [showAlert, isMobile, t])
+  }, [showAlert, isMobile, t, refetch])
 
   const handleAdUpdated = (status?: string) => {
-    fetchAds()
-
     if (status === "deleted") {
       setShowDeletedBanner(true)
       setTimeout(() => setShowDeletedBanner(false), 3000)
@@ -179,21 +153,27 @@ export default function AdsPage() {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
   }
 
-  const handleCloseErrorModal = () => {
+  const handleCloseErrorModal = useCallback(() => {
     setErrorModal((prev) => ({ ...prev, show: false }))
-  }
+  }, [])
 
   useEffect(() => {
-    if (errorModal.show) {
+    if (errorModal.show && !errorAlertShownRef.current) {
+      errorAlertShownRef.current = true
       showAlert({
         title: errorModal.title,
         description: errorModal.message,
         confirmText: t("common.ok"),
-        onConfirm: handleCloseErrorModal,
+        onConfirm: () => {
+          handleCloseErrorModal()
+          errorAlertShownRef.current = false
+        },
         type: "warning",
       })
+    } else if (!errorModal.show) {
+      errorAlertShownRef.current = false
     }
-  }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t])
+  }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t, handleCloseErrorModal])
 
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
@@ -215,7 +195,7 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
-    const hasNoAds = ads.length > 0
+    const hasNoAds = userAdverts.length > 0
     return (
       <div className="flex items-center justify-self-end self-end flex-shrink-0">
         <Switch
@@ -258,7 +238,7 @@ export default function AdsPage() {
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
-            {ads.length > 0 && (
+            {userAdverts.length > 0 && (
               <Button
                 onClick={handleCreateAd}
                 size="sm"
@@ -274,10 +254,10 @@ export default function AdsPage() {
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-          {error ? (
-            <div className="text-center py-8 text-red-500">{error}</div>
+          {queryError ? (
+            <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
+            <MyAdsTable ads={userAdverts} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} isFetching={isFetching} />
           )}
         </div>
 

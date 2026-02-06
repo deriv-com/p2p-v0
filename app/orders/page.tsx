@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -28,6 +28,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useOrders } from "@/hooks/use-api-queries"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -45,12 +46,10 @@ function TimeRemainingDisplay({ expiresAt }) {
 export default function OrdersPage() {
   const { t } = useTranslations()
   const router = useRouter()
-  const { showAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const { activeTab, setActiveTab, dateFilter, customDateRange, setDateFilter, setCustomDateRange } =
     useOrdersFilterStore()
   const { setIsChatVisible } = useChatVisibilityStore()
-  const [orders, setOrders] = useState<Order[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
@@ -63,7 +62,21 @@ export default function OrdersPage() {
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
-  const abortControllerRef = useRef<AbortController | null>(null)
+  // Build filters for useOrders hook
+  const filters = {
+    is_open: activeTab === "active" ? true : false,
+    ...(activeTab === "past" &&
+      dateFilter !== "all" &&
+      customDateRange.from && {
+        date_from: format(startOfDay(customDateRange.from), "yyyy-MM-dd"),
+        date_to: customDateRange.to
+          ? format(endOfDay(customDateRange.to), "yyyy-MM-dd")
+          : format(endOfDay(customDateRange.from), "yyyy-MM-dd"),
+      }),
+  }
+
+  const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
+  const orders = Array.isArray(ordersResponse?.data) ? ordersResponse.data : []
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -76,10 +89,10 @@ export default function OrdersPage() {
   useEffect(() => {
     if (showKycPopup) {
       showAlert({
-        title: t("wallet.gettingStartedWithP2P"),
+        title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" />
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
           </div>
         ),
         confirmText: undefined,
@@ -98,69 +111,6 @@ export default function OrdersPage() {
       setShowCheckPreviousOrdersButton(false)
     }
   }, [userData?.signup])
-
-  useEffect(() => {
-    fetchOrders()
-
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-    }
-  }, [activeTab, dateFilter, customDateRange])
-
-  const fetchOrders = async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-
-    const abortController = new AbortController()
-    abortControllerRef.current = abortController
-
-    setIsLoading(true)
-    try {
-      const filters: {
-        is_open?: boolean
-        date_from?: string
-        date_to?: string
-      } = {}
-
-      if (activeTab === "active") {
-        filters.is_open = true
-      } else {
-        filters.is_open = false
-
-        if (dateFilter !== "all") {
-          if (customDateRange.from) {
-            filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
-            if (customDateRange.to) {
-              filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
-            } else {
-              filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
-            }
-          }
-        }
-      }
-
-      const orders = await OrdersAPI.getOrders(filters)
-
-      if (abortController.signal.aborted) {
-        return
-      }
-
-      const ordersArray = Array.isArray(orders.data) ? orders.data : []
-      setOrders(ordersArray)
-    } catch (err) {
-      if (!abortController.signal.aborted) {
-        console.error("Error fetching orders:", err)
-        setOrders([])
-      }
-    } finally {
-      if (!abortController.signal.aborted) {
-        setIsLoading(false)
-      }
-    }
-  }
 
   const handleCheckPreviousOrders = () => {
     setShowPreviousOrders(true)
@@ -198,7 +148,7 @@ export default function OrdersPage() {
   const handleRatingSubmit = () => {
     setIsRatingSidebarOpen(false)
     setSelectedOrderId(null)
-    fetchOrders()
+    refetch()
   }
 
   const getOrderType = (order) => {
@@ -263,7 +213,7 @@ export default function OrdersPage() {
 
   const DesktopOrderTable = () => (
     <div className="relative">
-      <div className="overflow-auto max-h-[calc(100vh-200px)]">
+      <div className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
@@ -283,90 +233,94 @@ export default function OrdersPage() {
             </TableRow>
           </TableHeader>
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
-            {orders.map((order) => (
-              <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
-                key={order.id}
-                onClick={() => navigateToOrderDetails(order.id)}
-              >
-                {activeTab === "past" && (
-                  <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
-                    {order.created_at ? formatDate(order.created_at) : ""}
-                  </TableCell>
-                )}
-                <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
-                  <div>
-                    <div className="flex flex-row justify-between">
-                      <div className="font-bold">
-                        {getOrderType(order)}
-                        <span className="text-base">
-                          {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
-                        </span>
-                      </div>
-                      <div className="mt-[4px] text-slate-600 text-xs">
-                        {t("orders.id")}: {order.id}
-                      </div>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="py-0 px-4 align-top text-xs row-start-3">
-                  <div className="flex flex-row-reverse justify-end gap-[4px]">
+            {orders.map((order) => {
+              const isBuyer = getPayReceiveLabel(order) === t("orders.youPay")
+
+              return (
+                <TableRow
+                  className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
+                  key={order.id}
+                  onClick={() => navigateToOrderDetails(order.id)}
+                >
+                  {activeTab === "past" && (
+                    <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                      {order.created_at ? formatDate(order.created_at) : ""}
+                    </TableCell>
+                  )}
+                  <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
                     <div>
-                      {formatAmount(order.payment_amount)} {order.payment_currency}
-                    </div>
-                    <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
-                  </div>
-                </TableCell>
-                <TableCell className="py-0 px-4 align-top row-start-1">
-                  <div
-                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
-                  >
-                    {formatStatus(false, order.status, getPayReceiveLabel(order) === t("orders.youPay"), t)}
-                  </div>
-                </TableCell>
-                {activeTab === "active" && (
-                  <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
-                    {(order.status === "pending_payment" || order.status === "pending_release") && (
-                      <TimeRemainingDisplay expiresAt={order.expires_at} />
-                    )}
-                  </TableCell>
-                )}
-                {activeTab === "past" && (
-                  <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
-                    {order.rating > 0 && (
-                      <div className="flex">
-                        <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                        {Number(order.rating).toFixed(1)}
+                      <div className="flex flex-row justify-between">
+                        <div className="font-bold">
+                          {getOrderType(order)}
+                          <span className="text-base">
+                            {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
+                          </span>
+                        </div>
+                        <div className="mt-[4px] text-slate-600 text-xs">
+                          {t("orders.id")}: {order.id}
+                        </div>
                       </div>
-                    )}
-                    {order.is_reviewable > 0 && !order.disputed_at && (
-                      <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
-                        {t("orders.rate")}
-                      </Button>
-                    )}
+                    </div>
                   </TableCell>
-                )}
-                <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
-                  <div className="flex flex-row items-center justify-between">
-                    <div className="text-xs">
-                      {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
+                  <TableCell className="py-0 px-4 align-top text-xs row-start-3">
+                    <div className="flex flex-row-reverse justify-end gap-[4px]">
+                      <div>
+                        {formatAmount(order.payment_amount)} {order.payment_currency}
+                      </div>
+                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        onClick={(e) => {
-                          handleChatClick(e, order)
-                        }}
-                        className="text-slate-500 hover:text-slate-700 z-auto p-0"
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                      </Button>
+                  </TableCell>
+                  <TableCell className="py-0 px-4 align-top row-start-1">
+                    <div
+                      className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                    >
+                      {formatStatus(false, order.status, isBuyer, t)}
                     </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                  {activeTab === "active" && (
+                    <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                      {(order.status === "pending_payment" || order.status === "pending_release") && (
+                        <TimeRemainingDisplay expiresAt={order.expires_at} />
+                      )}
+                    </TableCell>
+                  )}
+                  {activeTab === "past" && (
+                    <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
+                      {order.rating > 0 && (
+                        <div className="flex">
+                          <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                          {Number(order.rating).toFixed(1)}
+                        </div>
+                      )}
+                      {order.is_reviewable > 0 && !order.disputed_at && (
+                        <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
+                          {t("orders.rate")}
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
+                  <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
+                    <div className="flex flex-row items-center justify-between">
+                      <div className="text-xs">
+                        {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={(e) => {
+                            handleChatClick(e, order)
+                          }}
+                          className="text-slate-500 hover:text-slate-700 z-auto p-0"
+                          variant="ghost"
+                          size="sm"
+                        >
+                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                        </Button>
+                      </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
@@ -386,7 +340,7 @@ export default function OrdersPage() {
         : selectedOrder?.advert?.user?.last_online_at
 
     return (
-      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+      <div className="h-screen md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
           <OrderChat
             orderId={selectedOrder.id}
@@ -467,9 +421,9 @@ export default function OrdersPage() {
           {isLoading ? (
             <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
-            <div className="mt-[40%] md:mt-0">
+            <div>
               {activeTab === "active" ? (
-                <EmptyState title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} />
+                <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} redirectToAds={true} redirectToMarket={true} />
               ) : (
                 <EmptyState title={t("orders.noPastOrders")} description={t("orders.noPastOrdersDescription")} />
               )}

@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useMarketFilterStore } from "@/stores/market-filter-store"
 
 export interface LoginRequest {
   email: string
@@ -28,10 +29,7 @@ export interface Country {
   code: string
   name: string
   currency?: string
-}
-
-export interface CountriesResponse {
-  countries: Country[]
+  currency_name?: string
 }
 
 export interface CurrencyItem {
@@ -213,6 +211,17 @@ export async function getSession(): Promise<boolean> {
       credentials: "include",
     })
 
+    const result = await response.json()
+    const externalId = result?.data?.identity?.external_id
+    if (externalId) useUserDataStore.getState().setExternalId(externalId)
+
+    const verifiableAddresses = result?.identity?.verifiable_addresses || []
+    const emailVerified = verifiableAddresses.some(
+      (addr: { via: string; verified: boolean }) => addr.via === "email" && addr.verified == true
+    )
+
+    useUserDataStore.getState().setOryEmailVerified(emailVerified)
+
     return response.status === 200
   } catch (error) {
     return false
@@ -245,6 +254,29 @@ export async function logout(): Promise<void> {
 }
 
 /**
+ * Fetch current user data from /users/me endpoint
+ */
+export async function getMe(): Promise<any> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user data: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching user data:", error)
+    throw error
+  }
+}
+
+/**
  * Fetch user data and store user_id in localStorage
  */
 export async function fetchUserIdAndStore(): Promise<void> {
@@ -256,6 +288,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       credentials: "include",
       headers: getAuthHeader(),
     })
+
 
     const result = await response.json()
 
@@ -280,10 +313,39 @@ export async function fetchUserIdAndStore(): Promise<void> {
         balances: [{ amount: "0" }],
         signup: "v2",
       })
+      useUserDataStore.getState().setUserId("")
+
+      // Set local currency from residence country if available
+      try {
+        const residenceCountry = useUserDataStore.getState().residenceCountry
+        if (residenceCountry) {
+          const settings = await getSettings()
+          const countries = settings?.countries || []
+          const normalizedResidenceCode = typeof residenceCountry === "string" ? residenceCountry.toLowerCase() : ""
+
+          const matchedCountry = normalizedResidenceCode
+            ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedResidenceCode)
+            : null
+
+          const derivedCurrency =
+            (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+            (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+            null
+
+          useUserDataStore.getState().setLocalCurrency(derivedCurrency)
+        } else {
+          useUserDataStore.getState().setLocalCurrency(null)
+        }
+      } catch (error) {
+        console.error("Error deriving local currency from residence:", error)
+        useUserDataStore.getState().setLocalCurrency(null)
+      }
+
       return
     }
 
     const userId = result?.data?.id
+    let userCountryCode = result?.data?.country_code
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
@@ -291,8 +353,48 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const status = result?.data?.status
     const tradeBand = result?.data?.trade_band
 
+    // If userCountryCode is not available, fallback to residence from client profile
+    if (!userCountryCode) {
+      const residenceCountry = useUserDataStore.getState().residenceCountry
+      if (residenceCountry) {
+        userCountryCode = residenceCountry
+      }
+    }
+
+    // Derive user's local currency from /settings.countries using /users/me country_code.
+    // Fallback to the first country currency if no match.
+    try {
+      const settings = await getSettings()
+      const countries = settings?.countries || []
+      const normalizedUserCountryCode = typeof userCountryCode === "string" ? userCountryCode.toLowerCase() : ""
+
+      const matchedCountry = normalizedUserCountryCode
+        ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedUserCountryCode)
+        : null
+
+      const derivedLocalCurrency =
+        (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+        (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+        null
+
+      useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
+    } catch (error) {
+      console.error("Error deriving local currency from settings:", error)
+    }
+
     if (userId) {
-      useUserDataStore.getState().setUserId(userId.toString())
+      const newUserId = userId.toString()
+      const previousUserId = useUserDataStore.getState().userId
+
+      // Always store the userId once we have it (first load previousUserId is often null).
+      // Only reset filters when the user actually changes between sessions.
+      if (previousUserId && previousUserId !== newUserId) {
+        useMarketFilterStore.getState().resetFilters()
+      }
+
+      if (previousUserId !== newUserId) {
+        useUserDataStore.getState().setUserId(newUserId)
+      }
 
       if (brandClientId) {
         useUserDataStore.getState().setBrandClientId(brandClientId)
@@ -318,6 +420,9 @@ export async function fetchUserIdAndStore(): Promise<void> {
         balances: [{ amount: "0" }],
         signup: "v2",
       })
+      useUserDataStore.getState().setUserId("")
+      useUserDataStore.getState().setLocalCurrency(null)
+      useMarketFilterStore.getState().resetFilters()
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
@@ -478,29 +583,6 @@ export async function getUserBalance(): Promise<{ amount: string; currency: stri
     }
   } catch (error) {
     console.error("Error fetching user balance:", error)
-    throw error
-  }
-}
-
-/**
- * Get list of available countries
- */
-export async function getCountries(): Promise<CountriesResponse> {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/countries`, {
-      method: "GET",
-      credentials: "include",
-      headers: getAuthHeader(),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch countries: ${response.statusText}`)
-    }
-
-    const result = await response.json()
-    return result.data
-  } catch (error) {
-    console.error("Error fetching countries:", error)
     throw error
   }
 }

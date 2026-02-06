@@ -10,6 +10,7 @@ export interface AlertDialogConfig {
   content?: React.ReactNode
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
+  onClose?: () => void
 }
 
 export interface AlertDialogContextType {

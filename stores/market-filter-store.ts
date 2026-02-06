@@ -30,14 +30,16 @@ const initialState = {
   selectedAccountCurrency: "USD",
 }
 
-export const useMarketFilterStore = create<MarketFilterState>((set) => ({
-  ...initialState,
+export const useMarketFilterStore = create<MarketFilterState>()(
+  (set: (partial: Partial<MarketFilterState>) => void) => ({
+    ...initialState,
 
-  setActiveTab: (tab) => set({ activeTab: tab }),
-  setCurrency: (currency) => set({ currency }),
-  setSortBy: (sortBy) => set({ sortBy }),
-  setFilterOptions: (options) => set({ filterOptions: options }),
-  setSelectedPaymentMethods: (methods) => set({ selectedPaymentMethods: methods }),
-  setSelectedAccountCurrency: (currency) => set({ selectedAccountCurrency: currency }),
-  resetFilters: () => set(initialState),
-}))
+    setActiveTab: (tab: "buy" | "sell") => set({ activeTab: tab }),
+    setCurrency: (currency: string) => set({ currency }),
+    setSortBy: (sortBy: string) => set({ sortBy }),
+    setFilterOptions: (options: MarketFilterOptions) => set({ filterOptions: options }),
+    setSelectedPaymentMethods: (methods: string[]) => set({ selectedPaymentMethods: methods }),
+    setSelectedAccountCurrency: (currency: string) => set({ selectedAccountCurrency: currency }),
+    resetFilters: () => set(initialState),
+  }),
+)

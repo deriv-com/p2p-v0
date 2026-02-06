@@ -58,7 +58,7 @@ export interface PaymentMethod {
 /**
  * Get all available advertisements
  */
-export async function getAdvertisements(params?: SearchParams): Promise<Advertisement[]> {
+export async function getAdvertisements(params?: SearchParams, signal?: AbortSignal): Promise<Advertisement[]> {
   try {
     const queryParams = new URLSearchParams()
     if (params) {
@@ -91,6 +91,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const response = await fetch(url, {
       headers,
       credentials: "include",
+      signal,
     })
 
     if (!response.ok) {
@@ -115,8 +116,8 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       return []
     }
   } catch (error) {
-    console.log(error)
-    return []
+    console.error("Error fetching advertisements:", error)
+    throw error
   }
 }
 

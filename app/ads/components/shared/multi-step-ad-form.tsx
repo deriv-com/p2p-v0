@@ -21,6 +21,7 @@ import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useCreateAd, useUpdateAd } from "@/hooks/use-api-queries"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -47,6 +48,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
+  const localCurrency = useUserDataStore((state) => state.localCurrency)
 
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
@@ -62,12 +64,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
-  const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
+  const [currencies, setCurrencies] = useState<Array<{ code: string, name: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
+  
+  const createAdMutation = useCreateAd()
+  const updateAdMutation = useUpdateAd()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
@@ -121,16 +126,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         const countriesData = response.countries || []
         setCountries(countriesData)
 
-        const uniqueCurrencies = Array.from(
-          new Set(
-            countriesData
-              .map((country: Country) => country.currency)
-              .filter((currency): currency is string => !!currency),
-          ),
-        )
-          .map((code) => ({ code }))
-          .sort((a, b) => a.code.localeCompare(b.code))
-
+        const uniqueCurrencies = countriesData
+          .filter((c: Country) => c.currency)
+          .reduce((acc, country) => {
+            if (!acc.some(c => c.code === country.currency)) {
+              acc.push({ code: country.currency, name: country.currency_name });
+            }
+            return acc;
+          }, [] as { code: string; name: string }[])
+          .sort((a, b) => a.code.localeCompare(b.code));
         setCurrencies(uniqueCurrencies)
       } catch (error) {
         setCountries([])
@@ -142,6 +146,21 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
     fetchCountries()
   }, [])
+
+  // Default "Paying with" currency to user's local currency for new ads (without overriding user edits).
+  useEffect(() => {
+    if (mode !== "create") return
+    if (!localCurrency) return
+    if (formData?.forCurrency) return
+    if (currencies.length === 0) return
+    if (!currencies.some((c: { code: string }) => c.code === localCurrency)) return
+
+    setFormData((prev: any) => {
+      const next = { ...prev, forCurrency: localCurrency }
+      formDataRef.current = { ...formDataRef.current, forCurrency: localCurrency }
+      return next
+    })
+  }, [mode, localCurrency, currencies, formData?.forCurrency])
 
   useEffect(() => {
     if (mode === "edit" && adId) {
@@ -211,7 +230,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           }
 
           setIsLoadingInitialData(false)
-        } catch (error) {}
+        } catch (error) { }
       }
 
       loadInitialData()
@@ -284,9 +303,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
 
       if (errorCodeMap[errors[0].code]) {
-        const error = new Error(errorCodeMap[errors[0].code])
-        error.name = errors[0].code
-        throw error
+        return errorCodeMap[errors[0].code]
       }
 
       return t("adForm.genericErrorCodeMessage", { code: errors[0].code })
@@ -295,43 +312,38 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     return t("adForm.genericProcessingErrorMessage")
   }
 
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = () => {
     const finalData = { ...formDataRef.current }
 
     setIsSubmitting(true)
 
-    try {
-      const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
+    const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
 
-      if (mode === "create") {
-        const exchangeRate =
-          finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+    if (mode === "create") {
+      const exchangeRate =
+        finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
 
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: finalData.buyCurrency,
-          payment_currency: finalData.forCurrency,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: orderTimeLimit,
-          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
-          is_private: adVisibility === "closed-group"? 1 : 0,
-        }
+      const payload = {
+        type: finalData.type || "buy",
+        account_currency: finalData.buyCurrency,
+        payment_currency: finalData.forCurrency,
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        available_amount: finalData.totalAmount || 0,
+        exchange_rate: exchangeRate || 0,
+        exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
+        description: finalData.instructions || "",
+        is_active: 1,
+        order_expiry_period: orderTimeLimit,
+        available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+      }
 
-        const result = await AdsAPI.createAd(payload)
-
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        } else {
+      createAdMutation.mutate(payload, {
+        onSuccess: (result) => {
+          setIsSubmitting(false)
           router.push("/ads")
           showAlert({
             title: t("myAds.adCreated"),
@@ -339,134 +351,134 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             confirmText: t("common.ok"),
             type: "success",
           })
-        }
-      } else {
-        const exchangeRate =
-          finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
-
-        const payload = {
-          is_active: true,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
-          order_expiry_period: orderTimeLimit,
-          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
-          description: finalData.instructions || "",
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
-          is_private: adVisibility === "closed-group"? 1 : 0,
-        }
-
-        const updateResult = await AdsAPI.updateAd(finalData.id, payload)
-
-        if (updateResult.errors && updateResult.errors.length > 0) {
-          const errorMessage = formatErrorMessage(updateResult.errors)
-          throw new Error(errorMessage)
-        } else {
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                <span>{t("adForm.adUpdatedSuccess")}</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-        }
-        router.push("/ads")
-      }
-    } catch (error) {
-      let errorInfo = {
-        title: mode === "create" ? t("adForm.failedToCreateAd") : t("adForm.failedToUpdateAd"),
-        message: t("adForm.tryAgain"),
-        type: "error" as "error" | "warning",
-        actionButtonText: t("adForm.updateAd"),
-      }
-
-      if (error instanceof Error) {
-        if (error.name === "AdvertExchangeRateDuplicate") {
-          errorInfo = {
-            title: t("adForm.duplicateRateTitle"),
-            message: t("adForm.duplicateRateMessage"),
-            type: "warning",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertOrderRangeOverlap") {
-          errorInfo = {
-            title: t("adForm.rangeOverlapTitle"),
-            message: t("adForm.rangeOverlapMessage"),
-            type: "warning",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
-          errorInfo = {
-            title: t("adForm.adLimitReachedTitle"),
-            message: t("adForm.adLimitReachedMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "InsufficientBalance") {
-          errorInfo = {
-            title: t("adForm.insufficientBalanceTitle"),
-            message: t("adForm.insufficientBalanceMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
-          errorInfo = {
-            title: t("adForm.invalidValuesTitle"),
-            message: error.message || t("adForm.invalidValuesMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertTotalAmountExceeded") {
-          errorInfo = {
-            title: t("adForm.amountExceedsBalanceTitle"),
-            message: t("adForm.amountExceedsBalanceMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertActiveCountExceeded") {
-          errorInfo = {
-            title: t("adForm.adLimitReachedTitle"),
-            message: t("adForm.adLimitReachedMessage"),
-            type: "error",
-            actionButtonText: "Go to my ads",
-            onConfirm: () => {
-              router.push("/ads")
-            }
-          }
-        } else if (error.name === "AdvertFloatRateMaximum") {
-          errorInfo = {
-            title: t("adForm.advertFloatRateMaximumTitle"),
-            message: t("adForm.advertFloatRateMaximumMessage"),
-            type: "error",
-            actionButtonText: t("common.ok"),
-          }
-        } else {
-          errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.name })
-        }
-      }
-
-      showAlert({
-        title: errorInfo.title,
-        description: errorInfo.message,
-        confirmText: errorInfo.actionButtonText,
-        type: errorInfo.type,
-        onConfirm: () => {
-          if(errorInfo.onConfirm) {
-            errorInfo.onConfirm()
-          } else {
-            setCurrentStep(0)
-          }
+        },
+        onError: (error: any) => {
+          setIsSubmitting(false)
+          handleAdError(error, "create")
         },
       })
-    } finally {
-      setIsSubmitting(false)
+    } else {
+      const exchangeRate =
+        finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+
+      const payload = {
+        is_active: true,
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        exchange_rate: exchangeRate || 0,
+        exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
+        order_expiry_period: orderTimeLimit,
+        available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+        description: finalData.instructions || "",
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+      }
+
+      updateAdMutation.mutate(
+        { id: finalData.id, adData: payload },
+        {
+          onSuccess: () => {
+            setIsSubmitting(false)
+            toast({
+              description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <span>{t("adForm.adUpdatedSuccess")}</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
+            })
+            router.push("/ads")
+          },
+          onError: (error: any) => {
+            setIsSubmitting(false)
+            handleAdError(error, "update")
+          },
+        }
+      )
     }
+  }
+
+  const handleAdError = (error: any, mode: "create" | "update") => {
+    let errorMessage = t("adForm.genericProcessingErrorMessage")
+    let errorName = "GenericError"
+
+    // Extract error from API response
+    if (error?.errors && Array.isArray(error.errors)) {
+      errorMessage = formatErrorMessage(error.errors)
+      if (error.errors[0]?.code) {
+        errorName = error.errors[0].code
+      }
+    } else if (error?.response?.data?.errors) {
+      errorMessage = formatErrorMessage(error.response.data.errors)
+      if (error.response.data.errors[0]?.code) {
+        errorName = error.response.data.errors[0].code
+      }
+    }
+
+    // Map error codes to specific error info
+    const errorInfoMap: Record<string, { title: string; type: "error" | "warning"; onConfirm?: () => void }> = {
+      AdvertExchangeRateDuplicate: {
+        title: t("adForm.duplicateRateTitle"),
+        type: "warning",
+      },
+      AdvertOrderRangeOverlap: {
+        title: t("adForm.rangeOverlapTitle"),
+        type: "warning",
+      },
+      AdvertLimitReached: {
+        title: t("adForm.adLimitReachedTitle"),
+        type: "error",
+      },
+      AdvertActiveCountExceeded: {
+        title: t("adForm.adLimitReachedTitle"),
+        type: "error",
+        onConfirm: () => {
+          router.push("/ads")
+        },
+      },
+      InsufficientBalance: {
+        title: t("adForm.insufficientBalanceTitle"),
+        type: "error",
+      },
+      InvalidExchangeRate: {
+        title: t("adForm.invalidValuesTitle"),
+        type: "error",
+      },
+      InvalidOrderAmount: {
+        title: t("adForm.invalidValuesTitle"),
+        type: "error",
+      },
+      AdvertTotalAmountExceeded: {
+        title: t("adForm.amountExceedsBalanceTitle"),
+        type: "error",
+      },
+      AdvertFloatRateMaximum: {
+        title: t("adForm.advertFloatRateMaximumTitle"),
+        type: "error",
+      },
+    }
+
+    const errorInfo = errorInfoMap[errorName] || {
+      title: mode === "create" ? t("adForm.failedToCreateAd") : t("adForm.failedToUpdateAd"),
+      type: "error" as "error" | "warning",
+    }
+
+    showAlert({
+      title: errorInfo.title,
+      description: errorMessage,
+      confirmText: t("adForm.updateAd"),
+      type: errorInfo.type,
+      onConfirm: () => {
+        if (errorInfo.onConfirm) {
+          errorInfo.onConfirm()
+        } else {
+          setCurrentStep(0)
+        }
+      },
+    })
   }
 
   const handleBottomSheetOpenChange = (isOpen: boolean) => {
@@ -542,27 +554,30 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
-          <Navigation
-            isBackBtnVisible={currentStep != 0}
-            isVisible={false}
-            onBack={() => {
-              const updatedStep = currentStep - 1
-              setCurrentStep(updatedStep)
-            }}
-            onClose={handleClose}
-            title=""
-          />
-          <ProgressSteps
-            currentStep={currentStep}
-            steps={steps}
-            className="px-6 my-6"
-            title={{
-              label: getPageTitle(),
-              stepTitle: steps[currentStep].title,
-            }}
-          />
+      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
+        <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
+          <div className="sticky top-0 z-10 bg-white">
+            <Navigation
+              isBackBtnVisible={currentStep != 0}
+              isVisible={false}
+              onBack={() => {
+                const updatedStep = currentStep - 1
+                setCurrentStep(updatedStep)
+              }}
+              onClose={handleClose}
+              title=""
+              className="md:h-16 md:pt-8"
+            />
+            <ProgressSteps
+              currentStep={currentStep}
+              steps={steps}
+              className="px-6 my-6"
+              title={{
+                label: getPageTitle(),
+                stepTitle: steps[currentStep].title,
+              }}
+            />
+          </div>
 
           <div className="relative mb-16 md:mb-0 mx-6">
             {currentStep === 0 ? (
@@ -689,18 +704,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               </div>
             </div>
           ) : (
-            <div className="hidden md:block"></div>
+            <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
+              <div className="flex justify-end px-6 pt-6">
+                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                  {isSubmitting ? (
+                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                  ) : (
+                    getButtonText()
+                  )}
+                </Button>
+              </div>
+            </div>
           )}
-
-          <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
-              {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-              ) : (
-                getButtonText()
-              )}
-            </Button>
-          </div>
         </div>
       </div>
     </form>

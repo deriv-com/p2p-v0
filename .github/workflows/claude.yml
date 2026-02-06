@@ -1,0 +1,51 @@
+
+name: Claude Code Assistant
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  claude-assistant:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+
+    # Cancel older runs when new commits arrive on the same PR
+    concurrency:
+      group: pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code Action
+        uses: anthropics/claude-code-action@8a1c4371755898f67cd97006ba7c97702d5fc4bf
+        timeout-minutes: 60
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          track_progress: true
+          prompt: |
+              REPO: ${{ github.repository }}
+              PR NUMBER: ${{ github.event.pull_request.number }}
+
+              Please review this pull request with a focus on:
+              - Correctness, regressions, and edge cases
+              - Code quality & readability (React + TypeScript best practices)
+              - Performance (render cost, memoization, effects)
+              - Security (XSS, auth flows, secrets)
+              - Tests (coverage for new logic)
+
+              Output:
+              - Inline comments for specific issues
+              - A summary comment with high/medium/low priority items
+              - Concrete fix suggestions and quick patches where safe

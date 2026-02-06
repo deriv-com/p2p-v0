@@ -8,9 +8,11 @@ import Main from "./main"
 import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
 import { DatadogRumInit } from "@/components/datadog-rum-init"
+import { AnalyticsInit } from "@/components/analytics-init"
 import { LanguageSync } from "@/lib/i18n/language-sync"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import Script from "next/script"
+import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -52,18 +54,21 @@ export default function RootLayout({
       <body className={inter.className}>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
         height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
+        <AnalyticsInit />
         <DatadogRumInit />
         <Suspense fallback={null}>
           <LanguageSync />
         </Suspense>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AlertDialogProvider>
-            <Toaster />
-            <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
-              <Main>{children}</Main>
-            </Suspense>
-          </AlertDialogProvider>
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <AlertDialogProvider>
+              <Toaster />
+              <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingIndicator/></div>}>
+                <Main>{children}</Main>
+              </Suspense>
+            </AlertDialogProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   )

@@ -10,8 +10,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.28.0",
     "@datadog/browser-logs": "latest",
     "@datadog/browser-rum": "latest",
+    "@deriv-com/analytics": "1.34.0",
+    "@deriv-com/utils": "^0.0.42",
     "@eslint/eslintrc": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@novu/nextjs": "latest",
@@ -57,9 +60,9 @@
     "immer": "latest",
     "input-otp": "latest",
     "jest": "latest",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "lucide-react": "^0.454.0",
-    "next": "15.4.10",
+    "next": "^15.4.11",
     "next-themes": "latest",
     "node-notifier": "8.0.1",
     "path": "latest",
@@ -95,13 +98,20 @@
   "pnpm": {
     "overrides": {
       "cookie@<0.7.0": "0.7.0",
+      "diff@<8.0.3": ">=8.0.3",
       "esbuild@<=0.24.2": "0.25.0",
       "glob@>=10.2.0 <10.5.0": ">=10.5.0",
       "js-yaml@>=4.0.0 <4.1.1": ">=4.1.1",
+      "lodash": "4.17.23",
       "path-to-regexp": "8.0.0",
       "qs@<6.14.1": ">=6.14.1",
+      "seroval@<1.4.1": ">=1.4.1",
+      "seroval@<=1.4.0": ">=1.4.1",
+      "tar@<=7.5.2": ">=7.5.3",
+      "undici@>=7.0.0 <7.18.2": ">=7.18.2",
       "undici@>=4.5.0 <5.28.5": ">=5.28.5",
-      "undici@<5.29.0": ">=5.29.0"
+      "undici@<5.29.0": ">=5.29.0",
+      "undici@<6.23.0": ">=6.23.0"
     }
   }
 }

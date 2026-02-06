@@ -9,12 +9,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   fetchWalletsList,
   walletTransfer,
-  getCurrencies,
   fetchExchangeRate,
   walletExchangeTransfer,
   fetchTransactionByReferenceId,
 } from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
@@ -123,6 +123,7 @@ type CurrencyToggleType = "source" | "destination"
 
 export default function Transfer({ currencySelected, onClose, stepVal = "enterAmount" }: TransferProps) {
   const { t } = useTranslations()
+  const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
 
   const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
@@ -163,7 +164,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }
   const toSuccess = () => setStep("success")
-  const toUnsuccessful = () => setStep("unsuccessful") 
+  const toUnsuccessful = () => setStep("unsuccessful")
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
@@ -184,30 +185,20 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   useEffect(() => {
-    const loadCurrencies = async () => {
-      try {
-        const response = await getCurrencies()
-        if (response?.data) {
-          setCurrenciesData(response as CurrenciesResponse)
-          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
-            code,
-            name: data.label,
-            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-            label: data.label,
-          }))
-          setCurrencies(currencyList)
-        }
-      } catch (error) {
-        console.error("Error fetching currencies:", error)
-      }
-    }
+    if (!currenciesResponse?.data) return
 
-    loadCurrencies()
-  }, [])
+    const currencyList = Object.entries(currenciesResponse.data).map(([code, data]: [string, any]) => ({
+      code,
+      name: data.label,
+      logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+      label: data.label,
+    }))
+    setCurrencies(currencyList)
+    setCurrenciesData(currenciesResponse as CurrenciesResponse)
+  }, [currenciesResponse])
 
   useEffect(() => {
     if (!selectedCurrency) return
-    if (!currenciesData?.data) return
 
     const loadWallets = async () => {
       try {
@@ -218,29 +209,26 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
           response.data.wallets.forEach((wallet: any) => {
             if (!wallet.balances || wallet.balances.length === 0) {
-              currencies
-                .filter((currency) => currency.code === "USD")
-                .forEach((currency) => {
-                  const currencyLabel = currenciesData.data[currency.code]?.label || currency.code
-                  const walletName =
-                    (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
+              // Handle USD wallets with no balances
+              const currencyLabel = currenciesData?.data["USD"]?.label || "USD"
+              const walletName =
+                (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
-                  processedWallets.push({
-                    wallet_id: wallet.wallet_id,
-                    name: walletName,
-                    balance: "0",
-                    currency: currency.code,
-                    icon: currency.logo,
-                    type: wallet.type,
-                  })
-                })
+              processedWallets.push({
+                wallet_id: wallet.wallet_id,
+                name: walletName,
+                balance: "0",
+                currency: "USD",
+                icon: currencyLogoMapper["USD"],
+                type: wallet.type,
+              })
             } else {
               wallet.balances.forEach((balance: any) => {
                 if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
                   return
                 }
 
-                const currencyLabel = currenciesData.data[balance.currency]?.label || balance.currency
+                const currencyLabel = currenciesData?.data[balance.currency]?.label || balance.currency
 
                 const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
@@ -277,7 +265,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
 
     loadWallets()
-  }, [selectedCurrency, currenciesData])
+  }, [selectedCurrency])
 
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
@@ -782,7 +770,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={wallet.icon}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -806,7 +794,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={wallet.icon}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -868,7 +856,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={getCurrencyImage(wallet.name, wallet.currency)}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -892,7 +880,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         currency={wallet.currency}
                         icon={getCurrencyImage(wallet.name, wallet.currency)}
                         isSelected={selectedWalletName === wallet.name}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     </div>
                   ))}
@@ -951,7 +939,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -964,7 +952,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -1007,7 +995,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1161,7 +1149,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1636,11 +1624,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <span className="text-[#181C25] text-xs font-normal">
                     {transferFeeCalculation
                       ? `${formatAmountByCurrency(
-                          transferFeeCalculation.transferAmount,
-                          selectedAmountCurrency === "source"
-                            ? sourceWalletData?.currency || ""
-                            : destinationWalletData?.currency || "",
-                        )} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
+                        transferFeeCalculation.transferAmount,
+                        selectedAmountCurrency === "source"
+                          ? sourceWalletData?.currency || ""
+                          : destinationWalletData?.currency || "",
+                      )} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
                       : "-"}
                   </span>
                 </div>

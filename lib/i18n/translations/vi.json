@@ -26,8 +26,7 @@
     "learnMore": "Tìm hiểu thêm",
     "verifiedBadge": {
       "title": "Tài khoản đã xác minh đầy đủ",
-      "descriptionSelf": "Bạn đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ.",
-      "descriptionOther": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
+      "description": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
     }
   },
   "navigation": {
@@ -49,7 +48,7 @@
     "yourePayingWith": "Bạn đang thanh toán bằng",
     "youreReceiving": "Bạn đang nhận",
     "paymentMethod": "Phương thức thanh toán",
-    "paymentMethodAll": "Phương thức thanh toán (Tất cả)",
+    "paymentMethodAll": "Phương thức thanh toán",
     "paymentMethodSelected": "Phương thức thanh toán ({count})",
     "advertisers": "Nhà quảng cáo",
     "rates": "Tỷ giá",
