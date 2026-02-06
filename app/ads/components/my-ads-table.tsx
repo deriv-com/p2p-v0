@@ -144,8 +144,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
       { id: ad.id, isActive: isListed },
       {
         onError: (error: any) => {
-          if (error?.response?.data?.errors?.length > 0) {
-            const firstError = error.response.data.errors[0]
+          if (error?.errors?.length > 0) {
+            const firstError = error.errors[0]
             const errorCodeMap: Record<string, string> = {
               AdvertActiveCountExceeded: t("adForm.adLimitReachedMessage"),
               AdvertExchangeRateDuplicate: t("adForm.duplicateRateMessage"),
