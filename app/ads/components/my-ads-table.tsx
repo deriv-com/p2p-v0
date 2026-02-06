@@ -146,21 +146,20 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         onError: (error: any) => {
           if (error?.response?.data?.errors?.length > 0) {
             const firstError = error.response.data.errors[0]
-            if (firstError.code === "AdvertActiveCountExceeded") {
-              showAlert({
-                title: t("adForm.adLimitReachedTitle"),
-                description: t("adForm.adLimitReachedMessage"),
-                confirmText: t("common.ok"),
-                type: "warning",
-              })
-            } else {
-              showAlert({
-                title: t("myAds.unableToUpdateAd"),
-                description: t("myAds.updateAdError"),
-                confirmText: t("common.ok"),
-                type: "warning",
-              })
+            const errorCodeMap: Record<string, string> = {
+              AdvertActiveCountExceeded: t("adForm.adLimitReachedMessage"),
+              AdvertExchangeRateDuplicate: t("adForm.duplicateRateMessage"),
+              InvalidExchangeRate: t("adForm.invalidExchangeRateMessage"),
             }
+
+            let errorMessage = errorCodeMap[firstError.code] || t("myAds.updateAdError")
+
+            showAlert({
+              title: t("myAds.unableToUpdateAd"),
+              description: errorMessage,
+              confirmText: t("common.ok"),
+              type: "warning",
+            })
           } else {
             showAlert({
               title: t("myAds.unableToUpdateAd"),
