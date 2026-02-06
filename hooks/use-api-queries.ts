@@ -217,6 +217,7 @@ export function useDeleteAd() {
       }
       return response
     },
+    retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts(true) })
     },
