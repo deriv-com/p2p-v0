@@ -211,7 +211,9 @@ export function useDeleteAd() {
     mutationFn: async (id: string) => {
       const response = await AdsAPI.deleteAd(id)
       if (!response.success) {
-        throw response
+        const error: any = new Error(response.errors?.[0]?.message || 'Failed to delete ad')
+        error.errors = response.errors
+        throw error
       }
       return response
     },
