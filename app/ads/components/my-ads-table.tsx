@@ -187,6 +187,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
+            onAdDeleted?.("deleted")
           },
           onError: (error: any) => {
             let description = t("myAds.deleteAdError")
