@@ -65,6 +65,7 @@ export default function ClosedGroupTab() {
 
   return (
     <div className="space-y-4">
+      <h2 className="text-grayscale-800 text-base font-medium">{t("profile.addFromYourFollowing")}</h2>
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
           <div className="relative w-full md:w-[50%]">
