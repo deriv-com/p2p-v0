@@ -479,7 +479,7 @@
     },
     "advertiserNoPrivateGroups": {
       "title": "Your ad isn't visible",
-      "description": "This ad is set for closed groups. You're no longer allowed to use that feature. Change the ad visibility to public to list it again."
+      "description": "You’re no longer in the Diamond tier, so closed group ads are no longer eligible and are hidden from the market. To list this ad on the market page, change its visibility from Closed Group to Everyone."
     },
     "advertFloatRateDisabled": {
       "title": "Your ad isn't visible",

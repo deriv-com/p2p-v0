@@ -351,6 +351,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const tempBanUntil = result?.data?.temp_ban_until
     const balances = result?.data?.total_account_value
     const status = result?.data?.status
+    const tradeBand = result?.data?.trade_band
 
     // If userCountryCode is not available, fallback to residence from client profile
     if (!userCountryCode) {
@@ -411,6 +412,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           temp_ban_until: tempBanUntil,
           balances: [balances],
           status: status,
+          trade_band: tradeBand,
         })
       }
     } else {

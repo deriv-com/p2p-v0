@@ -12,6 +12,8 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Label } from "@/components/ui/label"
 import type { MarketFilterOptions } from "./types"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { cn } from "@/lib/utils"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface MarketFilterDropdownProps {
   activeTab?: string
@@ -37,6 +39,7 @@ export default function MarketFilterDropdown({
   const [sortBy, setSortBy] = useState(initialSortBy)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const { userData } = useUserDataStore()
 
   useEffect(() => {
     setFilters(initialFilters)
@@ -44,7 +47,7 @@ export default function MarketFilterDropdown({
 
   const handleReset = () => {
     setSortBy("exchange_rate")
-    onApply({ fromFollowing: false }, "exchange_rate")
+    onApply({ fromFollowing: false, isPrivate: false }, "exchange_rate")
     setIsOpen(false)
     onOpenChangeProp?.(false)
   }
@@ -98,6 +101,17 @@ export default function MarketFilterDropdown({
           />
           <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
             {t("filter.adsFromFollowing")}
+          </label>
+        </div>
+        <div className={cn("flex items-center space-x-3", userData.trade_band !== "diamond" && "hidden")}>
+          <Checkbox
+            id="is-private"
+            checked={filters.isPrivate}
+            onCheckedChange={(checked) => handleFilterChange("isPrivate", checked as boolean)}
+            className="data-[state=checked]:bg-black border-2 border-grayscale-text-muted"
+          />
+          <label htmlFor="is-private" className="text-sm text-grayscale-600 cursor-pointer">
+            Ads from closed group only
           </label>
         </div>
       </div>
