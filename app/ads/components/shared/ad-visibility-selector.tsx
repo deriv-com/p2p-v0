@@ -89,7 +89,12 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
           ? "border-black"
           : "border-grayscale-500"}`}
-        onClick={() => onValueChange("everyone")}
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          onValueChange("everyone")
+          hideAlert()
+        }}
       >
         <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
         <div className="text-left flex-1">
