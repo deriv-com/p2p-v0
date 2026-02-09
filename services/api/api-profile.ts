@@ -524,7 +524,7 @@ export async function getClosedGroup(): Promise<[]> {
   }
 }
 
-export async function addToClosedGoup(advertiserId: string | number): Promise<{ success: boolean }> {
+export async function addToClosedGoup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
   try {
     if (!advertiserId) {
       throw new Error("User ID is required")
@@ -547,8 +547,12 @@ export async function addToClosedGoup(advertiserId: string | number): Promise<{ 
     })
 
     if (!response.ok) {
-      return {
-        success: false
+      const errorText = await response.text()
+      try {
+        const errorData = JSON.parse(errorText)
+        return { success: false, errors: errorData.errors }
+      } catch (error) {
+        return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
@@ -556,12 +560,14 @@ export async function addToClosedGoup(advertiserId: string | number): Promise<{ 
       success: true
     }
   } catch (error) {
-    console.error("Error adding to closed group:", error)
-    throw error
+    return {
+      success: false,
+      errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
   }
 }
 
-export async function removeFromClosedGoup(advertiserId: string | number): Promise<{ success: boolean }> {
+export async function removeFromClosedGoup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
   try {
     if (!advertiserId) {
       throw new Error("User ID is required")
@@ -579,8 +585,12 @@ export async function removeFromClosedGoup(advertiserId: string | number): Promi
     })
 
     if (!response.ok) {
-      return {
-        success: false
+      const errorText = await response.text()
+      try {
+        const errorData = JSON.parse(errorText)
+        return { success: false, errors: errorData.errors }
+      } catch (error) {
+        return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
@@ -588,8 +598,10 @@ export async function removeFromClosedGoup(advertiserId: string | number): Promi
       success: true
     }
   } catch (error) {
-    console.error("Error removing from closed group:", error)
-    throw error
+    return {
+      success: false,
+      errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
   }
 }
 
