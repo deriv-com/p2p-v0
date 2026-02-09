@@ -44,6 +44,10 @@ export default function ClosedGroupTab() {
     return closedGroups.filter((group) => group.nickname.toLowerCase().includes(searchQuery.toLowerCase()))
   }, [closedGroups, searchQuery])
 
+  const hasGroupMembers = useMemo(() => {
+    return closedGroups.some((group) => group.is_group_member)
+  }, [closedGroups])
+
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
@@ -141,7 +145,7 @@ export default function ClosedGroupTab() {
         {closedGroups.length > 0 && (
           <Button
             onClick={handleRemoveAll}
-            disabled={isRemoving}
+            disabled={isRemoving || !hasGroupMembers}
             variant="ghost"
             size="sm"
             className="underline hover:opacity-70 disabled:opacity-50"
