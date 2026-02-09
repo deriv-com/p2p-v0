@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { ChevronDown } from "lucide-react"
 
 interface FollowDropdownProps {
   isFollowing: boolean
@@ -57,8 +58,9 @@ export default function FollowDropdown({
     return (
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" disabled={isLoading}>
+          <Button variant="outline" size="sm" disabled={isLoading} className="gap-2">
             Following
+            <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="p-2 w-[280px]">
@@ -90,8 +92,9 @@ export default function FollowDropdown({
 
   return (
     <>
-      <Button variant="outline" size="sm" disabled={isLoading} onClick={() => setIsOpen(true)}>
+      <Button variant="outline" size="sm" disabled={isLoading} onClick={() => setIsOpen(true)} className="gap-2">
         Following
+        <ChevronDown className="h-4 w-4" />
       </Button>
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent side="bottom" className="h-auto p-6 rounded-t-2xl">

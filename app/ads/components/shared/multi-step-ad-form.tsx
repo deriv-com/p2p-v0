@@ -557,11 +557,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     showAlert({
       title: t("adForm.cancelAdCreation"),
       description: t("adForm.cancelAdCreationDescription"),
-      confirmText: t("adForm.continueAdCreation"),
-      cancelText: t("common.cancel"),
+      cancelText: t("adForm.continueAdCreation"),
+      confirmText: t("common.cancel"),
       type: "warning",
-      onConfirm: hideAlert,
-      onCancel: () => {
+      onCancel: hideAlert,
+      onConfirm: () => {
         const finalData = { ...formDataRef.current }
         const currency = finalData?.buyCurrency || "USD"
         leaveExchangeRatesChannel(currency)

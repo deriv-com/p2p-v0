@@ -59,8 +59,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     { id: "payment", label: t("profile.paymentMethods") },
     { id: "follows", label: t("profile.follows") },
     ...(userData.trade_band === "diamond"
-    ? [{ id: "closed-group", label: t("profile.closedGroup") }]
-    : []),
+      ? [{ id: "closed-group", label: t("profile.closedGroup") }]
+      : []),
     { id: "blocked", label: t("profile.blocked") },
   ]
 
@@ -257,25 +257,25 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
-             {userData.trade_band === "diamond" && (
+            {userData.trade_band === "diamond" && (
               <>
-              <Divider className="ml-[60px]" />
-              <div
-                onClick={() => {
-                  setShowClosedGroupSidebar(true)
-                }}
-                className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <Image src="/icons/profile-blocks.svg" width={20} height={20} />
-                <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.closedGroup")}</span>
-                <Image
-                  src="/icons/chevron-right-gray.png"
-                  alt="Chevron right"
-                  width={20}
-                  height={20}
-                  className="justify-self-end"
-                />
-              </div>
+                <Divider className="ml-[60px]" />
+                <div
+                  onClick={() => {
+                    setShowClosedGroupSidebar(true)
+                  }}
+                  className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+                >
+                  <Image src="/icons/star-light.svg" width={20} height={20} />
+                  <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.closedGroup")}</span>
+                  <Image
+                    src="/icons/chevron-right-gray.png"
+                    alt="Chevron right"
+                    width={20}
+                    height={20}
+                    className="justify-self-end"
+                  />
+                </div>
               </>)}
             {userData.trade_band === "diamond" && showClosedGroupSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
@@ -425,7 +425,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 <FollowsTab />
               </div>
             </TabsContent>
-         
+
             {userData.trade_band === "diamond" && (
               <TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
                 <div className="relative">
