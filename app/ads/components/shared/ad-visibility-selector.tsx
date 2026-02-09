@@ -32,8 +32,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
     <RadioGroup value={value} onValueChange={onValueChange}>
       <Label
         htmlFor="everyone"
-        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
-          value === "everyone"
+        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
             ? "border-black"
             : "border-grayscale-500"}`}
       >
@@ -49,11 +48,10 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
 
       <Label
         htmlFor="closed-group"
-        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
-          value === "closed-group"
+        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "closed-group"
             ? "border-black"
             : "border-grayscale-500"
-        }`}
+          }`}
       >
         <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
         <div className="text-left flex-1">
@@ -64,7 +62,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
               variant="ghost"
               size="sm"
               onClick={handleEditListClick}
-              className="p-0 h-auto text-slate-1200 underline hover:opacity-70 hover:bg-transparent"
+              className="p-0 h-auto text-xs text-grayscale-text-muted underline hover:opacity-100 hover:bg-transparent"
             >
               Edit list
             </Button>

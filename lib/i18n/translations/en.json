@@ -253,6 +253,7 @@
     "paymentMethods": "Payment methods",
     "follows": "Follows",
     "blocked": "Blocked",
+    "closedGroup": "Closed group",
     "addPaymentMethod": "Add payment method",
     "paymentMethodAdded": "Payment method added.",
     "bronzeTier": "Bronze tier",

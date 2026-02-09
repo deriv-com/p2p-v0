@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getClosedGroup, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
+import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
 interface ClosedGroup {
-  id: number
+  user_id: number
   nickname: string
   is_group_member: boolean
 }
@@ -24,7 +24,7 @@ export default function ClosedGroupTab() {
   const fetchClosedGroups = useCallback(async () => {
     try {
       setIsLoading(true)
-      const data = await getClosedGroup()
+      const data = await getFavouriteUsers()
       setClosedGroups(data)
     } catch (err) {
       console.error("Failed to fetch closed groups:", err)
@@ -69,15 +69,15 @@ export default function ClosedGroupTab() {
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
-      if (!group.id) {
+      if (!group.user_id) {
         return
       }
 
       let result
       if (group.is_group_member) {
-        result = await removeFromClosedGroup(group.id)
+        result = await removeFromClosedGroup(group.user_id)
       } else {
-        result = await addToClosedGroup(group.id)
+        result = await addToClosedGroup(group.user_id)
       }
 
       if (result.success) {
@@ -148,7 +148,7 @@ export default function ClosedGroupTab() {
             disabled={isRemoving || !hasGroupMembers}
             variant="ghost"
             size="sm"
-            className="underline hover:opacity-70 disabled:opacity-50"
+            className="px-0 underline hover:opacity-100 disabled:text-grayscale-text-placeholder"
           >
             Remove all
           </Button>
@@ -162,7 +162,7 @@ export default function ClosedGroupTab() {
             <p className="mt-2 text-slate-600">Loading users...</p>
           </div>
         ) : filteredClosedGroups.length > 0 ? (
-          filteredClosedGroups.map((group) => <GroupCard key={group.id} group={group} />)
+          filteredClosedGroups.map((group) => <GroupCard key={group.user_id} group={group} />)
         ) : (
           <EmptyState
             title={searchQuery ? "No matching name" : "No followed users yet"}
