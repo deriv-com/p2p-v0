@@ -112,7 +112,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           <div className="text-base text-slate-1200 mb-1">Closed group</div>
           <div className="text-xs text-grayscale-text-muted">
             Your ad will be visible only to users in your close group list.{" "}
-            {value === "closed-group" && (
+            {value === "closed-group" && hasClosedGroupMembers && (
               <Button
                 variant="ghost"
                 size="sm"
