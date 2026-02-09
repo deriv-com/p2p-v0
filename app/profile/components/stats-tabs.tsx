@@ -426,11 +426,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
          
-            {userData.trade_band === "diamond" && (<TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
-              <div className="relative">
-                <ClosedGroupTab />
-              </div>
-            </TabsContent>)}
+            {userData.trade_band === "diamond" && (
+              <TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
+                <div className="relative">
+                  <ClosedGroupTab />
+                </div>
+              </TabsContent>
+            )}
 
             <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
               <div className="relative">

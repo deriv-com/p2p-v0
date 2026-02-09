@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getFavouriteUsers } from "@/services/api/api-profile"
+import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGoup, removeFromClosedGoup } from "@/services/api/api-profile"
 import { Checkbox } from "@/components/ui/checkbox"
 
 interface ClosedGroup {
@@ -21,6 +21,7 @@ export default function ClosedGroupTab() {
   const [searchQuery, setSearchQuery] = useState("")
   const [closedGroups, setClosedGroups] = useState<ClosedGroup[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isRemoving, setIsRemoving] = useState(false)
 
   const fetchClosedGroups = useCallback(async () => {
     try {
@@ -37,7 +38,6 @@ export default function ClosedGroupTab() {
 
   useEffect(() => {
     fetchClosedGroups()
-    console.log("fetch")
   }, [fetchClosedGroups])
 
   const filteredClosedGroups = useMemo(() => {
@@ -51,6 +51,37 @@ export default function ClosedGroupTab() {
     setSearchQuery(value)
   }, [])
 
+  const handleRemoveAll = useCallback(async () => {
+    try {
+      setIsRemoving(true)
+      const result = await removeAllFromClosedGroup()
+      if (result.success) {
+        await fetchClosedGroups()
+      }
+    } catch (err) {
+      console.error("Failed to remove all from closed group:", err)
+    } finally {
+      setIsRemoving(false)
+    }
+  }, [fetchClosedGroups])
+
+  const handleCheckboxChange = useCallback(async (group: ClosedGroup, checked: boolean) => {
+    try {
+      let result
+      if (checked) {
+        result = await addToClosedGoup(group.id.toString())
+      } else {
+        result = await removeFromClosedGoup(group.id.toString())
+      }
+
+      if (result.success) {
+        await fetchClosedGroups()
+      }
+    } catch (err) {
+      console.error("Failed to update closed group membership:", err)
+    }
+  }, [fetchClosedGroups])
+
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="flex items-center justify-between py-4">
       <div className="flex flex-1 items-center gap-3">
@@ -58,16 +89,30 @@ export default function ClosedGroupTab() {
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
         <div className="text-slate-1200 flex-1">{group.nickname}</div>
-        <Checkbox checked={group.is_group_member} className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]" />
+        <Checkbox checked={group.is_group_member} onCheckedChange={(checked) => handleCheckboxChange(group, checked as boolean)} className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]" />
       </div>
     </div>
   )
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
+        {closedGroups.length > 0 && (
+          <Button
+            onClick={handleRemoveAll}
+            disabled={isRemoving}
+            variant="ghost"
+            size="sm"
+            className="underline hover:opacity-70 disabled:opacity-50"
+          >
+            Remove all
+          </Button>
+        )}
+      </div>
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-[50%]">
+          <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
@@ -79,7 +124,7 @@ export default function ClosedGroupTab() {
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
+              className="pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               autoComplete="off"
             />
             {searchQuery && (

@@ -122,7 +122,7 @@ export default function BlockedTab() {
     <div className="space-y-4">
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-[50%]">
+          <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
@@ -134,7 +134,7 @@ export default function BlockedTab() {
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
+              className="pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               autoComplete="off"
             />
             {searchQuery && (

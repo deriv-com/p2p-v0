@@ -81,7 +81,7 @@ export default function FollowUserList({
     <div className="mt-4">
       {(users.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4 mb-4">
-          <div className="relative w-full md:w-[50%]">
+          <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
@@ -93,7 +93,7 @@ export default function FollowUserList({
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={onSearchChange}
-              className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
+              className="pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               autoComplete="off"
             />
             {searchQuery && (
