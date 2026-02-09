@@ -524,15 +524,19 @@ export async function getClosedGroup(): Promise<[]> {
   }
 }
 
-export async function addToClosedGoup(advertiserId: string): Promise<[]> {
+export async function addToClosedGoup(advertiserId: string | number): Promise<{ success: boolean }> {
   try {
+    if (!advertiserId) {
+      throw new Error("User ID is required")
+    }
+
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
     const body = JSON.stringify({
       data: {
-        user_id: advertiserId,
+        user_id: String(advertiserId),
       },
     })
     const response = await fetch(`${API.baseUrl}/user-group/members`, {
@@ -552,18 +556,23 @@ export async function addToClosedGoup(advertiserId: string): Promise<[]> {
       success: true
     }
   } catch (error) {
+    console.error("Error adding to closed group:", error)
     throw error
   }
 }
 
-export async function removeFromClosedGoup(advertiserId: string): Promise<[]> {
+export async function removeFromClosedGoup(advertiserId: string | number): Promise<{ success: boolean }> {
   try {
+    if (!advertiserId) {
+      throw new Error("User ID is required")
+    }
+
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(`${API.baseUrl}/user-group/members/${advertiserId}`, {
+    const response = await fetch(`${API.baseUrl}/user-group/members/${String(advertiserId)}`, {
       method: "DELETE",
       headers,
       credentials: "include",
@@ -579,6 +588,7 @@ export async function removeFromClosedGoup(advertiserId: string): Promise<[]> {
       success: true
     }
   } catch (error) {
+    console.error("Error removing from closed group:", error)
     throw error
   }
 }
