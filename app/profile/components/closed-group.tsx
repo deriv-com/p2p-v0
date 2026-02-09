@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
+import { getClosedGroup, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
 interface ClosedGroup {
   id: number
   nickname: string
@@ -24,7 +24,7 @@ export default function ClosedGroupTab() {
   const fetchClosedGroups = useCallback(async () => {
     try {
       setIsLoading(true)
-      const data = await getFavouriteUsers()
+      const data = await getClosedGroup()
       setClosedGroups(data)
     } catch (err) {
       console.error("Failed to fetch closed groups:", err)
@@ -69,28 +69,19 @@ export default function ClosedGroupTab() {
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
-      console.log("[v0] handleToggleMembership called with group:", group)
       if (!group.id) {
-        console.log("[v0] No group ID, returning")
         return
       }
 
-      console.log("[v0] Current membership status:", group.is_group_member)
       let result
       if (group.is_group_member) {
-        console.log("[v0] Removing from closed group")
         result = await removeFromClosedGroup(group.id)
       } else {
-        console.log("[v0] Adding to closed group")
         result = await addToClosedGroup(group.id)
       }
 
-      console.log("[v0] API result:", result)
       if (result.success) {
-        console.log("[v0] Success, refetching closed groups")
         await fetchClosedGroups()
-      } else {
-        console.log("[v0] API returned errors:", result.errors)
       }
     } catch (err) {
       console.error("Failed to update closed group membership:", err)
@@ -105,10 +96,7 @@ export default function ClosedGroupTab() {
         </div>
         <div className="text-slate-1200 flex-1">{group.nickname}</div>
         <Button
-          onClick={(e) => {
-            console.log("[v0] Button clicked for group:", group.nickname)
-            handleToggleMembership(group)
-          }}
+          onClick={() => handleToggleMembership(group)}
           variant="outline"
           size="sm"
           className="min-w-fit"
