@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getFavouriteUsers } from "@/services/api/api-profile"
+import { getFavouriteUsers, removeAllFromClosedGroup } from "@/services/api/api-profile"
 import { Checkbox } from "@/components/ui/checkbox"
 
 interface ClosedGroup {
@@ -21,6 +21,7 @@ export default function ClosedGroupTab() {
   const [searchQuery, setSearchQuery] = useState("")
   const [closedGroups, setClosedGroups] = useState<ClosedGroup[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isRemoving, setIsRemoving] = useState(false)
 
   const fetchClosedGroups = useCallback(async () => {
     try {
@@ -51,6 +52,20 @@ export default function ClosedGroupTab() {
     setSearchQuery(value)
   }, [])
 
+  const handleRemoveAll = useCallback(async () => {
+    try {
+      setIsRemoving(true)
+      const result = await removeAllFromClosedGroup()
+      if (result.success) {
+        setClosedGroups([])
+      }
+    } catch (err) {
+      console.error("Failed to remove all from closed group:", err)
+    } finally {
+      setIsRemoving(false)
+    }
+  }, [])
+
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="flex items-center justify-between py-4">
       <div className="flex flex-1 items-center gap-3">
@@ -65,7 +80,18 @@ export default function ClosedGroupTab() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
+        {closedGroups.length > 0 && (
+          <button
+            onClick={handleRemoveAll}
+            disabled={isRemoving}
+            className="text-black text-sm underline hover:opacity-70 disabled:opacity-50"
+          >
+            Remove all
+          </button>
+        )}
+      </div>
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
           <div className="relative w-full md:w-[50%]">
