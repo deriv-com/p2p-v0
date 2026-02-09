@@ -61,18 +61,18 @@ export default function FollowDropdown({
             Following
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="p-2">
+        <DropdownMenuContent align="end" className="p-2 w-[280px]">
           {isGroupMember ? (<DropdownMenuItem
             onClick={handleRemoveFromClosedGroup}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
-            <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
+            <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
             <span className="text-base text-grayscale-600">Remove from closed group</span>
           </DropdownMenuItem>) : (<DropdownMenuItem
             onClick={handleAddToClosedGroup}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
-            <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
+            <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
             <span className="text-base text-grayscale-600">Add to closed group</span>
           </DropdownMenuItem>
           )}
@@ -80,7 +80,7 @@ export default function FollowDropdown({
             onClick={handleUnfollow}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
-            <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={20} />
+            <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={24} />
             <span className="text-base text-grayscale-600">Unfollow</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -104,14 +104,14 @@ export default function FollowDropdown({
               className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
               variant="ghost"
             >
-              <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
+              <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
               <span className="text-base text-grayscale-600">Remove from closed group</span>
             </Button>) : (<Button
               onClick={handleAddToClosedGroup}
               className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
               variant="ghost"
             >
-              <Image src="/icons/star.svg" alt="Add to closed group" width={20} height={20} />
+              <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
               <span className="text-base text-grayscale-600">Add to closed group</span>
             </Button>)
             }
@@ -120,7 +120,7 @@ export default function FollowDropdown({
               className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
               variant="ghost"
             >
-              <Image src="/icons/unfollow.svg" alt="Unfollow" width={20} height={20} />
+              <Image src="/icons/unfollow.svg" alt="Unfollow" width={16} height={24} />
               <span className="text-base text-grayscale-600">Unfollow</span>
             </Button>
           </div>
