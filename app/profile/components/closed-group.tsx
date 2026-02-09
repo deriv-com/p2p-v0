@@ -79,7 +79,7 @@ export default function ClosedGroupTab() {
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
+              className="pl-10 pr-10 border-0 bg-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               autoComplete="off"
             />
             {searchQuery && (
