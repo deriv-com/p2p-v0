@@ -4,6 +4,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import Link from "next/link"
 
 interface AdVisibilitySelectorProps {
   value: string
@@ -44,7 +45,10 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Closed group</div>
           <div className="text-xs text-grayscale-text-muted">
-            Your ad will be visible only to users in your close group list.
+            Your ad will be visible only to users in your close group list.{" "}
+            <Link href="/profile?tab=closed-group" className="text-slate-1200 underline hover:opacity-70">
+              Edit list
+            </Link>
           </div>
         </div>
         <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
