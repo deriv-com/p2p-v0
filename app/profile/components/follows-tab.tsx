@@ -5,6 +5,7 @@ import type React from "react"
 import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFavouriteUsers, getFollowers } from "@/services/api/api-profile"
 import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
@@ -138,8 +139,21 @@ export default function FollowsTab() {
 
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
 
+  const handleAddFromFollowing = useCallback(() => {
+    setActiveTab("followers")
+  }, [])
+
   return (
     <div className="space-y-4">
+      {!isLoadingFollowing && following.length > 0 && (
+        <Button
+          onClick={handleAddFromFollowing}
+          variant="outline"
+          className="w-full rounded-full"
+        >
+          {t("profile.addFromYourFollowing")}
+        </Button>
+      )}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="w-full md:w-auto">
           <TabsTrigger value="follows" className="flex-1 md:flex-none md:w-32">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
