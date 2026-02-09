@@ -134,7 +134,7 @@ export default function BlockedTab() {
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 pr-10 border-0 bg-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              className="pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               autoComplete="off"
             />
             {searchQuery && (
