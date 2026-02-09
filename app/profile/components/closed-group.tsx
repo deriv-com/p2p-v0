@@ -136,7 +136,7 @@ export default function ClosedGroupTab() {
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      {closedGroups.length > 0 && (<div className="flex items-center justify-between">
         <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
         {closedGroups.length > 0 && (
           <Button
@@ -149,7 +149,7 @@ export default function ClosedGroupTab() {
             Remove all
           </Button>
         )}
-      </div>
+      </div>)}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (

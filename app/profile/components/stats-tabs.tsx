@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
@@ -19,6 +19,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getFavouriteUsers } from "@/services/api/api-profile"
 
 interface StatsTabsProps {
   stats?: any
@@ -41,6 +42,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const [closedGroups, setClosedGroups] = useState<any[]>([])
   const { userData } = useUserDataStore()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
@@ -54,11 +56,29 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
+  const fetchClosedGroups = useCallback(async () => {
+    try {
+      const data = await getFavouriteUsers()
+      setClosedGroups(data)
+    } catch (err) {
+      console.error("Failed to fetch closed groups:", err)
+      setClosedGroups([])
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userData.trade_band === "diamond") {
+      fetchClosedGroups()
+    }
+  }, [userData.trade_band, fetchClosedGroups])
+
+  const hasGroupMembers = closedGroups.some((group: any) => group.is_group_member)
+
   const tabs = [
     { id: "stats", label: t("profile.stats") },
     { id: "payment", label: t("profile.paymentMethods") },
     { id: "follows", label: t("profile.follows") },
-    ...(userData.trade_band === "diamond"
+    ...(userData.trade_band === "diamond" && hasGroupMembers
     ? [{ id: "closed-group", label: "Closed group" }]
     : []),
     { id: "blocked", label: t("profile.blocked") },
