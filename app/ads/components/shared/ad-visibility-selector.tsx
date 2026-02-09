@@ -3,16 +3,22 @@
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import Link from "next/link"
 
 interface AdVisibilitySelectorProps {
   value: string
   onValueChange: (value: string) => void
+  onEditClosedGroup?: () => void
 }
 
-export default function AdVisibilitySelector({ value, onValueChange }: AdVisibilitySelectorProps) {
+export default function AdVisibilitySelector({ value, onValueChange, onEditClosedGroup }: AdVisibilitySelectorProps) {
   const { t } = useTranslations()
+
+  const handleEditListClick = () => {
+    alert("ClosedGroupTab")
+    onEditClosedGroup?.()
+  }
 
   return (
     <RadioGroup value={value} onValueChange={onValueChange}>
@@ -46,9 +52,14 @@ export default function AdVisibilitySelector({ value, onValueChange }: AdVisibil
           <div className="text-base text-slate-1200 mb-1">Closed group</div>
           <div className="text-xs text-grayscale-text-muted">
             Your ad will be visible only to users in your close group list.{" "}
-            <Link href="/profile?tab=closed-group" className="text-slate-1200 underline hover:opacity-70">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleEditListClick}
+              className="p-0 h-auto text-slate-1200 underline hover:opacity-70 hover:bg-transparent"
+            >
               Edit list
-            </Link>
+            </Button>
           </div>
         </div>
         <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
