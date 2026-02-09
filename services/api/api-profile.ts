@@ -582,3 +582,35 @@ export async function removeFromClosedGoup(advertiserId: string): Promise<[]> {
     throw error
   }
 }
+
+export async function removeAllFromClosedGroup(): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+
+    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+      method: "DELETE",
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      try {
+        const errorData = JSON.parse(errorText)
+        return { success: false, errors: errorData.errors }
+      } catch (error) {
+        return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
+      }
+    }
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
+  }
+}
