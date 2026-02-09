@@ -66,31 +66,21 @@ export default function ClosedGroupTab() {
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
       if (!group.id) {
-        console.log("[v0] Group ID is missing")
         return
       }
 
-      console.log("[v0] Toggle membership for group:", group.id, "Current member status:", group.is_group_member)
-
       let result
       if (group.is_group_member) {
-        console.log("[v0] Calling removeFromClosedGoup with ID:", group.id)
         result = await removeFromClosedGoup(group.id)
       } else {
-        console.log("[v0] Calling addToClosedGoup with ID:", group.id)
         result = await addToClosedGoup(group.id)
       }
 
-      console.log("[v0] API result:", result)
-
       if (result.success) {
-        console.log("[v0] API call successful, fetching updated groups")
         await fetchClosedGroups()
-      } else {
-        console.log("[v0] API call failed with errors:", result.errors)
       }
     } catch (err) {
-      console.error("[v0] Exception in handleToggleMembership:", err)
+      console.error("Failed to update closed group membership:", err)
     }
   }, [fetchClosedGroups])
 
