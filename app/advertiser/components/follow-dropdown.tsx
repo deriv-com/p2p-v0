@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ChevronDown } from "lucide-react"
-
 interface FollowDropdownProps {
   isFollowing: boolean
   isGroupMember: boolean
@@ -60,7 +58,13 @@ export default function FollowDropdown({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm" disabled={isLoading} className="gap-2">
             Following
-            <ChevronDown className="h-4 w-4" />
+            <Image 
+              src="/icons/chevron-down.png" 
+              alt="" 
+              width={16} 
+              height={16}
+              style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease-in-out' }}
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="p-2 w-[280px]">
@@ -94,7 +98,13 @@ export default function FollowDropdown({
     <>
       <Button variant="outline" size="sm" disabled={isLoading} onClick={() => setIsOpen(true)} className="gap-2">
         Following
-        <ChevronDown className="h-4 w-4" />
+        <Image 
+          src="/icons/chevron-down.png" 
+          alt="" 
+          width={16} 
+          height={16}
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease-in-out' }}
+        />
       </Button>
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent side="bottom" className="h-auto p-6 rounded-t-2xl">
