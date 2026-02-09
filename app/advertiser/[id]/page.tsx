@@ -24,6 +24,7 @@ import { TradeBandBadge } from "@/components/trade-band-badge"
 import { ClosedGroupBadge } from "@/components/closed-group-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
+import AdUnavailableModal from "@/components/ad-unavailable-modal"
 
 interface AdvertiserProfile {
   id: string | number
@@ -82,6 +83,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
+  const [showAdUnavailableModal, setShowAdUnavailableModal] = useState(false)
   const { t } = useTranslations()
 
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -149,12 +151,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       if (ad) {
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
       } else {
-        showAlert({
-          title: "This ad is unavailable",
-          description: "It's either deleted or no longer active.",
-          confirmText: "OK",
-          type: "warning",
-        })
+        setShowAdUnavailableModal(true)
       }
     }
   }, [adIdParam, adverts, isBlocked])
@@ -334,6 +331,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     router.push("/")
   }
 
+  const handleAdUnavailableClose = () => {
+    setShowAdUnavailableModal(false)
+    router.push("/")
+  }
+
   if (isLoading) {
     return (
       <div className="text-center py-8">
@@ -358,6 +360,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   return (
     <div className="h-full overflow-y-auto">
+      <AdUnavailableModal isOpen={showAdUnavailableModal} onClose={handleAdUnavailableClose} />
       <div className="p-6 md:px-2 md:py-0">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
