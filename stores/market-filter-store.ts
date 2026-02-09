@@ -1,8 +1,7 @@
 import { create } from "zustand"
 
 export interface MarketFilterOptions {
-  fromFollowing: boolean,
-  isPrivate: boolean
+  fromFollowing: boolean
 }
 
 interface MarketFilterState {
@@ -25,7 +24,7 @@ const initialState = {
   activeTab: "sell" as const,
   currency: "",
   sortBy: "exchange_rate",
-  filterOptions: { fromFollowing: false, isPrivate: false },
+  filterOptions: { fromFollowing: false },
   selectedPaymentMethods: [] as string[],
   selectedAccountCurrency: "USD",
 }

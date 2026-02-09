@@ -524,7 +524,7 @@ export async function getClosedGroup(): Promise<[]> {
   }
 }
 
-export async function addToClosedGoup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
+export async function addToClosedGroup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
   try {
     if (!advertiserId) {
       throw new Error("User ID is required")
@@ -567,7 +567,7 @@ export async function addToClosedGoup(advertiserId: string | number): Promise<{ 
   }
 }
 
-export async function removeFromClosedGoup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
+export async function removeFromClosedGroup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
   try {
     if (!advertiserId) {
       throw new Error("User ID is required")

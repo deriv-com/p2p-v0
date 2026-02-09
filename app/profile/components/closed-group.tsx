@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGoup, removeFromClosedGoup } from "@/services/api/api-profile"
-import { Checkbox } from "@/components/ui/checkbox"
-
+import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
 interface ClosedGroup {
   id: number
   nickname: string
@@ -46,6 +44,10 @@ export default function ClosedGroupTab() {
     return closedGroups.filter((group) => group.nickname.toLowerCase().includes(searchQuery.toLowerCase()))
   }, [closedGroups, searchQuery])
 
+  const hasGroupMembers = useMemo(() => {
+    return closedGroups.some((group) => group.is_group_member)
+  }, [closedGroups])
+
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
@@ -65,17 +67,17 @@ export default function ClosedGroupTab() {
     }
   }, [fetchClosedGroups])
 
-  const handleCheckboxChange = useCallback(async (group: ClosedGroup, checked: boolean) => {
+  const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
       if (!group.id) {
         return
       }
 
       let result
-      if (checked) {
-        result = await addToClosedGoup(group.id)
+      if (group.is_group_member) {
+        result = await removeFromClosedGroup(group.id)
       } else {
-        result = await removeFromClosedGoup(group.id)
+        result = await addToClosedGroup(group.id)
       }
 
       if (result.success) {
@@ -93,7 +95,14 @@ export default function ClosedGroupTab() {
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
         <div className="text-slate-1200 flex-1">{group.nickname}</div>
-        <Checkbox checked={group.is_group_member} onCheckedChange={(checked) => handleCheckboxChange(group, checked as boolean)} className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]" />
+        <Button
+          onClick={() => handleToggleMembership(group)}
+          variant={group.is_group_member ? "outline" : "default"}
+          size="sm"
+          className="min-w-fit"
+        >
+          {group.is_group_member ? "Remove" : "Add"}
+        </Button>
       </div>
     </div>
   )
@@ -131,12 +140,12 @@ export default function ClosedGroupTab() {
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      {closedGroups.length > 0 && (<div className="flex items-center justify-between">
         <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
         {closedGroups.length > 0 && (
           <Button
             onClick={handleRemoveAll}
-            disabled={isRemoving}
+            disabled={isRemoving || !hasGroupMembers}
             variant="ghost"
             size="sm"
             className="underline hover:opacity-70 disabled:opacity-50"
@@ -144,7 +153,7 @@ export default function ClosedGroupTab() {
             Remove all
           </Button>
         )}
-      </div>
+      </div>)}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
