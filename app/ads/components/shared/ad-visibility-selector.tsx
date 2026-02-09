@@ -24,7 +24,7 @@ interface AdVisibilitySelectorProps {
 
 export default function AdVisibilitySelector({ value, onValueChange, onEditClosedGroup }: AdVisibilitySelectorProps) {
   const { t } = useTranslations()
-  const { showAlert } = useAlertDialog()
+  const { showAlert, hideAlert } = useAlertDialog()
   const [closedGroupMembers, setClosedGroupMembers] = useState<ClosedGroupMember[]>([])
   const [isCheckingMembers, setIsCheckingMembers] = useState(false)
 
@@ -51,6 +51,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
       content: <ClosedGroupTab />,
       confirmText: "Done",
       cancelText: undefined,
+      onConfirm: hideAlert,
     })
     onEditClosedGroup?.()
   }
@@ -58,17 +59,17 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   const handleClosedGroupChange = async () => {
     // First, always update the selection
     onValueChange("closed-group")
-    
+
     // Then check if there are any members
     let members = closedGroupMembers
     if (members.length === 0) {
       // First time checking, fetch the members
       members = await fetchClosedGroupMembers()
     }
-    
+
     // Check if there are any active members
     const hasMembers = members.some((member) => member.is_group_member)
-    
+
     if (!hasMembers) {
       // No members in the closed group, show alert immediately
       showAlert({
@@ -76,6 +77,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         content: <ClosedGroupTab />,
         confirmText: "Done",
         cancelText: undefined,
+        onConfirm: hideAlert,
       })
     }
   }
@@ -112,19 +114,17 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           <div className="text-base text-slate-1200 mb-1">Closed group</div>
           <div className="text-xs text-grayscale-text-muted">
             Your ad will be visible only to users in your close group list.{" "}
-            {value === "closed-group" && hasClosedGroupMembers && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleEditListClick()
-                }}
-                className="font-normal p-0 h-auto text-xs text-grayscale-text-muted underline hover:opacity-100 hover:bg-transparent"
-              >
-                Edit list
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleEditListClick()
+              }}
+              className="font-normal p-0 h-auto text-xs text-grayscale-text-muted underline hover:opacity-100 hover:bg-transparent"
+            >
+              Edit list
+            </Button>
           </div>
         </div>
         <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
