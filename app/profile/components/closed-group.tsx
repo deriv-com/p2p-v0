@@ -57,14 +57,14 @@ export default function ClosedGroupTab() {
       setIsRemoving(true)
       const result = await removeAllFromClosedGroup()
       if (result.success) {
-        setClosedGroups([])
+        await fetchClosedGroups()
       }
     } catch (err) {
       console.error("Failed to remove all from closed group:", err)
     } finally {
       setIsRemoving(false)
     }
-  }, [])
+  }, [fetchClosedGroups])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="flex items-center justify-between py-4">
