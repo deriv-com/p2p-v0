@@ -83,18 +83,20 @@ export default function ClosedGroupTab() {
       <div className="flex items-center justify-between">
         <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
         {closedGroups.length > 0 && (
-          <button
+          <Button
             onClick={handleRemoveAll}
             disabled={isRemoving}
-            className="text-black text-sm underline hover:opacity-70 disabled:opacity-50"
+            variant="ghost"
+            size="sm"
+            className="underline hover:opacity-70 disabled:opacity-50"
           >
             Remove all
-          </button>
+          </Button>
         )}
       </div>
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-[50%]">
+          <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
