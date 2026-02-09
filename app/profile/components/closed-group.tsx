@@ -8,8 +8,6 @@ import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGoup, removeFromClosedGoup } from "@/services/api/api-profile"
-import { Checkbox } from "@/components/ui/checkbox"
-
 interface ClosedGroup {
   id: number
   nickname: string
@@ -65,17 +63,17 @@ export default function ClosedGroupTab() {
     }
   }, [fetchClosedGroups])
 
-  const handleCheckboxChange = useCallback(async (group: ClosedGroup, checked: boolean) => {
+  const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
       if (!group.id) {
         return
       }
 
       let result
-      if (checked) {
-        result = await addToClosedGoup(group.id)
-      } else {
+      if (group.is_group_member) {
         result = await removeFromClosedGoup(group.id)
+      } else {
+        result = await addToClosedGoup(group.id)
       }
 
       if (result.success) {
@@ -93,7 +91,14 @@ export default function ClosedGroupTab() {
           {group.nickname?.charAt(0).toUpperCase()}
         </div>
         <div className="text-slate-1200 flex-1">{group.nickname}</div>
-        <Checkbox checked={group.is_group_member} onCheckedChange={(checked) => handleCheckboxChange(group, checked as boolean)} className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]" />
+        <Button
+          onClick={() => handleToggleMembership(group)}
+          variant={group.is_group_member ? "outline" : "default"}
+          size="sm"
+          className="min-w-fit"
+        >
+          {group.is_group_member ? "Remove" : "Add"}
+        </Button>
       </div>
     </div>
   )
