@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import ClosedGroupModal from "@/components/closed-group-modal/closed-group-modal"
+import ClosedGroupTab from "@/app/profile/components/closed-group"
 
 interface AdVisibilitySelectorProps {
   value: string
@@ -16,16 +16,20 @@ interface AdVisibilitySelectorProps {
 
 export default function AdVisibilitySelector({ value, onValueChange, onEditClosedGroup }: AdVisibilitySelectorProps) {
   const { t } = useTranslations()
-  const [modalOpen, setModalOpen] = useState(false)
+  const { showAlert } = useAlertDialog()
 
   const handleEditListClick = () => {
-    setModalOpen(true)
+    showAlert({
+      title: "Closed group",
+      content: <ClosedGroupTab />,
+      confirmText: "Done",
+      cancelText: undefined,
+    })
     onEditClosedGroup?.()
   }
 
   return (
-    <>
-      <RadioGroup value={value} onValueChange={onValueChange}>
+    <RadioGroup value={value} onValueChange={onValueChange}>
       <Label
         htmlFor="everyone"
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
@@ -69,7 +73,5 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
     </RadioGroup>
-    <ClosedGroupModal open={modalOpen} onOpenChange={setModalOpen} />
-    </>
   )
 }
