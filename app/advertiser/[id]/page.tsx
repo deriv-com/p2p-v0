@@ -10,7 +10,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
-import { addToClosedGoup, removeFromClosedGoup } from "@/services/api/api-profile"
+import { addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
 import { formatPaymentMethodName } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -271,7 +271,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   const handleAddToClosedGroup = async () => {
     try {
-      const result = await addToClosedGoup(profile.id)
+      const result = await addToClosedGroup(profile.id)
 
       if (result.success) {
         setIsGroupMember(true)
@@ -295,7 +295,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
    const handleRemoveFromClosedGroup = async () => {
     try {
-      const result = await removeFromClosedGoup(profile.id)
+      const result = await removeFromClosedGroup(profile.id)
 
       if (result.success) {
         setIsGroupMember(false)

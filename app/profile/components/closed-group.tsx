@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGoup, removeFromClosedGoup } from "@/services/api/api-profile"
+import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
 interface ClosedGroup {
   id: number
   nickname: string
@@ -75,9 +75,9 @@ export default function ClosedGroupTab() {
 
       let result
       if (group.is_group_member) {
-        result = await removeFromClosedGoup(group.id)
+        result = await removeFromClosedGroup(group.id)
       } else {
-        result = await addToClosedGoup(group.id)
+        result = await addToClosedGroup(group.id)
       }
 
       if (result.success) {
