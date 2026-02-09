@@ -524,15 +524,19 @@ export async function getClosedGroup(): Promise<[]> {
   }
 }
 
-export async function addToClosedGoup(advertiserId: string): Promise<[]> {
+export async function addToClosedGoup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
   try {
+    if (!advertiserId) {
+      throw new Error("User ID is required")
+    }
+
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
     const body = JSON.stringify({
       data: {
-        user_id: advertiserId,
+        user_id: String(advertiserId),
       },
     })
     const response = await fetch(`${API.baseUrl}/user-group/members`, {
@@ -543,8 +547,12 @@ export async function addToClosedGoup(advertiserId: string): Promise<[]> {
     })
 
     if (!response.ok) {
-      return {
-        success: false
+      const errorText = await response.text()
+      try {
+        const errorData = JSON.parse(errorText)
+        return { success: false, errors: errorData.errors }
+      } catch (error) {
+        return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
@@ -552,26 +560,37 @@ export async function addToClosedGoup(advertiserId: string): Promise<[]> {
       success: true
     }
   } catch (error) {
-    throw error
+    return {
+      success: false,
+      errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
   }
 }
 
-export async function removeFromClosedGoup(advertiserId: string): Promise<[]> {
+export async function removeFromClosedGoup(advertiserId: string | number): Promise<{ success: boolean; errors?: Array<{ code: string; message: string }> }> {
   try {
+    if (!advertiserId) {
+      throw new Error("User ID is required")
+    }
+
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(`${API.baseUrl}/user-group/members/${advertiserId}`, {
+    const response = await fetch(`${API.baseUrl}/user-group/members/${String(advertiserId)}`, {
       method: "DELETE",
       headers,
       credentials: "include",
     })
 
     if (!response.ok) {
-      return {
-        success: false
+      const errorText = await response.text()
+      try {
+        const errorData = JSON.parse(errorText)
+        return { success: false, errors: errorData.errors }
+      } catch (error) {
+        return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
@@ -579,7 +598,10 @@ export async function removeFromClosedGoup(advertiserId: string): Promise<[]> {
       success: true
     }
   } catch (error) {
-    throw error
+    return {
+      success: false,
+      errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
   }
 }
 

@@ -28,6 +28,7 @@
     "no": "No",
     "ok": "OK",
     "learnMore": "Learn More",
+    "removeAll": "Remove all",
     "verifiedBadge": {
       "title": "Verified account",
       "description": "Email, phone, identity, and address checks are complete. This helps you trade with more confidence."
@@ -327,7 +328,8 @@
     "noResultForPrefix": "There is no result for",
     "aboutYou": "About you",
     "settings": "Settings",
-    "support": "Support"
+    "support": "Support",
+    "addFromYourFollowing": "Add from your following"
   },
   "wallet": {
     "title": "Wallet",

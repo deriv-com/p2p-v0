@@ -67,11 +67,15 @@ export default function ClosedGroupTab() {
 
   const handleCheckboxChange = useCallback(async (group: ClosedGroup, checked: boolean) => {
     try {
+      if (!group.id) {
+        return
+      }
+
       let result
       if (checked) {
-        result = await addToClosedGoup(group.id.toString())
+        result = await addToClosedGoup(group.id)
       } else {
-        result = await removeFromClosedGoup(group.id.toString())
+        result = await removeFromClosedGoup(group.id)
       }
 
       if (result.success) {
@@ -96,20 +100,6 @@ export default function ClosedGroupTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
-        {closedGroups.length > 0 && (
-          <Button
-            onClick={handleRemoveAll}
-            disabled={isRemoving}
-            variant="ghost"
-            size="sm"
-            className="underline hover:opacity-70 disabled:opacity-50"
-          >
-            Remove all
-          </Button>
-        )}
-      </div>
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
           <div className="relative w-full md:w-[360px]">
@@ -124,7 +114,7 @@ export default function ClosedGroupTab() {
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              className="h-14 pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none"
               autoComplete="off"
             />
             {searchQuery && (
@@ -140,6 +130,21 @@ export default function ClosedGroupTab() {
           </div>
         </div>
       )}
+
+      <div className="flex items-center justify-between">
+        <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
+        {closedGroups.length > 0 && (
+          <Button
+            onClick={handleRemoveAll}
+            disabled={isRemoving}
+            variant="ghost"
+            size="sm"
+            className="underline hover:opacity-70 disabled:opacity-50"
+          >
+            Remove all
+          </Button>
+        )}
+      </div>
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
