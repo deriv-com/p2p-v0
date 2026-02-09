@@ -327,7 +327,8 @@
     "noResultForPrefix": "There is no result for",
     "aboutYou": "About you",
     "settings": "Settings",
-    "support": "Support"
+    "support": "Support",
+    "addFromYourFollowing": "Add from your following"
   },
   "wallet": {
     "title": "Wallet",
