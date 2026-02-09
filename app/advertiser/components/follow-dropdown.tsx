@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
 interface FollowDropdownProps {
   isFollowing: boolean
   isGroupMember: boolean
@@ -63,7 +64,7 @@ export default function FollowDropdown({
               alt="" 
               width={16} 
               height={16}
-              style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease-in-out' }}
+              className={cn("transition-transform", isOpen && "rotate-180")}
             />
           </Button>
         </DropdownMenuTrigger>
@@ -103,7 +104,7 @@ export default function FollowDropdown({
           alt="" 
           width={16} 
           height={16}
-          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease-in-out' }}
+          className={cn("transition-transform", isOpen && "rotate-180")}
         />
       </Button>
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
