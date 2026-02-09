@@ -637,7 +637,10 @@
     "invalidExchangeRateMessage": "The exchange rate you provided is invalid.",
     "invalidOrderAmountMessage": "The order amount limits are invalid.",
     "genericErrorCodeMessage": "Please try again or contact support.",
-    "genericProcessingErrorMessage": "There was an error processing your request. Please try again."
+    "genericProcessingErrorMessage": "There was an error processing your request. Please try again.",
+    "cancelAdCreation": "Cancel ad creation?",
+    "cancelAdCreationDescription": "If you cancel, the details you've entered will be lost.",
+    "continueAdCreation": "Continue ad creation"
   },
   "advertiser": {
     "goBack": "Go Back",

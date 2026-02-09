@@ -59,7 +59,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [isLoadingInitialData, setIsLoadingInitialData] = useState(false)
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
-  const { showAlert } = useAlertDialog()
+  const { showAlert, hideAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
@@ -554,11 +554,20 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const handleClose = () => {
-    const finalData = { ...formDataRef.current }
-    const currency = finalData?.buyCurrency || "USD"
-    leaveExchangeRatesChannel(currency)
-
-    router.push("/ads")
+    showAlert({
+      title: t("adForm.cancelAdCreation"),
+      description: t("adForm.cancelAdCreationDescription"),
+      confirmText: t("adForm.continueAdCreation"),
+      cancelText: t("common.cancel"),
+      type: "warning",
+      onConfirm: hideAlert,
+      onCancel: () => {
+        const finalData = { ...formDataRef.current }
+        const currency = finalData?.buyCurrency || "USD"
+        leaveExchangeRatesChannel(currency)
+        router.push("/ads")
+      },
+    })
   }
 
   const isButtonDisabled =

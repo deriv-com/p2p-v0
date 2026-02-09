@@ -144,36 +144,20 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }, [id])
 
   useEffect(() => {
-    if (adIdParam && !isBlocked) {
-      if (adverts.length > 0) {
-        const ad = adverts.find((a) => a.id == adIdParam)
-        if (ad) {
-          handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
-        } else {
-          showAlert({
-            title: "Ad no longer available",
-            description: "This ad is no longer accessible. Try placing an order on a different ad.",
-            confirmText: "Got it",
-            type: "warning",
-            onConfirm: () => {
-              router.push("/")
-            },
-          })
-        }
-      } else if (profile && adverts.length === 0) {
-        // Advertiser profile loaded but no ads found, and user was looking for a specific ad
+    if (adIdParam && adverts.length > 0 && !isBlocked) {
+      const ad = adverts.find((a) => a.id == adIdParam)
+      if (ad) {
+        handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      } else {
         showAlert({
           title: "Ad no longer available",
           description: "This ad is no longer accessible. Try placing an order on a different ad.",
           confirmText: "Got it",
           type: "warning",
-          onConfirm: () => {
-            router.push("/")
-          },
         })
       }
     }
-  }, [adIdParam, adverts, isBlocked, profile])
+  }, [adIdParam, adverts, isBlocked])
 
   const toggleFollow = async () => {
     if (!profile) return
@@ -301,7 +285,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
-      }else {
+      } else {
         console.error("Failed to add to closed group")
       }
     } catch (error) {
@@ -309,7 +293,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     }
   }
 
-   const handleRemoveFromClosedGroup = async () => {
+  const handleRemoveFromClosedGroup = async () => {
     try {
       const result = await removeFromClosedGroup(profile.id)
 
@@ -325,7 +309,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
-      }else {
+      } else {
         console.error("Failed to remove from closed group")
       }
     } catch (error) {
