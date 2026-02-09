@@ -148,7 +148,7 @@ export default function ClosedGroupTab() {
             disabled={isRemoving || !hasGroupMembers}
             variant="ghost"
             size="sm"
-            className="px-0 underline hover:opacity-100 disabled:text-grayscale-text-placeholder"
+            className="px-0 underline hover:opacity-100 hover:bg-transparent disabled:text-grayscale-text-placeholder disabled:opacity-100 cursor-pointer"
           >
             Remove all
           </Button>

@@ -144,21 +144,42 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }, [id])
 
   useEffect(() => {
-    if (adIdParam && adverts.length > 0 && !isBlocked) {
-      const ad = adverts.find((a) => a.id == adIdParam)
-      if (ad) {
-        handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
-      } else {
+    if (adIdParam && !isBlocked) {
+      console.log("[v0] Checking for ad. adIdParam:", adIdParam, "adverts.length:", adverts.length, "isBlocked:", isBlocked)
+      if (adverts.length > 0) {
+        const ad = adverts.find((a) => a.id == adIdParam)
+        console.log("[v0] Ad found:", !!ad)
+        if (ad) {
+          handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+        } else {
+          console.log("[v0] Ad not found, showing alert")
+          showAlert({
+            title: "Ad no longer available",
+            description: "This ad is no longer accessible. Try placing an order on a different ad.",
+            confirmText: "Got it",
+            type: "warning",
+            onConfirm: () => {
+              console.log("[v0] Redirecting to home page")
+              router.push("/")
+            },
+          })
+        }
+      } else if (profile && adverts.length === 0) {
+        // Advertiser profile loaded but no ads found, and user was looking for a specific ad
+        console.log("[v0] Profile loaded with no ads, showing alert")
         showAlert({
           title: "Ad no longer available",
           description: "This ad is no longer accessible. Try placing an order on a different ad.",
           confirmText: "Got it",
           type: "warning",
-          onConfirm: () => router.push("/"),
+          onConfirm: () => {
+            console.log("[v0] Redirecting to home page")
+            router.push("/")
+          },
         })
       }
     }
-  }, [adIdParam, adverts, isBlocked])
+  }, [adIdParam, adverts, isBlocked, profile])
 
   const toggleFollow = async () => {
     if (!profile) return
