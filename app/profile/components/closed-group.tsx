@@ -38,7 +38,6 @@ export default function ClosedGroupTab() {
 
   useEffect(() => {
     fetchClosedGroups()
-    console.log("fetch")
   }, [fetchClosedGroups])
 
   const filteredClosedGroups = useMemo(() => {
