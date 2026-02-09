@@ -47,7 +47,7 @@ export default function MarketFilterDropdown({
 
   const handleReset = () => {
     setSortBy("exchange_rate")
-    onApply({ fromFollowing: false, isPrivate: false }, "exchange_rate")
+    onApply({ fromFollowing: false }, "exchange_rate")
     setIsOpen(false)
     onOpenChangeProp?.(false)
   }
@@ -101,17 +101,6 @@ export default function MarketFilterDropdown({
           />
           <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
             {t("filter.adsFromFollowing")}
-          </label>
-        </div>
-        <div className={cn("flex items-center space-x-3", userData.trade_band !== "diamond" && "hidden")}>
-          <Checkbox
-            id="is-private"
-            checked={filters.isPrivate}
-            onCheckedChange={(checked) => handleFilterChange("isPrivate", checked as boolean)}
-            className="data-[state=checked]:bg-black border-2 border-grayscale-text-muted"
-          />
-          <label htmlFor="is-private" className="text-sm text-grayscale-600 cursor-pointer">
-            Ads from closed group only
           </label>
         </div>
       </div>
