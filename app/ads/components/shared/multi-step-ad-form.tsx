@@ -69,7 +69,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
-  
+
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
   const { data: settingsData, isLoading: isLoadingSettings } = useSettings()
@@ -312,9 +312,37 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const handleFinalSubmit = () => {
     const finalData = { ...formDataRef.current }
 
-    setIsSubmitting(true)
-
     const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
+    const isPrivate = adVisibility === "closed-group"
+
+    // Check if ad is being changed to public and advertiser has no private groups restriction
+    if (
+      !isPrivate &&
+      userData?.visibility_status &&
+      userData.visibility_status.includes("advertiser_no_private_groups")
+    ) {
+      showAlert({
+        title: t("adForm.adVisibilityUpdate"),
+        description: t("adForm.adVisibilityUpdateDescription"),
+        confirmText: t("common.confirm"),
+        cancelText: t("common.cancel"),
+        type: "warning",
+        onConfirm: () => {
+          proceedWithSubmit(finalData, selectedPaymentMethodIdsForSubmit, isPrivate)
+        },
+      })
+      return
+    }
+
+    proceedWithSubmit(finalData, selectedPaymentMethodIdsForSubmit, isPrivate)
+  }
+
+  const proceedWithSubmit = (
+    finalData: any,
+    selectedPaymentMethodIdsForSubmit: string[],
+    isPrivate: boolean
+  ) => {
+    setIsSubmitting(true)
 
     if (mode === "create") {
       const exchangeRate =
@@ -333,6 +361,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         is_active: 1,
         order_expiry_period: orderTimeLimit,
         available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+        is_private: isPrivate,
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -367,6 +396,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         order_expiry_period: orderTimeLimit,
         available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
         description: finalData.instructions || "",
+        is_private: isPrivate,
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -613,7 +643,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                             alt="Info"
                             width={24}
                             height={24}
-                            className="ml-1 cursor-pointer"
+                            className="cursor-pointer"
                           />
                         </TooltipTrigger>
                         <TooltipContent>
@@ -637,7 +667,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                             alt="Info"
                             width={24}
                             height={24}
-                            className="ml-1 cursor-pointer"
+                            className="cursor-pointer"
                           />
                         </TooltipTrigger>
                         <TooltipContent>
@@ -656,7 +686,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                     />
                   </div>
                 </div>
-                {(userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
+                {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
                   <div className="flex gap-[4px] items-center mb-4">
                     <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
                     <TooltipProvider>
@@ -667,7 +697,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                             alt="Info"
                             width={24}
                             height={24}
-                            className="ml-1 cursor-pointer"
+                            className="cursor-pointer"
                           />
                         </TooltipTrigger>
                         <TooltipContent>
