@@ -68,7 +68,6 @@ export default function ClosedGroupTab() {
   const handleCheckboxChange = useCallback(async (group: ClosedGroup, checked: boolean) => {
     try {
       if (!group.id) {
-        console.error("Invalid group ID")
         return
       }
 
