@@ -58,12 +58,23 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   }
 
   const handleEveryoneChange = () => {
-    onValueChange("everyone")
-    hideAlert()
+    if (value !== "everyone") {
+      hideAlert()
+      onValueChange("everyone")
+    }
   }
 
-  const handleClosedGroupChange = async () => {
-    // First, always update the selection
+  const handleClosedGroupChange = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (value === "closed-group") {
+      // Already selected, just open the editor
+      handleEditListClick()
+      return
+    }
+
+    // First, update the selection
     onValueChange("closed-group")
 
     // Then check if there are any members
@@ -118,7 +129,11 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           ? "border-black"
           : "border-grayscale-500"
           }`}
-        onClick={handleClosedGroupChange}
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          handleClosedGroupChange(e)
+        }}
       >
         <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
         <div className="text-left flex-1">
