@@ -548,20 +548,27 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const handleClose = () => {
-    showAlert({
-      title: t("adForm.cancelAdCreation"),
-      description: t("adForm.cancelAdCreationDescription"),
-      cancelText: t("adForm.continueAdCreation"),
-      confirmText: t("common.cancel"),
-      type: "warning",
-      onCancel: hideAlert,
-      onConfirm: () => {
-        const finalData = { ...formDataRef.current }
-        const currency = finalData?.buyCurrency || "USD"
-        leaveExchangeRatesChannel(currency)
-        router.push("/ads")
-      },
-    })
+    if (mode === "create") {
+      showAlert({
+        title: t("adForm.cancelAdCreation"),
+        description: t("adForm.cancelAdCreationDescription"),
+        cancelText: t("adForm.continueAdCreation"),
+        confirmText: t("common.cancel"),
+        type: "warning",
+        onCancel: hideAlert,
+        onConfirm: () => {
+          const finalData = { ...formDataRef.current }
+          const currency = finalData?.buyCurrency || "USD"
+          leaveExchangeRatesChannel(currency)
+          router.push("/ads")
+        },
+      })
+    } else {
+      const finalData = { ...formDataRef.current }
+      const currency = finalData?.buyCurrency || "USD"
+      leaveExchangeRatesChannel(currency)
+      router.push("/ads")
+    }
   }
 
   const isButtonDisabled =
