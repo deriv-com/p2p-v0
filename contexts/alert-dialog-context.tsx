@@ -71,20 +71,6 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             </Button>
           </div>
           <div className="px-8 pb-6">{config.content}</div>
-          {(config.confirmText || config.cancelText) && (
-            <div className="flex flex-col gap-2 px-8 pb-6">
-              {config.cancelText && (
-                <Button onClick={handleCancel} variant="primary" className="w-full">
-                  {config.cancelText}
-                </Button>
-              )}
-              {config.confirmText && (
-                <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-                  {config.confirmText}
-                </Button>
-              )}
-            </div>
-          )}
         </div>
       )
     }
@@ -120,20 +106,6 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <div className="overflow-y-auto">
           {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6">{config.title}</div>}
           <div className="px-6 pb-6">{config.content}</div>
-          {(config.confirmText || config.cancelText) && (
-            <div className="flex flex-col gap-2 px-6 pb-6">
-              {config.cancelText && (
-                <Button onClick={handleCancel} variant="primary" className="w-full">
-                  {config.cancelText}
-                </Button>
-              )}
-              {config.confirmText && (
-                <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-                  {config.confirmText}
-                </Button>
-              )}
-            </div>
-          )}
         </div>
       )
     }
