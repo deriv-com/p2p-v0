@@ -59,11 +59,11 @@ export default function FollowDropdown({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm" disabled={isLoading} className="gap-2">
             Following
-            <Image 
-              src="/icons/chevron-down.png" 
-              alt="" 
-              width={16} 
-              height={16}
+            <Image
+              src="/icons/chevron-down.svg"
+              alt=""
+              width={14}
+              height={22}
               className={cn("transition-transform", isOpen && "rotate-180")}
             />
           </Button>
@@ -99,11 +99,11 @@ export default function FollowDropdown({
     <>
       <Button variant="outline" size="sm" disabled={isLoading} onClick={() => setIsOpen(true)} className="gap-2">
         Following
-        <Image 
-          src="/icons/chevron-down.png" 
-          alt="" 
-          width={16} 
-          height={16}
+        <Image
+          src="/icons/chevron-down.svg"
+          alt=""
+          width={14}
+          height={22}
           className={cn("transition-transform", isOpen && "rotate-180")}
         />
       </Button>
