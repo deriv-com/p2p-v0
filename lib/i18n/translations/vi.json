@@ -566,7 +566,9 @@
     "joinedDate": "Ngày tham gia",
     "joinedDateAll": "Bất kỳ thời gian nào",
     "joinedDateWithin": "Trong vòng {days} ngày",
-    "applyFilters": "Áp dụng bộ lọc"
+    "applyFilters": "Áp dụng bộ lọc",
+    "adVisibilityUpdate": "Cập nhật khả năng hiển thị quảng cáo",
+    "adVisibilityUpdateDescription": "Bạn sẽ không thể thay đổi quảng cáo này trở lại danh sách nhóm kín trừ khi bạn trở thành thành viên cấp Kim Cương một lần nữa."
   },
   "complaint": {
     "title": "Gửi khiếu nại",

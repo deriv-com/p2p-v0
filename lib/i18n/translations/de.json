@@ -550,7 +550,9 @@
     "selectAtLeastOnePaymentMethod": "Wählen Sie mindestens eine Zahlungsmethode aus",
     "genericErrorCodeMessage": "Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
     "genericProcessingErrorMessage": "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-    "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten"
+    "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten",
+    "adVisibilityUpdate": "Anzeigensichtbarkeit aktualisiert",
+    "adVisibilityUpdateDescription": "Sie können diese Anzeige nicht auf eine Auflistung für geschlossene Gruppen zurückändern, es sei denn, Sie werden erneut ein Diamond-Tier-Mitglied."
   },
   "advertiser": {
     "goBack": "Zurück",

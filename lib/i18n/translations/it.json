@@ -621,7 +621,8 @@
     "buyer_underpaid_buyer": "Non sono riuscito a completare il pagamento completo.",
     "buyer_overpaid_buyer": "Ho pagato più dell'importo concordato.",
     "helpText": "Se il tuo problema non è elencato, contattaci tramite chat dal vivo per assistenza.",
-    "submit": "Invia"
+    "adVisibilityUpdate": "Aggiornamento della visibilità dell'annuncio",
+    "adVisibilityUpdateDescription": "Non potrai riportare questo annuncio a un elenco di gruppo chiuso a meno che non diventi di nuovo un membro di livello Diamond."
   },
   "ratingSidebar": {
     "title": "Valuta e raccomanda",

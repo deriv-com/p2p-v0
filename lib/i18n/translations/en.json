@@ -640,7 +640,9 @@
     "genericProcessingErrorMessage": "There was an error processing your request. Please try again.",
     "cancelAdCreation": "Cancel ad creation?",
     "cancelAdCreationDescription": "If you cancel, the details you've entered will be lost.",
-    "continueAdCreation": "Continue ad creation"
+    "continueAdCreation": "Continue ad creation",
+    "adVisibilityUpdate": "Ad visibility update",
+    "adVisibilityUpdateDescription": "You won't be able to change this ad back to a closed group listing unless you become a Diamond tier member again."
   },
   "advertiser": {
     "goBack": "Go Back",

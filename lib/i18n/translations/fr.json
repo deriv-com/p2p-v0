@@ -552,7 +552,9 @@
     "noPaymentMethodsFound": "Aucune méthode de paiement trouvée",
     "genericErrorCodeMessage": "Veuillez réessayer ou contacter le support.",
     "genericProcessingErrorMessage": "Une erreur s'est produite lors du traitement de votre demande. Veuillez réessayer.",
-    "unknownErrorMessage": "Une erreur inconnue s'est produite"
+    "unknownErrorMessage": "Une erreur inconnue s'est produite",
+    "adVisibilityUpdate": "Mise à jour de la visibilité de l'annonce",
+    "adVisibilityUpdateDescription": "Vous ne pourrez pas reclasser cette annonce en annonce de groupe fermé à moins de devenir à nouveau un membre Diamond."
   },
   "advertiser": {
     "goBack": "Retour",

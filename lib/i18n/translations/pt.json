@@ -568,12 +568,20 @@
     "maxAmountGreaterThanMin": "O valor máximo deve ser maior que o valor mínimo",
     "minAmountLessThanTotal": "O valor mínimo deve ser menor que o valor total",
     "maxAmountLessThanTotal": "O valor máximo deve ser menor que o valor total",
+    "noPaymentMethodsYet": "Sem método de pagamento",
+    "insufficientBalanceMessage": "Você não tem saldo suficiente para criar este anúncio",
+    "sellerPaymentDetails": "Detalhes de pagamento do vendedor",
+    "goldTierDescription": "Trader experiente com histórico forte e privilégios maiores.",
+    "failedToCopyLink": "Falha ao copiar link",
+    "invalidValuesMessage": "Por favor, verifique seus valores de entrada.",
     "selectPayment": "Selecionar pagamento",
     "selected": "Selecionados ({count})",
     "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
     "genericErrorCodeMessage": "Tente novamente ou entre em contato com o suporte.",
     "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
-    "unknownErrorMessage": "Ocorreu um erro desconhecido"
+    "unknownErrorMessage": "Ocorreu um erro desconhecido",
+    "adVisibilityUpdate": "Atualização de visibilidade do anúncio",
+    "adVisibilityUpdateDescription": "Você não poderá alterar este anúncio para uma listagem de grupo fechado a menos que se torne um membro Diamond novamente."
   },
   "kyc": {
     "title": "Verificação de identidade",

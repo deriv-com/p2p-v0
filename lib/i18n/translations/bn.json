@@ -540,7 +540,9 @@
     "floating": "ভাসমান",
     "counterparty": "প্রতিপক্ষ",
     "allCounterparties": "সমস্ত প্রতিপক্ষ",
-    "genericErrorCodeMessage": "অনুগ্রহ করে আবার চেষ্টা করুন বা সহায়তার সাথে যোগাযোগ করুন।"
+    "genericErrorCodeMessage": "অনুগ্রহ করে আবার চেষ্টা করুন বা সহায়তার সাথে যোগাযোগ করুন।",
+    "adVisibilityUpdate": "বিজ্ঞাপন দৃশ্যমানতা আপডেট",
+    "adVisibilityUpdateDescription": "আপনি আবার হীরা স্তরের সদস্য না হওয়া পর্যন্ত এই বিজ্ঞাপনটি একটি বন্ধ গোষ্ঠী তালিকা হিসাবে ফিরিয়ে আনতে পারবেন না।"
   },
   "advertiser": {
     "goBack": "ফিরে যান",
