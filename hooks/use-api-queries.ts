@@ -4,6 +4,7 @@ import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
 import * as AdsAPI from '@/services/api/api-my-ads'
+import * as ProfileAPI from '@/services/api/api-profile'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
@@ -313,7 +314,7 @@ export function useAdvertiserAds(id: string | number) {
 export function useFavouriteUsers() {
   return useQuery({
     queryKey: queryKeys.buySell.favouriteUsers(),
-    queryFn: () => BuySellAPI.getFavouriteUsers(),
+    queryFn: () => ProfileAPI.getFavouriteUsers(),
     staleTime: 1000 * 60 * 5,
   })
 }
