@@ -91,14 +91,14 @@ export default function BlockedTab() {
   }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
-    <div className="flex items-center justify-between gap-3">
+    <div className="h-[72px] flex items-center justify-between gap-3">
       <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
         {user.nickname?.charAt(0).toUpperCase()}
       </div>
       <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
         <Button
           onClick={() => onUserClick(user.user_id)}
-          className="hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200"
+          className="hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200 px-0 text-base"
           size="sm"
           variant="ghost"
         >

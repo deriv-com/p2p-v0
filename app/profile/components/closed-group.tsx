@@ -80,7 +80,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
   }, [refetch])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
-    <div className="flex items-center justify-between gap-3">
+    <div className="h-[72px] flex items-center justify-between gap-3">
       <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
         {group.nickname?.charAt(0).toUpperCase()}
       </div>

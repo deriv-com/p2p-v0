@@ -321,9 +321,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       showAlert({
         title: t("adForm.adVisibilityUpdate"),
         description: t("adForm.adVisibilityUpdateDescription"),
-        confirmText: t("common.confirm"),
+        cancelText: t("common.confirm"),
         type: "warning",
-        onConfirm: () => {
+        onCancel: () => {
           proceedWithSubmit(finalData, selectedPaymentMethodIdsForSubmit, isPrivate)
         },
       })
