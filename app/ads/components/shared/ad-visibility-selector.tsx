@@ -57,6 +57,11 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
     onEditClosedGroup?.()
   }
 
+  const handleEveryoneChange = () => {
+    onValueChange("everyone")
+    hideAlert()
+  }
+
   const handleClosedGroupChange = async () => {
     // First, always update the selection
     onValueChange("closed-group")
@@ -94,8 +99,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         onClick={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          onValueChange("everyone")
-          hideAlert()
+          handleEveryoneChange()
         }}
       >
         <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
