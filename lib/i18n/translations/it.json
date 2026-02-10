@@ -624,6 +624,7 @@
     "adVisibilityUpdate": "Aggiornamento della visibilità dell'annuncio",
     "adVisibilityUpdateDescription": "Non potrai riportare questo annuncio a un elenco di gruppo chiuso a meno che non diventi di nuovo un membro di livello Diamond."
   },
+  "ratingSidebar": {
     "title": "Valuta e raccomanda",
     "ratingLabel": "Come valuteresti questa transazione?",
     "recommendLabel": "Consiglieresti questo utente?",
