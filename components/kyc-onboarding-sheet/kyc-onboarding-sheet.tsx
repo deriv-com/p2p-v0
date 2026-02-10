@@ -5,7 +5,7 @@ import Image from "next/image"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 
 interface KycOnboardingSheetProps {
   route?: "markets" | "profile" | "wallets" | "ads"
@@ -89,13 +89,15 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   ]
 
   const hasExpiredSteps = isPoiExpired || isPoaExpired
-  const verificationSteps = hasExpiredSteps
-    ? allVerificationSteps.filter((step) => {
-      if (isPoiExpired && step.id === "poi") return true
-      if (isPoaExpired && step.id === "poa") return true
-      return false
-    })
-    : allVerificationSteps
+  const verificationSteps = useMemo(() => {
+    return hasExpiredSteps
+      ? allVerificationSteps.filter((step) => {
+        if (isPoiExpired && step.id === "poi") return true
+        if (isPoaExpired && step.id === "poa") return true
+        return false
+      })
+      : allVerificationSteps
+  }, [isPoiExpired, isPoaExpired, allVerificationSteps])
 
   const getDescription = () => {
     if (hasExpiredSteps) {
