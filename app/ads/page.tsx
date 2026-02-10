@@ -112,33 +112,30 @@ export default function AdsPage() {
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (!success || !type || !id || showStatusModal !== "true") {
+    if (success !== "create" || !type || !id || showStatusModal !== "true") {
       return
     }
 
-    if ((success === "create" || success === "update") && !isMobile) {
+    if (!isMobile) {
       const adTypeDisplay = type.toUpperCase()
       const createDescription = t("myAds.adCreatedMessage", { type: adTypeDisplay, id })
-      const updateDescription = t("myAds.adUpdatedMessage", { type: adTypeDisplay, id })
 
       showAlert({
-        title: success === "create" ? t("myAds.adCreated") : t("myAds.adUpdated"),
-        description: success === "create" ? createDescription : updateDescription,
+        title: t("myAds.adCreated"),
+        description: createDescription,
         confirmText: t("common.ok"),
         type: "success",
       })
     }
 
-    if (success === "create" || success === "update") {
-      setStatusData({
-        success,
-        type,
-        id,
-        showStatusModal: true,
-      })
+    setStatusData({
+      success,
+      type,
+      id,
+      showStatusModal: true,
+    })
 
-      refetch()
-    }
+    refetch()
   }, [showAlert, isMobile, t, refetch])
 
   const handleAdUpdated = (status?: string) => {
