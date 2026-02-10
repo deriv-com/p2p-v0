@@ -283,7 +283,7 @@
     "noBlockedUsers": "Chưa có người dùng bị chặn",
     "blockedUsersAppear": "Người dùng bạn chặn sẽ xuất hiện ở đây.",
     "loadingUsers": "Đang tải người dùng...",
-    "noPaymentMethodsYet": "Chưa có phương thức thanh toán",
+    "noPaymentMethodsYet": "Chưa có phương th���c thanh toán",
     "startAddingPaymentMethods": "Bắt đầu thêm phương thức thanh toán",
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
@@ -419,7 +419,8 @@
     "deleteAdError": "Đã xảy ra lỗi khi xóa quảng cáo. Vui lòng thử lại.",
     "deleteAdOpenOrders": "Quảng cáo có đơn hàng đang diễn ra.",
     "unableToUpdateAd": "Không thể cập nhật quảng cáo",
-    "updateAdError": "Đã xảy ra lỗi khi cập nhật quảng cáo. Vui lòng thử lại."
+    "updateAdError": "Đã xảy ra lỗi khi cập nhật quảng cáo. Vui lòng thử lại.",
+    "visibilityStatusMultipleReasons": "Quảng cáo của bạn không được liệt kê trên Thị trường vì những lý do sau:"
   },
   "orders": {
     "title": "Đơn hàng",
@@ -529,7 +530,7 @@
     "adLimitReachedTitle": "Đã đạt giới hạn quảng cáo",
     "adLimitReachedMessage": "Bạn chỉ có thể có 3 quảng cáo đang hoạt động cho cặp tiền tệ và loại đơn hàng này. Xóa một quảng cáo để tạo quảng cáo mới.",
     "insufficientBalanceTitle": "Số dư không đủ",
-    "insufficientBalanceMessage": "Bạn không có đủ số dư để tạo quảng cáo này",
+    "insufficientBalanceMessage": "Bạn không c�� đủ số dư để tạo quảng cáo này",
     "invalidValuesTitle": "Giá trị không hợp lệ",
     "invalidValuesMessage": "Vui lòng kiểm tra các giá trị đầu vào của bạn.",
     "amountExceedsBalanceTitle": "Số tiền vượt quá số dư",

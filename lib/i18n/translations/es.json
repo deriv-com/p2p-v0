@@ -463,7 +463,8 @@
     "deleteAdError": "Hubo un error al eliminar el anuncio. Por favor, inténtalo de nuevo.",
     "deleteAdOpenOrders": "El anuncio tiene órdenes en curso.",
     "unableToUpdateAd": "No se puede actualizar el anuncio",
-    "updateAdError": "Hubo un error al actualizar el anuncio. Por favor, inténtalo de nuevo."
+    "updateAdError": "Hubo un error al actualizar el anuncio. Por favor, inténtalo de nuevo.",
+    "visibilityStatusMultipleReasons": "Tu anuncio no aparece en el Mercado debido a las siguientes razones:"
   },
   "errors": {
     "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",

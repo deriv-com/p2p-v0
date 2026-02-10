@@ -421,7 +421,8 @@
     "deleteAdError": "Beim Löschen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "deleteAdOpenOrders": "Die Anzeige hat laufende Bestellungen.",
     "unableToUpdateAd": "Anzeige kann nicht aktualisiert werden",
-    "updateAdError": "Beim Aktualisieren der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "updateAdError": "Beim Aktualisieren der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "visibilityStatusMultipleReasons": "Ihre Anzeige wird auf dem Markt nicht aufgelistet aus folgenden Gründen:"
   },
   "orders": {
     "title": "Bestellungen",

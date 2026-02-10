@@ -439,7 +439,8 @@
     "deleteAdError": "Une erreur s'est produite lors de la suppression de l'annonce. Veuillez réessayer.",
     "deleteAdOpenOrders": "L'annonce a des commandes en cours.",
     "unableToUpdateAd": "Impossible de mettre à jour l'annonce",
-    "updateAdError": "Une erreur s'est produite lors de la mise à jour de l'annonce. Veuillez réessayer."
+    "updateAdError": "Une erreur s'est produite lors de la mise à jour de l'annonce. Veuillez réessayer.",
+    "visibilityStatusMultipleReasons": "Votre annonce n'est pas listée sur le Marché en raison des raisons suivantes :"
   },
   "orders": {
     "title": "Commandes",

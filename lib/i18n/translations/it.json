@@ -427,7 +427,8 @@
     "deleteAdError": "Si è verificato un errore durante l'eliminazione dell'annuncio. Riprova.",
     "deleteAdOpenOrders": "L'annuncio ha ordini in corso.",
     "unableToUpdateAd": "Impossibile aggiornare l'annuncio",
-    "updateAdError": "Si è verificato un errore durante l'aggiornamento dell'annuncio. Riprova."
+    "updateAdError": "Si è verificato un errore durante l'aggiornamento dell'annuncio. Riprova.",
+    "visibilityStatusMultipleReasons": "Il tuo annuncio non è elencato sul Mercato per i seguenti motivi:"
   },
   "orders": {
     "title": "Ordini",

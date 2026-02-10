@@ -478,7 +478,8 @@
     "deleteAdError": "Ocorreu um erro ao excluir o anúncio. Por favor, tente novamente.",
     "deleteAdOpenOrders": "O anúncio tem pedidos em andamento.",
     "unableToUpdateAd": "Não foi possível atualizar o anúncio",
-    "updateAdError": "Ocorreu um erro ao atualizar o anúncio. Por favor, tente novamente."
+    "updateAdError": "Ocorreu um erro ao atualizar o anúncio. Por favor, tente novamente.",
+    "visibilityStatusMultipleReasons": "Seu anúncio não está listado no Mercado pelos seguintes motivos:"
   },
   "orders": {
     "title": "Pedidos",
