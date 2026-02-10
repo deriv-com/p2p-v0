@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
+import AdSuccessScreen from "../ad-success-screen"
+import ShareAdPage from "../share-ad-page"
 import { AdsAPI, ProfileAPI, BuySellAPI } from "@/services/api"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -22,6 +24,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useCreateAd, useUpdateAd, useSettings } from "@/hooks/use-api-queries"
+import type { Ad } from "@/types"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -69,6 +72,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
+  const [showSuccessScreen, setShowSuccessScreen] = useState(false)
+  const [showSharePage, setShowSharePage] = useState(false)
+  const [createdAd, setCreatedAd] = useState<Ad | null>(null)
 
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
@@ -370,13 +376,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       createAdMutation.mutate(payload, {
         onSuccess: (result) => {
           setIsSubmitting(false)
-          router.push("/ads")
-          showAlert({
-            title: t("myAds.adCreated"),
-            description: t("adForm.adCreatedSuccess", { type: result.data.type }),
-            confirmText: t("common.ok"),
-            type: "success",
-          })
+          setCreatedAd(result.data)
+          setShowSuccessScreen(true)
         },
         onError: (error: any) => {
           setIsSubmitting(false)
@@ -589,7 +590,16 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <>
+      {showSharePage && createdAd ? (
+        <ShareAdPage ad={createdAd} onClose={() => {
+          setShowSharePage(false)
+          router.push("/ads")
+        }} />
+      ) : showSuccessScreen && createdAd ? (
+        <AdSuccessScreen ad={createdAd} onShare={() => setShowSharePage(true)} />
+      ) : (
+        <form onSubmit={(e) => e.preventDefault()}>
       <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
         <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
           <div className="sticky top-0 z-10 bg-white">
@@ -755,6 +765,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         </div>
       </div>
     </form>
+      )}
+    </>
   )
 }
 
