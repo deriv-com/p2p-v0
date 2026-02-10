@@ -132,14 +132,6 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
 
   const failedStep = getFailedPoiOrPoaStep()
 
-  const prefetchVerificationLinks = () => {
-    verificationSteps.forEach((step) => {
-      if (step.link) {
-        prefetchLink(step.link)
-      }
-    })
-  }
-
   useEffect(() => {
     const links: HTMLLinkElement[] = []
     
