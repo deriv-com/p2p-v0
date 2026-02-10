@@ -93,30 +93,30 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       .replace(/[^a-z0-9_]/g, "")
   }
 
-  const fetchUserPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      setUserPaymentMethods(response || [])
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }
-
-  const fetchAvailablePaymentMethods = async () => {
-    try {
-      const methods = await BuySellAPI.getPaymentMethods()
-      setAvailablePaymentMethods(methods || [])
-    } catch (error) {
-      console.error("Error fetching available payment methods:", error)
-    }
-  }
-
   useEffect(() => {
+    const fetchUserPaymentMethods = async () => {
+      try {
+        const response = await ProfileAPI.getUserPaymentMethods()
+
+        if (response.error) {
+          return
+        }
+
+        setUserPaymentMethods(response || [])
+      } catch (error) {
+        console.error("Error fetching payment methods:", error)
+      }
+    }
+
+    const fetchAvailablePaymentMethods = async () => {
+      try {
+        const methods = await BuySellAPI.getPaymentMethods()
+        setAvailablePaymentMethods(methods || [])
+      } catch (error) {
+        console.error("Error fetching available payment methods:", error)
+      }
+    }
+
     fetchUserPaymentMethods()
     fetchAvailablePaymentMethods()
   }, [])
