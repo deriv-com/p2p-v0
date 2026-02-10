@@ -115,7 +115,7 @@ export function VisibilityStatusDialog({
 
               return (
                 <li key={index} className={cn("flex flex-col", reasons.length > 1 ? "text-base text-grayscale-600" : "")}>
-                  <p className={cn(reasons.length === 1 ? "text-base text-grayscale-600" : "")}>{reasonContent.description}</p>
+                  <p className={cn(reasons.length == 1 ? "text-base text-grayscale-600" : "")}>{reasonContent.description}</p>
                   {reasons.length == 1 && actionInfo && (
                     <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
                       {actionInfo.label}
