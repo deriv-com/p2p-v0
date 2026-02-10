@@ -125,6 +125,11 @@ export function VisibilityStatusDialog({
               )
             })}
           </ol>
+          {reasons.length > 1 && (
+            <Button onClick={() => onOpenChange(false)} className="w-full mt-8" variant="default">
+              {t("common.gotIt")}
+            </Button>
+          )}
         </>
       )}
     </div>
