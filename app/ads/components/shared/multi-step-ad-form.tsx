@@ -77,7 +77,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
 
-  // Use settings loading state for countries
   const isLoadingCountries = isLoadingSettings
 
   const steps = [
@@ -93,30 +92,30 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       .replace(/[^a-z0-9_]/g, "")
   }
 
+  const fetchUserPaymentMethods = async () => {
+    try {
+      const response = await ProfileAPI.getUserPaymentMethods()
+
+      if (response.error) {
+        return
+      }
+
+      setUserPaymentMethods(response || [])
+    } catch (error) {
+      console.error("Error fetching payment methods:", error)
+    }
+  }
+
+  const fetchAvailablePaymentMethods = async () => {
+    try {
+      const methods = await BuySellAPI.getPaymentMethods()
+      setAvailablePaymentMethods(methods || [])
+    } catch (error) {
+      console.error("Error fetching available payment methods:", error)
+    }
+  }
+
   useEffect(() => {
-    const fetchUserPaymentMethods = async () => {
-      try {
-        const response = await ProfileAPI.getUserPaymentMethods()
-
-        if (response.error) {
-          return
-        }
-
-        setUserPaymentMethods(response || [])
-      } catch (error) {
-        console.error("Error fetching payment methods:", error)
-      }
-    }
-
-    const fetchAvailablePaymentMethods = async () => {
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setAvailablePaymentMethods(methods || [])
-      } catch (error) {
-        console.error("Error fetching available payment methods:", error)
-      }
-    }
-
     fetchUserPaymentMethods()
     fetchAvailablePaymentMethods()
   }, [])
@@ -144,7 +143,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
   }, [settingsData])
 
-  // Default "Paying with" currency to user's local currency for new ads (without overriding user edits).
   useEffect(() => {
     if (mode !== "create") return
     if (!localCurrency) return
@@ -315,7 +313,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
     const isPrivate = adVisibility === "closed-group"
 
-    // Check if ad is being changed to public and advertiser has no private groups restriction
     if (
       !isPrivate &&
       userData?.visibility_status &&
@@ -432,7 +429,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     let errorMessage = t("adForm.genericProcessingErrorMessage")
     let errorName = "GenericError"
 
-    // Extract error from API response
     if (error?.errors && Array.isArray(error.errors)) {
       errorMessage = formatErrorMessage(error.errors)
       if (error.errors[0]?.code) {
@@ -445,7 +441,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
     }
 
-    // Map error codes to specific error info
     const errorInfoMap: Record<string, { title: string; type: "error" | "warning"; onConfirm?: () => void }> = {
       AdvertExchangeRateDuplicate: {
         title: t("adForm.duplicateRateTitle"),
