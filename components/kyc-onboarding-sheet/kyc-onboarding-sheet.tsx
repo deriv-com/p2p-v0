@@ -5,6 +5,7 @@ import Image from "next/image"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useEffect, useMemo } from "react"
 
 interface KycOnboardingSheetProps {
   route?: "markets" | "profile" | "wallets" | "ads"
@@ -88,13 +89,15 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   ]
 
   const hasExpiredSteps = isPoiExpired || isPoaExpired
-  const verificationSteps = hasExpiredSteps
-    ? allVerificationSteps.filter((step) => {
-      if (isPoiExpired && step.id === "poi") return true
-      if (isPoaExpired && step.id === "poa") return true
-      return false
-    })
-    : allVerificationSteps
+  const verificationSteps = useMemo(() => {
+    return hasExpiredSteps
+      ? allVerificationSteps.filter((step) => {
+        if (isPoiExpired && step.id === "poi") return true
+        if (isPoaExpired && step.id === "poa") return true
+        return false
+      })
+      : allVerificationSteps
+  }, [isPoiExpired, isPoaExpired, allVerificationSteps])
 
   const getDescription = () => {
     if (hasExpiredSteps) {
@@ -128,6 +131,27 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   }
 
   const failedStep = getFailedPoiOrPoaStep()
+
+  useEffect(() => {
+    const links: HTMLLinkElement[] = []
+    
+    verificationSteps.forEach((step) => {
+      if (step.link) {
+        const link = document.createElement("link")
+        link.rel = "prefetch"
+        link.href = step.link
+        document.head.appendChild(link)
+        links.push(link)
+      }
+    })
+
+    // Cleanup: remove prefetch links on unmount or dependency change
+    return () => {
+      links.forEach((link) => {
+        document.head.removeChild(link)
+      })
+    }
+  }, [verificationSteps])
 
   const handleCompleteVerification = () => {
     if (allStepsVerifiedOrInReview) {
