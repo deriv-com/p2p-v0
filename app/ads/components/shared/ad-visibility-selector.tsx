@@ -51,6 +51,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
       content: <ClosedGroupTab />,
       confirmText: "Done",
       cancelText: undefined,
+      type: "default",
       onConfirm: hideAlert,
     })
     onEditClosedGroup?.()
@@ -77,6 +78,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         content: <ClosedGroupTab />,
         confirmText: "Done",
         cancelText: undefined,
+        type: "default",
         onConfirm: hideAlert,
       })
     }
