@@ -24,6 +24,7 @@
     "no": "No",
     "ok": "OK",
     "learnMore": "Más información",
+    "gotIt": "Entendido",
     "verifiedBadge": {
       "title": "Cuenta totalmente verificada",
       "description": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
@@ -463,7 +464,8 @@
     "deleteAdError": "Hubo un error al eliminar el anuncio. Por favor, inténtalo de nuevo.",
     "deleteAdOpenOrders": "El anuncio tiene órdenes en curso.",
     "unableToUpdateAd": "No se puede actualizar el anuncio",
-    "updateAdError": "Hubo un error al actualizar el anuncio. Por favor, inténtalo de nuevo."
+    "updateAdError": "Hubo un error al actualizar el anuncio. Por favor, inténtalo de nuevo.",
+    "visibilityStatusMultipleReasons": "Tu anuncio no aparece en el Mercado debido a las siguientes razones:"
   },
   "errors": {
     "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",

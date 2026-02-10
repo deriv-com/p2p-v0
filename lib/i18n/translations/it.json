@@ -24,6 +24,7 @@
     "no": "No",
     "ok": "OK",
     "learnMore": "Scopri di più",
+    "gotIt": "Capito",
     "verifiedBadge": {
       "title": "Account completamente verificato",
       "description": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
@@ -427,7 +428,8 @@
     "deleteAdError": "Si è verificato un errore durante l'eliminazione dell'annuncio. Riprova.",
     "deleteAdOpenOrders": "L'annuncio ha ordini in corso.",
     "unableToUpdateAd": "Impossibile aggiornare l'annuncio",
-    "updateAdError": "Si è verificato un errore durante l'aggiornamento dell'annuncio. Riprova."
+    "updateAdError": "Si è verificato un errore durante l'aggiornamento dell'annuncio. Riprova.",
+    "visibilityStatusMultipleReasons": "Il tuo annuncio non è elencato sul Mercato per i seguenti motivi:"
   },
   "orders": {
     "title": "Ordini",

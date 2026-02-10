@@ -24,6 +24,7 @@
     "no": "Không",
     "ok": "OK",
     "learnMore": "Tìm hiểu thêm",
+    "gotIt": "Rồi",
     "verifiedBadge": {
       "title": "Tài khoản đã xác minh đầy đủ",
       "description": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
@@ -419,7 +420,8 @@
     "deleteAdError": "Đã xảy ra lỗi khi xóa quảng cáo. Vui lòng thử lại.",
     "deleteAdOpenOrders": "Quảng cáo có đơn hàng đang diễn ra.",
     "unableToUpdateAd": "Không thể cập nhật quảng cáo",
-    "updateAdError": "Đã xảy ra lỗi khi cập nhật quảng cáo. Vui lòng thử lại."
+    "updateAdError": "Đã xảy ra lỗi khi cập nhật quảng cáo. Vui lòng thử lại.",
+    "visibilityStatusMultipleReasons": "Quảng cáo của bạn không được liệt kê trên Thị trường vì những lý do sau:"
   },
   "orders": {
     "title": "Đơn hàng",

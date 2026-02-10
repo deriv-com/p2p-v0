@@ -28,6 +28,7 @@
     "no": "No",
     "ok": "OK",
     "learnMore": "Learn More",
+    "gotIt": "Got it",
     "removeAll": "Remove all",
     "verifiedBadge": {
       "title": "Verified account",
@@ -445,7 +446,8 @@
     "unableToUpdateAd": "Unable to update advert",
     "updateAdError": "There was an error when updating the advert. Please try again.",
     "visibilityStatus": "Your ad isn't visible",
-    "visibilityStatusDescription": "Your ad isn't visible to others. Here's why:"
+    "visibilityStatusDescription": "Your ad isn't visible to others. Here's why:",
+    "visibilityStatusMultipleReasons": "Your ad isn't listed on Market due to the following reasons:"
   },
   "visibilityStatus": {
     "advertInactive": {

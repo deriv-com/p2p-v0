@@ -24,6 +24,7 @@
     "no": "Nein",
     "ok": "OK",
     "learnMore": "Mehr erfahren",
+    "gotIt": "Verstanden",
     "verifiedBadge": {
       "title": "Vollständig verifiziertes Konto",
       "description": "Dieser Benutzer hat alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung. Sie können mit Vertrauen handeln, da dieses Konto verifiziert ist."
@@ -421,7 +422,8 @@
     "deleteAdError": "Beim Löschen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "deleteAdOpenOrders": "Die Anzeige hat laufende Bestellungen.",
     "unableToUpdateAd": "Anzeige kann nicht aktualisiert werden",
-    "updateAdError": "Beim Aktualisieren der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "updateAdError": "Beim Aktualisieren der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "visibilityStatusMultipleReasons": "Ihre Anzeige wird auf dem Markt nicht aufgelistet aus folgenden Gründen:"
   },
   "orders": {
     "title": "Bestellungen",

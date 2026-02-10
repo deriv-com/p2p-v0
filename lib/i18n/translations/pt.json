@@ -24,6 +24,7 @@
     "no": "Não",
     "ok": "OK",
     "learnMore": "Saiba mais",
+    "gotIt": "Entendi",
     "verifiedBadge": {
       "title": "Conta totalmente verificada",
       "description": "Este usuário concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço. Você pode negociar com confiança sabendo que esta conta está verificada."
@@ -478,7 +479,8 @@
     "deleteAdError": "Ocorreu um erro ao excluir o anúncio. Por favor, tente novamente.",
     "deleteAdOpenOrders": "O anúncio tem pedidos em andamento.",
     "unableToUpdateAd": "Não foi possível atualizar o anúncio",
-    "updateAdError": "Ocorreu um erro ao atualizar o anúncio. Por favor, tente novamente."
+    "updateAdError": "Ocorreu um erro ao atualizar o anúncio. Por favor, tente novamente.",
+    "visibilityStatusMultipleReasons": "Seu anúncio não está listado no Mercado pelos seguintes motivos:"
   },
   "orders": {
     "title": "Pedidos",
@@ -590,7 +592,7 @@
     "completeProfile": "Complete seu perfil",
     "completeProfileDescription": "Complete seu perfil para começar a negociar em P2P.",
     "backToHome": "Voltar ao Início",
-    "accessP2PMessage": "Para acessar o P2P, complete seu perfil e verificação.",
+    "accessP2PMessage": "Para acessar o P2P, complete seu perfil e verificação",
     "setupProfile": "Configure seu perfil",
     "proofOfIdentity": "Prova de identidade",
     "proofOfAddress": "Prova de endereço",
