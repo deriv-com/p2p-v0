@@ -5,10 +5,20 @@ import Image from "next/image"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useEffect } from "react"
 
 interface KycOnboardingSheetProps {
   route?: "markets" | "profile" | "wallets" | "ads"
   onClose?: () => void
+}
+
+const prefetchLink = (url: string) => {
+  if (typeof window === "undefined") return
+  
+  const link = document.createElement("link")
+  link.rel = "prefetch"
+  link.href = url
+  document.head.appendChild(link)
 }
 
 function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
@@ -128,6 +138,18 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   }
 
   const failedStep = getFailedPoiOrPoaStep()
+
+  const prefetchVerificationLinks = () => {
+    verificationSteps.forEach((step) => {
+      if (step.link) {
+        prefetchLink(step.link)
+      }
+    })
+  }
+
+  useEffect(() => {
+    prefetchVerificationLinks()
+  }, [verificationSteps])
 
   const handleCompleteVerification = () => {
     if (allStepsVerifiedOrInReview) {
