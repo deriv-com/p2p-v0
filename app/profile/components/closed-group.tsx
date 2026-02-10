@@ -14,7 +14,11 @@ interface ClosedGroup {
   is_group_member: boolean
 }
 
-export default function ClosedGroupTab() {
+interface ClosedGroupTabProps {
+  isInAlert?: boolean
+}
+
+export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
   const [searchQuery, setSearchQuery] = useState("")
   const [closedGroups, setClosedGroups] = useState<ClosedGroup[]>([])
@@ -111,7 +115,7 @@ export default function ClosedGroupTab() {
     <div className="space-y-4">
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full">
+          <div className={`relative ${isInAlert ? "w-full" : "w-full md:w-[360px]"}`}>
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"

@@ -48,7 +48,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   const handleEditListClick = () => {
     showAlert({
       title: "Closed group",
-      content: <ClosedGroupTab />,
+      content: <ClosedGroupTab isInAlert={true} />,
       confirmText: "Done",
       cancelText: undefined,
       type: "default",
@@ -75,7 +75,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
       // No members in the closed group, show alert immediately
       showAlert({
         title: "Closed group",
-        content: <ClosedGroupTab />,
+        content: <ClosedGroupTab isInAlert={true} />,
         confirmText: "Done",
         cancelText: undefined,
         type: "default",
