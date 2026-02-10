@@ -9,7 +9,7 @@ import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
-import { useAlertDialog } from "@/contexts/alert-dialog-context"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 interface ClosedGroup {
   user_id: number
   nickname: string

@@ -95,7 +95,17 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   }
 
   return (
-    <RadioGroup value={value}>
+    <RadioGroup
+      value={value}
+      onValueChange={(newValue) => {
+        // Only handle direct RadioGroupItem interactions
+        // Skip if coming from our custom handlers (which call onValueChange directly)
+        if (newValue === "everyone") {
+          onValueChange(newValue)
+        }
+        // For closed-group, the custom handler already manages this
+      }}
+    >
       <Label
         htmlFor="everyone"
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
