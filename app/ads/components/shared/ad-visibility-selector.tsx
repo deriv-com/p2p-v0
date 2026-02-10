@@ -51,7 +51,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
       content: <ClosedGroupTab isInAlert={true} />,
       confirmText: "Done",
       cancelText: undefined,
-      type: "default",
+      type: "warning",
       onConfirm: hideAlert,
     })
     onEditClosedGroup?.()
@@ -67,41 +67,40 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   const handleClosedGroupChange = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    
+
     if (value === "closed-group") {
-      // Already selected, just open the editor
       handleEditListClick()
       return
     }
 
-    // First, update the selection
     onValueChange("closed-group")
 
-    // Then check if there are any members
     let members = closedGroupMembers
     if (members.length === 0) {
-      // First time checking, fetch the members
       members = await fetchClosedGroupMembers()
     }
 
-    // Check if there are any active members
     const hasMembers = members.some((member) => member.is_group_member)
 
     if (!hasMembers) {
-      // No members in the closed group, show alert immediately
       showAlert({
         title: "Closed group",
         content: <ClosedGroupTab isInAlert={true} />,
         confirmText: "Done",
         cancelText: undefined,
-        type: "default",
+        type: "warning",
         onConfirm: hideAlert,
       })
     }
   }
 
   return (
-    <RadioGroup value={value} onValueChange={onValueChange}>
+    <RadioGroup value={value} onValueChange={(newValue) => {
+      if (newValue === "closed-group") {
+        return
+      }
+      onValueChange(newValue)
+    }}>
       <Label
         htmlFor="everyone"
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
