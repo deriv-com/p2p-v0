@@ -441,3 +441,41 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
     return []
   }
 }
+
+/**
+ * Get favourite users (followed advertisers)
+ */
+export async function getFavouriteUsers(): Promise<Advertisement["user"][]> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.userFavourites}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      console.error("Error Response:", response.status, response.statusText)
+      throw new Error(`Error fetching favourite users: ${response.statusText}`)
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      data = { data: [] }
+    }
+
+    if (data && data.data && Array.isArray(data.data)) {
+      return data.data
+    } else if (Array.isArray(data)) {
+      return data
+    } else return []
+  } catch (error) {
+    console.error("Error fetching favourite users:", error)
+    return []
+  }
+}

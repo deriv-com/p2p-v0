@@ -51,6 +51,7 @@ export const queryKeys = {
     paymentMethods: () => [...BUY_SELL_KEYS, 'payment-methods'] as const,
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
     advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
+    favouriteUsers: () => [...BUY_SELL_KEYS, 'favourite-users'] as const,
   },
 
   // Orders queries
@@ -305,6 +306,14 @@ export function useAdvertiserAds(id: string | number) {
   return useQuery({
     queryKey: queryKeys.buySell.advertiserAds(id),
     queryFn: () => BuySellAPI.getAdvertiserAds(id),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
+export function useFavouriteUsers() {
+  return useQuery({
+    queryKey: queryKeys.buySell.favouriteUsers(),
+    queryFn: () => BuySellAPI.getFavouriteUsers(),
     staleTime: 1000 * 60 * 5,
   })
 }
