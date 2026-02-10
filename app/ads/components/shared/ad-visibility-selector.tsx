@@ -7,15 +7,6 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import ClosedGroupTab from "@/app/profile/components/closed-group"
-import { useState, useEffect } from "react"
-import { getFavouriteUsers } from "@/services/api/api-profile"
-
-interface ClosedGroupMember {
-  user_id: number
-  nickname: string
-  is_group_member: boolean
-}
-
 interface AdVisibilitySelectorProps {
   value: string
   onValueChange: (value: string) => void
@@ -25,25 +16,6 @@ interface AdVisibilitySelectorProps {
 export default function AdVisibilitySelector({ value, onValueChange, onEditClosedGroup }: AdVisibilitySelectorProps) {
   const { t } = useTranslations()
   const { showAlert, hideAlert } = useAlertDialog()
-  const [closedGroupMembers, setClosedGroupMembers] = useState<ClosedGroupMember[]>([])
-  const [isCheckingMembers, setIsCheckingMembers] = useState(false)
-
-  const hasClosedGroupMembers = closedGroupMembers.some((member) => member.is_group_member)
-
-  const fetchClosedGroupMembers = async () => {
-    try {
-      setIsCheckingMembers(true)
-      const data = await getFavouriteUsers()
-      setClosedGroupMembers(data)
-      return data
-    } catch (err) {
-      console.error("Failed to fetch closed group members:", err)
-      setClosedGroupMembers([])
-      return []
-    } finally {
-      setIsCheckingMembers(false)
-    }
-  }
 
   const handleEditListClick = () => {
     showAlert({
@@ -57,65 +29,16 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
     onEditClosedGroup?.()
   }
 
-  const handleEveryoneChange = () => {
-    if (value !== "everyone") {
-      hideAlert()
-      onValueChange("everyone")
-    }
-  }
-
-  const handleClosedGroupChange = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (value === "closed-group") {
-      handleEditListClick()
-      return
-    }
-
-    onValueChange("closed-group")
-
-    let members = closedGroupMembers
-    if (members.length === 0) {
-      members = await fetchClosedGroupMembers()
-    }
-
-    const hasMembers = members.some((member) => member.is_group_member)
-
-    if (!hasMembers) {
-      showAlert({
-        title: "Closed group",
-        content: <ClosedGroupTab isInAlert={true} />,
-        confirmText: "Done",
-        cancelText: undefined,
-        type: "warning",
-        onConfirm: hideAlert,
-      })
-    }
-  }
-
   return (
     <RadioGroup
       value={value}
-      onValueChange={(newValue) => {
-        // Only handle direct RadioGroupItem interactions
-        // Skip if coming from our custom handlers (which call onValueChange directly)
-        if (newValue === "everyone") {
-          onValueChange(newValue)
-        }
-        // For closed-group, the custom handler already manages this
-      }}
+      onValueChange={onValueChange}
     >
       <Label
         htmlFor="everyone"
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
           ? "border-black"
           : "border-grayscale-500"}`}
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          handleEveryoneChange()
-        }}
       >
         <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
         <div className="text-left flex-1">
@@ -133,11 +56,6 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           ? "border-black"
           : "border-grayscale-500"
           }`}
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          handleClosedGroupChange(e)
-        }}
       >
         <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
         <div className="text-left flex-1">
