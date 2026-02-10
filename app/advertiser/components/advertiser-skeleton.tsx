@@ -9,17 +9,14 @@ export function AdvertiserSkeleton() {
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
-              {/* Back button skeleton */}
               <Skeleton className="bg-grayscale-500 h-10 w-10 rounded" />
               
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
-                  {/* Avatar skeleton */}
                   <div className="relative mr-[16px]">
                     <Skeleton className="h-[56px] w-[56px] rounded-full" />
                   </div>
                   
-                  {/* User info skeleton */}
                   <div className="flex-1">
                     <div className="flex gap-2 items-center mb-2">
                       <Skeleton className="bg-grayscale-500 h-6 w-32" />
@@ -39,7 +36,6 @@ export function AdvertiserSkeleton() {
                     </div>
                   </div>
                   
-                  {/* Action buttons skeleton */}
                   <div className="flex items-center gap-2 md:mt-0">
                     <Skeleton className="bg-grayscale-500 h-8 w-24 rounded" />
                     <Skeleton className="bg-grayscale-500 h-8 w-20 rounded" />
@@ -48,7 +44,6 @@ export function AdvertiserSkeleton() {
               </div>
             </div>
 
-            {/* Stats section skeleton */}
             <div className="mt-6 space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map((i) => (
@@ -60,7 +55,6 @@ export function AdvertiserSkeleton() {
               </div>
             </div>
 
-            {/* Online ads section skeleton */}
             <div className="mt-6">
               <Skeleton className="bg-grayscale-500 h-6 w-32 mb-4" />
               
