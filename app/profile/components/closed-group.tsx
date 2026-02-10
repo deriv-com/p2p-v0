@@ -9,6 +9,7 @@ import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
+import { useAlertDialog } from "@/contexts/alert-dialog-context"
 interface ClosedGroup {
   user_id: number
   nickname: string
@@ -21,6 +22,7 @@ interface ClosedGroupTabProps {
 
 export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
+  const { hideAlert } = useAlertDialog()
   const [searchQuery, setSearchQuery] = useState("")
   const [closedGroups, setClosedGroups] = useState<ClosedGroup[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -172,8 +174,27 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           <EmptyState
             title={searchQuery ? "No matching name" : "No followed users yet"}
             description={
-              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
+              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
             }
+            redirectToAds={false}
+          />
+        )}
+      </div>
+
+      {isInAlert && (
+        <div className="mt-6 pt-4 border-t border-gray-100">
+          <Button
+            onClick={hideAlert}
+            variant="primary"
+            className="w-full"
+          >
+            Done
+          </Button>
+        </div>
+      )}
+    </div>
+  )
+}
             redirectToAds={false}
           />
         )}

@@ -70,19 +70,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
             </Button>
           </div>
-          <div className="px-8">{config.content}</div>
-          {(config.cancelText || config.confirmText || config.type) && (<div className="px-8 pb-6 flex flex-col gap-2 mt-6">
-            {config.cancelText && (
-              <Button onClick={handleCancel} variant="primary" className="w-full">
-                {config.cancelText}
-              </Button>
-            )}
-            {(config.confirmText || config.type) && (
-              <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-                {config.confirmText || "Continue"}
-              </Button>
-            )}
-          </div>)}
+          <div className="px-8 pb-6">{config.content}</div>
         </div>
       )
     }
@@ -117,19 +105,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       return (
         <div className="overflow-y-auto">
           {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6">{config.title}</div>}
-          <div className="px-6">{config.content}</div>
-          {(config.cancelText || config.confirmText || config.type) && (<div className="px-6 pb-6 flex flex-col gap-2 mt-6">
-            {config.cancelText && (
-              <Button onClick={handleCancel} variant="primary" className="w-full">
-                {config.cancelText}
-              </Button>
-            )}
-            {(config.confirmText || config.type) && (
-              <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-                {config.confirmText || "Continue"}
-              </Button>
-            )}
-          </div>)}
+          <div className="px-6 pb-6">{config.content}</div>
         </div>
       )
     }
