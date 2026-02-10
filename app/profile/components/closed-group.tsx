@@ -195,10 +195,3 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     </div>
   )
 }
-            redirectToAds={false}
-          />
-        )}
-      </div>
-    </div>
-  )
-}
