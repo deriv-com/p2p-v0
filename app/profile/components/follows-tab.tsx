@@ -3,15 +3,16 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useMemo, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { getFavouriteUsers, getFollowers } from "@/services/api/api-profile"
+import { getFollowers } from "@/services/api/api-profile"
 import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 import FollowUserList from "./follow-user-list"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useFavouriteUsers } from "@/hooks/use-api-queries"
 
 interface FollowUser {
   nickname: string
@@ -22,30 +23,16 @@ export default function FollowsTab() {
   const { t } = useTranslations()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [following, setFollowing] = useState<FollowUser[]>([])
   const [followers, setFollowers] = useState<FollowUser[]>([])
-  const [isLoadingFollowing, setIsLoadingFollowing] = useState(true)
   const [isLoadingFollowers, setIsLoadingFollowers] = useState(true)
   const [activeTab, setActiveTab] = useState("follows")
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
+  const { data: following = [], isLoading: isLoadingFollowing, refetch: refetchFollowing } = useFavouriteUsers()
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}`)
   }
-
-  const fetchFollowing = useCallback(async () => {
-    try {
-      setIsLoadingFollowing(true)
-      const data = await getFavouriteUsers()
-      setFollowing(data)
-    } catch (err) {
-      console.error("Failed to fetch favourite users:", err)
-      setFollowing([])
-    } finally {
-      setIsLoadingFollowing(false)
-    }
-  }, [])
 
   const fetchFollowers = useCallback(async () => {
     try {
@@ -61,9 +48,8 @@ export default function FollowsTab() {
   }, [])
 
   useEffect(() => {
-    fetchFollowing()
     fetchFollowers()
-  }, [fetchFollowing, fetchFollowers])
+  }, [fetchFollowers])
 
   const filteredUsers = useMemo(() => {
     const users = activeTab === "follows" ? following : followers
@@ -104,7 +90,7 @@ export default function FollowsTab() {
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
                 duration: 2500,
               })
-              await fetchFollowing()
+              await refetchFollowing()
             }
           } catch (error) {
             console.error("Error unfollowing user:", error)
@@ -125,7 +111,7 @@ export default function FollowsTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            fetchFollowing()
+            refetchFollowing()
           }
         })
         .catch((error) => {

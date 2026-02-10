@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
@@ -54,11 +54,36 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
+  const [groupMembers, setGroupMembers] = useState<any[]>([])
+  const [loadingGroupMembers, setLoadingGroupMembers] = useState(false)
+  
+  const isDiamond = userData.trade_band === "diamond"
+  const hasGroupMembers = groupMembers.length > 0
+  const showClosedGroupTab = isDiamond || hasGroupMembers
+
+  useEffect(() => {
+    const fetchGroupMembers = async () => {
+      try {
+        setLoadingGroupMembers(true)
+        const { getClosedGroup } = await import("@/services/api/api-profile")
+        const members = await getClosedGroup()
+        setGroupMembers(Array.isArray(members) ? members : [])
+      } catch (error) {
+        console.error("Failed to fetch group members:", error)
+        setGroupMembers([])
+      } finally {
+        setLoadingGroupMembers(false)
+      }
+    }
+    
+    fetchGroupMembers()
+  }, [])
+
   const tabs = [
     { id: "stats", label: t("profile.stats") },
     { id: "payment", label: t("profile.paymentMethods") },
     { id: "follows", label: t("profile.follows") },
-    ...(userData.trade_band === "diamond"
+    ...(showClosedGroupTab
       ? [{ id: "closed-group", label: t("profile.closedGroup") }]
       : []),
     { id: "blocked", label: t("profile.blocked") },
@@ -257,7 +282,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
-            {userData.trade_band === "diamond" && (
+            {showClosedGroupTab && (
               <>
                 <Divider className="ml-[60px]" />
                 <div
@@ -277,7 +302,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   />
                 </div>
               </>)}
-            {userData.trade_band === "diamond" && showClosedGroupSidebar && (
+            {showClosedGroupTab && showClosedGroupSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
@@ -291,7 +316,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
                   <h2 className="text-2xl font-bold mb-4">{t("profile.closedGroup")}</h2>
-                  <ClosedGroupTab />
+                  <ClosedGroupTab isDiamondDowngraded={!isDiamond && hasGroupMembers} />
                 </div>
               </div>
             )}
@@ -426,10 +451,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
 
-            {userData.trade_band === "diamond" && (
+            {showClosedGroupTab && (
               <TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
                 <div className="relative">
-                  <ClosedGroupTab />
+                  <ClosedGroupTab isDiamondDowngraded={!isDiamond && hasGroupMembers} />
                 </div>
               </TabsContent>
             )}

@@ -1,15 +1,17 @@
 "use client"
 
 import type React from "react"
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useMemo } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
-import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
+import { removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useFavouriteUsers } from "@/hooks/use-api-queries"
 interface ClosedGroup {
   user_id: number
   nickname: string
@@ -18,32 +20,15 @@ interface ClosedGroup {
 
 interface ClosedGroupTabProps {
   isInAlert?: boolean
+  isDiamondDowngraded?: boolean
 }
 
-export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
+export default function ClosedGroupTab({ isInAlert = false, isDiamondDowngraded = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
   const { hideAlert } = useAlertDialog()
+  const { data: closedGroups = [], isLoading, refetch } = useFavouriteUsers()
   const [searchQuery, setSearchQuery] = useState("")
-  const [closedGroups, setClosedGroups] = useState<ClosedGroup[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [isRemoving, setIsRemoving] = useState(false)
-
-  const fetchClosedGroups = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await getFavouriteUsers()
-      setClosedGroups(data)
-    } catch (err) {
-      console.error("Failed to fetch closed groups:", err)
-      setClosedGroups([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchClosedGroups()
-  }, [fetchClosedGroups])
 
   const filteredClosedGroups = useMemo(() => {
     if (!searchQuery.trim()) return closedGroups
@@ -65,14 +50,14 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       setIsRemoving(true)
       const result = await removeAllFromClosedGroup()
       if (result.success) {
-        await fetchClosedGroups()
+        await refetch()
       }
     } catch (err) {
       console.error("Failed to remove all from closed group:", err)
     } finally {
       setIsRemoving(false)
     }
-  }, [fetchClosedGroups])
+  }, [refetch])
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
@@ -88,12 +73,12 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       }
 
       if (result.success) {
-        await fetchClosedGroups()
+        await refetch()
       }
     } catch (err) {
       console.error("Failed to update closed group membership:", err)
     }
-  }, [fetchClosedGroups])
+  }, [refetch])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="flex items-center justify-between py-4">
@@ -116,6 +101,25 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
 
   return (
     <div className="space-y-4">
+      {isDiamondDowngraded && (
+        <Alert variant="warning" className="bg-orange-50 border border-orange-200 rounded-lg">
+          <Image
+            src="/icons/info-icon.svg"
+            alt="Info"
+            width={24}
+            height={24}
+            className="text-orange-500"
+          />
+          <AlertDescription className="text-gray-900 ml-2">
+            <div className="font-semibold mb-2">
+              You can't manage or edit this closed group because your Diamond-tier access has ended. Regain Diamond tier to restore access.
+            </div>
+            <a href="#" className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1">
+              Learn more <Image src="/icons/chevron-right-gray.png" alt="Chevron" width={16} height={16} />
+            </a>
+          </AlertDescription>
+        </Alert>
+      )}
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
           <div className={cn("relative", isInAlert ? "w-full" : "w-full md:w-[360px]")}>

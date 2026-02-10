@@ -4,6 +4,7 @@ import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
 import * as AdsAPI from '@/services/api/api-my-ads'
+import * as ProfileAPI from '@/services/api/api-profile'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
@@ -51,6 +52,7 @@ export const queryKeys = {
     paymentMethods: () => [...BUY_SELL_KEYS, 'payment-methods'] as const,
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
     advertiserAds: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser-ads', id] as const,
+    favouriteUsers: () => [...BUY_SELL_KEYS, 'favourite-users'] as const,
   },
 
   // Orders queries
@@ -305,6 +307,14 @@ export function useAdvertiserAds(id: string | number) {
   return useQuery({
     queryKey: queryKeys.buySell.advertiserAds(id),
     queryFn: () => BuySellAPI.getAdvertiserAds(id),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
+export function useFavouriteUsers() {
+  return useQuery({
+    queryKey: queryKeys.buySell.favouriteUsers(),
+    queryFn: () => ProfileAPI.getFavouriteUsers(),
     staleTime: 1000 * 60 * 5,
   })
 }
