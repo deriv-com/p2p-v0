@@ -91,30 +91,28 @@ export default function BlockedTab() {
   }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
-    <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-1">
-        <div className="relative">
-          <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
-            {user.nickname?.charAt(0).toUpperCase()}
-          </div>
-        </div>
+    <div className="flex items-center justify-between gap-3">
+      <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+        {user.nickname?.charAt(0).toUpperCase()}
+      </div>
+      <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
         <Button
           onClick={() => onUserClick(user.user_id)}
-          className="hover:underline hover:bg-transparent cursor-pointer font-normal"
+          className="hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200"
           size="sm"
           variant="ghost"
         >
           {user.nickname}
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => handleUnblock(user)}
+          className="rounded-full px-4 py-1 text-sm"
+        >
+          {t("profile.unblock")}
+        </Button>
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => handleUnblock(user)}
-        className="rounded-full px-4 py-1 text-sm"
-      >
-        {t("profile.unblock")}
-      </Button>
     </div>
   )
 
@@ -151,7 +149,7 @@ export default function BlockedTab() {
         </div>
       )}
 
-      <div className="space-y-0 divide-y divide-gray-100">
+      <div className="space-y-0">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
