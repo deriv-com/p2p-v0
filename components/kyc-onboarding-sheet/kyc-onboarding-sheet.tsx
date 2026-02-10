@@ -12,15 +12,6 @@ interface KycOnboardingSheetProps {
   onClose?: () => void
 }
 
-const prefetchLink = (url: string) => {
-  if (typeof window === "undefined") return
-  
-  const link = document.createElement("link")
-  link.rel = "prefetch"
-  link.href = url
-  document.head.appendChild(link)
-}
-
 function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const { t } = useTranslations()
   const { isWalletAccount } = useUserDataStore()
@@ -148,7 +139,24 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   }
 
   useEffect(() => {
-    prefetchVerificationLinks()
+    const links: HTMLLinkElement[] = []
+    
+    verificationSteps.forEach((step) => {
+      if (step.link) {
+        const link = document.createElement("link")
+        link.rel = "prefetch"
+        link.href = step.link
+        document.head.appendChild(link)
+        links.push(link)
+      }
+    })
+
+    // Cleanup: remove prefetch links on unmount or dependency change
+    return () => {
+      links.forEach((link) => {
+        document.head.removeChild(link)
+      })
+    }
   }, [verificationSteps])
 
   const handleCompleteVerification = () => {
