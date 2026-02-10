@@ -24,6 +24,7 @@ import { TradeBandBadge } from "@/components/trade-band-badge"
 import { ClosedGroupBadge } from "@/components/closed-group-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
+import { AdvertiserSkeleton } from "@/app/advertiser/components/advertiser-skeleton"
 
 interface AdvertiserProfile {
   id: string | number
@@ -335,12 +336,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   if (isLoading) {
-    return (
-      <div className="text-center py-8">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">{t("advertiser.loadingAdvertiser")}</p>
-      </div>
-    )
+    return <AdvertiserSkeleton />
   }
 
   if (error && !profile) {
