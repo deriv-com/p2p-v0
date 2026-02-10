@@ -316,7 +316,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
                   <h2 className="text-2xl font-bold mb-4">{t("profile.closedGroup")}</h2>
-                  <ClosedGroupTab isDiamondDowngraded={!isDiamond && hasGroupMembers} />
+                  <ClosedGroupTab />
                 </div>
               </div>
             )}
@@ -454,7 +454,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             {showClosedGroupTab && (
               <TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
                 <div className="relative">
-                  <ClosedGroupTab isDiamondDowngraded={!isDiamond && hasGroupMembers} />
+                  <ClosedGroupTab />
                 </div>
               </TabsContent>
             )}
