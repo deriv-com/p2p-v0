@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useMemo } from "react"
+import { useCallback, useState, useMemo, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFollowers } from "@/services/api/api-profile"
@@ -46,6 +46,10 @@ export default function FollowsTab() {
       setIsLoadingFollowers(false)
     }
   }, [])
+
+  useEffect(() => {
+    fetchFollowers()
+  }, [fetchFollowers])
 
   const filteredUsers = useMemo(() => {
     const users = activeTab === "follows" ? following : followers
