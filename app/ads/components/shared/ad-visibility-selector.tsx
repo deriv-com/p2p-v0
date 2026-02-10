@@ -95,12 +95,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   }
 
   return (
-    <RadioGroup value={value} onValueChange={(newValue) => {
-      if (newValue === "closed-group") {
-        return
-      }
-      onValueChange(newValue)
-    }}>
+    <RadioGroup value={value}>
       <Label
         htmlFor="everyone"
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
