@@ -108,14 +108,14 @@ export function VisibilityStatusDialog({
           {reasons.length > 1 && (
             <p className="text-base text-grayscale-600 mt-2">{t("myAds.visibilityStatusMultipleReasons")}</p>
           )}
-          <ol className={cn("space-y-3", reasons.length > 1 ? "list-decimal list-inside pl-8" : "")}>
+          <ol className={cn("space-y-3", reasons.length > 1 ? "list-decimal pl-5" : "")}>
             {reasons.map((reason, index) => {
               const reasonContent = getReasonContent(reason, t)
               const actionInfo = getReasonAction(reason, t)
 
               return (
-                <li key={index} className={cn(reasons.length > 1 ? "text-base text-grayscale-600" : "flex flex-col")}>
-                  <p className={cn(reasons.length == 1 ? "text-base text-grayscale-600" : "")}>{reasonContent.description}</p>
+                <li key={index} className={cn("text-base text-grayscale-600", reasons.length > 1 ? "" : "flex flex-col")}>
+                  <span>{reasonContent.description}</span>
                   {reasons.length == 1 && actionInfo && (
                     <Button onClick={() => handleAction(actionInfo.action)} className="w-full mt-8" variant="default">
                       {actionInfo.label}
