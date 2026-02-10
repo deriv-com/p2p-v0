@@ -54,30 +54,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
-  const [groupMembers, setGroupMembers] = useState<any[]>([])
-  const [loadingGroupMembers, setLoadingGroupMembers] = useState(false)
-  
   const isDiamond = userData.trade_band === "diamond"
-  const hasGroupMembers = groupMembers.length > 0
-  const showClosedGroupTab = isDiamond || hasGroupMembers
-
-  useEffect(() => {
-    const fetchGroupMembers = async () => {
-      try {
-        setLoadingGroupMembers(true)
-        const { getClosedGroup } = await import("@/services/api/api-profile")
-        const members = await getClosedGroup()
-        setGroupMembers(Array.isArray(members) ? members : [])
-      } catch (error) {
-        console.error("Failed to fetch group members:", error)
-        setGroupMembers([])
-      } finally {
-        setLoadingGroupMembers(false)
-      }
-    }
-    
-    fetchGroupMembers()
-  }, [])
+  const showClosedGroupTab = isDiamond
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
