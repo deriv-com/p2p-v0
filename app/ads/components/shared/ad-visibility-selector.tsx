@@ -48,16 +48,33 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
   const handleEditListClick = () => {
     showAlert({
       title: "Closed group",
-      content: <ClosedGroupTab />,
+      content: <ClosedGroupTab isInAlert={true} />,
       confirmText: "Done",
       cancelText: undefined,
+      type: "default",
       onConfirm: hideAlert,
     })
     onEditClosedGroup?.()
   }
 
-  const handleClosedGroupChange = async () => {
-    // First, always update the selection
+  const handleEveryoneChange = () => {
+    if (value !== "everyone") {
+      hideAlert()
+      onValueChange("everyone")
+    }
+  }
+
+  const handleClosedGroupChange = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (value === "closed-group") {
+      // Already selected, just open the editor
+      handleEditListClick()
+      return
+    }
+
+    // First, update the selection
     onValueChange("closed-group")
 
     // Then check if there are any members
@@ -74,9 +91,10 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
       // No members in the closed group, show alert immediately
       showAlert({
         title: "Closed group",
-        content: <ClosedGroupTab />,
+        content: <ClosedGroupTab isInAlert={true} />,
         confirmText: "Done",
         cancelText: undefined,
+        type: "default",
         onConfirm: hideAlert,
       })
     }
@@ -92,8 +110,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         onClick={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          onValueChange("everyone")
-          hideAlert()
+          handleEveryoneChange()
         }}
       >
         <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
@@ -112,7 +129,11 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           ? "border-black"
           : "border-grayscale-500"
           }`}
-        onClick={handleClosedGroupChange}
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          handleClosedGroupChange(e)
+        }}
       >
         <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
         <div className="text-left flex-1">

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { cn } from "@/lib/utils"
 import { getFavouriteUsers, removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
 interface ClosedGroup {
   user_id: number
@@ -14,7 +15,11 @@ interface ClosedGroup {
   is_group_member: boolean
 }
 
-export default function ClosedGroupTab() {
+interface ClosedGroupTabProps {
+  isInAlert?: boolean
+}
+
+export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
   const [searchQuery, setSearchQuery] = useState("")
   const [closedGroups, setClosedGroups] = useState<ClosedGroup[]>([])
@@ -111,7 +116,7 @@ export default function ClosedGroupTab() {
     <div className="space-y-4">
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-[360px]">
+          <div className={cn("relative", isInAlert ? "w-full" : "w-full md:w-[360px]")}>
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
