@@ -80,12 +80,12 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
   }, [refetch])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
-    <div className="flex items-center justify-between py-4">
-      <div className="flex flex-1 items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
-          {group.nickname?.charAt(0).toUpperCase()}
-        </div>
-        <div className="text-slate-1200 flex-1">{group.nickname}</div>
+    <div className="flex items-center justify-between gap-3">
+      <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+        {group.nickname?.charAt(0).toUpperCase()}
+      </div>
+      <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+        <div className="text-slate-1200">{group.nickname}</div>
         <Button
           onClick={() => handleToggleMembership(group)}
           variant="outline"
@@ -146,7 +146,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         )}
       </div>)}
 
-      <div className="space-y-0 divide-y divide-gray-100">
+      <div className="space-y-0">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
