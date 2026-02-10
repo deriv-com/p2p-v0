@@ -111,7 +111,7 @@ export default function ClosedGroupTab() {
     <div className="space-y-4">
       {(filteredClosedGroups.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-[360px]">
+          <div className="relative w-full">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
