@@ -56,6 +56,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
 
   const isDiamond = userData.trade_band === "diamond"
   const showClosedGroupTab = isDiamond
+  
+  useEffect(() => {
+    console.log("[v0] StatsTabs - userData.trade_band:", userData.trade_band, "isDiamond:", isDiamond, "showClosedGroupTab:", showClosedGroupTab)
+  }, [userData.trade_band, isDiamond, showClosedGroupTab])
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
@@ -66,6 +70,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       : []),
     { id: "blocked", label: t("profile.blocked") },
   ]
+  
+  useEffect(() => {
+    console.log("[v0] StatsTabs - tabs updated:", tabs.map(t => t.id))
+  }, [tabs])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
@@ -430,7 +438,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </TabsContent>
 
             {showClosedGroupTab && (
-              <TabsContent value="closed-group" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
+              <TabsContent value="closed-group" className="mt-4 h-full overflow-y-auto">
                 <div className="relative">
                   <ClosedGroupTab />
                 </div>
