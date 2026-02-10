@@ -106,7 +106,7 @@ export function VisibilityStatusDialog({
       ) : (
         <>
           {reasons.length > 1 && (
-            <p className="text-base text-grayscale-600 font-semibold mt-2">{t("myAds.visibilityStatusMultipleReasons")}</p>
+            <p className="text-base text-grayscale-600 mt-2">{t("myAds.visibilityStatusMultipleReasons")}</p>
           )}
           <ol className={cn("space-y-3", reasons.length > 1 ? "list-decimal list-inside" : "")}>
             {reasons.map((reason, index) => {
