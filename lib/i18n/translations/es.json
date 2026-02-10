@@ -591,7 +591,9 @@
     "noPaymentMethodsFound": "No se encontraron métodos de pago",
     "genericErrorCodeMessage": "Inténtelo de nuevo o contacte con soporte.",
     "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo.",
-    "unknownErrorMessage": "Ocurrió un error desconocido"
+    "unknownErrorMessage": "Ocurrió un error desconocido",
+    "adVisibilityUpdate": "Actualizar visibilidad del anuncio",
+    "adVisibilityUpdateDescription": "No podrás cambiar este anuncio a una lista de grupo cerrado a menos que vuelvas a convertirte en miembro de nivel Diamond."
   },
   "kyc": {
     "title": "Verificación de identidad",

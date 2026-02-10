@@ -283,7 +283,7 @@
     "noBlockedUsers": "Chưa có người dùng bị chặn",
     "blockedUsersAppear": "Người dùng bạn chặn sẽ xuất hiện ở đây.",
     "loadingUsers": "Đang tải người dùng...",
-    "noPaymentMethodsYet": "Chưa có phương thức thanh toán",
+    "noPaymentMethodsYet": "Chưa có phương th���c thanh toán",
     "startAddingPaymentMethods": "Bắt đầu thêm phương thức thanh toán",
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
@@ -529,7 +529,7 @@
     "adLimitReachedTitle": "Đã đạt giới hạn quảng cáo",
     "adLimitReachedMessage": "Bạn chỉ có thể có 3 quảng cáo đang hoạt động cho cặp tiền tệ và loại đơn hàng này. Xóa một quảng cáo để tạo quảng cáo mới.",
     "insufficientBalanceTitle": "Số dư không đủ",
-    "insufficientBalanceMessage": "Bạn không có đủ số dư để tạo quảng cáo này",
+    "insufficientBalanceMessage": "Bạn không c�� đủ số dư để tạo quảng cáo này",
     "invalidValuesTitle": "Giá trị không hợp lệ",
     "invalidValuesMessage": "Vui lòng kiểm tra các giá trị đầu vào của bạn.",
     "amountExceedsBalanceTitle": "Số tiền vượt quá số dư",
@@ -566,7 +566,9 @@
     "joinedDate": "Ngày tham gia",
     "joinedDateAll": "Bất kỳ thời gian nào",
     "joinedDateWithin": "Trong vòng {days} ngày",
-    "applyFilters": "Áp dụng bộ lọc"
+    "applyFilters": "Áp dụng bộ lọc",
+    "adVisibilityUpdate": "Cập nhật khả năng hiển thị quảng cáo",
+    "adVisibilityUpdateDescription": "Bạn sẽ không thể thay đổi quảng cáo này trở lại danh sách nhóm kín trừ khi bạn trở thành thành viên cấp Kim Cương một lần nữa."
   },
   "complaint": {
     "title": "Gửi khiếu nại",

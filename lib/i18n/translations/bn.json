@@ -523,7 +523,7 @@
     "insufficientBalanceTitle": "অপর্যাপ্ত ব্যালেন্স",
     "insufficientBalanceMessage": "এই বিজ্ঞাপন তৈরি করতে আপনার পর্যাপ্ত ব্যালেন্স নেই",
     "invalidValuesTitle": "অবৈধ মান",
-    "invalidValuesMessage": "অনুগ্রহ করে আপনার ইনপুট মান পরীক্ষা করুন।",
+    "invalidValuesMessage": "অনুগ্রহ করে আপনার ইনপুট মান প���ীক্ষা করুন।",
     "amountExceedsBalanceTitle": "পরিমাণ ব্যালেন্স অতিক্রম করছে",
     "amountExceedsBalanceMessage": "মোট পরিমাণ আপনার উপলব্ধ ব্যালেন্স অতিক্রম করে। অনুগ্রহ করে একটি ছোট পরিমাণ লিখুন।",
     "selectPayment": "পেমেন্ট নির্বাচন করুন",
@@ -540,7 +540,9 @@
     "floating": "ভাসমান",
     "counterparty": "প্রতিপক্ষ",
     "allCounterparties": "সমস্ত প্রতিপক্ষ",
-    "genericErrorCodeMessage": "অনুগ্রহ করে আবার চেষ্টা করুন বা সহায়তার সাথে যোগাযোগ করুন।"
+    "genericErrorCodeMessage": "অনুগ্রহ করে আবার চেষ্টা করুন বা সহায়তার সাথে যোগাযোগ করুন।",
+    "adVisibilityUpdate": "বিজ্ঞাপন দৃশ্যমানতা আপডেট",
+    "adVisibilityUpdateDescription": "আপনি আবার হীরা স্তরের সদস্য না হওয়া পর্যন্ত এই বিজ্ঞাপনটি একটি বন্ধ গোষ্ঠী তালিকা হিসাবে ফিরিয়ে আনতে পারবেন না।"
   },
   "advertiser": {
     "goBack": "ফিরে যান",
@@ -614,7 +616,7 @@
     "rate": "রেট",
     "failedToGenerateQR": "QR কোড তৈরি করতে ব্যর্থ",
     "adLinkCopied": "বিজ্ঞাপন লিঙ্ক কপি করা হয়েছে",
-    "failedToCopyLink": "লিঙ্ক কপি করতে ব্যর্থ",
+    "failedToCopyLink": "লিঙ্ক কপি করতে ব��যর্থ",
     "imageSavedSuccessfully": "ছবি সফলভাবে সংরক্ষিত হয়েছে",
     "failedToSaveImage": "ছবি সংরক্ষণ করতে ব্যর্থ",
     "sharedSuccessfully": "সফলভাবে শেয়ার করা হয়েছে",

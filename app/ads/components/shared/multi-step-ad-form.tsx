@@ -315,14 +315,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
     if (
       !isPrivate &&
-      userData?.visibility_status &&
-      userData.visibility_status.includes("advertiser_no_private_groups")
+      finalData?.visibility_status &&
+      finalData.visibility_status.includes("advertiser_no_private_groups")
     ) {
       showAlert({
         title: t("adForm.adVisibilityUpdate"),
         description: t("adForm.adVisibilityUpdateDescription"),
         confirmText: t("common.confirm"),
-        cancelText: t("common.cancel"),
         type: "warning",
         onConfirm: () => {
           proceedWithSubmit(finalData, selectedPaymentMethodIdsForSubmit, isPrivate)
