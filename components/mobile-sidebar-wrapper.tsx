@@ -4,14 +4,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 
 export function MobileSidebarTrigger() {
   const pathname = usePathname()
   const router = useRouter()
-  const { isChatVisible } = useChatVisibilityStore()
   const isProfilePage = pathname === "/profile" || pathname.startsWith("/profile/")
-  const isOrderDetailPage = pathname.match(/^\/orders\/[^/]+$/)
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -21,8 +18,7 @@ export function MobileSidebarTrigger() {
     }
   }
 
-  // Show back button on profile page or when in chat view on order details
-  if (isProfilePage || (isOrderDetailPage && isChatVisible)) {
+  if (isProfilePage) {
     return (
       <Button
         onClick={handleBack}
