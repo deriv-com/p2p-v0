@@ -122,7 +122,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     
     fetchUserPaymentMethods()
     fetchAvailablePaymentMethods()
-  }, [])
+  }, [fetchUserPaymentMethods, fetchAvailablePaymentMethods])
 
   useEffect(() => {
     if (!settingsData) return
