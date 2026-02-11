@@ -170,8 +170,8 @@ export default function OrderChat({
   }
 
   return (
-    <div className="flex flex-col h-full overflow-auto">
-      <div className="flex items-center p-4 border-b">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center p-4 border-b flex-shrink-0">
         {onNavigateToOrderDetails && (
           <Button
             variant="ghost"
@@ -203,7 +203,7 @@ export default function OrderChat({
           </div>
         </div>
       </div>
-      <div className="h-full overflow-auto">
+      <div className="flex-1 overflow-y-auto">
         <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">
@@ -221,9 +221,9 @@ export default function OrderChat({
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="p-4">
           {isLoading ? (
-            <div className="flex justify-center items-center h-full">
+            <div className="flex justify-center items-center h-64">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
             </div>
           ) : (
@@ -297,11 +297,11 @@ export default function OrderChat({
       </div>
 
       {isClosed ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">
+        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75 flex-shrink-0">
           {t("chat.conversationClosed")}
         </div>
       ) : (
-        <div className="p-4 border-t bg-slate-75">
+        <div className="p-4 border-t bg-slate-75 flex-shrink-0">
           <div className="space-y-2">
             <div className="relative">
               <Input

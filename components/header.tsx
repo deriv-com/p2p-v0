@@ -7,10 +7,14 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
+  const isMobile = useIsMobile()
+  const { isChatVisible } = useChatVisibilityStore()
 
   const pathname = usePathname()
   const navItems = [
@@ -21,7 +25,9 @@ export default function Header() {
     { name: t("navigation.profile"), href: "/profile" },
   ]
 
-  if (pathname.startsWith("/advertiser") || pathname.match(/^\/orders\/[^/]+$/)) return null
+  // Hide header on advertiser page, order detail page, and when viewing chat on mobile
+  const isOrderDetailPage = pathname.match(/^\/orders\/[^/]+$/)
+  if (pathname.startsWith("/advertiser") || isOrderDetailPage || (isMobile && isOrderDetailPage && isChatVisible)) return null
 
   return (
     <header className="flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
