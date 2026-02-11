@@ -14,7 +14,6 @@ import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
-import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import "./globals.css"
 
 export default function Main({
@@ -36,7 +35,6 @@ export default function Main({
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
-  const isChatVisible = useChatVisibilityStore((state) => state.isChatVisible)
 
   const isDisabled = userData?.status === "disabled"
 
@@ -46,13 +44,7 @@ export default function Main({
       setIsWalletAccount(walletParam === "true")
     }
 
-    // Hide header when chat is visible or accessing order chat directly
-    if (isChatVisible || (pathname.startsWith("/orders/") && pathname !== "/orders")) {
-      setIsHeaderVisible(false)
-    } else {
-      setIsHeaderVisible(true)
-    }
-  }, [searchParams, setIsWalletAccount, pathname, isChatVisible])
+  }, [searchParams, setIsWalletAccount])
 
   useEffect(() => {
     isMountedRef.current = true
