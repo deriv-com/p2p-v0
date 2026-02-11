@@ -64,10 +64,8 @@ export function NovuNotifications() {
   const appearance = {
     icons: {
       bell: () => {
-        return isMobile ? (
-          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
-        ) : (
-          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        return (
+          <Image src="https://dashboard.novu.co/images/info.svg" alt="Notifications" width={24} height={24} />
         )
       },
     },
