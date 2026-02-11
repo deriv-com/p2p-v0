@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface FollowUser {
@@ -110,9 +111,16 @@ export default function FollowUserList({
 
       <div className="space-y-0">
         {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">{t("profile.loadingUsers")}</p>
+          <div className="space-y-0">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-[72px] flex items-center justify-between gap-3">
+                <Skeleton className="w-10 h-10 rounded-full flex-shrink-0 bg-grayscale-500" />
+                <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+                  <Skeleton className="h-5 w-32 bg-grayscale-500" />
+                  <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : users.length > 0 ? (
           users.map((user) => <UserCard key={user.user_id} user={user} />)

@@ -48,7 +48,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
-  
+
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
   const toggleStatusMutation = useToggleAdActiveStatus()
@@ -143,6 +143,19 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     toggleStatusMutation.mutate(
       { id: ad.id, isActive: isListed },
       {
+        onSuccess: () => {
+          const message = isListed ? t("myAds.adActivated") : t("myAds.adDeactivated")
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                <span>{message}</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+        },
         onError: (error: any) => {
           if (error?.errors?.length > 0) {
             const firstError = error.errors[0]
@@ -252,10 +265,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     }
   }
 
-  // Show skeleton loader when loading, during delete/toggle mutations, or during refetch after deletion
-  const showSkeleton = isLoading || isFetching || deleteAdMutation.isPending || toggleStatusMutation.isPending
-
-  if (showSkeleton) {
+  if (isLoading) {
     return (
       <div className="w-full">
         <Table>
