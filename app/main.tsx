@@ -9,6 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useWalletVisibilityStore } from "@/stores/wallet-visibility-store"
 import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
@@ -35,6 +36,7 @@ export default function Main({
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
+  const isTransfersListVisible = useWalletVisibilityStore((state) => state.isTransfersListVisible)
 
   const isDisabled = userData?.status === "disabled"
 
@@ -44,7 +46,14 @@ export default function Main({
       setIsWalletAccount(walletParam === "true")
     }
 
-  }, [searchParams, setIsWalletAccount])
+    // Hide header when transfers list is visible or on wallet page with transfers shown
+    if (isTransfersListVisible) {
+      setIsHeaderVisible(false)
+    } else {
+      setIsHeaderVisible(true)
+    }
+
+  }, [searchParams, setIsWalletAccount, isTransfersListVisible])
 
   useEffect(() => {
     isMountedRef.current = true

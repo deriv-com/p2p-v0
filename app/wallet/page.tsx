@@ -7,6 +7,7 @@ import WalletBalances from "./components/wallet-balances"
 import { useCurrencies, useTotalBalance } from "@/hooks/use-api-queries"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useWalletVisibilityStore } from "@/stores/wallet-visibility-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useRouter } from "next/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -36,6 +37,7 @@ export default function WalletPage() {
   const [hasBalance, setHasBalance] = useState(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
   const { userData } = useUserDataStore()
+  const { setIsTransfersListVisible } = useWalletVisibilityStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
@@ -115,11 +117,13 @@ export default function WalletPage() {
     setSelectedCurrency(currency)
     setTotalBalance(balance)
     setDisplayBalances(false)
+    setIsTransfersListVisible(true)
   }
 
   const handleBackToBalances = () => {
     setDisplayBalances(true)
     setSelectedCurrency(null)
+    setIsTransfersListVisible(false)
     // Restore the total balance from the p2p wallet
     if (balanceData?.wallets?.items) {
       const p2pWallet = balanceData.wallets.items.find((wallet: any) => wallet.type === "p2p")
