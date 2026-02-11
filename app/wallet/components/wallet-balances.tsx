@@ -4,6 +4,7 @@ import Image from "next/image"
 import BalanceItem from "./balance-item"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import EmptyState from "@/components/empty-state"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface Balance {
   amount: string
@@ -22,9 +23,19 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
 
   if (isLoading) {
     return (
-      <div className="text-center py-12">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">{t("wallet.loadingAssets")}</p>
+      <div className="w-full">
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
+          {[1, 2].map((i) => (
+            <div key={i} className="flex items-center justify-between h-[72px] w-full relative">
+              <div className="flex items-center gap-4 pl-0 w-full">
+                <Skeleton className="h-7 w-7 rounded-full flex-shrink-0" />
+                <Skeleton className="h-5 w-24" />
+              </div>
+              <Skeleton className="h-5 w-32" />
+              <div className="absolute bottom-0 left-10 right-0 h-[1px] bg-grayscale-200" />
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
