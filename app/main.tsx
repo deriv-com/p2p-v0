@@ -44,7 +44,13 @@ export default function Main({
       setIsWalletAccount(walletParam === "true")
     }
 
-  }, [searchParams, setIsWalletAccount])
+    // Hide header when accessing order chat directly
+    if (pathname.startsWith("/orders/") && pathname !== "/orders") {
+      setIsHeaderVisible(false)
+    } else {
+      setIsHeaderVisible(true)
+    }
+  }, [searchParams, setIsWalletAccount, pathname])
 
   useEffect(() => {
     isMountedRef.current = true
