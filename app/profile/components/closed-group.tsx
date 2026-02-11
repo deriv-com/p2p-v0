@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 import { removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
@@ -148,9 +149,16 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
 
       <div className="space-y-0">
         {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading users...</p>
+          <div className="space-y-0">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-[72px] flex items-center justify-between gap-3">
+                <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
+                <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-8 w-20 rounded-full" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : filteredClosedGroups.length > 0 ? (
           filteredClosedGroups.map((group) => <GroupCard key={group.user_id} group={group} />)
