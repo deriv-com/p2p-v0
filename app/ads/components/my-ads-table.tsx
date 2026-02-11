@@ -146,7 +146,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         onSuccess: () => {
           const message = isListed ? t("myAds.adActivated") : t("myAds.adDeactivated")
           toast({
-            description: message,
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                <span>{message}</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
           })
         },
         onError: (error: any) => {
