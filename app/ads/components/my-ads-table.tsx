@@ -143,6 +143,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     toggleStatusMutation.mutate(
       { id: ad.id, isActive: isListed },
       {
+        onSuccess: () => {
+          const message = isListed ? t("myAds.adActivated") : t("myAds.adDeactivated")
+          toast({
+            description: message,
+          })
+        },
         onError: (error: any) => {
           if (error?.errors?.length > 0) {
             const firstError = error.errors[0]
