@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
@@ -76,6 +76,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
+  const fetchPaymentMethodsRef = useRef(false)
 
   const isLoadingCountries = isLoadingSettings
 
@@ -92,7 +93,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       .replace(/[^a-z0-9_]/g, "")
   }
 
-  const fetchUserPaymentMethods = async () => {
+  const fetchUserPaymentMethods = useCallback(async () => {
     try {
       const response = await ProfileAPI.getUserPaymentMethods()
 
@@ -104,21 +105,24 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     } catch (error) {
       console.error("Error fetching payment methods:", error)
     }
-  }
+  }, [])
 
-  const fetchAvailablePaymentMethods = async () => {
+  const fetchAvailablePaymentMethods = useCallback(async () => {
     try {
       const methods = await BuySellAPI.getPaymentMethods()
       setAvailablePaymentMethods(methods || [])
     } catch (error) {
       console.error("Error fetching available payment methods:", error)
     }
-  }
+  }, [])
 
   useEffect(() => {
+    if (fetchPaymentMethodsRef.current) return
+    fetchPaymentMethodsRef.current = true
+    
     fetchUserPaymentMethods()
     fetchAvailablePaymentMethods()
-  }, [])
+  }, [fetchUserPaymentMethods, fetchAvailablePaymentMethods])
 
   useEffect(() => {
     if (!settingsData) return

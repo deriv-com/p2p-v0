@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { getCurrencies } from "@/services/api/api-auth"
+import { useMemo } from "react"
+import { useCurrencies } from "@/hooks/use-api-queries"
 
 export interface AccountCurrency {
   code: string
@@ -13,45 +13,27 @@ export interface AccountCurrency {
 }
 
 export function useAccountCurrencies() {
-  const [accountCurrencies, setAccountCurrencies] = useState<AccountCurrency[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { data: currenciesData, isLoading, error } = useCurrencies()
 
-  useEffect(() => {
-    const fetchAccountCurrencies = async () => {
-      try {
-        setIsLoading(true)
-        const response = await getCurrencies()
+  const accountCurrencies = useMemo(() => {
+    if (!currenciesData) return []
 
-        const currencyList = Object.keys(response)
-          .map((code) => ({
-            code,
-            name: code,
-            decimal: response[code]?.decimal,
-          }))
-          .sort((a, b) => {
-            if (a.code === "USD") return -1
-            if (b.code === "USD") return 1
-            return a.code.localeCompare(b.code)
-          })
-
-        setAccountCurrencies(currencyList)
-        setError(null)
-      } catch (err) {
-        console.error("Error fetching account currencies:", err)
-        setError("Failed to load account currencies")
-        setAccountCurrencies([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchAccountCurrencies()
-  }, [])
+    return Object.keys(currenciesData)
+      .map((code) => ({
+        code,
+        name: code,
+        decimal: currenciesData[code]?.decimal,
+      }))
+      .sort((a, b) => {
+        if (a.code === "USD") return -1
+        if (b.code === "USD") return 1
+        return a.code.localeCompare(b.code)
+      })
+  }, [currenciesData])
 
   return {
     accountCurrencies,
     isLoading,
-    error,
+    error: error ? (error as Error).message : null,
   }
 }
