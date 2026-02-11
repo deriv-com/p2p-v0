@@ -152,10 +152,10 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-[72px] flex items-center justify-between gap-3">
-                <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
+                <Skeleton className="w-10 h-10 rounded-full flex-shrink-0 bg-grayscale-500" />
                 <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
-                  <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-8 w-20 rounded-full" />
+                  <Skeleton className="h-5 w-32 bg-grayscale-500" />
+                  <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
                 </div>
               </div>
             ))}
