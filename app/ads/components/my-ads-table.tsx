@@ -48,7 +48,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
-  
+
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
   const toggleStatusMutation = useToggleAdActiveStatus()
@@ -252,10 +252,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     }
   }
 
-  // Show skeleton loader when loading, during delete/toggle mutations, or during refetch after deletion
-  const showSkeleton = isLoading || isFetching || deleteAdMutation.isPending || toggleStatusMutation.isPending
-
-  if (showSkeleton) {
+  if (isLoading) {
     return (
       <div className="w-full">
         <Table>

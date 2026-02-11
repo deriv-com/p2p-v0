@@ -408,7 +408,7 @@
     "createAd": "Create ad",
     "hideMyAds": "Hide my ads",
     "hideMyAdsTooltip": "Hidden ads won't appear on the Market page.",
-    "adDeleted": "Ad deleted",
+    "adDeleted": "Ad has been deleted.",
     "adCreated": "Ad created",
     "adUpdated": "Ad updated",
     "adCreatedMessage": "You've successfully created Ad ({type} {id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.",
