@@ -510,7 +510,9 @@ export const currencyFlagMapper = {
   LYD: "/icons/flag-libya.svg",
   GMD: "/icons/flag-gambia.svg",
   AFN: "/icons/flag-afghanistan.svg",
-  BBD: "/icons/flag-barbados.svg"
+  BBD: "/icons/flag-barbados.svg",
+  SZL: "/icons/flag-swaziland.svg",
+  UYU: "/icons/flag-uruguay.svg"
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
