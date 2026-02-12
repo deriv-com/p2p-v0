@@ -124,13 +124,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="fixed">
                   <div className="flex flex-col">
                     <span className="text-slate-1200">Fixed</span>
-                    <span className="text-xs text-grayscale-200">Set a constant rate, unaffected by market fluctuations.</span>
+                    <span className="text-xs text-grayscale-600">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float">
                   <div className="flex flex-col">
                     <span className="text-slate-1200">Floating</span>
-                    <span className="text-xs text-grayscale-200">Set a rate that changes with market movements.</span>
+                    <span className="text-xs text-grayscale-600">Set a rate that changes with market movements.</span>
                   </div>
                 </SelectItem>
               </SelectContent>
