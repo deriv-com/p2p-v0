@@ -195,6 +195,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const [paymentMethodTypeToAdd, setPaymentMethodTypeToAdd] = useState<string>("")
   const userData = useUserDataStore((state) => state.userData)
   const {
     joinExchangeRatesChannel,
@@ -298,7 +299,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const handleAddPaymentMethodWithType = (methodType: string) => {
+    setPaymentMethodTypeToAdd(methodType)
     setShowAddPaymentPanel(true)
+    hideAlert()
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -641,12 +644,24 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       </div>
 
       {showAddPaymentPanel && (
-        <AddPaymentMethodPanel
-          onAdd={handleAddPaymentMethod}
-          isLoading={isAddingPaymentMethod}
-          allowedPaymentMethods={ad?.payment_methods}
-          onClose={() => setShowAddPaymentPanel(false)}
-        />
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div
+            className="fixed inset-0 bg-black/30 transition-opacity duration-300"
+            onClick={() => setShowAddPaymentPanel(false)}
+          />
+          <div className="relative w-full bg-white h-full transform transition-transform duration-300 ease-in-out max-w-xl">
+            <AddPaymentMethodPanel
+              onAdd={handleAddPaymentMethod}
+              isLoading={isAddingPaymentMethod}
+              allowedPaymentMethods={sellerPaymentMethods.map((m) => m.method)}
+              selectedMethod={paymentMethodTypeToAdd}
+              onClose={() => {
+                setShowAddPaymentPanel(false)
+                setPaymentMethodTypeToAdd("")
+              }}
+            />
+          </div>
+        </div>
       )}
 
       {ad && (
