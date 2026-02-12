@@ -119,8 +119,8 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             </Drawer>
           ) : (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
-              <SelectTrigger asChild>
-                {triggerButton}
+              <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
+                <SelectValue placeholder="Select rate type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="fixed">
