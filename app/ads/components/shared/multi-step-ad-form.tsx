@@ -628,7 +628,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
                 userPaymentMethods={userPaymentMethods}
                 availablePaymentMethods={availablePaymentMethods}
-                onRefetchPaymentMethods={refetchPaymentMethods}
+                onRefetchPaymentMethods={refetchUserPaymentMethods}
               />
             ) : (
               <div className="space-y-6">
