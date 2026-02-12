@@ -45,8 +45,8 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
       <Label
         htmlFor="fixed"
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
-            ? "border-black"
-            : "border-grayscale-500"
+          ? "border-black"
+          : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
@@ -61,8 +61,8 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
       <Label
         htmlFor="float"
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
-            ? "border-black"
-            : "border-grayscale-500"
+          ? "border-black"
+          : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
@@ -130,7 +130,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="float">
                   <div className="flex flex-col">
                     <span>Floating</span>
-                    <span className="text-xs text-grayscale-text-muted">Set a rate that changes with market movements.</span>
+                    <span className="text-xs text-grayscale-200">Set a rate that changes with market movements.</span>
                   </div>
                 </SelectItem>
               </SelectContent>
