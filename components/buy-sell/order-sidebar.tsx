@@ -98,8 +98,8 @@ const PaymentSelectionContent = ({
                     onClick={() => handleAcceptedMethodClick(method)}
                     className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">+</span>
+                    <div className="flex items-center gap-2">
+                      <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
                       <span className="text-base text-slate-1200">
                         {formatPaymentMethodName(method.method)}
                       </span>
