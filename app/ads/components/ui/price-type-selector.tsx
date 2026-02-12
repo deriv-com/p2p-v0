@@ -104,20 +104,20 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           ) :
           (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>)
         }
-        {isMobile ? (
-          <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>{marketPrice && isFloatingRateEnabled && triggerButton}</DrawerTrigger>
-            <DrawerContent>
-              <div className="px-4 pb-6">
-                <div className="py-4">
-                  <h3 className="text-xl font-bold text-center">Rate type</h3>
+        {marketPrice && isFloatingRateEnabled && (
+          isMobile ? (
+            <Drawer open={open} onOpenChange={setOpen}>
+              <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
+              <DrawerContent>
+                <div className="px-4 pb-6">
+                  <div className="py-4">
+                    <h3 className="text-xl font-bold text-center">Rate type</h3>
+                  </div>
+                  {content}
                 </div>
-                {content}
-              </div>
-            </DrawerContent>
-          </Drawer>
-        ) : (
-          marketPrice && isFloatingRateEnabled && (
+              </DrawerContent>
+            </Drawer>
+          ) : (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
               <SelectTrigger asChild>
                 {triggerButton}
