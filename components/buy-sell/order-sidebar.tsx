@@ -88,7 +88,7 @@ const PaymentSelectionContent = ({
         {userPaymentMethods.length === 0 ? (
           <div className="pb-4 space-y-4">
             <div>
-              <div className="pb-2 text-slate-1200 text-sm font-medium">{t("paymentMethod.addCompatibleMethod")}</div>
+              <div className="text-slate-1200">{t("paymentMethod.addCompatibleMethod")}</div>
             </div>
             {sellerPaymentMethods && sellerPaymentMethods.length > 0 && (
               <div className="space-y-3">
