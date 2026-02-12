@@ -163,19 +163,17 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      {userPaymentMethods.length > 0 && (
-        <Button
-          className="w-full mt-12"
-          disabled={selectedPMs.length == 0}
-          onClick={() => {
-            setSelectedPaymentMethods(selectedPMs)
-            setTempSelectedPaymentMethods(selectedPMs)
-            hideAlert()
-          }}
-        >
-          {t("common.confirm")}
-        </Button>
-      )}
+      <Button
+        className="w-full mt-12"
+        disabled={selectedPMs.length == 0}
+        onClick={() => {
+          setSelectedPaymentMethods(selectedPMs)
+          setTempSelectedPaymentMethods(selectedPMs)
+          hideAlert()
+        }}
+      >
+        {t("common.confirm")}
+      </Button>
     </div>
   )
 }
