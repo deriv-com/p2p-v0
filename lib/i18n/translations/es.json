@@ -102,6 +102,8 @@
     "noCompatibleMethods": "No se encontraron métodos de pago compatibles",
     "addCompatibleMethod": "Agrega un método de pago que coincida con los métodos aceptados del comprador",
     "addPaymentMethod": "Agregar método de pago",
+    "addOneOfTheseMethods": "Agrega uno de estos métodos de pago",
+    "sellerAccepts": "El vendedor acepta",
     "duplicateMethod": "Método de pago duplicado",
     "duplicateMethodDescription": "Ya existe un método de pago con los mismos valores. Agrega uno nuevo.",
     "unableToAdd": "No se puede agregar el método de pago",

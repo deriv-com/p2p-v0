@@ -102,6 +102,8 @@
     "noCompatibleMethods": "No compatible payment methods found",
     "addCompatibleMethod": "Add a supported payment method to continue",
     "addPaymentMethod": "Add payment method",
+    "addOneOfTheseMethods": "Add one of these payment methods",
+    "sellerAccepts": "Seller accepts",
     "duplicateMethod": "Duplicate payment method",
     "duplicateMethodDescription": "A payment method with the same values already exists. Add a new one.",
     "unableToAdd": "Unable to add payment method",
