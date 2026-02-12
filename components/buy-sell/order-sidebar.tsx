@@ -36,6 +36,21 @@ interface PaymentMethod {
   method: string
 }
 
+interface SellerPaymentMethod {
+  type: string
+  method: string
+}
+
+interface PaymentMethodOption {
+  name: string
+  value: string
+}
+
+const PAYMENT_METHOD_OPTIONS: PaymentMethodOption[] = [
+  { name: "eWallet", value: "ewallet" },
+  { name: "Bank transfer", value: "bank_transfer" },
+]
+
 const PaymentSelectionContent = ({
   userPaymentMethods,
   tempSelectedPaymentMethods,
@@ -43,6 +58,8 @@ const PaymentSelectionContent = ({
   setSelectedPaymentMethods,
   setTempSelectedPaymentMethods,
   handleAddPaymentMethodClick,
+  sellerPaymentMethods,
+  onAddPaymentMethodWithType,
 }) => {
   const { t } = useTranslations()
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
@@ -59,12 +76,39 @@ const PaymentSelectionContent = ({
     })
   }
 
+  const handleAcceptedMethodClick = (method: SellerPaymentMethod) => {
+    hideAlert()
+    onAddPaymentMethodWithType?.(method.type)
+  }
+
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4 overflow-y-auto md:max-h-[30vh]">
         {userPaymentMethods.length > 0 && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
-          <div className="pb-2 text-slate-1200 text-sm">{t("paymentMethod.addCompatibleMethod")}</div>
+          <div className="pb-4 space-y-4">
+            <div>
+              <div className="text-slate-1200">{t("paymentMethod.addCompatibleMethod")}</div>
+            </div>
+            {sellerPaymentMethods && sellerPaymentMethods.length > 0 && (
+              <div className="space-y-3">
+                {sellerPaymentMethods.map((method, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleAcceptedMethodClick(method)}
+                    className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+                      <span className="text-base text-slate-1200">
+                        {formatPaymentMethodName(method.method)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
           userPaymentMethods.map((method) => (
             <div
@@ -103,17 +147,21 @@ const PaymentSelectionContent = ({
           ))
         )}
 
-        <div
-          className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
-          onClick={() => {
-            handleAddPaymentMethodClick()
-          }}
-        >
-          <div className="flex items-center">
-            <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-            <span className="text-slate-1200 text-base">{t("paymentMethod.addPaymentMethod")}</span>
+        {userPaymentMethods.length > 0 && (
+          <div
+            className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
+            onClick={() => {
+              handleAddPaymentMethodClick()
+            }}
+          >
+            <div className="flex items-center">
+              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <span className="text-slate-1200 text-base">
+                {t("paymentMethod.addPaymentMethod")}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <Button
         className="w-full mt-12"
@@ -142,6 +190,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [orderStatus, setOrderStatus] = useState<{ success: boolean; message: string } | null>(null)
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
+  const [sellerPaymentMethods, setSellerPaymentMethods] = useState<SellerPaymentMethod[]>([])
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
@@ -241,9 +290,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
           setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          sellerPaymentMethods={sellerPaymentMethods}
+          onAddPaymentMethodWithType={handleAddPaymentMethodWithType}
         />
       ),
     })
+  }
+
+  const handleAddPaymentMethodWithType = (methodType: string) => {
+    setShowAddPaymentPanel(true)
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -401,6 +456,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         }) || []
 
       setUserPaymentMethods(filteredMethods)
+
+      // Convert seller's payment methods to SellerPaymentMethod format for display
+      const sellerMethods: SellerPaymentMethod[] = buyerAcceptedMethods.map((method: string) => ({
+        type: method.toLowerCase().includes("bank") ? "bank" : "ewallet",
+        method: method,
+      }))
+      setSellerPaymentMethods(sellerMethods)
     } catch (error) {
       console.error("Error fetching payment methods:", error)
     }

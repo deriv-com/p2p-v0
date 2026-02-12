@@ -41,9 +41,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
   }
 
   if (balances.length === 0) {
-    return (
-      <EmptyState title={t("wallet.noAssetsTitle")} description={t("wallet.noAssetsDescription")} />
-    )
+    return <EmptyState title={t("wallet.noAssetsTitle")} description={t("wallet.noAssetsDescription")} />
   }
 
   return (
