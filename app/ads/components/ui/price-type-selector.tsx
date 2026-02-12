@@ -118,7 +118,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           ) : (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
-                <div className="text-grayscale-600">{value === "fixed" ? "Fixed" : "Floating"}</div>
+                <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="fixed">
