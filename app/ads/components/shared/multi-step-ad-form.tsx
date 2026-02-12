@@ -77,11 +77,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
-  const fetchPaymentMethodsRef = useRef(false)
-
-  const refetchPaymentMethods = async () => {
-    await refetchUserPaymentMethods()
-  }
 
   const isLoadingCountries = isLoadingSettings
 
@@ -99,9 +94,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   useEffect(() => {
-    if (fetchPaymentMethodsRef.current) return
-    fetchPaymentMethodsRef.current = true
-    
     if (userPaymentMethodsData) {
       setUserPaymentMethods(userPaymentMethodsData || [])
     }
@@ -116,7 +108,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
 
     fetchAvailableMethods()
-  }, [userPaymentMethodsData])
+  }, [])
 
   useEffect(() => {
     if (!settingsData) return
