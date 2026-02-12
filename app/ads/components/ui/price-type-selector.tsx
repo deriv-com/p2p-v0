@@ -119,9 +119,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         ) : (
           marketPrice && isFloatingRateEnabled && (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
-              <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent">
-                <SelectValue placeholder="Select rate type" />
-              </SelectTrigger>
+              {triggerButton}
               <SelectContent>
                 <SelectItem value="fixed">
                   <div className="flex flex-col">
