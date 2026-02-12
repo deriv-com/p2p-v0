@@ -33,7 +33,7 @@ export default function AddPaymentMethodPanel({
 }: AddPaymentMethodPanelProps) {
   const [selectedMethodState, setSelectedMethodState] = useState<string>("")
   const selectedMethod = selectedMethodProp || selectedMethodState
-  const [showMethodDetails, setShowMethodDetails] = useState(false)
+  const [showMethodDetails, setShowMethodDetails] = useState(!!selectedMethodProp)
   const [details, setDetails] = useState<Record<string, string>>({})
   const [instructions, setInstructions] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})

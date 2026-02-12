@@ -98,7 +98,7 @@ const PaymentSelectionContent = ({
                     onClick={() => handleAcceptedMethodClick(method)}
                     className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                       <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
                       <span className="text-base text-slate-1200">
                         {formatPaymentMethodName(method.method)}
@@ -195,6 +195,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const [paymentMethodTypeToAdd, setPaymentMethodTypeToAdd] = useState<string>("")
   const userData = useUserDataStore((state) => state.userData)
   const {
     joinExchangeRatesChannel,
@@ -298,7 +299,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const handleAddPaymentMethodWithType = (methodType: string) => {
+    setPaymentMethodTypeToAdd(methodType)
     setShowAddPaymentPanel(true)
+    hideAlert()
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -644,8 +647,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         <AddPaymentMethodPanel
           onAdd={handleAddPaymentMethod}
           isLoading={isAddingPaymentMethod}
-          allowedPaymentMethods={ad?.payment_methods}
-          onClose={() => setShowAddPaymentPanel(false)}
+          allowedPaymentMethods={sellerPaymentMethods.map((m) => m.method)}
+          selectedMethod={paymentMethodTypeToAdd}
+          onClose={() => {
+            setShowAddPaymentPanel(false)
+            setPaymentMethodTypeToAdd("")
+          }}
         />
       )}
 
