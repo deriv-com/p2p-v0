@@ -147,7 +147,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
           <AlertDialogTitle></AlertDialogTitle>
           <AlertDialogContent className="p-0">
-            <AlertDialogDescription>{renderDesktopContent()}</AlertDialogDescription>
+            {renderDesktopContent()}
           </AlertDialogContent>
         </AlertDialog>
       )}
