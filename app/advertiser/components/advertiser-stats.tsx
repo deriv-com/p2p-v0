@@ -58,7 +58,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   return (
     <TooltipProvider>
       <div>
-        <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between gap-4 mx-[-24px] p-6 border-b mb-4 md:mx-0 md:px-0 md:mb-0 py-6">
+        <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between gap-4 mx-[-24px] p-6 border-b mb-4 md:mx-0 md:px-0 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-8 flex-1">
             <div className="flex-shrink-0">
               {buyCompletionRate ? (
