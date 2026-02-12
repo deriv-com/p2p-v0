@@ -88,7 +88,7 @@ const PaymentSelectionContent = ({
         {userPaymentMethods.length === 0 ? (
           <div className="pb-4 space-y-4">
             <div>
-              <div className="pb-2 text-slate-1200 text-sm font-medium">{t("paymentMethod.addCompatibleMethod")}</div>
+              <div className="text-slate-1200">{t("paymentMethod.addCompatibleMethod")}</div>
             </div>
             {sellerPaymentMethods && sellerPaymentMethods.length > 0 && (
               <div className="space-y-3">
@@ -98,8 +98,8 @@ const PaymentSelectionContent = ({
                     onClick={() => handleAcceptedMethodClick(method)}
                     className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">+</span>
+                    <div className="flex items-center gap-2">
+                      <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
                       <span className="text-base text-slate-1200">
                         {formatPaymentMethodName(method.method)}
                       </span>
@@ -163,19 +163,17 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      {userPaymentMethods.length > 0 && (
-        <Button
-          className="w-full mt-12"
-          disabled={selectedPMs.length == 0}
-          onClick={() => {
-            setSelectedPaymentMethods(selectedPMs)
-            setTempSelectedPaymentMethods(selectedPMs)
-            hideAlert()
-          }}
-        >
-          {t("common.confirm")}
-        </Button>
-      )}
+      <Button
+        className="w-full mt-12"
+        disabled={selectedPMs.length == 0}
+        onClick={() => {
+          setSelectedPaymentMethods(selectedPMs)
+          setTempSelectedPaymentMethods(selectedPMs)
+          hideAlert()
+        }}
+      >
+        {t("common.confirm")}
+      </Button>
     </div>
   )
 }
