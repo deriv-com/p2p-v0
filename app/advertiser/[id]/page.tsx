@@ -493,7 +493,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                           {adverts.map((ad) => (
                             <TableRow
-                              className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
+                              className="grid grid-col gap-2 border-b mb-[16px] py-4 px-0 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0 lg:px-4 first:px-0 last:px-0"
                               key={ad.id}
                             >
                               <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
