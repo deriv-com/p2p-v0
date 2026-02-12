@@ -468,7 +468,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
             {!isBlocked && (
               <>
                 <AdvertiserStats profile={profile} />
-                <div className="container mx-auto pb-4 md:pt-4 text-lg font-bold">{t("advertiser.onlineAds")}</div>
+                <div className="container mx-auto pb-4 text-lg font-bold">{t("advertiser.onlineAds")}</div>
                 <div className="container mx-auto pb-8">
                   {adverts.length > 0 ? (
                     <div>
