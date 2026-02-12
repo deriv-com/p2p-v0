@@ -53,7 +53,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
           <div className="text-xs text-grayscale-text-muted">
-            Set a constant price, unaffected by market fluctuations.
+            Set a constant rate, unaffected by market fluctuations.
           </div>
         </div>
         <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
@@ -96,7 +96,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-white">Set a constant price, unaffected by market fluctuations.</p>
+                  <p className="text-white">Set a constant rate, unaffected by market fluctuations.</p>
                   <TooltipArrow className="fill-black" />
                 </TooltipContent>
               </Tooltip>
