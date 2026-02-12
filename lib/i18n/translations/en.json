@@ -101,6 +101,7 @@
     "selectUpTo3": "Select up to 3",
     "noCompatibleMethods": "No compatible payment methods found",
     "addCompatibleMethod": "Add a supported payment method to continue",
+    "addSupportedMethod": "Add a supported payment method to continue",
     "addPaymentMethod": "Add payment method",
     "addOneOfTheseMethods": "Add one of these payment methods",
     "sellerAccepts": "Seller accepts",
