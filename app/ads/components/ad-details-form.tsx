@@ -102,11 +102,9 @@ export default function AdDetailsForm({
 
   useEffect(() => {
     const fetchPriceRange = () => {
-      setIsLoadingPriceRange(true)
       try {
         if (!Array.isArray(advertStats)) {
           setPriceRange({ lowestPrice: null, highestPrice: null })
-          setIsLoadingPriceRange(false)
           return
         }
 
