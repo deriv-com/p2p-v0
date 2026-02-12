@@ -92,7 +92,6 @@ const PaymentSelectionContent = ({
             </div>
             {sellerPaymentMethods && sellerPaymentMethods.length > 0 && (
               <div className="space-y-3">
-                <div className="text-xs text-grayscale-text-muted">{t("paymentMethod.sellerAccepts")}</div>
                 {sellerPaymentMethods.map((method, index) => (
                   <div
                     key={index}
