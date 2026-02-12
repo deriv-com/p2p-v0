@@ -59,6 +59,7 @@ const PaymentSelectionContent = ({
   setTempSelectedPaymentMethods,
   handleAddPaymentMethodClick,
   sellerPaymentMethods,
+  onAddPaymentMethodWithType,
 }) => {
   const { t } = useTranslations()
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
@@ -75,22 +76,35 @@ const PaymentSelectionContent = ({
     })
   }
 
+  const handleAcceptedMethodClick = (method: SellerPaymentMethod) => {
+    hideAlert()
+    onAddPaymentMethodWithType?.(method.type)
+  }
+
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4 overflow-y-auto md:max-h-[30vh]">
         {userPaymentMethods.length > 0 && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
-          <div className="pb-4">
-            <div className="pb-2 text-slate-1200 text-sm font-medium">{t("paymentMethod.addCompatibleMethod")}</div>
+          <div className="pb-4 space-y-4">
+            <div>
+              <div className="pb-2 text-slate-1200 text-sm font-medium">{t("paymentMethod.addCompatibleMethod")}</div>
+            </div>
             {sellerPaymentMethods && sellerPaymentMethods.length > 0 && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="text-xs text-grayscale-text-muted">{t("paymentMethod.sellerAccepts")}</div>
                 {sellerPaymentMethods.map((method, index) => (
-                  <div key={index} className="flex items-center text-xs text-slate-1200">
-                    <div
-                      className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"}`}
-                    />
-                    {formatPaymentMethodName(method.method)}
+                  <div
+                    key={index}
+                    onClick={() => handleAcceptedMethodClick(method)}
+                    className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">+</span>
+                      <span className="text-base text-slate-1200">
+                        {formatPaymentMethodName(method.method)}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -134,33 +148,35 @@ const PaymentSelectionContent = ({
           ))
         )}
 
-        <div
-          className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
+        {userPaymentMethods.length > 0 && (
+          <div
+            className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
+            onClick={() => {
+              handleAddPaymentMethodClick()
+            }}
+          >
+            <div className="flex items-center">
+              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <span className="text-slate-1200 text-base">
+                {t("paymentMethod.addPaymentMethod")}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+      {userPaymentMethods.length > 0 && (
+        <Button
+          className="w-full mt-12"
+          disabled={selectedPMs.length == 0}
           onClick={() => {
-            handleAddPaymentMethodClick()
+            setSelectedPaymentMethods(selectedPMs)
+            setTempSelectedPaymentMethods(selectedPMs)
+            hideAlert()
           }}
         >
-          <div className="flex items-center">
-            <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-            <span className="text-slate-1200 text-base">
-              {userPaymentMethods.length === 0 && sellerPaymentMethods && sellerPaymentMethods.length > 0
-                ? t("paymentMethod.addOneOfTheseMethods")
-                : t("paymentMethod.addPaymentMethod")}
-            </span>
-          </div>
-        </div>
-      </div>
-      <Button
-        className="w-full mt-12"
-        disabled={selectedPMs.length == 0}
-        onClick={() => {
-          setSelectedPaymentMethods(selectedPMs)
-          setTempSelectedPaymentMethods(selectedPMs)
-          hideAlert()
-        }}
-      >
-        {t("common.confirm")}
-      </Button>
+          {t("common.confirm")}
+        </Button>
+      )}
     </div>
   )
 }
@@ -278,9 +294,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
           setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
           sellerPaymentMethods={sellerPaymentMethods}
+          onAddPaymentMethodWithType={handleAddPaymentMethodWithType}
         />
       ),
     })
+  }
+
+  const handleAddPaymentMethodWithType = (methodType: string) => {
+    setShowAddPaymentPanel(true)
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
