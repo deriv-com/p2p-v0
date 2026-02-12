@@ -102,7 +102,7 @@ export default function AdDetailsForm({
   }, [currenciesProp])
 
   useEffect(() => {
-    const fetchPriceRange = async () => {
+    const fetchPriceRange = () => {
       setIsLoadingPriceRange(true)
       try {
         if (!Array.isArray(advertStats)) {
