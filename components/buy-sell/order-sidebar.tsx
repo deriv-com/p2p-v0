@@ -18,14 +18,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import RateChangeConfirmation from "./rate-change-confirmation"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from "@/components/ui/dialog"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -58,105 +50,6 @@ const PAYMENT_METHOD_OPTIONS: PaymentMethodOption[] = [
   { name: "eWallet", value: "ewallet" },
   { name: "Bank transfer", value: "bank_transfer" },
 ]
-
-const NoPaymentMethodsDialog = ({
-  isOpen,
-  onClose,
-  sellerPaymentMethods,
-  onAddPaymentMethod,
-}: {
-  isOpen: boolean
-  onClose: () => void
-  sellerPaymentMethods: SellerPaymentMethod[]
-  onAddPaymentMethod: () => void
-}) => {
-  const { t } = useTranslations()
-  const [selectedMethod, setSelectedMethod] = useState<string>("")
-
-  const handleConfirm = () => {
-    if (selectedMethod) {
-      setSelectedMethod("")
-      onAddPaymentMethod()
-    }
-  }
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md w-full rounded-2xl">
-        <DialogHeader className="text-left">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold">
-              {t("paymentMethod.title")}
-            </DialogTitle>
-            <DialogClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-              <Image
-                src="/icons/close-circle.png"
-                alt="Close"
-                width={24}
-                height={24}
-              />
-              <span className="sr-only">{t("common.close")}</span>
-            </DialogClose>
-          </div>
-          <DialogDescription className="text-base text-slate-1200 font-normal mt-2">
-            {t("paymentMethod.addSupportedMethod")}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-3 my-6">
-          {PAYMENT_METHOD_OPTIONS.map((option) => {
-            const isSelected = sellerPaymentMethods.some(
-              (method) =>
-                (option.value === "ewallet" &&
-                  method.type === "ewallet") ||
-                (option.value === "bank_transfer" &&
-                  method.type === "bank"),
-            )
-
-            return (
-              <button
-                key={option.value}
-                onClick={() => setSelectedMethod(option.value)}
-                disabled={!isSelected}
-                className={`w-full border rounded-lg p-4 text-left transition-colors flex items-center gap-3 ${
-                  isSelected
-                    ? "border-gray-200 hover:bg-gray-50 cursor-pointer"
-                    : "border-gray-200 opacity-50 cursor-not-allowed"
-                }`}
-              >
-                <span className="text-xl">+</span>
-                <span
-                  className={`text-base ${
-                    isSelected
-                      ? "text-slate-1200 font-normal"
-                      : "text-slate-1200 font-normal"
-                  }`}
-                >
-                  {option.name}
-                </span>
-                {selectedMethod === option.value && (
-                  <div className="ml-auto">
-                    <div className="w-5 h-5 rounded-full border-2 border-black bg-white flex items-center justify-center">
-                      <div className="w-2.5 h-2.5 rounded-full bg-black" />
-                    </div>
-                  </div>
-                )}
-              </button>
-            )
-          })}
-        </div>
-
-        <Button
-          onClick={handleConfirm}
-          disabled={!selectedMethod}
-          className="w-full rounded-full py-3 bg-[#F5C0CB] hover:bg-[#F5C0CB] text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
-        >
-          {t("common.confirm")}
-        </Button>
-      </DialogContent>
-    </Dialog>
-  )
-}
 
 const PaymentSelectionContent = ({
   userPaymentMethods,
@@ -289,7 +182,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
-  const [showPaymentMethodDialog, setShowPaymentMethodDialog] = useState(false)
   const userData = useUserDataStore((state) => state.userData)
   const {
     joinExchangeRatesChannel,
@@ -375,24 +267,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }, [amount, ad, orderType, p2pBalance, t, marketRate])
 
   const handleShowPaymentSelection = () => {
-    if (userPaymentMethods.length === 0 && sellerPaymentMethods.length > 0) {
-      setShowPaymentMethodDialog(true)
-    } else {
-      showAlert({
-        title: t("paymentMethod.title"),
-        description: (
-          <PaymentSelectionContent
-            userPaymentMethods={userPaymentMethods}
-            tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-            setSelectedPaymentMethods={setSelectedPaymentMethods}
-            hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-            setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-            sellerPaymentMethods={sellerPaymentMethods}
-          />
-        ),
-      })
-    }
+    showAlert({
+      title: t("paymentMethod.title"),
+      description: (
+        <PaymentSelectionContent
+          userPaymentMethods={userPaymentMethods}
+          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+          setSelectedPaymentMethods={setSelectedPaymentMethods}
+          hideAlert={hideAlert}
+          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          sellerPaymentMethods={sellerPaymentMethods}
+        />
+      ),
+    })
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -742,13 +630,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           onClose={() => setShowAddPaymentPanel(false)}
         />
       )}
-
-      <NoPaymentMethodsDialog
-        isOpen={showPaymentMethodDialog}
-        onClose={() => setShowPaymentMethodDialog(false)}
-        sellerPaymentMethods={sellerPaymentMethods}
-        onAddPaymentMethod={handleAddPaymentMethodClick}
-      />
 
       {ad && (
         <RateChangeConfirmation
