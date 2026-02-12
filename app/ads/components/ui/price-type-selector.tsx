@@ -119,22 +119,12 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             </Drawer>
           ) : (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
-              <SelectTrigger asChild>
-                {triggerButton}
+              <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
+                <SelectValue placeholder="Select rate type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="fixed">
-                  <div className="flex flex-col">
-                    <span>Fixed</span>
-                    <span className="text-xs text-grayscale-text-muted">Set a constant rate, unaffected by market fluctuations.</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="float">
-                  <div className="flex flex-col">
-                    <span>Floating</span>
-                    <span className="text-xs text-grayscale-text-muted">Set a rate that changes with market movements.</span>
-                  </div>
-                </SelectItem>
+                <SelectItem value="fixed">Fixed</SelectItem>
+                <SelectItem value="float">Floating</SelectItem>
               </SelectContent>
             </Select>
           )
