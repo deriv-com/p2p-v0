@@ -21,7 +21,7 @@ import { type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useCreateAd, useUpdateAd, useSettings } from "@/hooks/use-api-queries"
+import { useCreateAd, useUpdateAd, useSettings, useUserPaymentMethods } from "@/hooks/use-api-queries"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -73,20 +73,14 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
   const { data: settingsData, isLoading: isLoadingSettings } = useSettings()
+  const { data: userPaymentMethodsData, refetch: refetchUserPaymentMethods } = useUserPaymentMethods()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
   const fetchPaymentMethodsRef = useRef(false)
 
   const refetchPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-      if (!response?.error) {
-        setUserPaymentMethods(response || [])
-      }
-    } catch (error) {
-      console.error("Error fetching user payment methods:", error)
-    }
+    await refetchUserPaymentMethods()
   }
 
   const isLoadingCountries = isLoadingSettings
@@ -108,15 +102,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     if (fetchPaymentMethodsRef.current) return
     fetchPaymentMethodsRef.current = true
     
-    const fetchPaymentMethods = async () => {
-      try {
-        const response = await ProfileAPI.getUserPaymentMethods()
-        if (!response?.error) {
-          setUserPaymentMethods(response || [])
-        }
-      } catch (error) {
-        console.error("Error fetching user payment methods:", error)
-      }
+    if (userPaymentMethodsData) {
+      setUserPaymentMethods(userPaymentMethodsData || [])
     }
 
     const fetchAvailableMethods = async () => {
@@ -128,9 +115,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
     }
 
-    fetchPaymentMethods()
     fetchAvailableMethods()
-  }, [])
+  }, [userPaymentMethodsData])
 
   useEffect(() => {
     if (!settingsData) return

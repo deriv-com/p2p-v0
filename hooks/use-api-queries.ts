@@ -33,6 +33,7 @@ export const queryKeys = {
     socketToken: () => [...AUTH_KEYS, 'socket-token'] as const,
     advertStats: (currency: string) => [...AUTH_KEYS, 'advert-stats', currency] as const,
     currencies: () => [...AUTH_KEYS, 'currencies'] as const,
+    userPaymentMethods: () => [...AUTH_KEYS, 'user-payment-methods'] as const,
   },
 
   // Buy/Sell queries
@@ -158,6 +159,15 @@ export function useCurrencies() {
     queryKey: queryKeys.auth.currencies(),
     queryFn: () => AuthAPI.getCurrencies(),
     staleTime: 1000 * 60 * 2, // 2 minutes
+  })
+}
+
+export function useUserPaymentMethods(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.auth.userPaymentMethods(),
+    queryFn: () => ProfileAPI.getUserPaymentMethods(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled,
   })
 }
 
