@@ -78,6 +78,17 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
   const fetchPaymentMethodsRef = useRef(false)
 
+  const refetchPaymentMethods = async () => {
+    try {
+      const response = await ProfileAPI.getUserPaymentMethods()
+      if (!response?.error) {
+        setUserPaymentMethods(response || [])
+      }
+    } catch (error) {
+      console.error("Error fetching user payment methods:", error)
+    }
+  }
+
   const isLoadingCountries = isLoadingSettings
 
   const steps = [
@@ -639,7 +650,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
                 userPaymentMethods={userPaymentMethods}
                 availablePaymentMethods={availablePaymentMethods}
-                onRefetchPaymentMethods={fetchUserPaymentMethods}
+                onRefetchPaymentMethods={refetchPaymentMethods}
               />
             ) : (
               <div className="space-y-6">
