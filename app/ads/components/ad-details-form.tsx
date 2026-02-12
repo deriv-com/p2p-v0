@@ -68,7 +68,6 @@ export default function AdDetailsForm({
   const [isFloatingRateEnabled, setIsFloatingRateEnabled] = useState(false)
   const [marketPrice, setMarketPrice] = useState<number | null>(null)
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
-  const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
   const [buyCurrencyOpen, setBuyCurrencyOpen] = useState(false)
   const [forCurrencyOpen, setForCurrencyOpen] = useState(false)
 
