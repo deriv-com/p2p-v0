@@ -157,8 +157,6 @@ export default function AdDetailsForm({
         }
       } catch (error) {
         setPriceRange({ lowestPrice: null, highestPrice: null })
-      } finally {
-        setIsLoadingPriceRange(false)
       }
     }
 
