@@ -119,7 +119,9 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         ) : (
           marketPrice && isFloatingRateEnabled && (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
-              {triggerButton}
+              <SelectTrigger asChild>
+                {triggerButton}
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="fixed">
                   <div className="flex flex-col">
