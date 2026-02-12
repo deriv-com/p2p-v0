@@ -44,11 +44,10 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
-          value === "fixed"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
             ? "border-black"
             : "border-grayscale-500"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
@@ -61,11 +60,10 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
       <Label
         htmlFor="float"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
-          value === "float"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
             ? "border-black"
             : "border-grayscale-500"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Floating</div>
@@ -81,7 +79,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
   return (
     <TooltipProvider>
       <div className="space-y-4">
-        {!marketPrice || !isFloatingRateEnabled ? 
+        {!marketPrice || !isFloatingRateEnabled ?
           (
             <div className="flex items-center">
               <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
@@ -126,7 +124,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="fixed">
                   <div className="flex flex-col">
                     <span>Fixed</span>
-                    <span className="text-xs text-grayscale-text-muted">Set a constant rate, unaffected by market fluctuations.</span>
+                    <span className="text-xs text-grayscale-200">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float">
