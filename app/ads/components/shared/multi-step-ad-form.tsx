@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
@@ -93,36 +93,33 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       .replace(/[^a-z0-9_]/g, "")
   }
 
-  const fetchUserPaymentMethods = useCallback(async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      setUserPaymentMethods(response || [])
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }, [])
-
-  const fetchAvailablePaymentMethods = useCallback(async () => {
-    try {
-      const methods = await BuySellAPI.getPaymentMethods()
-      setAvailablePaymentMethods(methods || [])
-    } catch (error) {
-      console.error("Error fetching available payment methods:", error)
-    }
-  }, [])
-
   useEffect(() => {
     if (fetchPaymentMethodsRef.current) return
     fetchPaymentMethodsRef.current = true
     
-    fetchUserPaymentMethods()
-    fetchAvailablePaymentMethods()
-  }, [fetchUserPaymentMethods, fetchAvailablePaymentMethods])
+    const fetchPaymentMethods = async () => {
+      try {
+        const response = await ProfileAPI.getUserPaymentMethods()
+        if (!response?.error) {
+          setUserPaymentMethods(response || [])
+        }
+      } catch (error) {
+        console.error("Error fetching user payment methods:", error)
+      }
+    }
+
+    const fetchAvailableMethods = async () => {
+      try {
+        const methods = await BuySellAPI.getPaymentMethods()
+        setAvailablePaymentMethods(methods || [])
+      } catch (error) {
+        console.error("Error fetching available payment methods:", error)
+      }
+    }
+
+    fetchPaymentMethods()
+    fetchAvailableMethods()
+  }, [])
 
   useEffect(() => {
     if (!settingsData) return

@@ -9,8 +9,7 @@ import { PriceTypeSelector } from "./ui/price-type-selector"
 import { FloatingRateInput } from "./ui/floating-rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
-import { useSettings } from "@/hooks/use-api-queries"
-import { getAdvertStatistics } from "@/services/api/api-auth"
+import { useSettings, useAdvertStats } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import { currencyFlagMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -76,6 +75,7 @@ export default function AdDetailsForm({
   const isMobile = useIsMobile()
   const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } = useWebSocketContext()
   const { data: settings } = useSettings()
+  const { data: advertStats, isLoading: isLoadingAdvertStats } = useAdvertStats(buyCurrency, !!buyCurrency)
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -105,56 +105,56 @@ export default function AdDetailsForm({
     const fetchPriceRange = async () => {
       setIsLoadingPriceRange(true)
       try {
-        const response = await getAdvertStatistics(buyCurrency)
+        if (!Array.isArray(advertStats)) {
+          setPriceRange({ lowestPrice: null, highestPrice: null })
+          setIsLoadingPriceRange(false)
+          return
+        }
 
-        if (Array.isArray(response)) {
-          const currencyStats = response.find((stat) => stat.payment_currency === forCurrency)
+        const currencyStats = advertStats.find((stat) => stat.payment_currency === forCurrency)
 
-          if (currencyStats) {
-            let lowestPrice = null
-            let highestPrice = null
+        if (currencyStats) {
+          let lowestPrice = null
+          let highestPrice = null
 
-            if (type === "buy") {
-              if (priceType === "fixed") {
-                lowestPrice = currencyStats.buy_fixed_minimum_rate
-                  ? Number.parseFloat(currencyStats.buy_fixed_minimum_rate)
-                  : null
-                highestPrice = currencyStats.buy_fixed_maximum_rate
-                  ? Number.parseFloat(currencyStats.buy_fixed_maximum_rate)
-                  : null
-              } else {
-                lowestPrice = currencyStats.buy_float_minimum_rate
-                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.buy_float_minimum_rate) / 100))
-                  : null
-                highestPrice = currencyStats.buy_float_maximum_rate
-                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.buy_float_maximum_rate) / 100))
-                  : null
-              }
+          if (type === "buy") {
+            if (priceType === "fixed") {
+              lowestPrice = currencyStats.buy_fixed_minimum_rate
+                ? Number.parseFloat(currencyStats.buy_fixed_minimum_rate)
+                : null
+              highestPrice = currencyStats.buy_fixed_maximum_rate
+                ? Number.parseFloat(currencyStats.buy_fixed_maximum_rate)
+                : null
             } else {
-              if (priceType === "fixed") {
-                lowestPrice = currencyStats.sell_fixed_minimum_rate
-                  ? Number.parseFloat(currencyStats.sell_fixed_minimum_rate)
-                  : null
-                highestPrice = currencyStats.sell_fixed_maximum_rate
-                  ? Number.parseFloat(currencyStats.sell_fixed_maximum_rate)
-                  : null
-              } else {
-                lowestPrice = currencyStats.sell_float_minimum_rate
-                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.sell_float_minimum_rate) / 100))
-                  : null
-                highestPrice = currencyStats.sell_float_maximum_rate
-                  ? (marketPrice * (1 + Number.parseFloat(currencyStats.sell_float_maximum_rate) / 100))
-                  : null
-              }
+              lowestPrice = currencyStats.buy_float_minimum_rate
+                ? (marketPrice * (1 + Number.parseFloat(currencyStats.buy_float_minimum_rate) / 100))
+                : null
+              highestPrice = currencyStats.buy_float_maximum_rate
+                ? (marketPrice * (1 + Number.parseFloat(currencyStats.buy_float_maximum_rate) / 100))
+                : null
             }
-
-            setPriceRange({
-              lowestPrice,
-              highestPrice,
-            })
           } else {
-            setPriceRange({ lowestPrice: null, highestPrice: null })
+            if (priceType === "fixed") {
+              lowestPrice = currencyStats.sell_fixed_minimum_rate
+                ? Number.parseFloat(currencyStats.sell_fixed_minimum_rate)
+                : null
+              highestPrice = currencyStats.sell_fixed_maximum_rate
+                ? Number.parseFloat(currencyStats.sell_fixed_maximum_rate)
+                : null
+            } else {
+              lowestPrice = currencyStats.sell_float_minimum_rate
+                ? (marketPrice * (1 + Number.parseFloat(currencyStats.sell_float_minimum_rate) / 100))
+                : null
+              highestPrice = currencyStats.sell_float_maximum_rate
+                ? (marketPrice * (1 + Number.parseFloat(currencyStats.sell_float_maximum_rate) / 100))
+                : null
+            }
           }
+
+          setPriceRange({
+            lowestPrice,
+            highestPrice,
+          })
         } else {
           setPriceRange({ lowestPrice: null, highestPrice: null })
         }
@@ -167,16 +167,16 @@ export default function AdDetailsForm({
 
     if (!buyCurrency || !forCurrency || !marketPrice) return
     fetchPriceRange()
-  }, [buyCurrency, forCurrency, priceType, type, marketPrice])
+  }, [buyCurrency, forCurrency, priceType, type, marketPrice, advertStats])
 
   useEffect(() => {
-    if (!isConnected) return
+    if (!isConnected || !buyCurrency) return
 
     joinExchangeRatesChannel(buyCurrency)
-  }, [isConnected])
+  }, [isConnected, buyCurrency, joinExchangeRatesChannel])
 
   useEffect(() => {
-    if (isLoadingInitialData) return
+    if (isLoadingInitialData || !isConnected || !buyCurrency) return
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
@@ -203,7 +203,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-  }, [isLoadingInitialData, buyCurrency, forCurrency])
+  }, [isLoadingInitialData, isConnected, buyCurrency, forCurrency, subscribe, requestExchangeRate])
 
   useEffect(() => {
     if (initialData) {
