@@ -119,9 +119,12 @@ const AdPaymentMethods = () => {
               return (
                 <Card
                   key={method.id}
-                  className={`cursor-pointer transition-all duration-200 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto ${
+                  className={`cursor-pointer transition-all duration-200 flex-shrink-0 w-64 md:w-auto ${
+                    isSelected ? "border rounded-lg border-slate-1200" : "border-0"
+                  } ${
                     isDisabled ? "bg-gray-100 opacity-50 cursor-not-allowed" : "bg-grayscale-300"
-                  }`}
+                  } hover:shadow-md`}
+                  onClick={() => !isDisabled && handleCheckboxChange(method.id, !isSelected)}
                 >
                   <CardContent className="p-2">
                     <div className="flex items-center justify-between mb-3">

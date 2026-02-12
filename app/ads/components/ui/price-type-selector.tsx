@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export type PriceType = "fixed" | "float"
 
@@ -53,7 +53,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
           <div className="text-xs text-grayscale-text-muted">
-            Set a constant price, unaffected by market fluctuations.
+            Set a constant rate, unaffected by market fluctuations.
           </div>
         </div>
         <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
@@ -96,7 +96,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-white">Set a constant price, unaffected by market fluctuations.</p>
+                  <p className="text-white">Set a constant rate, unaffected by market fluctuations.</p>
                   <TooltipArrow className="fill-black" />
                 </TooltipContent>
               </Tooltip>
@@ -117,20 +117,27 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             </DrawerContent>
           </Drawer>
         ) : (
-          <Dialog open={open} onOpenChange={setOpen} className="sm:rounded-4xl">
-            <DialogTrigger asChild>{marketPrice && isFloatingRateEnabled && triggerButton}</DialogTrigger>
-            <DialogContent className="p-[32px] sm:rounded-[32px]">
-              <DialogHeader className="flex-row items-center justify-between mb-4">
-                <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
-                <DialogClose> 
-                  <Button variant="ghost" className="bg-slate-75 min-w-[48px] px-0 absolute right-[32px] top-4">
-                    <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
-                  </Button>
-                </DialogClose>
-              </DialogHeader>
-              {content}
-            </DialogContent>
-          </Dialog>
+          marketPrice && isFloatingRateEnabled && (
+            <Select value={value} onValueChange={handleSelect} disabled={disabled}>
+              <SelectTrigger asChild>
+                {triggerButton}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fixed">
+                  <div className="flex flex-col">
+                    <span>Fixed</span>
+                    <span className="text-xs text-grayscale-text-muted">Set a constant rate, unaffected by market fluctuations.</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="float">
+                  <div className="flex flex-col">
+                    <span>Floating</span>
+                    <span className="text-xs text-grayscale-text-muted">Set a rate that changes with market movements.</span>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          )
         )}
       </div>
     </TooltipProvider>
