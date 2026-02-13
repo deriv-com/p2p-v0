@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
-import { AdsAPI, ProfileAPI, BuySellAPI } from "@/services/api"
+import { AdsAPI, ProfileAPI } from "@/services/api"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
@@ -21,7 +21,7 @@ import { type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useCreateAd, useUpdateAd, useSettings, useUserPaymentMethods } from "@/hooks/use-api-queries"
+import { useCreateAd, useUpdateAd, useSettings, useUserPaymentMethods, usePaymentMethods } from "@/hooks/use-api-queries"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -74,6 +74,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const updateAdMutation = useUpdateAd()
   const { data: settingsData, isLoading: isLoadingSettings } = useSettings()
   const { data: userPaymentMethodsData, refetch: refetchUserPaymentMethods } = useUserPaymentMethods()
+  const { data: paymentMethodsData } = usePaymentMethods()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
@@ -98,17 +99,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       setUserPaymentMethods(userPaymentMethodsData || [])
     }
 
-    const fetchAvailableMethods = async () => {
-      try {
-        const methods = await BuySellAPI.getPaymentMethods()
-        setAvailablePaymentMethods(methods || [])
-      } catch (error) {
-        console.error("Error fetching available payment methods:", error)
-      }
+    if (paymentMethodsData && Array.isArray(paymentMethodsData)) {
+      setAvailablePaymentMethods(paymentMethodsData || [])
     }
-
-    fetchAvailableMethods()
-  }, [userPaymentMethodsData])
+  }, [userPaymentMethodsData, paymentMethodsData])
 
   useEffect(() => {
     if (!settingsData) return
