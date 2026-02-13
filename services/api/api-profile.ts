@@ -242,7 +242,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
   }
 }
 
-export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
+export async function getUserPaymentMethods(): Promise<{ data: PaymentMethod[] }> {
   try {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
@@ -255,7 +255,7 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
     }
 
     const result = await response.json()
-    return result.data || []
+    return { data: result.data || [] }
   } catch (error) {
     throw error
   }

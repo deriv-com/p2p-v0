@@ -29,7 +29,6 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
-  const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
@@ -86,7 +85,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       })
 
       setShowAddPaymentPanel(false)
-      setRefreshKey((prev) => prev + 1)
     } catch (error: any) {
       let title = t("paymentMethod.unableToAdd")
       let description = t("paymentMethod.addError")
@@ -201,7 +199,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
                   )}
                   <PaymentMethodsTab
-                    key={refreshKey}
                     onAddPaymentMethod={handleShowAddPaymentMethod}
                     onPaymentMethodsCountChange={setPaymentMethodsCount}
                   />
@@ -411,7 +408,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   </div>
                 )}
                 <PaymentMethodsTab
-                  key={refreshKey}
                   onAddPaymentMethod={handleShowAddPaymentMethod}
                   onPaymentMethodsCountChange={setPaymentMethodsCount}
                 />
