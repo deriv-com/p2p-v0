@@ -1,16 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
-import { useAddPaymentMethod } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
   id: number
@@ -23,29 +22,19 @@ interface PaymentMethod {
 }
 
 const AdPaymentMethods = () => {
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
-  const [isLoading, setIsLoading] = useState(true)
   const { showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
 
-  // Use React Query hook for adding payment methods
+  // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
+  const { data: paymentMethodsResponse, isLoading } = useUserPaymentMethods(true)
 
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      try {
-        const data = await ProfileAPI.getUserPaymentMethods()
-        setPaymentMethods(data)
-      } catch (error) {
-        setPaymentMethods([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchPaymentMethods()
-  }, [])
+  // Transform API response to PaymentMethod format
+  const paymentMethods = useMemo(() => {
+    if (!paymentMethodsResponse?.data) return []
+    return paymentMethodsResponse.data
+  }, [paymentMethodsResponse?.data])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
     if (checked && selectedPaymentMethodIds.length >= 3) {
@@ -58,9 +47,6 @@ const AdPaymentMethods = () => {
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       await addPaymentMethod.mutateAsync({ method, fields })
-
-      const data = await ProfileAPI.getUserPaymentMethods()
-      setPaymentMethods(data)
       setShowAddPaymentPanel(false)
     } catch (error: any) {
       let title = "Unable to add payment method"
