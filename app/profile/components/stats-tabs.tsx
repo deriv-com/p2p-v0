@@ -18,7 +18,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useAddPaymentMethod } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
 
 interface StatsTabsProps {
   stats?: any
@@ -29,7 +29,6 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
-  const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
@@ -51,6 +50,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
 
   // Use React Query hook for adding payment methods
   const addPaymentMethod = useAddPaymentMethod()
+  const { refetch: refetchPaymentMethods } = useUserPaymentMethods(!!userId)
 
   const helpCentreUrl =
     locale != "en"
@@ -73,6 +73,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       await addPaymentMethod.mutateAsync({ method, fields })
+      await refetchPaymentMethods()
 
       toast({
         description: (
@@ -86,7 +87,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       })
 
       setShowAddPaymentPanel(false)
-      setRefreshKey((prev) => prev + 1)
     } catch (error: any) {
       let title = t("paymentMethod.unableToAdd")
       let description = t("paymentMethod.addError")
@@ -201,7 +201,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
                   )}
                   <PaymentMethodsTab
-                    key={refreshKey}
                     onAddPaymentMethod={handleShowAddPaymentMethod}
                     onPaymentMethodsCountChange={setPaymentMethodsCount}
                   />
@@ -411,7 +410,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   </div>
                 )}
                 <PaymentMethodsTab
-                  key={refreshKey}
                   onAddPaymentMethod={handleShowAddPaymentMethod}
                   onPaymentMethodsCountChange={setPaymentMethodsCount}
                 />
