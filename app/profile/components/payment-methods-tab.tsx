@@ -208,23 +208,6 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       })
     }
   }
-        }
-        showAlert({
-          title: t("profile.cannotDeletePaymentMethod"),
-          description: errorMessage,
-          confirmText: t("orderDetails.gotIt"),
-          type: "error",
-        })
-      }
-    } catch (error) {
-      showAlert({
-        title: t("profile.cannotDeletePaymentMethod"),
-        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: t("orderDetails.gotIt"),
-        type: "error",
-      })
-    }
-  }
 
   const bankTransfers = paymentMethods.filter((method) => method.category === "bank_transfer")
   const eWallets = paymentMethods.filter((method) => method.category === "e_wallet")
