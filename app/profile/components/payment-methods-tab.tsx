@@ -121,6 +121,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       }
 
       await updatePaymentMethod.mutateAsync({ id, ...payload })
+      await refetch()
 
       toast({
         description: (
@@ -174,6 +175,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
   const confirmDeletePaymentMethod = async (id: string) => {
     try {
       await deletePaymentMethod.mutateAsync(id)
+      await refetch()
 
       toast({
         description: (
