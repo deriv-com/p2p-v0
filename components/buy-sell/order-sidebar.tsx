@@ -195,6 +195,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const [selectedPaymentMethodType, setSelectedPaymentMethodType] = useState<string | undefined>()
   const userData = useUserDataStore((state) => state.userData)
   const {
     joinExchangeRatesChannel,
@@ -280,6 +281,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }, [amount, ad, orderType, p2pBalance, t, marketRate])
 
   const handleShowPaymentSelection = () => {
+    if (userPaymentMethods.length === 0 && sellerPaymentMethods.length > 0) {
+      // If no user payment methods, open the form with the first seller's method pre-selected
+      setSelectedPaymentMethodType(sellerPaymentMethods[0].method)
+      setShowAddPaymentPanel(true)
+      return
+    }
     showAlert({
       title: t("paymentMethod.title"),
       description: (
@@ -645,7 +652,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           onAdd={handleAddPaymentMethod}
           isLoading={isAddingPaymentMethod}
           allowedPaymentMethods={ad?.payment_methods}
-          onClose={() => setShowAddPaymentPanel(false)}
+          onClose={() => {
+            setShowAddPaymentPanel(false)
+            setSelectedPaymentMethodType(undefined)
+          }}
+          selectedMethod={selectedPaymentMethodType}
         />
       )}
 
