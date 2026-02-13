@@ -78,7 +78,7 @@ const PaymentSelectionContent = ({
 
   const handleAcceptedMethodClick = (method: SellerPaymentMethod) => {
     hideAlert()
-    onAddPaymentMethodWithType?.(method.type)
+    onAddPaymentMethodWithType?.(method.method)
   }
 
   return (
