@@ -198,7 +198,13 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
-    const hasNoAds = userAdverts.length > 0
+    const hasAds = userAdverts.length > 0
+    
+    // Only render if there are ads
+    if (!hasAds) {
+      return null
+    }
+    
     return (
       <div className="flex items-center justify-self-end self-end flex-shrink-0">
         <Switch
@@ -206,7 +212,7 @@ export default function AdsPage() {
           checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
-          disabled={tempBanUntil || !hasNoAds}
+          disabled={!!tempBanUntil}
         />
         <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ml-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
