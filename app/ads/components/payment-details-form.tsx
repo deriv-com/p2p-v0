@@ -3,7 +3,6 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { useQueryClient } from "@tanstack/react-query"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Textarea } from "@/components/ui/textarea"
@@ -18,7 +17,7 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { queryKeys } from "@/lib/query-keys"
+import { useAddPaymentMethod } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
   display_name: string
@@ -380,13 +379,12 @@ export default function PaymentDetailsForm({
 }: PaymentDetailsFormProps) {
   const { t } = useTranslations()
   const isMobile = useIsMobile()
-  const queryClient = useQueryClient()
+  const { mutateAsync: addPaymentMethod, isPending: isAddingPaymentMethod } = useAddPaymentMethod()
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
   const [instructions, setInstructions] = useState(initialData.instructions || "")
   const [touched, setTouched] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
-  const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [showFullPageModal, setShowFullPageModal] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
@@ -457,15 +455,9 @@ export default function PaymentDetailsForm({
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
-      setIsAddingPaymentMethod(true)
-      const response = await ProfileAPI.addPaymentMethod(method, fields)
+      const response = await addPaymentMethod({ method, fields })
 
       if (response.success) {
-        // Invalidate the query cache to force a fresh fetch
-        await queryClient.invalidateQueries({
-          queryKey: queryKeys.auth.userPaymentMethods(),
-        })
-        // Wait a bit for the cache to be invalidated, then close the panel
         setShowAddPaymentPanel(false)
       } else {
         let title = "Unable to add payment method"
@@ -484,8 +476,6 @@ export default function PaymentDetailsForm({
       }
     } catch (error) {
       console.log(error)
-    } finally {
-      setIsAddingPaymentMethod(false)
     }
   }
 

@@ -171,6 +171,24 @@ export function useUserPaymentMethods(enabled = true) {
   })
 }
 
+export function useAddPaymentMethod() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ method, fields }: { method: string; fields: Record<string, string> }) => {
+      const result = await ProfileAPI.addPaymentMethod(method, fields)
+      if (!result.success && result.errors && result.errors.length > 0) {
+        const error: any = new Error(result.errors[0].message || 'Failed to add payment method')
+        error.errors = result.errors
+        throw error
+      }
+      return result
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
+    },
+  })
+}
+
 // Ads Hooks
 export function useUserAdverts(showInactive?: boolean, enabled = true) {
   return useQuery({
