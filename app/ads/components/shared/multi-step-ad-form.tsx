@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
@@ -21,7 +21,7 @@ import { type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useCreateAd, useUpdateAd, useSettings } from "@/hooks/use-api-queries"
+import { useCreateAd, useUpdateAd, useSettings, useUserPaymentMethods } from "@/hooks/use-api-queries"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -73,10 +73,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
   const { data: settingsData, isLoading: isLoadingSettings } = useSettings()
+  const { data: userPaymentMethodsData, refetch: refetchUserPaymentMethods } = useUserPaymentMethods()
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
-  const fetchPaymentMethodsRef = useRef(false)
 
   const isLoadingCountries = isLoadingSettings
 
@@ -93,36 +93,22 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       .replace(/[^a-z0-9_]/g, "")
   }
 
-  const fetchUserPaymentMethods = useCallback(async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      setUserPaymentMethods(response || [])
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }, [])
-
-  const fetchAvailablePaymentMethods = useCallback(async () => {
-    try {
-      const methods = await BuySellAPI.getPaymentMethods()
-      setAvailablePaymentMethods(methods || [])
-    } catch (error) {
-      console.error("Error fetching available payment methods:", error)
-    }
-  }, [])
-
   useEffect(() => {
-    if (fetchPaymentMethodsRef.current) return
-    fetchPaymentMethodsRef.current = true
-    
-    fetchUserPaymentMethods()
-    fetchAvailablePaymentMethods()
-  }, [fetchUserPaymentMethods, fetchAvailablePaymentMethods])
+    if (userPaymentMethodsData) {
+      setUserPaymentMethods(userPaymentMethodsData || [])
+    }
+
+    const fetchAvailableMethods = async () => {
+      try {
+        const methods = await BuySellAPI.getPaymentMethods()
+        setAvailablePaymentMethods(methods || [])
+      } catch (error) {
+        console.error("Error fetching available payment methods:", error)
+      }
+    }
+
+    fetchAvailableMethods()
+  }, [])
 
   useEffect(() => {
     if (!settingsData) return
@@ -642,7 +628,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
                 userPaymentMethods={userPaymentMethods}
                 availablePaymentMethods={availablePaymentMethods}
-                onRefetchPaymentMethods={fetchUserPaymentMethods}
+                onRefetchPaymentMethods={refetchUserPaymentMethods}
               />
             ) : (
               <div className="space-y-6">

@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react"
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import type { WebSocketMessage } from "@/lib/websocket-message"
 import type { WebSocketOptions } from "@/lib/websocket-options"
@@ -319,61 +319,61 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
   }, [])
 
-  const joinChannel = (channel: string, id: number) => {
+  const joinChannel = useCallback((channel: string, id: number) => {
     wsClientRef.current?.joinChannel(channel, id)
-  }
+  }, [])
 
-  const leaveChannel = (channel: string) => {
+  const leaveChannel = useCallback((channel: string) => {
     wsClientRef.current?.leaveChannel(channel)
-  }
+  }, [])
 
-  const getChatHistory = (channel: string, orderId: string) => {
+  const getChatHistory = useCallback((channel: string, orderId: string) => {
     wsClientRef.current?.getChatHistory(channel, orderId)
-  }
+  }, [])
 
-  const subscribe = (callback: (data: any) => void) => {
+  const subscribe = useCallback((callback: (data: any) => void) => {
     subscribersRef.current.add(callback)
     return () => {
       subscribersRef.current.delete(callback)
     }
-  }
+  }, [])
 
-  const reconnect = () => {
+  const reconnect = useCallback(() => {
     if (wsClientRef.current) {
       wsClientRef.current.disconnect()
       wsClientRef.current.connect().catch((error) => {
         console.error("Failed to reconnect WebSocket:", error)
       })
     }
-  }
+  }, [])
 
-  const subscribeToUserUpdates = () => {
+  const subscribeToUserUpdates = useCallback(() => {
     wsClientRef.current?.subscribeToUserUpdates()
-  }
+  }, [])
 
-  const unsubscribeFromUserUpdates = () => {
+  const unsubscribeFromUserUpdates = useCallback(() => {
     wsClientRef.current?.unsubscribeFromUserUpdates()
-  }
+  }, [])
 
-  const joinExchangeRatesChannel = (buyCurrency: string, forCurrency: string) => {
+  const joinExchangeRatesChannel = useCallback((buyCurrency: string, forCurrency: string) => {
     wsClientRef.current?.joinExchangeRatesChannel(buyCurrency, forCurrency)
-  }
+  }, [])
 
-  const leaveExchangeRatesChannel = (buyCurrency: string, forCurrency: string) => {
+  const leaveExchangeRatesChannel = useCallback((buyCurrency: string, forCurrency: string) => {
     wsClientRef.current?.leaveExchangeRatesChannel(buyCurrency, forCurrency)
-  }
+  }, [])
 
-  const requestExchangeRate = (buyCurrency: string, forCurrency: string) => {
+  const requestExchangeRate = useCallback((buyCurrency: string, forCurrency: string) => {
     wsClientRef.current?.requestExchangeRate(buyCurrency, forCurrency)
-  }
+  }, [])
 
-  const joinAdvertsChannel = (accountCurrency: string, localCurrency: string, advertType: string) => {
+  const joinAdvertsChannel = useCallback((accountCurrency: string, localCurrency: string, advertType: string) => {
     wsClientRef.current?.joinAdvertsChannel(accountCurrency, localCurrency, advertType)
-  }
+  }, [])
 
-  const leaveAdvertsChannel = (accountCurrency: string, localCurrency: string, advertType: string) => {
+  const leaveAdvertsChannel = useCallback((accountCurrency: string, localCurrency: string, advertType: string) => {
     wsClientRef.current?.leaveAdvertsChannel(accountCurrency, localCurrency, advertType)
-  }
+  }, [])
 
   const value: WebSocketContextType = {
     isConnected,
