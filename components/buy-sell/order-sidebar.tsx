@@ -17,6 +17,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useAddPaymentMethod } from "@/hooks/use-api-queries"
 import RateChangeConfirmation from "./rate-change-confirmation"
 
 interface OrderSidebarProps {
@@ -191,7 +192,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
   const [sellerPaymentMethods, setSellerPaymentMethods] = useState<SellerPaymentMethod[]>([])
-  const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
@@ -207,6 +207,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
+
+  // Use React Query hook for adding payment methods
+  const addPaymentMethod = useAddPaymentMethod()
 
   useEffect(() => {
     if (
@@ -392,31 +395,23 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
-      setIsAddingPaymentMethod(true)
-      const response = await ProfileAPI.addPaymentMethod(method, fields)
+      await addPaymentMethod.mutateAsync({ method, fields })
+      await fetchUserPaymentMethods()
+      setShowAddPaymentPanel(false)
+    } catch (error: any) {
+      let title = t("paymentMethod.unableToAdd")
+      let description = t("paymentMethod.addError")
 
-      if (response.success) {
-        await fetchUserPaymentMethods()
-        setShowAddPaymentPanel(false)
-      } else {
-        let title = t("paymentMethod.unableToAdd")
-        let description = t("paymentMethod.addError")
-
-        if (response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
-          title = t("paymentMethod.duplicateMethod")
-          description = t("paymentMethod.duplicateMethodDescription")
-        }
-        showAlert({
-          title,
-          description,
-          confirmText: t("common.ok"),
-          type: "warning",
-        })
+      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
+        title = t("paymentMethod.duplicateMethod")
+        description = t("paymentMethod.duplicateMethodDescription")
       }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsAddingPaymentMethod(false)
+      showAlert({
+        title,
+        description,
+        confirmText: t("common.ok"),
+        type: "warning",
+      })
     }
   }
 
@@ -645,7 +640,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       {showAddPaymentPanel && (
         <AddPaymentMethodPanel
           onAdd={handleAddPaymentMethod}
-          isLoading={isAddingPaymentMethod}
+          isLoading={addPaymentMethod.isPending}
           allowedPaymentMethods={ad?.payment_methods}
           onClose={() => {
             setShowAddPaymentPanel(false)
