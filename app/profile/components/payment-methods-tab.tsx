@@ -411,7 +411,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
           paymentMethod={editPanel.paymentMethod}
           onClose={() => setEditPanel({ show: false, paymentMethod: null })}
           onSave={handleSavePaymentMethod}
-          isLoading={isEditing}
+          isLoading={updatePaymentMethod.isPending}
         />
       )}
     </div>
