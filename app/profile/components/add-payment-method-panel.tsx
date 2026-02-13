@@ -402,7 +402,7 @@ export default function AddPaymentMethodPanel({
 
   if (onClose) {
     return (
-      <PanelWrapper onBack={handleBackToMethodList} onClose={onClose}>
+      <PanelWrapper onBack={!selectedMethodProp ? handleBackToMethodList : undefined} onClose={onClose}>
         {formContent}
       </PanelWrapper>
     )
