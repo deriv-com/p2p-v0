@@ -280,10 +280,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }, [amount, ad, orderType, p2pBalance, t, marketRate])
 
   const handleShowPaymentSelection = () => {
-    if (userPaymentMethods.length === 0) {
-      setShowAddPaymentPanel(true)
-      return
-    }
     showAlert({
       title: t("paymentMethod.title"),
       description: (
