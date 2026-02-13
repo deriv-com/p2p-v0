@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { CustomShimmer } from "./ui/custom-shimmer"
-import { ProfileAPI } from "@/services/api"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
@@ -14,8 +13,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useUserPaymentMethods } from "@/hooks/use-api-queries"
-import { useQueryClient } from "@tanstack/react-query"
+import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
   id: string
@@ -37,16 +35,16 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
   const userId = useUserDataStore((state) => state.userId)
   const { toast } = useToast()
   const { showDeleteDialog, showAlert } = useAlertDialog()
-  const queryClient = useQueryClient()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
     paymentMethod: null as PaymentMethod | null,
   })
-  const [isEditing, setIsEditing] = useState(false)
 
-  // Use React Query hook to fetch payment methods
+  // Use React Query hooks
   const { data: methodsResponse, isLoading, error, refetch } = useUserPaymentMethods(!!userId)
+  const updatePaymentMethod = useUpdatePaymentMethod()
+  const deletePaymentMethod = useDeletePaymentMethod()
 
   // Transform API response to PaymentMethod format
   const paymentMethods = useMemo(() => {
@@ -115,8 +113,6 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
 
   const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
     try {
-      setIsEditing(true)
-
       const paymentMethod = paymentMethods.find((m) => m.id === id)
 
       const payload = {
@@ -124,55 +120,42 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         fields: { ...fields },
       }
 
-      const result = await ProfileAPI.updatePaymentMethod(id, payload)
+      await updatePaymentMethod.mutateAsync({ id, ...payload })
 
-      if (result.success) {
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{t("profile.paymentMethodUpdated")}</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
-
-        // Invalidate and refetch payment methods
-        queryClient.invalidateQueries({ queryKey: ['api', 'auth', 'user-payment-methods'] })
-      } else {
-        let errorMessage = t("profile.unableToUpdatePaymentMethod")
-
-        if (result.errors && result.errors.length > 0) {
-          const errorCode = result.errors[0].code
-
-          if (errorCode === "PaymentMethodInUseByOrder") {
-            errorMessage = t("profile.paymentMethodInUseByOrder")
-          } else if (result.errors[0].message) {
-            errorMessage = result.errors[0].message
-          }
-        }
-
-        showAlert({
-          title: t("profile.cannotUpdatePaymentMethod"),
-          description: errorMessage,
-          confirmText: t("orderDetails.gotIt"),
-          type: "error",
-        })
-      }
-    } catch (error) {
-      showAlert({
-        title: t("profile.cannotUpdatePaymentMethod"),
-        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: t("orderDetails.gotIt"),
-        type: "error",
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>{t("profile.paymentMethodUpdated")}</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
       })
-    } finally {
+
       setEditPanel({
         show: false,
         paymentMethod: null,
       })
-      setIsEditing(false)
+    } catch (error: any) {
+      let errorMessage = t("profile.unableToUpdatePaymentMethod")
+
+      if (error.errors && error.errors.length > 0) {
+        const errorCode = error.errors[0].code
+
+        if (errorCode === "PaymentMethodInUseByOrder") {
+          errorMessage = t("profile.paymentMethodInUseByOrder")
+        } else if (error.errors[0].message) {
+          errorMessage = error.errors[0].message
+        }
+      }
+
+      showAlert({
+        title: t("profile.cannotUpdatePaymentMethod"),
+        description: errorMessage,
+        confirmText: t("orderDetails.gotIt"),
+        type: "error",
+      })
     }
   }
 
@@ -188,37 +171,43 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     })
   }
 
-  const confirmDeletePaymentMethod = async (id) => {
+  const confirmDeletePaymentMethod = async (id: string) => {
     try {
-      const result = await ProfileAPI.deletePaymentMethod(id)
+      await deletePaymentMethod.mutateAsync(id)
 
-      if (result.success) {
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{t("profile.paymentMethodDeleted")}</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
-        
-        // Invalidate and refetch payment methods
-        queryClient.invalidateQueries({ queryKey: ['api', 'auth', 'user-payment-methods'] })
-      } else {
-        let errorMessage = t("profile.unableToDeletePaymentMethod")
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>{t("profile.paymentMethodDeleted")}</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
+      })
+    } catch (error: any) {
+      let errorMessage = t("profile.unableToDeletePaymentMethod")
 
-        if (result.errors && result.errors.length > 0) {
-          const errorCode = result.errors[0].code
+      if (error.errors && error.errors.length > 0) {
+        const errorCode = error.errors[0].code
 
-          if (errorCode === "PaymentMethodInUseByOrder") {
-            errorMessage = t("profile.paymentMethodLinkedToOrder")
-          } else if (errorCode === "PaymentMethodInUseByAdvert") {
-            errorMessage = t("profile.paymentMethodLinkedToAd")
-          } else if (result.errors[0].message) {
-            errorMessage = result.errors[0].message
-          }
+        if (errorCode === "PaymentMethodInUseByOrder") {
+          errorMessage = t("profile.paymentMethodLinkedToOrder")
+        } else if (errorCode === "PaymentMethodInUseByAdvert") {
+          errorMessage = t("profile.paymentMethodLinkedToAd")
+        } else if (error.errors[0].message) {
+          errorMessage = error.errors[0].message
+        }
+      }
+
+      showAlert({
+        title: t("profile.cannotDeletePaymentMethod"),
+        description: errorMessage,
+        confirmText: t("orderDetails.gotIt"),
+        type: "error",
+      })
+    }
+  }
         }
         showAlert({
           title: t("profile.cannotDeletePaymentMethod"),

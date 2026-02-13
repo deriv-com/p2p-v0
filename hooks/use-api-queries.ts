@@ -189,6 +189,43 @@ export function useAddPaymentMethod() {
   })
 }
 
+export function useUpdatePaymentMethod() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, method, fields }: { id: string; method: string; fields: Record<string, string> }) => {
+      const result = await ProfileAPI.updatePaymentMethod(id, { method, fields })
+      if (!result.success && result.errors && result.errors.length > 0) {
+        const error: any = new Error(result.errors[0].message || 'Failed to update payment method')
+        error.errors = result.errors
+        throw error
+      }
+      return result
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
+    },
+  })
+}
+
+export function useDeletePaymentMethod() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const result = await ProfileAPI.deletePaymentMethod(id)
+      if (!result.success && result.errors && result.errors.length > 0) {
+        const error: any = new Error(result.errors[0].message || 'Failed to delete payment method')
+        error.errors = result.errors
+        throw error
+      }
+      return result
+    },
+    retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
+    },
+  })
+}
+
 // Ads Hooks
 export function useUserAdverts(showInactive?: boolean, enabled = true) {
   return useQuery({
