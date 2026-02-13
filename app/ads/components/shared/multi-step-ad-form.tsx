@@ -96,11 +96,12 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   useEffect(() => {
     if (userPaymentMethodsData) {
-      setUserPaymentMethods(userPaymentMethodsData || [])
+      setUserPaymentMethods(userPaymentMethodsData.data || [])
     }
 
-    if (paymentMethodsData && Array.isArray(paymentMethodsData)) {
-      setAvailablePaymentMethods(paymentMethodsData || [])
+    if (paymentMethodsData) {
+      const methods = Array.isArray(paymentMethodsData) ? paymentMethodsData : []
+      setAvailablePaymentMethods(methods)
     }
   }, [userPaymentMethodsData, paymentMethodsData])
 

@@ -48,6 +48,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
 
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
@@ -121,6 +122,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   const handleShare = (ad: Ad) => {
     setDrawerOpen(false)
+    setOpenDropdownId(null)
     setAdToShare(ad)
     setShowShareView(true)
   }
@@ -132,11 +134,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   const handleEdit = (ad: Ad) => {
     setDrawerOpen(false)
+    setOpenDropdownId(null)
     router.push(`/ads/edit/${ad.id}`)
   }
 
   const handleToggleStatus = async (ad: Ad) => {
     setDrawerOpen(false)
+    setOpenDropdownId(null)
     const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
     const isListed = !isActive
 
@@ -188,6 +192,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   const handleDelete = (adId: string) => {
     setDrawerOpen(false)
+    setOpenDropdownId(null)
     showDeleteDialog({
       title: t("myAds.deleteAdTitle"),
       description: t("myAds.deleteAdDescription"),
@@ -503,7 +508,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                               <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                             </Button>
                           ) : (
-                            <DropdownMenu>
+                            <DropdownMenu open={openDropdownId === ad.id} onOpenChange={(open) => setOpenDropdownId(open ? ad.id : null)}>
                               <DropdownMenuTrigger asChild>
                                 <Button
                                   variant="ghost"
