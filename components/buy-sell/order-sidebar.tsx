@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,7 +17,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { useAddPaymentMethod } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
 import RateChangeConfirmation from "./rate-change-confirmation"
 
 interface OrderSidebarProps {
@@ -208,8 +208,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
 
-  // Use React Query hook for adding payment methods
+  // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
+  const { data: paymentMethodsResponse } = useUserPaymentMethods(isOpen)
 
   useEffect(() => {
     if (
@@ -436,40 +437,31 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
 
-  const fetchUserPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
+  // Filter and transform user payment methods based on ad's accepted methods
+  const filteredPaymentMethods = useMemo(() => {
+    if (!paymentMethodsResponse?.data || !ad?.payment_methods) return []
 
-      if (response.error) {
-        return
-      }
+    const buyerAcceptedMethods = ad.payment_methods || []
+    return paymentMethodsResponse.data.filter((method: any) => {
+      return buyerAcceptedMethods.some(
+        (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
+      )
+    })
+  }, [paymentMethodsResponse?.data, ad?.payment_methods])
 
-      const buyerAcceptedMethods = ad?.payment_methods || []
-      const filteredMethods =
-        response?.filter((method: PaymentMethod) => {
-          return buyerAcceptedMethods.some(
-            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
-          )
-        }) || []
-
-      setUserPaymentMethods(filteredMethods)
-
-      // Convert seller's payment methods to SellerPaymentMethod format for display
-      const sellerMethods: SellerPaymentMethod[] = buyerAcceptedMethods.map((method: string) => ({
-        type: method.toLowerCase().includes("bank") ? "bank" : "ewallet",
-        method: method,
-      }))
-      setSellerPaymentMethods(sellerMethods)
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }
-
+  // Set user payment methods and seller payment methods
   useEffect(() => {
-    if (ad) {
-      fetchUserPaymentMethods()
+    if (filteredPaymentMethods.length > 0) {
+      setUserPaymentMethods(filteredPaymentMethods)
     }
-  }, [ad])
+
+    const buyerAcceptedMethods = ad?.payment_methods || []
+    const sellerMethods: SellerPaymentMethod[] = buyerAcceptedMethods.map((method: string) => ({
+      type: method.toLowerCase().includes("bank") ? "bank" : "ewallet",
+      method: method,
+    }))
+    setSellerPaymentMethods(sellerMethods)
+  }, [filteredPaymentMethods, ad?.payment_methods])
 
   if (!isOpen && !isAnimating) return null
 
