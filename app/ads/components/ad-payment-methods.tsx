@@ -10,6 +10,7 @@ import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
+import { useAddPaymentMethod } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
   id: number
@@ -25,9 +26,11 @@ const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
   const [isLoading, setIsLoading] = useState(true)
-  const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+
+  // Use React Query hook for adding payment methods
+  const addPaymentMethod = useAddPaymentMethod()
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -54,31 +57,25 @@ const AdPaymentMethods = () => {
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
-      setIsAddingMethod(true)
-      const result = await ProfileAPI.addPaymentMethod(method, fields)
+      await addPaymentMethod.mutateAsync({ method, fields })
 
-      if (result.success) {
-        const data = await ProfileAPI.getUserPaymentMethods()
-        setPaymentMethods(data)
-        setShowAddPaymentPanel(false)
-      } else {
-        let title = "Unable to add payment method"
-        let description = "There was an error when adding the payment method. Please try again."
+      const data = await ProfileAPI.getUserPaymentMethods()
+      setPaymentMethods(data)
+      setShowAddPaymentPanel(false)
+    } catch (error: any) {
+      let title = "Unable to add payment method"
+      let description = "There was an error when adding the payment method. Please try again."
 
-        if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
-          title = "Duplicate payment method"
-          description = "A payment method with the same values already exists. Add a new one."
-        }
-        showAlert({
-          title,
-          description,
-          confirmText: "OK",
-          type: "warning",
-        })
+      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
+        title = "Duplicate payment method"
+        description = "A payment method with the same values already exists. Add a new one."
       }
-    } catch (error) {
-    } finally {
-      setIsAddingMethod(false)
+      showAlert({
+        title,
+        description,
+        confirmText: "OK",
+        type: "warning",
+      })
     }
   }
 
@@ -174,7 +171,7 @@ const AdPaymentMethods = () => {
       {showAddPaymentPanel && (
         <AddPaymentMethodPanel
           onAdd={handleAddPaymentMethod}
-          isLoading={isAddingMethod}
+          isLoading={addPaymentMethod.isPending}
           onClose={() => setShowAddPaymentPanel(false)}
         />
       )}
