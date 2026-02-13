@@ -44,14 +44,14 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors ${value === "fixed"
-          ? "bg-black border-black text-white"
-          : "bg-grayscale-500 border-grayscale-500 text-slate-1200"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
+          ? "border-black"
+          : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base mb-1">Fixed</div>
-          <div className={`text-xs ${value === "fixed" ? "text-gray-300" : "text-grayscale-text-muted"}`}>
+          <div className="text-base mb-1 text-slate-1200">Fixed</div>
+          <div className="text-xs text-grayscale-text-muted">
             Set a constant rate, unaffected by market fluctuations.
           </div>
         </div>
@@ -60,14 +60,14 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
       <Label
         htmlFor="float"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors ${value === "float"
-          ? "bg-black border-black text-white"
-          : "bg-grayscale-500 border-grayscale-500 text-slate-1200"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
+          ? "border-black"
+          : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base mb-1">Floating</div>
-          <div className={`text-xs ${value === "float" ? "text-gray-300" : "text-grayscale-text-muted"}`}>
+          <div className="text-base text-slate-1200 mb-1">Floating</div>
+          <div className="text-xs text-grayscale-text-muted">
             Set a rate that changes with market movements.
           </div>
         </div>
