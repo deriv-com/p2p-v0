@@ -44,14 +44,14 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
-          ? "border-black"
-          : "border-grayscale-500"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors ${value === "fixed"
+          ? "bg-black border-black text-white"
+          : "bg-grayscale-500 border-grayscale-500 text-slate-1200"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base mb-1 text-slate-1200">Fixed</div>
-          <div className="text-xs text-grayscale-text-muted">
+          <div className="text-base mb-1">Fixed</div>
+          <div className={`text-xs ${value === "fixed" ? "text-gray-300" : "text-grayscale-text-muted"}`}>
             Set a constant rate, unaffected by market fluctuations.
           </div>
         </div>
@@ -60,14 +60,14 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
       <Label
         htmlFor="float"
-        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
-          ? "border-black"
-          : "border-grayscale-500"
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors ${value === "float"
+          ? "bg-black border-black text-white"
+          : "bg-grayscale-500 border-grayscale-500 text-slate-1200"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base text-slate-1200 mb-1">Floating</div>
-          <div className="text-xs text-grayscale-text-muted">
+          <div className="text-base mb-1">Floating</div>
+          <div className={`text-xs ${value === "float" ? "text-gray-300" : "text-grayscale-text-muted"}`}>
             Set a rate that changes with market movements.
           </div>
         </div>
@@ -120,18 +120,18 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fixed">
-                  <div className="flex flex-col group">
-                    <span className="text-slate-1200 group-data-[state=checked]:text-white">Fixed</span>
-                    <span className="text-xs text-grayscale-600 group-data-[state=checked]:text-white group-data-[state=checked]:opacity-72">Set a constant rate, unaffected by market fluctuations.</span>
-                  </div>
+              <SelectContent className="[&>*]:!p-0">
+                <SelectItem value="fixed" className="!py-0 !px-0">
+                  <label className="flex flex-col p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 border-grayscale-500 text-slate-1200 w-full data-[state=checked]:bg-black data-[state=checked]:border-black data-[state=checked]:text-white">
+                    <span>Fixed</span>
+                    <span className="text-xs text-grayscale-600 data-[state=checked]:text-gray-300">Set a constant rate, unaffected by market fluctuations.</span>
+                  </label>
                 </SelectItem>
-                <SelectItem value="float">
-                  <div className="flex flex-col group">
-                    <span className="text-slate-1200 group-data-[state=checked]:text-white">Floating</span>
-                    <span className="text-xs text-grayscale-600 group-data-[state=checked]:text-white group-data-[state=checked]:opacity-72">Set a rate that changes with market movements.</span>
-                  </div>
+                <SelectItem value="float" className="!py-0 !px-0">
+                  <label className="flex flex-col p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 border-grayscale-500 text-slate-1200 w-full data-[state=checked]:bg-black data-[state=checked]:border-black data-[state=checked]:text-white">
+                    <span>Floating</span>
+                    <span className="text-xs text-grayscale-600 data-[state=checked]:text-gray-300">Set a rate that changes with market movements.</span>
+                  </label>
                 </SelectItem>
               </SelectContent>
             </Select>
