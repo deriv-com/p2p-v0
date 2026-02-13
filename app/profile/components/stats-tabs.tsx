@@ -18,7 +18,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod } from "@/hooks/use-api-queries"
 
 interface StatsTabsProps {
   stats?: any
@@ -50,7 +50,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
 
   // Use React Query hook for adding payment methods
   const addPaymentMethod = useAddPaymentMethod()
-  const { refetch: refetchPaymentMethods } = useUserPaymentMethods(!!userId)
 
   const helpCentreUrl =
     locale != "en"
@@ -73,7 +72,6 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       await addPaymentMethod.mutateAsync({ method, fields })
-      await refetchPaymentMethods()
 
       toast({
         description: (
