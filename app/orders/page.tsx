@@ -68,11 +68,11 @@ export default function OrdersPage() {
     ...(activeTab === "past" &&
       dateFilter !== "all" &&
       customDateRange.from && {
-        date_from: format(startOfDay(customDateRange.from), "yyyy-MM-dd"),
-        date_to: customDateRange.to
-          ? format(endOfDay(customDateRange.to), "yyyy-MM-dd")
-          : format(endOfDay(customDateRange.from), "yyyy-MM-dd"),
-      }),
+      date_from: format(startOfDay(customDateRange.from), "yyyy-MM-dd"),
+      date_to: customDateRange.to
+        ? format(endOfDay(customDateRange.to), "yyyy-MM-dd")
+        : format(endOfDay(customDateRange.from), "yyyy-MM-dd"),
+    }),
   }
 
   const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
@@ -425,7 +425,7 @@ export default function OrdersPage() {
               {activeTab === "active" ? (
                 <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} redirectToAds={true} redirectToMarket={true} />
               ) : (
-                <EmptyState title={t("orders.noPastOrders")} description={t("orders.noPastOrdersDescription")} />
+                <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noPastOrders")} description={t("orders.noPastOrdersDescription")} />
               )}
             </div>
           ) : (
