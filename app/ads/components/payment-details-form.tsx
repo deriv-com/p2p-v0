@@ -82,7 +82,7 @@ const FullPagePaymentSelection = ({
     return "id" in method ? method.id : method.method
   }
 
-  const filteredMethods = paymentMethods.filter((method) => {
+  const filteredMethods = (Array.isArray(paymentMethods) ? paymentMethods : []).filter((method) => {
     const displayName = method.display_name.toLowerCase()
     const query = searchQuery.toLowerCase()
     return displayName.includes(query)
