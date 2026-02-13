@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { ProfileAPI } from "@/services/api"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -19,6 +18,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useAddPaymentMethod } from "@/hooks/use-api-queries"
 
 interface StatsTabsProps {
   stats?: any
@@ -29,7 +29,6 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
-  const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
@@ -49,6 +48,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { t, locale } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
+
+  // Use React Query hook for adding payment methods
+  const addPaymentMethod = useAddPaymentMethod()
+
   const helpCentreUrl =
     locale != "en"
       ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
@@ -69,43 +72,35 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
-      setIsAddingPaymentMethod(true)
+      await addPaymentMethod.mutateAsync({ method, fields })
 
-      const result = await ProfileAPI.addPaymentMethod(method, fields)
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>{t("profile.paymentMethodAdded")}</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
+      })
 
-      if (result.success) {
-        setShowAddPaymentPanel(false)
+      setShowAddPaymentPanel(false)
+      setRefreshKey((prev) => prev + 1)
+    } catch (error: any) {
+      let title = t("paymentMethod.unableToAdd")
+      let description = t("paymentMethod.addError")
 
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{t("profile.paymentMethodAdded")}</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
-
-        setRefreshKey((prev) => prev + 1)
-      } else {
-        let title = t("paymentMethod.unableToAdd")
-        let description = t("paymentMethod.addError")
-
-        if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
-          title = t("paymentMethod.duplicateMethod")
-          description = t("paymentMethod.duplicateMethodDescription")
-        }
-        showAlert({
-          title,
-          description,
-          confirmText: t("common.ok"),
-          type: "warning",
-        })
+      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
+        title = t("paymentMethod.duplicateMethod")
+        description = t("paymentMethod.duplicateMethodDescription")
       }
-    } catch (error) {
-    } finally {
-      setIsAddingPaymentMethod(false)
+      showAlert({
+        title,
+        description,
+        confirmText: t("common.ok"),
+        type: "warning",
+      })
     }
   }
 
@@ -449,7 +444,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       {showAddPaymentPanel && (
         <AddPaymentMethodPanel
           onAdd={handleAddPaymentMethod}
-          isLoading={isAddingPaymentMethod}
+          isLoading={addPaymentMethod.isPending}
           onClose={() => setShowAddPaymentPanel(false)}
         />
       )}

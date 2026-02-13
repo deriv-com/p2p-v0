@@ -3,11 +3,9 @@
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
-import { ProfileAPI } from "@/services/api"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
@@ -15,6 +13,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
   id: string
@@ -34,9 +33,6 @@ interface PaymentMethodsTabProps {
 export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethodsCountChange }: PaymentMethodsTabProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
   const { showDeleteDialog, showAlert } = useAlertDialog()
 
@@ -44,84 +40,50 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     show: false,
     paymentMethod: null as PaymentMethod | null,
   })
-  const [isEditing, setIsEditing] = useState(false)
 
-  const fetchPaymentMethods = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
+  // Use React Query hooks
+  const { data: methodsResponse, isLoading, error, refetch } = useUserPaymentMethods(!!userId)
+  const updatePaymentMethod = useUpdatePaymentMethod()
+  const deletePaymentMethod = useDeletePaymentMethod()
 
-      const url = `${API.baseUrl}/user-payment-methods`
-      const headers = AUTH.getAuthHeader()
-      const response = await fetch(url, {
-        headers,
-        credentials: "include",
-        cache: "no-store",
-      })
+  // Transform API response to PaymentMethod format
+  const paymentMethods = useMemo(() => {
+    if (!methodsResponse?.data) return []
 
-      if (!response.ok) {
-        if (response.status == 401) {
-          setPaymentMethods([])
-          onPaymentMethodsCountChange?.(0)
-          return
-        } else {
-          throw new Error(`Error fetching payment methods: ${response.statusText}`)
-        }
+    return methodsResponse.data.map((method: any) => {
+      const methodType = method.method || ""
+
+      let category: "bank_transfer" | "e_wallet" | "other" = "other"
+
+      if (method.type === "bank") {
+        category = "bank_transfer"
+      } else if (method.type === "ewallet") {
+        category = "e_wallet"
       }
 
-      const responseText = await response.text()
-      let data
-
-      try {
-        data = JSON.parse(responseText)
-      } catch (e) {
-        console.error("Failed to parse payment methods response:", e)
-        data = { data: [] }
+      let instructions = ""
+      if (method.fields?.instructions?.value) {
+        instructions = method.fields.instructions.value
       }
 
-      const methodsData = data.data || []
+      const name = method.display_name || methodType.charAt(0).toUpperCase() + methodType.slice(1)
 
-      const transformedMethods = methodsData.map((method: any) => {
-        const methodType = method.method || ""
+      return {
+        id: String(method.id || ""),
+        name: name,
+        type: methodType,
+        category: category,
+        details: method.fields || {},
+        instructions: instructions,
+        isDefault: false,
+      }
+    })
+  }, [methodsResponse])
 
-        let category: "bank_transfer" | "e_wallet" | "other" = "other"
-
-        if (method.type === "bank") {
-          category = "bank_transfer"
-        } else if (method.type === "ewallet") {
-          category = "e_wallet"
-        }
-
-        let instructions = ""
-        if (method.fields?.instructions?.value) {
-          instructions = method.fields.instructions.value
-        }
-
-        const name = method.display_name || methodType.charAt(0).toUpperCase() + methodType.slice(1)
-
-        return {
-          id: String(method.id || ""),
-          name: name,
-          type: methodType,
-          category: category,
-          details: method.fields || {},
-          instructions: instructions,
-          isDefault: false,
-        }
-      })
-
-      setPaymentMethods(transformedMethods)
-      onPaymentMethodsCountChange?.(transformedMethods.length)
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to load payment methods")
-    } finally {
-      setIsLoading(false)
-    }
-  }, [onPaymentMethodsCountChange])
-
+  // Notify parent of count changes
   useEffect(() => {
-    fetchPaymentMethods()
-  }, [fetchPaymentMethods])
+    onPaymentMethodsCountChange?.(paymentMethods.length)
+  }, [paymentMethods.length, onPaymentMethodsCountChange])
 
   const handleEditPaymentMethod = (method: PaymentMethod) => {
     const transformedDetails: Record<string, { display_name: string; required: boolean; value: string }> = {}
@@ -151,8 +113,6 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
 
   const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
     try {
-      setIsEditing(true)
-
       const paymentMethod = paymentMethods.find((m) => m.id === id)
 
       const payload = {
@@ -160,56 +120,42 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         fields: { ...fields },
       }
 
-      const result = await ProfileAPI.updatePaymentMethod(id, payload)
+      await updatePaymentMethod.mutateAsync({ id, ...payload })
 
-      if (result.success) {
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{t("profile.paymentMethodUpdated")}</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
-
-        fetchPaymentMethods()
-      } else {
-        let errorMessage = t("profile.unableToUpdatePaymentMethod")
-
-        if (result.errors && result.errors.length > 0) {
-          const errorCode = result.errors[0].code
-
-          if (errorCode === "PaymentMethodInUseByOrder") {
-            errorMessage = t("profile.paymentMethodInUseByOrder")
-          } else if (result.errors[0].message) {
-            errorMessage = result.errors[0].message
-          }
-        }
-
-        showAlert({
-          title: t("profile.cannotUpdatePaymentMethod"),
-          description: errorMessage,
-          confirmText: t("orderDetails.gotIt"),
-          type: "error",
-        })
-      }
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
-
-      showAlert({
-        title: t("profile.cannotUpdatePaymentMethod"),
-        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: t("orderDetails.gotIt"),
-        type: "error",
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>{t("profile.paymentMethodUpdated")}</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
       })
-    } finally {
+
       setEditPanel({
         show: false,
         paymentMethod: null,
       })
-      setIsEditing(false)
+    } catch (error: any) {
+      let errorMessage = t("profile.unableToUpdatePaymentMethod")
+
+      if (error.errors && error.errors.length > 0) {
+        const errorCode = error.errors[0].code
+
+        if (errorCode === "PaymentMethodInUseByOrder") {
+          errorMessage = t("profile.paymentMethodInUseByOrder")
+        } else if (error.errors[0].message) {
+          errorMessage = error.errors[0].message
+        }
+      }
+
+      showAlert({
+        title: t("profile.cannotUpdatePaymentMethod"),
+        description: errorMessage,
+        confirmText: t("orderDetails.gotIt"),
+        type: "error",
+      })
     }
   }
 
@@ -225,49 +171,38 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     })
   }
 
-  const confirmDeletePaymentMethod = async (id) => {
+  const confirmDeletePaymentMethod = async (id: string) => {
     try {
-      const result = await ProfileAPI.deletePaymentMethod(id)
+      await deletePaymentMethod.mutateAsync(id)
 
-      if (result.success) {
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{t("profile.paymentMethodDeleted")}</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
-        fetchPaymentMethods()
-      } else {
-        let errorMessage = t("profile.unableToDeletePaymentMethod")
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>{t("profile.paymentMethodDeleted")}</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
+      })
+    } catch (error: any) {
+      let errorMessage = t("profile.unableToDeletePaymentMethod")
 
-        if (result.errors && result.errors.length > 0) {
-          const errorCode = result.errors[0].code
+      if (error.errors && error.errors.length > 0) {
+        const errorCode = error.errors[0].code
 
-          if (errorCode === "PaymentMethodInUseByOrder") {
-            errorMessage = t("profile.paymentMethodLinkedToOrder")
-          } else if (errorCode === "PaymentMethodInUseByAdvert") {
-            errorMessage = t("profile.paymentMethodLinkedToAd")
-          } else if (result.errors[0].message) {
-            errorMessage = result.errors[0].message
-          }
+        if (errorCode === "PaymentMethodInUseByOrder") {
+          errorMessage = t("profile.paymentMethodLinkedToOrder")
+        } else if (errorCode === "PaymentMethodInUseByAdvert") {
+          errorMessage = t("profile.paymentMethodLinkedToAd")
+        } else if (error.errors[0].message) {
+          errorMessage = error.errors[0].message
         }
-        showAlert({
-          title: t("profile.cannotDeletePaymentMethod"),
-          description: errorMessage,
-          confirmText: t("orderDetails.gotIt"),
-          type: "error",
-        })
       }
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       showAlert({
         title: t("profile.cannotDeletePaymentMethod"),
-        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        description: errorMessage,
         confirmText: t("orderDetails.gotIt"),
         type: "error",
       })
@@ -323,12 +258,13 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     )
   }
 
+  const errorMessage = error instanceof Error ? error.message : "Failed to load payment methods"
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
-        <p className="text-red-500 mb-4">{error}</p>
+        <p className="text-red-500 mb-4">{errorMessage}</p>
         <Button
-          onClick={fetchPaymentMethods}
+          onClick={() => refetch()}
           variant="primary"
           className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded"
         >
@@ -458,7 +394,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
           paymentMethod={editPanel.paymentMethod}
           onClose={() => setEditPanel({ show: false, paymentMethod: null })}
           onSave={handleSavePaymentMethod}
-          isLoading={isEditing}
+          isLoading={updatePaymentMethod.isPending}
         />
       )}
     </div>
