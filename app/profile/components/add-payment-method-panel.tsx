@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { getPaymentMethods } from "@/services/api/api-buy-sell"
+import { usePaymentMethods } from "@/hooks/use-api-queries"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
 import EmptyState from "@/components/empty-state"
@@ -40,39 +40,24 @@ export default function AddPaymentMethodPanel({
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [charCount, setCharCount] = useState(0)
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
-  const [isLoadingMethods, setIsLoadingMethods] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
 
   const { t } = useTranslations()
+  const { data: paymentMethods, isLoading: isLoadingMethods } = usePaymentMethods()
 
   useEffect(() => {
-    const fetchAvailablePaymentMethods = async () => {
-      try {
-        setIsLoadingMethods(true)
-        const response = await getPaymentMethods()
+    if (paymentMethods && Array.isArray(paymentMethods)) {
+      let methods = paymentMethods
 
-        let methods: AvailablePaymentMethod[] = []
-        if (response && response.data && Array.isArray(response.data)) {
-          methods = response.data
-        } else if (Array.isArray(response)) {
-          methods = response
-        }
-
-        if (allowedPaymentMethods && allowedPaymentMethods.length > 0) {
-          methods = methods.filter((method) =>
-            allowedPaymentMethods.some((allowed) => method.method.toLowerCase() === allowed.toLowerCase()),
-          )
-        }
-
-        setAvailablePaymentMethods(methods)
-      } catch (error) {
-      } finally {
-        setIsLoadingMethods(false)
+      if (allowedPaymentMethods && allowedPaymentMethods.length > 0) {
+        methods = methods.filter((method) =>
+          allowedPaymentMethods.some((allowed) => method.method.toLowerCase() === allowed.toLowerCase()),
+        )
       }
-    }
 
-    fetchAvailablePaymentMethods()
-  }, [allowedPaymentMethods])
+      setAvailablePaymentMethods(methods)
+    }
+  }, [paymentMethods, allowedPaymentMethods])
 
   useEffect(() => {
     setDetails({})
