@@ -115,12 +115,14 @@ const AdPaymentMethods = () => {
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
                         <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
-                      <Checkbox
-                        checked={isSelected}
-                        onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-                        disabled={isDisabled}
-                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
-                      />
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
+                          disabled={isDisabled}
+                          className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-1">
                       <div className="text-sm tracking-wide text-neutral-10">{displayDetails.primary}</div>

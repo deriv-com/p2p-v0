@@ -431,7 +431,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CLIENT_URL}/kyc-pii/v1/pii/identity`, {
       method: "GET",
       credentials: "include",
     })
