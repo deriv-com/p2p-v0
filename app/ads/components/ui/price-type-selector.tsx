@@ -120,15 +120,15 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent className="cursor-pointer">
-                <SelectItem value="fixed" className="[&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72">
-                  <div className="flex flex-col rounded-lg transition-all text-slate-1200 w-full hover:bg-black hover:border-black hover:[&>span:first-child]:text-white hover:[&>span:last-child]:text-white/72">
+              <SelectContent>
+                <SelectItem value="fixed" className="[&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72 cursor-pointer">
+                  <div className="flex flex-col rounded-lg">
                     <span className="text-base">Fixed</span>
                     <span className="text-xs text-grayscale-600">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="float" className="[&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72">
-                  <div className="flex flex-col rounded-lg transition-all text-slate-1200 w-full hover:bg-black hover:border-black hover:[&>span:first-child]:text-white hover:[&>span:last-child]:text-white/72">
+                <SelectItem value="float" className="[&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72 cursor-pointer">
+                  <div className="flex flex-col rounded-lg">
                     <span className="text-base">Floating</span>
                     <span className="text-xs text-grayscale-600">Set a rate that changes with market movements.</span>
                   </div>
