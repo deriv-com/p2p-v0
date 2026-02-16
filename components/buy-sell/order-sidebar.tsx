@@ -114,13 +114,11 @@ const PaymentSelectionContent = ({
           userPaymentMethods.map((method) => (
             <div
               key={method.id}
-              className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${
-                selectedPMs?.includes(method.id) ? "border-2 border-black" : ""
-              } ${
-                !selectedPMs?.includes(method.id) && selectedPMs?.length >= 3
+              className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${selectedPMs?.includes(method.id) ? "border border-black" : ""
+                } ${!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
-              }`}
+                }`}
               onClick={() => {
                 if (!(!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3)) {
                   handlePaymentMethodToggle(method.id)
