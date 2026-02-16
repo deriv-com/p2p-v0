@@ -10,7 +10,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.28.0",
     "@datadog/browser-logs": "latest",
     "@datadog/browser-rum": "latest",
     "@deriv-com/analytics": "1.34.0",
@@ -45,6 +44,7 @@
     "@radix-ui/react-toggle": "latest",
     "@radix-ui/react-toggle-group": "latest",
     "@radix-ui/react-tooltip": "latest",
+    "@tanstack/react-query": "^5.28.0",
     "@testing-library/dom": "latest",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
@@ -111,7 +111,8 @@
       "undici@>=7.0.0 <7.18.2": ">=7.18.2",
       "undici@>=4.5.0 <5.28.5": ">=5.28.5",
       "undici@<5.29.0": ">=5.29.0",
-      "undici@<6.23.0": ">=6.23.0"
+      "undici@<6.23.0": ">=6.23.0",
+      "qs@>=6.7.0 <=6.14.1": ">=6.14.2"
     }
   }
 }
