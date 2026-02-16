@@ -533,8 +533,8 @@ export const currencyFlagMapper = {
   BTN: "/icons/flag-bhutan.svg",
   SCR: "/icons/flag-seychelles.svg",
   MAD: "/icons/flag-morocco.svg",
-  STN: "/icons/flag-sao-tome-and-principe.svg",
-  ANG: "/icons/flag-netherlands-antilles.svg",
+  STN: "/icons/flag-sao-tome.svg",
+  ANG: "/icons/flag-netherland.svg",
   ISK: "/icons/flag-iceland.svg",
   DKK: "/icons/flag-denmark.svg",
   AUD: "/icons/flag-australia.svg",
@@ -560,7 +560,7 @@ export const currencyFlagMapper = {
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   const currentDomain = typeof window !== "undefined" ? window.location.hostname : ""
-  
+
   let domain = "deriv.com"
   if (currentDomain.includes("deriv.me")) {
     domain = "deriv.me"
@@ -619,7 +619,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
 export const getLoginUrl = (isV1Signup = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   const currentDomain = typeof window !== "undefined" ? window.location.hostname : ""
-  
+
   let domain = "deriv.com"
   if (currentDomain.includes("deriv.me")) {
     domain = "deriv.me"
