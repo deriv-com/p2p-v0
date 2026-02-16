@@ -511,7 +511,7 @@ export const currencyFlagMapper = {
   GMD: "/icons/flag-gambia.svg",
   AFN: "/icons/flag-afghanistan.svg",
   BBD: "/icons/flag-barbados.svg",
-  SZL: "/icons/flag-eswatini.svg",
+  SZL: "/icons/flag-swaziland.svg",
   UYU: "/icons/flag-uruguay.svg",
   SSP: "/icons/flag-south-sudan.svg",
   GNF: "/icons/flag-guinea.svg",
