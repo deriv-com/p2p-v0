@@ -41,18 +41,17 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
   )
 
   const content = (
-    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled} className="space-y-3">
+    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
-        className={`font-normal flex items-start justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-          value === "fixed"
-            ? "bg-slate-1200 border-slate-1200 text-white"
-            : "bg-grayscale-50 border-grayscale-200 text-slate-1200"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
+          ? "border-black"
+          : "border-grayscale-500"
+          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base font-semibold mb-1">Fixed</div>
-          <div className={`text-sm ${value === "fixed" ? "text-gray-300" : "text-grayscale-600"}`}>
+          <div className="text-base mb-1 text-slate-1200">Fixed</div>
+          <div className="text-xs text-grayscale-text-muted">
             Set a constant rate, unaffected by market fluctuations.
           </div>
         </div>
@@ -61,15 +60,14 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
       <Label
         htmlFor="float"
-        className={`font-normal flex items-start justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-          value === "float"
-            ? "bg-slate-1200 border-slate-1200 text-white"
-            : "bg-grayscale-50 border-grayscale-200 text-slate-1200"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+        className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
+          ? "border-black"
+          : "border-grayscale-500"
+          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
-          <div className="text-base font-semibold mb-1">Floating</div>
-          <div className={`text-sm ${value === "float" ? "text-gray-300" : "text-grayscale-600"}`}>
+          <div className="text-base text-slate-1200 mb-1">Floating</div>
+          <div className="text-xs text-grayscale-text-muted">
             Set a rate that changes with market movements.
           </div>
         </div>
@@ -118,7 +116,39 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               </DrawerContent>
             </Drawer>
           ) : (
-            <div>{content}</div>
+            <div className="space-y-3">
+              <div
+                onClick={() => handleSelect("fixed")}
+                className={`font-normal flex items-start justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+                  value === "fixed"
+                    ? "bg-slate-1200 border-slate-1200 text-white"
+                    : "bg-grayscale-50 border-grayscale-200 text-slate-1200"
+                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                <div className="text-left flex-1">
+                  <div className="text-base font-semibold mb-1">Fixed</div>
+                  <div className={`text-sm ${value === "fixed" ? "text-gray-300" : "text-grayscale-600"}`}>
+                    Set a constant rate, unaffected by market fluctuations.
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => handleSelect("float")}
+                className={`font-normal flex items-start justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+                  value === "float"
+                    ? "bg-slate-1200 border-slate-1200 text-white"
+                    : "bg-grayscale-50 border-grayscale-200 text-slate-1200"
+                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                <div className="text-left flex-1">
+                  <div className="text-base font-semibold mb-1">Floating</div>
+                  <div className={`text-sm ${value === "float" ? "text-gray-300" : "text-grayscale-600"}`}>
+                    Set a rate that changes with market movements.
+                  </div>
+                </div>
+              </div>
+            </div>
           )
         )}
       </div>
