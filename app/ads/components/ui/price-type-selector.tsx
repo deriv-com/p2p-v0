@@ -120,15 +120,15 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent className="[&>*]:!p-0 [&_.bg-black]:hover:!bg-black">
-                <SelectItem value="fixed" className="!py-0 !px-0">
-                  <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all text-slate-1200 w-full hover:bg-black hover:border-black hover:[&>span:first-child]:text-white hover:[&>span:last-child]:text-white/72">
+              <SelectContent className="[&>*]:!p-0">
+                <SelectItem value="fixed" className="!py-0 !px-0 [&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72">
+                  <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all text-slate-1200 w-full">
                     <span className="text-base mb-1">Fixed</span>
                     <span className="text-sm text-grayscale-600">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="float" className="!py-0 !px-0">
-                  <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all text-slate-1200 w-full hover:bg-black hover:border-black hover:[&>span:first-child]:text-white hover:[&>span:last-child]:text-white/72">
+                <SelectItem value="float" className="!py-0 !px-0 [&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72">
+                  <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all text-slate-1200 w-full">
                     <span className="text-base mb-1">Floating</span>
                     <span className="text-sm text-grayscale-600">Set a rate that changes with market movements.</span>
                   </div>
