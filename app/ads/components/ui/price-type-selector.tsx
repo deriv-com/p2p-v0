@@ -120,7 +120,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent className="[&_[role=option]>div]:bg-transparent">
+              <SelectContent className="[&_[role=option][data-state=checked]:has(~[role=option]:hover)]:!bg-transparent">
                 <SelectItem value="fixed" className="data-[state=checked]:bg-black hover:bg-black [&_span:first-child]:!text-slate-1200 [&_span:last-child]:!text-grayscale-600 data-[state=checked]:[&_span:first-child]:!text-white data-[state=checked]:[&_span:last-child]:!text-white data-[state=checked]:[&_span:last-child]:!opacity-72 hover:[&_span:first-child]:!text-white hover:[&_span:last-child]:!text-white hover:[&_span:last-child]:!opacity-72 cursor-pointer">
                   <div className="flex flex-col">
                     <span className="text-slate-1200">Fixed</span>
