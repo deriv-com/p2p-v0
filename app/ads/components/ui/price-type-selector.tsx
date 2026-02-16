@@ -120,7 +120,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent className="[&>*]:!p-0 [&_.bg-slate-1200]:hover:!bg-black">
+              <SelectContent className="[&>*]:!p-0 [&_.bg-black]:hover:!bg-black">
                 <SelectItem value="fixed" className="!py-0 !px-0">
                   <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all border-slate-1200 text-slate-1200 w-full hover:bg-black hover:border-black">
                     <span className="text-base mb-1">Fixed</span>
