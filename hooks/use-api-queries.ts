@@ -186,8 +186,8 @@ export function useAddPaymentMethod() {
   return useMutation({
     mutationFn: async ({ method, fields }: { method: string; fields: Record<string, string> }) => {
       const result = await ProfileAPI.addPaymentMethod(method, fields)
-      if (!result.success && result.errors && result.errors.length > 0) {
-        const error: any = new Error(result.errors[0].message || 'Failed to add payment method')
+      if (!result.success) {
+        const error: any = new Error(result.errors?.[0]?.message || 'Failed to add payment method')
         error.errors = result.errors
         throw error
       }
@@ -204,8 +204,8 @@ export function useUpdatePaymentMethod() {
   return useMutation({
     mutationFn: async ({ id, method, fields }: { id: string; method: string; fields: Record<string, string> }) => {
       const result = await ProfileAPI.updatePaymentMethod(id, { method, fields })
-      if (!result.success && result.errors && result.errors.length > 0) {
-        const error: any = new Error(result.errors[0].message || 'Failed to update payment method')
+      if (!result.success) {
+        const error: any = new Error(result.errors?.[0]?.message || 'Failed to update payment method')
         error.errors = result.errors
         throw error
       }
