@@ -34,6 +34,7 @@ export const queryKeys = {
     advertStats: (currency: string) => [...AUTH_KEYS, 'advert-stats', currency] as const,
     currencies: () => [...AUTH_KEYS, 'currencies'] as const,
     userPaymentMethods: () => [...AUTH_KEYS, 'user-payment-methods'] as const,
+    blockedUsers: () => [...AUTH_KEYS, 'blocked-users'] as const,
   },
 
   // Buy/Sell queries
@@ -166,6 +167,15 @@ export function useUserPaymentMethods(enabled = true) {
   return useQuery({
     queryKey: queryKeys.auth.userPaymentMethods(),
     queryFn: () => ProfileAPI.getUserPaymentMethods(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled,
+  })
+}
+
+export function useBlockedUsers(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.auth.blockedUsers(),
+    queryFn: () => ProfileAPI.getBlockedUsers(),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
   })
