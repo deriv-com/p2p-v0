@@ -121,13 +121,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
               <SelectContent className="[&_[role=option]>div]:bg-white">
-                <SelectItem value="fixed" className="bg-white hover:bg-white [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-slate-1200 [&[data-state=checked]_span:last-child]:text-grayscale-600 hover:[&_span:first-child]:!text-white hover:[&_span:last-child]:!text-white hover:[&_span:last-child]:!opacity-72 cursor-pointer">
+                <SelectItem value="fixed" className="bg-white [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-slate-1200 [&[data-state=checked]_span:last-child]:text-grayscale-600 cursor-pointer">
                   <div className="flex flex-col">
                     <span className="text-base text-slate-1200">Fixed</span>
                     <span className="text-xs text-grayscale-600">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="float" className="bg-white hover:bg-white [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-slate-1200 [&[data-state=checked]_span:last-child]:text-grayscale-600 hover:[&_span:first-child]:!text-white hover:[&_span:last-child]:!text-white hover:[&_span:last-child]:!opacity-72 cursor-pointer">
+                <SelectItem value="float" className="bg-white [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-slate-1200 [&[data-state=checked]_span:last-child]:text-grayscale-600 cursor-pointer">
                   <div className="flex flex-col">
                     <span className="text-base text-slate-1200">Floating</span>
                     <span className="text-xs text-grayscale-600">Set a rate that changes with market movements.</span>
