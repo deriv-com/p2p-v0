@@ -609,10 +609,18 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
 
 export const getLoginUrl = (isV1Signup = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
-
-  if (isV1Signup) {
-    return isProduction ? "https://app.deriv.com" : "https://staging-app.deriv.com"
+  const currentDomain = typeof window !== "undefined" ? window.location.hostname : ""
+  
+  let domain = "deriv.com"
+  if (currentDomain.includes("deriv.me")) {
+    domain = "deriv.me"
+  } else if (currentDomain.includes("deriv.be")) {
+    domain = "deriv.be"
   }
 
-  return isProduction ? "https://home.deriv.com/dashboard/login" : "https://staging-home.deriv.com/dashboard/login"
+  if (isV1Signup) {
+    return isProduction ? `https://app.${domain}` : `https://staging-app.${domain}`
+  }
+
+  return isProduction ? `https://home.${domain}/dashboard/login` : `https://staging-home.${domain}/dashboard/login`
 }
