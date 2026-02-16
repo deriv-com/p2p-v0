@@ -559,21 +559,30 @@ export const currencyFlagMapper = {
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
+  const currentDomain = typeof window !== "undefined" ? window.location.hostname : ""
+  
+  let domain = "deriv.com"
+  if (currentDomain.includes("deriv.me")) {
+    domain = "deriv.me"
+  } else if (currentDomain.includes("deriv.be")) {
+    domain = "deriv.be"
+  }
+
   let baseUrl = "",
     url = ""
 
   if (isV1Signup) {
-    baseUrl = isProduction ? "app.deriv.com" : "staging-app.deriv.com"
+    baseUrl = isProduction ? `app.${domain}` : `staging-app.${domain}`
   } else {
-    baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+    baseUrl = isProduction ? `home.${domain}` : `staging-home.${domain}`
   }
 
   if (section === "poi") {
     if (isV1Signup) {
       if (isWalletAccount) {
-        url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfIdentityStatus" : "https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus"
+        url = isProduction ? `https://hub.${domain}/Accounts/ProofOfIdentityStatus` : `https://staging-hub.${domain}/Accounts/ProofOfIdentityStatus`
       } else {
-        url = isProduction ? "https://app.deriv.com/account/proof-of-identity" : "https://staging-app.deriv.com/account/proof-of-identity"
+        url = isProduction ? `https://app.${domain}/account/proof-of-identity` : `https://staging-app.${domain}/account/proof-of-identity`
       }
     } else {
       url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
@@ -581,9 +590,9 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
   } else if (section === "poa") {
     if (isV1Signup) {
       if (isWalletAccount) {
-        url = isProduction ? "https://hub.deriv.com/Accounts/ProofOfAddress" : "https://staging-hub.deriv.com/Accounts/ProofOfAddress"
+        url = isProduction ? `https://hub.${domain}/Accounts/ProofOfAddress` : `https://staging-hub.${domain}/Accounts/ProofOfAddress`
       } else {
-        url = isProduction ? "https://app.deriv.com/account/proof-of-address" : "https://staging-app.deriv.com/account/proof-of-address"
+        url = isProduction ? `https://app.${domain}/account/proof-of-address` : `https://staging-app.${domain}/account/proof-of-address`
       }
     } else {
       url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
