@@ -138,23 +138,8 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
   try {
     if (isOryEnabled) {
-      let url: string
-      
-      if (process.env.NEXT_PUBLIC_NODE_ENV === "production") {
-        url = "https://dp2p.deriv.com"
-      } else {
-        // For staging, detect the domain suffix (.com, .be, .me) from the current hostname
-        const hostname = typeof window !== "undefined" ? window.location.hostname : ""
-        let domainSuffix = "com"
-        
-        if (hostname.includes(".be")) {
-          domainSuffix = "be"
-        } else if (hostname.includes(".me")) {
-          domainSuffix = "me"
-        }
-        
-        url = `https://staging-dp2p.deriv.${domainSuffix}`
-      }
+      const url =
+        process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
         method: "GET",
