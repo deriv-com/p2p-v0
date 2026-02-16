@@ -120,17 +120,17 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent className="[&_[role=option]>div]:bg-white">
-                <SelectItem value="fixed" className="bg-white hover:bg-white [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-slate-1200 [&[data-state=checked]_span:last-child]:text-grayscale-600 hover:[&_span:first-child]:!text-white hover:[&_span:last-child]:!text-white hover:[&_span:last-child]:!opacity-72 cursor-pointer">
+              <SelectContent>
+                <SelectItem value="fixed">
                   <div className="flex flex-col">
-                    <span className="text-base text-slate-1200">Fixed</span>
-                    <span className="text-xs text-grayscale-600">Set a constant rate, unaffected by market fluctuations.</span>
+                    <span className="text-base">Fixed</span>
+                    <span className="text-xs">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="float" className="bg-white hover:bg-white [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-slate-1200 [&[data-state=checked]_span:last-child]:text-grayscale-600 hover:[&_span:first-child]:!text-white hover:[&_span:last-child]:!text-white hover:[&_span:last-child]:!opacity-72 cursor-pointer">
+                <SelectItem value="float">
                   <div className="flex flex-col">
-                    <span className="text-base text-slate-1200">Floating</span>
-                    <span className="text-xs text-grayscale-600">Set a rate that changes with market movements.</span>
+                    <span className="text-base">Floating</span>
+                    <span className="text-xs">Set a rate that changes with market movements.</span>
                   </div>
                 </SelectItem>
               </SelectContent>
