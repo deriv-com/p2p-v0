@@ -116,39 +116,25 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               </DrawerContent>
             </Drawer>
           ) : (
-            <div className="space-y-3">
-              <div
-                onClick={() => handleSelect("fixed")}
-                className={`font-normal flex items-start justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-                  value === "fixed"
-                    ? "bg-slate-1200 border-slate-1200 text-white"
-                    : "bg-grayscale-50 border-grayscale-200 text-slate-1200"
-                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                <div className="text-left flex-1">
-                  <div className="text-base font-semibold mb-1">Fixed</div>
-                  <div className={`text-sm ${value === "fixed" ? "text-gray-300" : "text-grayscale-600"}`}>
-                    Set a constant rate, unaffected by market fluctuations.
+            <Select value={value} onValueChange={handleSelect} disabled={disabled}>
+              <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
+                <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
+              </SelectTrigger>
+              <SelectContent className="[&>*]:!p-0">
+                <SelectItem value="fixed" className="!py-0 !px-0">
+                  <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all bg-slate-1200 border-slate-1200 text-white w-full">
+                    <span className="text-base font-semibold mb-1">Fixed</span>
+                    <span className="text-sm text-gray-300">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
-                </div>
-              </div>
-
-              <div
-                onClick={() => handleSelect("float")}
-                className={`font-normal flex items-start justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-                  value === "float"
-                    ? "bg-slate-1200 border-slate-1200 text-white"
-                    : "bg-grayscale-50 border-grayscale-200 text-slate-1200"
-                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                <div className="text-left flex-1">
-                  <div className="text-base font-semibold mb-1">Floating</div>
-                  <div className={`text-sm ${value === "float" ? "text-gray-300" : "text-grayscale-600"}`}>
-                    Set a rate that changes with market movements.
+                </SelectItem>
+                <SelectItem value="float" className="!py-0 !px-0">
+                  <div className="flex flex-col p-4 rounded-xl border cursor-pointer transition-all bg-slate-1200 border-slate-1200 text-white w-full">
+                    <span className="text-base font-semibold mb-1">Floating</span>
+                    <span className="text-sm text-gray-300">Set a rate that changes with market movements.</span>
                   </div>
-                </div>
-              </div>
-            </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
           )
         )}
       </div>
