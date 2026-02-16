@@ -120,14 +120,14 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
-              <SelectContent className="[&>*]:!p-0">
-                <SelectItem value="fixed" className="!py-0 !px-0 [&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:bg-black [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72">
+              <SelectContent className="[&>*]:!p-0 [&_[role=option]>div]:bg-grayscale-500 [&_[role=option]>div]:border-grayscale-500">
+                <SelectItem value="fixed" className="!py-0 !px-0 [&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:bg-black [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72" data-testid="fixed-item">
                   <div className="flex flex-col p-4 rounded-xl border border-grayscale-500 bg-grayscale-500 cursor-pointer transition-all text-slate-1200 w-full">
                     <span className="text-base mb-1">Fixed</span>
                     <span className="text-sm text-grayscale-600">Set a constant rate, unaffected by market fluctuations.</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="float" className="!py-0 !px-0 [&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:bg-black [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72">
+                <SelectItem value="float" className="!py-0 !px-0 [&:hover>div]:bg-black [&:hover>div]:border-black [&:hover_span:first-child]:text-white [&:hover_span:last-child]:text-white/72 [&[data-state=checked]>div]:bg-black [&[data-state=checked]>div]:border-black [&[data-state=checked]_span:first-child]:text-white [&[data-state=checked]_span:last-child]:text-white/72" data-testid="float-item">
                   <div className="flex flex-col p-4 rounded-xl border border-grayscale-500 bg-grayscale-500 cursor-pointer transition-all text-slate-1200 w-full">
                     <span className="text-base mb-1">Floating</span>
                     <span className="text-sm text-grayscale-600">Set a rate that changes with market movements.</span>
