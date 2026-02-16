@@ -556,6 +556,7 @@ export const currencyFlagMapper = {
   BIF: "/icons/flag-burundi.svg",
   CDF: "/icons/flag-congo.svg",
   SBD: "/icons/flag-solomon.svg",
+  CHF: "/icons/flag-switzerland.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
