@@ -193,8 +193,9 @@ export function useAddPaymentMethod() {
       }
       return result
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
+    onSuccess: async () => {
+      // Invalidate and refetch payment methods immediately
+      await queryClient.refetchQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
     },
   })
 }
