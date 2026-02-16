@@ -527,7 +527,7 @@ export const currencyFlagMapper = {
   BZD: "/icons/flag-belize.svg",
   TMT: "/icons/flag-turkmenistan.svg",
   DJF: "/icons/flag-djibouti.svg",
-  BAM: "/icons/flag-bosnia-and-herzegovina.svg",
+  BAM: "/icons/flag-bosnia.svg",
   ERN: "/icons/flag-eritrea.svg",
   FJD: "/icons/flag-fiji.svg",
   BTN: "/icons/flag-bhutan.svg",
