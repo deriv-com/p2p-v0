@@ -111,7 +111,7 @@ export function CurrencyFilter({
         )}
       </div>
 
-      <div className="space-y-0 max-h-[80%] overflow-y-auto scrollbar-custom md:pr-2">
+      <div className="space-y-0 max-h-[80%] overflow-y-auto scrollbar-custom md:relative md:left-[-16px] md:w-[calc(100%+8px)]">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={t("filter.currencyUnavailable", { currency: searchQuery })}
@@ -119,7 +119,7 @@ export function CurrencyFilter({
             redirectToAds={false}
           />
         ) : (
-          <div className="space-y-0 md:pr-2">
+          <div className="space-y-0">
             {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{isTitleVisible && title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
