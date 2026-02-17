@@ -13,7 +13,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
-const isClosedGroupEnabled = process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "true"
+const isClosedGroupEnabled = process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1"
 interface FollowDropdownProps {
   isFollowing: boolean
   isGroupMember: boolean
