@@ -12,6 +12,8 @@ import {
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+
+const isClosedGroupEnabled = process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1"
 interface FollowDropdownProps {
   isFollowing: boolean
   isGroupMember: boolean
@@ -69,19 +71,21 @@ export default function FollowDropdown({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="p-2 w-[280px]">
-          {isGroupMember ? (<DropdownMenuItem
-            onClick={handleRemoveFromClosedGroup}
-            className="flex items-center gap-2 py-3 px-4 cursor-pointer"
-          >
-            <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
-            <span className="text-base text-grayscale-600">Remove from closed group</span>
-          </DropdownMenuItem>) : (<DropdownMenuItem
-            onClick={handleAddToClosedGroup}
-            className="flex items-center gap-2 py-3 px-4 cursor-pointer"
-          >
-            <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
-            <span className="text-base text-grayscale-600">Add to closed group</span>
-          </DropdownMenuItem>
+          {isClosedGroupEnabled && (
+            isGroupMember ? (<DropdownMenuItem
+              onClick={handleRemoveFromClosedGroup}
+              className="flex items-center gap-2 py-3 px-4 cursor-pointer"
+            >
+              <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
+              <span className="text-base text-grayscale-600">Remove from closed group</span>
+            </DropdownMenuItem>) : (<DropdownMenuItem
+              onClick={handleAddToClosedGroup}
+              className="flex items-center gap-2 py-3 px-4 cursor-pointer"
+            >
+              <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
+              <span className="text-base text-grayscale-600">Add to closed group</span>
+            </DropdownMenuItem>
+            )
           )}
           <DropdownMenuItem
             onClick={handleUnfollow}
@@ -113,22 +117,23 @@ export default function FollowDropdown({
             <DrawerTitle className="font-bold text-xl">{nickname}</DrawerTitle>
           </DrawerHeader>
           <div>
-            {isGroupMember ? (<Button
-              onClick={handleRemoveFromClosedGroup}
-              className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
-              variant="ghost"
-            >
-              <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
-              <span className="text-base text-grayscale-600">Remove from closed group</span>
-            </Button>) : (<Button
-              onClick={handleAddToClosedGroup}
-              className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
-              variant="ghost"
-            >
-              <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
-              <span className="text-base text-grayscale-600">Add to closed group</span>
-            </Button>)
-            }
+            {isClosedGroupEnabled && (
+              isGroupMember ? (<Button
+                onClick={handleRemoveFromClosedGroup}
+                className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
+                variant="ghost"
+              >
+                <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
+                <span className="text-base text-grayscale-600">Remove from closed group</span>
+              </Button>) : (<Button
+                onClick={handleAddToClosedGroup}
+                className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
+                variant="ghost"
+              >
+                <Image src="/icons/star.svg" alt="Add to closed group" width={16} height={24} />
+                <span className="text-base text-grayscale-600">Add to closed group</span>
+              </Button>)
+            )}
             <Button
               onClick={handleUnfollow}
               className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
