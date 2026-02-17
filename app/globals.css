@@ -55,6 +55,7 @@ body {
     .scrollbar-custom::-webkit-scrollbar {
       display: block;
       width: 4px;
+      height: 8px;
     }
 
     .scrollbar-custom::-webkit-scrollbar-track {
