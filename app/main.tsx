@@ -9,7 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useOnboardingStatus, useUserIdAndStore } from "@/hooks/use-api-queries"
+import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
@@ -35,7 +35,6 @@ export default function Main({
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
-  const { isInitialLoading: isUserIdAndStoreLoading } = useUserIdAndStore(isAuthenticated)
 
   const isDisabled = userData?.status === "disabled"
 

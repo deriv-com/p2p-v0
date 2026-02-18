@@ -285,17 +285,17 @@ export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
-      method: "GET",
-      credentials: "include",
-      headers: getAuthHeader(),
+    // Use React Query to fetch user data with caching
+    const meData = await queryClient.fetchQuery({
+      queryKey: queryKeys.auth.me(),
+      queryFn: () => getMe(),
+      staleTime: 1000 * 60 * 5,
     })
 
+    const result = { data: meData }
 
-    const result = await response.json()
-
-    if (response.status === 403) {
-      const errors = result?.errors || []
+    if (!meData) {
+      const errors = [{ code: "NoData" }]
       const isUserDisabled = errors.some(
         (error: any) => error.code === "UserDisabled" || error.message?.includes("UserDisabled"),
       )
@@ -326,7 +326,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
     }
 
-    if (!response.ok) {
+    if (!meData) {
       useUserDataStore.getState().updateUserData({
         balances: [{ amount: "0" }],
         signup: "v2",
