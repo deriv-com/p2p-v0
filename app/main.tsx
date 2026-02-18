@@ -68,6 +68,23 @@ export default function Main({
             const newUrl = new URL(window.location.href)
             newUrl.searchParams.delete("token")
             window.history.replaceState({}, "", newUrl.toString())
+          } catch (error) {
+            console.error("Token verification failed:", error)
+          }
+
+          if (abortController.signal.aborted || !isMountedRef.current) {
+            return
+          }
+
+          if (!isPublic) {
+            window.location.href = getLoginUrl(true)
+          }
+          return
+        }
+
+        const sessionAuth = await AuthAPI.getSession()
+        setIsAuthenticated(sessionAuth)
+
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
@@ -75,16 +92,9 @@ export default function Main({
         if (!sessionAuth && !isPublic) {
           setIsHeaderVisible(false)
           window.location.href = getLoginUrl(userData?.signup === "v1")
+        } else if (sessionAuth) {
+          await AuthAPI.fetchUserIdAndStore()
         }
-            if (!isPublic) {
-              window.location.href = getLoginUrl(true)
-            }
-            return
-          }
-        }
-
-        const sessionAuth = await AuthAPI.getSession()
-        setIsAuthenticated(sessionAuth)
       } catch (error) {
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
@@ -137,6 +147,8 @@ export default function Main({
           if (!isMounted || abortController.signal.aborted) {
             return
           }
+
+          await AuthAPI.fetchUserIdAndStore()
         }
       } catch (error) {
         if (abortController.signal.aborted) {
