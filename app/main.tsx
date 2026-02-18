@@ -69,7 +69,9 @@ export default function Main({
             newUrl.searchParams.delete("token")
             window.history.replaceState({}, "", newUrl.toString())
           } catch (error) {
-            console.error("Token verification failed:", error)
+            if (!isPublic) {
+              window.location.href = getLoginUrl(true)
+            }
           }
 
           if (abortController.signal.aborted || !isMountedRef.current) {
