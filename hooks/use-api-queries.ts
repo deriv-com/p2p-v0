@@ -170,7 +170,6 @@ export function useUserPaymentMethods(enabled = true) {
     queryFn: () => ProfileAPI.getUserPaymentMethods(),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
-    retry: 0,
   })
 }
 
@@ -195,6 +194,7 @@ export function useAddPaymentMethod() {
       }
       return result
     },
+    retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
     },
