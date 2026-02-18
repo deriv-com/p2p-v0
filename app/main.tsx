@@ -9,7 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useOnboardingStatus } from "@/hooks/use-api-queries"
+import { useOnboardingStatus, useUserIdAndStore } from "@/hooks/use-api-queries"
 import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
@@ -35,6 +35,7 @@ export default function Main({
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
+  const { isInitialLoading: isUserIdAndStoreLoading } = useUserIdAndStore(isAuthenticated)
 
   const isDisabled = userData?.status === "disabled"
 
@@ -68,7 +69,14 @@ export default function Main({
             const newUrl = new URL(window.location.href)
             newUrl.searchParams.delete("token")
             window.history.replaceState({}, "", newUrl.toString())
-          } catch (error) {
+        if (abortController.signal.aborted || !isMountedRef.current) {
+          return
+        }
+
+        if (!sessionAuth && !isPublic) {
+          setIsHeaderVisible(false)
+          window.location.href = getLoginUrl(userData?.signup === "v1")
+        }
             if (!isPublic) {
               window.location.href = getLoginUrl(true)
             }
@@ -78,17 +86,6 @@ export default function Main({
 
         const sessionAuth = await AuthAPI.getSession()
         setIsAuthenticated(sessionAuth)
-
-        if (abortController.signal.aborted || !isMountedRef.current) {
-          return
-        }
-
-        if (!sessionAuth && !isPublic) {
-          setIsHeaderVisible(false)
-          window.location.href = getLoginUrl(userData?.signup === "v1")
-        } else if (sessionAuth) {
-          await AuthAPI.fetchUserIdAndStore()
-        }
       } catch (error) {
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
@@ -141,8 +138,6 @@ export default function Main({
           if (!isMounted || abortController.signal.aborted) {
             return
           }
-
-          await AuthAPI.fetchUserIdAndStore()
         }
       } catch (error) {
         if (abortController.signal.aborted) {

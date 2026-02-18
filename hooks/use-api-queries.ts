@@ -89,6 +89,128 @@ export function useMe() {
   })
 }
 
+export function useUserIdAndStore(enabled = true) {
+  const { data: meData, ...queryState } = useMe()
+  const queryClient = useQueryClient()
+
+  // Effect to store user data when meData changes
+  useMemo(() => {
+    if (!meData || !enabled) return
+
+    const { useUserDataStore } = require('@/stores/user-data-store')
+    const { useMarketFilterStore } = require('@/stores/market-filter-store')
+    const { getSettings } = AuthAPI
+
+    const storeUserData = async () => {
+      try {
+        // Get settings from React Query cache first
+        let settings = queryClient.getQueryData(queryKeys.auth.settings())
+
+        if (!settings) {
+          try {
+            settings = await queryClient.fetchQuery({
+              queryKey: queryKeys.auth.settings(),
+              queryFn: () => getSettings(),
+              staleTime: 1000 * 60 * 30,
+            })
+          } catch (error) {
+            console.error('Error fetching settings:', error)
+          }
+        }
+
+        const userId = meData?.id
+        let userCountryCode = meData?.country_code
+        const brandClientId = meData?.brand_client_id
+        const brand = meData?.brand
+        const tempBanUntil = meData?.temp_ban_until
+        const balances = meData?.total_account_value
+        const status = meData?.status
+        const tradeBand = meData?.trade_band
+
+        // If userCountryCode is not available, fallback to residence from client profile
+        if (!userCountryCode) {
+          const residenceCountry = useUserDataStore.getState().residenceCountry
+          if (residenceCountry) {
+            userCountryCode = residenceCountry
+          }
+        }
+
+        // Derive user's local currency from /settings.countries
+        try {
+          if (settings) {
+            const countries = settings?.countries || []
+            const normalizedUserCountryCode = typeof userCountryCode === 'string' ? userCountryCode.toLowerCase() : ''
+
+            const matchedCountry = normalizedUserCountryCode
+              ? countries.find((c: any) => typeof c?.code === 'string' && c.code.toLowerCase() === normalizedUserCountryCode)
+              : null
+
+            const derivedLocalCurrency =
+              (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+              (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+              null
+
+            useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
+          }
+        } catch (error) {
+          console.error('Error deriving local currency from settings:', error)
+        }
+
+        if (userId) {
+          const newUserId = userId.toString()
+          const previousUserId = useUserDataStore.getState().userId
+
+          // Only reset filters when the user actually changes between sessions
+          if (previousUserId && previousUserId !== newUserId) {
+            useMarketFilterStore.getState().resetFilters()
+          }
+
+          if (previousUserId !== newUserId) {
+            useUserDataStore.getState().setUserId(newUserId)
+          }
+
+          if (brandClientId) {
+            useUserDataStore.getState().setBrandClientId(brandClientId)
+          }
+          if (brand) {
+            useUserDataStore.getState().setBrand(brand)
+          }
+
+          const { userData } = useUserDataStore.getState()
+          if (userData) {
+            useUserDataStore.getState().updateUserData({
+              adverts_are_listed: meData.adverts_are_listed,
+              signup: meData.signup,
+              wallet_id: meData.wallet_id,
+              temp_ban_until: tempBanUntil,
+              balances: [balances],
+              status: status,
+              trade_band: tradeBand,
+            })
+          }
+        } else {
+          useUserDataStore.getState().updateUserData({
+            balances: [{ amount: '0' }],
+            signup: 'v2',
+          })
+          useUserDataStore.getState().setUserId('')
+          useUserDataStore.getState().setLocalCurrency(null)
+          useMarketFilterStore.getState().resetFilters()
+        }
+      } catch (error) {
+        console.error('Error storing user data:', error)
+      }
+    }
+
+    storeUserData()
+  }, [meData, enabled, queryClient])
+
+  return {
+    data: meData,
+    ...queryState,
+  }
+}
+
 export function useKycStatus() {
   return useQuery({
     queryKey: queryKeys.auth.kycStatus(),
