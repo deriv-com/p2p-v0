@@ -109,16 +109,15 @@ const AdPaymentMethods = () => {
                   } hover:shadow-md`}
                   onClick={() => !isDisabled && handleCheckboxChange(method.id, !isSelected)}
                 >
-                  <CardContent className="p-2">
+                  <CardContent className="p-2 cursor-pointer">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 ml-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
                         <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
-                      <div onClick={(e) => e.stopPropagation()}>
+                      <div onClick={(e) => e.stopPropagation()} className="pointer-events-auto">
                         <Checkbox
                           checked={isSelected}
-                          onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
                           disabled={isDisabled}
                           className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                         />
