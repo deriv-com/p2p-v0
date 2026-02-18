@@ -370,12 +370,12 @@ export default function BuySellPage() {
                 {currencies.length > 0 && (
                   <div className="flex items-center gap-2">
                     {activeTab === "sell" && (
-                      <span className="hidden md:inline text-xs font-normal text-white opacity-72">
+                      <span className="text-xs font-normal text-white opacity-72">
                         {t("market.payWith")}:
                       </span>
                     )}
                     {activeTab === "buy" && (
-                      <span className="hidden md:inline text-xs font-normal text-white opacity-72">
+                      <span className="text-xs font-normal text-white opacity-72">
                         {t("market.receiveIn")}:
                       </span>
                     )}
