@@ -179,14 +179,11 @@ const FullPagePaymentSelection = ({
                   />
                   <span className="text-base text-slate-1200">{method.display_name}</span>
                 </div>
-                <div onClick={(e) => e.stopPropagation()}>
-                  <Checkbox
-                    checked={isSelected}
-                    disabled={isDisabled}
-                    onCheckedChange={() => !isDisabled && handleToggle(methodId)}
-                    className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-grayscale-text-muted rounded-[2px]"
-                  />
-                </div>
+                <Checkbox
+                  checked={isSelected}
+                  disabled={isDisabled}
+                  className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-grayscale-text-muted rounded-[2px]"
+                />
               </div>
             )
           })
@@ -299,15 +296,17 @@ const PaymentSelectionContent = ({
           paymentMethods.map((method) => {
             const methodId = getMethodId(method)
             const isUserMethod = "id" in method
+            const isDisabled = !selectedPMs?.includes(methodId) && selectedPMs?.length >= 3
 
             return (
               <div
                 key={methodId}
                 className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${
-                  !selectedPMs?.includes(methodId) && selectedPMs?.length >= 3
+                  isDisabled
                     ? "opacity-30 cursor-not-allowed hover:bg-white"
                     : ""
                 }`}
+                onClick={() => !isDisabled && handlePaymentMethodToggle(methodId)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -329,8 +328,7 @@ const PaymentSelectionContent = ({
                   </div>
                   <Checkbox
                     checked={selectedPMs?.includes(methodId)}
-                    onCheckedChange={() => handlePaymentMethodToggle(methodId)}
-                    disabled={!selectedPMs?.includes(methodId) && selectedPMs?.length >= 3}
+                    disabled={isDisabled}
                     className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                   />
                 </div>

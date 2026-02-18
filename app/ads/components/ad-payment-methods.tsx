@@ -111,17 +111,15 @@ const AdPaymentMethods = () => {
                 >
                   <CardContent className="p-2 cursor-pointer">
                     <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2 ml-2">
+                      <div className="flex items-center gap-2 ml-2 flex-1">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
                         <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
-                      <div onClick={(e) => e.stopPropagation()} className="pointer-events-auto">
-                        <Checkbox
-                          checked={isSelected}
-                          disabled={isDisabled}
-                          className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
-                        />
-                      </div>
+                      <Checkbox
+                        checked={isSelected}
+                        disabled={isDisabled}
+                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                      />
                     </div>
                     <div className="space-y-1">
                       <div className="text-sm tracking-wide text-neutral-10">{displayDetails.primary}</div>
