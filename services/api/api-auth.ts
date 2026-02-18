@@ -1,5 +1,7 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { queryClient } from "@/lib/react-query-client"
+import { queryKeys } from "@/hooks/query-keys"
 
 export interface LoginRequest {
   email: string
@@ -308,12 +310,16 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
     }
 
-    // Fetch settings once to use in both error and success paths
-    let settings: any = null
-    try {
-      settings = await getSettings()
-    } catch (error) {
-      console.error("Error fetching settings:", error)
+    // Get settings from React Query cache (populated by useSettings hook)
+    // If not cached, fetch it directly
+    let settings: any = queryClient.getQueryData(queryKeys.auth.settings())
+    
+    if (!settings) {
+      try {
+        settings = await getSettings()
+      } catch (error) {
+        console.error("Error fetching settings:", error)
+      }
     }
 
     if (!response.ok) {
