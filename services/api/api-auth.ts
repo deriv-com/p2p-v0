@@ -1,7 +1,7 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { queryClient } from "@/lib/react-query-client"
-import { queryKeys } from "@/hooks/query-keys"
+import { queryKeys } from "@/hooks/use-api-queries"
 
 export interface LoginRequest {
   email: string
