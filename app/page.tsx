@@ -368,14 +368,14 @@ export default function BuySellPage() {
                   </Tabs>
                 </div>
                 {currencies.length > 0 && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2">
                     {activeTab === "sell" && (
-                      <span className="hidden md:inline text-xs font-normal text-white opacity-72">
+                      <span className="text-xs font-normal text-white opacity-72">
                         {t("market.payWith")}:
                       </span>
                     )}
                     {activeTab === "buy" && (
-                      <span className="hidden md:inline text-xs font-normal text-white opacity-72">
+                      <span className="text-xs font-normal text-white opacity-72">
                         {t("market.receiveIn")}:
                       </span>
                     )}
@@ -439,16 +439,6 @@ export default function BuySellPage() {
                 </div>
               )}
               <div className="flex-1 md:flex md:items-center md:gap-2 md:flex-none">
-                {activeTab === "sell" && (
-                  <span className="hidden md:inline text-xs font-normal text-grayscale-600 opacity-72">
-                    {t("market.payWith")}:
-                  </span>
-                )}
-                {activeTab === "buy" && (
-                  <span className="hidden md:inline text-xs font-normal text-grayscale-600 opacity-72">
-                    {t("market.receiveIn")}:
-                  </span>
-                )}
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
                   selectedMethods={selectedPaymentMethods}
