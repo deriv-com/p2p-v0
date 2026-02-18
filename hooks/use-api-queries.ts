@@ -258,6 +258,7 @@ export function useCreateAd() {
       }
       return result
     },
+    retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts(true) })
     },
@@ -276,6 +277,7 @@ export function useUpdateAd() {
       }
       return result
     },
+    retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ads.userAdverts(true) })
     },
