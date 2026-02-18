@@ -397,7 +397,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
-      const result = await addPaymentMethod.mutateAsync({ method, fields })
+      await addPaymentMethod.mutateAsync({ method, fields })
 
       setShowAddPaymentPanel(false)
     } catch (error: any) {
