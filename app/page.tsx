@@ -368,7 +368,17 @@ export default function BuySellPage() {
                   </Tabs>
                 </div>
                 {currencies.length > 0 && (
-                  <div>
+                  <div className="flex items-center gap-2">
+                    {activeTab === "sell" && (
+                      <span className="hidden md:inline text-sm font-normal text-white">
+                        {t("market.payWith")}
+                      </span>
+                    )}
+                    {activeTab === "buy" && (
+                      <span className="hidden md:inline text-sm font-normal text-white">
+                        {t("market.receiveIn")}
+                      </span>
+                    )}
                     <CurrencyFilter
                       currencies={currencies}
                       selectedCurrency={currency}
@@ -428,7 +438,17 @@ export default function BuySellPage() {
                   ))}
                 </div>
               )}
-              <div className="flex-1 md:block md:flex-none">
+              <div className="flex-1 md:flex md:items-center md:gap-2 md:flex-none">
+                {activeTab === "sell" && (
+                  <span className="hidden md:inline text-sm font-normal text-grayscale-600">
+                    {t("market.payWith")}
+                  </span>
+                )}
+                {activeTab === "buy" && (
+                  <span className="hidden md:inline text-sm font-normal text-grayscale-600">
+                    {t("market.receiveIn")}
+                  </span>
+                )}
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
                   selectedMethods={selectedPaymentMethods}
