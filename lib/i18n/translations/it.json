@@ -48,6 +48,8 @@
     "iWantToSell": "Voglio vendere",
     "yourePayingWith": "Stai pagando con",
     "youreReceiving": "Stai ricevendo",
+    "payWith": "Paga con:",
+    "receiveIn": "Ricevi in:",
     "paymentMethod": "Metodo di pagamento",
     "paymentMethodAll": "Metodo di pagamento",
     "paymentMethodSelected": "Metodo di pagamento ({count})",
