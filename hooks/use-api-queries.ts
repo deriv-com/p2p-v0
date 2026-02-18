@@ -170,6 +170,7 @@ export function useUserPaymentMethods(enabled = true) {
     queryFn: () => ProfileAPI.getUserPaymentMethods(),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
+    retry: 0,
   })
 }
 
