@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input"
 import * as AuthAPI from "@/services/api/api-auth"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useUserIdAndStore } from "@/hooks/use-api-queries"
 
 export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verification">("login")
@@ -16,7 +15,6 @@ export default function LoginPage() {
   const [resendTimer, setResendTimer] = useState(59)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const { isInitialLoading: isUserIdAndStoreLoading } = useUserIdAndStore(false)
 
   const handleLogin = async () => {
     try {
