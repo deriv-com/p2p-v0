@@ -318,7 +318,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       try {
         settings = await queryClient.fetchQuery({
           queryKey: queryKeys.auth.settings(),
-          queryFn: () => AuthAPI.getSettings(),
+          queryFn: () => getSettings(),
           staleTime: 1000 * 60 * 30, // Match useSettings staleTime
         })
       } catch (error) {
