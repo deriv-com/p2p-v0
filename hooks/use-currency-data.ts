@@ -5,10 +5,7 @@ import type { Currency } from "@/components/currency-filter/types"
 import { useSettings } from "@/hooks/use-api-queries"
 
 export function useCurrencyData(currency = "USD") {
-  const { data: response, isLoading, error: queryError } = useSettings({
-    staleTime: 1000 * 60 * 30, // 30 minutes
-    gcTime: 1000 * 60 * 60, // 60 minutes (formerly cacheTime)
-  })
+  const { data: response, isLoading, error: queryError } = useSettings()
 
   const { currencies, error } = useMemo(() => {
     if (!response) {
