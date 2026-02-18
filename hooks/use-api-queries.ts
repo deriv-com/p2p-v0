@@ -213,6 +213,7 @@ export function useUpdatePaymentMethod() {
       }
       return result
     },
+    retry: 0,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth.userPaymentMethods() })
     },
