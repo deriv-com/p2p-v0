@@ -310,16 +310,20 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
     }
 
-    // Get settings from React Query using fetchQuery
-    // This will use the cache if available and properly integrate with useSettings hook
-    let settings: any = null
-    try {
-      settings = await queryClient.fetchQuery({
-        queryKey: queryKeys.auth.settings(),
-        queryFn: () => AuthAPI.getSettings(),
-      })
-    } catch (error) {
-      console.error("Error fetching settings:", error)
+    // Get settings from React Query cache first, then fetch if needed
+    // This ensures we reuse cached data from useSettings hook when available
+    let settings: any | undefined = queryClient.getQueryData(queryKeys.auth.settings())
+    
+    if (!settings) {
+      try {
+        settings = await queryClient.fetchQuery({
+          queryKey: queryKeys.auth.settings(),
+          queryFn: () => AuthAPI.getSettings(),
+          staleTime: 1000 * 60 * 30, // Match useSettings staleTime
+        })
+      } catch (error) {
+        console.error("Error fetching settings:", error)
+      }
     }
 
     if (!response.ok) {
