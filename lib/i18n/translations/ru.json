@@ -46,8 +46,8 @@
     "sellTab": "Продать",
     "iWantToBuy": "Я хочу купить",
     "iWantToSell": "Я хочу продать",
-    "payWith": "Платить:",
-    "receiveIn": "Получить в:",
+    "payWith": "Платить",
+    "receiveIn": "Получить в",
     "paymentMethod": "Способ оплаты",
     "paymentMethodAll": "Способ оплаты",
     "paymentMethodSelected": "Способ оплаты ({count})",
@@ -646,7 +646,7 @@
     "saveImage": "Сохранить изображение",
     "shareImage": "Поделиться изображением",
     "adVisibilityUpdate": "Обновление видимости объявления",
-    "adVisibilityUpdateDescription": "Вы не сможете изменить это объявление обратно на объявление закрытой группы, если снова не станете участником алмазного уровня."
+    "adVisibilityUpdateDescription": "Вы не сможете изменить э��о объявление обратно на объявление закрытой группы, если снова не станете участником алмазного уровня."
   },
   "newErrors": {
     "invalidExchangeRateMessage": "Указанный вами курс обмена недействителен.",
