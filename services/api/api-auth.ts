@@ -308,6 +308,14 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
     }
 
+    // Fetch settings once to use in both error and success paths
+    let settings: any = null
+    try {
+      settings = await getSettings()
+    } catch (error) {
+      console.error("Error fetching settings:", error)
+    }
+
     if (!response.ok) {
       useUserDataStore.getState().updateUserData({
         balances: [{ amount: "0" }],
@@ -318,8 +326,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       // Set local currency from residence country if available
       try {
         const residenceCountry = useUserDataStore.getState().residenceCountry
-        if (residenceCountry) {
-          const settings = await getSettings()
+        if (residenceCountry && settings) {
           const countries = settings?.countries || []
           const normalizedResidenceCode = typeof residenceCountry === "string" ? residenceCountry.toLowerCase() : ""
 
@@ -364,20 +371,21 @@ export async function fetchUserIdAndStore(): Promise<void> {
     // Derive user's local currency from /settings.countries using /users/me country_code.
     // Fallback to the first country currency if no match.
     try {
-      const settings = await getSettings()
-      const countries = settings?.countries || []
-      const normalizedUserCountryCode = typeof userCountryCode === "string" ? userCountryCode.toLowerCase() : ""
+      if (settings) {
+        const countries = settings?.countries || []
+        const normalizedUserCountryCode = typeof userCountryCode === "string" ? userCountryCode.toLowerCase() : ""
 
-      const matchedCountry = normalizedUserCountryCode
-        ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedUserCountryCode)
-        : null
+        const matchedCountry = normalizedUserCountryCode
+          ? countries.find((c: any) => typeof c?.code === "string" && c.code.toLowerCase() === normalizedUserCountryCode)
+          : null
 
-      const derivedLocalCurrency =
-        (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
-        (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
-        null
+        const derivedLocalCurrency =
+          (matchedCountry?.currency && String(matchedCountry.currency).toUpperCase()) ||
+          (countries?.[0]?.currency && String(countries[0].currency).toUpperCase()) ||
+          null
 
-      useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
+        useUserDataStore.getState().setLocalCurrency(derivedLocalCurrency)
+      }
     } catch (error) {
       console.error("Error deriving local currency from settings:", error)
     }
