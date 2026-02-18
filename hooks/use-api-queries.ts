@@ -127,7 +127,6 @@ export function useSettings() {
     queryKey: queryKeys.auth.settings(),
     queryFn: () => AuthAPI.getSettings(),
     staleTime: 1000 * 60 * 30, // 30 minutes
-    gcTime: 1000 * 60 * 60, // 60 minutes (formerly cacheTime)
     retry: 0,
   })
 }
