@@ -383,7 +383,7 @@ export default function BuySellPage() {
                       currencies={currencies}
                       selectedCurrency={currency}
                       onCurrencySelect={handleCurrencySelect}
-                      title={activeTab === "sell" ? t("market.yourePayingWith") : t("market.youreReceiving")}
+                      title={activeTab === "sell" ? t("market.payWith") : t("market.receiveIn")}
                       trigger={
                         <Button
                           variant="outline"
