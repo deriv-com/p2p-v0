@@ -523,7 +523,7 @@
     "adLimitReachedTitle": "বিজ্ঞাপন সীমা পৌঁছেছে",
     "adLimitReachedMessage": "এই মুদ্রা জোড়া এবং অর্ডার টাইপের জন্য আপনার শুধুমাত্র ৩টি সক্রিয় বিজ্ঞাপন থাকতে পারে। নতুন বিজ্ঞাপন তৈরি করতে একটি মুছুন।",
     "insufficientBalanceTitle": "অপর্যাপ্ত ব্যালেন্স",
-    "insufficientBalanceMessage": "এই বিজ্ঞাপন তৈরি করতে আপনার ���র্যাপ্ত ব্যালেন্স নেই",
+    "insufficientBalanceMessage": "এই বিজ্ঞাপন তৈরি করতে আপনার পর্যাপ্ত ব্যালেন্স নেই",
     "invalidValuesTitle": "অবৈধ মান",
     "invalidValuesMessage": "অনুগ্রহ করে আপনার ইনপুট মান পরীক্ষা করুন।",
     "amountExceedsBalanceTitle": "পরিমাণ ব্যালেন্স অতিক্রম করছে",
