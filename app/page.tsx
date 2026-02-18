@@ -439,16 +439,6 @@ export default function BuySellPage() {
                 </div>
               )}
               <div className="flex-1 md:flex md:items-center md:gap-2 md:flex-none">
-                {activeTab === "sell" && (
-                  <span className="hidden md:inline text-xs font-normal text-grayscale-600 opacity-72">
-                    {t("market.payWith")}:
-                  </span>
-                )}
-                {activeTab === "buy" && (
-                  <span className="hidden md:inline text-xs font-normal text-grayscale-600 opacity-72">
-                    {t("market.receiveIn")}:
-                  </span>
-                )}
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
                   selectedMethods={selectedPaymentMethods}
