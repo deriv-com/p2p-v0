@@ -368,7 +368,7 @@ export default function BuySellPage() {
                   </Tabs>
                 </div>
                 {currencies.length > 0 && (
-                  <div className="flex flex-col md:flex-row md:items-center gap-2">
+                  <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
                     {activeTab === "sell" && (
                       <span className="text-xs font-normal text-white opacity-72">
                         {t("market.payWith")}:
