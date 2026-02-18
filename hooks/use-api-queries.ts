@@ -122,11 +122,12 @@ export function useUserBalance() {
   })
 }
 
-export function useSettings() {
+export function useSettings(config?: { staleTime?: number; gcTime?: number }) {
   return useQuery({
     queryKey: queryKeys.auth.settings(),
     queryFn: () => AuthAPI.getSettings(),
-    staleTime: 1000 * 60 * 30, // 30 minutes
+    staleTime: config?.staleTime ?? 1000 * 60 * 30, // 30 minutes
+    gcTime: config?.gcTime ?? 1000 * 60 * 60, // 60 minutes (formerly cacheTime)
     retry: 0,
   })
 }
