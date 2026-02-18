@@ -72,16 +72,8 @@ export default function Main({
             if (!isPublic) {
               window.location.href = getLoginUrl(true)
             }
-          }
-
-          if (abortController.signal.aborted || !isMountedRef.current) {
             return
           }
-
-          if (!isPublic) {
-            window.location.href = getLoginUrl(true)
-          }
-          return
         }
 
         const sessionAuth = await AuthAPI.getSession()
