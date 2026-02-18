@@ -371,12 +371,12 @@ export default function BuySellPage() {
                   <div className="flex items-center gap-2">
                     {activeTab === "sell" && (
                       <span className="hidden md:inline text-xs font-normal text-white opacity-72">
-                        {t("market.payWith")}
+                        {t("market.payWith")}:
                       </span>
                     )}
                     {activeTab === "buy" && (
                       <span className="hidden md:inline text-xs font-normal text-white opacity-72">
-                        {t("market.receiveIn")}
+                        {t("market.receiveIn")}:
                       </span>
                     )}
                     <CurrencyFilter
@@ -441,12 +441,12 @@ export default function BuySellPage() {
               <div className="flex-1 md:flex md:items-center md:gap-2 md:flex-none">
                 {activeTab === "sell" && (
                   <span className="hidden md:inline text-xs font-normal text-grayscale-600 opacity-72">
-                    {t("market.payWith")}
+                    {t("market.payWith")}:
                   </span>
                 )}
                 {activeTab === "buy" && (
                   <span className="hidden md:inline text-xs font-normal text-grayscale-600 opacity-72">
-                    {t("market.receiveIn")}
+                    {t("market.receiveIn")}:
                   </span>
                 )}
                 <PaymentMethodsFilter
