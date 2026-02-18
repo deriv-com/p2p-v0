@@ -266,11 +266,23 @@ export async function getMe(): Promise<any> {
       headers: getAuthHeader(),
     })
 
+    const result = await response.json()
+
+    if (response.status === 403) {
+      const errors = result?.errors || []
+      const isUserDisabled = errors.some(
+        (error: any) => error.code === "UserDisabled" || error.message?.includes("UserDisabled"),
+      )
+
+      if (isUserDisabled) {
+        throw new Error("UserDisabled")
+      }
+    }
+
     if (!response.ok) {
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
 
-    const result = await response.json()
     return result.data
   } catch (error) {
     console.error("Error fetching user data:", error)
