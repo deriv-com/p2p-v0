@@ -10,6 +10,8 @@ export class WebSocketClient {
   private options: WebSocketOptions
   private isConnecting = false
   private currentToken: string | null = null
+  private heartbeatInterval: NodeJS.Timeout | null = null
+  private readonly HEARTBEAT_INTERVAL = 30000 // 30 seconds
 
   constructor(options: WebSocketOptions = {}) {
     this.options = options
@@ -18,6 +20,29 @@ export class WebSocketClient {
   private getSocketToken(): string | null {
     if (typeof window === "undefined") return null
     return useUserDataStore.getState().socketToken
+  }
+
+  private startHeartbeat(): void {
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval)
+    }
+    
+    this.heartbeatInterval = setInterval(() => {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+        try {
+          this.socket.send(JSON.stringify({ action: "ping" }))
+        } catch (error) {
+          console.warn("Failed to send heartbeat:", error)
+        }
+      }
+    }, this.HEARTBEAT_INTERVAL)
+  }
+
+  private stopHeartbeat(): void {
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval)
+      this.heartbeatInterval = null
+    }
   }
 
   public connect(): Promise<WebSocket> {
@@ -46,6 +71,7 @@ export class WebSocketClient {
 
         this.socket.onopen = () => {
           this.isConnecting = false
+          this.startHeartbeat()
           if (this.options.onOpen) {
             this.options.onOpen(this.socket!)
           }
@@ -73,6 +99,7 @@ export class WebSocketClient {
 
         this.socket.onclose = (event) => {
           this.isConnecting = false
+          this.stopHeartbeat()
           this.currentToken = null
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
@@ -177,6 +204,7 @@ export class WebSocketClient {
   }
 
   public disconnect(): void {
+    this.stopHeartbeat()
     if (this.socket) {
       if (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN) {
         this.socket.close()
