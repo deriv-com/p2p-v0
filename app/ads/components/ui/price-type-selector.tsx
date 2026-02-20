@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export type PriceType = "fixed" | "float"
 
@@ -23,6 +24,7 @@ interface PriceTypeSelectorProps {
 export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false, isFloatingRateEnabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
 
   const handleSelect = (newValue: PriceType) => {
     onChange(newValue)
@@ -52,7 +54,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
           <div className="text-xs text-grayscale-text-muted">
-            Set a constant rate, unaffected by market fluctuations.
+            {t("order.fixedRateDescription")}
           </div>
         </div>
         <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
@@ -94,7 +96,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-white">Set a constant rate, unaffected by market fluctuations.</p>
+                  <p className="text-white">{t("order.fixedRateDescription")}</p>
                   <TooltipArrow className="fill-black" />
                 </TooltipContent>
               </Tooltip>
@@ -124,7 +126,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="fixed">
                   <div className="flex flex-col">
                     <span className="text-base">Fixed</span>
-                    <span className="text-xs">Set a constant rate, unaffected by market fluctuations.</span>
+                    <span className="text-xs">{t("order.fixedRateDescription")}</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float">

@@ -88,6 +88,7 @@
     "orderExists": "La orden ya existe.",
     "orderCreationError": "Hubo un error al crear la orden. Por favor, inténtalo de nuevo.",
     "unableToCreateOrder": "No se puede crear una orden",
+    "fixedRateDescription": "Establece una tasa constante, no afectada por las fluctuaciones del mercado.",
     "confirmPayment": "Confirma tu pago",
     "fraudWarning": "Proporcionar documentos fraudulentos resultará en una prohibición permanente.",
     "ensurePayment": "Asegúrate de haber pagado {amount} {currency} a {name} y sube el recibo como prueba de pago.",
