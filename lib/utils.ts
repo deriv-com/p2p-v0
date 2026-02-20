@@ -557,6 +557,14 @@ export const currencyFlagMapper = {
   CDF: "/icons/flag-congo.svg",
   SBD: "/icons/flag-solomon.svg",
   CHF: "/icons/flag-switzerland.svg",
+  PAB: "/icons/flag-panama.svg",
+  JPY: "/icons/flag-japan.svg",
+  KRW: "/icons/flag-south-korea.svg",
+  YER: "/icons/flag-yemen.svg",
+  MXN: "/icons/flag-mexico.svg",
+  PEN: "/icons/flag-peru.svg",
+  NIO: "/icons/flag-nicaragua.svg",
+  SAR: "/icons/flag-saudi-arabia.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
