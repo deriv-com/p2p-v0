@@ -70,7 +70,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Floating</div>
           <div className="text-xs text-grayscale-text-muted">
-            Set a rate that changes with market movements.
+            {t("order.floatingRateDescription")}
           </div>
         </div>
         <RadioGroupItem value="float" id="float" className="hidden mt-1 ml-4 h-6 w-6" />
@@ -132,7 +132,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="float">
                   <div className="flex flex-col">
                     <span className="text-base">Floating</span>
-                    <span className="text-xs">Set a rate that changes with market movements.</span>
+                    <span className="text-xs">{t("order.floatingRateDescription")}</span>
                   </div>
                 </SelectItem>
               </SelectContent>
