@@ -94,7 +94,9 @@
     "orderLimitError": "Order limit: {min} - {max} {currency}",
     "orderExists": "You already have an active order for this ad. Complete the existing order before placing a new one.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
-    "unableToCreateOrder": "Unable to create an order"
+    "unableToCreateOrder": "Unable to create an order",
+    "fixedRateDescription": "Set a constant rate, unaffected by market fluctuations.",
+    "floatingRateDescription": "Set a rate that changes with market movements."
   },
   "paymentMethod": {
     "title": "Payment method",
