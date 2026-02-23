@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import FollowsTab from "./follows-tab"
@@ -51,10 +52,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   // Use React Query hook for adding payment methods
   const addPaymentMethod = useAddPaymentMethod()
 
-  const helpCentreUrl =
-    locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
-      : `https://trade.deriv.com/help-centre/deriv-p2p`
+  const helpCentreUrl = getHelpCentreUrl(locale)
 
   const isDiamond = userData.trade_band === "diamond"
   const showClosedGroupTab = isDiamond

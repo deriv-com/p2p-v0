@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
+import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
@@ -61,10 +62,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const homeProfileUrl = getHomeUrl(isV1Signup, "homeProfile")
 
-  const helpCentreUrl =
-    locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
-      : `https://trade.deriv.com/help-centre/deriv-p2p`
+  const helpCentreUrl = getHelpCentreUrl(locale)
 
   const liveChatUrl = "https://deriv.com/livechat"
 
