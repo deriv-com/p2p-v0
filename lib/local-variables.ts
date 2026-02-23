@@ -1,5 +1,6 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCoreUrl } from "@/lib/get-core-url"
+import { getSocketUrl } from "@/lib/get-socket-url"
 
 let USER_DATA = null
 let USER_TOKEN = null
@@ -7,6 +8,7 @@ let USER_ID = null
 let SOCKET_TOKEN = null
 let CLIENT_ID = null
 let CORE_URL = ""
+let SOCKET_URL = ""
 
 if (typeof window !== "undefined") {
   USER_TOKEN = localStorage.getItem("auth_token") ?? ""
@@ -20,6 +22,7 @@ if (typeof window !== "undefined") {
   CLIENT_ID = useUserDataStore.getState().clientId ?? ""
 
   CORE_URL = getCoreUrl()
+  SOCKET_URL = getSocketUrl()
 }
 
 export const USER = {
@@ -37,7 +40,7 @@ export const USER = {
 export const API = {
   baseUrl: `${CORE_URL}/p2p/v1`,
   coreUrl: `${CORE_URL}/v1`,
-  socketUrl: `${process.env.NEXT_PUBLIC_SOCKET_URL}/p2p/v1/events`,
+  socketUrl: `${SOCKET_URL}/p2p/v1/events`,
   notificationUrl: `${CORE_URL}/notifications/v1`,
   endpoints: {
     ads: "/adverts",
