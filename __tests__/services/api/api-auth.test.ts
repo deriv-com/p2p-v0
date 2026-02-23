@@ -92,8 +92,8 @@ describe("getSession", () => {
   })
 
   it("should call Ory endpoint when ory flag is enabled", async () => {
-    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(true)
-    
+    ; (RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(true)
+
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>
     mockFetch.mockResolvedValue({
       status: 200,
@@ -113,8 +113,8 @@ describe("getSession", () => {
   })
 
   it("should call legacy session endpoint when ory flag is disabled", async () => {
-    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
-    
+    ; (RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
+
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>
     mockFetch.mockResolvedValue({
       status: 200,
@@ -124,7 +124,7 @@ describe("getSession", () => {
 
     expect(RemoteConfigAPI.getFeatureFlag).toHaveBeenCalledWith("ory")
     expect(fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_CORE_URL}/session`,
+      `${process.env.NEXT_PUBLIC_CORE_URL}/v1/session`,
       expect.objectContaining({
         method: "GET",
         credentials: "include",
@@ -134,8 +134,8 @@ describe("getSession", () => {
   })
 
   it("should return false when session is invalid", async () => {
-    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
-    
+    ; (RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
+
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>
     mockFetch.mockResolvedValue({
       status: 401,
@@ -147,8 +147,8 @@ describe("getSession", () => {
   })
 
   it("should handle network errors gracefully", async () => {
-    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
-    
+    ; (RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
+
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>
     mockFetch.mockRejectedValue(new Error("Network error"))
 

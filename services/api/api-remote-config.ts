@@ -3,6 +3,8 @@
  * Handles feature flags and remote configuration
  */
 
+import { getCoreUrl } from "@/lib/get-core-url"
+
 export interface RemoteConfigResponse {
   ory?: boolean
   [key: string]: any
@@ -13,7 +15,7 @@ export interface RemoteConfigResponse {
  */
 export async function getRemoteConfig(): Promise<RemoteConfigResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/v1/fe/remote-config`, {
+    const response = await fetch(`${getCoreUrl()}/v1/fe/remote-config`, {
       method: "GET",
       credentials: "include",
       headers: {

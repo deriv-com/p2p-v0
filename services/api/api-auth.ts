@@ -2,6 +2,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { queryClient } from "@/lib/react-query-client"
 import { queryKeys } from "@/hooks/use-api-queries"
+import { getCoreUrl } from "@/lib/get-core-url"
 
 export interface LoginRequest {
   email: string
@@ -85,7 +86,7 @@ const getAuthHeader = () => ({
  */
 export async function login(email: LoginRequest): Promise<LoginResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/login`, {
+    const response = await fetch(`${getCoreUrl()}/v1/login`, {
       method: "POST",
       body: JSON.stringify(email),
     })
@@ -109,7 +110,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
  */
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/verify`, {
+    const response = await fetch(`${getCoreUrl()}/v1/verify`, {
       method: "POST",
       headers: {
         "X-Enable-Session": "true",
@@ -143,7 +144,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const url =
         process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
+      const response = await fetch(`${getCoreUrl()}/v1/auth/redirect-url?token=${token}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +174,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       return data
     } else {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
+      const response = await fetch(`${getCoreUrl()}/v1/auth/token/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -206,7 +207,7 @@ export async function getSession(): Promise<boolean> {
     const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
     const sessionUrl = isOryEnabled
       ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami`
-      : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
+      : `${getCoreUrl()}/session`
 
     const response = await fetch(sessionUrl, {
       method: "GET",
@@ -235,7 +236,7 @@ export async function getSession(): Promise<boolean> {
  */
 export async function logout(): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/logout`, {
+    const response = await fetch(`${getCoreUrl()}/v1/logout`, {
       method: "POST",
       credentials: "include",
     })
@@ -260,7 +261,7 @@ export async function logout(): Promise<void> {
  */
 export async function getMe(): Promise<any> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+    const response = await fetch(`${getCoreUrl()}/p2p/v1/users/me`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -285,7 +286,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+    const response = await fetch(`${getCoreUrl()}/p2p/v1/users/me`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -313,7 +314,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     // Get settings from React Query cache first, then fetch if needed
     // This ensures we reuse cached data from useSettings hook when available
     let settings: any | undefined = queryClient.getQueryData(queryKeys.auth.settings())
-    
+
     if (!settings) {
       try {
         settings = await queryClient.fetchQuery({
@@ -449,7 +450,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
+    const response = await fetch(`${getCoreUrl()}/v1/client/profile`, {
       method: "GET",
       credentials: "include",
     })
@@ -484,7 +485,7 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token?: string): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-websocket-token`, {
+    const response = await fetch(`${getCoreUrl()}/p2p/v1/user-websocket-token`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -513,7 +514,7 @@ export async function getSocketToken(token?: string): Promise<void> {
  */
 export async function getKycStatus(): Promise<KycStatusResponse[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/kyc-status`, {
+    const response = await fetch(`${getCoreUrl()}/v1/client/kyc-status`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -535,7 +536,7 @@ export async function getKycStatus(): Promise<KycStatusResponse[]> {
  */
 export async function getOnboardingStatus(): Promise<OnboardingStatusResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/onboarding-status`, {
+    const response = await fetch(`${getCoreUrl()}/v1/client/onboarding-status`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -558,7 +559,7 @@ export async function getOnboardingStatus(): Promise<OnboardingStatusResponse> {
  */
 export async function getTotalBalance(): Promise<TotalBalanceResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/total-balance`, {
+    const response = await fetch(`${getCoreUrl()}/v1/client/total-balance`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -581,7 +582,7 @@ export async function getTotalBalance(): Promise<TotalBalanceResponse> {
  */
 export async function getUserBalance(): Promise<{ amount: string; currency: string }> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+    const response = await fetch(`${getCoreUrl()}/p2p/v1/users/me`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -610,7 +611,7 @@ export async function getUserBalance(): Promise<{ amount: string; currency: stri
  */
 export async function getCurrencies(): Promise<CurrenciesResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`, {
+    const response = await fetch(`${getCoreUrl()}/v1/core/business/config/currencies`, {
       method: "POST",
       credentials: "include",
     })
@@ -632,7 +633,7 @@ export async function getCurrencies(): Promise<CurrenciesResponse> {
  */
 export async function getSettings(): Promise<any> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
+    const response = await fetch(`${getCoreUrl()}/p2p/v1/settings`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -655,7 +656,7 @@ export async function getSettings(): Promise<any> {
  */
 export async function createP2PUser(): Promise<CreateP2PUserResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/p2p/client`, {
+    const response = await fetch(`${getCoreUrl()}/v1/p2p/client`, {
       method: "POST",
       credentials: "include",
       headers: getAuthHeader(),
@@ -679,7 +680,7 @@ export async function createP2PUser(): Promise<CreateP2PUserResponse> {
  */
 export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/advert-statistics/${accountCurrency}`, {
+    const response = await fetch(`${getCoreUrl()}/p2p/v1/advert-statistics/${accountCurrency}`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),

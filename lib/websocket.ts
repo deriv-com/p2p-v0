@@ -33,7 +33,7 @@ export class WebSocketClient {
 
     return new Promise((resolve, reject) => {
       try {
-        const url = process.env.NEXT_PUBLIC_SOCKET_URL
+        const url = `${process.env.NEXT_PUBLIC_SOCKET_URL}/p2p/v1/events`
         this.socket = new WebSocket(url)
 
         this.socket.onopen = () => {

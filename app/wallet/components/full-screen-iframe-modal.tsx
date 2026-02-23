@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getCoreUrl } from "@/lib/get-core-url"
 
 interface IframeResponse {
   status: string
@@ -53,7 +54,7 @@ export default function FullScreenIframeModal({
       setError(null)
 
       try {
-        const cashierUrl = process.env.NEXT_PUBLIC_CASHIER_URL
+        const cashierUrl = `${getCoreUrl()}/v1/cashier/url`
         const apiOperation = operation === "WITHDRAW" ? "PAYOUT" : operation
         const params = new URLSearchParams({
           wallet_id: walletId || "",
