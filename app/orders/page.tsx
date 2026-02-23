@@ -77,6 +77,9 @@ export default function OrdersPage() {
 
   const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
   const orders = Array.isArray(ordersResponse?.data) ? ordersResponse.data : []
+  
+  // Check if there are any past orders available (used for DateFilter visibility)
+  const hasPastOrders = activeTab === "past" ? (ordersResponse?.data?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -407,7 +410,7 @@ export default function OrdersPage() {
             </div>
           )}
           <div className="my-4 self-end">
-            {activeTab === "past" && orders.length > 0 && (
+            {activeTab === "past" && !isLoading && hasPastOrders && (
               <DateFilter
                 value={dateFilter}
                 customRange={customDateRange}
