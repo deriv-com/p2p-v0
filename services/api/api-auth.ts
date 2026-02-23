@@ -3,6 +3,7 @@ import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { queryClient } from "@/lib/react-query-client"
 import { queryKeys } from "@/hooks/use-api-queries"
 import { getCoreUrl } from "@/lib/get-core-url"
+import { getOryUrl } from "@/lib/get-ory-url"
 
 export interface LoginRequest {
   email: string
@@ -206,7 +207,7 @@ export async function getSession(): Promise<boolean> {
   try {
     const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
     const sessionUrl = isOryEnabled
-      ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami`
+      ? `${getOryUrl()}/sessions/whoami`
       : `${getCoreUrl()}/session`
 
     const response = await fetch(sessionUrl, {
