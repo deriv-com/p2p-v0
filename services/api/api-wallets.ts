@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getCoreUrl } from "@/lib/get-core-url"
 
 const getAuthHeader = () => ({
   "Content-Type": "application/json",
@@ -9,7 +10,7 @@ export async function fetchTransactions(selectedCurrencyCode?: string) {
 
   const walletId = userData?.wallet_id
 
-  let url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
+  let url = `${getCoreUrl()}/v1/wallets/transactions?wallet_id=${walletId}`
   if (selectedCurrencyCode) {
     url += `&transaction_currency=${selectedCurrencyCode}`
   }
@@ -32,7 +33,7 @@ export async function fetchTransactions(selectedCurrencyCode?: string) {
 }
 
 export async function fetchWalletsList() {
-  const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets`
+  const url = `${getCoreUrl()}/v1/wallets`
 
   return fetch(url, {
     method: "GET",
@@ -53,7 +54,7 @@ export async function fetchWalletsList() {
 
 export async function getCurrencies(): Promise<any> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`
+    const url = `${getCoreUrl()}/v1/core/business/config/currencies`
     const headers = getAuthHeader()
 
     const response = await fetch(url, {
@@ -77,7 +78,7 @@ export async function walletTransfer(params: {
   source_wallet_id: string
 }): Promise<any> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transfers`
+    const url = `${getCoreUrl()}/v1/wallets/transfers`
     const headers = getAuthHeader()
 
     const response = await fetch(url, {
@@ -105,7 +106,7 @@ export async function fetchBalance(selectedCurrency: string): Promise<number> {
       return 0
     }
 
-    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
+    const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
 
     const response = await fetch(url, {
       credentials: "include",
@@ -142,7 +143,7 @@ export async function fetchUserBalances(): Promise<any> {
       return { balances: [] }
     }
 
-    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
+    const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
 
     const response = await fetch(url, {
       credentials: "include",
@@ -174,7 +175,7 @@ export async function fetchExchangeRate(params: {
   destination_currency: string
 }): Promise<any> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/exchange-rate?source_currency=${params.source_currency}&destination_currency=${params.destination_currency}`
+    const url = `${getCoreUrl()}/v1/wallets/exchange-rate?source_currency=${params.source_currency}&destination_currency=${params.destination_currency}`
     const headers = getAuthHeader()
 
     const response = await fetch(url, {
@@ -202,7 +203,7 @@ export async function walletExchangeTransfer(params: {
   exchange_rate: string
 }): Promise<any> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transfers/exchange`
+    const url = `${getCoreUrl()}/v1/wallets/transfers/exchange`
     const headers = getAuthHeader()
 
     const response = await fetch(url, {
@@ -225,7 +226,7 @@ export async function walletExchangeTransfer(params: {
 
 export async function fetchTransactionByReferenceId(referenceId: string): Promise<any> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?reference_id=${referenceId}`
+    const url = `${getCoreUrl()}/v1/wallets/transactions?reference_id=${referenceId}`
     const headers = getAuthHeader()
 
     const response = await fetch(url, {

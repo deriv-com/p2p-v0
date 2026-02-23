@@ -11,15 +11,15 @@ describe("api-remote-config", () => {
   describe("getRemoteConfig", () => {
     it("should fetch remote config successfully", async () => {
       const mockConfig = { ory: true, otherFlag: false }
-      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ data: mockConfig }),
-      })
+        ; (global.fetch as jest.Mock).mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ data: mockConfig }),
+        })
 
       const result = await getRemoteConfig()
 
       expect(global.fetch).toHaveBeenCalledWith(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/fe/remote-config`,
+        `${process.env.NEXT_PUBLIC_CORE_URL}/v1/fe/remote-config`,
         expect.objectContaining({
           method: "GET",
           credentials: "include",
@@ -29,7 +29,7 @@ describe("api-remote-config", () => {
     })
 
     it("should return default config when fetch fails", async () => {
-      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+      ; (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         statusText: "Not Found",
       })
@@ -40,7 +40,7 @@ describe("api-remote-config", () => {
     })
 
     it("should return default config on network error", async () => {
-      ;(global.fetch as jest.Mock).mockRejectedValueOnce(new Error("Network error"))
+      ; (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("Network error"))
 
       const result = await getRemoteConfig()
 
@@ -48,7 +48,7 @@ describe("api-remote-config", () => {
     })
 
     it("should handle missing data in response", async () => {
-      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+      ; (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({}),
       })
@@ -62,10 +62,10 @@ describe("api-remote-config", () => {
   describe("getFeatureFlag", () => {
     it("should return feature flag value when it exists", async () => {
       const mockConfig = { ory: true, otherFlag: false }
-      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ data: mockConfig }),
-      })
+        ; (global.fetch as jest.Mock).mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ data: mockConfig }),
+        })
 
       const result = await getFeatureFlag("ory")
 
@@ -74,10 +74,10 @@ describe("api-remote-config", () => {
 
     it("should return false when feature flag does not exist", async () => {
       const mockConfig = { ory: true }
-      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ data: mockConfig }),
-      })
+        ; (global.fetch as jest.Mock).mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ data: mockConfig }),
+        })
 
       const result = await getFeatureFlag("nonExistentFlag")
 
@@ -85,7 +85,7 @@ describe("api-remote-config", () => {
     })
 
     it("should return false on error", async () => {
-      ;(global.fetch as jest.Mock).mockRejectedValueOnce(new Error("Network error"))
+      ; (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("Network error"))
 
       const result = await getFeatureFlag("ory")
 

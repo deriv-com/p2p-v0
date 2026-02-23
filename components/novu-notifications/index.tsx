@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { getCoreUrl } from "@/lib/get-core-url"
 import Image from "next/image"
 import "../../styles/globals.css"
 
 const API = {
-  notificationUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
+  notificationUrl: `${getCoreUrl()}/notifications/v1`,
 }
 
 const AUTH = {
@@ -85,18 +86,18 @@ export function NovuNotifications() {
       colorBackground: "#ffffff",
     },
     elements: {
-       popoverTrigger: {
+      popoverTrigger: {
         borderRadius: "50%",
         backgroundColor: isMobile ? "rgba(255, 255, 255, 0.04)" : "rgba(0, 0, 0, 0.04)",
         padding: 0,
       },
       bellContainer: {
         margin: 0,
-           width: "32px",
+        width: "32px",
         height: "32px",
       },
       bellIcon: {
-       width: "24px",
+        width: "24px",
         height: "24px",
       },
       bellDot: {

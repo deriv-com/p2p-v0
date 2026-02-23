@@ -13,6 +13,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useCurrencies } from "@/hooks/use-api-queries"
 import { currencyLogoMapper } from "@/lib/utils"
+import { getCoreUrl } from "@/lib/get-core-url"
 
 interface WalletBalanceProps {
   className?: string
@@ -53,7 +54,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     try {
       setIsRefreshing(true)
 
-      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
+      const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
 
       const response = await fetch(url, {
         credentials: "include",
@@ -122,9 +123,9 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     setIsIframeModalOpen(true)
   }
 
-  const handleSendTransferClick = () => {}
+  const handleSendTransferClick = () => { }
 
-  const handleReceiveTransferClick = () => {}
+  const handleReceiveTransferClick = () => { }
 
   return (
     <TooltipProvider>

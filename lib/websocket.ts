@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getSocketUrl } from "@/lib/get-socket-url"
 import type { WebSocketMessage } from "./websocket-message"
 import type { WebSocketOptions } from "./websocket-options"
 
@@ -33,7 +34,7 @@ export class WebSocketClient {
 
     return new Promise((resolve, reject) => {
       try {
-        const url = process.env.NEXT_PUBLIC_SOCKET_URL
+        const url = `${getSocketUrl()}/p2p/v1/events`
         this.socket = new WebSocket(url)
 
         this.socket.onopen = () => {

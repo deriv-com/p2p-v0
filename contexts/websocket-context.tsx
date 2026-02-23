@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getSocketUrl } from "@/lib/get-socket-url"
 import type { WebSocketMessage } from "@/lib/websocket-message"
 import type { WebSocketOptions } from "@/lib/websocket-options"
 
@@ -39,7 +40,7 @@ export class WebSocketClient {
 
     return new Promise((resolve, reject) => {
       try {
-        const url = process.env.NEXT_PUBLIC_SOCKET_URL
+        const url = `${getSocketUrl()}/p2p/v1/events`
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
         this.socket = new WebSocket(url, protocols)
         this.currentToken = socketToken

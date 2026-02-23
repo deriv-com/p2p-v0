@@ -1,10 +1,14 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getCoreUrl } from "@/lib/get-core-url"
+import { getSocketUrl } from "@/lib/get-socket-url"
 
 let USER_DATA = null
 let USER_TOKEN = null
 let USER_ID = null
 let SOCKET_TOKEN = null
 let CLIENT_ID = null
+let CORE_URL = ""
+let SOCKET_URL = ""
 
 if (typeof window !== "undefined") {
   USER_TOKEN = localStorage.getItem("auth_token") ?? ""
@@ -16,6 +20,9 @@ if (typeof window !== "undefined") {
   SOCKET_TOKEN = localStorage.getItem("socket_token") ?? ""
 
   CLIENT_ID = useUserDataStore.getState().clientId ?? ""
+
+  CORE_URL = getCoreUrl()
+  SOCKET_URL = getSocketUrl()
 }
 
 export const USER = {
@@ -31,10 +38,10 @@ export const USER = {
 }
 
 export const API = {
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  coreUrl: process.env.NEXT_PUBLIC_CORE_URL,
-  socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL,
-  notificationUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
+  baseUrl: `${CORE_URL}/p2p/v1`,
+  coreUrl: `${CORE_URL}/v1`,
+  socketUrl: `${SOCKET_URL}/p2p/v1/events`,
+  notificationUrl: `${CORE_URL}/notifications/v1`,
   endpoints: {
     ads: "/adverts",
     orders: "/orders",
@@ -52,7 +59,7 @@ export const API = {
 }
 
 export const WALLETS = {
-  cashierUrl: process.env.NEXT_PUBLIC_CASHIER_URL,
+  cashierUrl: `${CORE_URL}/v1/cashier/url`,
   defaultParams: {
     wallet_id: USER_DATA?.balances?.find((b) => b.currency === "USD")?.wallet_id,
     user_id: CLIENT_ID || "",
@@ -81,7 +88,7 @@ export const APP_SETTINGS = {
 
 export const NOTIFICATIONS = {
   applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
-  subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
+  subscriberHashUrl: `${CORE_URL}/notifications/v1`,
 }
 
 export default {
