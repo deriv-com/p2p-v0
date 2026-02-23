@@ -474,19 +474,19 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
                     {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
+                    {hasVisibilityStatus && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                        onClick={() => handleVisibilityStatusClick(ad)}
+                      >
+                        <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
+                      </Button>
+                    )}
                   </TableCell>
                   <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
-                      {hasVisibilityStatus && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                          onClick={() => handleVisibilityStatusClick(ad)}
-                        >
-                          <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
-                        </Button>
-                      )}
                       {isMobile ? (
                         <Button
                           variant="ghost"
