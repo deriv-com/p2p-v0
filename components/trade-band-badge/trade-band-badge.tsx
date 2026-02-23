@@ -51,7 +51,7 @@ export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, cl
 
   const redirectToHelpCentre = () => {
     const baseUrl = getHelpCentreUrl(locale)
-    const url = `${baseUrl}-question/what-are-the-p2p-tier-levels-and-limits`
+    const url = `${baseUrl}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
     window.open(url, "_blank", "noopener,noreferrer")
   }
 
