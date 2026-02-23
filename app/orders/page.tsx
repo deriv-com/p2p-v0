@@ -407,7 +407,7 @@ export default function OrdersPage() {
             </div>
           )}
           <div className="my-4 self-end">
-            {activeTab === "past" && orders.length > 0 && (
+            {activeTab === "past" && !isLoading && orders.length > 0 && (
               <DateFilter
                 value={dateFilter}
                 customRange={customDateRange}
