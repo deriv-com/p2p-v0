@@ -142,9 +142,6 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
   try {
     if (isOryEnabled) {
-      const url =
-        process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
-
       const response = await fetch(`${getCoreUrl()}/v1/auth/redirect-url?token=${token}`, {
         method: "GET",
         headers: {
