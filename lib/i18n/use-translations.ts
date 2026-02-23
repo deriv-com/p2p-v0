@@ -13,6 +13,7 @@ import de from "./translations/de.json"
 import bn from "./translations/bn.json"
 import pl from "./translations/pl.json"
 import ko from "./translations/ko.json"
+import sw from "./translations/sw.json"
 import type { Locale } from "./config"
 
 const translations = {
@@ -27,6 +28,7 @@ const translations = {
   bn,
   pl,
   ko,
+  sw,
 }
 
 type TranslationKey = string
