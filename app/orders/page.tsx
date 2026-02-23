@@ -75,17 +75,11 @@ export default function OrdersPage() {
     }),
   }
 
-  // Check if there are any past orders (without date filter) to determine if DateFilter should be visible
-  const totalPastOrdersFilters = {
-    is_open: false,
-  }
-
   const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
-  const { data: totalPastOrdersResponse } = useOrders(totalPastOrdersFilters)
-  
   const orders = Array.isArray(ordersResponse?.data) ? ordersResponse.data : []
-  const totalPastOrders = Array.isArray(totalPastOrdersResponse?.data) ? totalPastOrdersResponse.data : []
-  const hasPastOrders = totalPastOrders.length > 0
+  
+  // Check if there are any past orders available (used for DateFilter visibility)
+  const hasPastOrders = activeTab === "past" ? (ordersResponse?.data?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
