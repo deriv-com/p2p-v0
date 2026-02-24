@@ -62,7 +62,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const homeProfileUrl = getHomeUrl(isV1Signup, "homeProfile")
 
-  const helpCentreUrl = getHelpCentreUrl(locale)
+  const helpCentreUrl = `${getHelpCentreUrl(locale)}/help-centre/deriv-p2p`
 
   const liveChatUrl = "https://deriv.com/livechat"
 
