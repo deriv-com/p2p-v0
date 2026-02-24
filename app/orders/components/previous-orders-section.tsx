@@ -12,7 +12,11 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
   const { t } = useTranslations()
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   const p2pUrl = getP2pUrl(isProduction)
-  const iframeUrl = `${p2pUrl}/orders?from=p2p-v2`
+  
+  const url = new URL(p2pUrl)
+  url.pathname = "/orders"
+  url.searchParams.set("from", "p2p-v2")
+  const iframeUrl = url.toString()
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-4 mb-6 px-3">
