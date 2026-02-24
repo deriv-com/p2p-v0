@@ -23,7 +23,6 @@ interface PriceTypeSelectorProps {
 
 export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false, isFloatingRateEnabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
-  const [hoveredOption, setHoveredOption] = useState<PriceType | null>(null)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
@@ -47,8 +46,6 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
-        onMouseEnter={() => setHoveredOption("fixed")}
-        onMouseLeave={() => setHoveredOption(null)}
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
           ? "border-black"
           : "border-grayscale-500"
@@ -56,7 +53,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
       >
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
-          <div className={`text-xs text-grayscale-text-muted transition-opacity ${value === "fixed" || hoveredOption === "fixed" ? 'opacity-72' : 'opacity-100'}`}>
+          <div className="text-xs text-grayscale-text-muted">
             {t("order.fixedRateDescription")}
           </div>
         </div>
@@ -65,8 +62,6 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
       <Label
         htmlFor="float"
-        onMouseEnter={() => setHoveredOption("float")}
-        onMouseLeave={() => setHoveredOption(null)}
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
           ? "border-black"
           : "border-grayscale-500"
@@ -74,7 +69,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
       >
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Floating</div>
-          <div className={`text-xs text-grayscale-text-muted transition-opacity ${value === "float" || hoveredOption === "float" ? 'opacity-72' : 'opacity-100'}`}>
+          <div className="text-xs text-grayscale-text-muted">
             {t("order.floatingRateDescription")}
           </div>
         </div>
