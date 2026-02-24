@@ -23,6 +23,7 @@ interface PriceTypeSelectorProps {
 
 export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false, isFloatingRateEnabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
+  const [hoveredItem, setHoveredItem] = useState<PriceType | null>(null)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
@@ -49,7 +50,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
           ? "border-black"
           : "border-grayscale-500"
-          } ${disabled ? "opacity-50 cursor-not-allowed" : "hover:border-black"}`}
+          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
@@ -65,7 +66,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
           ? "border-black"
           : "border-grayscale-500"
-          } ${disabled ? "opacity-50 cursor-not-allowed" : "hover:border-black"}`}
+          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Floating</div>
@@ -123,16 +124,16 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="fixed">
+                <SelectItem value="fixed" onMouseEnter={() => setHoveredItem("fixed")} onMouseLeave={() => setHoveredItem(null)}>
                   <div className="flex flex-col">
                     <span className="text-base">Fixed</span>
-                    <span className={`text-xs transition-opacity ${value === "fixed" ? 'opacity-72' : 'opacity-100'}`}>{t("order.fixedRateDescription")}</span>
+                    <span className={`text-xs transition-opacity ${value === "fixed" || hoveredItem === "fixed" ? 'opacity-72' : 'opacity-100'}`}>{t("order.fixedRateDescription")}</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="float">
+                <SelectItem value="float" onMouseEnter={() => setHoveredItem("float")} onMouseLeave={() => setHoveredItem(null)}>
                   <div className="flex flex-col">
                     <span className="text-base">Floating</span>
-                    <span className={`text-xs transition-opacity ${value === "float" ? 'opacity-72' : 'opacity-100'}`}>{t("order.floatingRateDescription")}</span>
+                    <span className={`text-xs transition-opacity ${value === "float" || hoveredItem === "float" ? 'opacity-72' : 'opacity-100'}`}>{t("order.floatingRateDescription")}</span>
                   </div>
                 </SelectItem>
               </SelectContent>
