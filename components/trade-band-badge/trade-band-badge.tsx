@@ -3,6 +3,7 @@
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface TradeBandBadgeProps {
@@ -49,9 +50,8 @@ export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, cl
   }
 
   const redirectToHelpCentre = () => {
-    const url = locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-      : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+    const baseUrl = getHelpCentreUrl(locale)
+    const url = `${baseUrl}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
     window.open(url, "_blank", "noopener,noreferrer")
   }
 
