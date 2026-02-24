@@ -263,14 +263,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     }
   }, [isOpen])
 
-  // Clear payment methods when advert changes
-  useEffect(() => {
-    if (ad) {
-      setSelectedPaymentMethods([])
-      setTempSelectedPaymentMethods([])
-    }
-  }, [ad?.id])
-
   useEffect(() => {
     if (ad && amount) {
       const numAmount = Number.parseFloat(amount)
