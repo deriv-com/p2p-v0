@@ -131,13 +131,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="fixed">
                   <div className="flex flex-col">
                     <span className="text-base">Fixed</span>
-                    <span className="text-xs">{t("order.fixedRateDescription")}</span>
+                    <span className={`text-xs transition-opacity ${value === "fixed" ? 'opacity-72' : 'opacity-100'}`}>{t("order.fixedRateDescription")}</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float">
                   <div className="flex flex-col">
                     <span className="text-base">Floating</span>
-                    <span className="text-xs">{t("order.floatingRateDescription")}</span>
+                    <span className={`text-xs transition-opacity ${value === "float" ? 'opacity-72' : 'opacity-100'}`}>{t("order.floatingRateDescription")}</span>
                   </div>
                 </SelectItem>
               </SelectContent>
