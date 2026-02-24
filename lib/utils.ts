@@ -587,6 +587,7 @@ export const currencyFlagMapper = {
   UZS: "/icons/flag-uzbekistan.svg",
   VND: "/icons/flag-vietnam.svg",
   XPF: "/icons/flag-french-polynesia.svg",
+  AAD: "/icons/flag-antarctica.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
