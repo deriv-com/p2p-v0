@@ -452,8 +452,16 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
   // Set user payment methods and seller payment methods
   useEffect(() => {
-    if (filteredPaymentMethods.length > 0) {
-      setUserPaymentMethods(filteredPaymentMethods)
+    if (isBuy) {
+      // For buy orders, filter payment methods by buyer's accepted methods
+      if (filteredPaymentMethods.length > 0) {
+        setUserPaymentMethods(filteredPaymentMethods)
+      }
+    } else {
+      // For sell orders, also filter to only show buyer's accepted methods
+      if (filteredPaymentMethods.length > 0) {
+        setUserPaymentMethods(filteredPaymentMethods)
+      }
     }
 
     const buyerAcceptedMethods = ad?.payment_methods || []
@@ -462,7 +470,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       method: method,
     }))
     setSellerPaymentMethods(sellerMethods)
-  }, [filteredPaymentMethods, ad?.payment_methods])
+  }, [filteredPaymentMethods, ad?.payment_methods, isBuy])
 
   if (!isOpen && !isAnimating) return null
 
@@ -524,7 +532,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                 </div>
 
-                {isBuy && (
+                {(isBuy || !isBuy) && (
                   <div className="mx-4 mt-4 pb-6 border-b">
                     <div
                       className="border border-gray-200 rounded-lg px-4 cursor-pointer hover:bg-gray-50 transition-colors flex items-center h-[56px]"
@@ -532,7 +540,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                     >
                       <div className="flex items-center justify-between flex-1">
                         <div className="flex flex-col gap-[1px]">
-                          {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>}
+                          {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{isBuy ? t("order.receivePaymentTo") : t("order.paymentMethod")}</span>}
                           <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
                         </div>
                         <Image
@@ -611,7 +619,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                     variant="primary"
                     onClick={handleSubmit}
                     disabled={
-                      !amount || (isBuy && selectedPaymentMethods.length === 0) || !!validationError || isSubmitting
+                      !amount || selectedPaymentMethods.length === 0 || !!validationError || isSubmitting
                     }
                   >
                     {isSubmitting ? (
