@@ -1,8 +1,8 @@
 /**
  * Get the correct help centre URL based on the current domain
- * - .com domain → trade.deriv.com
- * - .me domain → trade.deriv.me
- * - .be domain → trade.deriv.be
+ * - .com domain → trade.deriv.com/help-centre/deriv-p2p
+ * - .me domain → trade.deriv.me/help-centre/deriv-p2p
+ * - .be domain → trade.deriv.be/help-centre/deriv-p2p
  */
 export function getHelpCentreUrl(locale?: string): string {
   let baseUrl: string
@@ -30,8 +30,8 @@ export function getHelpCentreUrl(locale?: string): string {
 
   // Append locale to URL if provided and not "en"
   if (locale && locale !== "en") {
-    return `${baseUrl}/${locale}`
+    return `${baseUrl}/${locale}/help-centre/deriv-p2p`
   }
 
-  return baseUrl
+  return `${baseUrl}/help-centre/deriv-p2p`
 }
