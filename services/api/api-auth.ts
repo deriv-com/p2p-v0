@@ -158,17 +158,9 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       if (data.recovery_link) {
         const recoveryUrl = new URL(data.recovery_link)
-        let domain = recoveryUrl.hostname
+        let oryUrl = new URL(getOryUrl())
 
-        if (typeof window !== "undefined") {
-          if (window.origin.includes("deriv.be")) {
-            domain = process.env.NEXT_PUBLIC_ORY_BE_URL || ""
-          } else if (window.origin.includes("deriv.me")) {
-            domain = process.env.NEXT_PUBLIC_ORY_ME_URL || ""
-          }
-        }
-
-        recoveryUrl.hostname = domain
+        recoveryUrl.hostname = oryUrl.hostname
         const updatedRecoveryLink = recoveryUrl.toString()
 
         const recoveryResponse = await fetch(updatedRecoveryLink, {
