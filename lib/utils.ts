@@ -588,6 +588,20 @@ export const currencyFlagMapper = {
   VND: "/icons/flag-vietnam.svg",
   XPF: "/icons/flag-french-polynesia.svg",
   AAD: "/icons/flag-antarctica.svg",
+  AOA: "/icons/flag-angola.svg",
+  GHS: "/icons/flag-ghana.svg",
+  KES: "/icons/flag-kenya.svg",
+  NGN: "/icons/flag-nigeria.svg",
+  ZAR: "/icons/flag-south-africa.svg",
+  ZWL: "/icons/flag-zimbabwe.svg",
+  INR: "/icons/flag-india.svg",
+  IDR: "/icons/flag-indonesia.svg",
+  MVR: "/icons/flag-maldives.svg",
+  PKR: "/icons/flag-pakistan.svg",
+  LKR: "/icons/flag-sri-lanka.svg",
+  BRL: "/icons/flag-brazil.svg",
+  VIR: "/icons/flag-us-virgin-islands.svg",
+  VUV: "/icons/flag-vanuatu.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
