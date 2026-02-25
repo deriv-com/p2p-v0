@@ -162,9 +162,9 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
         if (typeof window !== "undefined") {
           if (window.origin.includes("deriv.be")) {
-            domain = "staging-auth.deriv.be"
+            domain = process.env.NEXT_PUBLIC_ORY_BE_URL || ""
           } else if (window.origin.includes("deriv.me")) {
-            domain = "staging-auth.deriv.me"
+            domain = process.env.NEXT_PUBLIC_ORY_ME_URL || ""
           }
         }
 
