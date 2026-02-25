@@ -157,19 +157,23 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const { data } = result
 
       if (data.recovery_link) {
-        const recoveryUrl = new URL(data.recovery_link)
-        let domain = recoveryUrl.hostname
+        let updatedRecoveryLink = data.recovery_link
 
         if (typeof window !== "undefined") {
           if (window.origin.includes("deriv.be")) {
-            domain = "deriv.be"
+            updatedRecoveryLink = data.recovery_link.replace(/https?:\/\/[^\/]+/, (match) => {
+              const url = new URL(match)
+              url.hostname = "deriv.be"
+              return url.toString()
+            })
           } else if (window.origin.includes("deriv.me")) {
-            domain = "deriv.me"
+            updatedRecoveryLink = data.recovery_link.replace(/https?:\/\/[^\/]+/, (match) => {
+              const url = new URL(match)
+              url.hostname = "deriv.me"
+              return url.toString()
+            })
           }
         }
-
-        recoveryUrl.hostname = domain
-        const updatedRecoveryLink = recoveryUrl.toString()
 
         const recoveryResponse = await fetch(updatedRecoveryLink, {
           method: "GET",
