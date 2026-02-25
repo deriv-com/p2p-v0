@@ -162,9 +162,9 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
         if (typeof window !== "undefined") {
           if (window.origin.includes("deriv.be")) {
-            domain = "deriv.be"
+            domain = "staging-auth.deriv.be"
           } else if (window.origin.includes("deriv.me")) {
-            domain = "deriv.me"
+            domain = "staging-auth.deriv.me"
           }
         }
 
