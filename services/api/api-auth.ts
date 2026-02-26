@@ -157,13 +157,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const { data } = result
 
       if (data.recovery_link) {
-        const recoveryUrl = new URL(data.recovery_link)
-        let oryUrl = new URL(getOryUrl())
-
-        recoveryUrl.hostname = oryUrl.hostname
-        const updatedRecoveryLink = recoveryUrl.toString()
-
-        const recoveryResponse = await fetch(updatedRecoveryLink, {
+        const recoveryResponse = await fetch(data.recovery_link, {
           method: "GET",
           redirect: "manual",
           credentials: "include",
