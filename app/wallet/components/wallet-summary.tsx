@@ -267,7 +267,6 @@ export default function WalletSummary({
                 size="icon"
                 className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
                 onClick={handleTransferClick}
-                disabled={!hasBalance}
                 aria-label="Transfer"
               >
                 <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />

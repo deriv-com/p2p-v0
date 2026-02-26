@@ -363,7 +363,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         } else {
           showAlert({
             title: t("order.unableToCreateOrder"),
-            description: t("order.orderCreationError"),
+            description: `${t("order.orderCreationError")} (${errorCode})`,
             confirmText: t("common.ok"),
             type: "warning",
           })
