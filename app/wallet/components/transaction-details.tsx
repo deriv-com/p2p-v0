@@ -170,19 +170,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
   return (
     <div>
-      {/* Header Section */}
-      <div className="flex items-center gap-4 pb-6 border-b border-slate-200">
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={onClose} 
-          className="px-0"
-        >
-          <Image src="/icons/arrow-left.png" alt={t("common.back")} width={20} height={20} />
-        </Button>
-      </div>
-
-      <div className="flex flex-col items-center mt-6 mb-8">
+      <div className="flex flex-col items-center mb-8">
         <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
           <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
         </div>
