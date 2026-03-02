@@ -107,7 +107,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
       </div>
 
       <div ref={scrollContainerRef} className="space-y-4 px-1 max-h-[300px] md:max-h-[240px] overflow-y-auto">
-        <div className="flex items-center space-x-3 mt-6 mb-1">
+        <div className="flex items-center space-x-3 mb-1">
           <Checkbox
             id="all-countries"
             checked={isAllSelected}

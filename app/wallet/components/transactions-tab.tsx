@@ -208,6 +208,7 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
           ))}
         </div>
 
+        {!selectedTransaction && (
         <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
           {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
             <div key={dateKey} className="space-y-0">
@@ -257,17 +258,44 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
                         </div>
                       </div>
 
-                      {isSelected && (
-                        <div className="bg-white border-l-4 border-slate-1200">
-                          <div className="px-6 py-6 space-y-6">
-                            <TransactionDetails transaction={transaction} onClose={handleCloseTransactionDetails} />
-                          </div>
-                        </div>
-                      )}
-
                       <div className="h-px bg-grayscale-200 ml-10" />
-                    </div>
-                  )
+            </div>
+          ))}
+
+          {filteredTransactions.length === 0 && !loading && (
+            <div className="text-center py-8 text-gray-500">
+              {selectedCurrency
+                ? t("wallet.noTransactionsForCurrency")
+                : activeFilter === t("wallet.all")
+                  ? t("wallet.noTransactions")
+                  : activeFilter === t("wallet.deposit")
+                    ? t("wallet.noDepositTransactions")
+                    : activeFilter === t("wallet.withdraw")
+                      ? t("wallet.noWithdrawTransactions")
+                      : t("wallet.noTransferTransactions")}
+            </div>
+          )}
+
+          {filteredTransactions.length > 0 && (
+            <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
+              {t("wallet.endOfTransaction")}
+            </div>
+          )}
+        </div>
+        )}
+
+        {selectedTransaction && (
+          <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
+            <div className="bg-white">
+              <div className="px-6 py-6 space-y-6">
+                <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  )
                 })}
               </div>
             </div>
