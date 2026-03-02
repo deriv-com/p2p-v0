@@ -40,8 +40,8 @@ interface TransactionsResponse {
 interface TransactionsTabProps {
   selectedCurrency?: string | null
   currencies?: Record<string, any>
-  selectedTransaction?: any
-  onTransactionSelect?: (transaction: any) => void
+  selectedTransaction?: Transaction | null
+  onTransactionSelect?: (transaction: Transaction | null) => void
 }
 
 export default function TransactionsTab({ 
@@ -185,14 +185,6 @@ export default function TransactionsTab({
     }
   }
 
-  const handleCloseTransactionDetails = () => {
-    if (onTransactionSelect) {
-      onTransactionSelect(null)
-    } else {
-      setLocalSelectedTransaction(null)
-    }
-  }
-
   if (loading) {
     return (
       <div className="p-4">
@@ -236,13 +228,12 @@ export default function TransactionsTab({
                   {dateTransactions.map((transaction, index) => {
                     const display = getTransactionDisplay(transaction)
                     const isTransfer = display.type === t("wallet.transfer")
-                    const isSelected = selectedTransaction?.transaction_id === transaction.transaction_id
 
                     return (
                       <div key={transaction.transaction_id} className="relative">
                         <div
                           className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${
-                            isSelected ? "bg-slate-50" : "hover:bg-gray-50"
+                            "hover:bg-gray-50"
                           }`}
                           onClick={() => handleTransactionClick(transaction)}
                         >
@@ -310,7 +301,7 @@ export default function TransactionsTab({
           <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
             <div className="bg-white">
               <div className="px-6 py-6 space-y-6">
-                <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+                <TransactionDetails transaction={selectedTransaction} />
               </div>
             </div>
           </div>

@@ -11,6 +11,7 @@ import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
 import WalletActionStep from "./wallet-action-step"
+import TransactionDetails from "./transaction-details"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
@@ -23,8 +24,31 @@ interface Currency {
   label: string
 }
 
+interface Transaction {
+  transaction_id: number
+  timestamp: string
+  metadata: {
+    brand_name: string
+    description: string
+    destination_client_id: string
+    destination_wallet_id: string
+    destination_wallet_type: string
+    is_reversible: string
+    payout_method: string
+    requester_platform: string
+    source_client_id: string
+    source_wallet_id: string
+    source_wallet_type: string
+    transaction_currency: string
+    transaction_gross_amount: string
+    transaction_net_amount: string
+    transaction_status: string
+    wallet_transaction_type: string
+  }
+}
+
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
-type WalletStep = "summary" | "chooseCurrency" | "walletAction"
+type WalletStep = "summary" | "chooseCurrency" | "walletAction" | "transactionDetails"
 
 interface WalletSummaryProps {
   isBalancesView?: boolean
@@ -34,6 +58,8 @@ interface WalletSummaryProps {
   currency?: string
   isLoading?: boolean
   hasBalance?: boolean
+  selectedTransaction?: Transaction | null
+  onTransactionSelect?: (transaction: Transaction | null) => void
 }
 
 export default function WalletSummary({
@@ -44,6 +70,8 @@ export default function WalletSummary({
   currency: propCurrency = "USD",
   isLoading: propIsLoading = true,
   hasBalance = false,
+  selectedTransaction: parentSelectedTransaction = null,
+  onTransactionSelect,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
@@ -58,8 +86,105 @@ export default function WalletSummary({
   const [currentStep, setCurrentStep] = useState<WalletStep>("summary")
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [localSelectedTransaction, setLocalSelectedTransaction] = useState<Transaction | null>(null)
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
+
+  // Use parent's transaction if provided, otherwise use local state
+  const selectedTransaction = parentSelectedTransaction !== undefined ? parentSelectedTransaction : localSelectedTransaction
+
+  const getTransactionType = (transaction: Transaction) => {
+    const walletTransactionType = transaction.metadata.wallet_transaction_type
+    if (walletTransactionType === "transfer_cashier_to_wallet") {
+      return t("wallet.deposit")
+    } else if (walletTransactionType === "transfer_cashier_from_wallet") {
+      return t("wallet.withdraw")
+    } else if (walletTransactionType === "transfer_between_wallets") {
+      return t("wallet.transfer")
+    }
+    return walletTransactionType
+  }
+
+  const formatTransactionType = (type: string) => {
+    return type.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+  }
+
+  const getFromWalletName = (transaction: Transaction) => {
+    const sourceWalletType = transaction.metadata.source_wallet_type
+    const transactionCurrency = transaction.metadata.transaction_currency
+
+    if (sourceWalletType === "main") {
+      return t("wallet.walletName", { currency: transactionCurrency })
+    } else if (sourceWalletType === "system") {
+      return transaction.metadata.payout_method || t("wallet.external")
+    } else if (sourceWalletType === "p2p") {
+      return `P2P ${transactionCurrency}`
+    }
+    return formatTransactionType(sourceWalletType)
+  }
+
+  const getToWalletName = (transaction: Transaction) => {
+    const destinationWalletType = transaction.metadata.destination_wallet_type
+    const transactionCurrency = transaction.metadata.transaction_currency
+
+    if (destinationWalletType === "main") {
+      return t("wallet.walletName", { currency: transactionCurrency })
+    } else if (destinationWalletType === "system") {
+      return transaction.metadata.payout_method || t("wallet.external")
+    } else if (destinationWalletType === "p2p") {
+      return `P2P ${transactionCurrency}`
+    }
+    return formatTransactionType(destinationWalletType)
+  }
+
+  const formatAmount = (amount: string, currency: string) => {
+    const numAmount = Number.parseFloat(amount)
+    return `${numAmount.toFixed(2)} ${currency}`
+  }
+
+  const getTransactionDisplay = (transaction: Transaction) => {
+    const type = getTransactionType(transaction)
+    const amount = formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
+
+    switch (type) {
+      case t("wallet.deposit"):
+        return {
+          icon: "/icons/add-green.png",
+          iconBg: "bg-success-light",
+          amount: amount,
+          amountColor: "text-success-text",
+          subtitle: t("wallet.deposit"),
+          subtitleColor: "text-grayscale-text-muted",
+        }
+      case t("wallet.withdraw"):
+        return {
+          icon: "/icons/withdraw-red.png",
+          iconBg: "bg-error-light",
+          amount: amount,
+          amountColor: "text-error-text",
+          subtitle: t("wallet.withdraw"),
+          subtitleColor: "text-grayscale-text-muted",
+        }
+      case t("wallet.transfer"):
+        return {
+          icon: "/icons/transfer-bold.png",
+          iconBg: "bg-slate-1200/[0.08]",
+          amount: amount,
+          amountColor: "text-slate-1200",
+          subtitle: `${getFromWalletName(transaction)} → ${getToWalletName(transaction)}`,
+          subtitleColor: "text-grayscale-text-muted",
+        }
+      default:
+        return {
+          icon: "/icons/add-green.png",
+          iconBg: "bg-slate-100",
+          amount: amount,
+          amountColor: "text-slate-1200",
+          subtitle: type,
+          subtitleColor: "text-grayscale-text-muted",
+        }
+    }
+  }
 
   const displayCurrency = externalSelectedCurrency || propCurrency
   const formattedBalance = formatAmountWithDecimals(propBalance)
@@ -164,6 +289,28 @@ export default function WalletSummary({
     setCurrentStep("summary")
     setIsSidebarOpen(false)
     setIsIframeModalOpen(false)
+  }
+
+  const handleTransactionSelect = (transaction: Transaction | null) => {
+    if (transaction) {
+      setCurrentStep("transactionDetails")
+      if (onTransactionSelect) {
+        onTransactionSelect(transaction)
+      } else {
+        setLocalSelectedTransaction(transaction)
+      }
+    } else {
+      handleCloseTransactionDetails()
+    }
+  }
+
+  const handleCloseTransactionDetails = () => {
+    setCurrentStep("summary")
+    if (onTransactionSelect) {
+      onTransactionSelect(null)
+    } else {
+      setLocalSelectedTransaction(null)
+    }
   }
 
   const handleDirectDepositClick = () => {
@@ -337,6 +484,23 @@ export default function WalletSummary({
               onDirectWithdrawClick={handleDirectWithdrawClick}
               selectedCurrency={selectedCurrency}
             />
+          </div>
+        )}
+
+        {currentStep === "transactionDetails" && selectedTransaction && (
+          <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-start items-center mb-6">
+                <button
+                  onClick={handleCloseTransactionDetails}
+                  className="w-8 h-8 flex items-center justify-center"
+                  aria-label="Back to transactions"
+                >
+                  <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+                </button>
+              </div>
+              <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+            </div>
           </div>
         )}
         <WalletSidebar
