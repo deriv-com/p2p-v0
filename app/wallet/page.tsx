@@ -35,6 +35,7 @@ export default function WalletPage() {
   const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
   const [hasBalance, setHasBalance] = useState(false)
   const [showKycPopup, setShowKycPopup] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState<any>(null)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -125,6 +126,7 @@ export default function WalletPage() {
   const handleBackToBalances = () => {
     setDisplayBalances(true)
     setSelectedCurrency(null)
+    setSelectedTransaction(null)
     // Restore the total balance from the p2p wallet
     if (balanceData?.wallets?.items) {
       const p2pWallet = balanceData.wallets.items.find((wallet: any) => wallet.type === "p2p")
@@ -152,7 +154,7 @@ export default function WalletPage() {
       <div className="w-full flex flex-col items-center">
         <div className="w-full mt-0">
           <WalletSummary
-            isBalancesView={displayBalances}
+            isBalancesView={displayBalances || !!selectedTransaction}
             selectedCurrency={selectedCurrency}
             onBack={handleBackToBalances}
             balance={totalBalance}
@@ -170,7 +172,12 @@ export default function WalletPage() {
           {displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isBalanceLoading} />
           ) : (
-            <TransactionsTab selectedCurrency={selectedCurrency} currencies={currenciesData} />
+            <TransactionsTab 
+              selectedCurrency={selectedCurrency} 
+              currencies={currenciesData}
+              selectedTransaction={selectedTransaction}
+              onTransactionSelect={setSelectedTransaction}
+            />
           )}
         </div>
       </div>

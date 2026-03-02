@@ -40,14 +40,24 @@ interface TransactionsResponse {
 interface TransactionsTabProps {
   selectedCurrency?: string | null
   currencies?: Record<string, any>
+  selectedTransaction?: any
+  onTransactionSelect?: (transaction: any) => void
 }
 
-export default function TransactionsTab({ selectedCurrency, currencies = {} }: TransactionsTabProps) {
+export default function TransactionsTab({ 
+  selectedCurrency, 
+  currencies = {},
+  selectedTransaction: parentSelectedTransaction,
+  onTransactionSelect
+}: TransactionsTabProps) {
   const { t } = useTranslations()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState(t("wallet.all"))
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+  const [localSelectedTransaction, setLocalSelectedTransaction] = useState<Transaction | null>(null)
+
+  // Use parent's transaction if provided, otherwise use local state
+  const selectedTransaction = parentSelectedTransaction !== undefined ? parentSelectedTransaction : localSelectedTransaction
 
   const filters = [t("wallet.all"), t("wallet.deposit"), t("wallet.withdraw"), t("wallet.transfer")]
 
@@ -168,11 +178,19 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
   }, {})
 
   const handleTransactionClick = (transaction: Transaction) => {
-    setSelectedTransaction(transaction)
+    if (onTransactionSelect) {
+      onTransactionSelect(transaction)
+    } else {
+      setLocalSelectedTransaction(transaction)
+    }
   }
 
   const handleCloseTransactionDetails = () => {
-    setSelectedTransaction(null)
+    if (onTransactionSelect) {
+      onTransactionSelect(null)
+    } else {
+      setLocalSelectedTransaction(null)
+    }
   }
 
   if (loading) {
