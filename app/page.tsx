@@ -77,8 +77,8 @@ export default function BuySellPage() {
   const localCurrency = useUserDataStore((state) => state.localCurrency)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
-  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
-  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
+  const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY && userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
