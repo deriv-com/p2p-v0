@@ -227,79 +227,83 @@ export default function TransactionsTab({
         </div>
 
         {!selectedTransaction && (
-        <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
-          {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
-            <div key={dateKey} className="space-y-0">
-              <h3 className="text-xs font-medium text-grayscale-text-muted">{dateKey}</h3>
+          <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
+            {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
+              <div key={dateKey} className="space-y-0">
+                <h3 className="text-xs font-medium text-grayscale-text-muted">{dateKey}</h3>
 
-              <div className="space-y-0">
-                {dateTransactions.map((transaction, index) => {
-                  const display = getTransactionDisplay(transaction)
-                  const isTransfer = display.type === t("wallet.transfer")
-                  const isSelected = selectedTransaction?.transaction_id === transaction.transaction_id
+                <div className="space-y-0">
+                  {dateTransactions.map((transaction, index) => {
+                    const display = getTransactionDisplay(transaction)
+                    const isTransfer = display.type === t("wallet.transfer")
+                    const isSelected = selectedTransaction?.transaction_id === transaction.transaction_id
 
-                  return (
-                    <div key={transaction.transaction_id} className="relative">
-                      <div
-                        className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${
-                          isSelected ? "bg-slate-50" : "hover:bg-gray-50"
-                        }`}
-                        onClick={() => handleTransactionClick(transaction)}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="flex-shrink-0">
-                            {display.iconSrc && (
-                              <Image
-                                src={display.iconSrc || "/placeholder.svg"}
-                                alt={`${display.type} icon`}
-                                width={24}
-                                height={24}
-                                className="w-6 h-6 object-contain"
-                                priority={index < 3}
-                              />
-                            )}
+                    return (
+                      <div key={transaction.transaction_id} className="relative">
+                        <div
+                          className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${
+                            isSelected ? "bg-slate-50" : "hover:bg-gray-50"
+                          }`}
+                          onClick={() => handleTransactionClick(transaction)}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="flex-shrink-0">
+                              {display.iconSrc && (
+                                <Image
+                                  src={display.iconSrc || "/placeholder.svg"}
+                                  alt={`${display.type} icon`}
+                                  width={24}
+                                  height={24}
+                                  className="w-6 h-6 object-contain"
+                                  priority={index < 3}
+                                />
+                              )}
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                              <div className="text-slate-1200 text-base font-normal">{display.type}</div>
+                              {isTransfer && (
+                                <div className="text-xs font-normal text-grayscale-text-muted">
+                                  {getTransferDestinationText(transaction)}
+                                </div>
+                              )}
+                            </div>
                           </div>
 
-                          <div className="flex flex-col gap-1">
-                            <div className="text-slate-1200 text-base font-normal">{display.type}</div>
-                            {isTransfer && (
-                              <div className="text-xs font-normal text-grayscale-text-muted">
-                                {getTransferDestinationText(transaction)}
-                              </div>
-                            )}
+                          <div className={`${display.amountColor} text-base font-normal mr-6`}>
+                            {formatAmountWithDecimals(transaction.metadata.transaction_net_amount)}{" "}
+                            {transaction.metadata.transaction_currency}
                           </div>
                         </div>
 
-                        <div className={`${display.amountColor} text-base font-normal mr-6`}>
-                          {formatAmountWithDecimals(transaction.metadata.transaction_net_amount)}{" "}
-                          {transaction.metadata.transaction_currency}
-                        </div>
+                        <div className="h-px bg-grayscale-200 ml-10" />
                       </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
 
-                      <div className="h-px bg-grayscale-200 ml-10" />
-            </div>
-          ))}
+            {filteredTransactions.length === 0 && !loading && (
+              <div className="text-center py-8 text-gray-500">
+                {selectedCurrency
+                  ? t("wallet.noTransactionsForCurrency")
+                  : activeFilter === t("wallet.all")
+                    ? t("wallet.noTransactions")
+                    : activeFilter === t("wallet.deposit")
+                      ? t("wallet.noDepositTransactions")
+                      : activeFilter === t("wallet.withdraw")
+                        ? t("wallet.noWithdrawTransactions")
+                        : t("wallet.noTransferTransactions")}
+              </div>
+            )}
 
-          {filteredTransactions.length === 0 && !loading && (
-            <div className="text-center py-8 text-gray-500">
-              {selectedCurrency
-                ? t("wallet.noTransactionsForCurrency")
-                : activeFilter === t("wallet.all")
-                  ? t("wallet.noTransactions")
-                  : activeFilter === t("wallet.deposit")
-                    ? t("wallet.noDepositTransactions")
-                    : activeFilter === t("wallet.withdraw")
-                      ? t("wallet.noWithdrawTransactions")
-                      : t("wallet.noTransferTransactions")}
-            </div>
-          )}
-
-          {filteredTransactions.length > 0 && (
-            <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
-              {t("wallet.endOfTransaction")}
-            </div>
-          )}
-        </div>
+            {filteredTransactions.length > 0 && (
+              <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
+                {t("wallet.endOfTransaction")}
+              </div>
+            )}
+          </div>
         )}
 
         {selectedTransaction && (
@@ -311,34 +315,6 @@ export default function TransactionsTab({
             </div>
           </div>
         )}
-      </div>
-    </>
-  )
-                })}
-              </div>
-            </div>
-          ))}
-
-          {filteredTransactions.length === 0 && !loading && (
-            <div className="text-center py-8 text-gray-500">
-              {selectedCurrency
-                ? t("wallet.noTransactionsForCurrency")
-                : activeFilter === t("wallet.all")
-                  ? t("wallet.noTransactions")
-                  : activeFilter === t("wallet.deposit")
-                    ? t("wallet.noDepositTransactions")
-                    : activeFilter === t("wallet.withdraw")
-                      ? t("wallet.noWithdrawTransactions")
-                      : t("wallet.noTransferTransactions")}
-            </div>
-          )}
-
-          {filteredTransactions.length > 0 && (
-            <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
-              {t("wallet.endOfTransaction")}
-            </div>
-          )}
-        </div>
       </div>
     </>
   )
