@@ -231,6 +231,20 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     const type = getTransactionType(transaction)
     const amount = formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
 
+    const getToWalletName = (transaction: Transaction) => {
+      const destinationWalletType = transaction.metadata.destination_wallet_type
+      const transactionCurrency = transaction.metadata.transaction_currency
+
+      if (destinationWalletType === "main") {
+        return t("wallet.walletName", { currency: transactionCurrency })
+      } else if (destinationWalletType === "system") {
+        return transaction.metadata.payout_method || t("wallet.external")
+      } else if (destinationWalletType === "p2p") {
+        return `P2P ${transactionCurrency}`
+      }
+      return formatTransactionType(destinationWalletType)
+    }
+
     switch (type) {
       case t("wallet.deposit"):
         return {
@@ -256,7 +270,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
           iconBg: "bg-slate-1200/[0.08]",
           amount: amount,
           amountColor: "text-slate-1200",
-          subtitle: `${getFromWalletName(transaction)} → ${getFromWalletName(transaction)}`,
+          subtitle: `${getFromWalletName(transaction)} → ${getToWalletName(transaction)}`,
           subtitleColor: "text-grayscale-text-muted",
         }
       default:
