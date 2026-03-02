@@ -490,7 +490,6 @@ export default function WalletSummary({
               </span>
             </div>
           </div>
-            </div>
         )}
       </div>
 
