@@ -185,11 +185,6 @@ export default function TransactionsTab({
     }
   }
 
-  const handleCloseTransactionDetails = () => {
-    // This function is no longer used when parent controls the state
-    // The back button in WalletSummary handles closing the transaction details
-  }
-
   if (loading) {
     return (
       <div className="p-4">
@@ -306,7 +301,7 @@ export default function TransactionsTab({
           <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
             <div className="bg-white">
               <div className="px-6 py-6 space-y-6">
-                <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+                <TransactionDetails transaction={selectedTransaction} />
               </div>
             </div>
           </div>
