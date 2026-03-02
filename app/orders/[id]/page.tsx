@@ -109,6 +109,7 @@ export default function OrderDetailsPage() {
         ),
         cancelText: t("orderDetails.gotIt"),
         type: "warning",
+        showCloseButton: false,
       })
     }
   }
