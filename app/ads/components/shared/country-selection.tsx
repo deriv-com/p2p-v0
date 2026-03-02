@@ -121,7 +121,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
         <div className="h-px bg-black/[0.08] my-7 md:fixed md:left-0 md:w-full" />
 
-        <div ref={scrollContainerRef} className="space-y-4 max-h-[600px] overflow-y-auto md:pt-6">
+        <div ref={scrollContainerRef} className="space-y-4 max-h-[300px] md:max-h-[240px] overflow-y-auto md:pt-6">
           {filteredCountries.map((country) => (
             <div key={country.code} className="flex items-center space-x-3">
               <Checkbox

@@ -677,6 +677,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       selectedCountries={selectedCountries}
                       onCountriesChange={setSelectedCountries}
                       countries={countries}
+                      isLoading={isLoadingCountries}
                     />
                   </div>
                 </div>
