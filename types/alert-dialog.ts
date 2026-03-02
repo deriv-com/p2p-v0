@@ -11,7 +11,6 @@ export interface AlertDialogConfig {
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
   onClose?: () => void
-  showCloseButton?: boolean
 }
 
 export interface AlertDialogContextType {

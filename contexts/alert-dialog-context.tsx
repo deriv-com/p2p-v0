@@ -66,23 +66,46 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <div className="overflow-y-auto">
           <div className="flex justify-between px-8 pt-6 items-center mb-4">
             {config.title && <div className="font-bold text-2xl">{config.title}</div>}
-            {config.showCloseButton !== false && (
-              <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
-                <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
-              </Button>
-            )}
+            <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+            </Button>
           </div>
           <div className="px-8 pb-6">{config.content}</div>
-          {config.showCloseButton === false && (
+          {config.cancelText && (
             <div className="px-8 pb-6">
-              <Button onClick={handleClose} variant="primary" className="w-full">
-                Got it
+              <Button onClick={handleCancel} variant="primary" className="w-full">
+                {config.cancelText}
               </Button>
             </div>
           )}
         </div>
       )
     }
+
+    return (
+      <div className="px-8 py-6 overflow-y-auto">
+        <div className="flex justify-between items-center mb-8">
+          {config.title && <div className="font-bold text-2xl mr-2">{config.title}</div>}
+          <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
+            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+        {config.description && <div className="text-grayscale-100">{config.description}</div>}
+        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-6">
+          {config.cancelText && (
+            <Button onClick={handleCancel} variant="primary" className="w-full">
+              {config.cancelText}
+            </Button>
+          )}
+          {config.type && (
+            <Button onClick={handleConfirm} disabled={isSubmitting} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+              {config.confirmText || "Continue"}
+            </Button>
+          )}
+        </div>)}
+      </div>
+    )
+  }
 
     return (
       <div className="px-8 py-6 overflow-y-auto">
