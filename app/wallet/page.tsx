@@ -161,6 +161,8 @@ export default function WalletPage() {
             currency={balanceCurrency}
             isLoading={isBalanceLoading}
             hasBalance={hasBalance}
+            selectedTransaction={selectedTransaction}
+            onTransactionSelect={setSelectedTransaction}
           />
         </div>
         {tempBanUntil && (

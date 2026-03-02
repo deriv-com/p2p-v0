@@ -170,15 +170,6 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
   return (
     <div>
-      <div className="flex flex-col items-center mb-8">
-        <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
-          <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
-        </div>
-        <div className={`text-2xl font-extrabold ${display.amountColor}`}>{display.amount}</div>
-        <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
-      </div>
-
-      {/* Details Section */}
       <div>
         {/* Section 1: Status, ID, Type */}
         <div className="space-y-3">

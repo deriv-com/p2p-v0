@@ -332,13 +332,15 @@ export default function WalletSummary({
 
   const currencyLogo = currencyLogoMapper[displayCurrency as keyof typeof currencyLogoMapper]
 
+  const isShowingTransactionDetails = selectedTransaction !== null
+
   return (
     <>
       <div
         className={cn(
           "w-full p-6 flex flex-col",
-          isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
-          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
+          isBalancesView && !isShowingTransactionDetails ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
+          isMobile ? (isBalancesView && !isShowingTransactionDetails ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
         )}
       >
         {!isBalancesView && (
@@ -349,50 +351,81 @@ export default function WalletSummary({
           </div>
         )}
 
-        <div className={cn("flex items-center justify-between", isMobile && "flex-col gap-4")}>
+        {isShowingTransactionDetails && selectedTransaction && (
+          <div className="flex justify-start items-center h-8 mb-6">
+            <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
+              <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+            </button>
+          </div>
+        )}
+
+        {isShowingTransactionDetails && selectedTransaction ? (
           <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
             <div className="flex-shrink-0">
-              {isBalancesView ? (<Image
-                src="/icons/dp2p-wallet.png"
-                alt="P2P Logo"
-                width={92}
-                height={92}
-                className="w-18 h-18 md:w-24 md:h-24"
-              />) :
-                (<div className="flex-shrink-0 relative w-16 h-16">
-                  <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
-                  <div className="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
-                    <Image
-                      src={currencyLogo}
-                      alt={`${externalSelectedCurrency} Logo`}
-                      width={24}
-                      height={24}
-                      className="w-6 h-6 rounded-full bg-white p-[2px]"
-                    />
-                  </div>
-                </div>)}
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center ${getTransactionDisplay(selectedTransaction).iconBg}`}>
+                <Image
+                  src={getTransactionDisplay(selectedTransaction).icon}
+                  alt="Transaction"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
+              </div>
             </div>
-
             <div className={cn("flex flex-col", isMobile && "items-center")}>
-              {isBalancesView ? (
-                <>
-                  <p className="text-xs font-normal text-white/72 mb-1">{t("wallet.estTotalValue")}</p>
-                  {propIsLoading ? (
-                    <Skeleton className="h-7 w-32 bg-white/20" />
-                  ) : (
-                    <p className="text-xl font-extrabold text-white">{`${formattedBalance} ${displayCurrency}`}</p>
-                  )}
-                </>
-              ) : (
-                <>
-                  <p className="text-[28px] font-extrabold text-slate-1200">
-                    {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
-                  </p>
-                  <p className="text-sm font-normal text-grayscale-100">{displayCurrencyLabel}</p>
-                </>
-              )}
+              <p className={`text-[28px] font-extrabold ${getTransactionDisplay(selectedTransaction).amountColor}`}>
+                {getTransactionDisplay(selectedTransaction).amount}
+              </p>
+              <p className={`text-sm font-normal ${getTransactionDisplay(selectedTransaction).subtitleColor}`}>
+                {getTransactionDisplay(selectedTransaction).subtitle}
+              </p>
             </div>
           </div>
+        ) : (
+          <div className={cn("flex items-center justify-between", isMobile && "flex-col gap-4")}>
+            <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
+              <div className="flex-shrink-0">
+                {isBalancesView ? (<Image
+                  src="/icons/dp2p-wallet.png"
+                  alt="P2P Logo"
+                  width={92}
+                  height={92}
+                  className="w-18 h-18 md:w-24 md:h-24"
+                />) :
+                  (<div className="flex-shrink-0 relative w-16 h-16">
+                    <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
+                    <div className="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
+                      <Image
+                        src={currencyLogo}
+                        alt={`${externalSelectedCurrency} Logo`}
+                        width={24}
+                        height={24}
+                        className="w-6 h-6 rounded-full bg-white p-[2px]"
+                      />
+                    </div>
+                  </div>)}
+              </div>
+
+              <div className={cn("flex flex-col", isMobile && "items-center")}>
+                {isBalancesView ? (
+                  <>
+                    <p className="text-xs font-normal text-white/72 mb-1">{t("wallet.estTotalValue")}</p>
+                    {propIsLoading ? (
+                      <Skeleton className="h-7 w-32 bg-white/20" />
+                    ) : (
+                      <p className="text-xl font-extrabold text-white">{`${formattedBalance} ${displayCurrency}`}</p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[28px] font-extrabold text-slate-1200">
+                      {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
+                    </p>
+                    <p className="text-sm font-normal text-grayscale-100">{displayCurrencyLabel}</p>
+                  </>
+                )}
+              </div>
+            </div>
 
           <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
             <div className="hidden flex-col items-center gap-2">
@@ -457,7 +490,9 @@ export default function WalletSummary({
               </span>
             </div>
           </div>
-        </div>
+        </>
+        )}
+      </div>
 
         {currentStep === "chooseCurrency" && (
           <div className="fixed inset-0 z-50 bg-white">
