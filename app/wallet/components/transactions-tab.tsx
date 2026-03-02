@@ -294,10 +294,6 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
           )}
         </div>
       </div>
-
-      {selectedTransaction && (
-        <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
-      )}
     </>
   )
 }
