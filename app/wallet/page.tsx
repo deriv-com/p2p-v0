@@ -51,8 +51,8 @@ export default function WalletPage() {
 
           const hasP2pBalance =
             p2pWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
-          const hasMainBalance = mainWallet && 
-            mainWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0) ?? false
+          const hasMainBalance = (mainWallet && 
+            mainWallet.balances?.some((wallet: any) => Number.parseFloat(wallet.balance || "0") > 0)) ?? false
           
           const hasAnyBalance = hasP2pBalance || hasMainBalance
           setHasBalance(hasAnyBalance)
