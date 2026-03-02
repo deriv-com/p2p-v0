@@ -108,7 +108,7 @@ export default function OrderDetailsPage() {
           </div>
         ),
         cancelText: t("orderDetails.gotIt"),
-        type: "warning",
+        hideCloseButton: true,
       })
     }
   }
