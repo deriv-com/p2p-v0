@@ -113,24 +113,44 @@ function TransactionDetailsContent({
     return formatTransactionType(destinationWalletType)
   }
 
+  const isMobileView = typeof window !== 'undefined' && window.innerWidth < 768
+
   return (
     <>
-      <div className="bg-slate-75 pt-16 pb-6 flex flex-col items-center relative">
-        <Button variant="ghost" size="sm" onClick={onClose} className="absolute top-4 right-6 px-0 z-10">
-          <Image src="/icons/close-circle-secondary.png" alt={t("common.close")} width={32} height={32} />
-        </Button>
+      {/* Header Section */}
+      <div className="bg-slate-75 pt-6 pb-6 md:pt-8 md:pb-8 flex flex-col items-center relative md:relative">
+        <div className="w-full flex items-start md:items-center md:justify-start px-4 md:px-8 md:pb-6 md:border-b border-slate-200">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={onClose} 
+            className="md:hidden px-0"
+          >
+            <Image src="/icons/close-circle-secondary.png" alt={t("common.close")} width={32} height={32} />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={onClose} 
+            className="hidden md:flex items-center gap-2 px-0 text-slate-1200"
+          >
+            <Image src="/icons/arrow-left.png" alt={t("common.back")} width={24} height={24} />
+          </Button>
+        </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-4 md:mt-6">
           <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
             <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
           </div>
-          <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
-          <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
+          <div className={`text-2xl md:text-3xl font-extrabold ${display.amountColor}`}>{display.amount}</div>
+          <div className={`text-sm md:text-base font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
         </div>
       </div>
 
-      <div className="pb-20 pt-6">
-        <div className="px-6 space-y-2">
+      {/* Details Section */}
+      <div className="pb-20 pt-6 md:pt-8 px-4 md:px-8">
+        {/* Section 1: Status, ID, Type */}
+        <div className="space-y-4 md:space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionStatus")}</span>
             <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
@@ -147,11 +167,10 @@ function TransactionDetailsContent({
           </div>
         </div>
 
-        <div className="my-6">
-          <div className="h-1 bg-slate-75" />
-        </div>
+        <div className="my-6 md:my-8 h-px bg-slate-200" />
 
-        <div className="px-6 space-y-2">
+        {/* Section 2: From, To, Amount */}
+        <div className="space-y-4 md:space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
             <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
@@ -168,11 +187,10 @@ function TransactionDetailsContent({
           </div>
         </div>
 
-        <div className="my-6">
-          <div className="h-1 bg-slate-75" />
-        </div>
+        <div className="my-6 md:my-8 h-px bg-slate-200" />
 
-        <div className="px-6 space-y-2">
+        {/* Section 3: Date, Time */}
+        <div className="space-y-4 md:space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.date")}</span>
             <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
@@ -321,20 +339,16 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         </div>
       )}
 
-      {/* Desktop sidebar modal */}
+      {/* Desktop main content layout */}
       {!isMobile && (
-        <div className="hidden md:block fixed inset-0 bg-black/50 z-50" onClick={onClose}>
-          <div className="fixed right-0 top-0 h-full w-[592px] bg-white overflow-y-auto shadow-lg" onClick={(e) => e.stopPropagation()}>
-            <div className="max-w-[592px]">
-              <TransactionDetailsContent
-                transaction={transaction}
-                display={display}
-                statusDisplay={statusDisplay}
-                transactionType={transactionType}
-                onClose={onClose}
-              />
-            </div>
-          </div>
+        <div className="hidden md:block w-full bg-background min-h-screen">
+          <TransactionDetailsContent
+            transaction={transaction}
+            display={display}
+            statusDisplay={statusDisplay}
+            transactionType={transactionType}
+            onClose={onClose}
+          />
         </div>
       )}
     </>
