@@ -217,11 +217,14 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
                 {dateTransactions.map((transaction, index) => {
                   const display = getTransactionDisplay(transaction)
                   const isTransfer = display.type === t("wallet.transfer")
+                  const isSelected = selectedTransaction?.transaction_id === transaction.transaction_id
 
                   return (
                     <div key={transaction.transaction_id} className="relative">
                       <div
-                        className="flex items-center justify-between min-h-[72px] py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                        className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${
+                          isSelected ? "bg-slate-50" : "hover:bg-gray-50"
+                        }`}
                         onClick={() => handleTransactionClick(transaction)}
                       >
                         <div className="flex items-center gap-4">
@@ -254,6 +257,14 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
                         </div>
                       </div>
 
+                      {isSelected && (
+                        <div className="bg-white border-l-4 border-slate-1200">
+                          <div className="px-6 py-6 space-y-6">
+                            <TransactionDetails transaction={transaction} onClose={handleCloseTransactionDetails} />
+                          </div>
+                        </div>
+                      )}
+
                       <div className="h-px bg-grayscale-200 ml-10" />
                     </div>
                   )
@@ -283,10 +294,6 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
           )}
         </div>
       </div>
-
-      {selectedTransaction && (
-        <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
-      )}
     </>
   )
 }
