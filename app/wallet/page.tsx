@@ -43,7 +43,7 @@ export default function WalletPage() {
     (currencies: Record<string, any>, balance: any) => {
       try {
         const p2pWallet = balance?.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-        const mainWallet = balance?.wallets?.items?.find((wallet: any) => wallet.type === "main" || wallet.type === "defi")
+        const mainWallet = balance?.wallets?.items?.find((wallet: any) => wallet.type === "main")
 
         if (p2pWallet) {
           setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
