@@ -40,8 +40,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
   const { userId, onboardingStatus, verificationStatus } = useUserDataStore()
-  const isPoiExpired = userId && onboardingStatus?.kyc?.poi_status !== "approved"
-  const isPoaExpired = userId && onboardingStatus?.kyc?.poa_status !== "approved"
+  const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
