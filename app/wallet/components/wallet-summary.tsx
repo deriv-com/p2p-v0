@@ -427,72 +427,71 @@ export default function WalletSummary({
               </div>
             </div>
 
-          <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
-            <div className="hidden flex-col items-center gap-2">
-              <Button
-                size="icon"
-                className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
-                onClick={handleDepositClick}
-                aria-label="Deposit"
-              >
-                <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
-              </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
-                {t("wallet.deposit")}
-              </span>
-            </div>
+            <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
+              <div className="hidden flex-col items-center gap-2">
+                <Button
+                  size="icon"
+                  className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                  onClick={handleDepositClick}
+                  aria-label="Deposit"
+                >
+                  <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
+                </Button>
+                <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+                  {t("wallet.deposit")}
+                </span>
+              </div>
 
-            <div className="flex flex-col items-center gap-2">
-              <Button
-                size="icon"
-                className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
-                onClick={handleTransferClick}
-                disabled={!hasBalance}
-                aria-label="Transfer"
-              >
-                <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
-              </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
-                {t("wallet.transfer")}
-              </span>
-            </div>
+              <div className="flex flex-col items-center gap-2">
+                <Button
+                  size="icon"
+                  className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
+                  onClick={handleTransferClick}
+                  disabled={!hasBalance}
+                  aria-label="Transfer"
+                >
+                  <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
+                </Button>
+                <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+                  {t("wallet.transfer")}
+                </span>
+              </div>
 
-            <div className="hidden flex-col items-center gap-2">
-              <Button
-                size="icon"
-                className={cn(
-                  "h-12 w-12 rounded-full p-0",
-                  isBalancesView
-                    ? propBalance === "0.00"
-                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
-                      : "border border-white bg-transparent hover:bg-white/10 text-white"
-                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
-                )}
-                onClick={handleWithdrawClick}
-                disabled={isBalancesView && propBalance === "0.00"}
-                aria-label="Withdraw"
-              >
-                <Image
-                  src={isBalancesView ? "/icons/withdraw-white.png" : "/icons/withdraw-black.png"}
-                  alt="Withdraw"
-                  width={14}
-                  height={14}
-                  className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
-                />
-              </Button>
-              <span
-                className={cn(
-                  "text-xs font-normal",
-                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
-                )}
-              >
-                {t("wallet.withdraw")}
-              </span>
+              <div className="hidden flex-col items-center gap-2">
+                <Button
+                  size="icon"
+                  className={cn(
+                    "h-12 w-12 rounded-full p-0",
+                    isBalancesView
+                      ? propBalance === "0.00"
+                        ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
+                        : "border border-white bg-transparent hover:bg-white/10 text-white"
+                      : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
+                  )}
+                  onClick={handleWithdrawClick}
+                  disabled={isBalancesView && propBalance === "0.00"}
+                  aria-label="Withdraw"
+                >
+                  <Image
+                    src={isBalancesView ? "/icons/withdraw-white.png" : "/icons/withdraw-black.png"}
+                    alt="Withdraw"
+                    width={14}
+                    height={14}
+                    className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
+                  />
+                </Button>
+                <span
+                  className={cn(
+                    "text-xs font-normal",
+                    isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  )}
+                >
+                  {t("wallet.withdraw")}
+                </span>
+              </div>
             </div>
           </div>
         )}
-      </div>
-
         {currentStep === "chooseCurrency" && (
           <div className="fixed inset-0 z-50 bg-white">
             <ChooseCurrencyStep
