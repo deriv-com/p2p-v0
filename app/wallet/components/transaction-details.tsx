@@ -1,6 +1,5 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import Image from "next/image"
 
@@ -33,7 +32,6 @@ interface TransactionDetailsProps {
 }
 
 export default function TransactionDetails({ transaction, onClose }: TransactionDetailsProps) {
-  const isMobile = useIsMobile()
   const { t } = useTranslations()
 
   const formatDate = (timestamp: string) => {
@@ -171,75 +169,75 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
   const transactionType = getTransactionType(transaction)
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0 overflow-y-auto z-50">
+    <div className="fixed inset-0 z-50 bg-black/50 flex md:justify-end md:items-stretch" onClick={onClose}>
       <div
-        className={`bg-slate-75 pt-16 pb-6 flex flex-col items-center relative ${isMobile ? "" : "mt-6 mx-auto w-[592px] rounded-2xl"}`}
+        className="bg-background w-full h-full md:max-w-md flex flex-col shadow-lg md:rounded-none overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
       >
-        <Button variant="ghost" size="sm" onClick={onClose} className="absolute top-4 right-6 px-0 z-10">
-          <Image src="/icons/close-circle-secondary.png" alt={t("common.close")} width={32} height={32} />
-        </Button>
-
-        <div className={`${isMobile ? "w-full" : "max-w-[592px]"} flex flex-col items-center`}>
-          <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
-            <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
-          </div>
-          <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
-          <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
-        </div>
-      </div>
-
-      <div className={`${isMobile ? "" : "max-w-[592px] mx-auto"} pb-20 pt-6`}>
-        <div className="px-6 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionStatus")}</span>
-            <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionId")}</span>
-            <span className="text-base font-normal text-slate-1200">{transaction.transaction_id}</span>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionType")}</span>
-            <span className="text-base font-normal text-slate-1200">{transactionType}</span>
-          </div>
+        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
+          <h2 className="text-lg font-bold">{t("wallet.transactionDetails")}</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
         </div>
 
-        <div className="my-6">
-          <div className="h-1 bg-slate-75" />
-        </div>
-
-        <div className="px-6 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
-            <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
+        <div className="p-4 flex flex-col gap-6 flex-1">
+          <div className="flex flex-col items-center pt-2">
+            <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
+              <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
+            </div>
+            <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
+            <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
-            <span className="text-base font-normal text-slate-1200">{getToWalletName(transaction)}</span>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionStatus")}</span>
+              <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionId")}</span>
+              <span className="text-base font-normal text-slate-1200">{transaction.transaction_id}</span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionType")}</span>
+              <span className="text-base font-normal text-slate-1200">{transactionType}</span>
+            </div>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.amount")}</span>
-            <span className="text-base font-normal text-slate-1200">{display.amount}</span>
+          <div className="h-px bg-grayscale-200" />
+
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
+              <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
+              <span className="text-base font-normal text-slate-1200">{getToWalletName(transaction)}</span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.amount")}</span>
+              <span className="text-base font-normal text-slate-1200">{display.amount}</span>
+            </div>
           </div>
-        </div>
 
-        <div className="my-6">
-          <div className="h-1 bg-slate-75" />
-        </div>
+          <div className="h-px bg-grayscale-200" />
 
-        <div className="px-6 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.date")}</span>
-            <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
-          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.date")}</span>
+              <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
+            </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.time")}</span>
-            <span className="text-base font-normal text-slate-1200">{formatTime(transaction.timestamp)}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.time")}</span>
+              <span className="text-base font-normal text-slate-1200">{formatTime(transaction.timestamp)}</span>
+            </div>
           </div>
         </div>
       </div>
