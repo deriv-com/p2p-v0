@@ -243,71 +243,76 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         </div>
       </div>
 
-      {/* Desktop: Sidebar */}
-      <div className="hidden md:flex fixed right-0 top-0 h-full w-[400px] bg-white border-l border-grayscale-200 z-50 flex-col">
-        <div className="flex justify-between items-center px-6 py-6 border-b border-grayscale-200">
-          <h2 className="text-lg font-bold">{t("wallet.transactionDetails")}</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
-            <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
-          </Button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-          <div className="flex flex-col items-center pt-2">
-            <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
-              <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
-            </div>
-            <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
-            <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
+      {/* Desktop: Sidebar using WalletSidebar pattern */}
+      <div className="hidden md:flex fixed inset-0 z-50 bg-black/50 justify-end items-stretch" onClick={onClose}>
+        <div
+          className="bg-background w-full h-full md:max-w-md flex flex-col shadow-lg md:rounded-none"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center px-4 pb-3 md:py-3 md:border-b">
+            <h2 className="text-lg font-bold">{t("wallet.transactionDetails")}</h2>
+            <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+            </Button>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionStatus")}</span>
-              <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
+          <div className="p-4 flex flex-col gap-6 overflow-y-auto flex-1">
+            <div className="flex flex-col items-center pt-2">
+              <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
+                <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
+              </div>
+              <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
+              <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
             </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionId")}</span>
-              <span className="text-base font-normal text-slate-1200">{transaction.transaction_id}</span>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionStatus")}</span>
+                <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionId")}</span>
+                <span className="text-base font-normal text-slate-1200">{transaction.transaction_id}</span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionType")}</span>
+                <span className="text-base font-normal text-slate-1200">{transactionType}</span>
+              </div>
             </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionType")}</span>
-              <span className="text-base font-normal text-slate-1200">{transactionType}</span>
-            </div>
-          </div>
+            <div className="h-px bg-grayscale-200" />
 
-          <div className="h-px bg-grayscale-200" />
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
+                <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
+              </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
-              <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
-            </div>
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
+                <span className="text-base font-normal text-slate-1200">{getToWalletName(transaction)}</span>
+              </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
-              <span className="text-base font-normal text-slate-1200">{getToWalletName(transaction)}</span>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.amount")}</span>
-              <span className="text-base font-normal text-slate-1200">{display.amount}</span>
-            </div>
-          </div>
-
-          <div className="h-px bg-grayscale-200" />
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.date")}</span>
-              <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.amount")}</span>
+                <span className="text-base font-normal text-slate-1200">{display.amount}</span>
+              </div>
             </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.time")}</span>
-              <span className="text-base font-normal text-slate-1200">{formatTime(transaction.timestamp)}</span>
+            <div className="h-px bg-grayscale-200" />
+
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.date")}</span>
+                <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.time")}</span>
+                <span className="text-base font-normal text-slate-1200">{formatTime(transaction.timestamp)}</span>
+              </div>
             </div>
           </div>
         </div>
