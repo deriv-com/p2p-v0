@@ -44,8 +44,8 @@ interface TransactionsTabProps {
   onTransactionSelect?: (transaction: Transaction | null) => void
 }
 
-export default function TransactionsTab({ 
-  selectedCurrency, 
+export default function TransactionsTab({
+  selectedCurrency,
   currencies = {},
   selectedTransaction: parentSelectedTransaction,
   onTransactionSelect
@@ -209,9 +209,8 @@ export default function TransactionsTab({
               variant={activeFilter === filter ? "black" : "outline"}
               size="sm"
               onClick={() => setActiveFilter(filter)}
-              className={`h-8 rounded-full px-4 text-sm font-normal ${
-                activeFilter === filter ? "" : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
-              }`}
+              className={`h-8 rounded-full px-4 text-sm font-normal ${activeFilter === filter ? "" : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
+                }`}
             >
               {filter}
             </Button>
@@ -232,9 +231,8 @@ export default function TransactionsTab({
                     return (
                       <div key={transaction.transaction_id} className="relative">
                         <div
-                          className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${
-                            "hover:bg-gray-50"
-                          }`}
+                          className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${"hover:bg-gray-50"
+                            }`}
                           onClick={() => handleTransactionClick(transaction)}
                         >
                           <div className="flex items-center gap-4">
@@ -300,7 +298,7 @@ export default function TransactionsTab({
         {selectedTransaction && (
           <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
             <div className="bg-white">
-              <div className="px-6 py-6 space-y-6">
+              <div className="space-y-6">
                 <TransactionDetails transaction={selectedTransaction} />
               </div>
             </div>
