@@ -487,11 +487,12 @@ export default function WalletSummary({
                 <div className="flex flex-col items-center gap-2">
                   <Button
                     size="icon"
-                    className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                    className="h-12 w-12 rounded-full text-white p-0 border border-white"
                     onClick={handleSellClick}
                     aria-label="Sell"
+                    variant="ghost"
                   >
-                    <Image src="/icons/minus-white.svg" alt="Sell" width={14} height={24} />
+                    <Image src="/icons/withdraw-white.svg" alt="Sell" width={14} height={24} />
                   </Button>
                   <span className="text-xs font-normal text-slate-1200">
                     {t("wallet.sell") || "Sell"}
