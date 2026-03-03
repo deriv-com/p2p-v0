@@ -6,12 +6,15 @@ interface PaymentSelectionContextType {
     selectedPaymentMethodIds: number[]
     setSelectedPaymentMethodIds: (ids: number[]) => void
     togglePaymentMethod: (id: number) => void
+    adType?: "buy" | "sell"
+    setAdType?: (type: "buy" | "sell") => void
 }
 
 const PaymentSelectionContext = createContext<PaymentSelectionContextType | undefined>(undefined)
 
 export function PaymentSelectionProvider({ children }: { children: ReactNode }) {
     const [selectedPaymentMethodIds, setSelectedPaymentMethodIds] = useState<number[]>([])
+    const [adType, setAdType] = useState<"buy" | "sell" | undefined>()
 
     const togglePaymentMethod = (id: number) => {
         setSelectedPaymentMethodIds((prev) => {
@@ -31,6 +34,8 @@ export function PaymentSelectionProvider({ children }: { children: ReactNode }) 
                 selectedPaymentMethodIds,
                 setSelectedPaymentMethodIds,
                 togglePaymentMethod,
+                adType,
+                setAdType,
             }}
         >
             {children}

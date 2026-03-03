@@ -22,7 +22,7 @@ interface PaymentMethod {
 }
 
 const AdPaymentMethods = () => {
-  const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
+  const { selectedPaymentMethodIds, togglePaymentMethod, adType } = usePaymentSelection()
   const { showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
 
@@ -103,7 +103,7 @@ const AdPaymentMethods = () => {
                 <Card
                   key={method.id}
                   className={`cursor-pointer transition-all duration-200 flex-shrink-0 w-64 md:w-auto ${
-                    isSelected ? "border-2 rounded-lg border-black" : "border-0"
+                    isSelected && adType === "sell" ? "border-2 rounded-lg border-black" : "border-0"
                   } ${
                     isDisabled ? "bg-gray-100 opacity-50 cursor-not-allowed" : "bg-grayscale-300"
                   } hover:shadow-md`}

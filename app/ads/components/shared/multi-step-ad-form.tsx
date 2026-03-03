@@ -58,7 +58,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [isLoadingInitialData, setIsLoadingInitialData] = useState(false)
-  const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
+  const { selectedPaymentMethodIds, setSelectedPaymentMethodIds, setAdType } = usePaymentSelection()
   const { showAlert, hideAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
@@ -222,7 +222,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       setSelectedPaymentMethodIds([])
     }
     previousTypeRef.current = formData.type as "buy" | "sell" | undefined
-  }, [formData.type, mode, setSelectedPaymentMethodIds])
+    if (setAdType && formData.type) {
+      setAdType(formData.type)
+    }
+  }, [formData.type, mode, setSelectedPaymentMethodIds, setAdType])
 
   const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
 
