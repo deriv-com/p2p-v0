@@ -127,9 +127,8 @@ const FullPagePaymentSelection = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
-            className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${
-              searchQuery.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
-            }`}
+            className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${searchQuery.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
+              }`}
           />
           {searchQuery && (
             <Button
@@ -168,9 +167,8 @@ const FullPagePaymentSelection = ({
             return (
               <div
                 key={methodId}
-                className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer ${
-                  isSelected ? "border border-black" : "border border-transparent"
-                } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer ${isSelected ? "border border-black" : "border border-transparent"
+                  } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                 onClick={() => !isDisabled && handleToggle(methodId)}
               >
                 <div className="flex items-center gap-4">
@@ -304,20 +302,18 @@ const PaymentSelectionContent = ({
             return (
               <div
                 key={methodId}
-                className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${
-                  isDisabled
+                className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${isDisabled
                     ? "opacity-30 cursor-not-allowed hover:bg-white"
                     : ""
-                }`}
+                  }`}
                 onClick={() => !isDisabled && handlePaymentMethodToggle(methodId)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center mb-[6px] gap-2">
                       <div
-                        className={`h-2 w-2 rounded-full mr-2 ${
-                          getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                        }`}
+                        className={`h-2 w-2 rounded-full mr-2 ${getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                          }`}
                       />
                       <div className="flex- flex-col">
                         <span className="text-base text-slate-1200">
@@ -333,7 +329,7 @@ const PaymentSelectionContent = ({
                     checked={selectedPMs?.includes(methodId)}
                     onCheckedChange={() => !isDisabled && handlePaymentMethodToggle(methodId)}
                     disabled={isDisabled}
-                    className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed pointer-events-none"
                   />
                 </div>
               </div>
@@ -541,7 +537,7 @@ export default function PaymentDetailsForm({
                 <Textarea
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
-                  placeholder={initialData.type === "buy" ? t("adForm.sellerInstructions"): t("adForm.buyerInstructions")}
+                  placeholder={initialData.type === "buy" ? t("adForm.sellerInstructions") : t("adForm.buyerInstructions")}
                   className="min-h-[120px] resize-none"
                   maxLength={300}
                 />
