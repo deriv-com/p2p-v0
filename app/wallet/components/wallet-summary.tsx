@@ -491,7 +491,7 @@ export default function WalletSummary({
                     onClick={handleSellClick}
                     aria-label="Sell"
                   >
-                    <Image src="/icons/plus-white.png" alt="Sell" width={14} height={14} />
+                    <Image src="/icons/minus-white.svg" alt="Sell" width={14} height={24} />
                   </Button>
                   <span className="text-xs font-normal text-slate-1200">
                     {t("wallet.sell") || "Sell"}
