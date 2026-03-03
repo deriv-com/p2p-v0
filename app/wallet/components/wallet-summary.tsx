@@ -283,26 +283,7 @@ export default function WalletSummary({
   }
 
   const handleBuyClick = () => {
-    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      router.push("/?operation=buy")
-    } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
-    }
+    router.push("/?operation=buy")
   }
 
   const handleCurrencySelect = (currency: string) => {
