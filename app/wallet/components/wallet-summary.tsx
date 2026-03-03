@@ -353,7 +353,7 @@ export default function WalletSummary({
 
         {isShowingTransactionDetails && selectedTransaction && (
           <div className="flex justify-start items-center h-8 mb-6">
-            <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
+            <button onClick={handleCloseTransactionDetails} className="w-8 h-8 flex items-center justify-center" aria-label="Back to transaction list">
               <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
             </button>
           </div>
