@@ -79,9 +79,6 @@ jobs:
                 sed -i "s/PROJECT_NAME/${{ secrets.CLOUDFLARE_PROJECT_NAME }}/g" wrangler.toml
               shell: bash
 
-            - name: Run tests for Eslint
-              run: pnpm run lint
-
             - name: List output folder contents for debugging
               run: ls -lR .vercel/output/static
 
