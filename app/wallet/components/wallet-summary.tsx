@@ -467,19 +467,21 @@ export default function WalletSummary({
                 </span>
               </div>
 
-              <div className="flex flex-col items-center gap-2">
-                <Button
-                  size="icon"
-                  className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
-                  onClick={handleBuyClick}
-                  aria-label="Buy"
-                >
-                  <Image src="/icons/plus-white.png" alt="Buy" width={14} height={14} />
-                </Button>
-                <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
-                  {t("wallet.buy") || "Buy"}
-                </span>
-              </div>
+              {!isBalancesView && (
+                <div className="flex flex-col items-center gap-2">
+                  <Button
+                    size="icon"
+                    className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                    onClick={handleBuyClick}
+                    aria-label="Buy"
+                  >
+                    <Image src="/icons/plus-white.png" alt="Buy" width={14} height={14} />
+                  </Button>
+                  <span className="text-xs font-normal text-slate-1200">
+                    {t("wallet.buy") || "Buy"}
+                  </span>
+                </div>
+              )}
 
               <div className="flex flex-col items-center gap-2">
                 <Button
