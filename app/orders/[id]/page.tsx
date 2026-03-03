@@ -556,7 +556,7 @@ export default function OrderDetailsPage() {
                 {order.status !== "completed" && (
                   <div className="space-y-6 mt-4">
                     <div className="space-y-4">
-                      {order.advert.user.id === userId ? (
+                      {order.advert.user.id == userId ? (
                         <h2 className="text-lg font-bold">{t("orderDetails.myPaymentDetails")}</h2>
                       ) : (
                         <h2 className="text-lg font-bold">{t("orderDetails.sellerPaymentDetails")}</h2>

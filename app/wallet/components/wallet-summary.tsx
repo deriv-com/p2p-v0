@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
@@ -74,6 +75,7 @@ export default function WalletSummary({
   onTransactionSelect,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
+  const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -280,6 +282,14 @@ export default function WalletSummary({
     }
   }
 
+  const handleBuyClick = () => {
+    router.push("/?operation=buy")
+  }
+
+  const handleSellClick = () => {
+    router.push("/?operation=sell")
+  }
+
   const handleCurrencySelect = (currency: string) => {
     setSelectedCurrency(currency)
     setCurrentStep("walletAction")
@@ -442,6 +452,22 @@ export default function WalletSummary({
                 </span>
               </div>
 
+              {!isBalancesView && (
+                <div className="flex flex-col items-center gap-2">
+                  <Button
+                    size="icon"
+                    className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                    onClick={handleBuyClick}
+                    aria-label="Buy"
+                  >
+                    <Image src="/icons/plus-white.png" alt="Buy" width={14} height={14} />
+                  </Button>
+                  <span className="text-xs font-normal text-slate-1200">
+                    {t("wallet.buy") || "Buy"}
+                  </span>
+                </div>
+              )}
+
               <div className="flex flex-col items-center gap-2">
                 <Button
                   size="icon"
@@ -456,6 +482,23 @@ export default function WalletSummary({
                   {t("wallet.transfer")}
                 </span>
               </div>
+
+              {!isBalancesView && (
+                <div className="flex flex-col items-center gap-2">
+                  <Button
+                    size="icon"
+                    className="h-12 w-12 rounded-full text-white p-0 border border-white"
+                    onClick={handleSellClick}
+                    aria-label="Sell"
+                    variant="ghost"
+                  >
+                    <Image src="/icons/withdraw-white.svg" alt="Sell" width={14} height={24} />
+                  </Button>
+                  <span className="text-xs font-normal text-slate-1200">
+                    {t("wallet.sell") || "Sell"}
+                  </span>
+                </div>
+              )}
 
               <div className="hidden flex-col items-center gap-2">
                 <Button
