@@ -78,11 +78,9 @@ export const OrderDetails = ({ order, setShowChat }) => {
   const isBlockLayout = order.status === "completed" || isMobile
 
   // Determine if current user is seller or buyer
-  // For "buy" orders: order creator is buyer, advert creator is seller
-  // For "sell" orders: order creator is seller, advert creator is buyer
-  const isUserSeller =
-    (order?.type === "buy" && order?.advert?.user?.id === userId) ||
-    (order?.type === "sell" && order?.advert?.user?.id === userId)
+  // User is seller if they created the order (order.user.id)
+  // User is buyer if they created the advert (advert.user.id)
+  const isUserSeller = order?.user?.id === userId
 
   // For sellers: show "You send" (USD) and "You receive" (local currency)
   // For buyers: show "You pay" (local currency) and "You receive" (USD)
