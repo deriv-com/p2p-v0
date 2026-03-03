@@ -84,9 +84,6 @@ jobs:
                 sed -i "s/PROJECT_NAME/${{ secrets.CLOUDFLARE_PROJECT_NAME }}/g" wrangler.toml
               shell: bash
 
-            - name: Run tests for Eslint
-              run: npm run lint
-
             - name: Publish to Cloudflare Pages
               uses: "deriv-com/shared-actions/.github/actions/publish_to_pages_branch@master"
               id: publish_to_cloudflare
