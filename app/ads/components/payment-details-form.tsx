@@ -303,8 +303,9 @@ const PaymentSelectionContent = ({
               <div
                 key={methodId}
                 className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${isDisabled
-                    ? "opacity-30 cursor-not-allowed hover:bg-white"
-                    : ""
+                  ? "opacity-30 cursor-not-allowed hover:bg-white"
+                  : ""
+                  } ${selectedPMs?.includes(methodId) ? "border border-black" : ""
                   }`}
                 onClick={() => !isDisabled && handlePaymentMethodToggle(methodId)}
               >
