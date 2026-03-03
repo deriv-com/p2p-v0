@@ -286,6 +286,10 @@ export default function WalletSummary({
     router.push("/?operation=buy")
   }
 
+  const handleSellClick = () => {
+    router.push("/?operation=sell")
+  }
+
   const handleCurrencySelect = (currency: string) => {
     setSelectedCurrency(currency)
     setCurrentStep("walletAction")
@@ -478,6 +482,22 @@ export default function WalletSummary({
                   {t("wallet.transfer")}
                 </span>
               </div>
+
+              {!isBalancesView && (
+                <div className="flex flex-col items-center gap-2">
+                  <Button
+                    size="icon"
+                    className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                    onClick={handleSellClick}
+                    aria-label="Sell"
+                  >
+                    <Image src="/icons/plus-white.png" alt="Sell" width={14} height={14} />
+                  </Button>
+                  <span className="text-xs font-normal text-slate-1200">
+                    {t("wallet.sell") || "Sell"}
+                  </span>
+                </div>
+              )}
 
               <div className="hidden flex-col items-center gap-2">
                 <Button
