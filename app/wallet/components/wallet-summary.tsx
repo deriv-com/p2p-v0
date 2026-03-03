@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
@@ -74,6 +75,7 @@ export default function WalletSummary({
   onTransactionSelect,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
+  const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -280,6 +282,29 @@ export default function WalletSummary({
     }
   }
 
+  const handleBuyClick = () => {
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+      router.push("/?operation=buy")
+    } else {
+      let title = t("profile.gettingStarted")
+
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
+      showAlert({
+        title,
+        description: (
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
+    }
+  }
+
   const handleCurrencySelect = (currency: string) => {
     setSelectedCurrency(currency)
     setCurrentStep("walletAction")
@@ -439,6 +464,20 @@ export default function WalletSummary({
                 </Button>
                 <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                   {t("wallet.deposit")}
+                </span>
+              </div>
+
+              <div className="flex flex-col items-center gap-2">
+                <Button
+                  size="icon"
+                  className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                  onClick={handleBuyClick}
+                  aria-label="Buy"
+                >
+                  <Image src="/icons/plus-white.png" alt="Buy" width={14} height={14} />
+                </Button>
+                <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+                  {t("wallet.buy") || "Buy"}
                 </span>
               </div>
 
