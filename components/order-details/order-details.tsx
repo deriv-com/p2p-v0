@@ -77,6 +77,21 @@ export const OrderDetails = ({ order, setShowChat }) => {
 
   const isBlockLayout = order.status === "completed" || isMobile
 
+  // Determine if current user is seller (advert creator) or buyer (order creator)
+  const isUserSeller = order?.advert?.user?.id === userId
+
+  // For sellers: show "You send" (USD) and "You receive" (local currency)
+  // For buyers: show "You pay" (local currency) and "You receive" (USD)
+  const firstLineLabel = isUserSeller ? t("orderDetails.youSend") : t("orderDetails.youPay")
+  const firstLineValue = isUserSeller
+    ? `${formatAmount(order.amount)} ${order.advert?.account_currency}`
+    : `${formatAmount(order.payment_amount)} ${order.payment_currency}`
+
+  const secondLineLabel = isUserSeller ? t("orderDetails.youReceive") : t("orderDetails.youReceive")
+  const secondLineValue = isUserSeller
+    ? `${formatAmount(order.payment_amount)} ${order.payment_currency}`
+    : `${formatAmount(order.amount)} ${order.advert?.account_currency}`
+
   return (
     <div className={cn("space-y-4", !isBlockLayout && "md:space-y-1")} data-testid="order-details-container">
       <OrderDetailItem
@@ -95,15 +110,15 @@ export const OrderDetails = ({ order, setShowChat }) => {
       />
 
       <OrderDetailItem
-        label={order.type === "buy" ? t("orderDetails.youPay") : t("orderDetails.youReceive")}
-        value={`${formatAmount(order.payment_amount)} ${order.payment_currency}`}
+        label={firstLineLabel}
+        value={firstLineValue}
         testId="payment-amount-item"
         isBlockLayout={isBlockLayout}
       />
 
       <OrderDetailItem
-        label={order.type === "buy" ? t("orderDetails.youReceive") : t("orderDetails.youSend")}
-        value={`${formatAmount(order.amount)} ${order.advert?.account_currency}`}
+        label={secondLineLabel}
+        value={secondLineValue}
         testId="amount-item"
         isBlockLayout={isBlockLayout}
       />
