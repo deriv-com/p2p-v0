@@ -452,6 +452,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
   // Set user payment methods and seller payment methods
   useEffect(() => {
+    // Clear selected payment methods when ad changes
+    setSelectedPaymentMethods([])
+    setTempSelectedPaymentMethods([])
+
     if (filteredPaymentMethods.length > 0) {
       setUserPaymentMethods(filteredPaymentMethods)
     }
@@ -462,7 +466,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       method: method,
     }))
     setSellerPaymentMethods(sellerMethods)
-  }, [filteredPaymentMethods, ad?.payment_methods])
+  }, [ad?.id])
+
+  // Update user payment methods when filtered methods change (but ad is the same)
+  useEffect(() => {
+    if (filteredPaymentMethods.length > 0 && ad?.id) {
+      setUserPaymentMethods(filteredPaymentMethods)
+    }
+  }, [filteredPaymentMethods])
 
   if (!isOpen && !isAnimating) return null
 
