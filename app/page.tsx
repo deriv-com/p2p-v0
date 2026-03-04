@@ -135,7 +135,7 @@ export default function BuySellPage() {
     try {
       // For V2 users, use total_account_value from /users/me endpoint
       if (!isV1Signup && meData?.total_account_value) {
-        setBalance(meData.total_account_value.balance?.toString() || "0.00")
+        setBalance(meData.total_account_value.amount?.toString() || "0.00")
         setBalanceCurrency(meData.total_account_value.currency || "USD")
       } else {
         // For V1 users, use balances from userData
@@ -166,7 +166,7 @@ export default function BuySellPage() {
     const unsubscribe = subscribe((data: any) => {
       // Check if message is from users/me channel with balance data
       if (data.channel === "users/me" && data.total_account_value) {
-        setBalance(data.total_account_value.balance?.toString() || "0.00")
+        setBalance(data.total_account_value.amount?.toString() || "0.00")
         setBalanceCurrency(data.total_account_value.currency || "USD")
       }
     })
