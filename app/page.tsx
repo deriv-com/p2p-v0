@@ -83,7 +83,7 @@ export default function BuySellPage() {
   const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
-  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe } = useWebSocketContext()
+  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
 
 
   const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
@@ -156,6 +156,26 @@ export default function BuySellPage() {
   useEffect(() => {
     fetchBalance()
   }, [fetchBalance])
+
+  // Subscribe to WebSocket updates for users/me to get real-time balance updates
+  useEffect(() => {
+    if (!isConnected || isV1Signup) return
+
+    subscribeToUserUpdates()
+
+    const unsubscribe = subscribe((data: any) => {
+      // Check if message is from users/me channel with balance data
+      if (data.channel === "users/me" && data.total_account_value) {
+        setBalance(data.total_account_value.balance?.toString() || "0.00")
+        setBalanceCurrency(data.total_account_value.currency || "USD")
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      unsubscribeFromUserUpdates()
+    }
+  }, [isConnected, isV1Signup, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
