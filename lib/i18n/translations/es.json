@@ -595,7 +595,7 @@
     "selectPayment": "Seleccionar pago",
     "selected": "Seleccionados ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago",
-    "genericErrorCodeMessage": "Inténtelo de nuevo o contacte con soporte.",
+    "genericErrorCodeMessage": "Se ha producido un error (Código: {code}). Inténtelo de nuevo o contacte con soporte.",
     "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo.",
     "unknownErrorMessage": "Ocurrió un error desconocido",
     "adVisibilityUpdate": "Actualizar visibilidad del anuncio",
