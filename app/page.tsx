@@ -161,12 +161,10 @@ export default function BuySellPage() {
         if (data?.payload?.data?.event === "balance_change" && data?.payload?.data?.user?.total_account_value) {
           setBalance(data?.payload?.data?.user?.total_account_value.amount?.toString() || "0.00")
           setBalanceCurrency(data?.payload?.data?.user?.total_account_value.currency || "USD")
-          
+
           // Update the user data store with the new balances
           const updateBalances = useUserDataStore.getState().updateBalances
-          if (data?.payload?.data?.user?.balances) {
-            updateBalances(data.payload.data.user.balances)
-          }
+          updateBalances(data.payload.data.user.total_account_value)
         }
       }
     })
