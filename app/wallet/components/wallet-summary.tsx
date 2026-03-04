@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useCurrencies, useMe } from "@/hooks/use-api-queries"
+import { useCurrencies } from "@/hooks/use-api-queries"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
@@ -83,7 +83,6 @@ export default function WalletSummary({
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
-  const { data: meData } = useMe()
   const { isConnected, subscribeToUserUpdates, unsubscribeFromUserUpdates, subscribe } = useWebSocketContext()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
@@ -92,8 +91,6 @@ export default function WalletSummary({
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [localSelectedTransaction, setLocalSelectedTransaction] = useState<Transaction | null>(null)
-  const [balance, setBalance] = useState(propBalance)
-  const [currency, setCurrency] = useState(propCurrency)
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
 
@@ -193,9 +190,8 @@ export default function WalletSummary({
     }
   }
 
-  const displayCurrency = externalSelectedCurrency || balance === propBalance ? propCurrency : currency
-  const displayBalance = balance || propBalance
-  const formattedBalance = formatAmountWithDecimals(displayBalance)
+  const displayCurrency = externalSelectedCurrency || propCurrency
+  const formattedBalance = formatAmountWithDecimals(propBalance)
   const displayCurrencyLabel = currencies.find((c) => c.code === displayCurrency)?.label || displayCurrency
 
   const fetchCurrencies = () => {
