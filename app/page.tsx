@@ -109,7 +109,7 @@ export default function BuySellPage() {
 
     if (isV1Signup) {
       const balances = userData?.balances || { amount: "0.00", currency: "USD" }
-      if (balances) return "v1-empty"
+      if (!balances) return "v1-empty"
       return `v1-${balances?.amount || "0"}-${balances?.currency || "USD"}`
     }
     return "v2"
