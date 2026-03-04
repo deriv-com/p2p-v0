@@ -46,6 +46,7 @@ interface UserDataState {
   setBrandClientId: (id: string) => void
   setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
+  updateBalances: (balances: Array<{ amount: string; currency: string }>) => void
   setVerificationStatus: (status: VerificationStatus) => void
   setOnboardingStatus: (status: OnboardingStatusResponse) => void
   setSocketToken: (token: string | null) => void
@@ -121,6 +122,12 @@ export const useUserDataStore = create<UserDataState>()(
         set((state: UserDataState) => {
           const newUserData = state.userData ? { ...state.userData, ...data } : data
           cacheSignup(newUserData.signup)
+          return { userData: newUserData }
+        }),
+
+      updateBalances: (balances: Array<{ amount: string; currency: string }>) =>
+        set((state: UserDataState) => {
+          const newUserData = state.userData ? { ...state.userData, balances } : { balances }
           return { userData: newUserData }
         }),
 
