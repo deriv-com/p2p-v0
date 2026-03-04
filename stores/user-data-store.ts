@@ -12,7 +12,7 @@ export interface UserData {
   wallet_id?: string
   temp_ban_until?: number | null
   is_online?: boolean
-  balances?: Array<{ amount: string; currency: string }>
+  balances?: { amount: string; currency: string }
   status?: string
 }
 
@@ -46,7 +46,7 @@ interface UserDataState {
   setBrandClientId: (id: string) => void
   setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
-  updateBalances: (balances: Array<{ amount: string; currency: string }>) => void
+  updateBalances: (balances: { amount: string; currency: string }) => void
   setVerificationStatus: (status: VerificationStatus) => void
   setOnboardingStatus: (status: OnboardingStatusResponse) => void
   setSocketToken: (token: string | null) => void
@@ -125,7 +125,7 @@ export const useUserDataStore = create<UserDataState>()(
           return { userData: newUserData }
         }),
 
-      updateBalances: (balances: Array<{ amount: string; currency: string }>) =>
+      updateBalances: (balances: { amount: string; currency: string }) =>
         set((state: UserDataState) => {
           const newUserData = state.userData ? { ...state.userData, balances } : { balances }
           return { userData: newUserData }

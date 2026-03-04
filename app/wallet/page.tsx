@@ -132,9 +132,12 @@ export default function WalletPage() {
           setTotalBalance(data?.payload?.data?.user?.total_account_value.amount?.toString() || "0.00")
           setBalanceCurrency(data?.payload?.data?.user?.total_account_value.currency || "USD")
 
-          // Update the user data store with the new balances
+          // Update the user data store with the new balance
           const updateBalances = useUserDataStore.getState().updateBalances
-          updateBalances(data.payload.data.user.total_account_value)
+          updateBalances({
+            amount: data.payload.data.user.total_account_value.amount?.toString() || "0.00",
+            currency: data.payload.data.user.total_account_value.currency || "USD",
+          })
         }
       }
     })
