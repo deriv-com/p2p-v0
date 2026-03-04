@@ -579,7 +579,7 @@
     "failedToCreateAd": "Error al crear el anuncio",
     "failedToUpdateAd": "Error al actualizar el anuncio",
     "tryAgain": "Por favor, inténtalo de nuevo.",
-    "updateAd": "Actualizar anuncio",
+    "updateAd": "Edit limits",
     "duplicateRateTitle": "Ya tienes un anuncio con esta tasa",
     "duplicateRateMessage": "Tienes otro anuncio activo con la misma tasa para este par de monedas y tipo de pedido. Establece una tasa diferente.",
     "rangeOverlapTitle": "Ya tienes un anuncio con este rango",

@@ -624,7 +624,7 @@
     "failedToCreateAd": "Failed to create ad",
     "failedToUpdateAd": "Failed to update ad",
     "tryAgain": "Please try again.",
-    "updateAd": "Update ad",
+    "updateAd": "Edit limits",
     "duplicateRateTitle": "You already have an ad with this rate",
     "duplicateRateMessage": "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
     "rangeOverlapTitle": "You already have an ad with this range",
