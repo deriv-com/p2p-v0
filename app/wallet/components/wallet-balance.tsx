@@ -13,7 +13,6 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useCurrencies } from "@/hooks/use-api-queries"
 import { currencyLogoMapper } from "@/lib/utils"
-import { getCoreUrl } from "@/lib/get-core-url"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface WalletBalanceProps {
@@ -37,7 +36,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const [isRefreshing, setIsRefreshing] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
 
@@ -52,45 +50,10 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     }
   }
 
-  const fetchBalance = async () => {
-    try {
-      setIsRefreshing(true)
-
-      const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
-
-      const response = await fetch(url, {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json"
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`)
-      }
-
-      const responseData = await response.json()
-
-      if (responseData && responseData.data) {
-        const data = responseData.data
-        const balance = data.balances?.find((b: any) => b.currency === selectedCurrency)?.amount
-        setBalance(balance ? Number.parseFloat(balance) : 0)
-      }
-
-      setIsLoading(false)
-    } catch (error) {
-      console.error("Error fetching user balance:", error)
-      setIsLoading(false)
-    } finally {
-      setIsRefreshing(false)
-    }
-  }
-
   useEffect(() => {
-    fetchBalance()
     fetchCurrencies()
-  }, [selectedCurrency, currenciesResponse])
+    setIsLoading(false)
+  }, [currenciesResponse])
 
   // Subscribe to real-time balance updates via websocket (already subscribed in WebSocketProvider)
   useEffect(() => {
@@ -109,10 +72,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
       unsubscribe()
     }
   }, [selectedCurrency, subscribe])
-
-  const handleRefresh = () => {
-    fetchBalance()
-  }
 
   const handleDepositClick = () => {
     setCurrentOperation("DEPOSIT")
@@ -158,15 +117,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           <h1 className="text-[32px] font-black text-black text-center leading-normal">
             {isLoading ? "Loading..." : `${balance} ${selectedCurrency}`}
           </h1>
-          <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
-            <Image
-              src="/icons/refresh-icon.png"
-              alt="Refresh"
-              width={16}
-              height={16}
-              className={cn("text-gray-400", isRefreshing && "animate-spin")}
-            />
-          </Button>
         </div>
 
         <div className="mt-1 flex items-center justify-center gap-1">
