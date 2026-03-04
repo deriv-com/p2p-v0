@@ -80,7 +80,6 @@ export default function WalletSummary({
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
-  const isV1Signup = useUserDataStore((state) => state.isV1Signup)
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
@@ -217,7 +216,7 @@ export default function WalletSummary({
 
   // Subscribe to WebSocket updates for users/me to get real-time balance updates
   useEffect(() => {
-    if (!isConnected || isV1Signup) return
+    if (!isConnected) return
 
     subscribeToUserUpdates()
 
@@ -233,7 +232,7 @@ export default function WalletSummary({
       unsubscribe()
       unsubscribeFromUserUpdates()
     }
-  }, [isConnected, isV1Signup, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
+  }, [isConnected, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   const handleDepositClick = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {

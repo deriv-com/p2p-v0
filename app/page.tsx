@@ -133,17 +133,8 @@ export default function BuySellPage() {
     setIsLoadingBalance(true)
 
     try {
-      // For V2 users, use total_account_value from /users/me endpoint
-      if (!isV1Signup && meData?.total_account_value) {
-        setBalance(meData.total_account_value.amount?.toString() || "0.00")
-        setBalanceCurrency(meData.total_account_value.currency || "USD")
-      } else {
-        // For V1 users, use balances from userData
-        const balances = userData?.balances || []
-        const firstBalance = balances[0] || {}
-        setBalance(firstBalance.amount || "0.00")
-        setBalanceCurrency(firstBalance.currency || "USD")
-      }
+      setBalance(meData.total_account_value.amount?.toString() || "0.00")
+      setBalanceCurrency(meData.total_account_value.currency || "USD")
     } catch (error) {
       console.error("Failed to fetch balance:", error)
       setBalance("0.00")
@@ -159,7 +150,7 @@ export default function BuySellPage() {
 
   // Subscribe to WebSocket updates for users/me to get real-time balance updates
   useEffect(() => {
-    if (!isConnected || isV1Signup) return
+    if (!isConnected) return
 
     subscribeToUserUpdates()
 
@@ -175,7 +166,7 @@ export default function BuySellPage() {
       unsubscribe()
       unsubscribeFromUserUpdates()
     }
-  }, [isConnected, isV1Signup, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
+  }, [isConnected, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
