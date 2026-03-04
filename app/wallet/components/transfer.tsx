@@ -14,7 +14,8 @@ import {
   fetchTransactionByReferenceId,
 } from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
-import { useCurrencies } from "@/hooks/use-api-queries"
+import { useCurrencies, queryKeys } from "@/hooks/use-api-queries"
+import { queryClient } from "@/lib/react-query-client"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
@@ -527,6 +528,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         if (result?.data?.external_reference_id) {
           setExternalReferenceId(result.data.external_reference_id)
         }
+        // Invalidate total balance cache after successful transfer
+        queryClient.invalidateQueries({ queryKey: queryKeys.auth.totalBalance() })
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
         toSuccess()
