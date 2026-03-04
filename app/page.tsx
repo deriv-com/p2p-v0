@@ -27,7 +27,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
+import { usePaymentMethods, useAdvertisements, useMe } from "@/hooks/use-api-queries"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -68,6 +68,7 @@ export default function BuySellPage() {
   const [showKycPopup, setShowKycPopup] = useState(false)
 
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
+  const { data: meData } = useMe()
 
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
@@ -132,10 +133,17 @@ export default function BuySellPage() {
     setIsLoadingBalance(true)
 
     try {
-      const balances = userData?.balances || []
-      const firstBalance = balances[0] || {}
-      setBalance(firstBalance.amount || "0.00")
-      setBalanceCurrency(firstBalance.currency || "USD")
+      // For V2 users, use total_account_value from /users/me endpoint
+      if (!isV1Signup && meData?.total_account_value) {
+        setBalance(meData.total_account_value.balance?.toString() || "0.00")
+        setBalanceCurrency(meData.total_account_value.currency || "USD")
+      } else {
+        // For V1 users, use balances from userData
+        const balances = userData?.balances || []
+        const firstBalance = balances[0] || {}
+        setBalance(firstBalance.amount || "0.00")
+        setBalanceCurrency(firstBalance.currency || "USD")
+      }
     } catch (error) {
       console.error("Failed to fetch balance:", error)
       setBalance("0.00")
@@ -143,7 +151,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData])
+  }, [balancesKey, isV1Signup, userData, meData])
 
   useEffect(() => {
     fetchBalance()
