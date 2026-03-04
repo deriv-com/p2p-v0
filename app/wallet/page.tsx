@@ -131,6 +131,13 @@ export default function WalletPage() {
         if (data?.payload?.data?.event === "balance_change" && data?.payload?.data?.user?.total_account_value) {
           setTotalBalance(data?.payload?.data?.user?.total_account_value.amount?.toString() || "0.00")
           setBalanceCurrency(data?.payload?.data?.user?.total_account_value.currency || "USD")
+
+          // Update the user data store with the new balance
+          const updateBalances = useUserDataStore.getState().updateBalances
+          updateBalances({
+            amount: data.payload.data.user.total_account_value.amount?.toString() || "0.00",
+            currency: data.payload.data.user.total_account_value.currency || "USD",
+          })
         }
       }
     })

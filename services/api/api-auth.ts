@@ -427,14 +427,14 @@ export async function fetchUserIdAndStore(): Promise<void> {
           signup: result.data.signup,
           wallet_id: result.data.wallet_id,
           temp_ban_until: tempBanUntil,
-          balances: [balances],
+          balances: balances,
           status: status,
           trade_band: tradeBand,
         })
       }
     } else {
       useUserDataStore.getState().updateUserData({
-        balances: [{ amount: "0" }],
+        balances: { amount: "0" },
         signup: "v2",
       })
       useUserDataStore.getState().setUserId("")
