@@ -283,7 +283,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
 
       if (errorCodeMap[errors[0].code]) {
-        return errorCodeMap[errors[0].code]
+        return `${errorCodeMap[errors[0].code]} (${errors[0].code})`
       }
 
       return t("adForm.genericErrorCodeMessage", { code: errors[0].code })
