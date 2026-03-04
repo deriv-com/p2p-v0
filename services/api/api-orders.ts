@@ -3,7 +3,7 @@ import { API, AUTH } from "@/lib/local-variables"
 // Type definitions
 export interface Order {
   id: string
-  type: "Buy" | "Sell"
+  type: "buy" | "sell"
   status: "Pending" | "Completed" | "Cancelled" | "Disputed"
   amount: Value
   rate: {
@@ -481,13 +481,13 @@ export async function sendChatMessage(
       success: true,
       message: data.data ||
         data.message || {
-          id: Date.now().toString(),
-          orderId,
-          senderId: 0,
-          content: message,
-          time,
-          isRead: false,
-        },
+        id: Date.now().toString(),
+        orderId,
+        senderId: 0,
+        content: message,
+        time,
+        isRead: false,
+      },
     }
   } catch (error) {
     throw error

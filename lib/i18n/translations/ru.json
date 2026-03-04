@@ -551,7 +551,7 @@
     "floating": "Плавающий",
     "counterparty": "Контрагент",
     "allCounterparties": "Все контрагенты",
-    "genericErrorCodeMessage": "Повторите попытку или обратитесь в службу поддержки.",
+    "genericErrorCodeMessage": "Произошла ошибка ({code}). Повторите попытку или обратитесь в службу поддержки.",
     "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку.",
     "unknownErrorMessage": "Произошла неизвестная ошибка"
   },
