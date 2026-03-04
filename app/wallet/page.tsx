@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
-import { useCurrencies, useTotalBalance } from "@/hooks/use-api-queries"
+import { useCurrencies, useTotalBalance, useMe } from "@/hooks/use-api-queries"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface Balance {
   wallet_id: string
@@ -26,6 +27,8 @@ export default function WalletPage() {
   const { hideAlert, showAlert } = useAlertDialog()
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
   const { data: balanceData, isLoading: isBalanceLoading } = useTotalBalance()
+  const { data: meData } = useMe()
+  const { isConnected, subscribeToUserUpdates, unsubscribeFromUserUpdates, subscribe } = useWebSocketContext()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -37,6 +40,7 @@ export default function WalletPage() {
   const [showKycPopup, setShowKycPopup] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<any>(null)
   const { userData } = useUserDataStore()
+  const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
@@ -116,6 +120,26 @@ export default function WalletPage() {
     setCurrenciesData(currencies)
     processBalanceData(currencies, balanceData)
   }, [balanceData, currenciesResponse, processBalanceData])
+
+  // Subscribe to WebSocket updates for users/me to get real-time balance updates
+  useEffect(() => {
+    if (!isConnected || isV1Signup) return
+
+    subscribeToUserUpdates()
+
+    const unsubscribe = subscribe((data: any) => {
+      // Check if message is from users/me channel with balance data
+      if (data.channel === "users/me" && data.total_account_value) {
+        setTotalBalance(data.total_account_value.amount?.toString() || "0.00")
+        setBalanceCurrency(data.total_account_value.currency || "USD")
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      unsubscribeFromUserUpdates()
+    }
+  }, [isConnected, isV1Signup, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)

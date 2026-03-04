@@ -8,7 +8,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useCurrencies } from "@/hooks/use-api-queries"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
@@ -83,7 +82,6 @@ export default function WalletSummary({
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
-  const { isConnected, subscribeToUserUpdates, unsubscribeFromUserUpdates, subscribe } = useWebSocketContext()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -209,26 +207,6 @@ export default function WalletSummary({
   useEffect(() => {
     fetchCurrencies()
   }, [currenciesResponse])
-
-  // Subscribe to WebSocket updates for users/me to get real-time balance updates
-  useEffect(() => {
-    if (!isConnected) return
-
-    subscribeToUserUpdates()
-
-    const unsubscribe = subscribe((data: any) => {
-      // Check if message is from users/me channel with balance data
-      if (data.channel === "users/me" && data.total_account_value) {
-        setBalance(data.total_account_value.amount?.toString() || "0.00")
-        setCurrency(data.total_account_value.currency || "USD")
-      }
-    })
-
-    return () => {
-      unsubscribe()
-      unsubscribeFromUserUpdates()
-    }
-  }, [isConnected, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   const handleDepositClick = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
