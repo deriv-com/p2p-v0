@@ -108,9 +108,9 @@ export default function BuySellPage() {
     if (!userData?.signup) return null
 
     if (isV1Signup) {
-      const balances = userData?.balances || []
-      if (balances.length === 0) return "v1-empty"
-      return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
+      const balances = userData?.balances || { amount: "0.00", currency: "USD" }
+      if (balances) return "v1-empty"
+      return `v1-${balances?.amount || "0"}-${balances?.currency || "USD"}`
     }
     return "v2"
   }, [isV1Signup, userData?.balances, userData?.signup])
@@ -132,10 +132,9 @@ export default function BuySellPage() {
     setIsLoadingBalance(true)
 
     try {
-      const balances = userData?.balances || []
-      const firstBalance = balances[0] || {}
-      setBalance(firstBalance.amount || "0.00")
-      setBalanceCurrency(firstBalance.currency || "USD")
+      const balances = userData?.balances || { amount: "0.00", currency: "USD" }
+      setBalance(balances.amount)
+      setBalanceCurrency(balances.currency)
     } catch (error) {
       console.error("Failed to fetch balance:", error)
       setBalance("0.00")
