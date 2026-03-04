@@ -475,7 +475,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     showAlert({
       title: errorInfo.title,
       description: errorMessage,
-      confirmText: t("adForm.updateAd"),
+      confirmText: errorName === "AdvertOrderRangeOverlap" ? t("adForm.editLimitsForRangeOverlap") : t("adForm.updateAd"),
       type: errorInfo.type,
       onConfirm: () => {
         if (errorInfo.onConfirm) {

@@ -524,6 +524,7 @@
     "failedToUpdateAd": "Không thể cập nhật quảng cáo",
     "tryAgain": "Vui lòng thử lại.",
     "updateAd": "Cập nhật quảng cáo",
+    "editLimitsForRangeOverlap": "Edit limits",
     "duplicateRateTitle": "Bạn đã có quảng cáo với tỷ giá này",
     "duplicateRateMessage": "Bạn có một quảng cáo đang hoạt động khác với cùng tỷ giá cho cặp tiền tệ và loại đơn hàng này. Đặt một tỷ giá khác.",
     "rangeOverlapTitle": "Bạn đã có quảng cáo với phạm vi này",

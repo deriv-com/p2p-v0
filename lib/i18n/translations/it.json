@@ -529,6 +529,7 @@
     "failedToUpdateAd": "Impossibile aggiornare l'annuncio",
     "tryAgain": "Riprova.",
     "updateAd": "Aggiorna annuncio",
+    "editLimitsForRangeOverlap": "Edit limits",
     "duplicateRateTitle": "Hai già un annuncio con questo tasso",
     "duplicateRateMessage": "Hai un altro annuncio attivo con lo stesso tasso per questa coppia di valute e tipo di ordine. Imposta un tasso diverso.",
     "rangeOverlapTitle": "Hai già un annuncio con questo intervallo",
