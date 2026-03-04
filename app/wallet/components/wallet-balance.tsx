@@ -92,10 +92,9 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     fetchCurrencies()
   }, [selectedCurrency, currenciesResponse])
 
-  // Subscribe to real-time balance updates via websocket
+  // Subscribe to real-time balance updates via websocket (already subscribed in WebSocketProvider)
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
-      console.log("[v0] Received websocket data:", data)
       if (data?.data?.balances) {
         const updatedBalance = data.data.balances.find(
           (b: any) => b.currency === selectedCurrency
