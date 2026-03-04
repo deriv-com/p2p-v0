@@ -1,13 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useCurrencies } from "@/hooks/use-api-queries"
+import { useCurrencies, useMe } from "@/hooks/use-api-queries"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
@@ -79,9 +80,12 @@ export default function WalletSummary({
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isV1Signup = useUserDataStore((state) => state.isV1Signup)
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
+  const { data: meData } = useMe()
+  const { isConnected, subscribeToUserUpdates, unsubscribeFromUserUpdates, subscribe } = useWebSocketContext()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -89,6 +93,8 @@ export default function WalletSummary({
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [localSelectedTransaction, setLocalSelectedTransaction] = useState<Transaction | null>(null)
+  const [balance, setBalance] = useState(propBalance)
+  const [currency, setCurrency] = useState(propCurrency)
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
 
@@ -188,8 +194,9 @@ export default function WalletSummary({
     }
   }
 
-  const displayCurrency = externalSelectedCurrency || propCurrency
-  const formattedBalance = formatAmountWithDecimals(propBalance)
+  const displayCurrency = externalSelectedCurrency || balance === propBalance ? propCurrency : currency
+  const displayBalance = balance || propBalance
+  const formattedBalance = formatAmountWithDecimals(displayBalance)
   const displayCurrencyLabel = currencies.find((c) => c.code === displayCurrency)?.label || displayCurrency
 
   const fetchCurrencies = () => {
@@ -207,6 +214,26 @@ export default function WalletSummary({
   useEffect(() => {
     fetchCurrencies()
   }, [currenciesResponse])
+
+  // Subscribe to WebSocket updates for users/me to get real-time balance updates
+  useEffect(() => {
+    if (!isConnected || isV1Signup) return
+
+    subscribeToUserUpdates()
+
+    const unsubscribe = subscribe((data: any) => {
+      // Check if message is from users/me channel with balance data
+      if (data.channel === "users/me" && data.total_account_value) {
+        setBalance(data.total_account_value.amount?.toString() || "0.00")
+        setCurrency(data.total_account_value.currency || "USD")
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      unsubscribeFromUserUpdates()
+    }
+  }, [isConnected, isV1Signup, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   const handleDepositClick = () => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
