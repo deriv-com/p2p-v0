@@ -14,6 +14,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useCurrencies } from "@/hooks/use-api-queries"
 import { currencyLogoMapper } from "@/lib/utils"
 import { getCoreUrl } from "@/lib/get-core-url"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface WalletBalanceProps {
   className?: string
@@ -30,6 +31,7 @@ type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 export default function WalletBalance({ className }: WalletBalanceProps) {
   const userId = useUserDataStore((state) => state.userId)
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
+  const { subscribe } = useWebSocketContext()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -89,6 +91,25 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     fetchBalance()
     fetchCurrencies()
   }, [selectedCurrency, currenciesResponse])
+
+  // Subscribe to real-time balance updates via websocket
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      console.log("[v0] Received websocket data:", data)
+      if (data?.data?.balances) {
+        const updatedBalance = data.data.balances.find(
+          (b: any) => b.currency === selectedCurrency
+        )?.amount
+        if (updatedBalance !== undefined) {
+          setBalance(Number.parseFloat(updatedBalance))
+        }
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [selectedCurrency, subscribe])
 
   const handleRefresh = () => {
     fetchBalance()

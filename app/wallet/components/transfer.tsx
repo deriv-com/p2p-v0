@@ -19,6 +19,9 @@ import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { getCoreUrl } from "@/lib/get-core-url"
 
 interface TransferProps {
   currencySelected?: string
@@ -529,6 +532,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         }
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
+        
+        // Subscribe to user updates and refresh balance after successful transfer
+        await refreshBalanceFromServer()
+        
         toSuccess()
       } else {
         const errorMessage = result.data.errors[0]?.message || "An error occurred during the transfer."
@@ -545,6 +552,42 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       toUnsuccessful()
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const refreshBalanceFromServer = async () => {
+    try {
+      const userId = useUserDataStore.getState().userId
+      if (!userId) return
+
+      const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
+      const response = await fetch(url, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      })
+
+      if (response.ok) {
+        const responseData = await response.json()
+        if (responseData?.data?.balances) {
+          // Update wallets with fresh balance data
+          setWallets((prevWallets) =>
+            prevWallets.map((wallet) => {
+              const updatedBalance = responseData.data.balances.find(
+                (b: any) => b.currency === wallet.currency && b.wallet_type === wallet.type
+              )
+              if (updatedBalance) {
+                return { ...wallet, balance: updatedBalance.amount }
+              }
+              return wallet
+            })
+          )
+        }
+      }
+    } catch (error) {
+      console.error("Error refreshing balance:", error)
     }
   }
 
