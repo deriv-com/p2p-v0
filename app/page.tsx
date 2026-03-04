@@ -157,9 +157,11 @@ export default function BuySellPage() {
 
     const unsubscribe = subscribe((data: any) => {
       // Check if message is from users/me channel with balance data
-      if (data.channel === "users/me" && data.total_account_value) {
-        setBalance(data.total_account_value.amount?.toString() || "0.00")
-        setBalanceCurrency(data.total_account_value.currency || "USD")
+      if (data?.options?.channel?.startsWith("users/me")) {
+        if (data?.payload?.data?.event === "balance_change" && data?.payload?.data?.user?.total_account_value) {
+          setBalance(data?.payload?.data?.user?.total_account_value.amount?.toString() || "0.00")
+          setBalanceCurrency(data?.payload?.data?.user?.total_account_value.currency || "USD")
+        }
       }
     })
 
