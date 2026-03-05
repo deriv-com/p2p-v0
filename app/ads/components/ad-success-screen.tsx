@@ -23,7 +23,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
       }}
     >
       <div className="w-full h-full flex flex-col items-center justify-center px-4 md:px-6">
-        <div className="relative w-48 h-48 md:w-64 md:h-64 mb-8 flex items-center justify-center">
+        <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6 flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             <Image
               src="/icons/ad-posted.png"
@@ -46,19 +46,19 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col gap-3 w-full max-w-xs md:max-w-sm mt-8">
+        <div className="flex flex-col gap-3 w-full max-w-xs md:max-w-sm mt-6">
           <Button
             onClick={onShareClick}
             className="w-full rounded-full transition-colors"
           >
-            {t("shareAdPage.shareImage")}
+            {t("shareAdPage.shareAdTitle")}
           </Button>
           <Button
             onClick={() => router.push("/ads")}
             variant="outline"
-            className="w-full rounded-full transition-colors"
+            className="w-full text-white border-white hover:bg-transparent rounded-full transition-colors"
           >
-            {t("myAds.goToMyAds")}
+            {t("navigation.goToMyAds")}
           </Button>
         </div>
       </div>
