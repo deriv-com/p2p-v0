@@ -36,8 +36,8 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
         </div>
 
         {/* Content */}
-        <div className="text-center max-w-none md:max-w-2xl">
-          <h1 className="text-2xl font-extrabold text-white mb-2">
+        <div className="text-center max-w-md">
+          <h1 className="text-2xl font-extrabold text-white mb-3">
             {t("myAds.adCreated")}
           </h1>
           <p className="text-gray-300 text-base mb-8 opacity-72">
@@ -46,7 +46,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col md:flex-row-reverse gap-2 w-full max-w-none md:max-w-2xl mt-6">
+        <div className="flex flex-col gap-3 w-full max-w-xs md:max-w-sm mt-6">
           <Button
             onClick={onShareClick}
             className="w-full rounded-full transition-colors"

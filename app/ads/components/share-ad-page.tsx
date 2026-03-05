@@ -54,15 +54,14 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
-    const rateValue = typeof ad?.rate === "object" ? ad.rate.value : ""
     const text = t("shareAdPage.shareMessage", {
       currency: ad?.account_currency,
-      rate: rateValue,
+      rate: ad?.rate.value,
       url: adUrl,
     })
     const telegramText = t("shareAdPage.shareTelegramMessage", {
       currency: ad?.account_currency,
-      rate: rateValue,
+      rate: ad?.rate.value,
     })
 
     const shareUrls: Record<string, string> = {
@@ -235,7 +234,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">{t("shareAdPage.limits")}</span>
                   <span className="font-bold text-sm">
-                    {typeof ad.limits === "object" ? `${ad.limits.min} - ${ad.limits.max} ${ad.limits.currency}` : ad.limits}
+                    {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
@@ -243,7 +242,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
                       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
-                      : typeof ad.rate === "object" ? ad.rate.value : "N/A"}
+                      : ad.rate.value}
                   </span>
                 </div>
               </div>
