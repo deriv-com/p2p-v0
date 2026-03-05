@@ -56,7 +56,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     const rateValue = ad?.exchange_rate_type === "float"
       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
-      : ad?.rate?.value || ""
+      : ad?.rate?.value ?? ""
     const text = t("shareAdPage.shareMessage", {
       currency: ad?.account_currency,
       rate: rateValue,
@@ -247,7 +247,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
                       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
-                      : ad.rate.value}
+                      : ad.rate?.value ?? ""}
                   </span>
                 </div>
               </div>
