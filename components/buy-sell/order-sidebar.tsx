@@ -363,7 +363,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         } else {
           showAlert({
             title: t("order.unableToCreateOrder"),
-            description: t("order.orderCreationError"),
+            description: `${t("order.orderCreationError")} (${errorCode})`,
             confirmText: t("common.ok"),
             type: "warning",
           })
@@ -372,9 +372,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         router.push("/orders/" + order.data.id)
       }
     } catch (error) {
+      const errorCode = error instanceof Error ? error.message : "Unknown Error"
       setOrderStatus({
         success: false,
-        message: error instanceof Error ? error.message : "Failed to create order. Please try again.",
+        message: `Failed to create order. Please try again. (${errorCode})`,
       })
     } finally {
       setIsSubmitting(false)
