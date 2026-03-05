@@ -56,12 +56,12 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     const text = t("shareAdPage.shareMessage", {
       currency: ad?.account_currency,
-      rate: ad?.rate.value,
+      rate: ad?.rate?.value,
       url: adUrl,
     })
     const telegramText = t("shareAdPage.shareTelegramMessage", {
       currency: ad?.account_currency,
-      rate: ad?.rate.value,
+      rate: ad?.rate?.value,
     })
 
     const shareUrls: Record<string, string> = {
