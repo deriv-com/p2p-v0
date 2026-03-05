@@ -16,11 +16,14 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
   const { t } = useTranslations()
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[radial-gradient(108.21%_50%_at_52.05%_0%,rgba(255,68,79,0.24)_0%,rgba(255,68,79,0)_100%),#181C25]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{
+        background:
+          "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), #181C25",
+      }}
+    >
       <div className="w-full h-full flex flex-col items-center justify-center px-4 md:px-6">
-        {/* Success Icon with Animation */}
-        <div className="relative w-48 h-48 md:w-64 md:h-64 mb-8 flex items-center justify-center">
-          <div className="absolute inset-0 animate-pulse rounded-full bg-red-500/20"></div>
+        <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6 flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             <Image
               src="/icons/ad-posted.png"
@@ -43,19 +46,19 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col gap-3 w-full max-w-xs md:max-w-sm mt-8">
+        <div className="flex flex-col gap-3 w-full max-w-xs md:max-w-sm mt-6">
           <Button
             onClick={onShareClick}
             className="w-full rounded-full transition-colors"
           >
-            {t("shareAdPage.shareImage")}
+            {t("shareAdPage.shareAdTitle")}
           </Button>
           <Button
             onClick={() => router.push("/ads")}
             variant="outline"
-            className="w-full rounded-full transition-colors"
+            className="w-full text-white border-white hover:bg-transparent rounded-full transition-colors"
           >
-            {t("myAds.goToMyAds")}
+            {t("navigation.goToMyAds")}
           </Button>
         </div>
       </div>
