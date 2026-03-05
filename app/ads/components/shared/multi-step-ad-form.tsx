@@ -364,14 +364,14 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             limits: {
               min: payload.minimum_order_amount,
               max: payload.maximum_order_amount,
-              currency: payload.payment_currency
+              currency: payload.account_currency
             },
             rate: {
               value: payload.exchange_rate_type === "float"
                 ? `${payload.exchange_rate > 0 ? "+" : ""}${payload.exchange_rate}%`
                 : payload.exchange_rate,
               percentage: payload.exchange_rate || "0",
-              currency: payload.account_currency
+              currency: payload.payment_currency
             }
           }
           setSuccessAd(successAdData)
