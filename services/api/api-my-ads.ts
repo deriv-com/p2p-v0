@@ -81,6 +81,13 @@ export interface CreateAdResponse {
   created_at: string
   account_currency?: string
   payment_currency?: string
+  minimum_order_amount?: number
+  maximum_order_amount?: number
+  exchange_rate?: number
+  exchange_rate_type?: "fixed" | "float"
+  available_amount?: number
+  description?: string
+  payment_method_names?: string[]
 }
 
 export interface Advert {
@@ -537,12 +544,7 @@ export async function createAd(
 
     return {
       success: true,
-      data: {
-        id: responseData.data?.id || "000000",
-        type: responseData.data?.type || payload.type,
-        status: responseData.data?.status || "active",
-        created_at: responseData.data?.created_at || new Date().toISOString(),
-      },
+      data: responseData.data,
       errors: responseData.errors || [],
     }
   } catch (error) {

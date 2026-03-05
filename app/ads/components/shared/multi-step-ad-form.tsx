@@ -359,19 +359,17 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           setIsSubmitting(false)
           const successAdData = {
             ...result.data,
-            account_currency: payload.account_currency,
-            payment_currency: payload.payment_currency,
             limits: {
-              min: payload.minimum_order_amount,
-              max: payload.maximum_order_amount,
-              currency: payload.account_currency
+              min: result.data.minimum_order_amount,
+              max: result.data.maximum_order_amount,
+              currency: result.data.account_currency
             },
             rate: {
-              value: payload.exchange_rate_type === "float"
-                ? `${payload.exchange_rate > 0 ? "+" : ""}${payload.exchange_rate}%`
-                : payload.exchange_rate,
-              percentage: payload.exchange_rate || "0",
-              currency: payload.payment_currency
+              value: result.data.exchange_rate_type === "float"
+                ? `${result.data.exchange_rate > 0 ? "+" : ""}${result.data.exchange_rate}%`
+                : result.data.exchange_rate,
+              percentage: result.data.exchange_rate || "0",
+              currency: result.data.payment_currency
             }
           }
           setSuccessAd(successAdData)
