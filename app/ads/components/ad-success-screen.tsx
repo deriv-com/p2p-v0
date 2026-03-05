@@ -44,7 +44,8 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
             {t("adForm.adCreatedSuccess", { 
               type: ad.type,
               account_currency: ad.account_currency,
-              payment_currency: ad.payment_currency
+              payment_currency: ad.payment_currency,
+              audience: ad.type === "buy" ? "potential sellers" : "potential buyers"
             })}
           </p>
         </div>
