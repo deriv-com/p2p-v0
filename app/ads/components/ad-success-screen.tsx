@@ -23,7 +23,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
           <div className="absolute inset-0 animate-pulse rounded-full bg-red-500/20"></div>
           <div className="relative flex items-center justify-center">
             <Image
-              src="/icons/ad-posted.svg"
+              src="/icons/ad-posted.png"
               alt="Ad created"
               width={256}
               height={256}
