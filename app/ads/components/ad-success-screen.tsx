@@ -16,7 +16,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
   const { t } = useTranslations()
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-[#3a2f4a] via-[#2a1f3a] to-[#1a0f2a]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[radial-gradient(108.21%_50%_at_52.05%_0%,rgba(255,68,79,0.24)_0%,rgba(255,68,79,0)_100%),#181C25]">
       <div className="w-full h-full flex flex-col items-center justify-center px-4 md:px-6">
         {/* Success Icon with Animation */}
         <div className="relative w-48 h-48 md:w-64 md:h-64 mb-8 flex items-center justify-center">
@@ -34,10 +34,10 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
 
         {/* Content */}
         <div className="text-center max-w-md">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <h1 className="text-2xl font-extrabold text-white mb-3">
             {t("myAds.adCreated")}
           </h1>
-          <p className="text-gray-300 text-base md:text-lg mb-8">
+          <p className="text-gray-300 text-base mb-8 opacity-72">
             {t("adForm.adCreatedSuccess", { type: ad.type })}
           </p>
         </div>
@@ -46,14 +46,14 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
         <div className="flex flex-col gap-3 w-full max-w-xs md:max-w-sm mt-8">
           <Button
             onClick={onShareClick}
-            className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-6 rounded-full text-lg transition-colors"
+            className="w-full rounded-full transition-colors"
           >
             {t("shareAdPage.shareImage")}
           </Button>
           <Button
             onClick={() => router.push("/ads")}
             variant="outline"
-            className="w-full border-gray-400 text-white hover:bg-white/10 font-semibold py-6 rounded-full text-lg transition-colors"
+            className="w-full rounded-full transition-colors"
           >
             {t("myAds.goToMyAds")}
           </Button>
