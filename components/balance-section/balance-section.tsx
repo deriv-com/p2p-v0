@@ -13,6 +13,8 @@ interface BalanceSectionProps {
 
 export function BalanceSection({ balance, currency, isLoading, className }: BalanceSectionProps) {
   const { t } = useTranslations()
+  const displayAmount = !balance || isNaN(Number(balance)) ? "0.00" : formatAmountWithDecimals(balance)
+  const displayCurrency = currency || "USD"
 
   return (
     <div className={className || "mb-4"}>
@@ -20,7 +22,7 @@ export function BalanceSection({ balance, currency, isLoading, className }: Bala
       {isLoading ? (
         <Skeleton className="h-7 w-32 bg-white/20" />
       ) : (
-        <div className="text-white text-xl font-bold">{`${formatAmountWithDecimals(balance)} ${currency}`}</div>
+        <div className="text-white text-xl font-bold">{`${displayAmount} ${displayCurrency}`}</div>
       )}
     </div>
   )
