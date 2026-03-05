@@ -234,7 +234,9 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">{t("shareAdPage.limits")}</span>
                   <span className="font-bold text-sm">
-                    {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
+                    {typeof ad.limits === "object"
+                      ? `${ad.limits.min} - ${ad.limits.max} ${ad.limits.currency}`
+                      : ad.limits}
                   </span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
