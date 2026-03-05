@@ -54,14 +54,17 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
+    const rateValue = ad?.exchange_rate_type === "float"
+      ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
+      : ad?.rate?.value || ""
     const text = t("shareAdPage.shareMessage", {
       currency: ad?.account_currency,
-      rate: ad?.rate?.value,
+      rate: rateValue,
       url: adUrl,
     })
     const telegramText = t("shareAdPage.shareTelegramMessage", {
       currency: ad?.account_currency,
-      rate: ad?.rate?.value,
+      rate: rateValue,
     })
 
     const shareUrls: Record<string, string> = {
