@@ -237,9 +237,9 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">{t("shareAdPage.limits")}</span>
                   <span className="font-bold text-sm">
-                    {ad.limits && typeof ad.limits === "object"
-                      ? `${ad.limits.min} - ${ad.limits.max} ${ad.limits.currency}`
-                      : ad.limits}
+                    {ad.limits && typeof ad.limits === "object" && ad.limits.min && ad.limits.max
+                      ? `${ad.limits.min} - ${ad.limits.max} ${ad.limits.currency || ""}`
+                      : typeof ad.limits === "string" ? ad.limits : "-"}
                   </span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
@@ -247,7 +247,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
                       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
-                      : ad.rate?.value ?? ""}
+                      : ad.rate?.value ?? "-"}
                   </span>
                 </div>
               </div>
