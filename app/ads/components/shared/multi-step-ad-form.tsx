@@ -357,11 +357,24 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       createAdMutation.mutate(payload, {
         onSuccess: (result) => {
           setIsSubmitting(false)
-          setSuccessAd({
+          const successAdData = {
             ...result.data,
             account_currency: payload.account_currency,
             payment_currency: payload.payment_currency,
-          })
+            limits: {
+              min: result.data.minimum_order_amount,
+              max: result.data.maximum_order_amount,
+              currency: payload.payment_currency
+            },
+            rate: {
+              value: result.data.exchange_rate_type === "float"
+                ? `${result.data.exchange_rate > 0 ? "+" : ""}${result.data.exchange_rate}%`
+                : result.data.exchange_rate,
+              percentage: result.data.exchange_rate || "0",
+              currency: payload.account_currency
+            }
+          }
+          setSuccessAd(successAdData)
           setShowSuccessScreen(true)
         },
         onError: (error: any) => {
