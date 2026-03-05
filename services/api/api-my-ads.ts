@@ -81,6 +81,13 @@ export interface CreateAdResponse {
   created_at: string
   account_currency?: string
   payment_currency?: string
+  minimum_order_amount?: number
+  maximum_order_amount?: number
+  exchange_rate?: number
+  exchange_rate_type?: "fixed" | "float"
+  available_amount?: number
+  description?: string
+  payment_method_names?: string[]
 }
 
 export interface Advert {
@@ -542,6 +549,15 @@ export async function createAd(
         type: responseData.data?.type || payload.type,
         status: responseData.data?.status || "active",
         created_at: responseData.data?.created_at || new Date().toISOString(),
+        account_currency: responseData.data?.account_currency || payload.account_currency,
+        payment_currency: responseData.data?.payment_currency || payload.payment_currency,
+        minimum_order_amount: responseData.data?.minimum_order_amount || payload.minimum_order_amount,
+        maximum_order_amount: responseData.data?.maximum_order_amount || payload.maximum_order_amount,
+        exchange_rate: responseData.data?.exchange_rate || payload.exchange_rate,
+        exchange_rate_type: responseData.data?.exchange_rate_type || payload.exchange_rate_type,
+        available_amount: responseData.data?.available_amount || payload.available_amount,
+        description: responseData.data?.description || payload.description,
+        payment_method_names: responseData.data?.payment_method_names || payload.payment_method_names,
       },
       errors: responseData.errors || [],
     }
