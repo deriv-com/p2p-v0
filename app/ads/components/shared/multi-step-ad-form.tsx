@@ -362,15 +362,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             account_currency: payload.account_currency,
             payment_currency: payload.payment_currency,
             limits: {
-              min: result.data.minimum_order_amount,
-              max: result.data.maximum_order_amount,
+              min: payload.minimum_order_amount,
+              max: payload.maximum_order_amount,
               currency: payload.payment_currency
             },
             rate: {
-              value: result.data.exchange_rate_type === "float"
-                ? `${result.data.exchange_rate > 0 ? "+" : ""}${result.data.exchange_rate}%`
-                : result.data.exchange_rate,
-              percentage: result.data.exchange_rate || "0",
+              value: payload.exchange_rate_type === "float"
+                ? `${payload.exchange_rate > 0 ? "+" : ""}${payload.exchange_rate}%`
+                : payload.exchange_rate,
+              percentage: payload.exchange_rate || "0",
               currency: payload.account_currency
             }
           }
@@ -613,171 +613,171 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         </>
       ) : (
         <form onSubmit={(e) => e.preventDefault()}>
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
-        <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
-          <div className="sticky top-0 z-10 bg-white">
-            <Navigation
-              isBackBtnVisible={currentStep != 0}
-              isVisible={false}
-              onBack={() => {
-                const updatedStep = currentStep - 1
-                setCurrentStep(updatedStep)
-              }}
-              onClose={handleClose}
-              title=""
-              className="md:h-16 md:pt-8"
-            />
-            <ProgressSteps
-              currentStep={currentStep}
-              steps={steps}
-              className="px-6 my-6"
-              title={{
-                label: getPageTitle(),
-                stepTitle: steps[currentStep].title,
-              }}
-            />
-          </div>
+          <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] md:overflow-y-auto">
+            <div className="md:max-w-[620px] mx-auto pb-12 md:pb-0 mt-0 progress-steps-container overflow-x-hidden md:overflow-visible h-full md:h-auto md:px-0">
+              <div className="sticky top-0 z-10 bg-white">
+                <Navigation
+                  isBackBtnVisible={currentStep != 0}
+                  isVisible={false}
+                  onBack={() => {
+                    const updatedStep = currentStep - 1
+                    setCurrentStep(updatedStep)
+                  }}
+                  onClose={handleClose}
+                  title=""
+                  className="md:h-16 md:pt-8"
+                />
+                <ProgressSteps
+                  currentStep={currentStep}
+                  steps={steps}
+                  className="px-6 my-6"
+                  title={{
+                    label: getPageTitle(),
+                    stepTitle: steps[currentStep].title,
+                  }}
+                />
+              </div>
 
-          <div className="relative mb-16 md:mb-0 mx-6">
-            {currentStep === 0 ? (
-              <AdDetailsForm
-                onNext={handleAdDetailsNext}
-                onClose={handleClose}
-                initialData={formData}
-                setFormData={setFormData}
-                isEditMode={mode === "edit"}
-                currencies={currencies}
-                isLoadingInitialData={isLoadingInitialData}
-              />
-            ) : currentStep === 1 ? (
-              <PaymentDetailsForm
-                onBack={() => setCurrentStep(0)}
-                onClose={handleClose}
-                initialData={formData}
-                setFormData={setFormData}
-                isSubmitting={isSubmitting}
-                isEditMode={mode === "edit"}
-                onBottomSheetOpenChange={handleBottomSheetOpenChange}
-                userPaymentMethods={userPaymentMethods}
-                availablePaymentMethods={availablePaymentMethods}
-                onRefetchPaymentMethods={refetchUserPaymentMethods}
-              />
-            ) : (
-              <div className="space-y-6">
-                <div>
-                  <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.svg"
-                            alt="Info"
-                            width={24}
-                            height={24}
-                            className="cursor-pointer"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+              <div className="relative mb-16 md:mb-0 mx-6">
+                {currentStep === 0 ? (
+                  <AdDetailsForm
+                    onNext={handleAdDetailsNext}
+                    onClose={handleClose}
+                    initialData={formData}
+                    setFormData={setFormData}
+                    isEditMode={mode === "edit"}
+                    currencies={currencies}
+                    isLoadingInitialData={isLoadingInitialData}
+                  />
+                ) : currentStep === 1 ? (
+                  <PaymentDetailsForm
+                    onBack={() => setCurrentStep(0)}
+                    onClose={handleClose}
+                    initialData={formData}
+                    setFormData={setFormData}
+                    isSubmitting={isSubmitting}
+                    isEditMode={mode === "edit"}
+                    onBottomSheetOpenChange={handleBottomSheetOpenChange}
+                    userPaymentMethods={userPaymentMethods}
+                    availablePaymentMethods={availablePaymentMethods}
+                    onRefetchPaymentMethods={refetchUserPaymentMethods}
+                  />
+                ) : (
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex gap-[4px] items-center mb-4">
+                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-[4px] items-center mb-4">
+                        <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white">{t("adForm.audienceTooltip")}</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>{" "}
+                      </div>
+                      <div>
+                        <CountrySelection
+                          selectedCountries={selectedCountries}
+                          onCountriesChange={setSelectedCountries}
+                          countries={countries}
+                          isLoading={isLoadingCountries}
+                        />
+                      </div>
+                    </div>
+                    {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
+                      <div className="flex gap-[4px] items-center mb-4">
+                        <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white">Choose who can see and interact with your ads on the marketplace.</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <AdVisibilitySelector value={adVisibility} onValueChange={setAdVisibility} />
+                    </div>)}
                   </div>
-                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                )}
+              </div>
+
+              {isMobile ? (
+                <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
+                  <div className="mx-6">
+                    <Button
+                      type="button"
+                      onClick={handleButtonClick}
+                      disabled={isButtonDisabled || isSubmitting}
+                      className="w-full"
+                    >
+                      {isSubmitting ? (
+                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                      ) : (
+                        getButtonText()
+                      )}
+                    </Button>
+                  </div>
                 </div>
-
-                <div className="w-full md:w-[100%]">
-                  <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.svg"
-                            alt="Info"
-                            width={24}
-                            height={24}
-                            className="cursor-pointer"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-white">{t("adForm.audienceTooltip")}</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>{" "}
-                  </div>
-                  <div>
-                    <CountrySelection
-                      selectedCountries={selectedCountries}
-                      onCountriesChange={setSelectedCountries}
-                      countries={countries}
-                      isLoading={isLoadingCountries}
-                    />
+              ) : (
+                <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
+                  <div className="flex justify-end px-6 pt-6">
+                    <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                      {isSubmitting ? (
+                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                      ) : (
+                        getButtonText()
+                      )}
+                    </Button>
                   </div>
                 </div>
-                {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
-                  <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.svg"
-                            alt="Info"
-                            width={24}
-                            height={24}
-                            className="cursor-pointer"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-white">Choose who can see and interact with your ads on the marketplace.</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <AdVisibilitySelector value={adVisibility} onValueChange={setAdVisibility} />
-                </div>)}
-              </div>
-            )}
+              )}
+            </div>
           </div>
-
-          {isMobile ? (
-            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
-              <div className="mx-6">
-                <Button
-                  type="button"
-                  onClick={handleButtonClick}
-                  disabled={isButtonDisabled || isSubmitting}
-                  className="w-full"
-                >
-                  {isSubmitting ? (
-                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                  ) : (
-                    getButtonText()
-                  )}
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
-              <div className="flex justify-end px-6 pt-6">
-                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
-                  {isSubmitting ? (
-                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                  ) : (
-                    getButtonText()
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </form>
+        </form>
       )}
     </>
   )
