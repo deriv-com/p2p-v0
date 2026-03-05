@@ -511,7 +511,7 @@
     "maxAmountGreaterThanMin": "Максимальная сумма должна быть больше минимальной суммы",
     "minAmountLessThanTotal": "Минимальная сумма должна быть меньше общей суммы",
     "maxAmountLessThanTotal": "Максимальная сумма должна быть меньше общей суммы",
-    "adCreatedSuccess": "Вы успешно создали объявление {type}.\n\nЕсли ваше объявление не получит заказ в течение 3 дней, оно будет деактивировано.",
+    "adCreatedSuccess": "Вы создали объявление для {type} {account_currency} за {payment_currency}. Поделитесь им, чтобы привлечь больше {audience}.",
     "adUpdatedSuccess": "Детали объявления обновлены.",
     "failedToCreateAd": "Не удалось создать объявление",
     "failedToUpdateAd": "Не удалось обновить объявление",

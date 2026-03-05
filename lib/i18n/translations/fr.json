@@ -531,7 +531,7 @@
     "maxAmountGreaterThanMin": "Le montant maximum doit être supérieur au montant minimum",
     "minAmountLessThanTotal": "Le montant minimum doit être inférieur au montant total",
     "maxAmountLessThanTotal": "Le montant maximum doit être inférieur au montant total",
-    "adCreatedSuccess": "Vous avez créé avec succès une annonce de {type}.\n\nSi votre annonce ne reçoit pas de commande dans les 3 jours, elle sera désactivée.",
+    "adCreatedSuccess": "Vous avez créé une annonce pour {type} {account_currency} pour {payment_currency}. Partagez-la pour atteindre plus de {audience}.",
     "adUpdatedSuccess": "Les détails de l'annonce ont été mis à jour.",
     "failedToCreateAd": "Échec de la création de l'annonce",
     "failedToUpdateAd": "Échec de la mise à jour de l'annonce",

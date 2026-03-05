@@ -620,7 +620,7 @@
     "maxAmountGreaterThanMin": "Maximum order must be greater than minimum order.",
     "minAmountLessThanTotal": "Minimum order should not exceed total amount.",
     "maxAmountLessThanTotal": "Maximum order should not exceed total amount.",
-    "adCreatedSuccess": "You've successfully created a {type} advert.\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.",
+    "adCreatedSuccess": "You've created an ad to {type} {account_currency} for {payment_currency}. Share it to reach more {audience}.",
     "adUpdatedSuccess": "Ad details have been updated.",
     "failedToCreateAd": "Failed to create ad",
     "failedToUpdateAd": "Failed to update ad",

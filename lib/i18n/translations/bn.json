@@ -510,7 +510,7 @@
     "maxAmountGreaterThanMin": "সর্বোচ্চ পরিমাণ সর্বনিম্ন পরিমাণের চেয়ে বেশি হতে হবে",
     "minAmountLessThanTotal": "সর্বনিম্ন পরিমাণ মোট পরিমাণের চেয়ে কম হতে হবে",
     "maxAmountLessThanTotal": "সর্বোচ্চ পরিমাণ মোট পরিমাণের চেয়ে কম হতে হবে",
-    "adCreatedSuccess": "আপনি সফলভাবে একটি {type} বিজ্ঞাপন তৈরি করেছেন।\n\nযদি আপনার বিজ্ঞাপন ৩ দিনের মধ্যে অর্ডার না পায়, এটি নিষ্ক্রিয় হয়ে যাবে।",
+    "adCreatedSuccess": "আপনি {type} {account_currency} এর জন্য {payment_currency} একটি বিজ্ঞাপন তৈরি করেছেন। এটি ভাগ করুন আরও {audience} এর কাছে পৌঁছাতে।",
     "adUpdatedSuccess": "বিজ্ঞাপন বিবরণ আপডেট করা হয়েছে।",
     "failedToCreateAd": "বিজ্ঞাপন তৈরি করতে ব্যর্থ",
     "failedToUpdateAd": "বিজ্ঞাপন আপডেট করতে ব্যর্থ",

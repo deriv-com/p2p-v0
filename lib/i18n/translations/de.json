@@ -525,7 +525,7 @@
     "floating": "Variabel",
     "counterparty": "Gegenpartei",
     "allCounterparties": "Alle Gegenparteien",
-    "adCreatedSuccess": "Sie haben erfolgreich eine {type} Anzeige erstellt.\n\nWenn Ihre Anzeige innerhalb von 3 Tagen keine Bestellung erhält, wird sie deaktiviert.",
+    "adCreatedSuccess": "Sie haben eine Anzeige zum {type} von {account_currency} für {payment_currency} erstellt. Teilen Sie es, um mehr {audience} zu erreichen.",
     "adUpdatedSuccess": "Anzeigendetails wurden aktualisiert.",
     "failedToCreateAd": "Anzeige konnte nicht erstellt werden",
     "failedToUpdateAd": "Anzeige konnte nicht aktualisiert werden",
