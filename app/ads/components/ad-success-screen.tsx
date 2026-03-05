@@ -23,7 +23,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
       }}
     >
       <div className="w-full h-full flex flex-col items-center justify-between md:justify-center px-4 md:px-6 py-8 md:py-6">
-        <div className="flex-1 flex flex-col items-center justify-center">
+        <div className="flex-1 md:flex-none flex flex-col items-center justify-center">
           <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6 flex items-center justify-center">
             <div className="relative flex items-center justify-center">
               <Image
