@@ -42,11 +42,11 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
               {t("myAds.adCreated")}
             </h1>
             <p className="text-gray-300 text-base mb-8 opacity-72">
-              {t("adForm.adCreatedSuccess", { 
+              {t("adForm.adCreatedSuccess", {
                 type: ad.type,
                 account_currency: ad.account_currency,
                 payment_currency: ad.payment_currency,
-                audience: ad.type === "buy" ? "potential sellers" : "potential buyers"
+                audience: ad.type == "buy" ? "potential sellers" : "potential buyers"
               })}
             </p>
           </div>
