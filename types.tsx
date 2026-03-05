@@ -22,6 +22,7 @@ export interface Ad {
   status: "Active" | "Inactive"
   description: string
   account_currency?: string
+  payment_currency?: string
   available_amount?: number
   open_order_amount?: number
   completed_order_amount?: number

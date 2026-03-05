@@ -357,7 +357,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       createAdMutation.mutate(payload, {
         onSuccess: (result) => {
           setIsSubmitting(false)
-          setSuccessAd(result.data)
+          setSuccessAd({
+            ...result.data,
+            account_currency: payload.account_currency,
+            payment_currency: payload.payment_currency,
+          })
           setShowSuccessScreen(true)
         },
         onError: (error: any) => {

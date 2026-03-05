@@ -79,6 +79,8 @@ export interface CreateAdResponse {
   type: "buy" | "sell"
   status: "active" | "inactive"
   created_at: string
+  account_currency?: string
+  payment_currency?: string
 }
 
 export interface Advert {
