@@ -34,10 +34,10 @@ importers:
     dependencies:
       '@datadog/browser-logs':
         specifier: latest
-        version: 6.28.1(@datadog/browser-rum@6.28.1)
+        version: 6.30.1(@datadog/browser-rum@6.30.1)
       '@datadog/browser-rum':
         specifier: latest
-        version: 6.28.1(@datadog/browser-logs@6.28.1)
+        version: 6.30.1(@datadog/browser-logs@6.30.1)
       '@deriv-com/analytics':
         specifier: 1.34.0
         version: 1.34.0
@@ -220,7 +220,7 @@ importers:
         version: 7.71.2(react@19.0.0)
       react-resizable-panels:
         specifier: latest
-        version: 4.7.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 4.7.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       recharts:
         specifier: latest
         version: 3.7.0(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react-is@18.3.1)(react@19.0.0)(redux@5.0.1)
@@ -1014,24 +1014,24 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@datadog/browser-core@6.28.1':
-    resolution: {integrity: sha512-h5y6aEyMTBZ091Y1mVLe2ta2YHiBa1qEEHliIp7+lb7rMZ1uWzYUzAu83bmTfvgI/yEZdHcVeTjxMucAncwK3g==}
+  '@datadog/browser-core@6.30.1':
+    resolution: {integrity: sha512-udXaUdjFld/UkdaH69oVWzDYILRqTdSXobVGnmcsqPvC5VBqdhunl0cR+t1k0oJgJndabqCFY/zluJ+joTOdaA==}
 
-  '@datadog/browser-logs@6.28.1':
-    resolution: {integrity: sha512-v0b8DfhJLfv1C/YgFeHHA1jVN51bfaIWZ3MKmaSZ8T8zL1EUL5rt+r9AFB0HvUgMhVJEsvGPQLsmtdrszxrSjw==}
+  '@datadog/browser-logs@6.30.1':
+    resolution: {integrity: sha512-FhV1xY60U9wyaX+uQm8z7yN1Jn8XeI+1bF+LOL+tn1zuaJkOnLbSYz/tvDWsVk8LsJ1/gOHMht5D9JXHbDxexA==}
     peerDependencies:
-      '@datadog/browser-rum': 6.28.1
+      '@datadog/browser-rum': 6.30.1
     peerDependenciesMeta:
       '@datadog/browser-rum':
         optional: true
 
-  '@datadog/browser-rum-core@6.28.1':
-    resolution: {integrity: sha512-/Eu2YuQkpdZk4GvQi4AV1/dt60qrEt0HTQC53PXoWav7SGx2UNWlTCxO6wio6kzgmlkyqa/gCscWqnUsQPWWXg==}
+  '@datadog/browser-rum-core@6.30.1':
+    resolution: {integrity: sha512-U7TxRz5MuvLACfuskP4gGZk3ghSniEzkrhDNJeUXdA9+TZZLyrsZYBT9n6NuZTL1qTM5NNeK89e49kLUVI3Tiw==}
 
-  '@datadog/browser-rum@6.28.1':
-    resolution: {integrity: sha512-7KwMvhVsvTdt6OtB3dnSW8KZDycne3hAI96+CcWUII6Wg9Xv+UH1dbIW1skDHp9ANmLl1DZrSs9XdWCYR7rqSQ==}
+  '@datadog/browser-rum@6.30.1':
+    resolution: {integrity: sha512-XwY+BQZ1Zh+zFHIX9E14O8w0asuAaI/K15qFvX7psdVfeTf27WCzlJpzhaYJC+qXn3Pys0uR5ioPWgRcliAFjw==}
     peerDependencies:
-      '@datadog/browser-logs': 6.28.1
+      '@datadog/browser-logs': 6.30.1
     peerDependenciesMeta:
       '@datadog/browser-logs':
         optional: true
@@ -1794,28 +1794,24 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@next/swc-linux-arm64-musl@15.5.7':
     resolution: {integrity: sha512-nfymt+SE5cvtTrG9u1wdoxBr9bVB7mtKTcj0ltRn6gkP/2Nu1zM5ei8rwP9qKQP0Y//umK+TtkKgNtfboBxRrw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@next/swc-linux-x64-gnu@15.5.7':
     resolution: {integrity: sha512-hvXcZvCaaEbCZcVzcY7E1uXN9xWZfFvkNHwbe/n4OkRhFWrs1J1QV+4U1BN06tXLdaS4DazEGXwgqnu/VMcmqw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@next/swc-linux-x64-musl@15.5.7':
     resolution: {integrity: sha512-4IUO539b8FmF0odY6/SqANJdgwn1xs1GkPO5doZugwZ3ETF6JUdckk7RGmsfSf7ws8Qb2YB5It33mvNL/0acqA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@next/swc-win32-arm64-msvc@15.5.7':
     resolution: {integrity: sha512-CpJVTkYI3ZajQkC5vajM7/ApKJUOlm6uP4BknM3XKvJ7VXAvCqSjSLmM0LKdYzn6nBJVSjdclx8nYJSa3xlTgQ==}
@@ -2697,28 +2693,24 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rolldown/binding-linux-arm64-musl@1.0.0-beta.59':
     resolution: {integrity: sha512-CCKEk+H+8c0WGe/8n1E20n85Tq4Pv+HNAbjP1KfUXW+01aCWSMjU56ChNrM2tvHnXicfm7QRNoZyfY8cWh7jLQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rolldown/binding-linux-x64-gnu@1.0.0-beta.59':
     resolution: {integrity: sha512-VlfwJ/HCskPmQi8R0JuAFndySKVFX7yPhE658o27cjSDWWbXVtGkSbwaxstii7Q+3Rz87ZXN+HLnb1kd4R9Img==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rolldown/binding-linux-x64-musl@1.0.0-beta.59':
     resolution: {integrity: sha512-kuO92hTRyGy0Ts3Nsqll0rfO8eFsEJe9dGQGktkQnZ2hrJrDVN0y419dMgKy/gB2S2o7F2dpWhpfQOBehZPwVA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rolldown/binding-openharmony-arm64@1.0.0-beta.59':
     resolution: {integrity: sha512-PXAebvNL4sYfCqi8LdY4qyFRacrRoiPZLo3NoUmiTxm7MPtYYR8CNtBGNokqDmMuZIQIecRaD/jbmFAIDz7DxQ==}
@@ -5652,8 +5644,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-resizable-panels@4.7.0:
-    resolution: {integrity: sha512-QJTeh8KJR6lKzDwVez+WGPPUPuarIjR3ptg23thJ0G5dAMYJH4iSN1AnNY0DuSP+PgH8s9eYfwrR7AlmX6TvYA==}
+  react-resizable-panels@4.7.1:
+    resolution: {integrity: sha512-RYBRgvdZhnUds5jJWYr1up0hYFofgN1dqSwhxfBl9Savoxms0gyGF0AfaXskhxTYkXrlwc+TlQPe5UkoV+1neg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -6118,8 +6110,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  tar@7.5.9:
-    resolution: {integrity: sha512-BTLcK0xsDh2+PUe9F6c2TlRp4zOOBMTkoQHQIWSIzI0R7KG46uEwq4OPk2W7bZcprBMsuaeFsqwYr7pjh6CuHg==}
+  tar@7.5.10:
+    resolution: {integrity: sha512-8mOPs1//5q/rlkNSPcCegA6hiHJYDmSLEI8aMH/CdSQJNWztHC9WHNam5zdQlfpTwB9Xp7IBEsHfV5LKMJGVAw==}
     engines: {node: '>=18'}
 
   test-exclude@6.0.0:
@@ -7468,24 +7460,24 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@datadog/browser-core@6.28.1': {}
+  '@datadog/browser-core@6.30.1': {}
 
-  '@datadog/browser-logs@6.28.1(@datadog/browser-rum@6.28.1)':
+  '@datadog/browser-logs@6.30.1(@datadog/browser-rum@6.30.1)':
     dependencies:
-      '@datadog/browser-core': 6.28.1
+      '@datadog/browser-core': 6.30.1
     optionalDependencies:
-      '@datadog/browser-rum': 6.28.1(@datadog/browser-logs@6.28.1)
+      '@datadog/browser-rum': 6.30.1(@datadog/browser-logs@6.30.1)
 
-  '@datadog/browser-rum-core@6.28.1':
+  '@datadog/browser-rum-core@6.30.1':
     dependencies:
-      '@datadog/browser-core': 6.28.1
+      '@datadog/browser-core': 6.30.1
 
-  '@datadog/browser-rum@6.28.1(@datadog/browser-logs@6.28.1)':
+  '@datadog/browser-rum@6.30.1(@datadog/browser-logs@6.30.1)':
     dependencies:
-      '@datadog/browser-core': 6.28.1
-      '@datadog/browser-rum-core': 6.28.1
+      '@datadog/browser-core': 6.30.1
+      '@datadog/browser-rum-core': 6.30.1
     optionalDependencies:
-      '@datadog/browser-logs': 6.28.1(@datadog/browser-rum@6.28.1)
+      '@datadog/browser-logs': 6.30.1(@datadog/browser-rum@6.30.1)
 
   '@date-fns/tz@1.4.1': {}
 
@@ -8140,7 +8132,7 @@ snapshots:
       node-fetch: 2.7.0
       nopt: 8.1.0
       semver: 7.7.4
-      tar: 7.5.9
+      tar: 7.5.10
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -9754,7 +9746,7 @@ snapshots:
       semver: 7.5.4
       stat-mode: 0.3.0
       stream-to-promise: 2.2.0
-      tar: 7.5.9
+      tar: 7.5.10
       tinyexec: 0.3.2
       tree-kill: 1.2.2
       uid-promise: 1.0.0
@@ -12590,7 +12582,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.0.0
 
-  react-resizable-panels@4.7.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  react-resizable-panels@4.7.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -13163,7 +13155,7 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
-  tar@7.5.9:
+  tar@7.5.10:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
