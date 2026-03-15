@@ -57,14 +57,14 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.svg",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`,
+      link: getHomeUrl(isV1Signup, "onboardingProfile", isWalletAccount, fromParam, isTncAccepted),
     },
     {
       id: "phone",
       title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.svg",
       completed: isPhoneCompleted,
-      link: isTncAccepted ? `https://${getHomeUrl(isV1Signup)}/dashboard/details?is_from_p2p=true&${fromParam}` : `https://${getHomeUrl(isV1Signup)}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`,
+      link: getHomeUrl(isV1Signup, "onboardingPNV", isWalletAccount, fromParam, isTncAccepted),
     },
     {
       id: "poi",
@@ -134,7 +134,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
 
   useEffect(() => {
     const links: HTMLLinkElement[] = []
-    
+
     verificationSteps.forEach((step) => {
       if (step.link) {
         const link = document.createElement("link")
