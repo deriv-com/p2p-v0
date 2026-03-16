@@ -656,6 +656,18 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
     } else {
       url = `https://${baseUrl}/dashboard/profile`
     }
+  } else if (section === "onboardingProfile") {
+    if (isV1Signup) {
+      url = `https://${baseUrl}/account/personal-details`
+    } else {
+      url = `https://${baseUrl}/dashboard/onboarding/personal-details?is_from_p2p=true&${fromParam}`
+    }
+  } else if (section === "onboardingPNV") {
+    if (isV1Signup) {
+      url = `https://${baseUrl}/account/personal-details`
+    } else {
+      url = isTncAccepted ? `https://${baseUrl}/dashboard/details?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`
+    }
   } else {
     url = baseUrl
   }
