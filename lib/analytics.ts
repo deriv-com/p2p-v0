@@ -1,33 +1,16 @@
 "use client"
 
+import { Analytics, cacheTrackEvents } from "@deriv-com/analytics"
 import { useLanguageStore } from "@/stores/language-store"
 import { useUserDataStore } from "@/stores/user-data-store"
 
-declare global {
-  interface Window {
-    DerivAnalytics: {
-      Analytics: {
-        initialise: (config: Record<string, unknown>) => Promise<void>
-        identifyEvent: (id: string, traits?: Record<string, unknown>) => void
-        backfillPersonProperties: (properties: Record<string, unknown>) => void
-        reset: () => void
-      }
-      cacheTrackEvents: {
-        pageView: () => void
-      }
-    }
-  }
-}
-
 export const initializeAnalytics = () => {
-  if (typeof window === "undefined" || !window?.DerivAnalytics) {
+  if (typeof window === "undefined") {
     return
   }
 
-  const { Analytics, cacheTrackEvents } = window?.DerivAnalytics;
-
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
-  const POSTHOGKEY = isProduction ? process.env.NEXT_PUBLIC_POSTHOG_PRODUCTION_KEY : process.env.NEXT_PUBLIC_POSTHOG_STAGING_KEY;
+  const POSTHOGKEY = isProduction ? process.env.NEXT_PUBLIC_POSTHOG_PRODUCTION_KEY ?? "" : process.env.NEXT_PUBLIC_POSTHOG_STAGING_KEY ?? "";
 
   const RUDDERSTACKKEY = isProduction
     ? process.env.NEXT_PUBLIC_RUDDERSTACK_PRODUCTION_KEY ?? ""
@@ -58,27 +41,25 @@ export const initializeAnalytics = () => {
 }
 
 export const backfillAnalyticsProperties = () => {
-  if (typeof window === "undefined" || !window?.DerivAnalytics) {
+  if (typeof window === "undefined") {
     return
   }
 
-  const { Analytics } = window.DerivAnalytics;
-  if (!Analytics) return
-
   const { externalId, userData, residenceCountry } = useUserDataStore.getState()
-  Analytics.backfillPersonProperties({
-    user_id: externalId,
-    email: userData?.email,
-    country_of_residence: residenceCountry,
-  })
+  if (Analytics && externalId && residenceCountry) {
+    Analytics.backfillPersonProperties({
+      user_id: externalId,
+      email: userData?.email,
+      country_of_residence: residenceCountry,
+    })
+  }
 }
 
 export const resetAnalytics = () => {
-  if (typeof window === "undefined" || !window?.DerivAnalytics) {
+  if (typeof window === "undefined") {
     return
   }
 
-  const { Analytics } = window.DerivAnalytics;
   if (Analytics) {
     Analytics.reset();
   }
