@@ -8,6 +8,7 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
+import { backfillAnalyticsProperties, resetAnalytics } from "@/lib/analytics"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import { cn, getLoginUrl } from "@/lib/utils"
@@ -78,6 +79,8 @@ export default function Main({
 
         const sessionAuth = await AuthAPI.getSession()
         setIsAuthenticated(sessionAuth)
+        if (sessionAuth) backfillAnalyticsProperties()
+        else resetAnalytics()
 
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
