@@ -40,6 +40,7 @@ overrides:
   picomatch@>=4.0.0 <4.0.4: '>=4.0.4'
   srvx@<0.11.13: '>=0.11.13'
   brace-expansion@<5.0.5: '>=5.0.5'
+  path-to-regexp@>=8.0.0 <8.4.0: '>=8.4.0'
 
 importers:
 
@@ -5446,6 +5447,9 @@ packages:
     resolution: {integrity: sha512-GAWaqWlTjYK/7SVpIUA6CTxmcg65SP30sbjdCvyYReosRkk7Z/LyHWwkK3Vu0FcIi0FNTADUs4eh1AsU5s10cg==}
     engines: {node: '>=16'}
 
+  path-to-regexp@8.4.0:
+    resolution: {integrity: sha512-PuseHIvAnz3bjrM2rGJtSgo1zjgxapTLZ7x2pjhzWwlp4SJQgK3f3iZIQwkpEnBaKz6seKBADpM4B4ySkuYypg==}
+
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
@@ -9817,7 +9821,7 @@ snapshots:
       '@vercel/node': 5.5.26
       '@vercel/static-config': 3.1.2
       fs-extra: 11.1.0
-      path-to-regexp: 8.0.0
+      path-to-regexp: 8.4.0
       ts-morph: 12.0.0
       zod: 3.22.4
     transitivePeerDependencies:
@@ -9848,7 +9852,7 @@ snapshots:
       micro: 9.3.5-canary.3
       ms: 2.1.1
       node-fetch: 2.6.7
-      path-to-regexp: 8.0.0
+      path-to-regexp: 8.4.0
       promisepipe: 3.0.0
       semver: 7.5.4
       stat-mode: 0.3.0
@@ -9894,7 +9898,7 @@ snapshots:
       '@vercel/node': 5.5.26
       '@vercel/static-config': 3.1.2
       fs-extra: 11.1.0
-      path-to-regexp: 8.0.0
+      path-to-regexp: 8.4.0
       ts-morph: 12.0.0
       zod: 3.22.4
     transitivePeerDependencies:
@@ -9911,7 +9915,7 @@ snapshots:
 
   '@vercel/introspection@0.0.10':
     dependencies:
-      path-to-regexp: 8.0.0
+      path-to-regexp: 8.4.0
       zod: 3.22.4
 
   '@vercel/koa@0.1.8':
@@ -12436,6 +12440,8 @@ snapshots:
   path-to-regexp@6.3.0: {}
 
   path-to-regexp@8.0.0: {}
+
+  path-to-regexp@8.4.0: {}
 
   path-type@4.0.0: {}
 
