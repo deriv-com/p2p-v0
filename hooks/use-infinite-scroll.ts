@@ -16,11 +16,9 @@ export function useInfiniteScroll(
       entries.forEach((entry) => {
         if (entry.isIntersecting && !isLoadingRef.current && options?.enabled !== false) {
           isLoadingRef.current = true
-          callback()
-          // Reset loading flag after callback completes
-          setTimeout(() => {
+          Promise.resolve(callback()).finally(() => {
             isLoadingRef.current = false
-          }, 0)
+          })
         }
       })
     },
