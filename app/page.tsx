@@ -27,7 +27,8 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll"
+import { usePaymentMethods, useAdvertisements, useInfiniteAdvertisements } from "@/hooks/use-api-queries"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -85,7 +86,7 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
 
 
-  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
+  const { data: fetchedAdverts = [], isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteAdvertisements(
     {
       type: activeTab,
       account_currency: selectedAccountCurrency,
@@ -94,6 +95,15 @@ export default function BuySellPage() {
       sortBy: sortBy,
       favourites_only: filterOptions.fromFollowing ? 1 : 0,
     }
+  )
+
+  const observerTarget = useInfiniteScroll(
+    () => {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage()
+      }
+    },
+    { enabled: Boolean(hasNextPage && !isFetchingNextPage) }
   )
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
@@ -772,6 +782,14 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
+                <div ref={observerTarget} className="py-8 text-center">
+                  {isFetchingNextPage && (
+                    <div className="flex items-center justify-center gap-2">
+                      <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                      <span className="text-sm text-slate-600">{t("market.loadingMore") || "Loading more..."}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
