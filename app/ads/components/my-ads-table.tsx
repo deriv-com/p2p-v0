@@ -58,15 +58,22 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const deleteAdMutation = useDeleteAd()
   const toggleStatusMutation = useToggleAdActiveStatus()
 
+  // Sort ads by created_at in descending order (most recent first)
+  const sortedAds = [...ads].sort((a, b) => {
+    const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
+    const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
+    return dateB - dateA
+  })
+
   // Reset page when ads array changes
   useEffect(() => {
-    const maxPage = Math.ceil(ads.length / ITEMS_PER_PAGE)
+    const maxPage = Math.ceil(sortedAds.length / ITEMS_PER_PAGE)
     if (currentPage > maxPage && maxPage > 0) {
       setCurrentPage(maxPage)
-    } else if (ads.length === 0) {
+    } else if (sortedAds.length === 0) {
       setCurrentPage(1)
     }
-  }, [ads.length, currentPage])
+  }, [sortedAds.length, currentPage])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
@@ -383,7 +390,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-            {ads.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad, index) => {
+            {sortedAds.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad, index) => {
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
               const adType = ad.type || "Buy"
@@ -554,7 +561,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         </Table>
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(ads.length / ITEMS_PER_PAGE)}
+          totalPages={Math.ceil(sortedAds.length / ITEMS_PER_PAGE)}
           onPageChange={setCurrentPage}
         />
       </div>
