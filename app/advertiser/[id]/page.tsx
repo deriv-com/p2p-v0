@@ -2,7 +2,7 @@
 
 export const runtime = "edge"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -25,6 +25,7 @@ import { ClosedGroupBadge } from "@/components/closed-group-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 import { AdvertiserSkeleton } from "@/app/advertiser/components/advertiser-skeleton"
+import { useAdvertiserAds } from "@/hooks/use-api-queries"
 
 interface AdvertiserProfile {
   id: string | number
@@ -72,7 +73,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
-  const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isFollowing, setIsFollowing] = useState(false)
   const [isGroupMember, setIsGroupMember] = useState(false)
   const [isBlocked, setIsBlocked] = useState(false)
@@ -86,6 +86,17 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const { t } = useTranslations()
 
   const abortControllerRef = useRef<AbortController | null>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  const {
+    data: advertsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useAdvertiserAds(id)
+
+  const adverts = useMemo(() => advertsData?.pages.flat() ?? [], [advertsData])
 
   const fetchAdvertiserData = async () => {
     if (abortControllerRef.current) {
@@ -109,19 +120,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setIsFollowing(advertiserData.data.is_favourite || false)
       setIsBlocked(advertiserData.data.is_blocked || false)
       setIsGroupMember(advertiserData.data.is_group_member || false)
-
-      const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
-
-      if (abortController.signal.aborted) {
-        return
-      }
-
-      setAdverts(advertiserAds)
     } catch (err) {
       if (!abortController.signal.aborted) {
         setError("Failed to load the advertiser profile.")
         setProfile(null)
-        setAdverts([])
       }
     } finally {
       if (!abortController.signal.aborted) {
@@ -143,6 +145,23 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       }
     }
   }, [id])
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    const scrollContainer = scrollContainerRef.current
+    if (!sentinel || !hasNextPage || !scrollContainer) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0, rootMargin: "0px", root: scrollContainer },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
@@ -471,7 +490,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                 <div className="container mx-auto pb-4 text-lg font-bold">{t("advertiser.onlineAds")}</div>
                 <div className="container mx-auto pb-8">
                   {adverts.length > 0 ? (
-                    <div>
+                    <>
+                    <div ref={scrollContainerRef} className="overflow-auto scrollbar-custom max-h-[calc(100vh-360px)]">
                       <Table>
                         <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
                           <TableRow className="text-xs">
@@ -557,7 +577,14 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           ))}
                         </TableBody>
                       </Table>
+                      <div ref={sentinelRef} className="h-1" />
                     </div>
+                    {isFetchingNextPage && (
+                      <div className="flex justify-center py-4">
+                        <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                      </div>
+                    )}
+                    </>
                   ) : (
                     <EmptyState
                       title={t("advertiser.noAdsYet")}

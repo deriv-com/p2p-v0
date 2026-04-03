@@ -245,12 +245,14 @@ function createMockAdvertiser(id: string | number): any {
 /**
  * Get advertiser ads by advertiser ID
  */
-export async function getAdvertiserAds(advertiserId: string | number): Promise<Advertisement[]> {
+export async function getAdvertiserAds(advertiserId: string | number, page?: number, perPage?: number): Promise<Advertisement[]> {
   try {
     const queryParams = new URLSearchParams({
       user_id: advertiserId.toString(),
       account_currency: "USD",
     })
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = {
