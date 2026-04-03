@@ -76,7 +76,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     } else if (ads.length === 0) {
       setCurrentPage(1)
     }
-  }, [ads.length])
+  }, [ads.length, currentPage])
 
   // Scroll to top of table when page changes
   useEffect(() => {
