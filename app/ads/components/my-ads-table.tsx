@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -30,15 +30,11 @@ interface MyAdsTableProps {
   hiddenAdverts: boolean
   isLoading: boolean
   isFetching?: boolean
-  hasMore?: boolean
-  isFetchingMore?: boolean
-  onLoadMore?: () => void
   onAdDeleted?: (status?: string) => void
 }
 
 
-export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, hasMore, isFetchingMore, onLoadMore, onAdDeleted }: MyAdsTableProps) {
-  const sentinelRef = useRef<HTMLDivElement>(null)
+export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
@@ -68,22 +64,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     })
   }, [ads])
 
-  // Infinite scroll: fetch next page when sentinel comes into view
-  useEffect(() => {
-    const sentinel = sentinelRef.current
-    if (!sentinel || !hasMore) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isFetchingMore) {
-          onLoadMore?.()
-        }
-      },
-      { threshold: 0, rootMargin: "100px" },
-    )
-    observer.observe(sentinel)
-    return () => observer.disconnect()
-  }, [hasMore, isFetchingMore, onLoadMore])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
@@ -569,7 +549,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             })}
           </TableBody>
         </Table>
-        <div ref={sentinelRef} className="h-1" />
       </div>
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
