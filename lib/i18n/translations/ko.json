@@ -170,6 +170,7 @@
     "exchangeRateLowHigh": "환율 (낮음-높음)",
     "exchangeRateHighLow": "환율 (높음-낮음)",
     "userRatingHighLow": "사용자 평가 (높음-낮음)",
+    "tierLevelHighLow": "등급 수준 (높음-낮음)",
     "applyFilters": "필터 적용",
     "filter": "필터",
     "currencyUnavailable": "{currency}는 사용 불가능합니다",

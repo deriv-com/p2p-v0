@@ -157,10 +157,11 @@
     "exchangeRateLowHigh": "Tasso di cambio (basso-alto)",
     "exchangeRateHighLow": "Tasso di cambio (alto-basso)",
     "userRatingHighLow": "Valutazione utente (alto-basso)",
+    "tierLevelHighLow": "Livello di grado (alto-basso)",
     "applyFilters": "Applica filtri",
-    "filter": "Filtra",
+    "filter": "Filtro",
     "currencyUnavailable": "{currency} non disponibile",
-    "selectAnotherCurrency": "Si prega di selezionare un'altra valuta."
+    "selectAnotherCurrency": "Seleziona un'altra valuta"
   },
   "chat": {
     "conversationClosed": "Questa conversazione è chiusa.",

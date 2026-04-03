@@ -169,6 +169,7 @@
     "exchangeRateLowHigh": "Tasa de cambio (bajo-alto)",
     "exchangeRateHighLow": "Tasa de cambio (alto-bajo)",
     "userRatingHighLow": "Calificación de usuario (alto-bajo)",
+    "tierLevelHighLow": "Nivel de rango (alto-bajo)",
     "applyFilters": "Aplicar filtros",
     "filter": "Filtrar",
     "currencyUnavailable": "{currency} no disponible",

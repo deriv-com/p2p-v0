@@ -145,6 +145,7 @@
     "exchangeRateLowHigh": "বিনিময় হার (কম-বেশি)",
     "exchangeRateHighLow": "বিনিময় হার (বেশি-কম)",
     "userRatingHighLow": "ব্যবহারকারী রেটিং (বেশি-কম)",
+    "tierLevelHighLow": "স্তরের রেটিং (বেশি-কম)",
     "applyFilters": "ফিল্টার প্রয়োগ করুন",
     "filter": "ফিল্টার",
     "currencyUnavailable": "{currency} উপলব্ধ নয়",
