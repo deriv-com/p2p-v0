@@ -237,7 +237,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       return []
     }
 
-    return apiData.data.map((advert: APIAdvert) => {
+    const mappedAds = apiData.data.map((advert: APIAdvert) => {
       const minAmount = advert.minimum_order_amount || 0
       const maxAmount = advert.maximum_order_amount || 0
       const exchangeRate = advert.exchange_rate || 0
@@ -278,6 +278,13 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         account_currency: accountCurrency,
         user: advert.user,
       }
+    })
+
+    // Sort ads by created_at in descending order (newest first)
+    return mappedAds.sort((a, b) => {
+      const dateA = new Date((a as any).created_at || 0).getTime()
+      const dateB = new Date((b as any).created_at || 0).getTime()
+      return dateB - dateA
     })
   } catch (error) {
     return []
