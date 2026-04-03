@@ -2,7 +2,7 @@
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { useUserAdverts, useHideMyAds } from "@/hooks/use-api-queries"
@@ -48,7 +48,8 @@ export default function AdsPage() {
   const router = useRouter()
 
   // Use the React Query hook
-  const { data: userAdverts = [], isLoading: loading, isFetching, error: queryError, refetch } = useUserAdverts(true, !!userId)
+  const { data, isLoading: loading, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage, error: queryError, refetch } = useUserAdverts(true, !!userId)
+  const userAdverts = useMemo(() => data?.pages.flat() ?? [], [data?.pages])
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -266,7 +267,7 @@ export default function AdsPage() {
           {queryError ? (
             <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
-            <MyAdsTable ads={userAdverts} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} isFetching={isFetching} />
+            <MyAdsTable ads={userAdverts} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} isFetching={isFetching} hasMore={hasNextPage} isFetchingMore={isFetchingNextPage} onLoadMore={fetchNextPage} />
           )}
         </div>
 
