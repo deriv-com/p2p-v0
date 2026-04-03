@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import EmptyState from "@/components/empty-state"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Pagination } from "@/components/ui/pagination"
 import { AdsAPI } from "@/services/api"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
@@ -33,7 +34,10 @@ interface MyAdsTableProps {
   onAdDeleted?: (status?: string) => void
 }
 
+const ITEMS_PER_PAGE = 10
+
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
+  const [currentPage, setCurrentPage] = useState(1)
   const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
@@ -369,7 +373,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-            {ads.map((ad, index) => {
+            {ads.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad, index) => {
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
               const adType = ad.type || "Buy"
@@ -538,6 +542,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             })}
           </TableBody>
         </Table>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(ads.length / ITEMS_PER_PAGE)}
+          onPageChange={setCurrentPage}
+        />
       </div>
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
