@@ -96,7 +96,7 @@ export default function BuySellPage() {
     }
   )
 
-  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "trade_band_rank"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const hasFilteredPaymentMethods =
