@@ -70,13 +70,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   // Reset page when ads array changes
   useEffect(() => {
-    const maxPage = Math.ceil(sortedAds.length / ITEMS_PER_PAGE)
+    const maxPage = Math.ceil(ads.length / ITEMS_PER_PAGE)
     if (currentPage > maxPage && maxPage > 0) {
       setCurrentPage(maxPage)
-    } else if (sortedAds.length === 0) {
+    } else if (ads.length === 0) {
       setCurrentPage(1)
     }
-  }, [sortedAds.length])
+  }, [ads.length])
 
   // Scroll to top of table when page changes
   useEffect(() => {
