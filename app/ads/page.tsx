@@ -48,6 +48,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   // Use the React Query hook
   const { data, isLoading: loading, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage, error: queryError, refetch } = useUserAdverts(true, !!userId)
@@ -56,7 +57,8 @@ export default function AdsPage() {
   // Infinite scroll: fetch next page when sentinel comes into view
   useEffect(() => {
     const sentinel = sentinelRef.current
-    if (!sentinel || !hasNextPage) return
+    const scrollContainer = scrollContainerRef.current
+    if (!sentinel || !hasNextPage || !scrollContainer) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -64,7 +66,7 @@ export default function AdsPage() {
           fetchNextPage()
         }
       },
-      { threshold: 0, rootMargin: "100px" },
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
     )
     observer.observe(sentinel)
     return () => observer.disconnect()
@@ -282,11 +284,16 @@ export default function AdsPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
           {queryError ? (
             <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
             <MyAdsTable ads={userAdverts} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} isFetching={isFetching} />
+          )}
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-4">
+              <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+            </div>
           )}
           <div ref={sentinelRef} className="h-1" />
         </div>
