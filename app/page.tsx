@@ -27,9 +27,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { useInfiniteScroll } from "@/hooks/use-infinite-scroll"
-import { usePaymentMethods, useAdvertisements, useInfiniteAdvertisements, queryKeys } from "@/hooks/use-api-queries"
-import { useQueryClient } from "@tanstack/react-query"
+import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -60,6 +58,7 @@ export default function BuySellPage() {
     setSelectedAccountCurrency,
   } = useMarketFilterStore()
 
+  const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
@@ -86,7 +85,7 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
 
 
-  const { data: fetchedAdverts = [], isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteAdvertisements(
+  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
     {
       type: activeTab,
       account_currency: selectedAccountCurrency,
@@ -95,17 +94,6 @@ export default function BuySellPage() {
       sortBy: sortBy,
       favourites_only: filterOptions.fromFollowing ? 1 : 0,
     }
-  )
-
-  const queryClient = useQueryClient()
-
-  const observerTarget = useInfiniteScroll(
-    () => {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage()
-      }
-    },
-    { enabled: Boolean(hasNextPage && !isFetchingNextPage) }
   )
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
@@ -224,6 +212,17 @@ export default function BuySellPage() {
     [selectedPaymentMethods]
   )
 
+  // Sync hook data to local state for websocket updates
+  useEffect(() => {
+    if (Array.isArray(fetchedAdverts)) {
+      setAdverts((prev) => {
+        if (JSON.stringify(prev) === JSON.stringify(fetchedAdverts)) {
+          return prev
+        }
+        return fetchedAdverts
+      })
+    }
+  }, [fetchedAdverts])
 
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
@@ -330,35 +329,17 @@ export default function BuySellPage() {
         if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
           const updatedAdvert = data.payload.data.advert
 
-          // Update React Query cache with the new advert data
-          const cacheKey = queryKeys.buySell.infiniteAdvertisementsByParams({
-            type: activeTab,
-            currency: currency,
-            account_currency: selectedAccountCurrency,
-            paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
-            sortBy: sortBy,
-            favourites_only: filterOptions.fromFollowing ? 1 : 0,
-          })
-
-          queryClient.setQueryData(cacheKey, (oldData: any) => {
-            if (!oldData) return oldData
-            return {
-              ...oldData,
-              pages: oldData.pages.map((page: Advertisement[]) =>
-                page.map((ad) =>
-                  ad.id === updatedAdvert.id
-                    ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display }
-                    : ad,
-                ),
-              ),
-            }
-          })
+          setAdverts((currentAdverts) =>
+            currentAdverts.map((ad) =>
+              ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
+            ),
+          )
         }
       }
     })
 
     return unsubscribe
-  }, [subscribe, queryClient, activeTab, currency, selectedAccountCurrency, selectedPaymentMethods, sortBy, filterOptions])
+  }, [subscribe])
 
   useEffect(() => {
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
@@ -791,14 +772,6 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
-                <div ref={observerTarget} className="py-8 text-center">
-                  {isFetchingNextPage && (
-                    <div className="flex items-center justify-center gap-2">
-                      <Skeleton className="bg-grayscale-500 h-5 w-32" />
-                      <span className="text-sm text-slate-600">{t("market.loadingMore") || "Loading more..."}</span>
-                    </div>
-                  )}
-                </div>
               </div>
             )}
           </div>
