@@ -7,8 +7,9 @@ export const initDatadog = () => {
     return
   }
 
-  // Prevent duplicate initialization
-  if (datadogInitialized || datadogRum.getInternalContext()) {
+  // Use both module flag and window flag to prevent duplicate initialization across module reloads
+  const windowDatadogInitialized = (window as any).__datadogInitialized
+  if (datadogInitialized || windowDatadogInitialized || datadogRum.getInternalContext()) {
     return
   }
 
@@ -48,6 +49,7 @@ export const initDatadog = () => {
     })
 
     datadogInitialized = true
+    ;(window as any).__datadogInitialized = true
   } catch (error) {
     console.error("Datadog: Initialization failed", {
       error,
@@ -56,3 +58,4 @@ export const initDatadog = () => {
     })
   }
 }
+
