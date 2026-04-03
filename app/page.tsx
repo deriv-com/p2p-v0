@@ -34,9 +34,12 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Pagination } from "@/components/ui/pagination"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
+
+const ITEMS_PER_PAGE = 10
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -66,6 +69,7 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
@@ -610,7 +614,7 @@ export default function BuySellPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {adverts.map((ad) => (
+                    {adverts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad) => (
                       <TableRow
                         className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                         key={ad.id}
@@ -772,6 +776,11 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(adverts.length / ITEMS_PER_PAGE)}
+                  onPageChange={setCurrentPage}
+                />
               </div>
             )}
           </div>
