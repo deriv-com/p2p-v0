@@ -68,6 +68,7 @@ export default function BuySellPage() {
   const [showKycPopup, setShowKycPopup] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const isFetchingNextPageRef = useRef(false)
 
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
@@ -234,6 +235,11 @@ export default function BuySellPage() {
     }
   }, [activeTab, currency, paymentMethodsString, sortBy, filterOptions.fromFollowing, selectedAccountCurrency])
 
+  // Keep ref in sync so the observer callback always reads the latest value
+  useEffect(() => {
+    isFetchingNextPageRef.current = isFetchingNextPage
+  }, [isFetchingNextPage])
+
   // Infinite scroll: fetch next page when sentinel comes into view
   useEffect(() => {
     const sentinel = sentinelRef.current
@@ -242,7 +248,7 @@ export default function BuySellPage() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isFetchingNextPage) {
+        if (entries[0].isIntersecting && !isFetchingNextPageRef.current) {
           fetchNextPage()
         }
       },
@@ -250,7 +256,7 @@ export default function BuySellPage() {
     )
     observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+  }, [hasNextPage, fetchNextPage])
 
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
@@ -388,7 +394,7 @@ export default function BuySellPage() {
 
   return (
     <>
-      <div className="flex flex-col h-full overflow-hidden">
+      <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -805,7 +811,7 @@ export default function BuySellPage() {
               </div>
             )}
           {isFetchingNextPage && (
-            <div className="flex justify-center py-4">
+            <div className="sticky bottom-0 flex justify-center py-4 bg-background">
               <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
             </div>
           )}
