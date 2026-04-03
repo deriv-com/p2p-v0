@@ -228,6 +228,16 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
+  // Reset page when adverts array changes
+  useEffect(() => {
+    const maxPage = Math.ceil(adverts.length / ITEMS_PER_PAGE)
+    if (currentPage > maxPage && maxPage > 0) {
+      setCurrentPage(maxPage)
+    } else if (adverts.length === 0) {
+      setCurrentPage(1)
+    }
+  }, [adverts.length, currentPage])
+
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
       setSelectedPaymentMethods(paymentMethods.map((method) => method.method))

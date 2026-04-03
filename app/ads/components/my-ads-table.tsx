@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -57,6 +57,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   // React Query mutations for delete and toggle status
   const deleteAdMutation = useDeleteAd()
   const toggleStatusMutation = useToggleAdActiveStatus()
+
+  // Reset page when ads array changes
+  useEffect(() => {
+    const maxPage = Math.ceil(ads.length / ITEMS_PER_PAGE)
+    if (currentPage > maxPage && maxPage > 0) {
+      setCurrentPage(maxPage)
+    } else if (ads.length === 0) {
+      setCurrentPage(1)
+    }
+  }, [ads.length, currentPage])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
