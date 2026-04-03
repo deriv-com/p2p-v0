@@ -55,9 +55,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const deleteAdMutation = useDeleteAd()
   const toggleStatusMutation = useToggleAdActiveStatus()
 
-  // Sort ads by created_at in descending order (most recent first)
+  // Sort ads: active first, then by created_at descending
   const sortedAds = useMemo(() => {
     return [...ads].sort((a, b) => {
+      const activeA = a.is_active ? 1 : 0
+      const activeB = b.is_active ? 1 : 0
+      if (activeB !== activeA) return activeB - activeA
       const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
       const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
       return dateB - dateA
