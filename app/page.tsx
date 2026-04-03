@@ -45,6 +45,7 @@ export default function BuySellPage() {
   const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const tableRef = useRef<HTMLDivElement>(null)
 
   const {
     activeTab,
@@ -237,6 +238,20 @@ export default function BuySellPage() {
       setCurrentPage(1)
     }
   }, [adverts.length, currentPage])
+
+  // Sort ads by created_at in descending order (most recent first)
+  const sortedAdverts = [...adverts].sort((a, b) => {
+    const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
+    const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
+    return dateB - dateA
+  })
+
+  // Scroll to top of table when page changes
+  useEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentPage])
 
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
@@ -607,7 +622,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
+              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0" ref={tableRef}>
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
@@ -624,7 +639,7 @@ export default function BuySellPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {adverts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad) => (
+                    {sortedAdverts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad) => (
                       <TableRow
                         className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                         key={ad.id}
@@ -788,7 +803,7 @@ export default function BuySellPage() {
                 </Table>
                 <Pagination
                   currentPage={currentPage}
-                  totalPages={Math.ceil(adverts.length / ITEMS_PER_PAGE)}
+                  totalPages={Math.ceil(sortedAdverts.length / ITEMS_PER_PAGE)}
                   onPageChange={setCurrentPage}
                 />
               </div>
