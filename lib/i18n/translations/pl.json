@@ -170,6 +170,7 @@
     "exchangeRateLowHigh": "Kurs wymiany (niski-wysoki)",
     "exchangeRateHighLow": "Kurs wymiany (wysoki-niski)",
     "userRatingHighLow": "Ocena użytkownika (wysoka-niska)",
+    "tierLevelHighLow": "Poziom rangi (wysoki-niski)",
     "applyFilters": "Zastosuj filtry",
     "filter": "Filtr",
     "currencyUnavailable": "Waluta {currency} jest niedostępna",

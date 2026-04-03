@@ -170,6 +170,7 @@
     "exchangeRateLowHigh": "Kiwango cha kubadili (chini-juu)",
     "exchangeRateHighLow": "Kiwango cha kubadili (juu-chini)",
     "userRatingHighLow": "Tathmini ya mtumiaji (juu-chini)",
+    "tierLevelHighLow": "Kiwango cha daraja (juu-chini)",
     "applyFilters": "Tekeleza kichuja",
     "filter": "Kuchuja",
     "currencyUnavailable": "{currency} haipatikani",

@@ -145,6 +145,7 @@
     "exchangeRateLowHigh": "Wechselkurs (niedrig-hoch)",
     "exchangeRateHighLow": "Wechselkurs (hoch-niedrig)",
     "userRatingHighLow": "Nutzerbewertung (hoch-niedrig)",
+    "tierLevelHighLow": "Ebene (hoch-niedrig)",
     "applyFilters": "Filter anwenden",
     "filter": "Filter",
     "currencyUnavailable": "{currency} ist nicht verfügbar",
