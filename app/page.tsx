@@ -67,6 +67,7 @@ export default function BuySellPage() {
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
@@ -229,7 +230,8 @@ export default function BuySellPage() {
   // Infinite scroll: fetch next page when sentinel comes into view
   useEffect(() => {
     const sentinel = sentinelRef.current
-    if (!sentinel || !hasNextPage) return
+    const scrollContainer = scrollContainerRef.current
+    if (!sentinel || !hasNextPage || !scrollContainer) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -237,7 +239,7 @@ export default function BuySellPage() {
           fetchNextPage()
         }
       },
-      { threshold: 0, rootMargin: "100px" },
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
     )
     observer.observe(sentinel)
     return () => observer.disconnect()
@@ -612,7 +614,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
+              <div ref={scrollContainerRef} className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
@@ -791,6 +793,11 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
+                {isFetchingNextPage && (
+                  <div className="flex justify-center py-4">
+                    <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                  </div>
+                )}
                 <div ref={sentinelRef} className="h-1" />
               </div>
             )}
