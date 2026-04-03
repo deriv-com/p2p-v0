@@ -61,7 +61,7 @@ export const API = {
 export const WALLETS = {
   cashierUrl: `${CORE_URL}/v1/cashier/url`,
   defaultParams: {
-    wallet_id: USER_DATA?.balances?.find((b) => b.currency === "USD")?.wallet_id,
+    wallet_id: Array.isArray(USER_DATA?.balances) ? USER_DATA.balances.find((b) => b.currency === "USD")?.wallet_id : undefined,
     user_id: CLIENT_ID || "",
     operation: "DEPOSIT",
     currency: "USD",
