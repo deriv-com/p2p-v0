@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
@@ -44,6 +44,16 @@ export const queryKeys = {
     advertisementsByParams: (params: BuySellSearchParams) => [
       ...BUY_SELL_KEYS,
       'advertisements',
+      params.type,
+      params.currency,
+      params.account_currency,
+      params.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
+      params.sortBy,
+      params.favourites_only,
+    ] as const,
+    infiniteAdvertisementsByParams: (params: BuySellSearchParams) => [
+      ...BUY_SELL_KEYS,
+      'advertisements-infinite',
       params.type,
       params.currency,
       params.account_currency,
@@ -363,6 +373,60 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
 
   return {
     ...query,
+    error: query.error as Error | null,
+  }
+}
+
+export function useInfiniteAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
+  const PAGE_SIZE = 25
+
+  // Create stable query key using only the necessary parameters
+  const queryKey = useMemo(() => {
+    if (!params) return undefined
+    
+    return queryKeys.buySell.infiniteAdvertisementsByParams({
+      type: params.type,
+      currency: params.currency,
+      account_currency: params.account_currency,
+      paymentMethod: params.paymentMethod,
+      sortBy: params.sortBy,
+      favourites_only: params.favourites_only,
+    })
+  }, [params?.type, params?.currency, params?.account_currency, JSON.stringify(params?.paymentMethod), params?.sortBy, params?.favourites_only])
+
+  const query = useInfiniteQuery({
+    queryKey: queryKey || ['no-params'],
+    queryFn: async ({ pageParam = 0 }) => {
+      const response = await (BuySellAPI.getAdvertisements as any)(
+        {
+          ...params,
+          limit: PAGE_SIZE,
+          offset: pageParam,
+        },
+        signal
+      )
+      return response
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      // If the last page has fewer items than PAGE_SIZE, there's no next page
+      if (lastPage.length < PAGE_SIZE) {
+        return undefined
+      }
+      // Return the offset for the next page
+      return allPages.length * PAGE_SIZE
+    },
+    staleTime: 1000 * 10, // 10 seconds
+    enabled: Boolean(params && queryKey && params.currency && params.account_currency),
+  })
+
+  // Flatten the pages into a single array
+  const allAdvertisements = useMemo(() => {
+    return query.data?.pages.flatMap((page) => page) ?? []
+  }, [query.data?.pages])
+
+  return {
+    ...query,
+    data: allAdvertisements,
     error: query.error as Error | null,
   }
 }
