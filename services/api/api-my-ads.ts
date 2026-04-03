@@ -212,6 +212,8 @@ export async function getUserAdverts(showInactive?: boolean, page = 1, per_page 
       account_currency: "USD",
       page: page.toString(),
       per_page: per_page.toString(),
+      sort_by: "is_active",
+      sort_order: "desc",
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
