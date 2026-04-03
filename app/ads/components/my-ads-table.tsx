@@ -38,6 +38,7 @@ const ITEMS_PER_PAGE = 20
 
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
+  const tableRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
@@ -74,6 +75,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
       setCurrentPage(1)
     }
   }, [sortedAds.length])
+
+  // Scroll to top of table when page changes
+  useEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentPage])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
@@ -372,7 +380,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full" ref={tableRef}>
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
