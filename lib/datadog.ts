@@ -1,7 +1,13 @@
 import { datadogRum } from "@datadog/browser-rum"
 
+let isDatadogInitialized = false
+
 export const initDatadog = () => {
   if (typeof window === "undefined") {
+    return
+  }
+
+  if (isDatadogInitialized) {
     return
   }
 
@@ -14,10 +20,6 @@ export const initDatadog = () => {
   if (!applicationId ||
     !clientToken
   ) {
-    return
-  }
-
-  if (datadogRum.getInternalContext()) {
     return
   }
 
@@ -43,6 +45,7 @@ export const initDatadog = () => {
       trackLongTasks: true,
       defaultPrivacyLevel: "mask-user-input",
     })
+    isDatadogInitialized = true
   } catch (error) {
     console.error("Datadog: Initialization failed", {
       error,
