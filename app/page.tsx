@@ -555,7 +555,7 @@ export default function BuySellPage() {
             </div>
           </div>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
+        <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
           <div className="h-full">
             {isLoading || (adverts.length === 0 && !currency) ? (
               <div className="md:block">
@@ -621,7 +621,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div ref={scrollContainerRef} className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
+              <div className="md:block">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
