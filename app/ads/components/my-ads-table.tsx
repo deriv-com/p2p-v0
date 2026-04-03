@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -60,11 +60,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const toggleStatusMutation = useToggleAdActiveStatus()
 
   // Sort ads by created_at in descending order (most recent first)
-  const sortedAds = [...ads].sort((a, b) => {
-    const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
-    const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
-    return dateB - dateA
-  })
+  const sortedAds = useMemo(() => {
+    return [...ads].sort((a, b) => {
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
+      return dateB - dateA
+    })
+  }, [ads])
 
   // Reset page when ads array changes
   useEffect(() => {
