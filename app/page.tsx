@@ -227,6 +227,13 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
+  // Reset scroll position when filters change so sentinel re-enters view and load more works
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0
+    }
+  }, [activeTab, currency, paymentMethodsString, sortBy, filterOptions.fromFollowing, selectedAccountCurrency])
+
   // Infinite scroll: fetch next page when sentinel comes into view
   useEffect(() => {
     const sentinel = sentinelRef.current
