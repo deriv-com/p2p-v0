@@ -199,7 +199,7 @@ export async function getCurrencies(): Promise<string[]> {
   return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
 }
 
-export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
+export async function getUserAdverts(showInactive?: boolean, offset = 0, limit = 20): Promise<MyAd[]> {
   try {
     const userId = useUserDataStore.getState().userId
 
@@ -210,6 +210,8 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       show_unlisted: "true",
       show_ineligible: "true",
       account_currency: "USD",
+      offset: offset.toString(),
+      limit: limit.toString(),
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`

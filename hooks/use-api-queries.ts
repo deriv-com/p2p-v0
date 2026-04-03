@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
@@ -240,11 +240,16 @@ export function useDeletePaymentMethod() {
 }
 
 // Ads Hooks
+const PAGE_SIZE = 20
+
 export function useUserAdverts(showInactive?: boolean, enabled = true) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: queryKeys.ads.userAdverts(showInactive),
-    queryFn: () => AdsAPI.getUserAdverts(showInactive),
-    staleTime: 1000 * 30, // 30 seconds
+    queryFn: ({ pageParam = 0 }) => AdsAPI.getUserAdverts(showInactive, pageParam as number, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length * PAGE_SIZE,
+    initialPageParam: 0,
+    staleTime: 1000 * 30,
     enabled,
   })
 }
@@ -336,11 +341,9 @@ export function useHideMyAds() {
 }
 
 // Buy/Sell Hooks
-export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSignal) {
-  // Create stable query key using only the necessary parameters
+export function useAdvertisements(params?: BuySellSearchParams) {
   const queryKey = useMemo(() => {
     if (!params) return undefined
-    
     return queryKeys.buySell.advertisementsByParams({
       type: params.type,
       currency: params.currency,
@@ -351,14 +354,15 @@ export function useAdvertisements(params?: BuySellSearchParams, signal?: AbortSi
     })
   }, [params?.type, params?.currency, params?.account_currency, JSON.stringify(params?.paymentMethod), params?.sortBy, params?.favourites_only])
 
-  const query = useQuery({
+  const query = useInfiniteQuery({
     queryKey: queryKey || ['no-params'],
-    queryFn: async () => {
-      const response = await (BuySellAPI.getAdvertisements as any)(params, signal)
-      return response
-    },
-    staleTime: 1000 * 10, // 10 seconds
-    enabled: Boolean(params && queryKey && params.currency && params.account_currency), // Only run query when params and required fields are provided
+    queryFn: ({ pageParam = 0 }) =>
+      BuySellAPI.getAdvertisements({ ...params!, offset: pageParam as number, limit: PAGE_SIZE }),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length * PAGE_SIZE,
+    initialPageParam: 0,
+    staleTime: 1000 * 10,
+    enabled: Boolean(params && queryKey && params.currency && params.account_currency),
   })
 
   return {

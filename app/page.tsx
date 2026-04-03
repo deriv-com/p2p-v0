@@ -34,19 +34,15 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Pagination } from "@/components/ui/pagination"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
 
-const ITEMS_PER_PAGE = 20
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const tableRef = useRef<HTMLDivElement>(null)
-
   const {
     activeTab,
     currency,
@@ -70,7 +66,7 @@ export default function BuySellPage() {
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const [showKycPopup, setShowKycPopup] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  const sentinelRef = useRef<HTMLDivElement>(null)
 
   const { data: paymentMethods = [], isLoading: isLoadingPaymentMethods } = usePaymentMethods()
 
@@ -90,7 +86,7 @@ export default function BuySellPage() {
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
 
 
-  const { data: fetchedAdverts = [], isLoading, error } = useAdvertisements(
+  const { data: advertsData, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useAdvertisements(
     {
       type: activeTab,
       account_currency: selectedAccountCurrency,
@@ -100,6 +96,7 @@ export default function BuySellPage() {
       favourites_only: filterOptions.fromFollowing ? 1 : 0,
     }
   )
+  const fetchedAdverts = useMemo(() => advertsData?.pages.flat() ?? [], [advertsData?.pages])
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "trade_band_rank"
   const isV1Signup = userData?.signup === "v1"
@@ -229,22 +226,22 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
-  // Reset page when adverts array changes
+  // Infinite scroll: fetch next page when sentinel comes into view
   useEffect(() => {
-    const maxPage = Math.ceil(adverts.length / ITEMS_PER_PAGE)
-    if (currentPage > maxPage && maxPage > 0) {
-      setCurrentPage(maxPage)
-    } else if (adverts.length === 0) {
-      setCurrentPage(1)
-    }
-  }, [adverts.length])
+    const sentinel = sentinelRef.current
+    if (!sentinel || !hasNextPage) return
 
-  // Scroll to top of table when page changes
-  useEffect(() => {
-    if (tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
-    }
-  }, [currentPage])
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0, rootMargin: "100px" },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
@@ -615,7 +612,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0" ref={tableRef}>
+              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
@@ -632,7 +629,7 @@ export default function BuySellPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {adverts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad) => (
+                    {adverts.map((ad) => (
                       <TableRow
                         className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                         key={ad.id}
@@ -794,11 +791,7 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(adverts.length / ITEMS_PER_PAGE)}
-                  onPageChange={setCurrentPage}
-                />
+                <div ref={sentinelRef} className="h-1" />
               </div>
             )}
           </div>
