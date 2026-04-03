@@ -556,8 +556,7 @@ export default function BuySellPage() {
           </div>
         </div>
         <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
-          <div className="h-full">
-            {isLoading || (adverts.length === 0 && !currency) ? (
+          {isLoading || (adverts.length === 0 && !currency) ? (
               <div className="md:block">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
@@ -613,13 +612,15 @@ export default function BuySellPage() {
                 {error.message || "Failed to load advertisements"}
               </div>
             ) : adverts.length === 0 ? (
-              <EmptyState
-                title={t("market.noAdsTitle", { currency: currency })}
-                description={t("market.noAdsDescription", { currency: currency })}
-                redirectToAds={true}
-                adType={activeTab}
-                route="markets"
-              />
+              <div className="h-full">
+                <EmptyState
+                  title={t("market.noAdsTitle", { currency: currency })}
+                  description={t("market.noAdsDescription", { currency: currency })}
+                  redirectToAds={true}
+                  adType={activeTab}
+                  route="markets"
+                />
+              </div>
             ) : (
               <div className="md:block">
                 <Table>
@@ -638,6 +639,7 @@ export default function BuySellPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+
                     {adverts.map((ad) => (
                       <TableRow
                         className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
@@ -800,15 +802,14 @@ export default function BuySellPage() {
                     ))}
                   </TableBody>
                 </Table>
-                {isFetchingNextPage && (
-                  <div className="flex justify-center py-4">
-                    <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                  </div>
-                )}
-                <div ref={sentinelRef} className="h-1" />
               </div>
             )}
-          </div>
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-4">
+              <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+            </div>
+          )}
+          <div ref={sentinelRef} className="h-1" />
         </div>
 
         <div className="flex-shrink-0">
