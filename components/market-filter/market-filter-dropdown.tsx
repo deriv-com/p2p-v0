@@ -46,8 +46,8 @@ export default function MarketFilterDropdown({
   }, [initialFilters])
 
   const handleReset = () => {
-    setSortBy("exchange_rate")
-    onApply({ fromFollowing: false }, "exchange_rate")
+    setSortBy("trade_band_rank")
+    onApply({ fromFollowing: false }, "trade_band_rank")
     setIsOpen(false)
     onOpenChangeProp?.(false)
   }
@@ -78,7 +78,7 @@ export default function MarketFilterDropdown({
     }
   }
 
-  const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
+  const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime" | "trade_band_rank") => {
     setSortBy(value)
 
     if (!isMobile) {
@@ -108,6 +108,12 @@ export default function MarketFilterDropdown({
         <div className="border-t border-gray-200 pt-2">
           <h4 className="text-base font-normal text-grayscale-text-muted mb-2">{t("filter.sortBy")}</h4>
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
+            <div className="flex items-center space-x-3">
+              <RadioGroupItem value="trade_band_rank" id="trade_band_rank" className="border-grayscale-100 text-black" />
+              <Label htmlFor="trade_band_rank" className="font-normal text-sm text-grayscale-600 cursor-pointer">
+                {t("filter.tierLevelHighLow")}
+              </Label>
+            </div>
             <div className="flex items-center space-x-3">
               <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
               <Label htmlFor="exchange_rate" className="font-normal text-sm text-grayscale-600 cursor-pointer">

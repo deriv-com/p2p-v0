@@ -171,6 +171,7 @@
     "exchangeRateLowHigh": "Exchange rate (low-high)",
     "exchangeRateHighLow": "Exchange rate (high-low)",
     "userRatingHighLow": "User rating (high-low)",
+    "tierLevelHighLow": "Tier level (high-low)",
     "applyFilters": "Apply filters",
     "filter": "Filter",
     "currencyUnavailable": "{currency} is unavailable",
