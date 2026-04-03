@@ -15,7 +15,7 @@ describe("useMarketFilterStore", () => {
 
     expect(result.current.activeTab).toBe("sell")
     expect(result.current.currency).toBe("")
-    expect(result.current.sortBy).toBe("exchange_rate")
+    expect(result.current.sortBy).toBe("trade_band_rank")
     expect(result.current.filterOptions).toEqual({ fromFollowing: false })
     expect(result.current.selectedPaymentMethods).toEqual([])
     expect(result.current.selectedAccountCurrency).toBe("USD")
@@ -103,7 +103,7 @@ describe("useMarketFilterStore", () => {
     // Check all values are back to initial state
     expect(result.current.activeTab).toBe("sell")
     expect(result.current.currency).toBe("")
-    expect(result.current.sortBy).toBe("exchange_rate")
+    expect(result.current.sortBy).toBe("trade_band_rank")
     expect(result.current.filterOptions).toEqual({ fromFollowing: false })
     expect(result.current.selectedPaymentMethods).toEqual([])
     expect(result.current.selectedAccountCurrency).toBe("USD")
