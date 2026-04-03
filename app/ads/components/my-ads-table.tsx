@@ -73,7 +73,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     } else if (sortedAds.length === 0) {
       setCurrentPage(1)
     }
-  }, [sortedAds.length, currentPage])
+  }, [sortedAds.length])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
