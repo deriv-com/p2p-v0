@@ -245,10 +245,10 @@ const PAGE_SIZE = 20
 export function useUserAdverts(showInactive?: boolean, enabled = true) {
   return useInfiniteQuery({
     queryKey: queryKeys.ads.userAdverts(showInactive),
-    queryFn: ({ pageParam = 0 }) => AdsAPI.getUserAdverts(showInactive, pageParam as number, PAGE_SIZE),
+    queryFn: ({ pageParam = 1 }) => AdsAPI.getUserAdverts(showInactive, pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length < PAGE_SIZE ? undefined : allPages.length * PAGE_SIZE,
-    initialPageParam: 0,
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+    initialPageParam: 1,
     staleTime: 1000 * 30,
     enabled,
   })
@@ -356,11 +356,11 @@ export function useAdvertisements(params?: BuySellSearchParams) {
 
   const query = useInfiniteQuery({
     queryKey: queryKey || ['no-params'],
-    queryFn: ({ pageParam = 0 }) =>
-      BuySellAPI.getAdvertisements({ ...params!, offset: pageParam as number, limit: PAGE_SIZE }),
+    queryFn: ({ pageParam = 1 }) =>
+      BuySellAPI.getAdvertisements({ ...params!, page: pageParam as number, per_page: PAGE_SIZE }),
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length < PAGE_SIZE ? undefined : allPages.length * PAGE_SIZE,
-    initialPageParam: 0,
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+    initialPageParam: 1,
     staleTime: 1000 * 10,
     enabled: Boolean(params && queryKey && params.currency && params.account_currency),
   })

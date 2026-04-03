@@ -46,8 +46,8 @@ export interface SearchParams {
   sortBy?: string
   following?: boolean
   favourites_only?: number
-  offset?: number
-  limit?: number
+  page?: number
+  per_page?: number
 }
 
 // Define the PaymentMethod interface
@@ -81,8 +81,8 @@ export async function getAdvertisements(params?: SearchParams, signal?: AbortSig
       if (params.sortBy) queryParams.append("sort_by", params.sortBy)
       if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
       if (params.is_private) queryParams.append("private_only", params.is_private.toString())
-      if (params.offset !== undefined) queryParams.append("offset", params.offset.toString())
-      if (params.limit !== undefined) queryParams.append("limit", params.limit.toString())
+      if (params.page !== undefined) queryParams.append("page", params.page.toString())
+      if (params.per_page !== undefined) queryParams.append("per_page", params.per_page.toString())
     }
 
     const auth_country_code = useUserDataStore.getState().residenceCountry
