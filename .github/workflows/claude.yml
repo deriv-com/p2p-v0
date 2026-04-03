@@ -25,11 +25,6 @@ jobs:
       id-token: write
       actions: read
 
-    # Cancel older runs when new commits arrive on the same PR
-    concurrency:
-      group: pr-${{ github.event.pull_request.number }}
-      cancel-in-progress: true
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
