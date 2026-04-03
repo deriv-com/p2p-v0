@@ -39,7 +39,7 @@ import { Pagination } from "@/components/ui/pagination"
 type Ad = Advertisement
 type AdType = "buy" | "sell"
 
-const ITEMS_PER_PAGE = 10
+const ITEMS_PER_PAGE = 20
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()

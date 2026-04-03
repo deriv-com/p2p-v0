@@ -34,7 +34,7 @@ interface MyAdsTableProps {
   onAdDeleted?: (status?: string) => void
 }
 
-const ITEMS_PER_PAGE = 10
+const ITEMS_PER_PAGE = 20
 
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
