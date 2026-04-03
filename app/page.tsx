@@ -45,6 +45,7 @@ export default function BuySellPage() {
   const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const tableRef = useRef<HTMLDivElement>(null)
 
   const {
     activeTab,
@@ -236,7 +237,14 @@ export default function BuySellPage() {
     } else if (adverts.length === 0) {
       setCurrentPage(1)
     }
-  }, [adverts.length, currentPage])
+  }, [adverts.length])
+
+  // Scroll to top of table when page changes
+  useEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentPage])
 
   useEffect(() => {
     if (paymentMethods.length > 0 && selectedPaymentMethods.length === 0) {
@@ -607,7 +615,7 @@ export default function BuySellPage() {
                 route="markets"
               />
             ) : (
-              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0">
+              <div className="md:block overflow-auto scrollbar-custom max-h-[calc(100vh-260px)] pb-20 md:pb-0" ref={tableRef}>
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">

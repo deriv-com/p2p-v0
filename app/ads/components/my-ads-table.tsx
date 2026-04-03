@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -38,6 +38,7 @@ const ITEMS_PER_PAGE = 20
 
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
+  const tableRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
@@ -58,6 +59,15 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const deleteAdMutation = useDeleteAd()
   const toggleStatusMutation = useToggleAdActiveStatus()
 
+  // Sort ads by created_at in descending order (most recent first)
+  const sortedAds = useMemo(() => {
+    return [...ads].sort((a, b) => {
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
+      return dateB - dateA
+    })
+  }, [ads])
+
   // Reset page when ads array changes
   useEffect(() => {
     const maxPage = Math.ceil(ads.length / ITEMS_PER_PAGE)
@@ -66,7 +76,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
     } else if (ads.length === 0) {
       setCurrentPage(1)
     }
-  }, [ads.length, currentPage])
+  }, [ads.length])
+
+  // Scroll to top of table when page changes
+  useEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentPage])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.maximum_order_amount) {
@@ -365,7 +382,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full" ref={tableRef}>
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
@@ -383,7 +400,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-            {ads.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad, index) => {
+            {sortedAds.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((ad, index) => {
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
               const adType = ad.type || "Buy"
@@ -554,7 +571,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         </Table>
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(ads.length / ITEMS_PER_PAGE)}
+          totalPages={Math.ceil(sortedAds.length / ITEMS_PER_PAGE)}
           onPageChange={setCurrentPage}
         />
       </div>
