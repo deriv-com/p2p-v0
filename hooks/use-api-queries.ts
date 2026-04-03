@@ -388,9 +388,12 @@ export function useAdvertiser(id: string | number) {
 }
 
 export function useAdvertiserAds(id: string | number) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: queryKeys.buySell.advertiserAds(id),
-    queryFn: () => BuySellAPI.getAdvertiserAds(id),
+    queryFn: ({ pageParam = 1 }) => BuySellAPI.getAdvertiserAds(id, pageParam as number, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+    initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
   })
 }
