@@ -41,6 +41,12 @@ export interface UserProfile {
   }
 }
 
+export interface TradePartner {
+  nickname: string
+  user_id: number
+  is_blocked?: boolean
+}
+
 export interface BusinessHours {
   isOpen: boolean
   availability: string
@@ -637,7 +643,7 @@ export async function removeAllFromClosedGroup(): Promise<{ success: boolean; er
   }
 }
 
-export async function getTradePartners(): Promise<[]> {
+export async function getTradePartners(): Promise<TradePartner[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),

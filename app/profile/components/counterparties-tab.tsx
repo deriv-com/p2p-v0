@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { useCallback, useState, useMemo } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
+import type { TradePartner } from "@/services/api/api-profile"
 import { useTradePartners } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { queryKeys } from "@/hooks/use-api-queries"
@@ -16,12 +17,6 @@ import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
-
-interface TradePartner {
-  nickname: string
-  user_id: number
-  is_blocked?: boolean
-}
 
 export default function CounterpartiesTab() {
   const { t } = useTranslations()
