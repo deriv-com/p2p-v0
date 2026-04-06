@@ -356,18 +356,18 @@ export default function OrdersPage() {
                 </TableRow>
               )
             })}
-            <div ref={observerTarget} className="py-4" />
-            {isFetchingNextPage && (
-              <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 col-span-full">
-                {[1, 2].map((i) => (
-                  <div key={i} className="border rounded-lg p-4">
-                    <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
-                  </div>
-                ))}
-              </div>
-            )}
           </TableBody>
         </Table>
+        <div ref={observerTarget} className="py-4" />
+        {isFetchingNextPage && (
+          <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4">
+            {[1, 2].map((i) => (
+              <div key={i} className="border rounded-lg p-4">
+                <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
