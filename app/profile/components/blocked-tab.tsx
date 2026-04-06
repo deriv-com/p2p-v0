@@ -107,7 +107,7 @@ export default function BlockedTab() {
   }
 
   const onUserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+    router.push(`/advertiser/${userId}?return_to=profile&tab=blocked`)
   }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (

@@ -98,7 +98,7 @@ export default function FollowsTab() {
   }, [hasNextPageFollowers, isFetchingNextPageFollowers, fetchNextPageFollowers, activeTab])
 
   const handleAdvertiserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+    router.push(`/advertiser/${userId}?return_to=profile&tab=follows`)
   }
 
   const filteredUsers = useMemo(() => {

@@ -62,7 +62,7 @@ export default function CounterpartiesTab() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const handleAdvertiserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+    router.push(`/advertiser/${userId}?return_to=profile&tab=counterparties`)
   }
 
   const filteredUsers = useMemo(() => {
