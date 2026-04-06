@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -56,11 +56,11 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
-  const [showKycPopup, setShowKycPopup] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const observerTarget = useRef<HTMLDivElement>(null)
 
   // Build filters for useOrders hook
   const filters = {
@@ -75,11 +75,13 @@ export default function OrdersPage() {
     }),
   }
 
-  const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
-  const orders = Array.isArray(ordersResponse?.data) ? ordersResponse.data : []
+  const { data: ordersData, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } = useOrders(filters)
+  const orders = useMemo(() => {
+    return ordersData?.pages?.flatMap(page => page) ?? []
+  }, [ordersData])
   
   // Check if there are any past orders available (used for DateFilter visibility)
-  const hasPastOrders = activeTab === "past" ? (ordersResponse?.data?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
+  const hasPastOrders = activeTab === "past" ? (orders?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -106,6 +108,26 @@ export default function OrdersPage() {
       setShowKycPopup(false)
     }
   }, [showKycPopup, showAlert, t])
+
+  // Observe last item for infinite scroll
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   useEffect(() => {
     if (userData?.signup === "v1") {
@@ -324,6 +346,16 @@ export default function OrdersPage() {
                 </TableRow>
               )
             })}
+            <div ref={observerTarget} className="py-4" />
+            {isFetchingNextPage && (
+              <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 col-span-full">
+                {[1, 2].map((i) => (
+                  <div key={i} className="border rounded-lg p-4">
+                    <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
+                  </div>
+                ))}
+              </div>
+            )}
           </TableBody>
         </Table>
       </div>

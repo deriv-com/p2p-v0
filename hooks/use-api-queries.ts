@@ -440,9 +440,12 @@ export function useFavouriteUsers() {
 
 // Orders Hooks
 export function useOrders(filters?: OrderFilters) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: queryKeys.orders.listByFilters(filters),
-    queryFn: () => OrdersAPI.getOrders(filters),
+    queryFn: ({ pageParam = 1 }) => OrdersAPI.getOrders(filters, pageParam as number, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    initialPageParam: 1,
     staleTime: 1000 * 30,
   })
 }
