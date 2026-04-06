@@ -3,10 +3,12 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useMemo, useEffect } from "react"
+import { useCallback, useState, useMemo } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getTradePartners } from "@/services/api/api-profile"
 import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
+import { useTradePartners } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { queryKeys } from "@/hooks/use-api-queries"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,32 +26,15 @@ interface TradePartner {
 export default function CounterpartiesTab() {
   const { t } = useTranslations()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const [counterparties, setCounterparties] = useState<TradePartner[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const { data: counterparties = [], isLoading } = useTradePartners()
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}`)
   }
-
-  const fetchCounterparties = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await getTradePartners()
-      setCounterparties(data)
-    } catch (err) {
-      console.error("Failed to fetch counterparties:", err)
-      setCounterparties([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchCounterparties()
-  }, [fetchCounterparties])
 
   const filteredUsers = useMemo(() => {
     if (!searchQuery.trim()) return counterparties
@@ -88,7 +73,7 @@ export default function CounterpartiesTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            await fetchCounterparties()
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
           }
         } catch (error) {
           console.error("Error blocking user:", error)
@@ -119,7 +104,7 @@ export default function CounterpartiesTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            await fetchCounterparties()
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
           }
         } catch (error) {
           console.error("Error unblocking user:", error)

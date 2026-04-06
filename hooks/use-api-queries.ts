@@ -35,6 +35,7 @@ export const queryKeys = {
     currencies: () => [...AUTH_KEYS, 'currencies'] as const,
     userPaymentMethods: () => [...AUTH_KEYS, 'user-payment-methods'] as const,
     blockedUsers: () => [...AUTH_KEYS, 'blocked-users'] as const,
+    tradePartners: () => [...AUTH_KEYS, 'trade-partners'] as const,
   },
 
   // Buy/Sell queries
@@ -177,6 +178,15 @@ export function useBlockedUsers(enabled = true) {
   return useQuery({
     queryKey: queryKeys.auth.blockedUsers(),
     queryFn: () => ProfileAPI.getBlockedUsers(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled,
+  })
+}
+
+export function useTradePartners(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.auth.tradePartners(),
+    queryFn: () => ProfileAPI.getTradePartners(),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
   })
