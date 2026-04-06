@@ -118,24 +118,19 @@ export default function OrdersPage() {
 
   // Observe last item for infinite scroll
   useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return
+    const sentinel = observerTarget.current
+    const container = scrollContainer.current
+    if (!sentinel || !hasNextPage || !container) return
 
     const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0]?.isIntersecting) {
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingNextPage) {
           fetchNextPage()
         }
       },
-      { 
-        threshold: 0.1,
-        root: scrollContainer.current
-      }
+      { threshold: 0, rootMargin: "100px", root: container },
     )
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current)
-    }
-
+    observer.observe(sentinel)
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
@@ -358,11 +353,9 @@ export default function OrdersPage() {
             })}
           </TableBody>
         </Table>
-        <div ref={observerTarget} className="h-20 py-4 flex items-center justify-center">
-          {isFetchingNextPage && <span className="text-sm text-gray-500">Loading more orders...</span>}
-        </div>
+        <div ref={observerTarget} className="h-12" />
         {isFetchingNextPage && (
-          <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4">
+          <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 p-4">
             {[1, 2].map((i) => (
               <div key={i} className="border rounded-lg p-4">
                 <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
