@@ -52,6 +52,7 @@ export const queryKeys = {
       params.paymentMethod ? JSON.stringify(params.paymentMethod) : undefined,
       params.sortBy,
       params.favourites_only,
+      params.nickname,
     ] as const,
     paymentMethods: () => [...BUY_SELL_KEYS, 'payment-methods'] as const,
     advertiser: (id: string | number) => [...BUY_SELL_KEYS, 'advertiser', id] as const,
@@ -380,7 +381,7 @@ export function useAdvertisements(params?: BuySellSearchParams) {
       sortBy: params.sortBy,
       favourites_only: params.favourites_only,
     })
-  }, [params?.type, params?.currency, params?.account_currency, JSON.stringify(params?.paymentMethod), params?.sortBy, params?.favourites_only])
+  }, [params?.type, params?.currency, params?.account_currency, JSON.stringify(params?.paymentMethod), params?.sortBy, params?.favourites_only, params?.nickname])
 
   const query = useInfiniteQuery({
     queryKey: queryKey || ['no-params'],
