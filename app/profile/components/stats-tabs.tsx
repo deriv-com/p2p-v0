@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import StatsGrid from "./stats-grid"
@@ -28,6 +29,7 @@ interface StatsTabsProps {
 }
 
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
+  const router = useRouter()
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -59,6 +61,11 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   useEffect(() => {
     setSelectedTab(activeTab)
   }, [activeTab])
+
+  const handleTabChange = (tab: string) => {
+    setSelectedTab(tab)
+    router.push(`/profile?tab=${tab}`)
+  }
 
   const isDiamond = userData.trade_band === "diamond"
   const showClosedGroupTab = isDiamond
@@ -385,7 +392,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </div>
           </div>
         ) : (
-          <Tabs value={selectedTab} onValueChange={setSelectedTab} className="h-full">
+          <Tabs value={selectedTab} onValueChange={handleTabChange} className="h-full">
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (
