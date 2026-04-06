@@ -643,13 +643,21 @@ export async function removeAllFromClosedGroup(): Promise<{ success: boolean; er
   }
 }
 
-export async function getTradePartners(): Promise<TradePartner[]> {
+export async function getTradePartners(page?: number, perPage?: number): Promise<TradePartner[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/trade-partners`, {
+    const queryParams = new URLSearchParams()
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
+    
+    const url = queryParams.toString() 
+      ? `${API.baseUrl}/trade-partners?${queryParams.toString()}`
+      : `${API.baseUrl}/trade-partners`
+    
+    const response = await fetch(url, {
       headers,
       credentials: "include",
     })

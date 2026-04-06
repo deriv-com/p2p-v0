@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useMemo } from "react"
+import { useCallback, useState, useMemo, useRef, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import type { TradePartner } from "@/services/api/api-profile"
@@ -23,9 +23,41 @@ export default function CounterpartiesTab() {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const { data: counterparties = [], isLoading } = useTradePartners()
+  const observerTarget = useRef<HTMLDivElement>(null)
+  
+  const { 
+    data, 
+    isLoading, 
+    hasNextPage, 
+    fetchNextPage, 
+    isFetchingNextPage 
+  } = useTradePartners()
+  
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
+
+  // Flatten pages into single array
+  const counterparties = useMemo(() => {
+    return data?.pages.flatMap(page => page) ?? []
+  }, [data])
+
+  // Observe last item for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}`)
@@ -204,7 +236,26 @@ export default function CounterpartiesTab() {
 
       <div className="space-y-0">
         {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => <UserCard key={user.user_id} user={user} />)
+          <>
+            {filteredUsers.map((user) => (
+              <UserCard key={user.user_id} user={user} />
+            ))}
+            <div ref={observerTarget} className="py-4" />
+            {isFetchingNextPage && (
+              <div className="space-y-3">
+                {[...Array(2)].map((_, i) => (
+                  <div key={i} className="h-[72px] flex items-center gap-3 p-3 rounded-lg">
+                    <Skeleton className="w-10 h-10 rounded-full bg-grayscale-500" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-24 mb-2 rounded bg-grayscale-500" />
+                      <Skeleton className="h-3 w-32 rounded bg-grayscale-500" />
+                    </div>
+                    <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         ) : (
           <EmptyState
             title={searchQuery ? t("profile.noMatchingName") : t("profile.noCounterparties")}
