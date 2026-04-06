@@ -41,6 +41,12 @@ export interface UserProfile {
   }
 }
 
+export interface TradePartner {
+  nickname: string
+  user_id: number
+  is_blocked?: boolean
+}
+
 export interface BusinessHours {
   isOpen: boolean
   availability: string
@@ -634,5 +640,27 @@ export async function removeAllFromClosedGroup(): Promise<{ success: boolean; er
       success: false,
       errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
     }
+  }
+}
+
+export async function getTradePartners(): Promise<TradePartner[]> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const response = await fetch(`${API.baseUrl}/trade_partners`, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error fetching trade partners: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data || []
+  } catch (error) {
+    throw error
   }
 }
