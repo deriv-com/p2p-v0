@@ -65,7 +65,7 @@ export default function OrdersPage() {
   const scrollContainer = useRef<HTMLDivElement>(null)
 
   // Build filters for useOrders hook
-  const filters = {
+  const filters = useMemo(() => ({
     is_open: activeTab === "active" ? true : false,
     ...(activeTab === "past" &&
       dateFilter !== "all" &&
@@ -75,7 +75,7 @@ export default function OrdersPage() {
         ? format(endOfDay(customDateRange.to), "yyyy-MM-dd")
         : format(endOfDay(customDateRange.from), "yyyy-MM-dd"),
     }),
-  }
+  }), [activeTab, dateFilter, customDateRange])
 
   const { data: ordersData, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } = useOrders(filters)
   const orders = useMemo(() => {
