@@ -649,7 +649,7 @@ export async function getTradePartners(): Promise<TradePartner[]> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/trade_partners`, {
+    const response = await fetch(`${API.baseUrl}/trade-partners`, {
       headers,
       credentials: "include",
     })
