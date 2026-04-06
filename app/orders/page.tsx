@@ -63,7 +63,6 @@ export default function OrdersPage() {
   const tempBanUntil = userData?.temp_ban_until
   const observerTarget = useRef<HTMLDivElement>(null)
   const scrollContainer = useRef<HTMLDivElement>(null)
-  const scrollPosition = useRef<number>(0)
 
   // Build filters for useOrders hook
   const filters = {
@@ -134,27 +133,6 @@ export default function OrdersPage() {
     observer.observe(sentinel)
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
-  // Save scroll position before data changes
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollContainer.current) {
-        scrollPosition.current = scrollContainer.current.scrollTop
-      }
-    }
-    const container = scrollContainer.current
-    if (container) {
-      container.addEventListener("scroll", handleScroll, { passive: true })
-      return () => container.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
-
-  // Restore scroll position after new data loads
-  useEffect(() => {
-    if (scrollContainer.current && orders.length > 0 && isFetchingNextPage === false && scrollPosition.current > 0) {
-      scrollContainer.current.scrollTop = scrollPosition.current
-    }
-  }, [orders.length, isFetchingNextPage])
 
   useEffect(() => {
     if (userData?.signup === "v1") {
@@ -264,8 +242,8 @@ export default function OrdersPage() {
   )
 
   const DesktopOrderTable = () => (
-    <div className="relative">
-      <div ref={scrollContainer} className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
+    <div className="relative h-full flex flex-col">
+      <div ref={scrollContainer} className="flex-1 overflow-y-auto overflow-x-hidden">
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
