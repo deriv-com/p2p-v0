@@ -36,6 +36,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
   const [showClosedGroupSidebar, setShowClosedGroupSidebar] = useState(false)
   const [showCounterpartiesSidebar, setShowCounterpartiesSidebar] = useState(false)
+  const [selectedTab, setSelectedTab] = useState(activeTab)
   const { toast } = useToast()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
@@ -54,6 +55,10 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const addPaymentMethod = useAddPaymentMethod()
 
   const helpCentreUrl = getHelpCentreUrl(locale)
+
+  useEffect(() => {
+    setSelectedTab(activeTab)
+  }, [activeTab])
 
   const isDiamond = userData.trade_band === "diamond"
   const showClosedGroupTab = isDiamond
@@ -380,7 +385,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </div>
           </div>
         ) : (
-          <Tabs defaultValue={activeTab} className="h-full">
+          <Tabs value={selectedTab} onValueChange={setSelectedTab} className="h-full">
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (

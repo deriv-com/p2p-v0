@@ -23,8 +23,7 @@ export default function ProfilePage() {
   const { t } = useTranslations()
   const [showKycPopup, setShowKycPopup] = useState(false)
   const searchParams = useSearchParams()
-  const windowSearchParams = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "")
-  const shouldShowKyc = windowSearchParams.get("show_kyc_popup") === "true"
+  const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
   const tabFromQuery = searchParams.get("tab")
 
   const userData = useMemo(() => {
