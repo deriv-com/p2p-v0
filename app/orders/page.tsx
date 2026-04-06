@@ -63,6 +63,7 @@ export default function OrdersPage() {
   const tempBanUntil = userData?.temp_ban_until
   const observerTarget = useRef<HTMLDivElement>(null)
   const scrollContainer = useRef<HTMLDivElement>(null)
+  const hasCalledFetch = useRef(false)
 
   // Build filters for useOrders hook
   const filters = {
@@ -122,9 +123,12 @@ export default function OrdersPage() {
     const container = scrollContainer.current
     if (!sentinel || !hasNextPage || !container) return
 
+    hasCalledFetch.current = false
+
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isFetchingNextPage) {
+        if (entries[0].isIntersecting && !isFetchingNextPage && !hasCalledFetch.current) {
+          hasCalledFetch.current = true
           fetchNextPage()
         }
       },
