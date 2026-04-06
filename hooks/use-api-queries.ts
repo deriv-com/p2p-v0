@@ -180,7 +180,7 @@ export function useBlockedUsers(enabled = true) {
     queryKey: queryKeys.auth.blockedUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getBlockedUsers(pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
@@ -192,7 +192,7 @@ export function useTradePartners(enabled = true) {
     queryKey: queryKeys.auth.tradePartners(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getTradePartners(pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
@@ -204,7 +204,7 @@ export function useFollowers(enabled = true) {
     queryKey: queryKeys.auth.followers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFollowers(pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
@@ -432,7 +432,7 @@ export function useFavouriteUsers() {
     queryKey: queryKeys.buySell.favouriteUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFavouriteUsers(pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
   })
