@@ -144,22 +144,17 @@ export default function OrdersPage() {
     }
     const container = scrollContainer.current
     if (container) {
-      container.addEventListener("scroll", handleScroll)
+      container.addEventListener("scroll", handleScroll, { passive: true })
       return () => container.removeEventListener("scroll", handleScroll)
     }
   }, [])
 
-  // Restore scroll position after data updates
+  // Restore scroll position after new data loads
   useEffect(() => {
-    if (scrollContainer.current && scrollPosition.current > 0) {
-      // Use requestAnimationFrame to ensure DOM is ready
-      requestAnimationFrame(() => {
-        if (scrollContainer.current) {
-          scrollContainer.current.scrollTop = scrollPosition.current
-        }
-      })
+    if (scrollContainer.current && orders.length > 0 && isFetchingNextPage === false && scrollPosition.current > 0) {
+      scrollContainer.current.scrollTop = scrollPosition.current
     }
-  }, [orders.length])
+  }, [orders.length, isFetchingNextPage])
 
   useEffect(() => {
     if (userData?.signup === "v1") {
