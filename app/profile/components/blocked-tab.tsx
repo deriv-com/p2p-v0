@@ -27,7 +27,9 @@ export default function BlockedTab() {
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
   const observerTarget = useRef<HTMLDivElement>(null)
-  
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const isFetchingNextPageRef = useRef(false)
+
   const {
     data,
     isLoading,
@@ -35,7 +37,7 @@ export default function BlockedTab() {
     fetchNextPage,
     isFetchingNextPage,
   } = useBlockedUsers()
-  
+
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
@@ -44,25 +46,28 @@ export default function BlockedTab() {
     return data?.pages.flatMap(page => page) ?? []
   }, [data])
 
-  // Observe last item for infinite scroll
+  // Keep ref in sync so the observer callback always reads the latest value
   useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return
+    isFetchingNextPageRef.current = isFetchingNextPage
+  }, [isFetchingNextPage])
+
+  // Infinite scroll: fetch next page when sentinel comes into view
+  useEffect(() => {
+    const sentinel = observerTarget.current
+    const scrollContainer = scrollContainerRef.current
+    if (!sentinel || !hasNextPage || !scrollContainer) return
 
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0]?.isIntersecting) {
+        if (entries[0].isIntersecting && !isFetchingNextPageRef.current) {
           fetchNextPage()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
     )
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current)
-    }
-
+    observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+  }, [hasNextPage, fetchNextPage])
 
   const filteredBlockedUsers = useMemo(() => {
     if (!searchQuery.trim()) return blockedUsers
@@ -137,9 +142,9 @@ export default function BlockedTab() {
   )
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-full">
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
@@ -169,7 +174,7 @@ export default function BlockedTab() {
         </div>
       )}
 
-      <div className="space-y-0">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (

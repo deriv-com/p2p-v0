@@ -28,10 +28,14 @@ export default function FollowsTab() {
   const [activeTab, setActiveTab] = useState("follows")
   const observerTargetFollows = useRef<HTMLDivElement>(null)
   const observerTargetFollowers = useRef<HTMLDivElement>(null)
-  
+  const scrollContainerFollowsRef = useRef<HTMLDivElement>(null)
+  const scrollContainerFollowersRef = useRef<HTMLDivElement>(null)
+  const isFetchingNextPageFollowsRef = useRef(false)
+  const isFetchingNextPageFollowersRef = useRef(false)
+
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
-  
+
   const {
     data: followingData,
     isLoading: isLoadingFollowing,
@@ -39,7 +43,7 @@ export default function FollowsTab() {
     fetchNextPage: fetchNextPageFollows,
     isFetchingNextPage: isFetchingNextPageFollows,
   } = useFavouriteUsers()
-  
+
   const {
     data: followersData,
     isLoading: isLoadingFollowers,
@@ -57,45 +61,50 @@ export default function FollowsTab() {
     return followersData?.pages.flatMap(page => page) ?? []
   }, [followersData])
 
+  // Keep refs in sync
+  useEffect(() => {
+    isFetchingNextPageFollowsRef.current = isFetchingNextPageFollows
+  }, [isFetchingNextPageFollows])
+
+  useEffect(() => {
+    isFetchingNextPageFollowersRef.current = isFetchingNextPageFollowers
+  }, [isFetchingNextPageFollowers])
+
   // Observe for follows tab
   useEffect(() => {
-    if (activeTab !== "follows" || !hasNextPageFollows || isFetchingNextPageFollows) return
+    const sentinel = observerTargetFollows.current
+    const scrollContainer = scrollContainerFollowsRef.current
+    if (activeTab !== "follows" || !sentinel || !hasNextPageFollows || !scrollContainer) return
 
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0]?.isIntersecting) {
+        if (entries[0].isIntersecting && !isFetchingNextPageFollowsRef.current) {
           fetchNextPageFollows()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
     )
-
-    if (observerTargetFollows.current) {
-      observer.observe(observerTargetFollows.current)
-    }
-
+    observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [hasNextPageFollows, isFetchingNextPageFollows, fetchNextPageFollows, activeTab])
+  }, [hasNextPageFollows, fetchNextPageFollows, activeTab])
 
   // Observe for followers tab
   useEffect(() => {
-    if (activeTab !== "followers" || !hasNextPageFollowers || isFetchingNextPageFollowers) return
+    const sentinel = observerTargetFollowers.current
+    const scrollContainer = scrollContainerFollowersRef.current
+    if (activeTab !== "followers" || !sentinel || !hasNextPageFollowers || !scrollContainer) return
 
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0]?.isIntersecting) {
+        if (entries[0].isIntersecting && !isFetchingNextPageFollowersRef.current) {
           fetchNextPageFollowers()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
     )
-
-    if (observerTargetFollowers.current) {
-      observer.observe(observerTargetFollowers.current)
-    }
-
+    observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [hasNextPageFollowers, isFetchingNextPageFollowers, fetchNextPageFollowers, activeTab])
+  }, [hasNextPageFollowers, fetchNextPageFollowers, activeTab])
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}?return_to=profile&tab=follows`)
@@ -202,6 +211,7 @@ export default function FollowsTab() {
             searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={true}
             observerTarget={observerTargetFollows}
+            scrollContainerRef={scrollContainerFollowsRef}
           />
         </TabsContent>
 
@@ -223,6 +233,7 @@ export default function FollowsTab() {
             searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={false}
             observerTarget={observerTargetFollowers}
+            scrollContainerRef={scrollContainerFollowersRef}
           />
         </TabsContent>
       </Tabs>

@@ -31,6 +31,7 @@ interface FollowUserListProps {
   searchEmptyDescription: string
   showFollowingButton?: boolean
   observerTarget?: RefObject<HTMLDivElement>
+  scrollContainerRef?: RefObject<HTMLDivElement>
 }
 
 export default function FollowUserList({
@@ -50,6 +51,7 @@ export default function FollowUserList({
   searchEmptyDescription,
   showFollowingButton = false,
   observerTarget,
+  scrollContainerRef,
 }: FollowUserListProps) {
   const { t } = useTranslations()
 
@@ -84,7 +86,7 @@ export default function FollowUserList({
   }
 
   return (
-    <div className="mt-4">
+    <div className="flex flex-col h-full mt-4">
       {(users.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[360px]">
@@ -116,7 +118,7 @@ export default function FollowUserList({
         </div>
       )}
 
-      <div className="space-y-0">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
