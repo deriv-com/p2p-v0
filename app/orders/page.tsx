@@ -62,6 +62,7 @@ export default function OrdersPage() {
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const observerTarget = useRef<HTMLDivElement>(null)
+  const scrollContainer = useRef<HTMLDivElement>(null)
 
   // Build filters for useOrders hook
   const filters = {
@@ -125,7 +126,10 @@ export default function OrdersPage() {
           fetchNextPage()
         }
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.1,
+        root: scrollContainer.current
+      }
     )
 
     if (observerTarget.current) {
@@ -244,7 +248,7 @@ export default function OrdersPage() {
 
   const DesktopOrderTable = () => (
     <div className="relative">
-      <div className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
+      <div ref={scrollContainer} className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
