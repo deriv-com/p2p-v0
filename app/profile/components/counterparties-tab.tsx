@@ -23,12 +23,21 @@ export default function CounterpartiesTab() {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const { data: counterparties = [], isLoading } = useTradePartners()
+  const {
+    data,
+    isLoading,
+  } = useTradePartners()
+
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
+  // Flatten pages into single array
+  const counterparties = useMemo(() => {
+    return data?.pages.flatMap(page => page) ?? []
+  }, [data])
+
   const handleAdvertiserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+    router.push(`/advertiser/${userId}?return_to=profile&tab=counterparties`)
   }
 
   const filteredUsers = useMemo(() => {
@@ -69,6 +78,7 @@ export default function CounterpartiesTab() {
               duration: 2500,
             })
             queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
           }
         } catch (error) {
           console.error("Error blocking user:", error)
@@ -109,6 +119,7 @@ export default function CounterpartiesTab() {
               duration: 2500,
             })
             queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
           }
         } catch (error) {
           console.error("Error unblocking user:", error)
@@ -170,9 +181,9 @@ export default function CounterpartiesTab() {
   )
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-full">
       {(filteredUsers.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
@@ -202,9 +213,13 @@ export default function CounterpartiesTab() {
         </div>
       )}
 
-      <div className="space-y-0">
+      <div className="flex-1 overflow-y-auto">
         {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => <UserCard key={user.user_id} user={user} />)
+          <>
+            {filteredUsers.map((user) => (
+              <UserCard key={user.user_id} user={user} />
+            ))}
+          </>
         ) : (
           <EmptyState
             title={searchQuery ? t("profile.noMatchingName") : t("profile.noCounterparties")}

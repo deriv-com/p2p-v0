@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import StatsGrid from "./stats-grid"
@@ -28,6 +29,7 @@ interface StatsTabsProps {
 }
 
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
+  const router = useRouter()
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -36,6 +38,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
   const [showClosedGroupSidebar, setShowClosedGroupSidebar] = useState(false)
   const [showCounterpartiesSidebar, setShowCounterpartiesSidebar] = useState(false)
+  const [selectedTab, setSelectedTab] = useState(activeTab)
   const { toast } = useToast()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
@@ -54,6 +57,15 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const addPaymentMethod = useAddPaymentMethod()
 
   const helpCentreUrl = getHelpCentreUrl(locale)
+
+  useEffect(() => {
+    setSelectedTab(activeTab)
+  }, [activeTab])
+
+  const handleTabChange = (tab: string) => {
+    setSelectedTab(tab)
+    router.push(`/profile?tab=${tab}`)
+  }
 
   const isDiamond = userData.trade_band === "diamond"
   const showClosedGroupTab = isDiamond
@@ -380,7 +392,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </div>
           </div>
         ) : (
-          <Tabs defaultValue={activeTab} className="h-full">
+          <Tabs value={selectedTab} onValueChange={handleTabChange} className="h-full">
             <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (
@@ -449,14 +461,14 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
 
-            <TabsContent value="counterparties" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
-              <div className="relative">
+            <TabsContent value="counterparties" className="mt-4 h-[calc(100vh-480px)]">
+              <div className="relative h-full">
                 <CounterpartiesTab />
               </div>
             </TabsContent>
 
-            <TabsContent value="follows" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
-              <div className="relative">
+            <TabsContent value="follows" className="mt-4 h-[calc(100vh-480px)]">
+              <div className="relative h-full">
                 <FollowsTab />
               </div>
             </TabsContent>
@@ -469,8 +481,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </TabsContent>
             )}
 
-            <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
-              <div className="relative">
+            <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)]">
+              <div className="relative h-full">
                 <BlockedTab />
               </div>
             </TabsContent>

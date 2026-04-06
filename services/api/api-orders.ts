@@ -64,7 +64,7 @@ export interface ChatMessage {
   isRead: boolean
 }
 
-export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
+export async function getOrders(filters?: OrderFilters, page?: number, perPage?: number): Promise<Order[]> {
   try {
     const queryParams = new URLSearchParams()
 
@@ -75,6 +75,9 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
       if (filters.date_from) queryParams.append("date_from", filters.date_from)
       if (filters.date_to) queryParams.append("date_to", filters.date_to)
     }
+
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
     const url = `${API.baseUrl}${API.endpoints.orders}${queryString}`

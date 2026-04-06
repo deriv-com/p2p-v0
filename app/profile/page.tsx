@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
+import { useSearchParams } from "next/navigation"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
@@ -21,8 +22,9 @@ export default function ProfilePage() {
   const isDisabled = user?.status === "disabled"
   const { t } = useTranslations()
   const [showKycPopup, setShowKycPopup] = useState(false)
-  const searchParams = new URLSearchParams(window.location.search)
+  const searchParams = useSearchParams()
   const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
+  const tabFromQuery = searchParams.get("tab")
 
   const userData = useMemo(() => {
     if (!meData || !meData.nickname || !meData.registered_at) {
@@ -131,7 +133,7 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} activeTab={shouldShowKyc ? "payment" : "stats"} />
+            <StatsTabs stats={userData} isLoading={isLoading} activeTab={tabFromQuery || (shouldShowKyc ? "payment" : "stats")} />
           </div>
         </div>
       </div>

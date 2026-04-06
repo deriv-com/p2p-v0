@@ -3,16 +3,17 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useMemo, useEffect } from "react"
+import { useCallback, useState, useMemo } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { getFollowers } from "@/services/api/api-profile"
 import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 import FollowUserList from "./follow-user-list"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useFavouriteUsers } from "@/hooks/use-api-queries"
+import { useFavouriteUsers, useFollowers } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { queryKeys } from "@/hooks/use-api-queries"
 
 interface FollowUser {
   nickname: string
@@ -22,34 +23,35 @@ interface FollowUser {
 export default function FollowsTab() {
   const { t } = useTranslations()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const [followers, setFollowers] = useState<FollowUser[]>([])
-  const [isLoadingFollowers, setIsLoadingFollowers] = useState(true)
   const [activeTab, setActiveTab] = useState("follows")
+
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
-  const { data: following = [], isLoading: isLoadingFollowing, refetch: refetchFollowing } = useFavouriteUsers()
+
+  const {
+    data: followingData,
+    isLoading: isLoadingFollowing,
+  } = useFavouriteUsers()
+
+  const {
+    data: followersData,
+    isLoading: isLoadingFollowers,
+  } = useFollowers()
+
+  // Flatten pages into single arrays
+  const following = useMemo(() => {
+    return followingData?.pages.flatMap(page => page) ?? []
+  }, [followingData])
+
+  const followers = useMemo(() => {
+    return followersData?.pages.flatMap(page => page) ?? []
+  }, [followersData])
 
   const handleAdvertiserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+    router.push(`/advertiser/${userId}?return_to=profile&tab=follows`)
   }
-
-  const fetchFollowers = useCallback(async () => {
-    try {
-      setIsLoadingFollowers(true)
-      const data = await getFollowers()
-      setFollowers(data)
-    } catch (err) {
-      console.error("Failed to fetch followers:", err)
-      setFollowers([])
-    } finally {
-      setIsLoadingFollowers(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchFollowers()
-  }, [fetchFollowers])
 
   const filteredUsers = useMemo(() => {
     const users = activeTab === "follows" ? following : followers
@@ -90,7 +92,7 @@ export default function FollowsTab() {
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
                 duration: 2500,
               })
-              await refetchFollowing()
+              queryClient.invalidateQueries({ queryKey: queryKeys.buySell.favouriteUsers() })
             }
           } catch (error) {
             console.error("Error unfollowing user:", error)
@@ -111,7 +113,7 @@ export default function FollowsTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            refetchFollowing()
+            queryClient.invalidateQueries({ queryKey: queryKeys.buySell.favouriteUsers() })
           }
         })
         .catch((error) => {
@@ -125,14 +127,14 @@ export default function FollowsTab() {
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
 
   return (
-    <div className="space-y-4">
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="w-full md:w-auto">
-          <TabsTrigger value="follows" className="flex-1 md:flex-none md:w-32">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
-          <TabsTrigger value="followers" className="flex-1 md:flex-none md:w-32">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
+    <div className="flex flex-col h-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
+        <TabsList className="w-auto shrink-0">
+          <TabsTrigger value="follows">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
+          <TabsTrigger value="followers">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="follows">
+        <TabsContent value="follows" className="flex-1 min-h-0">
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
@@ -150,7 +152,7 @@ export default function FollowsTab() {
           />
         </TabsContent>
 
-        <TabsContent value="followers">
+        <TabsContent value="followers" className="flex-1 min-h-0">
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}

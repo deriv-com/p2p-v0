@@ -66,6 +66,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const { id } = useParams() as { id: string }
   const searchParams = useSearchParams()
   const adIdParam = searchParams.get("adId")
+  const returnTo = searchParams.get("return_to")
+  const tabParam = searchParams.get("tab")
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
@@ -351,7 +353,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   const handleBack = () => {
-    router.push("/")
+    if (returnTo === "profile" && tabParam) {
+      router.push(`/profile?tab=${tabParam}`)
+    } else {
+      router.push("/")
+    }
   }
 
   if (isLoading) {

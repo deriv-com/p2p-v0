@@ -2,12 +2,14 @@
 
 import type React from "react"
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { getBlockedUsers } from "@/services/api/api-profile"
 import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
+import { useBlockedUsers } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { queryKeys } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -22,28 +24,20 @@ interface BlockedUser {
 export default function BlockedTab() {
   const { t } = useTranslations()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const {
+    data,
+    isLoading,
+  } = useBlockedUsers()
+
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
-  const fetchBlockedUsers = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await getBlockedUsers()
-      setBlockedUsers(data)
-    } catch (err) {
-      console.error("Failed to fetch blocked users:", err)
-      setBlockedUsers([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchBlockedUsers()
-  }, [fetchBlockedUsers])
+  // Flatten pages into single array
+  const blockedUsers = useMemo(() => {
+    return data?.pages.flatMap(page => page) ?? []
+  }, [data])
 
   const filteredBlockedUsers = useMemo(() => {
     if (!searchQuery.trim()) return blockedUsers
@@ -78,7 +72,7 @@ export default function BlockedTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            await fetchBlockedUsers()
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
           }
         } catch (error) {
           console.error("Error unblocking user:", error)
@@ -88,7 +82,7 @@ export default function BlockedTab() {
   }
 
   const onUserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+    router.push(`/advertiser/${userId}?return_to=profile&tab=blocked`)
   }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
@@ -118,9 +112,9 @@ export default function BlockedTab() {
   )
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-full">
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
@@ -150,7 +144,7 @@ export default function BlockedTab() {
         </div>
       )}
 
-      <div className="space-y-0">
+      <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
@@ -164,7 +158,11 @@ export default function BlockedTab() {
             ))}
           </div>
         ) : filteredBlockedUsers.length > 0 ? (
-          filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
+          <>
+            {filteredBlockedUsers.map((user) => (
+              <UserCard key={user.user_id} user={user} />
+            ))}
+          </>
         ) : (
           <EmptyState
             title={searchQuery ? t("profile.noMatchingName") : t("profile.noBlockedUsers")}

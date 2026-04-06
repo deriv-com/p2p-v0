@@ -442,13 +442,21 @@ export async function deletePaymentMethod(
   }
 }
 
-export async function getFavouriteUsers(): Promise<[]> {
+export async function getFavouriteUsers(page?: number, perPage?: number): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/user-favourites`, {
+    const queryParams = new URLSearchParams()
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
+    
+    const url = queryParams.toString() 
+      ? `${API.baseUrl}/user-favourites?${queryParams.toString()}`
+      : `${API.baseUrl}/user-favourites`
+    
+    const response = await fetch(url, {
       headers,
       credentials: "include",
     })
@@ -464,13 +472,21 @@ export async function getFavouriteUsers(): Promise<[]> {
   }
 }
 
-export async function getFollowers(): Promise<[]> {
+export async function getFollowers(page?: number, perPage?: number): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/user-favourited-by`, {
+    const queryParams = new URLSearchParams()
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
+    
+    const url = queryParams.toString() 
+      ? `${API.baseUrl}/user-favourited-by?${queryParams.toString()}`
+      : `${API.baseUrl}/user-favourited-by`
+    
+    const response = await fetch(url, {
       headers,
       credentials: "include",
     })
@@ -486,13 +502,21 @@ export async function getFollowers(): Promise<[]> {
   }
 }
 
-export async function getBlockedUsers(): Promise<[]> {
+export async function getBlockedUsers(page?: number, perPage?: number): Promise<[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/user-blocks`, {
+    const queryParams = new URLSearchParams()
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
+    
+    const url = queryParams.toString() 
+      ? `${API.baseUrl}/user-blocks?${queryParams.toString()}`
+      : `${API.baseUrl}/user-blocks`
+    
+    const response = await fetch(url, {
       headers,
       credentials: "include",
     })
@@ -643,13 +667,21 @@ export async function removeAllFromClosedGroup(): Promise<{ success: boolean; er
   }
 }
 
-export async function getTradePartners(): Promise<TradePartner[]> {
+export async function getTradePartners(page?: number, perPage?: number): Promise<TradePartner[]> {
   try {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/trade-partners`, {
+    const queryParams = new URLSearchParams()
+    if (page !== undefined) queryParams.append("page", page.toString())
+    if (perPage !== undefined) queryParams.append("per_page", perPage.toString())
+    
+    const url = queryParams.toString() 
+      ? `${API.baseUrl}/trade-partners?${queryParams.toString()}`
+      : `${API.baseUrl}/trade-partners`
+    
+    const response = await fetch(url, {
       headers,
       credentials: "include",
     })

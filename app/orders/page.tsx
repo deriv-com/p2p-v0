@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -61,9 +61,11 @@ export default function OrdersPage() {
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const observerTarget = useRef<HTMLDivElement>(null)
+  const scrollContainer = useRef<HTMLDivElement>(null)
 
   // Build filters for useOrders hook
-  const filters = {
+  const filters = useMemo(() => ({
     is_open: activeTab === "active" ? true : false,
     ...(activeTab === "past" &&
       dateFilter !== "all" &&
@@ -73,13 +75,20 @@ export default function OrdersPage() {
         ? format(endOfDay(customDateRange.to), "yyyy-MM-dd")
         : format(endOfDay(customDateRange.from), "yyyy-MM-dd"),
     }),
-  }
+  }), [activeTab, dateFilter, customDateRange])
 
-  const { data: ordersResponse, isLoading, refetch } = useOrders(filters)
-  const orders = Array.isArray(ordersResponse?.data) ? ordersResponse.data : []
+  const { data: ordersData, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } = useOrders(filters)
+  const orders = useMemo(() => {
+    if (!ordersData?.pages || ordersData.pages.length === 0) return []
+    return ordersData.pages.flatMap(page => {
+      if (Array.isArray(page)) return page
+      if (page?.data && Array.isArray(page.data)) return page.data
+      return []
+    }) ?? []
+  }, [ordersData])
   
   // Check if there are any past orders available (used for DateFilter visibility)
-  const hasPastOrders = activeTab === "past" ? (ordersResponse?.data?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
+  const hasPastOrders = activeTab === "past" ? (orders?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -106,6 +115,24 @@ export default function OrdersPage() {
       setShowKycPopup(false)
     }
   }, [showKycPopup, showAlert, t])
+
+  // Observe last item for infinite scroll
+  useEffect(() => {
+    const sentinel = observerTarget.current
+    const container = scrollContainer.current
+    if (!sentinel || !hasNextPage || !container) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0, rootMargin: "100px", root: container },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   useEffect(() => {
     if (userData?.signup === "v1") {
@@ -214,122 +241,6 @@ export default function OrdersPage() {
     </div>
   )
 
-  const DesktopOrderTable = () => (
-    <div className="relative">
-      <div className="overflow-auto max-h-[calc(100vh-200px)] pb-20 md:pb-0">
-        <Table>
-          <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
-            <TableRow>
-              {activeTab === "past" && (
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.date")}</TableHead>
-              )}
-              <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.orderId")}</TableHead>
-              <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.amount")}</TableHead>
-              <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.status")}</TableHead>
-              {activeTab === "active" && (
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.time")}</TableHead>
-              )}
-              {activeTab === "past" && (
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.rating")}</TableHead>
-              )}
-              <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
-            {orders.map((order) => {
-              const isBuyer = getPayReceiveLabel(order) === t("orders.youPay")
-
-              return (
-                <TableRow
-                  className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
-                  key={order.id}
-                  onClick={() => navigateToOrderDetails(order.id)}
-                >
-                  {activeTab === "past" && (
-                    <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
-                      {order.created_at ? formatDate(order.created_at) : ""}
-                    </TableCell>
-                  )}
-                  <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
-                    <div>
-                      <div className="flex flex-row justify-between">
-                        <div className="font-bold">
-                          {getOrderType(order)}
-                          <span className="text-base">
-                            {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
-                          </span>
-                        </div>
-                        <div className="mt-[4px] text-slate-600 text-xs">
-                          {t("orders.id")}: {order.id}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="py-0 px-4 align-top text-xs row-start-3">
-                    <div className="flex flex-row-reverse justify-end gap-[4px]">
-                      <div>
-                        {formatAmount(order.payment_amount)} {order.payment_currency}
-                      </div>
-                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="py-0 px-4 align-top row-start-1">
-                    <div
-                      className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, isBuyer)}`}
-                    >
-                      {formatStatus(false, order.status, isBuyer, t)}
-                    </div>
-                  </TableCell>
-                  {activeTab === "active" && (
-                    <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
-                      {(order.status === "pending_payment" || order.status === "pending_release") && (
-                        <TimeRemainingDisplay expiresAt={order.expires_at} />
-                      )}
-                    </TableCell>
-                  )}
-                  {activeTab === "past" && (
-                    <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
-                      {order.rating > 0 && (
-                        <div className="flex">
-                          <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                          {Number(order.rating).toFixed(1)}
-                        </div>
-                      )}
-                      {order.is_reviewable > 0 && !order.disputed_at && (
-                        <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
-                          {t("orders.rate")}
-                        </Button>
-                      )}
-                    </TableCell>
-                  )}
-                  <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
-                    <div className="flex flex-row items-center justify-between">
-                      <div className="text-xs">
-                        {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          onClick={(e) => {
-                            handleChatClick(e, order)
-                          }}
-                          className="text-slate-500 hover:text-slate-700 z-auto p-0"
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                        </Button>
-                      </div>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
-  )
-
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =
       selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
@@ -371,7 +282,7 @@ export default function OrdersPage() {
 
   return (
     <>
-      <div className="flex flex-col h-full px-3">
+      <div className="flex flex-col h-screen px-3">
         <div className="flex flex-col">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
@@ -420,7 +331,7 @@ export default function OrdersPage() {
             )}
           </div>
         </div>
-        <div className="flex-1 pb-4">
+        <div className="flex-1 pb-4 flex flex-col overflow-hidden">
           {isLoading ? (
             <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
@@ -432,8 +343,122 @@ export default function OrdersPage() {
               )}
             </div>
           ) : (
-            <div>
-              <DesktopOrderTable />
+            <div ref={scrollContainer} className="flex-1 overflow-y-auto overflow-x-hidden">
+              <Table>
+                <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
+                  <TableRow>
+                    {activeTab === "past" && (
+                      <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.date")}</TableHead>
+                    )}
+                    <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.orderId")}</TableHead>
+                    <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.amount")}</TableHead>
+                    <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.status")}</TableHead>
+                    {activeTab === "active" && (
+                      <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.time")}</TableHead>
+                    )}
+                    {activeTab === "past" && (
+                      <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.rating")}</TableHead>
+                    )}
+                    <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
+                  {orders.map((order) => {
+                    const isBuyer = getPayReceiveLabel(order) === t("orders.youPay")
+
+                    return (
+                      <TableRow
+                        className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
+                        key={order.id}
+                        onClick={() => navigateToOrderDetails(order.id)}
+                      >
+                        {activeTab === "past" && (
+                          <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                            {order.created_at ? formatDate(order.created_at) : ""}
+                          </TableCell>
+                        )}
+                        <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
+                          <div>
+                            <div className="flex flex-row justify-between">
+                              <div className="font-bold">
+                                {getOrderType(order)}
+                                <span className="text-base">
+                                  {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
+                                </span>
+                              </div>
+                              <div className="mt-[4px] text-slate-600 text-xs">
+                                {t("orders.id")}: {order.id}
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-0 px-4 align-top text-xs row-start-3">
+                          <div className="flex flex-row-reverse justify-end gap-[4px]">
+                            <div>
+                              {formatAmount(order.payment_amount)} {order.payment_currency}
+                            </div>
+                            <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-0 px-4 align-top row-start-1">
+                          <div
+                            className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                          >
+                            {formatStatus(false, order.status, isBuyer, t)}
+                          </div>
+                        </TableCell>
+                        {activeTab === "active" && (
+                          <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                            {(order.status === "pending_payment" || order.status === "pending_release") && (
+                              <TimeRemainingDisplay expiresAt={order.expires_at} />
+                            )}
+                          </TableCell>
+                        )}
+                        {activeTab === "past" && (
+                          <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
+                            {order.rating > 0 && (
+                              <div className="flex">
+                                <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                                {Number(order.rating).toFixed(1)}
+                              </div>
+                            )}
+                            {order.is_reviewable > 0 && !order.disputed_at && (
+                              <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
+                                {t("orders.rate")}
+                              </Button>
+                            )}
+                          </TableCell>
+                        )}
+                        <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
+                          <div className="flex flex-row items-center justify-between">
+                            <div className="text-xs">
+                              {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                onClick={(e) => {
+                                  handleChatClick(e, order)
+                                }}
+                                className="text-slate-500 hover:text-slate-700 z-auto p-0"
+                                variant="ghost"
+                                size="sm"
+                              >
+                                <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                              </Button>
+                            </div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+              <div ref={observerTarget} className="h-12" />
+              {isFetchingNextPage && (
+                <div className="flex justify-center py-4">
+                  <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                </div>
+              )}
             </div>
           )}
         </div>
