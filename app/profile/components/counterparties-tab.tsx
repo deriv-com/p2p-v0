@@ -103,6 +103,7 @@ export default function CounterpartiesTab() {
               duration: 2500,
             })
             queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
           }
         } catch (error) {
           console.error("Error blocking user:", error)
@@ -143,6 +144,7 @@ export default function CounterpartiesTab() {
               duration: 2500,
             })
             queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
           }
         } catch (error) {
           console.error("Error unblocking user:", error)
