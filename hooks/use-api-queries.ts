@@ -269,7 +269,7 @@ export function useDeletePaymentMethod() {
 }
 
 // Ads Hooks
-const PAGE_SIZE = 20
+const PAGE_SIZE = 30
 
 export function useUserAdverts(showInactive?: boolean, enabled = true) {
   return useInfiniteQuery({
