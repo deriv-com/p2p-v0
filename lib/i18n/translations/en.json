@@ -313,7 +313,7 @@
     "noBlockedUsers": "No blocked users yet",
     "blockedUsersAppear": "Users you block will appear here.",
     "noCounterparties": "No counterparties yet",
-    "noCounterpartiesDescription": "Users you have successfully traded with will appear here.",
+    "noCounterpartiesDescription": "Traders you have traded with will appear here.",
     "loadingUsers": "Loading users...",
     "noPaymentMethodsYet": "No payment method",
     "startAddingPaymentMethods": "You haven't added any payment method yet.",

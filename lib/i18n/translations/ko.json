@@ -312,7 +312,7 @@
     "noBlockedUsers": "차단된 사용자 없음",
     "blockedUsersAppear": "차단한 사용자가 여기에 나타납니다.",
     "noCounterparties": "거래 파트너 없음",
-    "noCounterpartiesDescription": "성공적으로 거래한 사용자가 여기에 나타납니다.",
+    "noCounterpartiesDescription": "거래한 트레이더가 여기에 나타납니다.",
     "loadingUsers": "사용자를 로딩 중입니다...",
     "noPaymentMethodsYet": "결제 방법 없음",
     "startAddingPaymentMethods": "아직 결제 방법을 추가하지 않았습니다.",

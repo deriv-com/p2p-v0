@@ -332,7 +332,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <Image src="/icons/counterparties-icon.svg" width={20} height={20} />
+              <Image src="/icons/counterparties.svg" width={20} height={20} />
               <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.counterparties")}</span>
               <Image
                 src="/icons/chevron-right-sm.png"
