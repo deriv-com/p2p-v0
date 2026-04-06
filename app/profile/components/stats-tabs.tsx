@@ -1,4 +1,3 @@
-"use client"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
@@ -7,6 +6,7 @@ import PaymentMethodsTab from "./payment-methods-tab"
 import FollowsTab from "./follows-tab"
 import BlockedTab from "./blocked-tab"
 import ClosedGroupTab from "./closed-group"
+import CounterpartiesTab from "./counterparties-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
@@ -60,6 +60,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const tabs = [
     { id: "stats", label: t("profile.stats") },
     { id: "payment", label: t("profile.paymentMethods") },
+    { id: "counterparties", label: t("profile.counterparties") },
     { id: "follows", label: t("profile.follows") },
     ...(showClosedGroupTab
       ? [{ id: "closed-group", label: t("profile.closedGroup") }]
@@ -409,6 +410,12 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   onAddPaymentMethod={handleShowAddPaymentMethod}
                   onPaymentMethodsCountChange={setPaymentMethodsCount}
                 />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="counterparties" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
+              <div className="relative">
+                <CounterpartiesTab />
               </div>
             </TabsContent>
 
