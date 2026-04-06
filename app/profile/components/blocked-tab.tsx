@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useEffect, useMemo, useRef } from "react"
+import { useCallback, useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -26,16 +26,9 @@ export default function BlockedTab() {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const observerTarget = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const isFetchingNextPageRef = useRef(false)
-
   const {
     data,
     isLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
   } = useBlockedUsers()
 
   const { showAlert } = useAlertDialog()
@@ -45,29 +38,6 @@ export default function BlockedTab() {
   const blockedUsers = useMemo(() => {
     return data?.pages.flatMap(page => page) ?? []
   }, [data])
-
-  // Keep ref in sync so the observer callback always reads the latest value
-  useEffect(() => {
-    isFetchingNextPageRef.current = isFetchingNextPage
-  }, [isFetchingNextPage])
-
-  // Infinite scroll: fetch next page when sentinel comes into view
-  useEffect(() => {
-    const sentinel = observerTarget.current
-    const scrollContainer = scrollContainerRef.current
-    if (!sentinel || !hasNextPage || !scrollContainer) return
-
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && !isFetchingNextPageRef.current) {
-          fetchNextPage()
-        }
-      },
-      { threshold: 0, rootMargin: "100px", root: scrollContainer },
-    )
-    observer.observe(sentinel)
-    return () => observer.disconnect()
-  }, [hasNextPage, fetchNextPage])
 
   const filteredBlockedUsers = useMemo(() => {
     if (!searchQuery.trim()) return blockedUsers
@@ -174,7 +144,7 @@ export default function BlockedTab() {
         </div>
       )}
 
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
@@ -192,12 +162,6 @@ export default function BlockedTab() {
             {filteredBlockedUsers.map((user) => (
               <UserCard key={user.user_id} user={user} />
             ))}
-            <div ref={observerTarget} className="py-4" />
-            {isFetchingNextPage && (
-              <div className="flex justify-center py-4">
-                <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-              </div>
-            )}
           </>
         ) : (
           <EmptyState

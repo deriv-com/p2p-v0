@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useMemo, useRef, useEffect } from "react"
+import { useCallback, useState, useMemo } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
@@ -26,12 +26,6 @@ export default function FollowsTab() {
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
   const [activeTab, setActiveTab] = useState("follows")
-  const observerTargetFollows = useRef<HTMLDivElement>(null)
-  const observerTargetFollowers = useRef<HTMLDivElement>(null)
-  const scrollContainerFollowsRef = useRef<HTMLDivElement>(null)
-  const scrollContainerFollowersRef = useRef<HTMLDivElement>(null)
-  const isFetchingNextPageFollowsRef = useRef(false)
-  const isFetchingNextPageFollowersRef = useRef(false)
 
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
@@ -39,17 +33,11 @@ export default function FollowsTab() {
   const {
     data: followingData,
     isLoading: isLoadingFollowing,
-    hasNextPage: hasNextPageFollows,
-    fetchNextPage: fetchNextPageFollows,
-    isFetchingNextPage: isFetchingNextPageFollows,
   } = useFavouriteUsers()
 
   const {
     data: followersData,
     isLoading: isLoadingFollowers,
-    hasNextPage: hasNextPageFollowers,
-    fetchNextPage: fetchNextPageFollowers,
-    isFetchingNextPage: isFetchingNextPageFollowers,
   } = useFollowers()
 
   // Flatten pages into single arrays
@@ -60,51 +48,6 @@ export default function FollowsTab() {
   const followers = useMemo(() => {
     return followersData?.pages.flatMap(page => page) ?? []
   }, [followersData])
-
-  // Keep refs in sync
-  useEffect(() => {
-    isFetchingNextPageFollowsRef.current = isFetchingNextPageFollows
-  }, [isFetchingNextPageFollows])
-
-  useEffect(() => {
-    isFetchingNextPageFollowersRef.current = isFetchingNextPageFollowers
-  }, [isFetchingNextPageFollowers])
-
-  // Observe for follows tab
-  useEffect(() => {
-    const sentinel = observerTargetFollows.current
-    const scrollContainer = scrollContainerFollowsRef.current
-    if (activeTab !== "follows" || !sentinel || !hasNextPageFollows || !scrollContainer) return
-
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && !isFetchingNextPageFollowsRef.current) {
-          fetchNextPageFollows()
-        }
-      },
-      { threshold: 0, rootMargin: "100px", root: scrollContainer },
-    )
-    observer.observe(sentinel)
-    return () => observer.disconnect()
-  }, [hasNextPageFollows, fetchNextPageFollows, activeTab])
-
-  // Observe for followers tab
-  useEffect(() => {
-    const sentinel = observerTargetFollowers.current
-    const scrollContainer = scrollContainerFollowersRef.current
-    if (activeTab !== "followers" || !sentinel || !hasNextPageFollowers || !scrollContainer) return
-
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && !isFetchingNextPageFollowersRef.current) {
-          fetchNextPageFollowers()
-        }
-      },
-      { threshold: 0, rootMargin: "100px", root: scrollContainer },
-    )
-    observer.observe(sentinel)
-    return () => observer.disconnect()
-  }, [hasNextPageFollowers, fetchNextPageFollowers, activeTab])
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}?return_to=profile&tab=follows`)
@@ -182,21 +125,19 @@ export default function FollowsTab() {
   const followingUserIds = useMemo(() => following.map((user) => user.user_id), [following])
 
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
-  const isFetchingNextPage = activeTab === "follows" ? isFetchingNextPageFollows : isFetchingNextPageFollowers
 
   return (
     <div className="flex flex-col h-full">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
-        <TabsList className="w-full md:w-auto shrink-0">
-          <TabsTrigger value="follows" className="flex-1 md:flex-none md:w-32">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
-          <TabsTrigger value="followers" className="flex-1 md:flex-none md:w-32">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
+        <TabsList className="w-auto shrink-0">
+          <TabsTrigger value="follows">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
+          <TabsTrigger value="followers">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="follows" className="flex-1 min-h-0">
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
-            isFetchingNextPage={isFetchingNextPage}
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onClearSearch={handleClearSearch}
@@ -208,8 +149,6 @@ export default function FollowsTab() {
             searchEmptyTitle={t("profile.noMatchingName")}
             searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={true}
-            observerTarget={observerTargetFollows}
-            scrollContainerRef={scrollContainerFollowsRef}
           />
         </TabsContent>
 
@@ -217,7 +156,6 @@ export default function FollowsTab() {
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
-            isFetchingNextPage={isFetchingNextPage}
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onClearSearch={handleClearSearch}
@@ -229,8 +167,6 @@ export default function FollowsTab() {
             searchEmptyTitle={t("profile.noMatchingName")}
             searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={false}
-            observerTarget={observerTargetFollowers}
-            scrollContainerRef={scrollContainerFollowersRef}
           />
         </TabsContent>
       </Tabs>

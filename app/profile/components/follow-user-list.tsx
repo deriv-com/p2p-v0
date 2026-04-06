@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import type { RefObject } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
@@ -17,7 +16,6 @@ interface FollowUser {
 interface FollowUserListProps {
   users: FollowUser[]
   isLoading: boolean
-  isFetchingNextPage?: boolean
   searchQuery: string
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onClearSearch: () => void
@@ -29,14 +27,11 @@ interface FollowUserListProps {
   searchEmptyTitle: string
   searchEmptyDescription: string
   showFollowingButton?: boolean
-  observerTarget?: RefObject<HTMLDivElement | null>
-  scrollContainerRef?: RefObject<HTMLDivElement | null>
 }
 
 export default function FollowUserList({
   users,
   isLoading,
-  isFetchingNextPage = false,
   searchQuery,
   onSearchChange,
   onClearSearch,
@@ -48,8 +43,6 @@ export default function FollowUserList({
   searchEmptyTitle,
   searchEmptyDescription,
   showFollowingButton = false,
-  observerTarget,
-  scrollContainerRef,
 }: FollowUserListProps) {
   const { t } = useTranslations()
 
@@ -116,7 +109,7 @@ export default function FollowUserList({
         </div>
       )}
 
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
@@ -134,12 +127,6 @@ export default function FollowUserList({
             {users.map((user) => (
               <UserCard key={user.user_id} user={user} />
             ))}
-            {observerTarget && <div ref={observerTarget} className="py-4" />}
-            {isFetchingNextPage && (
-              <div className="flex justify-center py-4">
-                <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-              </div>
-            )}
           </>
         ) : (
           <EmptyState
