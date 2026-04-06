@@ -442,10 +442,14 @@ export function useOrders(filters?: OrderFilters) {
   return useInfiniteQuery({
     queryKey: queryKeys.orders.listByFilters(filters),
     queryFn: ({ pageParam = 1 }) => OrdersAPI.getOrders(filters, pageParam as number, PAGE_SIZE),
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage || lastPage.length === 0) return undefined
+      if (lastPage.length < PAGE_SIZE) return undefined
+      return allPages.length + 1
+    },
     initialPageParam: 1,
     staleTime: 1000 * 30,
+    gcTime: 1000 * 60 * 5,
   })
 }
 
