@@ -59,16 +59,18 @@ export default function FollowsTab() {
 
   // Observe for follows tab
   useEffect(() => {
+    if (activeTab !== "follows" || !hasNextPageFollows || isFetchingNextPageFollows) return
+
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0]?.isIntersecting && hasNextPageFollows && !isFetchingNextPageFollows) {
+        if (entries[0]?.isIntersecting) {
           fetchNextPageFollows()
         }
       },
       { threshold: 0.1 }
     )
 
-    if (observerTargetFollows.current && activeTab === "follows") {
+    if (observerTargetFollows.current) {
       observer.observe(observerTargetFollows.current)
     }
 
@@ -77,16 +79,18 @@ export default function FollowsTab() {
 
   // Observe for followers tab
   useEffect(() => {
+    if (activeTab !== "followers" || !hasNextPageFollowers || isFetchingNextPageFollowers) return
+
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0]?.isIntersecting && hasNextPageFollowers && !isFetchingNextPageFollowers) {
+        if (entries[0]?.isIntersecting) {
           fetchNextPageFollowers()
         }
       },
       { threshold: 0.1 }
     )
 
-    if (observerTargetFollowers.current && activeTab === "followers") {
+    if (observerTargetFollowers.current) {
       observer.observe(observerTargetFollowers.current)
     }
 
