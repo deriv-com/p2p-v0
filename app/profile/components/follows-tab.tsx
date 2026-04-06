@@ -183,22 +183,20 @@ export default function FollowsTab() {
 
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
   const isFetchingNextPage = activeTab === "follows" ? isFetchingNextPageFollows : isFetchingNextPageFollowers
-  const hasNextPage = activeTab === "follows" ? hasNextPageFollows : hasNextPageFollowers
 
   return (
-    <div className="space-y-4">
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="w-full md:w-auto">
+    <div className="flex flex-col h-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
+        <TabsList className="w-full md:w-auto shrink-0">
           <TabsTrigger value="follows" className="flex-1 md:flex-none md:w-32">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
           <TabsTrigger value="followers" className="flex-1 md:flex-none md:w-32">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="follows">
+        <TabsContent value="follows" className="flex-1 min-h-0">
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
-            hasNextPage={hasNextPage}
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onClearSearch={handleClearSearch}
@@ -215,12 +213,11 @@ export default function FollowsTab() {
           />
         </TabsContent>
 
-        <TabsContent value="followers">
+        <TabsContent value="followers" className="flex-1 min-h-0">
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
             isFetchingNextPage={isFetchingNextPage}
-            hasNextPage={hasNextPage}
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onClearSearch={handleClearSearch}

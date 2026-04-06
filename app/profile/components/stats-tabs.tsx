@@ -461,14 +461,14 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </div>
             </TabsContent>
 
-            <TabsContent value="counterparties" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
-              <div className="relative">
+            <TabsContent value="counterparties" className="mt-4 h-[calc(100vh-480px)]">
+              <div className="relative h-full">
                 <CounterpartiesTab />
               </div>
             </TabsContent>
 
-            <TabsContent value="follows" className="mt-4 h-[calc(100vh-480px)] overflow-y-auto">
-              <div className="relative">
+            <TabsContent value="follows" className="mt-4 h-[calc(100vh-480px)]">
+              <div className="relative h-full">
                 <FollowsTab />
               </div>
             </TabsContent>
@@ -481,8 +481,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               </TabsContent>
             )}
 
-            <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)] overflow-y-auto">
-              <div className="relative">
+            <TabsContent value="blocked" className="mt-4 h-[calc(100vh-440px)]">
+              <div className="relative h-full">
                 <BlockedTab />
               </div>
             </TabsContent>

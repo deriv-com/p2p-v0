@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { RefObject } from "react"
+import type { RefObject } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
@@ -18,7 +18,6 @@ interface FollowUserListProps {
   users: FollowUser[]
   isLoading: boolean
   isFetchingNextPage?: boolean
-  hasNextPage?: boolean
   searchQuery: string
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onClearSearch: () => void
@@ -30,15 +29,14 @@ interface FollowUserListProps {
   searchEmptyTitle: string
   searchEmptyDescription: string
   showFollowingButton?: boolean
-  observerTarget?: RefObject<HTMLDivElement>
-  scrollContainerRef?: RefObject<HTMLDivElement>
+  observerTarget?: RefObject<HTMLDivElement | null>
+  scrollContainerRef?: RefObject<HTMLDivElement | null>
 }
 
 export default function FollowUserList({
   users,
   isLoading,
   isFetchingNextPage = false,
-  hasNextPage = false,
   searchQuery,
   onSearchChange,
   onClearSearch,
@@ -86,7 +84,7 @@ export default function FollowUserList({
   }
 
   return (
-    <div className="flex flex-col h-full mt-4">
+    <div className="flex flex-col h-full">
       {(users.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[360px]">
