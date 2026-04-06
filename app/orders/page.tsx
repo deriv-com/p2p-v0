@@ -78,7 +78,12 @@ export default function OrdersPage() {
 
   const { data: ordersData, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } = useOrders(filters)
   const orders = useMemo(() => {
-    return ordersData?.pages?.flatMap(page => page) ?? []
+    if (!ordersData?.pages || ordersData.pages.length === 0) return []
+    return ordersData.pages.flatMap(page => {
+      if (Array.isArray(page)) return page
+      if (page?.data && Array.isArray(page.data)) return page.data
+      return []
+    }) ?? []
   }, [ordersData])
   
   // Check if there are any past orders available (used for DateFilter visibility)
