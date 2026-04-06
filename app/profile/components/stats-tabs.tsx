@@ -35,6 +35,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
   const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
   const [showClosedGroupSidebar, setShowClosedGroupSidebar] = useState(false)
+  const [showCounterpartiesSidebar, setShowCounterpartiesSidebar] = useState(false)
   const { toast } = useToast()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
@@ -321,6 +322,41 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 <div className="m-4 flex-1 overflow-auto">
                   <h2 className="text-2xl font-bold mb-4">{t("profile.blocked")}</h2>
                   <BlockedTab />
+                </div>
+              </div>
+            )}
+            <Divider className="ml-[60px]" />
+            <div
+              onClick={() => {
+                setShowCounterpartiesSidebar(true)
+              }}
+              className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <Image src="/icons/counterparties-icon.svg" width={20} height={20} />
+              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.counterparties")}</span>
+              <Image
+                src="/icons/chevron-right-sm.png"
+                alt="Chevron right"
+                width={20}
+                height={20}
+                className="justify-self-end"
+              />
+            </div>
+            {showCounterpartiesSidebar && (
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+                <div className="flex items-center gap-4 px-4 py-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowCounterpartiesSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                </div>
+                <div className="m-4 flex-1 overflow-auto">
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.counterparties")}</h2>
+                  <CounterpartiesTab />
                 </div>
               </div>
             )}
