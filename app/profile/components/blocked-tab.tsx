@@ -2,12 +2,14 @@
 
 import type React from "react"
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useEffect, useMemo, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { getBlockedUsers } from "@/services/api/api-profile"
 import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
+import { useBlockedUsers } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { queryKeys } from "@/hooks/use-api-queries"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -22,28 +24,43 @@ interface BlockedUser {
 export default function BlockedTab() {
   const { t } = useTranslations()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const observerTarget = useRef<HTMLDivElement>(null)
+  
+  const {
+    data,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useBlockedUsers()
+  
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
-  const fetchBlockedUsers = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await getBlockedUsers()
-      setBlockedUsers(data)
-    } catch (err) {
-      console.error("Failed to fetch blocked users:", err)
-      setBlockedUsers([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
+  // Flatten pages into single array
+  const blockedUsers = useMemo(() => {
+    return data?.pages.flatMap(page => page) ?? []
+  }, [data])
 
+  // Observe last item for infinite scroll
   useEffect(() => {
-    fetchBlockedUsers()
-  }, [fetchBlockedUsers])
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const filteredBlockedUsers = useMemo(() => {
     if (!searchQuery.trim()) return blockedUsers
@@ -78,7 +95,7 @@ export default function BlockedTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            await fetchBlockedUsers()
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
           }
         } catch (error) {
           console.error("Error unblocking user:", error)
@@ -164,7 +181,25 @@ export default function BlockedTab() {
             ))}
           </div>
         ) : filteredBlockedUsers.length > 0 ? (
-          filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
+          <>
+            {filteredBlockedUsers.map((user) => (
+              <UserCard key={user.user_id} user={user} />
+            ))}
+            <div ref={observerTarget} className="py-4" />
+            {isFetchingNextPage && (
+              <div className="space-y-0">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-[72px] flex items-center justify-between gap-3">
+                    <Skeleton className="w-10 h-10 rounded-full flex-shrink-0 bg-grayscale-500" />
+                    <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+                      <Skeleton className="h-5 w-32 bg-grayscale-500" />
+                      <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         ) : (
           <EmptyState
             title={searchQuery ? t("profile.noMatchingName") : t("profile.noBlockedUsers")}

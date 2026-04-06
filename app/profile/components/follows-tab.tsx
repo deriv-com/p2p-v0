@@ -3,16 +3,17 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
-import { useCallback, useState, useMemo, useEffect } from "react"
+import { useCallback, useState, useMemo, useRef, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { getFollowers } from "@/services/api/api-profile"
 import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 import FollowUserList from "./follow-user-list"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useFavouriteUsers } from "@/hooks/use-api-queries"
+import { useFavouriteUsers, useFollowers } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { queryKeys } from "@/hooks/use-api-queries"
 
 interface FollowUser {
   nickname: string
@@ -22,34 +23,79 @@ interface FollowUser {
 export default function FollowsTab() {
   const { t } = useTranslations()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
-  const [followers, setFollowers] = useState<FollowUser[]>([])
-  const [isLoadingFollowers, setIsLoadingFollowers] = useState(true)
   const [activeTab, setActiveTab] = useState("follows")
+  const observerTargetFollows = useRef<HTMLDivElement>(null)
+  const observerTargetFollowers = useRef<HTMLDivElement>(null)
+  
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
-  const { data: following = [], isLoading: isLoadingFollowing, refetch: refetchFollowing } = useFavouriteUsers()
+  
+  const {
+    data: followingData,
+    isLoading: isLoadingFollowing,
+    hasNextPage: hasNextPageFollows,
+    fetchNextPage: fetchNextPageFollows,
+    isFetchingNextPage: isFetchingNextPageFollows,
+  } = useFavouriteUsers()
+  
+  const {
+    data: followersData,
+    isLoading: isLoadingFollowers,
+    hasNextPage: hasNextPageFollowers,
+    fetchNextPage: fetchNextPageFollowers,
+    isFetchingNextPage: isFetchingNextPageFollowers,
+  } = useFollowers()
+
+  // Flatten pages into single arrays
+  const following = useMemo(() => {
+    return followingData?.pages.flatMap(page => page) ?? []
+  }, [followingData])
+
+  const followers = useMemo(() => {
+    return followersData?.pages.flatMap(page => page) ?? []
+  }, [followersData])
+
+  // Observe for follows tab
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting && hasNextPageFollows && !isFetchingNextPageFollows) {
+          fetchNextPageFollows()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerTargetFollows.current && activeTab === "follows") {
+      observer.observe(observerTargetFollows.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasNextPageFollows, isFetchingNextPageFollows, fetchNextPageFollows, activeTab])
+
+  // Observe for followers tab
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting && hasNextPageFollowers && !isFetchingNextPageFollowers) {
+          fetchNextPageFollowers()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerTargetFollowers.current && activeTab === "followers") {
+      observer.observe(observerTargetFollowers.current)
+    }
+
+    return () => observer.disconnect()
+  }, [hasNextPageFollowers, isFetchingNextPageFollowers, fetchNextPageFollowers, activeTab])
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}`)
   }
-
-  const fetchFollowers = useCallback(async () => {
-    try {
-      setIsLoadingFollowers(true)
-      const data = await getFollowers()
-      setFollowers(data)
-    } catch (err) {
-      console.error("Failed to fetch followers:", err)
-      setFollowers([])
-    } finally {
-      setIsLoadingFollowers(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchFollowers()
-  }, [fetchFollowers])
 
   const filteredUsers = useMemo(() => {
     const users = activeTab === "follows" ? following : followers
@@ -90,7 +136,7 @@ export default function FollowsTab() {
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
                 duration: 2500,
               })
-              await refetchFollowing()
+              queryClient.invalidateQueries({ queryKey: queryKeys.buySell.favouriteUsers() })
             }
           } catch (error) {
             console.error("Error unfollowing user:", error)
@@ -111,7 +157,7 @@ export default function FollowsTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-            refetchFollowing()
+            queryClient.invalidateQueries({ queryKey: queryKeys.buySell.favouriteUsers() })
           }
         })
         .catch((error) => {
@@ -123,6 +169,8 @@ export default function FollowsTab() {
   const followingUserIds = useMemo(() => following.map((user) => user.user_id), [following])
 
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
+  const isFetchingNextPage = activeTab === "follows" ? isFetchingNextPageFollows : isFetchingNextPageFollowers
+  const hasNextPage = activeTab === "follows" ? hasNextPageFollows : hasNextPageFollowers
 
   return (
     <div className="space-y-4">
@@ -136,6 +184,8 @@ export default function FollowsTab() {
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
+            isFetchingNextPage={isFetchingNextPage}
+            hasNextPage={hasNextPage}
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onClearSearch={handleClearSearch}
@@ -147,6 +197,7 @@ export default function FollowsTab() {
             searchEmptyTitle={t("profile.noMatchingName")}
             searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={true}
+            observerTarget={observerTargetFollows}
           />
         </TabsContent>
 
@@ -154,6 +205,8 @@ export default function FollowsTab() {
           <FollowUserList
             users={filteredUsers}
             isLoading={isLoading}
+            isFetchingNextPage={isFetchingNextPage}
+            hasNextPage={hasNextPage}
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
             onClearSearch={handleClearSearch}
@@ -165,6 +218,7 @@ export default function FollowsTab() {
             searchEmptyTitle={t("profile.noMatchingName")}
             searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={false}
+            observerTarget={observerTargetFollowers}
           />
         </TabsContent>
       </Tabs>

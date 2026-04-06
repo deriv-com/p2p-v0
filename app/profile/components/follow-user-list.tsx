@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { RefObject } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
@@ -16,6 +17,8 @@ interface FollowUser {
 interface FollowUserListProps {
   users: FollowUser[]
   isLoading: boolean
+  isFetchingNextPage?: boolean
+  hasNextPage?: boolean
   searchQuery: string
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onClearSearch: () => void
@@ -27,11 +30,14 @@ interface FollowUserListProps {
   searchEmptyTitle: string
   searchEmptyDescription: string
   showFollowingButton?: boolean
+  observerTarget?: RefObject<HTMLDivElement>
 }
 
 export default function FollowUserList({
   users,
   isLoading,
+  isFetchingNextPage = false,
+  hasNextPage = false,
   searchQuery,
   onSearchChange,
   onClearSearch,
@@ -43,6 +49,7 @@ export default function FollowUserList({
   searchEmptyTitle,
   searchEmptyDescription,
   showFollowingButton = false,
+  observerTarget,
 }: FollowUserListProps) {
   const { t } = useTranslations()
 
@@ -123,7 +130,25 @@ export default function FollowUserList({
             ))}
           </div>
         ) : users.length > 0 ? (
-          users.map((user) => <UserCard key={user.user_id} user={user} />)
+          <>
+            {users.map((user) => (
+              <UserCard key={user.user_id} user={user} />
+            ))}
+            {observerTarget && <div ref={observerTarget} className="py-4" />}
+            {isFetchingNextPage && (
+              <div className="space-y-0">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-[72px] flex items-center justify-between gap-3">
+                    <Skeleton className="w-10 h-10 rounded-full flex-shrink-0 bg-grayscale-500" />
+                    <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+                      <Skeleton className="h-5 w-32 bg-grayscale-500" />
+                      <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         ) : (
           <EmptyState
             title={searchQuery ? searchEmptyTitle : emptyTitle}

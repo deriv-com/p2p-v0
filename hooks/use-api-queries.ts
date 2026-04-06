@@ -36,6 +36,7 @@ export const queryKeys = {
     userPaymentMethods: () => [...AUTH_KEYS, 'user-payment-methods'] as const,
     blockedUsers: () => [...AUTH_KEYS, 'blocked-users'] as const,
     tradePartners: () => [...AUTH_KEYS, 'trade-partners'] as const,
+    followers: () => [...AUTH_KEYS, 'followers'] as const,
   },
 
   // Buy/Sell queries
@@ -175,9 +176,12 @@ export function useUserPaymentMethods(enabled = true) {
 }
 
 export function useBlockedUsers(enabled = true) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: queryKeys.auth.blockedUsers(),
-    queryFn: () => ProfileAPI.getBlockedUsers(),
+    queryFn: ({ pageParam = 1 }) => ProfileAPI.getBlockedUsers(pageParam as number, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+    initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
   })
@@ -187,6 +191,18 @@ export function useTradePartners(enabled = true) {
   return useInfiniteQuery({
     queryKey: queryKeys.auth.tradePartners(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getTradePartners(pageParam as number, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+    initialPageParam: 1,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled,
+  })
+}
+
+export function useFollowers(enabled = true) {
+  return useInfiniteQuery({
+    queryKey: queryKeys.auth.followers(),
+    queryFn: ({ pageParam = 1 }) => ProfileAPI.getFollowers(pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
@@ -412,9 +428,12 @@ export function useAdvertiserAds(id: string | number) {
 }
 
 export function useFavouriteUsers() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: queryKeys.buySell.favouriteUsers(),
-    queryFn: () => ProfileAPI.getFavouriteUsers(),
+    queryFn: ({ pageParam = 1 }) => ProfileAPI.getFavouriteUsers(pageParam as number, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
+    initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
   })
 }
