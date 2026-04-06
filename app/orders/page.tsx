@@ -78,6 +78,7 @@ export default function OrdersPage() {
   }
 
   const { data: ordersData, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } = useOrders(filters)
+  console.log("[v0] Orders data:", { isLoading, hasNextPage, isFetchingNextPage, pagesCount: ordersData?.pages?.length })
   const orders = useMemo(() => {
     if (!ordersData?.pages || ordersData.pages.length === 0) return []
     return ordersData.pages.flatMap(page => {
@@ -86,6 +87,7 @@ export default function OrdersPage() {
       return []
     }) ?? []
   }, [ordersData])
+  console.log("[v0] Flattened orders count:", orders.length)
   
   // Check if there are any past orders available (used for DateFilter visibility)
   const hasPastOrders = activeTab === "past" ? (orders?.length ?? 0) > 0 || (dateFilter !== "all" && customDateRange.from) : false
@@ -118,11 +120,14 @@ export default function OrdersPage() {
 
   // Observe last item for infinite scroll
   useEffect(() => {
+    console.log("[v0] Orders observer setup - hasNextPage:", hasNextPage, "isFetchingNextPage:", isFetchingNextPage)
     if (!hasNextPage || isFetchingNextPage) return
 
     const observer = new IntersectionObserver(
       entries => {
+        console.log("[v0] Observer triggered, isIntersecting:", entries[0]?.isIntersecting)
         if (entries[0]?.isIntersecting) {
+          console.log("[v0] Calling fetchNextPage from orders")
           fetchNextPage()
         }
       },
@@ -133,6 +138,7 @@ export default function OrdersPage() {
     )
 
     if (observerTarget.current) {
+      console.log("[v0] Observing target element")
       observer.observe(observerTarget.current)
     }
 
@@ -358,7 +364,9 @@ export default function OrdersPage() {
             })}
           </TableBody>
         </Table>
-        <div ref={observerTarget} className="py-4" />
+        <div ref={observerTarget} className="h-20 py-4 flex items-center justify-center">
+          {isFetchingNextPage && <span className="text-sm text-gray-500">Loading more orders...</span>}
+        </div>
         {isFetchingNextPage && (
           <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4">
             {[1, 2].map((i) => (
