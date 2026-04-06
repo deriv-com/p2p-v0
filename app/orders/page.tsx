@@ -63,6 +63,7 @@ export default function OrdersPage() {
   const tempBanUntil = userData?.temp_ban_until
   const observerTarget = useRef<HTMLDivElement>(null)
   const scrollContainer = useRef<HTMLDivElement>(null)
+  const scrollPosition = useRef<number>(0)
 
   // Build filters for useOrders hook
   const filters = {
@@ -133,6 +134,32 @@ export default function OrdersPage() {
     observer.observe(sentinel)
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  // Save scroll position before data changes
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollContainer.current) {
+        scrollPosition.current = scrollContainer.current.scrollTop
+      }
+    }
+    const container = scrollContainer.current
+    if (container) {
+      container.addEventListener("scroll", handleScroll)
+      return () => container.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  // Restore scroll position after data updates
+  useEffect(() => {
+    if (scrollContainer.current && scrollPosition.current > 0) {
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        if (scrollContainer.current) {
+          scrollContainer.current.scrollTop = scrollPosition.current
+        }
+      })
+    }
+  }, [orders.length])
 
   useEffect(() => {
     if (userData?.signup === "v1") {
