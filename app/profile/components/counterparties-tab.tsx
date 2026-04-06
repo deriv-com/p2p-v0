@@ -246,17 +246,8 @@ export default function CounterpartiesTab() {
             ))}
             <div ref={observerTarget} className="py-4" />
             {isFetchingNextPage && (
-              <div className="space-y-3">
-                {[...Array(2)].map((_, i) => (
-                  <div key={i} className="h-[72px] flex items-center gap-3 p-3 rounded-lg">
-                    <Skeleton className="w-10 h-10 rounded-full bg-grayscale-500" />
-                    <div className="flex-1">
-                      <Skeleton className="h-4 w-24 mb-2 rounded bg-grayscale-500" />
-                      <Skeleton className="h-3 w-32 rounded bg-grayscale-500" />
-                    </div>
-                    <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
-                  </div>
-                ))}
+              <div className="flex justify-center py-4">
+                <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
               </div>
             )}
           </>

@@ -189,16 +189,8 @@ export default function BlockedTab() {
             ))}
             <div ref={observerTarget} className="py-4" />
             {isFetchingNextPage && (
-              <div className="space-y-0">
-                {[1, 2].map((i) => (
-                  <div key={i} className="h-[72px] flex items-center justify-between gap-3">
-                    <Skeleton className="w-10 h-10 rounded-full flex-shrink-0 bg-grayscale-500" />
-                    <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
-                      <Skeleton className="h-5 w-32 bg-grayscale-500" />
-                      <Skeleton className="h-8 w-20 rounded-full bg-grayscale-500" />
-                    </div>
-                  </div>
-                ))}
+              <div className="flex justify-center py-4">
+                <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
               </div>
             )}
           </>

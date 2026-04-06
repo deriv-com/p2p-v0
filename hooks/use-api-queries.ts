@@ -179,8 +179,8 @@ export function useBlockedUsers(enabled = true) {
   return useInfiniteQuery({
     queryKey: queryKeys.auth.blockedUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getBlockedUsers(pageParam as number, PAGE_SIZE),
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    getNextPageParam: (lastPage: any[], allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
@@ -191,8 +191,8 @@ export function useTradePartners(enabled = true) {
   return useInfiniteQuery({
     queryKey: queryKeys.auth.tradePartners(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getTradePartners(pageParam as number, PAGE_SIZE),
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    getNextPageParam: (lastPage: any[], allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
@@ -203,8 +203,8 @@ export function useFollowers(enabled = true) {
   return useInfiniteQuery({
     queryKey: queryKeys.auth.followers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFollowers(pageParam as number, PAGE_SIZE),
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    getNextPageParam: (lastPage: any[], allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled,
@@ -430,8 +430,8 @@ export function useFavouriteUsers() {
   return useInfiniteQuery({
     queryKey: queryKeys.buySell.favouriteUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFavouriteUsers(pageParam as number, PAGE_SIZE),
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.length === PAGE_SIZE ? allPages.length + 1 : undefined,
+    getNextPageParam: (lastPage: any[], allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
   })
@@ -443,16 +443,6 @@ export function useOrders(filters?: OrderFilters) {
     queryKey: queryKeys.orders.listByFilters(filters),
     queryFn: ({ pageParam = 1 }) => OrdersAPI.getOrders(filters, pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) => {
-      // Prefer server-side pagination metadata when available
-      const meta = (lastPage as any)?.meta
-      if (meta) {
-        return meta.current_page < meta.last_page ? allPages.length + 1 : undefined
-      }
-      const links = (lastPage as any)?.links
-      if (links !== undefined) {
-        return links.next ? allPages.length + 1 : undefined
-      }
-      // Fallback: infer from item count
       const items = Array.isArray(lastPage) ? lastPage : (lastPage as any)?.data ?? []
       return items.length < PAGE_SIZE ? undefined : allPages.length + 1
     },

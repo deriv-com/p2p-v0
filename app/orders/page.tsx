@@ -455,12 +455,8 @@ export default function OrdersPage() {
               </Table>
               <div ref={observerTarget} className="h-12" />
               {isFetchingNextPage && (
-                <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 p-4">
-                  {[1, 2].map((i) => (
-                    <div key={i} className="border rounded-lg p-4">
-                      <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
-                    </div>
-                  ))}
+                <div className="flex justify-center py-4">
+                  <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
                 </div>
               )}
             </div>
