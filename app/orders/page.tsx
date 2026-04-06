@@ -457,7 +457,7 @@ export default function OrdersPage() {
             )}
           </div>
         </div>
-        <div className="flex-1 pb-4">
+        <div className="flex-1 pb-4 flex flex-col">
           {isLoading ? (
             <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
@@ -469,9 +469,7 @@ export default function OrdersPage() {
               )}
             </div>
           ) : (
-            <div>
-              <DesktopOrderTable />
-            </div>
+            <DesktopOrderTable />
           )}
         </div>
         <RatingSidebar
