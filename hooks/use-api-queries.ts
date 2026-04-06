@@ -443,6 +443,16 @@ export function useOrders(filters?: OrderFilters) {
     queryKey: queryKeys.orders.listByFilters(filters),
     queryFn: ({ pageParam = 1 }) => OrdersAPI.getOrders(filters, pageParam as number, PAGE_SIZE),
     getNextPageParam: (lastPage, allPages) => {
+      // Prefer server-side pagination metadata when available
+      const meta = (lastPage as any)?.meta
+      if (meta) {
+        return meta.current_page < meta.last_page ? allPages.length + 1 : undefined
+      }
+      const links = (lastPage as any)?.links
+      if (links !== undefined) {
+        return links.next ? allPages.length + 1 : undefined
+      }
+      // Fallback: infer from item count
       const items = Array.isArray(lastPage) ? lastPage : (lastPage as any)?.data ?? []
       return items.length < PAGE_SIZE ? undefined : allPages.length + 1
     },
