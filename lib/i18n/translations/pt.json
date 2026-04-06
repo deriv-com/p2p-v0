@@ -309,6 +309,8 @@
     "noCounterparties": "Sem contrapartes ainda",
     "noCounterpartiesDescription": "Os traders com os quais você negociou aparecerão aqui.",
     "loadingUsers": "Carregando usuários...",
+    "errorBlockingUser": "Erro ao bloquear usuário. Por favor, tente novamente.",
+    "errorUnblockingUser": "Erro ao desbloquear usuário. Por favor, tente novamente.",
     "noPaymentMethodsYet": "Ainda sem métodos de pagamento",
     "startAddingPaymentMethods": "Comece a adicionar métodos de pagamento",
     "edit": "Editar",

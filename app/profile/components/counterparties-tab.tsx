@@ -77,6 +77,15 @@ export default function CounterpartiesTab() {
           }
         } catch (error) {
           console.error("Error blocking user:", error)
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <span>{t("profile.errorBlockingUser")}</span>
+              </div>
+            ),
+            className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 3000,
+          })
         }
       },
     })
@@ -108,6 +117,15 @@ export default function CounterpartiesTab() {
           }
         } catch (error) {
           console.error("Error unblocking user:", error)
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <span>{t("profile.errorUnblockingUser")}</span>
+              </div>
+            ),
+            className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 3000,
+          })
         }
       },
     })

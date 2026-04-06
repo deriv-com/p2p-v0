@@ -315,6 +315,8 @@
     "noCounterparties": "No counterparties yet",
     "noCounterpartiesDescription": "Traders you have traded with will appear here.",
     "loadingUsers": "Loading users...",
+    "errorBlockingUser": "Failed to block user. Please try again.",
+    "errorUnblockingUser": "Failed to unblock user. Please try again.",
     "noPaymentMethodsYet": "No payment method",
     "startAddingPaymentMethods": "You haven't added any payment method yet.",
     "edit": "Edit",

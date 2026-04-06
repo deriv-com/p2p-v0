@@ -310,6 +310,8 @@
     "noCounterparties": "Pas encore de contreparties",
     "noCounterpartiesDescription": "Les traders avec lesquels vous avez commercé apparaîtront ici.",
     "loadingUsers": "Chargement des utilisateurs...",
+    "errorBlockingUser": "Erreur lors du blocage de l&apos;utilisateur. Veuillez réessayer.",
+    "errorUnblockingUser": "Erreur lors du déblocage de l&apos;utilisateur. Veuillez réessayer.",
     "noPaymentMethodsYet": "Pas encore de méthodes de paiement",
     "startAddingPaymentMethods": "Commencez à ajouter des méthodes de paiement",
     "edit": "Modifier",

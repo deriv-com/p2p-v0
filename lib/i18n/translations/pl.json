@@ -314,6 +314,8 @@
     "noCounterparties": "Brak partnerów handlowych",
     "noCounterpartiesDescription": "Handlowcy, z którymi handlowałeś, pojawią się tutaj.",
     "loadingUsers": "Ładowanie użytkowników...",
+    "errorBlockingUser": "Błąd przy blokowaniu użytkownika. Spróbuj ponownie.",
+    "errorUnblockingUser": "Błąd przy odblokowaniu użytkownika. Spróbuj ponownie.",
     "noPaymentMethodsYet": "Brak metody płatności",
     "startAddingPaymentMethods": "Jeszcze nie dodałeś żadnej metody płatności.",
     "edit": "Edytuj",

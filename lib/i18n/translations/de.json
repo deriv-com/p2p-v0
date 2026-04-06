@@ -287,6 +287,8 @@
     "noCounterparties": "Noch keine Handelspartner",
     "noCounterpartiesDescription": "Händler, mit denen Sie gehandelt haben, werden hier angezeigt.",
     "loadingUsers": "Nutzer werden geladen...",
+    "errorBlockingUser": "Fehler beim Blockieren des Benutzers. Bitte versuchen Sie es erneut.",
+    "errorUnblockingUser": "Fehler beim Entsperren des Benutzers. Bitte versuchen Sie es erneut.",
     "noPaymentMethodsYet": "Noch keine Zahlungsmethoden",
     "startAddingPaymentMethods": "Beginnen Sie mit dem Hinzufügen von Zahlungsmethoden",
     "edit": "Bearbeiten",

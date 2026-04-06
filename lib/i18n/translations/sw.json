@@ -314,6 +314,8 @@
     "noCounterparties": "Hakuna washirika wa biashara bado",
     "noCounterpartiesDescription": "Wafanyabiashara ambao umefanya biashara nao wataonekana hapa.",
     "loadingUsers": "Inapakua watumiaji...",
+    "errorBlockingUser": "Hitilafu wakati wa kuzuia mtumiaji. Tafadhali jaribu tena.",
+    "errorUnblockingUser": "Hitilafu wakati wa kuondoa uzuizi wa mtumiaji. Tafadhali jaribu tena.",
     "noPaymentMethodsYet": "Hakuna njia ya kulipa",
     "startAddingPaymentMethods": "Hujaongeza njia yoyote ya kulipa bado.",
     "edit": "Hariri",
