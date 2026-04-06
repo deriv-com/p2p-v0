@@ -60,12 +60,12 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const tabs = [
     { id: "stats", label: t("profile.stats") },
     { id: "payment", label: t("profile.paymentMethods") },
-    { id: "counterparties", label: t("profile.counterparties") },
     { id: "follows", label: t("profile.follows") },
     ...(showClosedGroupTab
       ? [{ id: "closed-group", label: t("profile.closedGroup") }]
       : []),
     { id: "blocked", label: t("profile.blocked") },
+    { id: "counterparties", label: t("profile.counterparties") },
   ]
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
