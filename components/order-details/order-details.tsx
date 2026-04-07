@@ -137,11 +137,19 @@ export const OrderDetails = ({ order, setShowChat }) => {
       <div className="flex md:block items-end justify-between">
         <div className="flex-1">
           <OrderDetailItem
-            label={counterpartyLabel}
+            label={counterpartyLabel === t("orderDetails.buyer") ? t("orderDetails.buyerNickname") : t("orderDetails.sellerNickname")}
             value={counterpartyNickname || ""}
             testId="counterparty-item"
             isBlockLayout={isBlockLayout}
           />
+          {order?.counterparty_name && order.status !== "completed" && (
+            <OrderDetailItem
+              label={counterpartyLabel === t("orderDetails.buyer") ? t("orderDetails.buyerRealName") : t("orderDetails.sellerRealName")}
+              value={order.counterparty_name}
+              testId="counterparty-real-name-item"
+              isBlockLayout={isBlockLayout}
+            />
+          )}
         </div>
         {order.status === "completed" && isMobile && (
           <Button
