@@ -12,6 +12,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import MobileAdvertiserSearch from "./mobile-advertiser-search"
+import { Button } from "@/components/ui/button"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
@@ -69,13 +70,14 @@ export default function Header() {
         <div className="h-12 flex items-center space-x-2">
           {userId && (
             <>
-              <button
+              <Button
                 onClick={() => setIsSearchOpen(true)}
-                className="md:hidden flex items-center justify-center rounded-full bg-white/[0.04] h-8 w-8"
-                aria-label="Search advertiser"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full bg-[#ffffff0a]"
               >
-                <Image src="/icons/search-icon-custom.png" alt="Search" width={24} height={24} className="brightness-0 invert" />
-              </button>
+                <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
+              </Button>
               <div className="text-slate-600 hover:text-slate-700">
                 <NovuNotifications />
               </div>

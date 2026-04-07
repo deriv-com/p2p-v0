@@ -101,7 +101,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0">
                     <Button
                         variant="ghost"
-                        size="icon"
+                        size="sm"
                         onClick={handleClose}
                         className="bg-grayscale-500 px-1 w-fit"
                     >
