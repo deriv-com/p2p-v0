@@ -46,9 +46,6 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const { data: searchResults, isFetching: isSearching } = useAdvertiserSearch({
     nickname: debouncedSearchInput,
-    type: activeTab,
-    currency,
-    account_currency: selectedAccountCurrency,
   })
 
   const handleSearchChange = (value: string) => {
@@ -63,11 +60,11 @@ export default function Sidebar({ className }: SidebarProps) {
     }, 300)
   }
 
-  const handleSelectAd = (advertiserNickname: string) => {
+  const handleSelectAd = (advertiserNickname: string, advertiserId: number) => {
     setSearchInput(advertiserNickname)
     setNickname(advertiserNickname)
     setIsSearchFocused(false)
-    if (pathname !== "/") router.push("/")
+    router.push(`/advertiser/${advertiserId}`)
   }
 
   const handleClear = () => {
@@ -202,7 +199,7 @@ export default function Sidebar({ className }: SidebarProps) {
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-slate-50"
                     onMouseDown={(e) => {
                       e.preventDefault()
-                      handleSelectAd(ad.user.nickname)
+                      handleSelectAd(ad.user.nickname, ad.user.id)
                     }}
                   >
                     <div className="h-7 w-7 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">

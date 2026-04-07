@@ -39,7 +39,7 @@ export interface Advertisement {
 export interface SearchParams {
   type?: string
   currency?: string
-  account_currency: string
+  account_currency?: string
   paymentMethod?: string[]
   amount?: number
   nickname?: string

@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { NovuNotifications } from "./novu-notifications"
@@ -9,12 +11,14 @@ import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useIsMobile } from "@/hooks/use-mobile"
+import MobileAdvertiserSearch from "./mobile-advertiser-search"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const pathname = usePathname()
   const navItems = [
@@ -30,44 +34,57 @@ export default function Header() {
   if (pathname.startsWith("/advertiser") || isOrderDetailPage || (isMobile && isOrderDetailPage && isChatVisible)) return null
 
   return (
-    <header className="flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
-      <div className="md:hidden">
-        <MobileSidebarTrigger />
-      </div>
+    <>
+      <header className="flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
+        <div className="md:hidden">
+          <MobileSidebarTrigger />
+        </div>
 
-      <div className="hidden md:block">
-        <nav className="flex h-12 border-b border-slate-200">
-          {navItems.map((item) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/" || pathname.startsWith("/advertiser")
-                : pathname.startsWith(item.href)
+        <div className="hidden md:block">
+          <nav className="flex h-12 border-b border-slate-200">
+            {navItems.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/" || pathname.startsWith("/advertiser")
+                  : pathname.startsWith(item.href)
 
-            return (
-              <Link
-                prefetch
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "inline-flex h-12 items-center border-b-2 px-4 text-sm",
-                  isActive
-                    ? "text-slate-1400 border-primary font-bold"
-                    : "border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-700",
-                )}
+              return (
+                <Link
+                  prefetch
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "inline-flex h-12 items-center border-b-2 px-4 text-sm",
+                    isActive
+                      ? "text-slate-1400 border-primary font-bold"
+                      : "border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-700",
+                  )}
+                >
+                  {item.name}
+                </Link>
+              )
+            })}
+          </nav>
+        </div>
+        <div className="h-12 flex items-center space-x-2">
+          {userId && (
+            <>
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="md:hidden flex items-center justify-center h-9 w-9"
+                aria-label="Search advertiser"
               >
-                {item.name}
-              </Link>
-            )
-          })}
-        </nav>
-      </div>
-      <div className="h-12 flex items-center space-x-4">
-        {userId && (
-          <div className="text-slate-600 hover:text-slate-700">
-            <NovuNotifications />
-          </div>
-        )}
-      </div>
-    </header>
+                <Image src="/icons/search-icon-custom.png" alt="Search" width={24} height={24} />
+              </button>
+              <div className="text-slate-600 hover:text-slate-700">
+                <NovuNotifications />
+              </div>
+            </>
+          )}
+        </div>
+      </header>
+
+      <MobileAdvertiserSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    </>
   )
 }
