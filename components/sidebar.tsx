@@ -17,6 +17,7 @@ import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import EmptyState from "@/components/empty-state"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { TradeBandBadge } from "@/components/trade-band-badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -199,7 +200,7 @@ export default function Sidebar({ className }: SidebarProps) {
             alt="Search"
             width={24}
             height={24}
-            className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10"
           />
           <Input
             variant="tertiary"
@@ -208,7 +209,7 @@ export default function Sidebar({ className }: SidebarProps) {
             onChange={(e) => handleSearchChange(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
-            className="bg-grayscale-500 rounded-lg pr-8"
+            className="bg-grayscale-500 rounded-lg pr-8 pl-8"
           />
           {searchInput && (
             <Button
@@ -223,7 +224,15 @@ export default function Sidebar({ className }: SidebarProps) {
           {isSearchFocused && searchInput.length > 0 && (
             <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
               {isSearching && searchResults.length === 0 ? (
-                <div className="px-4 py-3 text-sm text-slate-500">Searching...</div>
+                <div className="px-4 py-2 space-y-1">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-2 px-0 py-2">
+                      <Skeleton className="h-[24px] w-[24px] rounded-full flex-shrink-0 bg-grayscale-200" />
+                      <Skeleton className="h-4 w-32 bg-grayscale-200" />
+                      <Skeleton className="h-4 w-12 bg-grayscale-200" />
+                    </div>
+                  ))}
+                </div>
               ) : searchResults.length > 0 ? (
                 <div ref={dropdownScrollContainerRef} className="max-h-64 overflow-y-auto">
                   {searchResults.map((ad) => (

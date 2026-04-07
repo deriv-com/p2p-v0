@@ -9,6 +9,10 @@ import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import EmptyState from "@/components/empty-state"
+import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
+import { useTranslations } from "@/lib/i18n/use-translations"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface MobileAdvertiserSearchProps {
     isOpen: boolean
@@ -17,6 +21,7 @@ interface MobileAdvertiserSearchProps {
 
 export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvertiserSearchProps) {
     const router = useRouter()
+    const { t } = useTranslations()
     const { setNickname } = useMarketFilterStore()
     const [searchInput, setSearchInput] = useState("")
     const [debouncedSearchInput, setDebouncedSearchInput] = useState("")
@@ -133,14 +138,15 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
 
                 {/* Results */}
                 <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">
-                    {!searchInput ? (
-                        <div className="flex flex-col items-center justify-center h-full gap-3 text-slate-400 px-6">
-                            <Image src="/icons/search-icon-custom.png" alt="Search" width={48} height={48} className="opacity-30" />
-                            <p className="text-sm text-center">Search for an advertiser by their nickname</p>
-                        </div>
-                    ) : isSearching && searchResults.length === 0 ? (
-                        <div className="flex items-center justify-center py-12">
-                            <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                    {!searchInput ? null : isSearching && searchResults.length === 0 ? (
+                        <div className="px-4 py-2 space-y-1">
+                            {[...Array(5)].map((_, i) => (
+                                <div key={i} className="flex items-center gap-2 py-3 border-b border-slate-100">
+                                    <Skeleton className="h-[24px] w-[24px] rounded-full flex-shrink-0 bg-grayscale-200" />
+                                    <Skeleton className="h-4 w-36 bg-grayscale-200" />
+                                    <Skeleton className="h-4 w-12 bg-grayscale-200" />
+                                </div>
+                            ))}
                         </div>
                     ) : searchResults.length > 0 ? (
                         <>
@@ -148,17 +154,32 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                                 {searchResults.map((ad) => (
                                     <li key={ad.id}>
                                         <button
-                                            className="w-full flex items-center gap-3 px-4 py-3 text-left border-b border-slate-100 active:bg-slate-50"
+                                            className="w-full flex items-center gap-2 px-4 py-3 text-left border-b border-slate-100 active:bg-slate-50"
                                             onClick={() => handleSelectAdvertiser(ad.user.nickname, ad.user.id)}
                                         >
-                                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-sm font-bold">
-                                                {ad.user.nickname.charAt(0).toUpperCase()}
+                                            {/* Avatar with online indicator */}
+                                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                                                {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                                                <div
+                                                    className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`}
+                                                />
                                             </div>
-                                            <div className="min-w-0 flex-1">
-                                                <div className="text-sm font-medium truncate">{ad.user.nickname}</div>
-                                                <div className="text-xs text-slate-500 truncate">
-                                                    {ad.exchange_rate} {ad.payment_currency}/{ad.account_currency}
-                                                </div>
+                                            {/* Nickname + badges */}
+                                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                                                <span className="text-sm truncate">{ad.user?.nickname}</span>
+                                                <VerifiedBadge />
+                                                {ad.user.trade_band && (
+                                                    <TradeBandBadge
+                                                        tradeBand={ad.user.trade_band}
+                                                        showLearnMore={true}
+                                                        size={18}
+                                                    />
+                                                )}
+                                                {ad.user?.is_favourite && (
+                                                    <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
+                                                        {t("market.following")}
+                                                    </span>
+                                                )}
                                             </div>
                                         </button>
                                     </li>
