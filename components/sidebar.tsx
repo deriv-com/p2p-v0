@@ -171,7 +171,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
-                className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${searchQuery.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
+                className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${searchInput.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
                   }`}
               />
               {searchInput && (
