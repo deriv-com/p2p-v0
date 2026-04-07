@@ -194,7 +194,7 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
       </div>
       <nav className="flex-1 px-4">
-        <div className="relative mb-2">
+        <div className="relative mt-2">
           <Image
             src="/icons/search-icon-custom.png"
             alt="Search"
