@@ -12,7 +12,7 @@ import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
@@ -160,7 +160,7 @@ export default function Sidebar({ className }: SidebarProps) {
       </div>
       <nav className="flex-1 px-4">
         <Popover open={isSearchFocused && searchInput.length > 0}>
-          <PopoverTrigger asChild>
+          <PopoverAnchor asChild>
             <div className="relative mb-2">
               <Image
                 src="/icons/search-icon-custom.png"
@@ -189,7 +189,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 </Button>
               )}
             </div>
-          </PopoverTrigger>
+          </PopoverAnchor>
           <PopoverContent align="start" sideOffset={4} className="p-0 w-[263px] rounded-xl overflow-hidden">
             {isSearching ? (
               <div className="px-4 py-3 text-sm text-slate-500">Searching...</div>
