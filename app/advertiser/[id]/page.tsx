@@ -360,7 +360,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   const handleBack = () => {
     if (returnTo === "profile" && tabParam) {
-      router.push(`/profile?tab=${tabParam}`)
+      router.replace(`/profile?tab=${tabParam}`)
     } else if (isMobile) {
       router.back()
     } else {
