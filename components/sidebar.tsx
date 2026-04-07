@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import EmptyState from "@/components/empty-state"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -44,9 +45,44 @@ export default function Sidebar({ className }: SidebarProps) {
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const { data: searchResults, isFetching: isSearching } = useAdvertiserSearch({
+  const {
+    data: searchData,
+    isFetching: isSearching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useAdvertiserSearch({
     nickname: debouncedSearchInput,
   })
+
+  const searchResults = searchData?.pages.flat() ?? []
+
+  const dropdownSentinelRef = useRef<HTMLDivElement>(null)
+  const dropdownScrollContainerRef = useRef<HTMLDivElement>(null)
+  const isFetchingNextPageRef = useRef(false)
+
+  // Keep ref in sync so the observer callback always reads the latest value
+  useEffect(() => {
+    isFetchingNextPageRef.current = isFetchingNextPage
+  }, [isFetchingNextPage])
+
+  // Infinite scroll: fetch next page when sentinel comes into view
+  useEffect(() => {
+    const sentinel = dropdownSentinelRef.current
+    const scrollContainer = dropdownScrollContainerRef.current
+    if (!sentinel || !hasNextPage || !scrollContainer) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingNextPageRef.current) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [hasNextPage, fetchNextPage])
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value)
@@ -190,31 +226,43 @@ export default function Sidebar({ className }: SidebarProps) {
           )}
           {isSearchFocused && searchInput.length > 0 && (
             <div className="absolute top-full left-0 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
-              {isSearching ? (
+              {isSearching && searchResults.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-slate-500">Searching...</div>
-              ) : searchResults?.length ? (
-                searchResults.map((ad) => (
-                  <button
-                    key={ad.id}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-slate-50"
-                    onMouseDown={(e) => {
-                      e.preventDefault()
-                      handleSelectAd(ad.user.nickname, ad.user.id)
-                    }}
-                  >
-                    <div className="h-7 w-7 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
-                      {ad.user.nickname.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="min-w-0 flex-1 text-left">
-                      <div className="text-sm font-medium truncate">{ad.user.nickname}</div>
-                      <div className="text-xs text-slate-500 truncate">
-                        {ad.exchange_rate} {ad.payment_currency}/{ad.account_currency}
+              ) : searchResults.length > 0 ? (
+                <div ref={dropdownScrollContainerRef} className="max-h-64 overflow-y-auto">
+                  {searchResults.map((ad) => (
+                    <button
+                      key={ad.id}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-slate-50"
+                      onMouseDown={(e) => {
+                        e.preventDefault()
+                        handleSelectAd(ad.user.nickname, ad.user.id)
+                      }}
+                    >
+                      <div className="h-7 w-7 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
+                        {ad.user.nickname.charAt(0).toUpperCase()}
                       </div>
+                      <div className="min-w-0 flex-1 text-left">
+                        <div className="text-sm font-medium truncate">{ad.user.nickname}</div>
+                        <div className="text-xs text-slate-500 truncate">
+                          {ad.exchange_rate} {ad.payment_currency}/{ad.account_currency}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                  {isFetchingNextPage && (
+                    <div className="sticky bottom-0 flex justify-center py-2 bg-white">
+                      <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
                     </div>
-                  </button>
-                ))
+                  )}
+                  <div ref={dropdownSentinelRef} className="h-1" />
+                </div>
               ) : (
-                <div className="px-4 py-3 text-sm text-slate-500">No advertisers found</div>
+                <EmptyState
+                  title={`No results found for "${debouncedSearchInput}"`}
+                  description="Check spelling or try finding different advertisers."
+                  className="py-4 px-2"
+                />
               )}
             </div>
           )}
