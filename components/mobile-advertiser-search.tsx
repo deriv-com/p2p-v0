@@ -40,6 +40,13 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
 
     const searchResults = data?.pages.flat() ?? []
 
+    // Cleanup debounce timeout on unmount to prevent race conditions
+    useEffect(() => {
+        return () => {
+            if (debounceRef.current) clearTimeout(debounceRef.current)
+        }
+    }, [])
+
     // Keep ref in sync so the observer callback always reads the latest value
     useEffect(() => {
         isFetchingNextPageRef.current = isFetchingNextPage

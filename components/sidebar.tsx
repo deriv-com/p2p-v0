@@ -47,6 +47,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const {
     data: searchData,
@@ -63,6 +64,24 @@ export default function Sidebar({ className }: SidebarProps) {
   const dropdownSentinelRef = useRef<HTMLDivElement>(null)
   const dropdownScrollContainerRef = useRef<HTMLDivElement>(null)
   const isFetchingNextPageRef = useRef(false)
+
+  // Reset nickname filter when navigating away from market/advertiser pages
+  useEffect(() => {
+    const isMarketPage = pathname === "/" || pathname.startsWith("/advertiser")
+    if (!isMarketPage) {
+      setSearchInput("")
+      setDebouncedSearchInput("")
+      setNickname("")
+    }
+  }, [pathname, setNickname])
+
+  // Cleanup timeouts on unmount to prevent memory leaks and race conditions
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+      if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
+    }
+  }, [])
 
   // Keep ref in sync so the observer callback always reads the latest value
   useEffect(() => {
@@ -208,7 +227,9 @@ export default function Sidebar({ className }: SidebarProps) {
             value={searchInput}
             onChange={(e) => handleSearchChange(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
-            onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
+            onBlur={() => {
+              blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
+            }}
             className="bg-grayscale-500 rounded-lg pr-8 pl-8"
           />
           {searchInput && (
