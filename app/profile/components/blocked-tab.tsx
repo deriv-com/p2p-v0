@@ -73,6 +73,7 @@ export default function BlockedTab() {
               duration: 2500,
             })
             queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
+            queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
           }
         } catch (error) {
           console.error("Error unblocking user:", error)

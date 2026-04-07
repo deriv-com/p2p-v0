@@ -219,7 +219,7 @@ export default function Sidebar({ className }: SidebarProps) {
             alt="Search"
             width={24}
             height={24}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2"
           />
           <Input
             variant="tertiary"
