@@ -53,6 +53,9 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value)
+    if (value.length > 0) {
+      setIsSearchFocused(true)
+    }
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => setNickname(value), 300)
   }
@@ -154,36 +157,31 @@ export default function Sidebar({ className }: SidebarProps) {
         <Popover open={isSearchFocused && searchInput.length > 0}>
           <PopoverTrigger asChild>
             <div className="relative mb-2">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
-              </svg>
+              <Image
+                src="/icons/search-icon-custom.png"
+                alt="Search"
+                width={24}
+                height={24}
+                className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
+              />
               <Input
-                variant="tertiary"
-                placeholder="Search advertiser's nickname"
+                type="text"
+                placeholder="Search by advertiser's nickname"
                 value={searchInput}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
-                className="rounded-full pr-8"
+                onBlur={() => setIsSearchFocused(false)}
+                className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${searchQuery.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
+                  }`}
               />
               {searchInput && (
                 <Button
                   variant="ghost"
-                  size="icon"
-                  onClick={handleClear}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-400 hover:text-slate-600 hover:bg-transparent"
+                  size="sm"
+                  onClick={() => handleClear()}
+                  className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
                 </Button>
               )}
             </div>
