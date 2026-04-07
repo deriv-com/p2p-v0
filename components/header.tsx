@@ -71,10 +71,10 @@ export default function Header() {
             <>
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="md:hidden flex items-center justify-center h-9 w-9"
+                className="md:hidden flex items-center justify-center rounded-full bg-white/[0.04] h-8 w-8"
                 aria-label="Search advertiser"
               >
-                <Image src="/icons/search-icon-custom.png" alt="Search" width={24} height={24} />
+                <Image src="/icons/search-icon-custom.png" alt="Search" width={24} height={24} className="brightness-0 invert" />
               </button>
               <div className="text-slate-600 hover:text-slate-700">
                 <NovuNotifications />

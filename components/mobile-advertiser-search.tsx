@@ -73,9 +73,9 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
     }
 
     const handleSelectAdvertiser = (nickname: string, advertiserId: number) => {
+        router.push(`/advertiser/${advertiserId}`)
         setNickname(nickname)
         handleClose()
-        router.push(`/advertiser/${advertiserId}`)
     }
 
     const handleClear = () => {
@@ -98,14 +98,14 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 className="h-full w-full p-0 flex flex-col gap-0 rounded-none"
             >
                 {/* Header */}
-                <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200 flex-shrink-0">
+                <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0">
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={handleClose}
-                        className="h-9 w-9 hover:bg-transparent p-0 flex-shrink-0"
+                        className="bg-grayscale-500 px-1 w-fit"
                     >
-                        <Image src="/icons/arrow-back.svg" alt="Back" width={24} height={24} />
+                        <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                     </Button>
                     <div className="relative flex-1">
                         <Image

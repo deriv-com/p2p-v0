@@ -356,7 +356,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     if (returnTo === "profile" && tabParam) {
       router.push(`/profile?tab=${tabParam}`)
     } else {
-      router.push("/")
+      router.back()
     }
   }
 
@@ -497,99 +497,99 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                 <div className="container mx-auto pb-8">
                   {adverts.length > 0 ? (
                     <>
-                    <div ref={scrollContainerRef} className="overflow-auto scrollbar-custom max-h-[calc(100vh-360px)]">
-                      <Table>
-                        <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
-                          <TableRow className="text-xs">
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                              {t("advertiser.rates")}
-                            </TableHead>
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                              {t("advertiser.orderLimits")}
-                            </TableHead>
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                              {t("advertiser.timeLimit")}
-                            </TableHead>
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                              {t("advertiser.paymentMethods")}
-                            </TableHead>
-                            <TableHead className="text-right py-4 px-4"></TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                          {adverts.map((ad) => (
-                            <TableRow
-                              className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
-                              key={ad.id}
-                            >
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
-                                <div className="font-bold">
-                                  {ad.effective_rate_display
-                                    ? ad.effective_rate_display.toLocaleString(undefined, {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    })
-                                    : ""}{" "}
-                                  {ad.payment_currency}
-                                  <span className="text-xs font-normal text-black opacity-[0.48]">
-                                    {" "}
-                                    /{ad.account_currency}
-                                  </span>
-                                </div>
-                                {ad.exchange_rate_type === "floating" && (
-                                  <div className="text-xs text-slate-500">0.1%</div>
-                                )}
-                              </TableCell>
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
-                                <div>
-                                  {isMobile && <span>Trade Limits: </span>}
-                                  {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
-                                </div>
-                              </TableCell>
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
-                                <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
-                                  <span>{ad.order_expiry_period} min</span>
-                                </div>
-                              </TableCell>
-                              <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
-                                <div className="flex flex-wrap gap-2 text-xs">
-                                  {ad.payment_methods?.map((method, index) => (
-                                    <div key={index} className="flex items-center">
-                                      <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                          ? "bg-paymentMethod-bank"
-                                          : "bg-paymentMethod-ewallet"
-                                          }`}
-                                      ></div>
-                                      <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              </TableCell>
-                              <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
-                                {userId != ad.user.id && (
-                                  <Button
-                                    variant={ad.type === "buy" ? "destructive" : "secondary"}
-                                    size="sm"
-                                    onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
-                                    disabled={!!tempBanUntil}
-                                  >
-                                    {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
-                                  </Button>
-                                )}
-                              </TableCell>
+                      <div ref={scrollContainerRef} className="overflow-auto scrollbar-custom max-h-[calc(100vh-360px)]">
+                        <Table>
+                          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+                            <TableRow className="text-xs">
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.rates")}
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.orderLimits")}
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.timeLimit")}
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.paymentMethods")}
+                              </TableHead>
+                              <TableHead className="text-right py-4 px-4"></TableHead>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                      <div ref={sentinelRef} className="h-1" />
-                    </div>
-                    {isFetchingNextPage && (
-                      <div className="flex justify-center py-4">
-                        <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                          </TableHeader>
+                          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                            {adverts.map((ad) => (
+                              <TableRow
+                                className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
+                                key={ad.id}
+                              >
+                                <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
+                                  <div className="font-bold">
+                                    {ad.effective_rate_display
+                                      ? ad.effective_rate_display.toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      })
+                                      : ""}{" "}
+                                    {ad.payment_currency}
+                                    <span className="text-xs font-normal text-black opacity-[0.48]">
+                                      {" "}
+                                      /{ad.account_currency}
+                                    </span>
+                                  </div>
+                                  {ad.exchange_rate_type === "floating" && (
+                                    <div className="text-xs text-slate-500">0.1%</div>
+                                  )}
+                                </TableCell>
+                                <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
+                                  <div>
+                                    {isMobile && <span>Trade Limits: </span>}
+                                    {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
+                                  <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                    <span>{ad.order_expiry_period} min</span>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
+                                  <div className="flex flex-wrap gap-2 text-xs">
+                                    {ad.payment_methods?.map((method, index) => (
+                                      <div key={index} className="flex items-center">
+                                        <div
+                                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                            ? "bg-paymentMethod-bank"
+                                            : "bg-paymentMethod-ewallet"
+                                            }`}
+                                        ></div>
+                                        <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
+                                  {userId != ad.user.id && (
+                                    <Button
+                                      variant={ad.type === "buy" ? "destructive" : "secondary"}
+                                      size="sm"
+                                      onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
+                                      disabled={!!tempBanUntil}
+                                    >
+                                      {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
+                                    </Button>
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                        <div ref={sentinelRef} className="h-1" />
                       </div>
-                    )}
+                      {isFetchingNextPage && (
+                        <div className="flex justify-center py-4">
+                          <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                        </div>
+                      )}
                     </>
                   ) : (
                     <EmptyState
