@@ -60,7 +60,16 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
 
   useEffect(() => {
     setSelectedTab(activeTab)
-  }, [activeTab])
+    if (isMobile) {
+      if (activeTab === "counterparties") {
+        setShowCounterpartiesSidebar(true)
+      } else if (activeTab === "follows") {
+        setShowFollowsSidebar(true)
+      } else if (activeTab === "blocked") {
+        setShowBlockedSidebar(true)
+      }
+    }
+  }, [activeTab, isMobile])
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab)

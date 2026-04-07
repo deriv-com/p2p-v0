@@ -25,7 +25,8 @@ import { ClosedGroupBadge } from "@/components/closed-group-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 import { AdvertiserSkeleton } from "@/app/advertiser/components/advertiser-skeleton"
-import { useAdvertiserAds } from "@/hooks/use-api-queries"
+import { useAdvertiserAds, queryKeys } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface AdvertiserProfile {
   id: string | number
@@ -86,6 +87,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
   const { t } = useTranslations()
+  const queryClient = useQueryClient()
 
   const abortControllerRef = useRef<AbortController | null>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -231,6 +233,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
             if (result.success) {
               setIsBlocked(!isBlocked)
+              queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
+              queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
 
               toast({
                 description: (
@@ -270,6 +274,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
       if (result.success) {
         setIsBlocked(false)
+        queryClient.invalidateQueries({ queryKey: queryKeys.auth.tradePartners() })
+        queryClient.invalidateQueries({ queryKey: queryKeys.auth.blockedUsers() })
 
         toast({
           description: (
