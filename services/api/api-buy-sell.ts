@@ -14,6 +14,8 @@ export interface Advertisement {
     rating_average_lifetime?: number
     order_count_lifetime?: number
     completion_average_30day?: number
+    completion_rate_all_30day?: number
+    trade_band?: string
   }
   account_currency: string
   actual_maximum_order_amount: string
@@ -39,7 +41,7 @@ export interface Advertisement {
 export interface SearchParams {
   type?: string
   currency?: string
-  account_currency: string
+  account_currency?: string
   paymentMethod?: string[]
   amount?: number
   nickname?: string

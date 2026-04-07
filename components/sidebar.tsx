@@ -2,14 +2,22 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import { NovuNotifications } from "./novu-notifications"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import EmptyState from "@/components/empty-state"
+import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -31,8 +39,97 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const { isWalletAccount, userData, userId } = useUserDataStore()
   const { t, locale } = useTranslations()
+  const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
+  const [searchInput, setSearchInput] = useState(nickname)
+  const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
+  const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const {
+    data: searchData,
+    isFetching: isSearching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useAdvertiserSearch({
+    nickname: debouncedSearchInput,
+  })
+
+  const searchResults = searchData?.pages.flat() ?? []
+
+  const dropdownSentinelRef = useRef<HTMLDivElement>(null)
+  const dropdownScrollContainerRef = useRef<HTMLDivElement>(null)
+  const isFetchingNextPageRef = useRef(false)
+
+  // Reset nickname filter when navigating away from market/advertiser pages
+  useEffect(() => {
+    const isMarketPage = pathname === "/" || pathname.startsWith("/advertiser")
+    if (!isMarketPage) {
+      setSearchInput("")
+      setDebouncedSearchInput("")
+      setNickname("")
+    }
+  }, [pathname, setNickname])
+
+  // Cleanup timeouts on unmount to prevent memory leaks and race conditions
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+      if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
+    }
+  }, [])
+
+  // Keep ref in sync so the observer callback always reads the latest value
+  useEffect(() => {
+    isFetchingNextPageRef.current = isFetchingNextPage
+  }, [isFetchingNextPage])
+
+  // Infinite scroll: fetch next page when sentinel comes into view
+  useEffect(() => {
+    const sentinel = dropdownSentinelRef.current
+    const scrollContainer = dropdownScrollContainerRef.current
+    if (!sentinel || !hasNextPage || !scrollContainer) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingNextPageRef.current) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0, rootMargin: "100px", root: scrollContainer },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [hasNextPage, fetchNextPage])
+
+  const handleSearchChange = (value: string) => {
+    setSearchInput(value)
+    if (value.length > 0) {
+      setIsSearchFocused(true)
+    }
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearchInput(value)
+      setNickname(value)
+    }, 300)
+  }
+
+  const handleSelectAd = (advertiserNickname: string, advertiserId: number) => {
+    setSearchInput(advertiserNickname)
+    setNickname(advertiserNickname)
+    setIsSearchFocused(false)
+    router.push(`/advertiser/${advertiserId}`)
+  }
+
+  const handleClear = () => {
+    setSearchInput("")
+    setDebouncedSearchInput("")
+    setNickname("")
+  }
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
     return cached !== "v1"
@@ -116,6 +213,101 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
       </div>
       <nav className="flex-1 px-4">
+        <div className="relative mt-2">
+          <Image
+            src="/icons/search-icon-custom.png"
+            alt="Search"
+            width={24}
+            height={24}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10"
+          />
+          <Input
+            variant="tertiary"
+            placeholder="Search advertiser's nickname"
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => {
+              blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
+            }}
+            className="bg-grayscale-500 rounded-lg pr-8 pl-8"
+          />
+          {searchInput && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClear}
+              className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
+            >
+              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+            </Button>
+          )}
+          {isSearchFocused && searchInput.length > 0 && (
+            <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
+              {isSearching && searchResults.length === 0 ? (
+                <div className="px-4 py-2 space-y-1">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-2 px-0 py-2">
+                      <Skeleton className="h-[24px] w-[24px] rounded-full flex-shrink-0 bg-grayscale-200" />
+                      <Skeleton className="h-4 w-32 bg-grayscale-200" />
+                      <Skeleton className="h-4 w-12 bg-grayscale-200" />
+                    </div>
+                  ))}
+                </div>
+              ) : searchResults.length > 0 ? (
+                <div ref={dropdownScrollContainerRef} className="max-h-64 overflow-y-auto">
+                  {searchResults.map((ad) => (
+                    <button
+                      key={ad.id}
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-slate-50"
+                      onMouseDown={(e) => {
+                        e.preventDefault()
+                        handleSelectAd(ad.user.nickname, ad.user.id)
+                      }}
+                    >
+                      {/* Avatar with online indicator */}
+                      <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                        {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                        <div
+                          className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`}
+                        />
+                      </div>
+                      {/* Nickname + badges */}
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <span className="text-sm truncate">{ad.user?.nickname}</span>
+                        <VerifiedBadge />
+                        {ad.user.trade_band && (
+                          <TradeBandBadge
+                            tradeBand={ad.user.trade_band}
+                            showLearnMore={true}
+                            size={18}
+                          />
+                        )}
+                        {ad.user?.is_favourite && (
+                          <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
+                            {t("market.following")}
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                  {isFetchingNextPage && (
+                    <div className="sticky bottom-0 flex justify-center py-2 bg-white">
+                      <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                    </div>
+                  )}
+                  <div ref={dropdownSentinelRef} className="h-1" />
+                </div>
+              ) : (
+                <EmptyState
+                  title={`No results found for "${debouncedSearchInput}"`}
+                  description="Check spelling or try finding different advertisers."
+                  className="py-4 px-2"
+                />
+              )}
+            </div>
+          )}
+        </div>
         <ul>
           {navItems.map((item) => {
             const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.liveChat")

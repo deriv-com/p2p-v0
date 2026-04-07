@@ -50,6 +50,7 @@ export default function BuySellPage() {
     filterOptions,
     selectedPaymentMethods,
     selectedAccountCurrency,
+    nickname,
     setActiveTab,
     setCurrency,
     setSortBy,
@@ -471,345 +472,347 @@ export default function BuySellPage() {
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
-              {!isV1Signup && (
-                <div className="flex gap-2 mb-3 flex-1 hidden">
-                  {accountCurrencies.map((curr) => (
-                    <Button
-                      key={curr.code}
-                      variant={selectedAccountCurrency === curr.code ? "black" : "outline"}
-                      onClick={() => setSelectedAccountCurrency(curr.code)}
-                      className={cn(
-                        "px-4 py-2 rounded-full font-normal border-slate-800",
-                        selectedAccountCurrency === curr.code
-                          ? ""
-                          : "text-grayscale-600 hover:bg-transparent border-gray-300",
-                      )}
-                      size="sm"
-                    >
-                      {curr.code}
-                    </Button>
-                  ))}
+              <div className="flex gap-2 items-center ml-auto">
+                {!isV1Signup && (
+                  <div className="flex gap-2 mb-3 flex-1 hidden">
+                    {accountCurrencies.map((curr) => (
+                      <Button
+                        key={curr.code}
+                        variant={selectedAccountCurrency === curr.code ? "black" : "outline"}
+                        onClick={() => setSelectedAccountCurrency(curr.code)}
+                        className={cn(
+                          "px-4 py-2 rounded-full font-normal border-slate-800",
+                          selectedAccountCurrency === curr.code
+                            ? ""
+                            : "text-grayscale-600 hover:bg-transparent border-gray-300",
+                        )}
+                        size="sm"
+                      >
+                        {curr.code}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+                <div className="flex-1 md:flex md:items-center md:gap-2 md:flex-none">
+                  <PaymentMethodsFilter
+                    paymentMethods={paymentMethods}
+                    selectedMethods={selectedPaymentMethods}
+                    onSelectionChange={setSelectedPaymentMethods}
+                    isLoading={isLoadingPaymentMethods}
+                    trigger={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className={cn(
+                          "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
+                          hasFilteredPaymentMethods
+                            ? "bg-black hover:bg-black text-white"
+                            : "bg-transparent hover:bg-transparent",
+                        )}
+                      >
+                        <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
+                          {getPaymentMethodsDisplayText()}
+                        </span>
+                        {hasFilteredPaymentMethods ? (
+                          <Image
+                            src="/icons/chevron-down-white.png"
+                            alt="Arrow"
+                            width={24}
+                            height={24}
+                            className="transition-transform duration-200"
+                          />
+                        ) : (
+                          <Image
+                            src="/icons/chevron-down.png"
+                            alt="Arrow"
+                            width={24}
+                            height={24}
+                            className="transition-transform duration-200"
+                          />
+                        )}
+                      </Button>
+                    }
+                  />
                 </div>
-              )}
-              <div className="flex-1 md:flex md:items-center md:gap-2 md:flex-none">
-                <PaymentMethodsFilter
-                  paymentMethods={paymentMethods}
-                  selectedMethods={selectedPaymentMethods}
-                  onSelectionChange={setSelectedPaymentMethods}
-                  isLoading={isLoadingPaymentMethods}
-                  trigger={
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className={cn(
-                        "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
-                        hasFilteredPaymentMethods
-                          ? "bg-black hover:bg-black text-white"
-                          : "bg-transparent hover:bg-transparent",
-                      )}
-                    >
-                      <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
-                        {getPaymentMethodsDisplayText()}
-                      </span>
-                      {hasFilteredPaymentMethods ? (
-                        <Image
-                          src="/icons/chevron-down-white.png"
-                          alt="Arrow"
-                          width={24}
-                          height={24}
-                          className="transition-transform duration-200"
-                        />
-                      ) : (
-                        <Image
-                          src="/icons/chevron-down.png"
-                          alt="Arrow"
-                          width={24}
-                          height={24}
-                          className="transition-transform duration-200"
-                        />
-                      )}
-                    </Button>
-                  }
-                />
-              </div>
 
-              <div className="filter-dropdown-container flex-shrink-0">
-                <MarketFilterDropdown
-                  activeTab={activeTab}
-                  onApply={handleFilterApply}
-                  initialFilters={filterOptions}
-                  initialSortBy={sortBy}
-                  hasActiveFilters={hasActiveFilters}
-                  trigger={
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className={cn(
-                        "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
-                        hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
-                      )}
-                    >
-                      {hasActiveFilters ? (
-                        <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} />
-                      ) : (
-                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
-                      )}
-                    </Button>
-                  }
-                />
+                <div className="filter-dropdown-container flex-shrink-0">
+                  <MarketFilterDropdown
+                    activeTab={activeTab}
+                    onApply={handleFilterApply}
+                    initialFilters={filterOptions}
+                    initialSortBy={sortBy}
+                    hasActiveFilters={hasActiveFilters}
+                    trigger={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className={cn(
+                          "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
+                          hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
+                        )}
+                      >
+                        {hasActiveFilters ? (
+                          <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} />
+                        ) : (
+                          <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                        )}
+                      </Button>
+                    }
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
           {isLoading || (adverts.length === 0 && !currency) ? (
-              <div className="md:block">
-                <Table>
-                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
-                    <TableRow className="text-xs">
-                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
-                      </TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
-                      </TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
-                      </TableHead>
-                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {[...Array(2)].map((_, index) => (
-                      <TableRow
-                        key={index}
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
-                      >
-                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
-                          <div className="flex items-center">
-                            <Skeleton className="bg-grayscale-500 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
-                            <div className="flex-1">
-                              <Skeleton className="bg-grayscale-500 h-4 w-32 mb-2" />
-                              <Skeleton className="bg-grayscale-500 h-3 w-48" />
-                              <Skeleton className="bg-grayscale-500 h-3 w-24 mt-2" />
-                            </div>
+            <div className="md:block">
+              <Table>
+                <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+                  <TableRow className="text-xs">
+                    <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                      <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                    </TableHead>
+                    <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                      <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                    </TableHead>
+                    <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                      <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                    </TableHead>
+                    <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                  {[...Array(2)].map((_, index) => (
+                    <TableRow
+                      key={index}
+                      className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
+                    >
+                      <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Skeleton className="bg-grayscale-500 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
+                          <div className="flex-1">
+                            <Skeleton className="bg-grayscale-500 h-4 w-32 mb-2" />
+                            <Skeleton className="bg-grayscale-500 h-3 w-48" />
+                            <Skeleton className="bg-grayscale-500 h-3 w-24 mt-2" />
                           </div>
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                          <Skeleton className="bg-grayscale-500 h-5 w-32 mb-2" />
-                          <Skeleton className="bg-grayscale-500 h-3 w-48" />
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                          <div className="flex flex-col gap-2">
-                            <Skeleton className="bg-grayscale-500 h-3 w-24" />
-                            <Skeleton className="bg-grayscale-500 h-3 w-28" />
-                          </div>
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                          <Skeleton className="bg-grayscale-500 h-8 w-20 ml-auto" />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            ) : error ? (
-              <div className="text-center py-8 text-red-500">
-                {error.message || "Failed to load advertisements"}
-              </div>
-            ) : adverts.length === 0 ? (
-              <div className="h-full">
-                <EmptyState
-                  title={t("market.noAdsTitle", { currency: currency })}
-                  description={t("market.noAdsDescription", { currency: currency })}
-                  redirectToAds={true}
-                  adType={activeTab}
-                  route="markets"
-                />
-              </div>
-            ) : (
-              <div className="md:block">
-                <Table>
-                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
-                    <TableRow className="text-xs">
-                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                        {t("market.advertisers")}
-                      </TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                        {t("market.rates")}
-                      </TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                        {t("market.paymentMethods")}
-                      </TableHead>
-                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                        </div>
+                      </TableCell>
+                      <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                        <Skeleton className="bg-grayscale-500 h-5 w-32 mb-2" />
+                        <Skeleton className="bg-grayscale-500 h-3 w-48" />
+                      </TableCell>
+                      <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                        <div className="flex flex-col gap-2">
+                          <Skeleton className="bg-grayscale-500 h-3 w-24" />
+                          <Skeleton className="bg-grayscale-500 h-3 w-28" />
+                        </div>
+                      </TableCell>
+                      <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                        <Skeleton className="bg-grayscale-500 h-8 w-20 ml-auto" />
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-500">
+              {error.message || "Failed to load advertisements"}
+            </div>
+          ) : adverts.length === 0 ? (
+            <div className="h-full">
+              <EmptyState
+                title={t("market.noAdsTitle", { currency: currency })}
+                description={t("market.noAdsDescription", { currency: currency })}
+                redirectToAds={true}
+                adType={activeTab}
+                route="markets"
+              />
+            </div>
+          ) : (
+            <div className="md:block">
+              <Table>
+                <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+                  <TableRow className="text-xs">
+                    <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                      {t("market.advertisers")}
+                    </TableHead>
+                    <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                      {t("market.rates")}
+                    </TableHead>
+                    <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                      {t("market.paymentMethods")}
+                    </TableHead>
+                    <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
 
-                    {adverts.map((ad) => (
-                      <TableRow
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
-                        key={ad.id}
-                      >
-                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                              {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                              <div
-                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                  }`}
-                              />
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                className="hover:underline cursor-pointer"
-                              >
-                                {ad.user?.nickname}
-                              </button>
-                              <VerifiedBadge />
-                              {ad.user.trade_band && (
-                                <TradeBandBadge
-                                  tradeBand={ad.user.trade_band}
-                                  showLearnMore={true}
-                                  size={18}
-                                />
-                              )}
-                              {userId != ad.user.id && ad.is_private && (
-                                <Image
-                                  src="/icons/closed-group.svg"
-                                  alt="Closed Group"
-                                  width={32}
-                                  height={32}
-                                  className="cursor-pointer mr-1"
-                                />
-                              )}
-                              {ad.user?.is_favourite && (
-                                <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                  {t("market.following")}
-                                </span>
-                              )}
-                            </div>
+                  {adverts.map((ad) => (
+                    <TableRow
+                      className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
+                      key={ad.id}
+                    >
+                      <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                            {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                            <div
+                              className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                }`}
+                            />
                           </div>
-                          <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                            {ad.user.rating_average_lifetime && (
-                              <span className="flex items-center">
-                                <Image
-                                  src="/icons/star-active.svg"
-                                  alt="Rating"
-                                  width={16}
-                                  height={16}
-                                  className="mr-1"
-                                />
-                                <span className="text-pending-text-secondary">
-                                  {ad.user.rating_average_lifetime.toFixed(2)}
-                                </span>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                              className="hover:underline cursor-pointer"
+                            >
+                              {ad.user?.nickname}
+                            </button>
+                            <VerifiedBadge />
+                            {ad.user.trade_band && (
+                              <TradeBandBadge
+                                tradeBand={ad.user.trade_band}
+                                showLearnMore={true}
+                                size={18}
+                              />
+                            )}
+                            {userId != ad.user.id && ad.is_private && (
+                              <Image
+                                src="/icons/closed-group.svg"
+                                alt="Closed Group"
+                                width={32}
+                                height={32}
+                                className="cursor-pointer mr-1"
+                              />
+                            )}
+                            {ad.user?.is_favourite && (
+                              <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                {t("market.following")}
                               </span>
                             )}
-                            {ad.user.order_count_lifetime > 0 && (
-                              <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
-                                <span>
-                                  {ad.user.order_count_lifetime} {t("market.orders")}
-                                </span>
-                              </div>
-                            )}
-                            {ad.user.completion_rate_all_30day > 0 && (
-                              <div className="flex flex-row items-center justify-center gap-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                <span>
-                                  {ad.user.completion_rate_all_30day}% {t("market.completion")}
-                                </span>
-                              </div>
-                            )}
                           </div>
-                          {!isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
-                                    <span>
-                                      {ad.order_expiry_period} {t("market.min")}
-                                    </span>
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
-                                  <TooltipArrow className="fill-black" />
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-                          }
-                        </TableCell>
-                        <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
-                          <div className="font-bold text-base flex items-center">
-                            {ad.effective_rate_display
-                              ? ad.effective_rate_display.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
-                              : ""}{" "}
-                            {ad.payment_currency}
-                            <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
-                          </div>
-                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
-                            }  ${ad.account_currency}`}</div>
-                          {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
-                                    <span>
-                                      {ad.order_expiry_period} {t("market.min")}
-                                    </span>
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
-                                  <TooltipArrow className="fill-black" />
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>}
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                          <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
-                            {ad.payment_methods?.map((method, index) => (
-                              <div key={index} className="flex items-center">
-                                {method && (
-                                  <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                      ? "bg-paymentMethod-bank"
-                                      : "bg-paymentMethod-ewallet"
-                                      }`}
-                                  ></div>
-                                )}
-                                <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                          {userId != ad.user.id && (
-                            <Button
-                              variant={ad.type === "buy" ? "destructive" : "secondary"}
-                              size="sm"
-                              onClick={() => handleOrderClick(ad)}
-                              disabled={!!tempBanUntil}
-                            >
-                              {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
-                            </Button>
+                        </div>
+                        <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                          {ad.user.rating_average_lifetime && (
+                            <span className="flex items-center">
+                              <Image
+                                src="/icons/star-active.svg"
+                                alt="Rating"
+                                width={16}
+                                height={16}
+                                className="mr-1"
+                              />
+                              <span className="text-pending-text-secondary">
+                                {ad.user.rating_average_lifetime.toFixed(2)}
+                              </span>
+                            </span>
                           )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
+                          {ad.user.order_count_lifetime > 0 && (
+                            <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                              {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
+                              <span>
+                                {ad.user.order_count_lifetime} {t("market.orders")}
+                              </span>
+                            </div>
+                          )}
+                          {ad.user.completion_rate_all_30day > 0 && (
+                            <div className="flex flex-row items-center justify-center gap-[8px]">
+                              <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                              <span>
+                                {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        {!isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                  <span>
+                                    {ad.order_expiry_period} {t("market.min")}
+                                  </span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                <TooltipArrow className="fill-black" />
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                        }
+                      </TableCell>
+                      <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
+                        <div className="font-bold text-base flex items-center">
+                          {ad.effective_rate_display
+                            ? ad.effective_rate_display.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                            : ""}{" "}
+                          {ad.payment_currency}
+                          <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
+                        </div>
+                        <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                          }  ${ad.account_currency}`}</div>
+                        {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                  <span>
+                                    {ad.order_expiry_period} {t("market.min")}
+                                  </span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                <TooltipArrow className="fill-black" />
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>}
+                      </TableCell>
+                      <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                        <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
+                          {ad.payment_methods?.map((method, index) => (
+                            <div key={index} className="flex items-center">
+                              {method && (
+                                <div
+                                  className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                    ? "bg-paymentMethod-bank"
+                                    : "bg-paymentMethod-ewallet"
+                                    }`}
+                                ></div>
+                              )}
+                              <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </TableCell>
+                      <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                        {userId != ad.user.id && (
+                          <Button
+                            variant={ad.type === "buy" ? "destructive" : "secondary"}
+                            size="sm"
+                            onClick={() => handleOrderClick(ad)}
+                            disabled={!!tempBanUntil}
+                          >
+                            {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
           {isFetchingNextPage && (
             <div className="sticky bottom-0 flex justify-center py-4 bg-background">
               <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
