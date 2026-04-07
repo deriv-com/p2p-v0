@@ -400,6 +400,15 @@ export function useAdvertisements(params?: BuySellSearchParams) {
   }
 }
 
+export function useAdvertiserSearch(params: BuySellSearchParams & { nickname: string }) {
+  return useQuery({
+    queryKey: [...queryKeys.buySell.all, 'advertiser-search', params.nickname, params.type, params.currency, params.account_currency],
+    queryFn: () => BuySellAPI.getAdvertisements({ ...params, per_page: 6 }),
+    enabled: params.nickname.trim().length > 0 && !!params.currency && !!params.account_currency,
+    staleTime: 1000 * 10,
+  })
+}
+
 export function usePaymentMethods() {
   return useQuery({
     queryKey: queryKeys.buySell.paymentMethods(),

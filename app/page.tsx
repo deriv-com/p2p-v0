@@ -34,8 +34,6 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
@@ -52,6 +50,7 @@ export default function BuySellPage() {
     filterOptions,
     selectedPaymentMethods,
     selectedAccountCurrency,
+    nickname,
     setActiveTab,
     setCurrency,
     setSortBy,
@@ -87,15 +86,6 @@ export default function BuySellPage() {
   const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
-  const [nicknameSearch, setNicknameSearch] = useState("")
-  const [debouncedNickname, setDebouncedNickname] = useState("")
-  const [isSearchFocused, setIsSearchFocused] = useState(false)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedNickname(nicknameSearch), 300)
-    return () => clearTimeout(timer)
-  }, [nicknameSearch])
-
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
 
 
@@ -107,7 +97,7 @@ export default function BuySellPage() {
       paymentMethod: selectedPaymentMethods.length === paymentMethods.length ? [] : selectedPaymentMethods,
       sortBy: sortBy,
       favourites_only: filterOptions.fromFollowing ? 1 : 0,
-      nickname: debouncedNickname || undefined,
+      nickname: nickname || undefined,
     }
   )
   const fetchedAdverts = useMemo(() => advertsData?.pages.flat() ?? [], [advertsData?.pages])
@@ -482,76 +472,7 @@ export default function BuySellPage() {
               </div>
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
-            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end md:justify-between items-center">
-              {!isMobile && (
-                <Popover open={isSearchFocused && !!nicknameSearch}>
-                  <PopoverTrigger asChild>
-                    <div className="relative flex-shrink-0">
-                      <svg
-                        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <circle cx="11" cy="11" r="8" />
-                        <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
-                      </svg>
-                      <Input
-                        variant="secondary"
-                        placeholder="Search by advertiser"
-                        value={nicknameSearch}
-                        onChange={(e) => setNicknameSearch(e.target.value)}
-                        onFocus={() => setIsSearchFocused(true)}
-                        onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
-                        className="w-[220px] rounded-3xl pr-8"
-                      />
-                      {nicknameSearch && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => { setNicknameSearch(""); setDebouncedNickname("") }}
-                          className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-400 hover:text-slate-600 hover:bg-transparent"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </Button>
-                      )}
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent align="start" className="p-0 w-72 rounded-xl overflow-hidden">
-                    {isLoading ? (
-                      <div className="px-4 py-3 text-sm text-slate-500">Searching...</div>
-                    ) : advertsData?.pages[0]?.length ? (
-                      advertsData.pages[0].slice(0, 6).map((ad) => (
-                        <Button
-                          key={ad.id}
-                          variant="ghost"
-                          className="w-full justify-start gap-3 px-4 py-2.5 h-auto rounded-none"
-                          onMouseDown={() => {
-                            setNicknameSearch(ad.user.nickname)
-                            setIsSearchFocused(false)
-                          }}
-                        >
-                          <div className="h-7 w-7 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
-                            {ad.user.nickname.charAt(0).toUpperCase()}
-                          </div>
-                          <div className="min-w-0 flex-1 text-left">
-                            <div className="text-sm font-medium truncate">{ad.user.nickname}</div>
-                            <div className="text-xs text-slate-500 truncate">
-                              {ad.exchange_rate} {ad.payment_currency}/{ad.account_currency}
-                            </div>
-                          </div>
-                        </Button>
-                      ))
-                    ) : (
-                      <div className="px-4 py-3 text-sm text-slate-500">No advertisers found</div>
-                    )}
-                  </PopoverContent>
-                </Popover>
-              )}
+            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex gap-2 items-center ml-auto">
               {!isV1Signup && (
                 <div className="flex gap-2 mb-3 flex-1 hidden">
