@@ -12,7 +12,6 @@ import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
@@ -159,64 +158,70 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
       </div>
       <nav className="flex-1 px-4">
-        <Popover open={isSearchFocused && searchInput.length > 0}>
-          <PopoverAnchor asChild>
-            <div className="relative mb-2">
-              <Image
-                src="/icons/search-icon-custom.png"
-                alt="Search"
-                width={24}
-                height={24}
-                className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
-              />
-              <Input
-                type="text"
-                placeholder="Search by advertiser's nickname"
-                value={searchInput}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
-                className="text-sm font-normal placeholder:text-grayscale-text-placeholder pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
-              />
-              {searchInput && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleClear()}
-                  className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
-                >
-                  <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
-                </Button>
+        <div className="relative mb-2">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none z-10"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
+          </svg>
+          <Input
+            variant="tertiary"
+            placeholder="Search advertiser's nickname"
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
+            className="rounded-full pr-8"
+          />
+          {searchInput && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleClear}
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-400 hover:text-slate-600 hover:bg-transparent"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </Button>
+          )}
+          {isSearchFocused && searchInput.length > 0 && (
+            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
+              {isSearching ? (
+                <div className="px-4 py-3 text-sm text-slate-500">Searching...</div>
+              ) : searchResults?.length ? (
+                searchResults.map((ad) => (
+                  <button
+                    key={ad.id}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-slate-50"
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      handleSelectAd(ad.user.nickname)
+                    }}
+                  >
+                    <div className="h-7 w-7 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
+                      {ad.user.nickname.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0 flex-1 text-left">
+                      <div className="text-sm font-medium truncate">{ad.user.nickname}</div>
+                      <div className="text-xs text-slate-500 truncate">
+                        {ad.exchange_rate} {ad.payment_currency}/{ad.account_currency}
+                      </div>
+                    </div>
+                  </button>
+                ))
+              ) : (
+                <div className="px-4 py-3 text-sm text-slate-500">No advertisers found</div>
               )}
             </div>
-          </PopoverAnchor>
-          <PopoverContent align="start" sideOffset={4} className="p-0 w-[263px] rounded-xl overflow-hidden">
-            {isSearching ? (
-              <div className="px-4 py-3 text-sm text-slate-500">Searching...</div>
-            ) : searchResults?.length ? (
-              searchResults.map((ad) => (
-                <Button
-                  key={ad.id}
-                  variant="ghost"
-                  className="w-full justify-start gap-3 px-4 py-2.5 h-auto rounded-none"
-                  onMouseDown={() => handleSelectAd(ad.user.nickname)}
-                >
-                  <div className="h-7 w-7 flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
-                    {ad.user.nickname.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="min-w-0 flex-1 text-left">
-                    <div className="text-sm font-medium truncate">{ad.user.nickname}</div>
-                    <div className="text-xs text-slate-500 truncate">
-                      {ad.exchange_rate} {ad.payment_currency}/{ad.account_currency}
-                    </div>
-                  </div>
-                </Button>
-              ))
-            ) : (
-              <div className="px-4 py-3 text-sm text-slate-500">No advertisers found</div>
-            )}
-          </PopoverContent>
-        </Popover>
+          )}
+        </div>
         <ul>
           {navItems.map((item) => {
             const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.liveChat")
