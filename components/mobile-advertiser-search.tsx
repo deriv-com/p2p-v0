@@ -150,8 +150,13 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                             {[...Array(5)].map((_, i) => (
                                 <div key={i} className="flex items-center gap-2 py-3 border-b border-slate-100">
                                     <Skeleton className="h-[24px] w-[24px] rounded-full flex-shrink-0 bg-grayscale-200" />
-                                    <Skeleton className="h-4 w-36 bg-grayscale-200" />
-                                    <Skeleton className="h-4 w-12 bg-grayscale-200" />
+                                    <div className="flex flex-col gap-1 flex-1">
+                                        <div className="flex items-center gap-2">
+                                            <Skeleton className="h-4 w-36 bg-grayscale-200" />
+                                            <Skeleton className="h-4 w-12 bg-grayscale-200" />
+                                        </div>
+                                        <Skeleton className="h-3 w-48 bg-grayscale-200" />
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -161,32 +166,83 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                                 {searchResults.map((ad) => (
                                     <li key={ad.id}>
                                         <button
-                                            className="w-full flex items-center gap-2 px-4 py-3 text-left border-b border-slate-100 active:bg-slate-50"
+                                            className="w-full flex items-start gap-2 px-4 py-3 text-left border-b border-slate-100 active:bg-slate-50"
                                             onClick={() => handleSelectAdvertiser(ad.user.nickname, ad.user.id)}
                                         >
                                             {/* Avatar with online indicator */}
-                                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px] mt-[2px]">
                                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                                                 <div
                                                     className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`}
                                                 />
                                             </div>
-                                            {/* Nickname + badges */}
-                                            <div className="flex items-center gap-2 min-w-0 flex-1">
-                                                <span className="text-sm truncate">{ad.user?.nickname}</span>
-                                                <VerifiedBadge />
-                                                {ad.user.trade_band && (
-                                                    <TradeBandBadge
-                                                        tradeBand={ad.user.trade_band}
-                                                        showLearnMore={true}
-                                                        size={18}
-                                                    />
-                                                )}
-                                                {ad.user?.is_favourite && (
-                                                    <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
-                                                        {t("market.following")}
-                                                    </span>
-                                                )}
+                                            {/* Nickname + badges + stats */}
+                                            <div className="flex flex-col min-w-0 flex-1">
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <span className="text-sm truncate">{ad.user?.nickname}</span>
+                                                    <VerifiedBadge />
+                                                    {ad.user.trade_band && (
+                                                        <TradeBandBadge
+                                                            tradeBand={ad.user.trade_band}
+                                                            showLearnMore={true}
+                                                            size={18}
+                                                        />
+                                                    )}
+                                                    {ad.user?.is_favourite && (
+                                                        <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
+                                                            {t("market.following")}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                {/* Rating, orders, completion */}
+                                                <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                                                    {ad.user.rating_average_lifetime && (
+                                                        <span className="flex items-center">
+                                                            <Image
+                                                                src="/icons/star-active.svg"
+                                                                alt="Rating"
+                                                                width={16}
+                                                                height={16}
+                                                                className="mr-1"
+                                                            />
+                                                            <span className="text-pending-text-secondary">
+                                                                {ad.user.rating_average_lifetime.toFixed(2)}
+                                                            </span>
+                                                        </span>
+                                                    )}
+                                                    {(ad.user.order_count_lifetime ?? 0) > 0 && (
+                                                        <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                                            {ad.user.rating_average_lifetime && (
+                                                                <div className="h-1 w-1 rounded-full bg-slate-500" />
+                                                            )}
+                                                            <span>
+                                                                {ad.user.order_count_lifetime} {t("market.orders")}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                    {(ad.user.completion_rate_all_30day ?? 0) > 0 && (
+                                                        <div className="flex flex-row items-center justify-center gap-[8px]">
+                                                            <div className="h-1 w-1 rounded-full bg-slate-500" />
+                                                            <span>
+                                                                {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            {/* Rates (desktop only) */}
+                                            <div className="hidden md:flex flex-col items-end flex-shrink-0 ml-4">
+                                                <div className="font-bold text-sm flex items-center">
+                                                    {ad.effective_rate_display
+                                                        ? ad.effective_rate_display.toLocaleString(undefined, {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2,
+                                                        })
+                                                        : ""}{" "}
+                                                    {ad.payment_currency}
+                                                    <span className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</span>
+                                                </div>
+                                                <div className="text-xs text-slate-500 mt-1">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"} ${ad.account_currency}`}</div>
                                             </div>
                                         </button>
                                     </li>
