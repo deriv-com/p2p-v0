@@ -41,11 +41,12 @@ export default function Sidebar({ className }: SidebarProps) {
   const { t, locale } = useTranslations()
   const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
   const [searchInput, setSearchInput] = useState(nickname)
+  const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const { data: searchResults, isFetching: isSearching } = useAdvertiserSearch({
-    nickname: searchInput,
+    nickname: debouncedSearchInput,
     type: activeTab,
     currency,
     account_currency: selectedAccountCurrency,
@@ -57,7 +58,10 @@ export default function Sidebar({ className }: SidebarProps) {
       setIsSearchFocused(true)
     }
     if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => setNickname(value), 300)
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearchInput(value)
+      setNickname(value)
+    }, 300)
   }
 
   const handleSelectAd = (advertiserNickname: string) => {
@@ -69,6 +73,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const handleClear = () => {
     setSearchInput("")
+    setDebouncedSearchInput("")
     setNickname("")
   }
   const [showWallet, setShowWallet] = useState<boolean>(() => {
@@ -170,9 +175,8 @@ export default function Sidebar({ className }: SidebarProps) {
                 value={searchInput}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-                className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${searchInput.length > 0 && isSearchFocused ? "border border-black" : "border-0 focus:border-0"
-                  }`}
+                onBlur={() => setTimeout(() => setIsSearchFocused(false), 150)}
+                className="text-sm font-normal placeholder:text-grayscale-text-placeholder pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
               />
               {searchInput && (
                 <Button
