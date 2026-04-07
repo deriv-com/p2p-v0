@@ -135,12 +135,14 @@ export const OrderDetails = ({ order, setShowChat }) => {
       />
 
       <div className="flex md:block items-end justify-between">
-        <OrderDetailItem
-          label={counterpartyLabel}
-          value={counterpartyNickname || ""}
-          testId="counterparty-item"
-          isBlockLayout={isBlockLayout}
-        />
+        <div className="flex-1">
+          <OrderDetailItem
+            label={counterpartyLabel}
+            value={counterpartyNickname || ""}
+            testId="counterparty-item"
+            isBlockLayout={isBlockLayout}
+          />
+        </div>
         {order.status === "completed" && isMobile && (
           <Button
             onClick={() => {

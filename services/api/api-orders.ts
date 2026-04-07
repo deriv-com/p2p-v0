@@ -34,6 +34,7 @@ export interface Order {
   payment_amount: string
   is_reviewable: boolean
   rating: number
+  counterparty_name?: string
 }
 
 export interface OrderFilters {

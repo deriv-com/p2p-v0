@@ -535,6 +535,9 @@ export default function OrderDetailsPage() {
                         <div>
                           <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
                           <p className="font-bold text-sm">{counterpartyNickname}</p>
+                          {order?.counterparty_name && (
+                            <p className="text-xs text-slate-500 mt-0.5">{order.counterparty_name}</p>
+                          )}
                         </div>
                         {isMobile && (
                           <Button
