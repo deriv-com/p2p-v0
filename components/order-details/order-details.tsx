@@ -59,14 +59,14 @@ export const OrderDetails = ({ order, setShowChat }) => {
   if (!order) return null
 
   const counterpartyNickname =
-    order?.advert?.user?.id === userId ? order?.user?.nickname : order?.advert?.user?.nickname
+    order?.advert?.user?.id == userId ? order?.user?.nickname : order?.advert?.user?.nickname
 
   const isCounterpartyBuyer =
     order?.type === "sell"
-      ? order?.advert?.user?.id === userId
+      ? order?.advert?.user?.id == userId
         ? false
         : true
-      : order?.advert?.user?.id === userId
+      : order?.advert?.user?.id == userId
         ? true
         : false
 
