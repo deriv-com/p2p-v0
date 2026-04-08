@@ -82,15 +82,16 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         }, 300)
     }
 
-    const { setPendingAd } = useOrderSidebarStore()
+    const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
 
     const handleAdvertiserClick = (advertiserId: number) => {
+        setShouldReopenSearchOnReturn(true)
         router.push(`/advertiser/${advertiserId}`)
         handleClose()
     }
 
     const handleBuySellClick = (ad: Advertisement) => {
-        setPendingAd(ad)
+        setPendingAd(ad, true)
         handleClose()
     }
 

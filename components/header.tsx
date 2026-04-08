@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -10,6 +10,7 @@ import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import MobileAdvertiserSearch from "./mobile-advertiser-search"
 import { Button } from "@/components/ui/button"
@@ -19,9 +20,28 @@ export default function Header() {
   const { t } = useTranslations()
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-
   const pathname = usePathname()
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const { triggerSearchReopen, setTriggerSearchReopen, shouldReopenSearchOnReturn, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
+  const prevPathnameRef = useRef(pathname)
+
+  useEffect(() => {
+    if (triggerSearchReopen) {
+      setIsSearchOpen(true)
+      setTriggerSearchReopen(false)
+    }
+  }, [triggerSearchReopen, setTriggerSearchReopen])
+
+  useEffect(() => {
+    const prevPathname = prevPathnameRef.current
+    prevPathnameRef.current = pathname
+
+    if (shouldReopenSearchOnReturn && prevPathname.startsWith("/advertiser") && pathname === "/") {
+      setIsSearchOpen(true)
+      setShouldReopenSearchOnReturn(false)
+    }
+  }, [pathname, shouldReopenSearchOnReturn, setShouldReopenSearchOnReturn])
+
   const navItems = [
     { name: t("navigation.market"), href: "/" },
     { name: t("navigation.orders"), href: "/orders" },

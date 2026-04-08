@@ -64,7 +64,7 @@ export default function BuySellPage() {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const { pendingAd, setPendingAd } = useOrderSidebarStore()
+  const { pendingAd, openedFromSearch, setPendingAd, setTriggerSearchReopen } = useOrderSidebarStore()
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
@@ -482,7 +482,7 @@ export default function BuySellPage() {
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
-              <div className="flex gap-2 items-center ml-auto">
+              <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
                 {!isV1Signup && (
                   <div className="flex gap-2 mb-3 flex-1 hidden">
                     {accountCurrencies.map((curr) => (
@@ -837,7 +837,13 @@ export default function BuySellPage() {
 
         <OrderSidebar
           isOpen={isOrderSidebarOpen}
-          onClose={() => setIsOrderSidebarOpen(false)}
+          onClose={() => {
+            setIsOrderSidebarOpen(false)
+            if (openedFromSearch) {
+              setTriggerSearchReopen(true)
+              setPendingAd(null)
+            }
+          }}
           ad={selectedAd}
           orderType={activeTab}
           p2pBalance={Number.parseFloat(balance)}
