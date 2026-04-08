@@ -70,7 +70,7 @@ export function AdvertiserSearchResultCard({ ad, onSelect }: AdvertiserSearchRes
             </div>
 
             {/* Row 2: Rate + Order limits + Expiry */}
-            <div className="mb-2 pl-[32px]">
+            <div className="mb-2">
                 <div className="font-bold text-base flex items-center">
                     {ad.effective_rate_display
                         ? ad.effective_rate_display.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -100,7 +100,7 @@ export function AdvertiserSearchResultCard({ ad, onSelect }: AdvertiserSearchRes
             </div>
 
             {/* Row 3: Payment methods + Buy/Sell button */}
-            <div className="flex items-start justify-between pl-[32px]">
+            <div className="flex items-center justify-between">
                 <div className="flex flex-row flex-wrap gap-2">
                     {ad.payment_methods?.map((method, index) => (
                         <div key={index} className="flex items-center">

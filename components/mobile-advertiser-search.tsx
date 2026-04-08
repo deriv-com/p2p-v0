@@ -145,28 +145,26 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 </div>
 
                 {/* Tabs */}
-                {searchInput && (
-                    <div className="px-4 pt-3 pb-0 border-b border-slate-100 flex-shrink-0">
+                <div className="px-4 pt-3 pb-0 border-b border-slate-100 flex-shrink-0">
                         <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
-                            <TabsList className="w-auto bg-transparent p-0 gap-4">
+                            <TabsList className="w-full bg-transparent p-0">
                                 <TabsTrigger
                                     value="sell"
                                     variant="underline"
-                                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                                    className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
                                 >
                                     {t("market.buyTab")}
                                 </TabsTrigger>
                                 <TabsTrigger
                                     value="buy"
                                     variant="underline"
-                                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                                    className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
                                 >
                                     {t("market.sellTab")}
                                 </TabsTrigger>
                             </TabsList>
                         </Tabs>
                     </div>
-                )}
 
                 {/* Results */}
                 <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">

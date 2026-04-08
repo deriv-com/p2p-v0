@@ -248,18 +248,18 @@ export default function Sidebar({ className }: SidebarProps) {
             <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
               <div className="px-4 pt-3 pb-0 border-b border-slate-100">
                 <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
-                  <TabsList className="w-auto bg-transparent p-0 gap-4">
+                  <TabsList className="w-full bg-transparent p-0">
                     <TabsTrigger
                       value="sell"
                       variant="underline"
-                      className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
                     >
                       {t("market.buyTab")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="buy"
                       variant="underline"
-                      className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
                     >
                       {t("market.sellTab")}
                     </TabsTrigger>
