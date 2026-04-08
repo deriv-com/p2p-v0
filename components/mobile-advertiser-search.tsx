@@ -11,6 +11,8 @@ import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import EmptyState from "@/components/empty-state"
 import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface MobileAdvertiserSearchProps {
     isOpen: boolean
@@ -20,7 +22,9 @@ interface MobileAdvertiserSearchProps {
 export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvertiserSearchProps) {
     const router = useRouter()
     const { setNickname } = useMarketFilterStore()
+    const { t } = useTranslations()
     const [searchInput, setSearchInput] = useState("")
+    const [searchTab, setSearchTab] = useState<"buy" | "sell">("sell")
     const [debouncedSearchInput, setDebouncedSearchInput] = useState("")
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const sentinelRef = useRef<HTMLDivElement>(null)
@@ -33,7 +37,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         isFetchingNextPage,
         hasNextPage,
         fetchNextPage,
-    } = useAdvertiserSearch({ nickname: debouncedSearchInput })
+    } = useAdvertiserSearch({ nickname: debouncedSearchInput, type: searchTab })
 
     const searchResults = data?.pages.flat() ?? []
 
@@ -139,6 +143,30 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                         )}
                     </div>
                 </div>
+
+                {/* Tabs */}
+                {searchInput && (
+                    <div className="px-4 pt-3 pb-0 border-b border-slate-100 flex-shrink-0">
+                        <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                            <TabsList className="w-auto bg-transparent p-0 gap-4">
+                                <TabsTrigger
+                                    value="sell"
+                                    variant="underline"
+                                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                                >
+                                    {t("market.buyTab")}
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="buy"
+                                    variant="underline"
+                                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                                >
+                                    {t("market.sellTab")}
+                                </TabsTrigger>
+                            </TabsList>
+                        </Tabs>
+                    </div>
+                )}
 
                 {/* Results */}
                 <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">

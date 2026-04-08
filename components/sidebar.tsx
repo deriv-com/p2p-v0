@@ -12,6 +12,7 @@ import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import EmptyState from "@/components/empty-state"
@@ -45,6 +46,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const [searchInput, setSearchInput] = useState(nickname)
   const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const [searchTab, setSearchTab] = useState<"buy" | "sell">("sell")
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -56,6 +58,7 @@ export default function Sidebar({ className }: SidebarProps) {
     fetchNextPage,
   } = useAdvertiserSearch({
     nickname: debouncedSearchInput,
+    type: searchTab,
   })
 
   const searchResults = searchData?.pages.flat() ?? []
@@ -243,6 +246,26 @@ export default function Sidebar({ className }: SidebarProps) {
           )}
           {isSearchFocused && searchInput.length > 0 && (
             <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
+              <div className="px-4 pt-3 pb-0 border-b border-slate-100">
+                <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                  <TabsList className="w-auto bg-transparent p-0 gap-4">
+                    <TabsTrigger
+                      value="sell"
+                      variant="underline"
+                      className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                    >
+                      {t("market.buyTab")}
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="buy"
+                      variant="underline"
+                      className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none px-0"
+                    >
+                      {t("market.sellTab")}
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
               {isSearching && searchResults.length === 0 ? (
                 <AdvertiserSearchSkeleton count={3} />
               ) : searchResults.length > 0 ? (

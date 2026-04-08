@@ -400,11 +400,11 @@ export function useAdvertisements(params?: BuySellSearchParams) {
   }
 }
 
-export function useAdvertiserSearch(params: BuySellSearchParams & { nickname: string }) {
+export function useAdvertiserSearch(params: BuySellSearchParams & { nickname: string; type?: string }) {
   return useInfiniteQuery({
-    queryKey: [...queryKeys.buySell.all, 'advertiser-search', params.nickname],
+    queryKey: [...queryKeys.buySell.all, 'advertiser-search', params.nickname, params.type],
     queryFn: ({ pageParam = 1 }) =>
-      BuySellAPI.getAdvertisements({ nickname: params.nickname, page: pageParam as number, per_page: PAGE_SIZE }),
+      BuySellAPI.getAdvertisements({ nickname: params.nickname, type: params.type, page: pageParam as number, per_page: PAGE_SIZE }),
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
