@@ -20,6 +20,7 @@ import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
@@ -63,6 +64,7 @@ export default function BuySellPage() {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const { pendingAd, setPendingAd } = useOrderSidebarStore()
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
@@ -152,6 +154,14 @@ export default function BuySellPage() {
   useEffect(() => {
     fetchBalance()
   }, [fetchBalance])
+
+  useEffect(() => {
+    if (pendingAd) {
+      setSelectedAd(pendingAd)
+      setIsOrderSidebarOpen(true)
+      setPendingAd(null)
+    }
+  }, [pendingAd, setPendingAd])
 
   // Subscribe to WebSocket updates for users/me to get real-time balance updates
   useEffect(() => {

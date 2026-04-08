@@ -11,10 +11,11 @@ import type { Advertisement } from "@/services/api/api-buy-sell"
 
 interface AdvertiserSearchResultCardProps {
     ad: Advertisement
-    onSelect: (nickname: string, advertiserId: number) => void
+    onAdvertiserClick: (advertiserId: number) => void
+    onBuySellClick: (ad: Advertisement) => void
 }
 
-export function AdvertiserSearchResultCard({ ad, onSelect }: AdvertiserSearchResultCardProps) {
+export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellClick }: AdvertiserSearchResultCardProps) {
     const { t } = useTranslations()
 
     return (
@@ -29,7 +30,7 @@ export function AdvertiserSearchResultCard({ ad, onSelect }: AdvertiserSearchRes
                     <div className="flex items-center gap-2 flex-wrap">
                         <button
                             className="text-sm hover:underline cursor-pointer truncate"
-                            onClick={() => onSelect(ad.user.nickname, ad.user.id)}
+                            onClick={() => onAdvertiserClick(ad.user.id)}
                         >
                             {ad.user?.nickname}
                         </button>
@@ -114,7 +115,7 @@ export function AdvertiserSearchResultCard({ ad, onSelect }: AdvertiserSearchRes
                 <Button
                     variant={ad.type === "buy" ? "destructive" : "secondary"}
                     size="sm"
-                    onClick={() => onSelect(ad.user.nickname, ad.user.id)}
+                    onClick={() => onBuySellClick(ad)}
                     className="ml-2 flex-shrink-0"
                 >
                     {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}

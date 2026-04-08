@@ -7,7 +7,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
 import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
@@ -80,9 +82,15 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         }, 300)
     }
 
-    const handleSelectAdvertiser = (nickname: string, advertiserId: number) => {
+    const { setPendingAd } = useOrderSidebarStore()
+
+    const handleAdvertiserClick = (advertiserId: number) => {
         router.push(`/advertiser/${advertiserId}`)
-        setNickname(nickname)
+        handleClose()
+    }
+
+    const handleBuySellClick = (ad: Advertisement) => {
+        setPendingAd(ad)
         handleClose()
     }
 
@@ -145,26 +153,26 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 </div>
 
                 {/* Tabs */}
-                <div className="px-4 pt-3 pb-0 border-b border-slate-100 flex-shrink-0">
-                        <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
-                            <TabsList className="w-full bg-transparent p-0">
-                                <TabsTrigger
-                                    value="sell"
-                                    variant="underline"
-                                    className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
-                                >
-                                    {t("market.buyTab")}
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="buy"
-                                    variant="underline"
-                                    className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
-                                >
-                                    {t("market.sellTab")}
-                                </TabsTrigger>
-                            </TabsList>
-                        </Tabs>
-                    </div>
+                <div className="px-0 pt-3 pb-0 flex-shrink-0">
+                    <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                        <TabsList className="w-full bg-transparent p-0">
+                            <TabsTrigger
+                                value="sell"
+                                variant="underline"
+                                className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                            >
+                                {t("market.buyTab")}
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="buy"
+                                variant="underline"
+                                className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                            >
+                                {t("market.sellTab")}
+                            </TabsTrigger>
+                        </TabsList>
+                    </Tabs>
+                </div>
 
                 {/* Results */}
                 <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">
@@ -175,7 +183,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                             <ul>
                                 {searchResults.map((ad) => (
                                     <li key={ad.id} className="border-b border-slate-100">
-                                        <AdvertiserSearchResultCard ad={ad} onSelect={handleSelectAdvertiser} />
+                                        <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />
                                     </li>
                                 ))}
                             </ul>

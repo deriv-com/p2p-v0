@@ -14,7 +14,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
 import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
@@ -43,6 +45,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const { isWalletAccount, userData, userId } = useUserDataStore()
   const { t, locale } = useTranslations()
   const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
+  const { setPendingAd } = useOrderSidebarStore()
   const [searchInput, setSearchInput] = useState(nickname)
   const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
@@ -120,11 +123,14 @@ export default function Sidebar({ className }: SidebarProps) {
     }, 300)
   }
 
-  const handleSelectAd = (advertiserNickname: string, advertiserId: number) => {
-    setSearchInput(advertiserNickname)
-    setNickname(advertiserNickname)
+  const handleAdvertiserClick = (advertiserId: number) => {
     setIsSearchFocused(false)
     router.push(`/advertiser/${advertiserId}`)
+  }
+
+  const handleBuySellClick = (ad: Advertisement) => {
+    setPendingAd(ad)
+    setIsSearchFocused(false)
   }
 
   const handleClear = () => {
@@ -246,20 +252,20 @@ export default function Sidebar({ className }: SidebarProps) {
           )}
           {isSearchFocused && searchInput.length > 0 && (
             <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
-              <div className="px-4 pt-3 pb-0 border-b border-slate-100">
+              <div className="px-0 pt-3 pb-0" onMouseDown={(e) => e.preventDefault()}>
                 <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
                   <TabsList className="w-full bg-transparent p-0">
                     <TabsTrigger
                       value="sell"
                       variant="underline"
-                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
+                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
                     >
                       {t("market.buyTab")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="buy"
                       variant="underline"
-                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black"
+                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
                     >
                       {t("market.sellTab")}
                     </TabsTrigger>
@@ -272,7 +278,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 <div ref={dropdownScrollContainerRef} className="max-h-[480px] overflow-y-auto">
                   {searchResults.map((ad) => (
                     <div key={ad.id} className="border-b border-slate-100">
-                      <AdvertiserSearchResultCard ad={ad} onSelect={handleSelectAd} />
+                      <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />
                     </div>
                   ))}
                   {isFetchingNextPage && (
