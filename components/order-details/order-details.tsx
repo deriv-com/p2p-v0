@@ -59,16 +59,18 @@ export const OrderDetails = ({ order, setShowChat }) => {
   if (!order) return null
 
   const counterpartyNickname =
-    order?.advert?.user?.id === userId ? order?.user?.nickname : order?.advert?.user?.nickname
+    order?.advert?.user?.id == userId ? order?.user?.nickname : order?.advert?.user?.nickname
 
-  const counterpartyLabel =
+  const isCounterpartyBuyer =
     order?.type === "sell"
-      ? order?.advert?.user?.id === userId
-        ? t("orderDetails.seller")
-        : t("orderDetails.buyer")
-      : order?.advert?.user?.id === userId
-        ? t("orderDetails.buyer")
-        : t("orderDetails.seller")
+      ? order?.advert?.user?.id == userId
+        ? false
+        : true
+      : order?.advert?.user?.id == userId
+        ? true
+        : false
+
+  const counterpartyLabel = isCounterpartyBuyer ? t("orderDetails.buyer") : t("orderDetails.seller")
 
   const exchangeRateValue = order.exchange_rate?.toLocaleString(undefined, {
     minimumFractionDigits: 2,
@@ -135,12 +137,22 @@ export const OrderDetails = ({ order, setShowChat }) => {
       />
 
       <div className="flex md:block items-end justify-between">
-        <OrderDetailItem
-          label={counterpartyLabel}
-          value={counterpartyNickname || ""}
-          testId="counterparty-item"
-          isBlockLayout={isBlockLayout}
-        />
+        <div className="flex-1">
+          <OrderDetailItem
+            label={isCounterpartyBuyer ? t("orderDetails.buyerNickname") : t("orderDetails.sellerNickname")}
+            value={counterpartyNickname || ""}
+            testId="counterparty-item"
+            isBlockLayout={isBlockLayout}
+          />
+          {order?.counterparty_name && order.status !== "completed" && (
+            <OrderDetailItem
+              label={isCounterpartyBuyer ? t("orderDetails.buyerRealName") : t("orderDetails.sellerRealName")}
+              value={order.counterparty_name}
+              testId="counterparty-real-name-item"
+              isBlockLayout={isBlockLayout}
+            />
+          )}
+        </div>
         {order.status === "completed" && isMobile && (
           <Button
             onClick={() => {

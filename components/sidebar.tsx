@@ -12,12 +12,14 @@ import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
-import { VerifiedBadge } from "@/components/verified-badge"
-import { TradeBandBadge } from "@/components/trade-band-badge"
-import { Skeleton } from "@/components/ui/skeleton"
+import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
+import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -43,9 +45,11 @@ export default function Sidebar({ className }: SidebarProps) {
   const { isWalletAccount, userData, userId } = useUserDataStore()
   const { t, locale } = useTranslations()
   const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
+  const { setPendingAd } = useOrderSidebarStore()
   const [searchInput, setSearchInput] = useState(nickname)
   const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const [searchTab, setSearchTab] = useState<"buy" | "sell">("sell")
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -57,6 +61,7 @@ export default function Sidebar({ className }: SidebarProps) {
     fetchNextPage,
   } = useAdvertiserSearch({
     nickname: debouncedSearchInput,
+    type: searchTab,
   })
 
   const searchResults = searchData?.pages.flat() ?? []
@@ -118,11 +123,14 @@ export default function Sidebar({ className }: SidebarProps) {
     }, 300)
   }
 
-  const handleSelectAd = (advertiserNickname: string, advertiserId: number) => {
-    setSearchInput(advertiserNickname)
-    setNickname(advertiserNickname)
+  const handleAdvertiserClick = (advertiserId: number) => {
     setIsSearchFocused(false)
     router.push(`/advertiser/${advertiserId}`)
+  }
+
+  const handleBuySellClick = (ad: Advertisement) => {
+    setPendingAd(ad)
+    setIsSearchFocused(false)
   }
 
   const handleClear = () => {
@@ -213,6 +221,7 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
       </div>
       <nav className="flex-1 px-4">
+        {(pathname === "/" || pathname.startsWith("/advertiser")) && (
         <div className="relative mt-2">
           <Image
             src="/icons/search-icon-custom.png"
@@ -228,6 +237,7 @@ export default function Sidebar({ className }: SidebarProps) {
             onChange={(e) => handleSearchChange(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => {
+              if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
               blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
             }}
             className="bg-grayscale-500 rounded-lg pr-8 pl-8"
@@ -243,53 +253,35 @@ export default function Sidebar({ className }: SidebarProps) {
             </Button>
           )}
           {isSearchFocused && searchInput.length > 0 && (
-            <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
-              {isSearching && searchResults.length === 0 ? (
-                <div className="px-4 py-2 space-y-1">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="flex items-center gap-2 px-0 py-2">
-                      <Skeleton className="h-[24px] w-[24px] rounded-full flex-shrink-0 bg-grayscale-200" />
-                      <Skeleton className="h-4 w-32 bg-grayscale-200" />
-                      <Skeleton className="h-4 w-12 bg-grayscale-200" />
-                    </div>
-                  ))}
-                </div>
-              ) : searchResults.length > 0 ? (
-                <div ref={dropdownScrollContainerRef} className="max-h-64 overflow-y-auto">
-                  {searchResults.map((ad) => (
-                    <button
-                      key={ad.id}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-left hover:bg-slate-50"
-                      onMouseDown={(e) => {
-                        e.preventDefault()
-                        handleSelectAd(ad.user.nickname, ad.user.id)
-                      }}
+            <div className="absolute top-full left-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
+              <div className="px-0 pt-3 pb-0">
+                <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                  <TabsList className="w-full bg-transparent p-0">
+                    <TabsTrigger
+                      value="sell"
+                      variant="underline"
+                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
                     >
-                      {/* Avatar with online indicator */}
-                      <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                        {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                        <div
-                          className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`}
-                        />
-                      </div>
-                      {/* Nickname + badges */}
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <span className="text-sm truncate">{ad.user?.nickname}</span>
-                        <VerifiedBadge />
-                        {ad.user.trade_band && (
-                          <TradeBandBadge
-                            tradeBand={ad.user.trade_band}
-                            showLearnMore={true}
-                            size={18}
-                          />
-                        )}
-                        {ad.user?.is_favourite && (
-                          <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
-                            {t("market.following")}
-                          </span>
-                        )}
-                      </div>
-                    </button>
+                      {t("market.buyTab")}
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="buy"
+                      variant="underline"
+                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                    >
+                      {t("market.sellTab")}
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+              {isSearching && searchResults.length === 0 ? (
+                <AdvertiserSearchSkeleton count={3} />
+              ) : searchResults.length > 0 ? (
+                <div ref={dropdownScrollContainerRef} className="max-h-[480px] overflow-y-auto">
+                  {searchResults.map((ad) => (
+                    <div key={ad.id} className="border-b border-slate-100">
+                      {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
+                    </div>
                   ))}
                   {isFetchingNextPage && (
                     <div className="sticky bottom-0 flex justify-center py-2 bg-white">
@@ -298,16 +290,17 @@ export default function Sidebar({ className }: SidebarProps) {
                   )}
                   <div ref={dropdownSentinelRef} className="h-1" />
                 </div>
-              ) : (
+              ) : debouncedSearchInput.length > 0 ? (
                 <EmptyState
                   title={`No results found for "${debouncedSearchInput}"`}
                   description="Check spelling or try finding different advertisers."
                   className="py-4 px-2"
                 />
-              )}
+              ) : null}
             </div>
           )}
         </div>
+        )}
         <ul>
           {navItems.map((item) => {
             const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.liveChat")

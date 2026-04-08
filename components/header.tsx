@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -10,6 +10,7 @@ import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import MobileAdvertiserSearch from "./mobile-advertiser-search"
 import { Button } from "@/components/ui/button"
@@ -19,9 +20,28 @@ export default function Header() {
   const { t } = useTranslations()
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-
   const pathname = usePathname()
+  const [userIsSearchOpen, setUserIsSearchOpen] = useState(false)
+  const { triggerSearchReopen, setTriggerSearchReopen, shouldReopenSearchOnReturn, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
+
+  // Derive open state synchronously so the sheet is open on the first render — no flash
+  const isSearchOpen = userIsSearchOpen || triggerSearchReopen || (shouldReopenSearchOnReturn && pathname === "/")
+
+  // Latch local state and clear store flags so the sheet stays open after flags are cleared
+  useEffect(() => {
+    if (triggerSearchReopen) {
+      setUserIsSearchOpen(true)
+      setTriggerSearchReopen(false)
+    }
+  }, [triggerSearchReopen, setTriggerSearchReopen])
+
+  useEffect(() => {
+    if (shouldReopenSearchOnReturn && pathname === "/") {
+      setUserIsSearchOpen(true)
+      setShouldReopenSearchOnReturn(false)
+    }
+  }, [shouldReopenSearchOnReturn, pathname, setShouldReopenSearchOnReturn])
+
   const navItems = [
     { name: t("navigation.market"), href: "/" },
     { name: t("navigation.orders"), href: "/orders" },
@@ -70,14 +90,16 @@ export default function Header() {
         <div className="h-12 flex items-center space-x-2">
           {userId && (
             <>
-              <Button
-                onClick={() => setIsSearchOpen(true)}
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-full bg-[#ffffff0a]"
-              >
-                <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
-              </Button>
+              {(pathname === "/" || pathname.startsWith("/advertiser")) && (
+                <Button
+                  onClick={() => setUserIsSearchOpen(true)}
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 rounded-full bg-[#ffffff0a]"
+                >
+                  <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
+                </Button>
+              )}
               <div className="text-slate-600 hover:text-slate-700">
                 <NovuNotifications />
               </div>
@@ -86,7 +108,7 @@ export default function Header() {
         </div>
       </header>
 
-      <MobileAdvertiserSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <MobileAdvertiserSearch isOpen={isSearchOpen} onClose={() => setUserIsSearchOpen(false)} />
     </>
   )
 }

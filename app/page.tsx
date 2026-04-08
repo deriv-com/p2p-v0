@@ -20,6 +20,7 @@ import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
@@ -63,6 +64,8 @@ export default function BuySellPage() {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const [isOpenedFromSearch, setIsOpenedFromSearch] = useState(false)
+  const { pendingAd, openedFromSearch, setPendingAd, setTriggerSearchReopen } = useOrderSidebarStore()
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
@@ -152,6 +155,15 @@ export default function BuySellPage() {
   useEffect(() => {
     fetchBalance()
   }, [fetchBalance])
+
+  useEffect(() => {
+    if (pendingAd) {
+      setIsOpenedFromSearch(openedFromSearch)
+      setSelectedAd(pendingAd)
+      setIsOrderSidebarOpen(true)
+      setPendingAd(null)
+    }
+  }, [pendingAd, openedFromSearch, setPendingAd])
 
   // Subscribe to WebSocket updates for users/me to get real-time balance updates
   useEffect(() => {
@@ -472,7 +484,7 @@ export default function BuySellPage() {
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
-              <div className="flex gap-2 items-center ml-auto">
+              <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
                 {!isV1Signup && (
                   <div className="flex gap-2 mb-3 flex-1 hidden">
                     {accountCurrencies.map((curr) => (
@@ -827,7 +839,15 @@ export default function BuySellPage() {
 
         <OrderSidebar
           isOpen={isOrderSidebarOpen}
-          onClose={() => setIsOrderSidebarOpen(false)}
+          onStartClose={() => {
+            if (isOpenedFromSearch) {
+              setTriggerSearchReopen(true)
+              setIsOpenedFromSearch(false)
+            }
+          }}
+          onClose={() => {
+            setIsOrderSidebarOpen(false)
+          }}
           ad={selectedAd}
           orderType={activeTab}
           p2pBalance={Number.parseFloat(balance)}

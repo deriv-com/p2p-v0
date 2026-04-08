@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
-import { VerifiedBadge } from "@/components/verified-badge"
-import { TradeBandBadge } from "@/components/trade-band-badge"
+import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
+import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { Skeleton } from "@/components/ui/skeleton"
 
 interface MobileAdvertiserSearchProps {
     isOpen: boolean
@@ -21,9 +23,23 @@ interface MobileAdvertiserSearchProps {
 
 export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvertiserSearchProps) {
     const router = useRouter()
-    const { t } = useTranslations()
     const { setNickname } = useMarketFilterStore()
+
+    // Restore previous search when sheet reopens (e.g. returning from advertiser page or order sidebar)
+    useEffect(() => {
+        let mounted = true
+        if (isOpen) {
+            const storedNickname = useMarketFilterStore.getState().nickname
+            if (storedNickname && mounted) {
+                setSearchInput(storedNickname)
+                setDebouncedSearchInput(storedNickname)
+            }
+        }
+        return () => { mounted = false }
+    }, [isOpen])
+    const { t } = useTranslations()
     const [searchInput, setSearchInput] = useState("")
+    const [searchTab, setSearchTab] = useState<"buy" | "sell">("sell")
     const [debouncedSearchInput, setDebouncedSearchInput] = useState("")
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const sentinelRef = useRef<HTMLDivElement>(null)
@@ -36,7 +52,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         isFetchingNextPage,
         hasNextPage,
         fetchNextPage,
-    } = useAdvertiserSearch({ nickname: debouncedSearchInput })
+    } = useAdvertiserSearch({ nickname: debouncedSearchInput, type: searchTab })
 
     const searchResults = data?.pages.flat() ?? []
 
@@ -79,9 +95,16 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         }, 300)
     }
 
-    const handleSelectAdvertiser = (nickname: string, advertiserId: number) => {
+    const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
+
+    const handleAdvertiserClick = (advertiserId: number) => {
+        setShouldReopenSearchOnReturn(true)
         router.push(`/advertiser/${advertiserId}`)
-        setNickname(nickname)
+        onClose()
+    }
+
+    const handleBuySellClick = (ad: Advertisement) => {
+        setPendingAd(ad, true)
         handleClose()
     }
 
@@ -143,52 +166,38 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                     </div>
                 </div>
 
+                {/* Tabs */}
+                <div className="px-0 pt-3 pb-0 flex-shrink-0">
+                    <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                        <TabsList className="w-full bg-transparent p-0">
+                            <TabsTrigger
+                                value="sell"
+                                variant="underline"
+                                className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                            >
+                                {t("market.buyTab")}
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="buy"
+                                variant="underline"
+                                className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                            >
+                                {t("market.sellTab")}
+                            </TabsTrigger>
+                        </TabsList>
+                    </Tabs>
+                </div>
+
                 {/* Results */}
                 <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">
-                    {!searchInput ? null : isSearching && searchResults.length === 0 ? (
-                        <div className="px-4 py-2 space-y-1">
-                            {[...Array(5)].map((_, i) => (
-                                <div key={i} className="flex items-center gap-2 py-3 border-b border-slate-100">
-                                    <Skeleton className="h-[24px] w-[24px] rounded-full flex-shrink-0 bg-grayscale-200" />
-                                    <Skeleton className="h-4 w-36 bg-grayscale-200" />
-                                    <Skeleton className="h-4 w-12 bg-grayscale-200" />
-                                </div>
-                            ))}
-                        </div>
+                    {!debouncedSearchInput ? null : isSearching && searchResults.length === 0 ? (
+                        <AdvertiserSearchSkeleton count={5} />
                     ) : searchResults.length > 0 ? (
                         <>
                             <ul>
                                 {searchResults.map((ad) => (
-                                    <li key={ad.id}>
-                                        <button
-                                            className="w-full flex items-center gap-2 px-4 py-3 text-left border-b border-slate-100 active:bg-slate-50"
-                                            onClick={() => handleSelectAdvertiser(ad.user.nickname, ad.user.id)}
-                                        >
-                                            {/* Avatar with online indicator */}
-                                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                                                {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                                                <div
-                                                    className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`}
-                                                />
-                                            </div>
-                                            {/* Nickname + badges */}
-                                            <div className="flex items-center gap-2 min-w-0 flex-1">
-                                                <span className="text-sm truncate">{ad.user?.nickname}</span>
-                                                <VerifiedBadge />
-                                                {ad.user.trade_band && (
-                                                    <TradeBandBadge
-                                                        tradeBand={ad.user.trade_band}
-                                                        showLearnMore={true}
-                                                        size={18}
-                                                    />
-                                                )}
-                                                {ad.user?.is_favourite && (
-                                                    <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
-                                                        {t("market.following")}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </button>
+                                    <li key={ad.id} className="border-b border-slate-100">
+                                        {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
                                     </li>
                                 ))}
                             </ul>
