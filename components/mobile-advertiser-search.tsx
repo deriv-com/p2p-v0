@@ -87,7 +87,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
     const handleAdvertiserClick = (advertiserId: number) => {
         setShouldReopenSearchOnReturn(true)
         router.push(`/advertiser/${advertiserId}`)
-        handleClose()
+        onClose()
     }
 
     const handleBuySellClick = (ad: Advertisement) => {
@@ -177,7 +177,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
 
                 {/* Results */}
                 <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">
-                    {!searchInput ? null : isSearching && searchResults.length === 0 ? (
+                    {!debouncedSearchInput ? null : isSearching && searchResults.length === 0 ? (
                         <AdvertiserSearchSkeleton count={5} />
                     ) : searchResults.length > 0 ? (
                         <>

@@ -64,6 +64,7 @@ export default function BuySellPage() {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const [isOpenedFromSearch, setIsOpenedFromSearch] = useState(false)
   const { pendingAd, openedFromSearch, setPendingAd, setTriggerSearchReopen } = useOrderSidebarStore()
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
@@ -157,11 +158,12 @@ export default function BuySellPage() {
 
   useEffect(() => {
     if (pendingAd) {
+      setIsOpenedFromSearch(openedFromSearch)
       setSelectedAd(pendingAd)
       setIsOrderSidebarOpen(true)
       setPendingAd(null)
     }
-  }, [pendingAd, setPendingAd])
+  }, [pendingAd, openedFromSearch, setPendingAd])
 
   // Subscribe to WebSocket updates for users/me to get real-time balance updates
   useEffect(() => {
@@ -839,9 +841,9 @@ export default function BuySellPage() {
           isOpen={isOrderSidebarOpen}
           onClose={() => {
             setIsOrderSidebarOpen(false)
-            if (openedFromSearch) {
+            if (isOpenedFromSearch) {
               setTriggerSearchReopen(true)
-              setPendingAd(null)
+              setIsOpenedFromSearch(false)
             }
           }}
           ad={selectedAd}

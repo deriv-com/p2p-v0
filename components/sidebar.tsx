@@ -251,8 +251,8 @@ export default function Sidebar({ className }: SidebarProps) {
             </Button>
           )}
           {isSearchFocused && searchInput.length > 0 && (
-            <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden">
-              <div className="px-0 pt-3 pb-0" onMouseDown={(e) => e.preventDefault()}>
+            <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
+              <div className="px-0 pt-3 pb-0">
                 <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
                   <TabsList className="w-full bg-transparent p-0">
                     <TabsTrigger
@@ -288,13 +288,13 @@ export default function Sidebar({ className }: SidebarProps) {
                   )}
                   <div ref={dropdownSentinelRef} className="h-1" />
                 </div>
-              ) : (
+              ) : debouncedSearchInput.length > 0 ? (
                 <EmptyState
                   title={`No results found for "${debouncedSearchInput}"`}
                   description="Check spelling or try finding different advertisers."
                   className="py-4 px-2"
                 />
-              )}
+              ) : null}
             </div>
           )}
         </div>
