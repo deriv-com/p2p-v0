@@ -23,6 +23,7 @@ import RateChangeConfirmation from "./rate-change-confirmation"
 interface OrderSidebarProps {
   isOpen: boolean
   onClose: () => void
+  onStartClose?: () => void
   ad: Advertisement | null
   orderType: "buy" | "sell"
   p2pBalance: number
@@ -180,7 +181,7 @@ const PaymentSelectionContent = ({
   )
 }
 
-export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
+export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
   const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
@@ -383,6 +384,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const handleClose = () => {
+    onStartClose?.()
     setIsAnimating(false)
     setTimeout(() => {
       setTotalAmount(0)

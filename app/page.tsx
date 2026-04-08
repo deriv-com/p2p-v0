@@ -839,12 +839,14 @@ export default function BuySellPage() {
 
         <OrderSidebar
           isOpen={isOrderSidebarOpen}
-          onClose={() => {
-            setIsOrderSidebarOpen(false)
+          onStartClose={() => {
             if (isOpenedFromSearch) {
               setTriggerSearchReopen(true)
               setIsOpenedFromSearch(false)
             }
+          }}
+          onClose={() => {
+            setIsOrderSidebarOpen(false)
           }}
           ad={selectedAd}
           orderType={activeTab}

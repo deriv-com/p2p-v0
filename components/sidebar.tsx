@@ -237,6 +237,7 @@ export default function Sidebar({ className }: SidebarProps) {
             onChange={(e) => handleSearchChange(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => {
+              if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
               blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
             }}
             className="bg-grayscale-500 rounded-lg pr-8 pl-8"
@@ -252,7 +253,7 @@ export default function Sidebar({ className }: SidebarProps) {
             </Button>
           )}
           {isSearchFocused && searchInput.length > 0 && (
-            <div className="absolute top-full left-0 mt-1 w-[360px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
+            <div className="absolute top-full left-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
               <div className="px-0 pt-3 pb-0">
                 <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
                   <TabsList className="w-full bg-transparent p-0">
@@ -279,7 +280,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 <div ref={dropdownScrollContainerRef} className="max-h-[480px] overflow-y-auto">
                   {searchResults.map((ad) => (
                     <div key={ad.id} className="border-b border-slate-100">
-                      <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />
+                      {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
                     </div>
                   ))}
                   {isFetchingNextPage && (

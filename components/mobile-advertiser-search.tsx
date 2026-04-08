@@ -27,13 +27,15 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
 
     // Restore previous search when sheet reopens (e.g. returning from advertiser page or order sidebar)
     useEffect(() => {
+        let mounted = true
         if (isOpen) {
             const storedNickname = useMarketFilterStore.getState().nickname
-            if (storedNickname) {
+            if (storedNickname && mounted) {
                 setSearchInput(storedNickname)
                 setDebouncedSearchInput(storedNickname)
             }
         }
+        return () => { mounted = false }
     }, [isOpen])
     const { t } = useTranslations()
     const [searchInput, setSearchInput] = useState("")
@@ -195,7 +197,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                             <ul>
                                 {searchResults.map((ad) => (
                                     <li key={ad.id} className="border-b border-slate-100">
-                                        <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />
+                                        {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
                                     </li>
                                 ))}
                             </ul>
