@@ -24,6 +24,17 @@ interface MobileAdvertiserSearchProps {
 export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvertiserSearchProps) {
     const router = useRouter()
     const { setNickname } = useMarketFilterStore()
+
+    // Restore previous search when sheet reopens (e.g. returning from advertiser page or order sidebar)
+    useEffect(() => {
+        if (isOpen) {
+            const storedNickname = useMarketFilterStore.getState().nickname
+            if (storedNickname) {
+                setSearchInput(storedNickname)
+                setDebouncedSearchInput(storedNickname)
+            }
+        }
+    }, [isOpen])
     const { t } = useTranslations()
     const [searchInput, setSearchInput] = useState("")
     const [searchTab, setSearchTab] = useState<"buy" | "sell">("sell")

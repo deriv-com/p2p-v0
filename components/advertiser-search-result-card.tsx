@@ -21,7 +21,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
     return (
         <div className="px-4 py-3">
             {/* Row 1: Advertiser info */}
-            <div className="flex items-start gap-2 mb-2">
+            <div className="flex items-start gap-2">
                 <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px] mt-[2px]">
                     {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                     <div className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`} />
@@ -47,29 +47,28 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                             </span>
                         )}
                     </div>
-                    <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                        {ad.user.rating_average_lifetime && (
-                            <span className="flex items-center">
-                                <Image src="/icons/star-active.svg" alt="Rating" width={16} height={16} className="mr-1" />
-                                <span className="text-pending-text-secondary">{ad.user.rating_average_lifetime.toFixed(2)}</span>
-                            </span>
-                        )}
-                        {(ad.user.order_count_lifetime ?? 0) > 0 && (
-                            <div className="flex flex-row items-center gap-[8px] mx-[8px]">
-                                {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500" />}
-                                <span>{ad.user.order_count_lifetime} {t("market.orders")}</span>
-                            </div>
-                        )}
-                        {(ad.user.completion_rate_all_30day ?? 0) > 0 && (
-                            <div className="flex flex-row items-center gap-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500" />
-                                <span>{ad.user.completion_rate_all_30day}% {t("market.completion")}</span>
-                            </div>
-                        )}
-                    </div>
                 </div>
             </div>
-
+            <div className="flex items-center text-xs text-slate-500 mb-2">
+                {ad.user.rating_average_lifetime && (
+                    <span className="flex items-center">
+                        <Image src="/icons/star-active.svg" alt="Rating" width={16} height={16} className="mr-1" />
+                        <span className="text-pending-text-secondary">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                    </span>
+                )}
+                {(ad.user.order_count_lifetime ?? 0) > 0 && (
+                    <div className="flex flex-row items-center gap-[8px] mx-[8px]">
+                        {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500" />}
+                        <span>{ad.user.order_count_lifetime} {t("market.orders")}</span>
+                    </div>
+                )}
+                {(ad.user.completion_rate_all_30day ?? 0) > 0 && (
+                    <div className="flex flex-row items-center gap-[8px]">
+                        <div className="h-1 w-1 rounded-full bg-slate-500" />
+                        <span>{ad.user.completion_rate_all_30day}% {t("market.completion")}</span>
+                    </div>
+                )}
+            </div>
             {/* Row 2: Rate + Order limits + Expiry */}
             <div className="mb-2">
                 <div className="font-bold text-base flex items-center">

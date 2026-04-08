@@ -221,6 +221,7 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
       </div>
       <nav className="flex-1 px-4">
+        {(pathname === "/" || pathname.startsWith("/advertiser")) && (
         <div className="relative mt-2">
           <Image
             src="/icons/search-icon-custom.png"
@@ -298,6 +299,7 @@ export default function Sidebar({ className }: SidebarProps) {
             </div>
           )}
         </div>
+        )}
         <ul>
           {navItems.map((item) => {
             const isExternal = item.name === t("navigation.home") || item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.liveChat")

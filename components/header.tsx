@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -21,26 +21,26 @@ export default function Header() {
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
   const pathname = usePathname()
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [userIsSearchOpen, setUserIsSearchOpen] = useState(false)
   const { triggerSearchReopen, setTriggerSearchReopen, shouldReopenSearchOnReturn, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
-  const prevPathnameRef = useRef(pathname)
 
+  // Derive open state synchronously so the sheet is open on the first render — no flash
+  const isSearchOpen = userIsSearchOpen || triggerSearchReopen || (shouldReopenSearchOnReturn && pathname === "/")
+
+  // Latch local state and clear store flags so the sheet stays open after flags are cleared
   useEffect(() => {
     if (triggerSearchReopen) {
-      setIsSearchOpen(true)
+      setUserIsSearchOpen(true)
       setTriggerSearchReopen(false)
     }
   }, [triggerSearchReopen, setTriggerSearchReopen])
 
   useEffect(() => {
-    const prevPathname = prevPathnameRef.current
-    prevPathnameRef.current = pathname
-
-    if (shouldReopenSearchOnReturn && prevPathname.startsWith("/advertiser") && pathname === "/") {
-      setIsSearchOpen(true)
+    if (shouldReopenSearchOnReturn && pathname === "/") {
+      setUserIsSearchOpen(true)
       setShouldReopenSearchOnReturn(false)
     }
-  }, [pathname, shouldReopenSearchOnReturn, setShouldReopenSearchOnReturn])
+  }, [shouldReopenSearchOnReturn, pathname, setShouldReopenSearchOnReturn])
 
   const navItems = [
     { name: t("navigation.market"), href: "/" },
@@ -92,7 +92,7 @@ export default function Header() {
             <>
               {(pathname === "/" || pathname.startsWith("/advertiser")) && (
                 <Button
-                  onClick={() => setIsSearchOpen(true)}
+                  onClick={() => setUserIsSearchOpen(true)}
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 rounded-full bg-[#ffffff0a]"
@@ -108,7 +108,7 @@ export default function Header() {
         </div>
       </header>
 
-      <MobileAdvertiserSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <MobileAdvertiserSearch isOpen={isSearchOpen} onClose={() => setUserIsSearchOpen(false)} />
     </>
   )
 }
