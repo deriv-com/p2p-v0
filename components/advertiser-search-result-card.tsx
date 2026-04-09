@@ -8,6 +8,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import { formatPaymentMethodName } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import type { Advertisement } from "@/services/api/api-buy-sell"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface AdvertiserSearchResultCardProps {
     ad: Advertisement
@@ -17,6 +18,7 @@ interface AdvertiserSearchResultCardProps {
 
 export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellClick }: AdvertiserSearchResultCardProps) {
     const { t } = useTranslations()
+    const { userId } = useUserDataStore()
 
     return (
         <div className="px-4 py-3">
@@ -111,14 +113,16 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         </div>
                     ))}
                 </div>
-                <Button
-                    variant={ad.type === "buy" ? "destructive" : "secondary"}
-                    size="sm"
-                    onClick={() => onBuySellClick(ad)}
-                    className="ml-2 flex-shrink-0"
-                >
-                    {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
-                </Button>
+                {userId && ad.user.id !== Number(userId) && (
+                    <Button
+                        variant={ad.type === "buy" ? "destructive" : "secondary"}
+                        size="sm"
+                        onClick={() => onBuySellClick(ad)}
+                        className="ml-2 flex-shrink-0"
+                    >
+                        {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
+                    </Button>
+                )}
             </div>
         </div>
     )
