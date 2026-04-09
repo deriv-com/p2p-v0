@@ -113,7 +113,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         </div>
                     ))}
                 </div>
-                {String(ad.user.id) !== userId && (
+                {userId && ad.user.id !== Number(userId) && (
                     <Button
                         variant={ad.type === "buy" ? "destructive" : "secondary"}
                         size="sm"
