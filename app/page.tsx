@@ -849,7 +849,7 @@ export default function BuySellPage() {
             setIsOrderSidebarOpen(false)
           }}
           ad={selectedAd}
-          orderType={activeTab}
+          orderType={(selectedAd?.type ?? activeTab) as "buy" | "sell"}
           p2pBalance={Number.parseFloat(balance)}
         />
       </div>
