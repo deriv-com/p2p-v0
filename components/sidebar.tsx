@@ -130,6 +130,9 @@ export default function Sidebar({ className }: SidebarProps) {
   const handleBuySellClick = (ad: Advertisement) => {
     setPendingAd(ad)
     setIsSearchFocused(false)
+    if (pathname.startsWith("/advertiser")) {
+      router.push("/")
+    }
   }
 
   const handleClear = () => {
