@@ -124,7 +124,6 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    setIsSearchFocused(false)
     router.push(`/advertiser/${advertiserId}`)
   }
 
