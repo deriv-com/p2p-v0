@@ -9,6 +9,10 @@ import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod 
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
 
+export interface PaymentMethodError extends Error {
+  errors?: Array<{ code?: string; message?: string }>
+}
+
 // Query Keys
 const ALL_KEYS = ['api'] as const
 const AUTH_KEYS = [...ALL_KEYS, 'auth'] as const
@@ -218,8 +222,10 @@ export function useAddPaymentMethod() {
     mutationFn: async ({ method, fields }: { method: string; fields: Record<string, string> }) => {
       const result = await ProfileAPI.addPaymentMethod(method, fields)
       if (!result.success) {
-        const error: any = new Error(result.errors?.[0]?.message || 'Failed to add payment method')
-        error.errors = result.errors
+        const error: PaymentMethodError = Object.assign(
+          new Error(result.errors?.[0]?.message || 'Failed to add payment method'),
+          { errors: result.errors },
+        )
         throw error
       }
       return result

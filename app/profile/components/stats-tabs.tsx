@@ -20,7 +20,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useAddPaymentMethod } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
 
 interface StatsTabsProps {
   stats?: any
@@ -106,14 +106,19 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       })
 
       setShowAddPaymentPanel(false)
-    } catch (error: any) {
-      let title = t("paymentMethod.unableToAdd")
-      let description = t("paymentMethod.addError")
-
-      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
-        title = t("paymentMethod.duplicateMethod")
-        description = t("paymentMethod.duplicateMethodDescription")
+    } catch (err) {
+      const error = err as PaymentMethodError
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
+        PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
+        PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
+        PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
+        PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
+
+      const errorCode = error?.errors?.[0]?.code
+      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+
       showAlert({
         title,
         description,

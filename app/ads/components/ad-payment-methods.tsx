@@ -9,7 +9,8 @@ import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
-import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, useUserPaymentMethods, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentMethod {
   id: number
@@ -24,6 +25,7 @@ interface PaymentMethod {
 const AdPaymentMethods = () => {
   const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
   const { showAlert } = useAlertDialog()
+  const { t } = useTranslations()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
 
   // Use React Query hooks
@@ -48,18 +50,23 @@ const AdPaymentMethods = () => {
     try {
       await addPaymentMethod.mutateAsync({ method, fields })
       setShowAddPaymentPanel(false)
-    } catch (error: any) {
-      let title = "Unable to add payment method"
-      let description = "There was an error when adding the payment method. Please try again."
-
-      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
-        title = "Duplicate payment method"
-        description = "A payment method with the same values already exists. Add a new one."
+    } catch (err) {
+      const error = err as PaymentMethodError
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
+        PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
+        PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
+        PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
+        PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
+
+      const errorCode = error?.errors?.[0]?.code
+      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+
       showAlert({
         title,
         description,
-        confirmText: "OK",
+        confirmText: t("common.ok"),
         type: "warning",
       })
     }
