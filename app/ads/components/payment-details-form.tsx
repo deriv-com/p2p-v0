@@ -454,27 +454,26 @@ export default function PaymentDetailsForm({
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
-      const response = await addPaymentMethod({ method, fields })
-
-      if (response.success) {
-        setShowAddPaymentPanel(false)
-      } else {
-        let title = "Unable to add payment method"
-        let description = "There was an error when adding the payment method. Please try again."
-
-        if (response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
-          title = "Duplicate payment method"
-          description = "A payment method with the same values already exists. Add a new one."
-        }
-        showAlert({
-          title,
-          description,
-          confirmText: "OK",
-          type: "warning",
-        })
+      await addPaymentMethod({ method, fields })
+      setShowAddPaymentPanel(false)
+    } catch (error: any) {
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodDuplicate: { title: "Duplicate payment method", description: "A payment method with the same values already exists. Add a new one." },
+        PaymentMethodInvalid: { title: "Payment method not valid", description: "This payment method has invalid details. Edit it or choose a different method." },
+        PaymentMethodInvalidField: { title: "Payment details incorrect", description: "One of the payment method fields is not recognised. Check and update the details." },
+        PaymentMethodNotFound: { title: "Payment method not found", description: "This payment method is not available. Choose another method or add a new one." },
+        PaymentMethodRequiredField: { title: "Missing payment details", description: "A required field is empty for this payment method. Fill in all required fields to continue." },
       }
-    } catch (error) {
-      console.log(error)
+
+      const errorCode = error.errors?.[0]?.code
+      const { title, description } = errorMessages[errorCode] ?? { title: "Unable to add payment method", description: "There was an error when adding the payment method. Please try again." }
+
+      showAlert({
+        title,
+        description,
+        confirmText: "OK",
+        type: "warning",
+      })
     }
   }
 

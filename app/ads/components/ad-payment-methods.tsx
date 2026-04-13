@@ -49,13 +49,17 @@ const AdPaymentMethods = () => {
       await addPaymentMethod.mutateAsync({ method, fields })
       setShowAddPaymentPanel(false)
     } catch (error: any) {
-      let title = "Unable to add payment method"
-      let description = "There was an error when adding the payment method. Please try again."
-
-      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
-        title = "Duplicate payment method"
-        description = "A payment method with the same values already exists. Add a new one."
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodDuplicate: { title: "Duplicate payment method", description: "A payment method with the same values already exists. Add a new one." },
+        PaymentMethodInvalid: { title: "Payment method not valid", description: "This payment method has invalid details. Edit it or choose a different method." },
+        PaymentMethodInvalidField: { title: "Payment details incorrect", description: "One of the payment method fields is not recognised. Check and update the details." },
+        PaymentMethodNotFound: { title: "Payment method not found", description: "This payment method is not available. Choose another method or add a new one." },
+        PaymentMethodRequiredField: { title: "Missing payment details", description: "A required field is empty for this payment method. Fill in all required fields to continue." },
       }
+
+      const errorCode = error.errors?.[0]?.code
+      const { title, description } = errorMessages[errorCode] ?? { title: "Unable to add payment method", description: "There was an error when adding the payment method. Please try again." }
+
       showAlert({
         title,
         description,

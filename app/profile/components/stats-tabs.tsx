@@ -107,13 +107,17 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
 
       setShowAddPaymentPanel(false)
     } catch (error: any) {
-      let title = t("paymentMethod.unableToAdd")
-      let description = t("paymentMethod.addError")
-
-      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
-        title = t("paymentMethod.duplicateMethod")
-        description = t("paymentMethod.duplicateMethodDescription")
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
+        PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
+        PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
+        PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
+        PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
+
+      const errorCode = error.errors?.[0]?.code
+      const { title, description } = errorMessages[errorCode] ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+
       showAlert({
         title,
         description,
