@@ -20,7 +20,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useAddPaymentMethod } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
 
 interface StatsTabsProps {
   stats?: any
@@ -106,7 +106,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       })
 
       setShowAddPaymentPanel(false)
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as PaymentMethodError
       const errorMessages: Record<string, { title: string; description: string }> = {
         PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
         PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
@@ -115,8 +116,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
         PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
 
-      const errorCode = error.errors?.[0]?.code
-      const { title, description } = errorMessages[errorCode] ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+      const errorCode = error?.errors?.[0]?.code
+      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
 
       showAlert({
         title,
