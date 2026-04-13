@@ -192,6 +192,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
       if (result.success) {
         setIsFollowing(!isFollowing)
+        queryClient.invalidateQueries({ queryKey: queryKeys.auth.followers() })
+        queryClient.invalidateQueries({ queryKey: queryKeys.buySell.favouriteUsers() })
         toast({
           description: (
             <div className="flex items-center gap-2">
