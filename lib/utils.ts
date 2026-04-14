@@ -602,6 +602,9 @@ export const currencyFlagMapper = {
   BRL: "/icons/flag-brazil.svg",
   VIR: "/icons/flag-us-virgin-islands.svg",
   VUV: "/icons/flag-vanuatu.svg",
+  GIP: "/icons/flag-gibraltar.svg",
+  MKD: "/icons/flag-macedonia.svg",
+  MDL: "/icons/flag-moldova.svg",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
