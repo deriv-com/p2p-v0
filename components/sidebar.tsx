@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
@@ -42,10 +44,13 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const { isWalletAccount, userData, userId } = useUserDataStore()
+  const { isWalletAccount, userData, userId, verificationStatus, onboardingStatus } = useUserDataStore()
   const { t, locale } = useTranslations()
   const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
-  const { setPendingAd } = useOrderSidebarStore()
+  const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
+  const { hideAlert, showAlert } = useAlertDialog()
+  const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
+  const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [searchInput, setSearchInput] = useState(nickname)
   const [debouncedSearchInput, setDebouncedSearchInput] = useState(nickname)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
@@ -124,7 +129,27 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    router.push(`/advertiser/${advertiserId}`)
+    if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+      setShouldReopenSearchOnReturn(true)
+      router.push(`/advertiser/${advertiserId}`)
+    } else {
+      let title = t("profile.gettingStarted")
+
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
+      showAlert({
+        title,
+        description: (
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="markets" onClose={hideAlert} />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
+    }
   }
 
   const handleBuySellClick = (ad: Advertisement) => {
