@@ -130,7 +130,6 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const handleAdvertiserClick = (advertiserId: number) => {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
-      setShouldReopenSearchOnReturn(true)
       router.push(`/advertiser/${advertiserId}`)
     } else {
       let title = t("profile.gettingStarted")
@@ -249,84 +248,84 @@ export default function Sidebar({ className }: SidebarProps) {
       </div>
       <nav className="flex-1 px-4">
         {(pathname === "/" || pathname.startsWith("/advertiser")) && (
-        <div className="relative mt-2">
-          <Image
-            src="/icons/search-icon-custom.png"
-            alt="Search"
-            width={24}
-            height={24}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2"
-          />
-          <Input
-            variant="tertiary"
-            placeholder="Search advertiser's nickname"
-            value={searchInput}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            onFocus={() => setIsSearchFocused(true)}
-            onBlur={() => {
-              if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
-              blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
-            }}
-            className="bg-grayscale-500 rounded-lg pr-8 pl-8"
-          />
-          {searchInput && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClear}
-              className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
-            >
-              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
-            </Button>
-          )}
-          {isSearchFocused && searchInput.length > 0 && (
-            <div className="absolute top-full left-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
-              <div className="px-0 pt-3 pb-0">
-                <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
-                  <TabsList className="w-full bg-transparent p-0">
-                    <TabsTrigger
-                      value="sell"
-                      variant="underline"
-                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
-                    >
-                      {t("market.buyTab")}
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="buy"
-                      variant="underline"
-                      className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
-                    >
-                      {t("market.sellTab")}
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
-              {isSearching && searchResults.length === 0 ? (
-                <AdvertiserSearchSkeleton count={3} />
-              ) : searchResults.length > 0 ? (
-                <div ref={dropdownScrollContainerRef} className="max-h-[480px] overflow-y-auto">
-                  {searchResults.map((ad) => (
-                    <div key={ad.id} className="border-b border-slate-100">
-                      {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
-                    </div>
-                  ))}
-                  {isFetchingNextPage && (
-                    <div className="sticky bottom-0 flex justify-center py-2 bg-white">
-                      <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                    </div>
-                  )}
-                  <div ref={dropdownSentinelRef} className="h-1" />
+          <div className="relative mt-2">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2"
+            />
+            <Input
+              variant="tertiary"
+              placeholder="Search advertiser's nickname"
+              value={searchInput}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => {
+                if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
+                blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
+              }}
+              className="bg-grayscale-500 rounded-lg pr-8 pl-8"
+            />
+            {searchInput && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClear}
+                className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
+              >
+                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              </Button>
+            )}
+            {isSearchFocused && searchInput.length > 0 && (
+              <div className="absolute top-full left-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
+                <div className="px-0 pt-3 pb-0">
+                  <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                    <TabsList className="w-full bg-transparent p-0">
+                      <TabsTrigger
+                        value="sell"
+                        variant="underline"
+                        className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                      >
+                        {t("market.buyTab")}
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="buy"
+                        variant="underline"
+                        className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
+                      >
+                        {t("market.sellTab")}
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
                 </div>
-              ) : debouncedSearchInput.length > 0 ? (
-                <EmptyState
-                  title={`No results found for "${debouncedSearchInput}"`}
-                  description="Check spelling or try finding different advertisers."
-                  className="py-4 px-2"
-                />
-              ) : null}
-            </div>
-          )}
-        </div>
+                {isSearching && searchResults.length === 0 ? (
+                  <AdvertiserSearchSkeleton count={3} />
+                ) : searchResults.length > 0 ? (
+                  <div ref={dropdownScrollContainerRef} className="max-h-[480px] overflow-y-auto">
+                    {searchResults.map((ad) => (
+                      <div key={ad.id} className="border-b border-slate-100">
+                        {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
+                      </div>
+                    ))}
+                    {isFetchingNextPage && (
+                      <div className="sticky bottom-0 flex justify-center py-2 bg-white">
+                        <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                      </div>
+                    )}
+                    <div ref={dropdownSentinelRef} className="h-1" />
+                  </div>
+                ) : debouncedSearchInput.length > 0 ? (
+                  <EmptyState
+                    title={`No results found for "${debouncedSearchInput}"`}
+                    description="Check spelling or try finding different advertisers."
+                    className="py-4 px-2"
+                  />
+                ) : null}
+              </div>
+            )}
+          </div>
         )}
         <ul>
           {navItems.map((item) => {
