@@ -15,6 +15,9 @@ import { AdvertiserSearchResultCard } from "@/components/advertiser-search-resul
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface MobileAdvertiserSearchProps {
     isOpen: boolean
@@ -95,12 +98,38 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         }, 300)
     }
 
+    const userId = useUserDataStore((state) => state.userId)
+    const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+    const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+    const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
+    const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
+    const { hideAlert, showAlert } = useAlertDialog()
+
     const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
 
     const handleAdvertiserClick = (advertiserId: number) => {
-        setShouldReopenSearchOnReturn(true)
-        router.push(`/advertiser/${advertiserId}`)
-        onClose()
+        if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+            setShouldReopenSearchOnReturn(true)
+            router.push(`/advertiser/${advertiserId}`)
+            onClose()
+        } else {
+            let title = t("profile.gettingStarted")
+
+            if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+            else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+            else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+
+            showAlert({
+                title,
+                description: (
+                    <div className="space-y-4 my-2">
+                        <KycOnboardingSheet route="markets" onClose={hideAlert} />
+                    </div>
+                ),
+                confirmText: undefined,
+                cancelText: undefined,
+            })
+        }
     }
 
     const handleBuySellClick = (ad: Advertisement) => {
