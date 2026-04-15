@@ -88,22 +88,20 @@ export default function Header() {
           </nav>
         </div>
         <div className="h-12 flex items-center space-x-2">
+          {(pathname === "/" || pathname.startsWith("/advertiser")) && (
+            <Button
+              onClick={() => setUserIsSearchOpen(true)}
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full bg-[#ffffff0a]"
+            >
+              <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
+            </Button>
+          )}
           {userId && (
-            <>
-              {(pathname === "/" || pathname.startsWith("/advertiser")) && (
-                <Button
-                  onClick={() => setUserIsSearchOpen(true)}
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full bg-[#ffffff0a]"
-                >
-                  <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
-                </Button>
-              )}
-              <div className="text-slate-600 hover:text-slate-700">
-                <NovuNotifications />
-              </div>
-            </>
+            <div className="text-slate-600 hover:text-slate-700">
+              <NovuNotifications />
+            </div>
           )}
         </div>
       </header>
