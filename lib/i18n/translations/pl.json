@@ -95,6 +95,9 @@
     "orderExists": "Masz już aktywne zamówienie dla tego ogłoszenia. Dokończ istniejące zamówienie przed złożeniem nowego.",
     "orderCreationError": "Podczas tworzenia zamówienia wystąpił błąd. Spróbuj ponownie.",
     "unableToCreateOrder": "Nie można utworzyć zamówienia",
+    "insufficientFunds": "Niewystarczające środki",
+    "insufficientFundsDescription": "W tej chwili nie ma wystarczających środków, aby złożyć to zamówienie. Spróbuj ponownie później lub wybierz inne ogłoszenie.",
+    "viewOtherAds": "Zobacz inne ogłoszenia",
     "fixedRateDescription": "Ustaw stały kurs, niezależny od wahań rynkowych.",
     "floatingRateDescription": "Ustaw kurs, który zmienia się wraz z ruchami rynkowymi."
   },
