@@ -361,6 +361,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             confirmText: "Try again",
             type: "warning",
           })
+        } else if (errorCode === "v1InsufficientFunds" && orderType === "sell") {
+          showAlert({
+            title: "Not enough funds",
+            description: "There aren't enough funds to place this order right now. Try again later or choose another ad.",
+            confirmText: "View other ads",
+            type: "warning",
+            onConfirm: () => {
+              handleClose()
+            },
+          })
         } else {
           showAlert({
             title: t("order.unableToCreateOrder"),

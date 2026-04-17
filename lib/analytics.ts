@@ -11,7 +11,7 @@ export const initializeAnalytics = async () => {
   const remoteConfigURL = process.env.NEXT_PUBLIC_REMOTE_CONFIG_URL
   let flags = {
     tracking_rudderstack: true,
-    tracking_posthog: true
+    tracking_posthog: false
   }
 
   if (remoteConfigURL) {
@@ -20,7 +20,7 @@ export const initializeAnalytics = async () => {
         .catch(() => {
           return {
             tracking_rudderstack: true,
-            tracking_posthog: true
+            tracking_posthog: false
           }
         })
   }
