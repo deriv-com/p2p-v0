@@ -89,9 +89,9 @@
     "orderExists": "Bạn chỉ có thể có một đơn hàng đang hoạt động cho mỗi tin đăng. Hoàn thành đơn hàng hiện tại để tiếp tục.",
     "orderCreationError": "Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại.",
     "unableToCreateOrder": "Không thể tạo đơn hàng",
-    "insufficientFunds": "Not enough funds",
-    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
-    "viewOtherAds": "View other ads"
+    "insufficientFunds": "Không đủ tiền",
+    "insufficientFundsDescription": "Hiện không đủ tiền để đặt đơn hàng này. Vui lòng thử lại sau hoặc chọn tin đăng khác.",
+    "viewOtherAds": "Xem tin đăng khác"
   },
   "paymentMethod": {
     "title": "Phương thức thanh toán",

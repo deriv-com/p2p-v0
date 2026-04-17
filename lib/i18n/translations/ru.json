@@ -89,9 +89,9 @@
     "orderExists": "У вас может быть только один активный заказ на объявление. Завершите существующий заказ, чтобы продолжить.",
     "orderCreationError": "Произошла ошибка при создании заказа. Пожалуйста, попробуйте снова.",
     "unableToCreateOrder": "Не удалось создать заказ",
-    "insufficientFunds": "Not enough funds",
-    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
-    "viewOtherAds": "View other ads"
+    "insufficientFunds": "Недостаточно средств",
+    "insufficientFundsDescription": "Недостаточно средств для размещения этого заказа прямо сейчас. Попробуйте позже или выберите другое объявление.",
+    "viewOtherAds": "Просмотреть другие объявления"
   },
   "paymentMethod": {
     "title": "Способ оплаты",

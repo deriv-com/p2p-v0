@@ -88,9 +88,9 @@
     "orderExists": "Sie können nur eine aktive Bestellung pro Anzeige haben. Schließen Sie Ihre bestehende Bestellung ab, um fortzufahren.",
     "orderCreationError": "Beim Erstellen der Bestellung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "unableToCreateOrder": "Bestellung kann nicht erstellt werden",
-    "insufficientFunds": "Not enough funds",
-    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
-    "viewOtherAds": "View other ads"
+    "insufficientFunds": "Nicht genügend Guthaben",
+    "insufficientFundsDescription": "Es sind derzeit nicht genügend Mittel vorhanden, um diese Bestellung aufzugeben. Versuchen Sie es später erneut oder wählen Sie eine andere Anzeige.",
+    "viewOtherAds": "Andere Anzeigen anzeigen"
   },
   "paymentMethod": {
     "title": "Zahlungsmethode",
