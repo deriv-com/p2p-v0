@@ -88,7 +88,10 @@
     "orderLimitError": "Лимит заказа: {min} - {max} {currency}",
     "orderExists": "У вас может быть только один активный заказ на объявление. Завершите существующий заказ, чтобы продолжить.",
     "orderCreationError": "Произошла ошибка при создании заказа. Пожалуйста, попробуйте снова.",
-    "unableToCreateOrder": "Не удалось создать заказ"
+    "unableToCreateOrder": "Не удалось создать заказ",
+    "insufficientFunds": "Not enough funds",
+    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
+    "viewOtherAds": "View other ads"
   },
   "paymentMethod": {
     "title": "Способ оплаты",

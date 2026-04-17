@@ -95,6 +95,9 @@
     "orderExists": "Tayari una amri inayofanya kazi kwa tangazo hili. Kamilisha amri iliyopo kabla ya kuweka mpya.",
     "orderCreationError": "Kulikuwa na hitilafu wakati wa kuunda amri. Tafadhali jaribu tena.",
     "unableToCreateOrder": "Haiwezi kuunda amri",
+    "insufficientFunds": "Not enough funds",
+    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
+    "viewOtherAds": "View other ads",
     "fixedRateDescription": "Weka kiwango thabiti, ambacho hakiathiriwi na mabadiliko ya soko.",
     "floatingRateDescription": "Weka kiwango kinachobadilika na mabadiliko ya soko."
   },

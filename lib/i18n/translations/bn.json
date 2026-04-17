@@ -87,7 +87,10 @@
     "orderLimitError": "অর্ডার সীমা: {min} - {max} {currency}",
     "orderExists": "প্রতি অ্যাডে আপনার শুধুমাত্র একটি সক্রিয় অর্ডার থাকতে পারে। চালিয়ে যেতে আপনার বিদ্যমান অর্ডারটি সম্পূর্ণ করুন।",
     "orderCreationError": "অর্ডার তৈরিতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
-    "unableToCreateOrder": "অর্ডার তৈরি করা সম্ভব হচ্ছে না"
+    "unableToCreateOrder": "অর্ডার তৈরি করা সম্ভব হচ্ছে না",
+    "insufficientFunds": "Not enough funds",
+    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
+    "viewOtherAds": "View other ads"
   },
   "paymentMethod": {
     "title": "পেমেন্ট পদ্ধতি",

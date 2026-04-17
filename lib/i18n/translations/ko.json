@@ -95,6 +95,9 @@
     "orderExists": "이 광고에 대해 이미 활성화된 주문이 있습니다. 새 주문을 생성하기 전에 기존 주문을 완료하세요.",
     "orderCreationError": "주문을 생성할 때 오류가 발생했습니다. 다시 시도하세요.",
     "unableToCreateOrder": "주문을 생성할 수 없습니다",
+    "insufficientFunds": "Not enough funds",
+    "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
+    "viewOtherAds": "View other ads",
     "fixedRateDescription": "시장 변동의 영향을 받지 않는 고정 환율을 설정하세요.",
     "floatingRateDescription": "시장 변동에 따라 변하는 환율을 설정하세요."
   },
