@@ -94,10 +94,10 @@
     "viewOtherAds": "Просмотреть другие объявления",
     "adNotAvailableTitle": "Объявление недоступно",
     "adNotAvailableDescription": "Это объявление сейчас недоступно. Попробуйте снова через несколько минут или выберите другое объявление.",
-    "userReadOnlyTitle": "Active orders only",
-    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
-    "userReadOnlyOpenChat": "Open live chat",
-    "userReadOnlyMaybeLater": "Maybe later"
+    "userReadOnlyTitle": "Только активные заказы",
+    "userReadOnlyDescription": "Вы можете просматривать существующие P2P-заказы, но сейчас не можете создавать или обновлять объявления и размещать новые заказы. Свяжитесь с нами, если вам нужна помощь.",
+    "userReadOnlyOpenChat": "Открыть онлайн-чат",
+    "userReadOnlyMaybeLater": "Может быть позже"
   },
   "paymentMethod": {
     "title": "Способ оплаты",

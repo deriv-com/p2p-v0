@@ -94,10 +94,10 @@
     "viewOtherAds": "Xem tin đăng khác",
     "adNotAvailableTitle": "Quảng cáo không khả dụng",
     "adNotAvailableDescription": "Quảng cáo này hiện không khả dụng. Thử lại sau vài phút hoặc chọn quảng cáo khác.",
-    "userReadOnlyTitle": "Active orders only",
-    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
-    "userReadOnlyOpenChat": "Open live chat",
-    "userReadOnlyMaybeLater": "Maybe later"
+    "userReadOnlyTitle": "Chỉ đơn hàng đang hoạt động",
+    "userReadOnlyDescription": "Bạn có thể xem các đơn hàng P2P hiện có, nhưng không thể tạo hoặc cập nhật quảng cáo hay đặt đơn hàng mới lúc này. Liên hệ với chúng tôi nếu bạn cần hỗ trợ.",
+    "userReadOnlyOpenChat": "Mở trò chuyện trực tiếp",
+    "userReadOnlyMaybeLater": "Có thể sau"
   },
   "paymentMethod": {
     "title": "Phương thức thanh toán",

@@ -93,10 +93,10 @@
     "viewOtherAds": "Andere Anzeigen anzeigen",
     "adNotAvailableTitle": "Anzeige nicht verfügbar",
     "adNotAvailableDescription": "Diese Anzeige ist gerade nicht verfügbar. Versuche es in ein paar Minuten erneut oder wähle eine andere Anzeige.",
-    "userReadOnlyTitle": "Active orders only",
-    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
-    "userReadOnlyOpenChat": "Open live chat",
-    "userReadOnlyMaybeLater": "Maybe later"
+    "userReadOnlyTitle": "Nur aktive Aufträge",
+    "userReadOnlyDescription": "Du kannst deine bestehenden P2P-Aufträge einsehen, aber du kannst derzeit keine Anzeigen erstellen oder aktualisieren und keine neuen Aufträge aufgeben. Kontaktiere uns, wenn du Hilfe benötigst.",
+    "userReadOnlyOpenChat": "Live-Chat öffnen",
+    "userReadOnlyMaybeLater": "Vielleicht später"
   },
   "paymentMethod": {
     "title": "Zahlungsmethode",

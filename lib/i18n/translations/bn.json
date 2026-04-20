@@ -93,10 +93,10 @@
     "viewOtherAds": "অন্যান্য বিজ্ঞাপন দেখুন",
     "adNotAvailableTitle": "বিজ্ঞাপন উপলব্ধ নেই",
     "adNotAvailableDescription": "এই বিজ্ঞাপনটি এই মুহূর্তে উপলব্ধ নেই। কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
-    "userReadOnlyTitle": "Active orders only",
-    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
-    "userReadOnlyOpenChat": "Open live chat",
-    "userReadOnlyMaybeLater": "Maybe later"
+    "userReadOnlyTitle": "শুধুমাত্র সক্রিয় অর্ডার",
+    "userReadOnlyDescription": "আপনি আপনার বিদ্যমান P2P অর্ডারগুলি দেখতে পারবেন, কিন্তু এখন বিজ্ঞাপন তৈরি বা আপডেট করতে বা নতুন অর্ডার দিতে পারবেন না। সাহায্যের প্রয়োজন হলে আমাদের সাথে যোগাযোগ করুন।",
+    "userReadOnlyOpenChat": "লাইভ চ্যাট খুলুন",
+    "userReadOnlyMaybeLater": "হয়তো পরে"
   },
   "paymentMethod": {
     "title": "পেমেন্ট পদ্ধতি",
