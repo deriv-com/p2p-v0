@@ -92,7 +92,11 @@
     "insufficientFundsDescription": "এই মুহূর্তে এই অর্ডারটি দেওয়ার জন্য পর্যাপ্ত তহবিল নেই। পরে আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
     "viewOtherAds": "অন্যান্য বিজ্ঞাপন দেখুন",
     "adNotAvailableTitle": "বিজ্ঞাপন উপলব্ধ নেই",
-    "adNotAvailableDescription": "এই বিজ্ঞাপনটি এই মুহূর্তে উপলব্ধ নেই। কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।"
+    "adNotAvailableDescription": "এই বিজ্ঞাপনটি এই মুহূর্তে উপলব্ধ নেই। কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
+    "userReadOnlyTitle": "Active orders only",
+    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
+    "userReadOnlyOpenChat": "Open live chat",
+    "userReadOnlyMaybeLater": "Maybe later"
   },
   "paymentMethod": {
     "title": "পেমেন্ট পদ্ধতি",

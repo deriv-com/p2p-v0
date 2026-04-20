@@ -101,6 +101,10 @@
     "viewOtherAds": "View other ads",
     "adNotAvailableTitle": "Ad not available",
     "adNotAvailableDescription": "This ad isn't available right now. Try again in a few minutes or choose another ad.",
+    "userReadOnlyTitle": "Active orders only",
+    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
+    "userReadOnlyOpenChat": "Open live chat",
+    "userReadOnlyMaybeLater": "Maybe later",
     "fixedRateDescription": "Set a constant rate, unaffected by market fluctuations.",
     "floatingRateDescription": "Set a rate that changes with market movements."
   },

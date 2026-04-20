@@ -93,7 +93,11 @@
     "insufficientFundsDescription": "Недостаточно средств для размещения этого заказа прямо сейчас. Попробуйте позже или выберите другое объявление.",
     "viewOtherAds": "Просмотреть другие объявления",
     "adNotAvailableTitle": "Объявление недоступно",
-    "adNotAvailableDescription": "Это объявление сейчас недоступно. Попробуйте снова через несколько минут или выберите другое объявление."
+    "adNotAvailableDescription": "Это объявление сейчас недоступно. Попробуйте снова через несколько минут или выберите другое объявление.",
+    "userReadOnlyTitle": "Active orders only",
+    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
+    "userReadOnlyOpenChat": "Open live chat",
+    "userReadOnlyMaybeLater": "Maybe later"
   },
   "paymentMethod": {
     "title": "Способ оплаты",

@@ -92,7 +92,11 @@
     "insufficientFundsDescription": "Es sind derzeit nicht genügend Mittel vorhanden, um diese Bestellung aufzugeben. Versuchen Sie es später erneut oder wählen Sie eine andere Anzeige.",
     "viewOtherAds": "Andere Anzeigen anzeigen",
     "adNotAvailableTitle": "Anzeige nicht verfügbar",
-    "adNotAvailableDescription": "Diese Anzeige ist gerade nicht verfügbar. Versuche es in ein paar Minuten erneut oder wähle eine andere Anzeige."
+    "adNotAvailableDescription": "Diese Anzeige ist gerade nicht verfügbar. Versuche es in ein paar Minuten erneut oder wähle eine andere Anzeige.",
+    "userReadOnlyTitle": "Active orders only",
+    "userReadOnlyDescription": "You can view your existing P2P orders, but you cannot create or update ads or place new orders right now. Contact us if you need help.",
+    "userReadOnlyOpenChat": "Open live chat",
+    "userReadOnlyMaybeLater": "Maybe later"
   },
   "paymentMethod": {
     "title": "Zahlungsmethode",
