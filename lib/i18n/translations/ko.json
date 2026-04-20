@@ -509,7 +509,7 @@
     "editAdvPaymentMethods": "결제 방법 수정",
     "editAdvCountries": "국가 수정",
     "editAdvAmount": "금액 수정",
-    "instructionsInvalidCharsMessage": "문자, 숫자 및 다음 기호만 사용하세요: @ ' - . , _ ( ) # + : 최대 300자.",
+    "instructionsInvalidCharsMessage": "문자, 숫자 및 다음 기호만 사용하세요: @ ' - . ! / % & , _ ( ) # + : ; 최대 300자.",
     "advertFixedRateMinimumTitle": "고정 환율을 확인하세요",
     "advertFixedRateMinimumMessage": "입력한 고정 환율이 허용 한도보다 낮습니다. 환율을 올려 계속하세요.",
     "advertFixedRateMaximumTitle": "고정 환율을 확인하세요",
