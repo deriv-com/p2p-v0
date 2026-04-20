@@ -381,6 +381,7 @@ export default function PaymentDetailsForm({
   const { mutateAsync: addPaymentMethod, isPending: isAddingPaymentMethod } = useAddPaymentMethod()
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
   const [instructions, setInstructions] = useState(initialData.instructions || "")
+  const [instructionsError, setInstructionsError] = useState("")
   const [touched, setTouched] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
@@ -388,8 +389,10 @@ export default function PaymentDetailsForm({
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
+  const INSTRUCTIONS_REGEX = /^[\p{L}\p{Nd}\s@\-\.\!\/%&,_()+:;]{0,300}$/u
+
   const isFormValid = () => {
-    return selectedPaymentMethodIds.length > 0
+    return selectedPaymentMethodIds.length > 0 && INSTRUCTIONS_REGEX.test(instructions)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -537,14 +540,26 @@ export default function PaymentDetailsForm({
               <div>
                 <Textarea
                   value={instructions}
-                  onChange={(e) => setInstructions(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setInstructions(value)
+                    if (value && !INSTRUCTIONS_REGEX.test(value)) {
+                      setInstructionsError(t("adForm.instructionsInvalidCharsMessage"))
+                    } else {
+                      setInstructionsError("")
+                    }
+                  }}
                   placeholder={initialData.type === "buy" ? t("adForm.sellerInstructions") : t("adForm.buyerInstructions")}
-                  className="min-h-[120px] resize-none"
+                  className={`min-h-[120px] resize-none${instructionsError ? " border-red-500" : ""}`}
                   maxLength={300}
                 />
-                <div className="flex justify-between items-start mt-2 text-xs text-gray-500 mx-4">
-                  <span>{t("adForm.instructionsDisclaimer")}</span>
-                  <span>{instructions.length}/300</span>
+                <div className="flex justify-between items-start mt-2 text-xs mx-4">
+                  {instructionsError ? (
+                    <span className="text-red-500">{instructionsError}</span>
+                  ) : (
+                    <span className="text-gray-500">{t("adForm.instructionsDisclaimer")}</span>
+                  )}
+                  <span className="text-gray-500">{instructions.length}/300</span>
                 </div>
               </div>
             </div>
