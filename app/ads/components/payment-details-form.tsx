@@ -393,7 +393,7 @@ export default function PaymentDetailsForm({
   const validateInstructions = (value: string) => {
     // Allow letters, numbers, spaces, and special chars: @ ' - . ! / % & , _ ( ) # + : ;
     // Max 300 characters (enforced by maxLength on textarea)
-    const allowedPattern = new RegExp('^[\\p{L}\\p{Nd}\\s@\\-\\.\\!\\/%&,_()+:;]{0,300}$', 'u')
+    const allowedPattern = new RegExp('^[\\p{L}\\p{Nd}\\s@\\-\\.!\\/%&,_()+:;]{0,300}$', 'u')
     return allowedPattern.test(value)
   }
 
