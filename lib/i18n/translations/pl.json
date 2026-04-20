@@ -467,11 +467,11 @@
     "deleteAdOpenOrders": "Ogłoszenie ma trwające zamówienia.",
     "unableToUpdateAd": "Nie można zaktualizować ogłoszenia",
     "updateAdError": "Podczas aktualizacji ogłoszenia wystąpił błąd. Spróbuj ponownie.",
-    "instructionsInvalidCharsMessage": "Używaj tylko liter, cyfr i tych symboli: @ ' - . , _ ( ) # + : maksymalnie 100 znaków.",
+    "instructionsInvalidCharsMessage": "Używaj tylko liter, cyfr i tych symboli: @ ' - . , _ ( ) # + : maksymalnie 300 znaków.",
     "advertFixedRateMinimumTitle": "Sprawdź swoją stałą stawkę",
     "advertFixedRateMinimumMessage": "Wprowadzona stała stawka jest niższa niż dozwolony limit. Zwiększ stawkę, aby kontynuować.",
     "advertFixedRateMaximumTitle": "Sprawdź swoją stałą stawkę",
-    "advertFixedRateMaximumMessage": "Wprowadzona zmienna stawka jest wyższa niż dozwolony limit. Obniż stawkę, aby kontynuować.",
+    "advertFixedRateMaximumMessage": "Wprowadzona stała stawka jest wyższa niż dozwolony limit. Obniż stawkę, aby kontynuować.",
     "advertFloatRateMaximumTitle": "Sprawdź swoją zmienną stawkę",
     "advertFloatRateMaximumMessage": "Wprowadzona zmienna stawka jest wyższa niż dozwolony limit. Obniż stawkę, aby kontynuować.",
     "updateRate": "Aktualizuj stawkę"

@@ -1,5 +1,6 @@
 "use client"
 
+
 import type React from "react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
@@ -191,7 +192,7 @@ const FullPagePaymentSelection = ({
         )}
       </div>
       <div className={isMobile ? "p-4 pt-4" : "pt-4"}>
-        <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary" className="w-full">
+        <Button onClick={handleConfirm} disabled={localSelected.length === 0} className="w-full">
           {t("common.confirm")}
         </Button>
       </div>
@@ -389,10 +390,15 @@ export default function PaymentDetailsForm({
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
-  const INSTRUCTIONS_REGEX = /^[\p{L}\p{Nd}\s@\-\.\!\/%&,_()+:;]{0,300}$/u
+  const validateInstructions = (value: string) => {
+    // Allow letters, numbers, spaces, and special chars: @ ' - . ! / % & , _ ( ) # + : ;
+    // Max 300 characters (enforced by maxLength on textarea)
+    const allowedPattern = new RegExp('^[\\p{L}\\p{Nd}\\s@\\-\\.\\!\\/%&,_()+:;]{0,300}$', 'u')
+    return allowedPattern.test(value)
+  }
 
   const isFormValid = () => {
-    return selectedPaymentMethodIds.length > 0 && INSTRUCTIONS_REGEX.test(instructions)
+    return selectedPaymentMethodIds.length > 0 && validateInstructions(instructions)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -543,7 +549,7 @@ export default function PaymentDetailsForm({
                   onChange={(e) => {
                     const value = e.target.value
                     setInstructions(value)
-                    if (value && !INSTRUCTIONS_REGEX.test(value)) {
+                    if (value && !validateInstructions(value)) {
                       setInstructionsError(t("adForm.instructionsInvalidCharsMessage"))
                     } else {
                       setInstructionsError("")
