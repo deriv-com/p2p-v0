@@ -371,6 +371,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               handleClose()
             },
           })
+        } else if (errorCode === "v1DebitFailed") {
+          showAlert({
+            title: t("order.adNotAvailableTitle"),
+            description: t("order.adNotAvailableDescription"),
+            confirmText: t("order.viewOtherAds"),
+            type: "warning",
+            onConfirm: () => {
+              handleClose()
+            },
+          })
         } else {
           showAlert({
             title: t("order.unableToCreateOrder"),
@@ -621,7 +631,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 <div className="mt-auto p-4 flex justify-end">
                   <Button
                     className="w-full md:w-auto"
-                    variant="primary"
+                    variant="default"
                     onClick={handleSubmit}
                     disabled={
                       !amount || (isBuy && selectedPaymentMethods.length === 0) || !!validationError || isSubmitting

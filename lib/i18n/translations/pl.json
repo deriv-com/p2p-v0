@@ -98,6 +98,8 @@
     "insufficientFunds": "Niewystarczające środki",
     "insufficientFundsDescription": "W tej chwili nie ma wystarczających środków, aby złożyć to zamówienie. Spróbuj ponownie później lub wybierz inne ogłoszenie.",
     "viewOtherAds": "Zobacz inne ogłoszenia",
+    "adNotAvailableTitle": "Ogłoszenie niedostępne",
+    "adNotAvailableDescription": "To ogłoszenie nie jest teraz dostępne. Spróbuj ponownie za kilka minut lub wybierz inne ogłoszenie.",
     "fixedRateDescription": "Ustaw stały kurs, niezależny od wahań rynkowych.",
     "floatingRateDescription": "Ustaw kurs, który zmienia się wraz z ruchami rynkowymi."
   },
@@ -464,7 +466,15 @@
     "deleteAdError": "Podczas usuwania ogłoszenia wystąpił błąd. Spróbuj ponownie.",
     "deleteAdOpenOrders": "Ogłoszenie ma trwające zamówienia.",
     "unableToUpdateAd": "Nie można zaktualizować ogłoszenia",
-    "updateAdError": "Podczas aktualizacji ogłoszenia wystąpił błąd. Spróbuj ponownie."
+    "updateAdError": "Podczas aktualizacji ogłoszenia wystąpił błąd. Spróbuj ponownie.",
+    "instructionsInvalidCharsMessage": "Używaj tylko liter, cyfr i tych symboli: @ ' - . ! / % & , _ ( ) # + : ; maksymalnie 300 znaków.",
+    "advertFixedRateMinimumTitle": "Sprawdź swoją stałą stawkę",
+    "advertFixedRateMinimumMessage": "Wprowadzona stała stawka jest niższa niż dozwolony limit. Zwiększ stawkę, aby kontynuować.",
+    "advertFixedRateMaximumTitle": "Sprawdź swoją stałą stawkę",
+    "advertFixedRateMaximumMessage": "Wprowadzona stała stawka jest wyższa niż dozwolony limit. Obniż stawkę, aby kontynuować.",
+    "advertFloatRateMaximumTitle": "Sprawdź swoją zmienną stawkę",
+    "advertFloatRateMaximumMessage": "Wprowadzona zmienna stawka jest wyższa niż dozwolony limit. Obniż stawkę, aby kontynuować.",
+    "updateRate": "Aktualizuj stawkę"
   },
   "advertiser": {
     "goBack": "Wróć",

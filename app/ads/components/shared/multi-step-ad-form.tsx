@@ -283,6 +283,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         InsufficientBalance: t("adForm.insufficientBalanceMessage"),
         AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
         AdvertActiveCountExceeded: t("adForm.adLimitReachedMessage"),
+        AdvertFixedRateMinimum: t("adForm.advertFixedRateMinimumMessage"),
+        AdvertFixedRateMaximum: t("adForm.advertFixedRateMaximumMessage"),
         AdvertFloatRateMaximum: t("adForm.advertFloatRateMaximumMessage"),
         AdvertExchangeRateDuplicate: t("adForm.duplicateRateMessage"),
         AdvertOrderRangeOverlap: t("adForm.rangeOverlapMessage")
@@ -477,6 +479,14 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         title: t("adForm.amountExceedsBalanceTitle"),
         type: "error",
       },
+      AdvertFixedRateMinimum: {
+        title: t("adForm.advertFixedRateMinimumTitle"),
+        type: "error",
+      },
+      AdvertFixedRateMaximum: {
+        title: t("adForm.advertFixedRateMaximumTitle"),
+        type: "error",
+      },
       AdvertFloatRateMaximum: {
         title: t("adForm.advertFloatRateMaximumTitle"),
         type: "error",
@@ -491,7 +501,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     showAlert({
       title: errorInfo.title,
       description: errorMessage,
-      confirmText: errorName === "AdvertOrderRangeOverlap" ? t("adForm.editLimitsForRangeOverlap") : t("adForm.updateAd"),
+      confirmText: errorName === "AdvertOrderRangeOverlap"
+        ? t("adForm.editLimitsForRangeOverlap")
+        : ["AdvertFixedRateMinimum", "AdvertFixedRateMaximum", "AdvertFloatRateMaximum"].includes(errorName)
+          ? t("adForm.updateRate")
+          : t("adForm.updateAd"),
       type: errorInfo.type,
       onConfirm: () => {
         if (errorInfo.onConfirm) {

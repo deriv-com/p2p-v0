@@ -98,6 +98,8 @@
     "insufficientFunds": "Fedha haitoshi",
     "insufficientFundsDescription": "Hakuna fedha za kutosha kuweka amri hii kwa sasa. Jaribu tena baadaye au chagua tangazo lingine.",
     "viewOtherAds": "Tazama matangazo mengine",
+    "adNotAvailableTitle": "Tangazo halipatikani",
+    "adNotAvailableDescription": "Tangazo hili halipatikani kwa sasa. Jaribu tena baada ya dakika chache au chagua tangazo lingine.",
     "fixedRateDescription": "Weka kiwango thabiti, ambacho hakiathiriwi na mabadiliko ya soko.",
     "floatingRateDescription": "Weka kiwango kinachobadilika na mabadiliko ya soko."
   },
@@ -464,6 +466,14 @@
     "deleteAdError": "Kulikuwa na hitilafu wakati wa kufuta tangazo. Tafadhali jaribu tena.",
     "deleteAdOpenOrders": "Tangazo lina maagizo yanayoendelea.",
     "unableToUpdateAd": "Haiwezi kubadilisha tangazo",
-    "updateAdError": "Kulikuwa na hitilafu wakati wa kubadilisha tangazo. Tafadhali jaribu tena."
+    "updateAdError": "Kulikuwa na hitilafu wakati wa kubadilisha tangazo. Tafadhali jaribu tena.",
+    "instructionsInvalidCharsMessage": "Tumia herufi, nambari, na alama hizi tu: @ ' - . ! / % & , _ ( ) # + : ; kwa urefu wa herufi 300 tu.",
+    "advertFixedRateMinimumTitle": "Angalia kiwango chako cha kudumu",
+    "advertFixedRateMinimumMessage": "Kiwango cha kudumu ulichoweka ni chini ya kikomo kinachokubalika. Ongeza kiwango ili kuendelea.",
+    "advertFixedRateMaximumTitle": "Angalia kiwango chako cha kudumu",
+    "advertFixedRateMaximumMessage": "Kiwango cha kudumu ulichoweka ni juu ya kikomo kinachokubalika. Punguza kiwango ili kuendelea.",
+    "advertFloatRateMaximumTitle": "Angalia kiwango chako cha kuelea",
+    "advertFloatRateMaximumMessage": "Kiwango cha kuelea ulichoweka ni juu ya kikomo kinachokubalika. Punguza kiwango ili kuendelea.",
+    "updateRate": "Sasisha kiwango"
   }
 }
