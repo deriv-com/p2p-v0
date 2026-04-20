@@ -93,7 +93,11 @@
     "insufficientFundsDescription": "Hiện không đủ tiền để đặt đơn hàng này. Vui lòng thử lại sau hoặc chọn tin đăng khác.",
     "viewOtherAds": "Xem tin đăng khác",
     "adNotAvailableTitle": "Quảng cáo không khả dụng",
-    "adNotAvailableDescription": "Quảng cáo này hiện không khả dụng. Thử lại sau vài phút hoặc chọn quảng cáo khác."
+    "adNotAvailableDescription": "Quảng cáo này hiện không khả dụng. Thử lại sau vài phút hoặc chọn quảng cáo khác.",
+    "userReadOnlyTitle": "Chỉ đơn hàng đang hoạt động",
+    "userReadOnlyDescription": "Bạn có thể xem các đơn hàng P2P hiện có, nhưng không thể tạo hoặc cập nhật quảng cáo hay đặt đơn hàng mới lúc này. Liên hệ với chúng tôi nếu bạn cần hỗ trợ.",
+    "userReadOnlyOpenChat": "Mở trò chuyện trực tiếp",
+    "userReadOnlyMaybeLater": "Có thể sau"
   },
   "paymentMethod": {
     "title": "Phương thức thanh toán",

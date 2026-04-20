@@ -100,6 +100,10 @@
     "viewOtherAds": "Zobacz inne ogłoszenia",
     "adNotAvailableTitle": "Ogłoszenie niedostępne",
     "adNotAvailableDescription": "To ogłoszenie nie jest teraz dostępne. Spróbuj ponownie za kilka minut lub wybierz inne ogłoszenie.",
+    "userReadOnlyTitle": "Tylko aktywne zamówienia",
+    "userReadOnlyDescription": "Możesz przeglądać swoje istniejące zamówienia P2P, ale nie możesz teraz tworzyć ani aktualizować ogłoszeń ani składać nowych zamówień. Skontaktuj się z nami, jeśli potrzebujesz pomocy.",
+    "userReadOnlyOpenChat": "Otwórz czat na żywo",
+    "userReadOnlyMaybeLater": "Może później",
     "fixedRateDescription": "Ustaw stały kurs, niezależny od wahań rynkowych.",
     "floatingRateDescription": "Ustaw kurs, który zmienia się wraz z ruchami rynkowymi."
   },

@@ -381,6 +381,19 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               handleClose()
             },
           })
+        } else if (errorCode === "UserReadOnly") {
+          showAlert({
+            title: t("order.userReadOnlyTitle"),
+            description: t("order.userReadOnlyDescription"),
+            confirmText: t("order.userReadOnlyOpenChat"),
+            cancelText: t("order.userReadOnlyMaybeLater"),
+            type: "warning",
+            onConfirm: () => {
+              if (typeof window !== "undefined" && window.Intercom) {
+                window.Intercom("show")
+              }
+            },
+          })
         } else {
           showAlert({
             title: t("order.unableToCreateOrder"),

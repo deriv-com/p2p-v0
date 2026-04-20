@@ -100,6 +100,10 @@
     "viewOtherAds": "Tazama matangazo mengine",
     "adNotAvailableTitle": "Tangazo halipatikani",
     "adNotAvailableDescription": "Tangazo hili halipatikani kwa sasa. Jaribu tena baada ya dakika chache au chagua tangazo lingine.",
+    "userReadOnlyTitle": "Maagizo ya sasa tu",
+    "userReadOnlyDescription": "Unaweza kuona maagizo yako ya P2P yaliyopo, lakini huwezi kuunda au kusasisha matangazo au kuweka maagizo mapya kwa sasa. Wasiliana nasi ikiwa unahitaji msaada.",
+    "userReadOnlyOpenChat": "Fungua mazungumzo ya moja kwa moja",
+    "userReadOnlyMaybeLater": "Labda baadaye",
     "fixedRateDescription": "Weka kiwango thabiti, ambacho hakiathiriwi na mabadiliko ya soko.",
     "floatingRateDescription": "Weka kiwango kinachobadilika na mabadiliko ya soko."
   },
