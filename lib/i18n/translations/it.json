@@ -526,7 +526,7 @@
     "audienceTooltip": "Puoi filtrare chi interagisce con i tuoi annunci in base alla loro posizione o cronologia P2P. Filtri più rigidi possono ridurre la visibilità dell'annuncio.",
     "sellerInstructions": "Istruzioni (opzionale)",
     "instructionsDisclaimer": "Queste informazioni saranno visibili a tutti. Non condividere il tuo numero di telefono o dettagli personali.",
-    "instructionsInvalidCharsMessage": "Usa solo lettere, numeri e questi simboli: @ ' - . ! / % & , _ ( ) # + : ; con un massimo di 300 caratteri.",
+    "instructionsInvalidCharsMessage": "Usa solo lettere, numeri e questi simboli: @ - . ! / % & , _ ( ) + : ; con un massimo di 300 caratteri.",
     "totalAmountRequired": "L'importo totale è obbligatorio",
     "totalAmountGreaterThanZero": "L'importo totale deve essere maggiore di 0",
     "rateRequired": "Il tasso è obbligatorio",
