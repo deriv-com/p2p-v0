@@ -391,7 +391,7 @@ export default function PaymentDetailsForm({
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
   const validateInstructions = (value: string) => {
-    // Allow letters, numbers, spaces, and special chars: @ ' - . ! / % & , _ ( ) # + : ;
+    // Allow letters, numbers, spaces, and special chars: @ - . ! / % & , _ ( ) + : ;
     // Max 300 characters (enforced by maxLength on textarea)
     const allowedPattern = new RegExp('^[\\p{L}\\p{Nd}\\s@\\-\\.!\\/%&,_()+:;]{0,300}$', 'u')
     return allowedPattern.test(value)
@@ -559,7 +559,7 @@ export default function PaymentDetailsForm({
                   className={`min-h-[120px] resize-none${instructionsError ? " border-red-500" : ""}`}
                   maxLength={300}
                 />
-                <div className="flex justify-between items-start mt-2 text-xs mx-4">
+                <div className="flex justify-between items-start mt-2 text-xs mx-4 gap-2">
                   {instructionsError ? (
                     <span className="text-red-500">{instructionsError}</span>
                   ) : (

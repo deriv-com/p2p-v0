@@ -467,7 +467,7 @@
     "deleteAdOpenOrders": "Tangazo lina maagizo yanayoendelea.",
     "unableToUpdateAd": "Haiwezi kubadilisha tangazo",
     "updateAdError": "Kulikuwa na hitilafu wakati wa kubadilisha tangazo. Tafadhali jaribu tena.",
-    "instructionsInvalidCharsMessage": "Tumia herufi, nambari, na alama hizi tu: @ ' - . ! / % & , _ ( ) # + : ; kwa urefu wa herufi 300 tu.",
+    "instructionsInvalidCharsMessage": "Tumia herufi, nambari, na alama hizi tu: @ - . ! / % & , _ ( ) + : ; kwa urefu wa herufi 300 tu.",
     "advertFixedRateMinimumTitle": "Angalia kiwango chako cha kudumu",
     "advertFixedRateMinimumMessage": "Kiwango cha kudumu ulichoweka ni chini ya kikomo kinachokubalika. Ongeza kiwango ili kuendelea.",
     "advertFixedRateMaximumTitle": "Angalia kiwango chako cha kudumu",
