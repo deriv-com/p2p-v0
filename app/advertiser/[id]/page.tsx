@@ -92,6 +92,9 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   const { isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
 
+  const currentIdRef = useRef(id)
+  useEffect(() => { currentIdRef.current = id }, [id])
+
   const abortControllerRef = useRef<AbortController | null>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
@@ -178,7 +181,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     const unsubscribe = subscribe((data: any) => {
       if (data?.options?.channel === "users_online") {
         const updates: Array<{ user_id: number; is_online: boolean }> = data?.payload?.data ?? []
-        const match = updates.find((u) => String(u.user_id) === String(id))
+        const match = updates.find((u) => String(u.user_id) === String(currentIdRef.current))
         if (match !== undefined) {
           setProfile((prev) => prev ? { ...prev, is_online: match.is_online } : prev)
         }
@@ -189,7 +192,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       unsubscribe()
       leaveUsersOnlineChannel()
     }
-  }, [isConnected, id, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
+  }, [isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
