@@ -2,7 +2,7 @@
 
 export const runtime = "edge"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
 import Navigation from "@/components/navigation"
@@ -62,7 +62,7 @@ export default function OrderDetailsPage() {
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(true)
   const [orderVerificationEnabled, setOrderVerificationEnabled] = useState<boolean>(true)
-  const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
+  const { isConnected, joinChannel, reconnect, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
   const [otpRequested, setOtpRequested] = useState(false)
 
   useEffect(() => {
@@ -80,6 +80,37 @@ export default function OrderDetailsPage() {
       setIsChatLoading(false)
     }
   }, [isConnected, orderId])
+
+  const handleUsersOnlineUpdate = useCallback((data: any) => {
+    if (data?.options?.channel === "users_online") {
+      const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+      if (update) {
+        setOrder((prev) => {
+          if (!prev) return prev
+          const updatedOrder = { ...prev }
+          if (prev.user?.id === update.user_id) {
+            updatedOrder.user = { ...prev.user, is_online: update.is_online }
+          }
+          if (prev.advert?.user?.id === update.user_id) {
+            updatedOrder.advert = { ...prev.advert, user: { ...prev.advert.user, is_online: update.is_online } }
+          }
+          return updatedOrder
+        })
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isConnected) return
+
+    joinUsersOnlineChannel()
+    const unsubscribe = subscribe(handleUsersOnlineUpdate)
+
+    return () => {
+      unsubscribe()
+      leaveUsersOnlineChannel()
+    }
+  }, [isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {

@@ -2,7 +2,7 @@
 
 export const runtime = "edge"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -173,26 +173,26 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  const handleUsersOnlineUpdate = useCallback((data: any) => {
+    if (data?.options?.channel === "users_online") {
+      const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+      if (update && String(update.user_id) === String(currentIdRef.current)) {
+        setProfile((prev) => prev ? { ...prev, is_online: update.is_online } : prev)
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (!isConnected) return
 
     joinUsersOnlineChannel()
-
-    const unsubscribe = subscribe((data: any) => {
-      if (data?.options?.channel === "users_online") {
-        const updates: Array<{ user_id: number; is_online: boolean }> = data?.payload?.data ?? []
-        const match = updates.find((u) => String(u.user_id) === String(currentIdRef.current))
-        if (match !== undefined) {
-          setProfile((prev) => prev ? { ...prev, is_online: match.is_online } : prev)
-        }
-      }
-    })
+    const unsubscribe = subscribe(handleUsersOnlineUpdate)
 
     return () => {
       unsubscribe()
       leaveUsersOnlineChannel()
     }
-  }, [isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
+  }, [isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
