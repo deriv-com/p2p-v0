@@ -180,10 +180,9 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
     const unsubscribe = subscribe((data: any) => {
       if (data?.options?.channel === "users_online") {
-        const updates: Array<{ user_id: number; is_online: boolean }> = data?.payload?.data ?? []
-        const match = updates.find((u) => String(u.user_id) === String(currentIdRef.current))
-        if (match !== undefined) {
-          setProfile((prev) => prev ? { ...prev, is_online: match.is_online } : prev)
+        const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+        if (update && String(update.user_id) === String(currentIdRef.current)) {
+          setProfile((prev) => prev ? { ...prev, is_online: update.is_online } : prev)
         }
       }
     })

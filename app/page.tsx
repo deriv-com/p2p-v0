@@ -395,13 +395,12 @@ export default function BuySellPage() {
 
     const unsubscribe = subscribe((data: any) => {
       if (data?.options?.channel === "users_online") {
-        const updates: Array<{ user_id: number; is_online: boolean }> = data?.payload?.data ?? []
-        if (updates.length > 0) {
+        const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+        if (update) {
           setAdverts((currentAdverts) =>
-            currentAdverts.map((ad) => {
-              const update = updates.find((u) => u.user_id === ad.user?.id)
-              return update !== undefined ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad
-            }),
+            currentAdverts.map((ad) =>
+              update.user_id === ad.user?.id ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad,
+            ),
           )
         }
       }

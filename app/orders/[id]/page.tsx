@@ -62,7 +62,7 @@ export default function OrderDetailsPage() {
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
   const [isChatLoading, setIsChatLoading] = useState(true)
   const [orderVerificationEnabled, setOrderVerificationEnabled] = useState<boolean>(true)
-  const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
+  const { isConnected, joinChannel, reconnect, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
   const [otpRequested, setOtpRequested] = useState(false)
 
   useEffect(() => {
@@ -80,6 +80,36 @@ export default function OrderDetailsPage() {
       setIsChatLoading(false)
     }
   }, [isConnected, orderId])
+
+  useEffect(() => {
+    if (!isConnected) return
+
+    joinUsersOnlineChannel()
+
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.options?.channel === "users_online") {
+        const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+        if (update) {
+          setOrder((prev) => {
+            if (!prev) return prev
+            const updatedOrder = { ...prev }
+            if (prev.user?.id === update.user_id) {
+              updatedOrder.user = { ...prev.user, is_online: update.is_online }
+            }
+            if (prev.advert?.user?.id === update.user_id) {
+              updatedOrder.advert = { ...prev.advert, user: { ...prev.advert.user, is_online: update.is_online } }
+            }
+            return updatedOrder
+          })
+        }
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      leaveUsersOnlineChannel()
+    }
+  }, [isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
