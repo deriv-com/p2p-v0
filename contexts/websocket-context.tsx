@@ -124,6 +124,21 @@ export class WebSocketClient {
     this.leaveChannel(channel)
   }
 
+  public joinUsersOnlineChannel(): void {
+    const joinMessage: WebSocketMessage = {
+      action: "join",
+      options: {
+        channel: "users_online",
+      },
+      payload: {},
+    }
+    this.send(joinMessage)
+  }
+
+  public leaveUsersOnlineChannel(): void {
+    this.leaveChannel("users_online")
+  }
+
   public joinAdvertsChannel(accountCurrency: string, localCurrency: string, advertType: string): void {
     const channel = `adverts/currency/${accountCurrency}/${localCurrency}/${advertType}`
     const joinMessage: WebSocketMessage = {
@@ -256,6 +271,8 @@ interface WebSocketContextType {
   requestExchangeRate: (buyCurrency: string, forCurrency: string) => void
   joinAdvertsChannel: (accountCurrency: string, localCurrency: string, advertType: string) => void
   leaveAdvertsChannel: (accountCurrency: string, localCurrency: string, advertType: string) => void
+  joinUsersOnlineChannel: () => void
+  leaveUsersOnlineChannel: () => void
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -376,6 +393,14 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current?.leaveAdvertsChannel(accountCurrency, localCurrency, advertType)
   }, [])
 
+  const joinUsersOnlineChannel = useCallback(() => {
+    wsClientRef.current?.joinUsersOnlineChannel()
+  }, [])
+
+  const leaveUsersOnlineChannel = useCallback(() => {
+    wsClientRef.current?.leaveUsersOnlineChannel()
+  }, [])
+
   const value: WebSocketContextType = {
     isConnected,
     joinChannel,
@@ -390,6 +415,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     requestExchangeRate,
     joinAdvertsChannel,
     leaveAdvertsChannel,
+    joinUsersOnlineChannel,
+    leaveUsersOnlineChannel,
   }
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>
