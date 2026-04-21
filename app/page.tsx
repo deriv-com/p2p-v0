@@ -388,29 +388,30 @@ export default function BuySellPage() {
     return unsubscribe
   }, [subscribe])
 
+  const handleUsersOnlineUpdate = useCallback((data: any) => {
+    if (data?.options?.channel === "users_online") {
+      const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+      if (update) {
+        setAdverts((currentAdverts) =>
+          currentAdverts.map((ad) =>
+            update.user_id === ad.user?.id ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad,
+          ),
+        )
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (!isConnected) return
 
     joinUsersOnlineChannel()
-
-    const unsubscribe = subscribe((data: any) => {
-      if (data?.options?.channel === "users_online") {
-        const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
-        if (update) {
-          setAdverts((currentAdverts) =>
-            currentAdverts.map((ad) =>
-              update.user_id === ad.user?.id ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad,
-            ),
-          )
-        }
-      }
-    })
+    const unsubscribe = subscribe(handleUsersOnlineUpdate)
 
     return () => {
       unsubscribe()
       leaveUsersOnlineChannel()
     }
-  }, [isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
+  }, [isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
