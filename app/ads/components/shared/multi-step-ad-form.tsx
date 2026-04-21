@@ -429,6 +429,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
   }
 
+  const getErrorConfirmText = (errorName: string): string => {
+    const confirmTextMap: Record<string, string> = {
+      AdvertOrderRangeOverlap: t("adForm.editLimitsForRangeOverlap"),
+      AdvertFixedRateMinimum: t("adForm.updateRate"),
+      AdvertFixedRateMaximum: t("adForm.updateRate"),
+      AdvertFloatRateMaximum: t("adForm.updateRate"),
+      AdvertPaymentMethodDuplicate: t("adForm.updatePaymentMethods"),
+      AdvertPaymentMethodRemoveOpenOrder: t("common.gotIt"),
+    }
+    return confirmTextMap[errorName] || t("adForm.updateAd")
+  }
+
   const handleAdError = (error: any, mode: "create" | "update") => {
     let errorMessage = t("adForm.genericProcessingErrorMessage")
     let errorName = "GenericError"
@@ -515,15 +527,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     showAlert({
       title: errorInfo.title,
       description: errorMessage,
-      confirmText: errorName === "AdvertOrderRangeOverlap"
-        ? t("adForm.editLimitsForRangeOverlap")
-        : ["AdvertFixedRateMinimum", "AdvertFixedRateMaximum", "AdvertFloatRateMaximum"].includes(errorName)
-          ? t("adForm.updateRate")
-          : errorName === "AdvertPaymentMethodDuplicate"
-            ? t("adForm.updatePaymentMethods")
-            : errorName === "AdvertPaymentMethodRemoveOpenOrder"
-              ? t("common.gotIt")
-              : t("adForm.updateAd"),
+      confirmText: getErrorConfirmText(errorName),
       type: errorInfo.type,
       onConfirm: () => {
         if (errorInfo.onConfirm) {
