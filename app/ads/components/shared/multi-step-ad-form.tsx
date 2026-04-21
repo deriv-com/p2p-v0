@@ -287,7 +287,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         AdvertFixedRateMaximum: t("adForm.advertFixedRateMaximumMessage"),
         AdvertFloatRateMaximum: t("adForm.advertFloatRateMaximumMessage"),
         AdvertExchangeRateDuplicate: t("adForm.duplicateRateMessage"),
-        AdvertOrderRangeOverlap: t("adForm.rangeOverlapMessage")
+        AdvertOrderRangeOverlap: t("adForm.rangeOverlapMessage"),
+        AdvertPaymentMethodDuplicate: t("adForm.duplicatePaymentMethodMessage"),
+        AdvertPaymentMethodRemoveOpenOrder: t("adForm.paymentMethodRemoveOpenOrderMessage")
       }
 
       if (errorCodeMap[errors[0].code]) {
@@ -491,6 +493,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         title: t("adForm.advertFloatRateMaximumTitle"),
         type: "error",
       },
+      AdvertPaymentMethodDuplicate: {
+        title: t("adForm.duplicatePaymentMethodTitle"),
+        type: "error",
+        onConfirm: () => {
+          router.push("/profile?tab=payment")
+        },
+      },
+      AdvertPaymentMethodRemoveOpenOrder: {
+        title: t("adForm.paymentMethodRemoveOpenOrderTitle"),
+        type: "error",
+        onConfirm: () => {},
+      },
     }
 
     const errorInfo = errorInfoMap[errorName] || {
@@ -505,7 +519,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         ? t("adForm.editLimitsForRangeOverlap")
         : ["AdvertFixedRateMinimum", "AdvertFixedRateMaximum", "AdvertFloatRateMaximum"].includes(errorName)
           ? t("adForm.updateRate")
-          : t("adForm.updateAd"),
+          : errorName === "AdvertPaymentMethodDuplicate"
+            ? t("adForm.updatePaymentMethods")
+            : errorName === "AdvertPaymentMethodRemoveOpenOrder"
+              ? t("common.gotIt")
+              : t("adForm.updateAd"),
       type: errorInfo.type,
       onConfirm: () => {
         if (errorInfo.onConfirm) {
