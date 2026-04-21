@@ -89,7 +89,7 @@ export default function BuySellPage() {
   const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
 
-  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
+  const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
 
 
   const { data: advertsData, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useAdvertisements(
@@ -387,6 +387,31 @@ export default function BuySellPage() {
 
     return unsubscribe
   }, [subscribe])
+
+  useEffect(() => {
+    if (!isConnected) return
+
+    joinUsersOnlineChannel()
+
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.options?.channel === "users_online") {
+        const updates: Array<{ user_id: number; is_online: boolean }> = data?.payload?.data ?? []
+        if (updates.length > 0) {
+          setAdverts((currentAdverts) =>
+            currentAdverts.map((ad) => {
+              const update = updates.find((u) => u.user_id === ad.user?.id)
+              return update !== undefined ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad
+            }),
+          )
+        }
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      leaveUsersOnlineChannel()
+    }
+  }, [isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"

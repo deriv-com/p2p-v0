@@ -27,6 +27,7 @@ import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 import { AdvertiserSkeleton } from "@/app/advertiser/components/advertiser-skeleton"
 import { useAdvertiserAds, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface AdvertiserProfile {
   id: string | number
@@ -88,6 +89,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
   const { t } = useTranslations()
   const queryClient = useQueryClient()
+
+  const { isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
+
+  const currentIdRef = useRef(id)
+  useEffect(() => { currentIdRef.current = id }, [id])
 
   const abortControllerRef = useRef<AbortController | null>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -166,6 +172,27 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     observer.observe(sentinel)
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  useEffect(() => {
+    if (!isConnected) return
+
+    joinUsersOnlineChannel()
+
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.options?.channel === "users_online") {
+        const updates: Array<{ user_id: number; is_online: boolean }> = data?.payload?.data ?? []
+        const match = updates.find((u) => String(u.user_id) === String(currentIdRef.current))
+        if (match !== undefined) {
+          setProfile((prev) => prev ? { ...prev, is_online: match.is_online } : prev)
+        }
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      leaveUsersOnlineChannel()
+    }
+  }, [isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
