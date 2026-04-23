@@ -293,15 +293,32 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const hasInitializedRef = useRef(false)
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const reconnectAttemptsRef = useRef(0)
+  const isMountedRef = useRef(true)
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     if (hasInitializedRef.current) return
 
     hasInitializedRef.current = true
+    isMountedRef.current = true
+
+    const scheduleReconnect = (wsClient: WebSocketClient) => {
+      if (!isMountedRef.current) return
+      const delay = Math.min(3000 * Math.pow(1.5, reconnectAttemptsRef.current), 30000)
+      reconnectTimeoutRef.current = setTimeout(() => {
+        if (!isMountedRef.current) return
+        reconnectAttemptsRef.current++
+        wsClient.connect().catch((error) => {
+          console.error("Failed to reconnect WebSocket:", error)
+        })
+      }, delay)
+    }
 
     const wsClient = getWebSocketClient({
       onOpen: () => {
+        reconnectAttemptsRef.current = 0
         setIsConnected(true)
         const userData = useUserDataStore.getState().userData
         if (userData?.signup === "v1") {
@@ -313,6 +330,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       },
       onClose: () => {
         setIsConnected(false)
+        scheduleReconnect(wsClient)
       },
       onError: (error) => {
         console.error("WebSocket error:", error)
@@ -327,6 +345,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     })
 
     return () => {
+      isMountedRef.current = false
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current)
+      }
       if (wsClientRef.current) {
         const userData = useUserDataStore.getState().userData
         if (userData?.signup === "v1") {
