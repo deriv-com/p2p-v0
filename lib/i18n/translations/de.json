@@ -93,10 +93,14 @@
     "viewOtherAds": "Andere Anzeigen anzeigen",
     "adNotAvailableTitle": "Anzeige nicht verfügbar",
     "adNotAvailableDescription": "Diese Anzeige ist gerade nicht verfügbar. Versuche es in ein paar Minuten erneut oder wähle eine andere Anzeige.",
+    "adCountryInvalidDescription": "Diese Anzeige ist in deinem Land nicht verfügbar. Wähle eine andere Anzeige, die deinen Standort unterstützt.",
     "userReadOnlyTitle": "Nur aktive Aufträge",
     "userReadOnlyDescription": "Du kannst deine bestehenden P2P-Aufträge einsehen, aber du kannst derzeit keine Anzeigen erstellen oder aktualisieren und keine neuen Aufträge aufgeben. Kontaktiere uns, wenn du Hilfe benötigst.",
     "userReadOnlyOpenChat": "Live-Chat öffnen",
-    "userReadOnlyMaybeLater": "Vielleicht später"
+    "userReadOnlyMaybeLater": "Vielleicht später",
+    "exchangeRateRequiredTitle": "Wechselkurs hinzufügen",
+    "exchangeRateRequiredDescription": "Diese Bestellung benötigt einen Wechselkurs. Geben Sie den vereinbarten Kurs ein, um fortzufahren.",
+    "exchangeRateRequiredCta": "Kurs eingeben"
   },
   "paymentMethod": {
     "title": "Zahlungsmethode",
@@ -439,7 +443,8 @@
     "deleteAdDescription": "Sie können sie nicht wiederherstellen.",
     "unableToDeleteAd": "Anzeige kann nicht gelöscht werden",
     "deleteAdError": "Beim Löschen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-    "deleteAdOpenOrders": "Die Anzeige hat laufende Bestellungen.",
+    "deleteAdOpenOrdersTitle": "Anzeige kann nicht gelöscht werden",
+    "deleteAdOpenOrders": "Diese Anzeige hat aktive Bestellungen. Sie können sie löschen, sobald die Bestellungen abgeschlossen sind.",
     "unableToUpdateAd": "Anzeige kann nicht aktualisiert werden",
     "updateAdError": "Beim Aktualisieren der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "visibilityStatusMultipleReasons": "Ihre Anzeige wird auf dem Markt nicht aufgelistet aus folgenden Gründen:"

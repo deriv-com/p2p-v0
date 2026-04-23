@@ -227,22 +227,26 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             })
           },
           onError: (error: any) => {
+            let title = t("myAds.unableToDeleteAd")
             let description = t("myAds.deleteAdError")
+            let confirmText = t("common.ok")
 
             if (error?.errors?.length > 0) {
               const hasOpenOrdersError = error.errors.some(
                 (err: any) => err.code === "AdvertDeleteOpenOrders"
               )
               if (hasOpenOrdersError) {
+                title = t("myAds.deleteAdOpenOrdersTitle")
                 description = t("myAds.deleteAdOpenOrders")
+                confirmText = t("common.gotIt")
               }
             }
 
             setTimeout(() => {
               showAlert({
-                title: t("myAds.unableToDeleteAd"),
+                title,
                 description,
-                confirmText: t("common.ok"),
+                confirmText,
                 type: "warning",
               })
             }, 500)

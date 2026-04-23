@@ -93,10 +93,14 @@
     "viewOtherAds": "অন্যান্য বিজ্ঞাপন দেখুন",
     "adNotAvailableTitle": "বিজ্ঞাপন উপলব্ধ নেই",
     "adNotAvailableDescription": "এই বিজ্ঞাপনটি এই মুহূর্তে উপলব্ধ নেই। কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
+    "adCountryInvalidDescription": "এই বিজ্ঞাপনটি আপনার দেশে পাওয়া যাচ্ছে না। আপনার অবস্থান সমর্থন করে এমন অন্য বিজ্ঞাপন বেছে নিন।",
     "userReadOnlyTitle": "শুধুমাত্র সক্রিয় অর্ডার",
     "userReadOnlyDescription": "আপনি আপনার বিদ্যমান P2P অর্ডারগুলি দেখতে পারবেন, কিন্তু এখন বিজ্ঞাপন তৈরি বা আপডেট করতে বা নতুন অর্ডার দিতে পারবেন না। সাহায্যের প্রয়োজন হলে আমাদের সাথে যোগাযোগ করুন।",
     "userReadOnlyOpenChat": "লাইভ চ্যাট খুলুন",
-    "userReadOnlyMaybeLater": "হয়তো পরে"
+    "userReadOnlyMaybeLater": "হয়তো পরে",
+    "exchangeRateRequiredTitle": "বিনিময় হার যোগ করুন",
+    "exchangeRateRequiredDescription": "এই অর্ডারে একটি বিনিময় হার প্রয়োজন। চালিয়ে যেতে সম্মত হার লিখুন।",
+    "exchangeRateRequiredCta": "হার লিখুন"
   },
   "paymentMethod": {
     "title": "পেমেন্ট পদ্ধতি",
@@ -434,7 +438,8 @@
     "deleteAdDescription": "আপনি এটি পুনরুদ্ধার করতে পারবেন না।",
     "unableToDeleteAd": "বিজ্ঞাপন মুছতে অক্ষম",
     "deleteAdError": "বিজ্ঞাপন মুছতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
-    "deleteAdOpenOrders": "বিজ্ঞাপনে চলমান অর্ডার আছে।",
+    "deleteAdOpenOrdersTitle": "বিজ্ঞাপন মুছে ফেলা যাচ্ছে না",
+    "deleteAdOpenOrders": "এই বিজ্ঞাপনে সক্রিয় অর্ডার রয়েছে। অর্ডারগুলো সম্পন্ন হলে আপনি এটি মুছে ফেলতে পারবেন।",
     "unableToUpdateAd": "বিজ্ঞাপন আপডেট করতে অক্ষম",
     "updateAdError": "বিজ্ঞাপন আপডেট করতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
     "visibilityStatusMultipleReasons": "আপনার বিজ্ঞাপন নিম্নলিখিত কারণে বাজারে তালিকাভুক্ত নয়:"

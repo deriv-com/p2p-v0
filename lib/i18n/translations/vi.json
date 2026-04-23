@@ -94,10 +94,14 @@
     "viewOtherAds": "Xem tin đăng khác",
     "adNotAvailableTitle": "Quảng cáo không khả dụng",
     "adNotAvailableDescription": "Quảng cáo này hiện không khả dụng. Thử lại sau vài phút hoặc chọn quảng cáo khác.",
+    "adCountryInvalidDescription": "Quảng cáo này không có sẵn ở quốc gia của bạn. Chọn quảng cáo khác hỗ trợ vị trí của bạn.",
     "userReadOnlyTitle": "Chỉ đơn hàng đang hoạt động",
     "userReadOnlyDescription": "Bạn có thể xem các đơn hàng P2P hiện có, nhưng không thể tạo hoặc cập nhật quảng cáo hay đặt đơn hàng mới lúc này. Liên hệ với chúng tôi nếu bạn cần hỗ trợ.",
     "userReadOnlyOpenChat": "Mở trò chuyện trực tiếp",
-    "userReadOnlyMaybeLater": "Có thể sau"
+    "userReadOnlyMaybeLater": "Có thể sau",
+    "exchangeRateRequiredTitle": "Thêm tỷ giá hối đoái",
+    "exchangeRateRequiredDescription": "Đơn hàng này cần tỷ giá hối đoái. Nhập tỷ giá đã thỏa thuận để tiếp tục.",
+    "exchangeRateRequiredCta": "Nhập tỷ giá"
   },
   "paymentMethod": {
     "title": "Phương thức thanh toán",
@@ -434,7 +438,8 @@
     "deleteAdDescription": "Bạn sẽ không thể khôi phục nó.",
     "unableToDeleteAd": "Không thể xóa quảng cáo",
     "deleteAdError": "Đã xảy ra lỗi khi xóa quảng cáo. Vui lòng thử lại.",
-    "deleteAdOpenOrders": "Quảng cáo có đơn hàng đang diễn ra.",
+    "deleteAdOpenOrdersTitle": "Không thể xóa quảng cáo",
+    "deleteAdOpenOrders": "Quảng cáo này có đơn hàng đang hoạt động. Bạn có thể xóa sau khi các đơn hàng hoàn tất.",
     "unableToUpdateAd": "Không thể cập nhật quảng cáo",
     "updateAdError": "Đã xảy ra lỗi khi cập nhật quảng cáo. Vui lòng thử lại.",
     "visibilityStatusMultipleReasons": "Quảng cáo của bạn không được liệt kê trên Thị trường vì những lý do sau:"
