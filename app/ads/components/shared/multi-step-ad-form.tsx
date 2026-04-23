@@ -395,7 +395,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         exchange_rate: exchangeRate || 0,
         exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
         order_expiry_period: orderTimeLimit,
-        available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+        available_countries: selectedCountries,
         description: finalData.instructions || "",
         is_private: isPrivate,
         ...(finalData.type === "buy"

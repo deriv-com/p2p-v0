@@ -361,7 +361,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             confirmText: "Try again",
             type: "warning",
           })
-        } else if (errorCode === "v1InsufficientFunds" && orderType === "sell") {
+        } else if (errorCode === "v1InsufficientFunds") {
           showAlert({
             title: t("order.insufficientFunds"),
             description: t("order.insufficientFundsDescription"),
