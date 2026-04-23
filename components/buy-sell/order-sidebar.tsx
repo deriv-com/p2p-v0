@@ -371,6 +371,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               handleClose()
             },
           })
+        } else if (errorCode === "OrderCountryInvalid") {
+          showAlert({
+            title: t("order.adNotAvailableTitle"),
+            description: t("order.adCountryInvalidDescription"),
+            confirmText: t("order.viewOtherAds"),
+            type: "warning",
+            onConfirm: () => {
+              handleClose()
+            },
+          })
         } else if (errorCode === "v1DebitFailed") {
           showAlert({
             title: t("order.adNotAvailableTitle"),
@@ -380,6 +390,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             onConfirm: () => {
               handleClose()
             },
+          })
+        } else if (errorCode === "OrderExchangeRateRequired") {
+          showAlert({
+            title: t("order.exchangeRateRequiredTitle"),
+            description: t("order.exchangeRateRequiredDescription"),
+            confirmText: t("order.exchangeRateRequiredCta"),
+            type: "warning",
           })
         } else if (errorCode === "UserReadOnly") {
           showAlert({
