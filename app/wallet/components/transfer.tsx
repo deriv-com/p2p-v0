@@ -1592,8 +1592,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div className="flex gap-2 mt-6">
               <Button
                 className={`flex-1 font-normal ${selectedPercentage === 25
-                    ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
-                    : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
+                  ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
+                  : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
                   }`}
                 onClick={() => handlePercentageClick(25)}
                 size="sm"
@@ -1603,8 +1603,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </Button>
               <Button
                 className={`flex-1 font-normal ${selectedPercentage === 50
-                    ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
-                    : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
+                  ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
+                  : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
                   }`}
                 onClick={() => handlePercentageClick(50)}
                 size="sm"
@@ -1614,8 +1614,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </Button>
               <Button
                 className={`flex-1 font-normal ${selectedPercentage === 75
-                    ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
-                    : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
+                  ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
+                  : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
                   }`}
                 onClick={() => handlePercentageClick(75)}
                 size="sm"
@@ -1625,8 +1625,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </Button>
               <Button
                 className={`flex-1 font-normal ${selectedPercentage === 100
-                    ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
-                    : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
+                  ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
+                  : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
                   }`}
                 onClick={() => handlePercentageClick(100)}
                 size="sm"
@@ -1785,7 +1785,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   if (step === "unsuccessful") {
-    const transferText = `${t("wallet.transferUnsuccessfulMessage")} ${transferErrorMessage || ""}`
+    const transferText = `${t("wallet.transferUnsuccessfulMessage")}`
 
     return (
       <div
@@ -1797,7 +1797,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       >
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
-            <Image src="/icons/success-transfer.png" alt="Unsuccessful" width={256} height={256} />
+            <Image src="/icons/failed-transfer.png" alt="Unsuccessful" width={256} height={256} />
           </div>
           <h1 className="text-white text-center text-2xl font-extrabold mb-4">{t("wallet.transferUnsuccessful")}</h1>
           <p className="text-white text-center text-base font-normal">{transferText}</p>
