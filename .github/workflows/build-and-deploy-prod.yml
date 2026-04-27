@@ -105,16 +105,13 @@ jobs:
         if: always()
         needs: [build_to_cloudflare_pages]
         steps:
-            - name: Create Slack Message
-              id: create_slack_message
-              run: |
-                  if [[ "${{ needs.build_to_cloudflare_pages.result }}" == 'success' ]]; then
-                    echo "message=A new P2P v2 frontend release has been deployed on production with version $VERSION" >> $GITHUB_OUTPUT
-                  else
-                    echo "message=A new P2P v2 frontend release has failed with version $VERSION" >> $GITHUB_OUTPUT
-                  fi
             - name: Send Slack Notification
-              uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
-              with:
-                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-                  MESSAGE: ${{ steps.create_slack_message.outputs.message }}
+              env:
+                SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+              run: |
+                curl -X POST "$SLACK_WEBHOOK_URL" \
+                  -H "Content-Type: application/json" \
+                  -d '{
+                    "version": "${{ github.ref_name }}",
+                    "release_url": "${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+                  }'
