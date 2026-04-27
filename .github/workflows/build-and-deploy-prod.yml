@@ -108,10 +108,29 @@ jobs:
             - name: Send Slack Notification
               env:
                 SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                VERSION: ${{ github.ref_name }}
+                RELEASE_URL: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}
+                WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                BUILD_RESULT: ${{ needs.build_to_cloudflare_pages.result }}
               run: |
-                curl -X POST "$SLACK_WEBHOOK_URL" \
+                if [[ "$BUILD_RESULT" == 'success' ]]; then
+                  STATUS="✅ SUCCESS"
+                  MESSAGE="P2P v2 frontend release $VERSION has been successfully deployed to production (dp2p.deriv.com)"
+                else
+                  STATUS="❌ FAILED"
+                  MESSAGE="P2P v2 frontend release $VERSION deployment to production has failed"
+                fi
+
+                PAYLOAD=$(jq -n \
+                  --arg status "$STATUS" \
+                  --arg message "$MESSAGE" \
+                  --arg version "$VERSION" \
+                  --arg release_url "$RELEASE_URL" \
+                  --arg workflow_url "$WORKFLOW_URL" \
+                  '{status: $status, message: $message, version: $version, release_url: $release_url, workflow_url: $workflow_url}')
+
+                if ! curl -X POST "$SLACK_WEBHOOK_URL" \
                   -H "Content-Type: application/json" \
-                  -d '{
-                    "version": "${{ github.ref_name }}",
-                    "release_url": "${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
-                  }'
+                  -d "$PAYLOAD"; then
+                  echo "::warning::Failed to send Slack notification"
+                fi
