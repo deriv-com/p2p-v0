@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
 import RateChangeConfirmation from "./rate-change-confirmation"
+import PaymentMethodChangedAlert from "./payment-method-changed-alert"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -209,51 +210,85 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
+  const [showPaymentMethodChangedAlert, setShowPaymentMethodChangedAlert] = useState(false)
+  const [adPaymentMethods, setAdPaymentMethods] = useState<string[]>([])
+  const currentPaymentMethodsRef = useRef<string[]>([])
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
   const { data: paymentMethodsResponse } = useUserPaymentMethods(isOpen)
 
   useEffect(() => {
-    if (
-      isOpen &&
-      ad &&
-      ad.payment_currency &&
-      ad.account_currency &&
-      ad.exchange_rate_type === "float" &&
-      isConnected
-    ) {
-      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+    if (!isOpen || !ad || !ad.payment_currency || !ad.account_currency || !isConnected) return
 
-      const requestTimer = setTimeout(() => {
+    let requestTimer: ReturnType<typeof setTimeout> | null = null
+
+    if (ad.exchange_rate_type === "float") {
+      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+      requestTimer = setTimeout(() => {
         requestExchangeRate(ad.account_currency, ad.payment_currency)
       }, 400)
+    }
 
-      const unsubscribe = subscribe((data) => {
-        const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+    const unsubscribe = subscribe((data) => {
+      const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
 
+      if (ad.exchange_rate_type === "float") {
         if (data.options.channel === expectedChannel && data.payload?.rate) {
           setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
           setMarketRate(data.payload.data.rate * ((ad.exchange_rate / 100) + 1))
           ad.effective_rate_display = Number(data.payload.data.rate * ((ad.exchange_rate / 100) + 1)).toFixed(6)
-        } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
-          if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
-            const updatedAdvert = data.payload.data.advert
-            if (ad.id == updatedAdvert.id) {
+        }
+      }
+
+      if (data?.options?.channel?.startsWith("adverts/currency/")) {
+        if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
+          const updatedAdvert = data.payload.data.advert
+          if (ad.id == updatedAdvert.id) {
+            if (ad.exchange_rate_type === "float") {
               setMarketRate(updatedAdvert.effective_rate)
               ad.effective_rate_display = updatedAdvert.effective_rate_display
             }
+
+            const newMethods: string[] = updatedAdvert.payment_methods || []
+            const currentMethods = currentPaymentMethodsRef.current
+            const hasChanged =
+              newMethods.length !== currentMethods.length ||
+              newMethods.some((m) => !currentMethods.includes(m))
+            if (hasChanged) {
+              setAdPaymentMethods(newMethods)
+              setShowPaymentMethodChangedAlert(true)
+            }
           }
         }
-      })
-      return () => {
-        clearTimeout(requestTimer)
-        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
-        unsubscribe()
       }
+    })
+
+    return () => {
+      if (requestTimer) clearTimeout(requestTimer)
+      if (ad.exchange_rate_type === "float") {
+        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+      }
+      unsubscribe()
     }
   }, [isOpen, ad, isConnected])
+
+  useEffect(() => {
+    if (ad && isOpen) {
+      const methods = ad.payment_methods || []
+      setAdPaymentMethods(methods)
+      currentPaymentMethodsRef.current = methods
+    }
+    if (!isOpen) {
+      setShowPaymentMethodChangedAlert(false)
+    }
+  }, [ad?.id, isOpen])
+
+  useEffect(() => {
+    currentPaymentMethodsRef.current = adPaymentMethods
+  }, [adPaymentMethods])
+
 
   useEffect(() => {
     if (isOpen) {
@@ -444,6 +479,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setTempSelectedPaymentMethods([])
       setShowRateChangeConfirmation(false)
       setLockedConfirmationRate(null)
+      setShowPaymentMethodChangedAlert(false)
       onClose()
     }, 300)
   }
@@ -493,15 +529,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
   // Filter and transform user payment methods based on ad's accepted methods
   const filteredPaymentMethods = useMemo(() => {
-    if (!paymentMethodsResponse?.data || !ad?.payment_methods) return []
+    if (!paymentMethodsResponse?.data || !adPaymentMethods.length) return []
 
-    const buyerAcceptedMethods = ad.payment_methods || []
     return paymentMethodsResponse.data.filter((method: any) => {
-      return buyerAcceptedMethods.some(
+      return adPaymentMethods.some(
         (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
       )
     })
-  }, [paymentMethodsResponse?.data, ad?.payment_methods])
+  }, [paymentMethodsResponse?.data, adPaymentMethods])
 
   // Set user payment methods and seller payment methods
   useEffect(() => {
@@ -509,13 +544,12 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setUserPaymentMethods(filteredPaymentMethods)
     }
 
-    const buyerAcceptedMethods = ad?.payment_methods || []
-    const sellerMethods: SellerPaymentMethod[] = buyerAcceptedMethods.map((method: string) => ({
+    const sellerMethods: SellerPaymentMethod[] = adPaymentMethods.map((method: string) => ({
       type: method.toLowerCase().includes("bank") ? "bank" : "ewallet",
       method: method,
     }))
     setSellerPaymentMethods(sellerMethods)
-  }, [filteredPaymentMethods, ad?.payment_methods])
+  }, [filteredPaymentMethods, adPaymentMethods])
 
   if (!isOpen && !isAnimating) return null
 
@@ -637,7 +671,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                     {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
                   <div className="flex flex-wrap gap-4">
-                    {ad.payment_methods?.map((method, index) => (
+                    {adPaymentMethods.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
                           className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
@@ -687,12 +721,19 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
         <AddPaymentMethodPanel
           onAdd={handleAddPaymentMethod}
           isLoading={addPaymentMethod.isPending}
-          allowedPaymentMethods={ad?.payment_methods}
+          allowedPaymentMethods={adPaymentMethods}
           onClose={() => {
             setShowAddPaymentPanel(false)
             setSelectedPaymentMethodType(undefined)
           }}
           selectedMethod={selectedPaymentMethodType}
+        />
+      )}
+
+      {ad && (
+        <PaymentMethodChangedAlert
+          isOpen={showPaymentMethodChangedAlert}
+          onReview={() => setShowPaymentMethodChangedAlert(false)}
         />
       )}
 
