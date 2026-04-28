@@ -92,7 +92,7 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent className="sm:max-w-[580px] sm:rounded-[32px] p-0">
+      <DialogContent className="sm:max-w-[512px] sm:rounded-[32px] p-0">
         <DialogHeader className="px-6 pt-6 pb-0">
           <div className="flex justify-between items-start">
             <DialogTitle className="tracking-normal font-bold text-2xl text-left pr-4">
@@ -101,7 +101,7 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="bg-slate-75 px-1 min-w-[48px] shrink-0"
+              className="px-1 min-w-[48px] shrink-0 hover:bg-transparent"
               onClick={onClose}
             >
               <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />

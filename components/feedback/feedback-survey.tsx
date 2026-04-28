@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-const ALLOWED_CHARS_RE = new RegExp("^[\\p{L}\\p{Nd}\\s@.!/%&,_()+:;-]{0,300}$", "u")
-const MAX_REVIEW_LENGTH = 300
+const ALLOWED_CHARS_RE = new RegExp("^[\\p{L}\\p{Nd}\\s@.!/%&,_()+:;-]{0,500}$", "u")
+const MAX_REVIEW_LENGTH = 500
 
 export interface FeedbackSurveyProps {
   onSubmit: (npsScore: number, reviewText: string) => void
@@ -103,7 +103,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
           variant="ghost"
           onClick={onClose}
           disabled={isSubmitting}
-          className="w-full text-sm font-normal disabled:opacity-50"
+          className="w-full text-sm font-bold underline disabled:opacity-50"
         >
           {t("nps.askMeLater")}
         </Button>
