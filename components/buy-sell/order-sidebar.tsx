@@ -214,6 +214,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [showAdvertChangedAlert, setShowAdvertChangedAlert] = useState(false)
   const [adPaymentMethods, setAdPaymentMethods] = useState<string[]>([])
   const currentPaymentMethodsRef = useRef<string[]>([])
+  const prevAdIdRef = useRef<number | undefined>(undefined)
   const [adVersion, setAdVersion] = useState<number | undefined>(ad?.version)
   const [adMinOrderAmount, setAdMinOrderAmount] = useState(ad?.minimum_order_amount ?? "0.00")
   const [adMaxOrderAmount, setAdMaxOrderAmount] = useState(ad?.maximum_order_amount ?? "0.00")
@@ -221,6 +222,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [adOrderExpiryPeriod, setAdOrderExpiryPeriod] = useState(ad?.order_expiry_period ?? 0)
   const [adDescription, setAdDescription] = useState(ad?.description ?? "")
   const [adEffectiveRateDisplay, setAdEffectiveRateDisplay] = useState<number | string | undefined>(ad?.effective_rate_display)
+  const adRef = useRef(ad)
+  useEffect(() => { adRef.current = ad }, [ad])
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -239,15 +242,17 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     }
 
     const unsubscribe = subscribe((data) => {
-      const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+      const currentAd = adRef.current
+      if (!currentAd) return
+      const expectedChannel = `exchange_rates/${currentAd.account_currency}/${currentAd.payment_currency}`
 
-      if (ad.exchange_rate_type === "float") {
+      if (currentAd.exchange_rate_type === "float") {
         if (data.options.channel === expectedChannel && data.payload?.rate) {
-          const newRate = data.payload.rate * ((ad.exchange_rate / 100) + 1)
+          const newRate = data.payload.rate * ((currentAd.exchange_rate / 100) + 1)
           setMarketRate(newRate)
           setAdEffectiveRateDisplay(Number(newRate).toFixed(6))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-          const newRate = data.payload.data.rate * ((ad.exchange_rate / 100) + 1)
+          const newRate = data.payload.data.rate * ((currentAd.exchange_rate / 100) + 1)
           setMarketRate(newRate)
           setAdEffectiveRateDisplay(Number(newRate).toFixed(6))
         }
@@ -256,7 +261,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       if (data?.options?.channel?.startsWith("adverts/currency/")) {
         if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
           const updatedAdvert = data.payload.data.advert
-          if (ad.id == updatedAdvert.id) {
+          if (currentAd.id == updatedAdvert.id) {
             const updatedFields: string[] = data.payload.data.updated_fields || []
 
             if (updatedFields.includes("version")) setAdVersion(updatedAdvert.version)
@@ -266,14 +271,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             if (updatedFields.includes("order_expiry_period")) setAdOrderExpiryPeriod(updatedAdvert.order_expiry_period)
             if (updatedFields.includes("description")) setAdDescription(updatedAdvert.description)
 
-            if (ad.exchange_rate_type === "float") {
-              setMarketRate(updatedAdvert.effective_rate)
+            if (updatedAdvert.effective_rate_display !== undefined) {
               setAdEffectiveRateDisplay(updatedAdvert.effective_rate_display)
+            }
+            if (currentAd.exchange_rate_type === "float" && updatedAdvert.effective_rate !== undefined) {
+              setMarketRate(updatedAdvert.effective_rate)
             }
 
             if (updatedFields.includes("payment_method_names")) {
               const newMethods: string[] = updatedAdvert.payment_methods || []
-              ad.payment_method_names = updatedAdvert.payment_method_names || ad.payment_method_names
+              currentAd.payment_method_names = updatedAdvert.payment_method_names || currentAd.payment_method_names
               currentPaymentMethodsRef.current = newMethods
               setAdPaymentMethods(newMethods)
               setSelectedPaymentMethods([])
@@ -297,10 +304,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       }
       unsubscribe()
     }
-  }, [isOpen, ad, isConnected])
+  }, [isOpen, ad?.id, ad?.account_currency, ad?.payment_currency, ad?.exchange_rate_type, isConnected])
 
   useEffect(() => {
     if (ad && isOpen) {
+      const isNewAd = prevAdIdRef.current !== ad.id
+      prevAdIdRef.current = ad.id
+
       const methods = ad.payment_methods || []
       setAdPaymentMethods(methods)
       currentPaymentMethodsRef.current = methods
@@ -310,7 +320,12 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setAdActualMaxOrderAmount(ad.actual_maximum_order_amount ?? "0.00")
       setAdOrderExpiryPeriod(ad.order_expiry_period ?? 0)
       setAdDescription(ad.description ?? "")
-      setAdEffectiveRateDisplay(ad.effective_rate_display)
+      // For float ads on reopen of the same ad, keep last known rate — the WS will
+      // provide the fresh rate. Resetting from the prop would show a stale value
+      // because page.tsx doesn't subscribe to the exchange_rates channel.
+      if (isNewAd || ad.exchange_rate_type !== "float") {
+        setAdEffectiveRateDisplay(ad.effective_rate_display)
+      }
     }
     if (!isOpen) {
       setShowAdvertChangedAlert(false)
