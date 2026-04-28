@@ -49,14 +49,14 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
       <div className="flex-1 px-6 pb-4 space-y-6">
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((score) => (
+            {Array.from({ length: 11 }, (_, i) => i).map((score) => (
               <button
                 key={score}
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => setSelectedScore(score)}
                 className={cn(
-                  "h-10 w-10 rounded-full border text-sm font-bold transition-colors disabled:opacity-50",
+                  "h-10 w-10 rounded-md border text-sm font-bold transition-colors disabled:opacity-50",
                   selectedScore === score
                     ? "bg-primary text-white border-primary"
                     : "bg-transparent border-slate-300 text-slate-700 hover:border-primary hover:text-primary"

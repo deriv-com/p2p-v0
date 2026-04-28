@@ -37,8 +37,6 @@ import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
 import HomeIcon from "@/public/icons/ic-house.svg"
 import LiveChatIcon from "@/public/icons/ic-livechat.svg"
-import FeedbackIcon from "@/public/icons/star-light.svg"
-
 interface SidebarProps {
   className?: string
 }
@@ -385,7 +383,7 @@ export default function Sidebar({ className }: SidebarProps) {
             className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
           >
             <div className="h-5 w-5 flex items-center justify-center">
-              <SvgIcon src={FeedbackIcon} fill="#181C25" />
+              <Image src="/icons/star-light.svg" alt="" width={20} height={20} />
             </div>
             {t("nps.sendFeedback")}
           </button>
