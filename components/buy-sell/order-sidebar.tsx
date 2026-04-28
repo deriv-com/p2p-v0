@@ -249,12 +249,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       if (currentAd.exchange_rate_type === "float") {
         if (data.options.channel === expectedChannel && data.payload?.rate) {
           const newRate = data.payload.rate * ((currentAd.exchange_rate / 100) + 1)
-          setMarketRate(newRate)
-          setAdEffectiveRateDisplay(Number(newRate).toFixed(6))
+          const display = Number(newRate).toFixed(6)
+          setAdEffectiveRateDisplay(display)
+          setMarketRate(Number(display))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
           const newRate = data.payload.data.rate * ((currentAd.exchange_rate / 100) + 1)
-          setMarketRate(newRate)
-          setAdEffectiveRateDisplay(Number(newRate).toFixed(6))
+          const display = Number(newRate).toFixed(6)
+          setAdEffectiveRateDisplay(display)
+          setMarketRate(Number(display))
         }
       }
 
@@ -272,10 +274,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             if (updatedFields.includes("description")) setAdDescription(updatedAdvert.description)
 
             if (updatedAdvert.effective_rate_display !== undefined) {
-              setAdEffectiveRateDisplay(updatedAdvert.effective_rate_display)
-            }
-            if (currentAd.exchange_rate_type === "float" && updatedAdvert.effective_rate !== undefined) {
-              setMarketRate(updatedAdvert.effective_rate)
+              const display = Number(updatedAdvert.effective_rate_display).toFixed(6)
+              setAdEffectiveRateDisplay(display)
+              if (currentAd.exchange_rate_type === "float") {
+                setMarketRate(Number(display))
+              }
             }
 
             if (updatedFields.includes("payment_method_names")) {
@@ -331,6 +334,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setShowAdvertChangedAlert(false)
       setAdvertChanged(false)
       setMarketRate(null)
+      setShowRateChangeConfirmation(false)
+      setLockedConfirmationRate(null)
     }
   }, [ad?.id, isOpen])
 
@@ -397,7 +402,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const handleSubmit = async () => {
     if (!ad) return
 
-    if (ad.exchange_rate_type == "float" && marketRate && marketRate != Number(adEffectiveRateDisplay)) {
+    if (ad.exchange_rate_type == "float" && marketRate && Number(marketRate.toFixed(6)) !== Number(Number(adEffectiveRateDisplay).toFixed(6))) {
       setLockedConfirmationRate(marketRate)
       setShowRateChangeConfirmation(true)
       return
