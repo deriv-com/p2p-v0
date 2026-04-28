@@ -714,7 +714,7 @@ export async function submitFeedback(userId: string, payload: { nps_score: numbe
   try {
     responseData = JSON.parse(responseText)
   } catch {
-    // non-JSON body — still check ok
+    console.warn("[submitFeedback] Non-JSON response body:", responseText.slice(0, 200))
   }
 
   if (!response.ok) {

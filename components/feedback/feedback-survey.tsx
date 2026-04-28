@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-const ALLOWED_CHARS_RE = new RegExp("^[\\p{L}\\p{Nd}\\s@.!/%&,_()+:;-]{0,500}$", "u")
 const MAX_REVIEW_LENGTH = 500
+const ALLOWED_CHARS_RE = new RegExp(`^[\\p{L}\\p{Nd}\\s@.!/%&,_()+:;-]{0,${MAX_REVIEW_LENGTH}}$`, "u")
 
 export interface FeedbackSurveyProps {
   onSubmit: (npsScore: number, reviewText: string) => void
@@ -23,16 +23,17 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
   const [validationError, setValidationError] = useState<string | null>(null)
 
   const trimmedReview = reviewText.trim()
-  const isReviewValid = ALLOWED_CHARS_RE.test(reviewText) && trimmedReview.length > 0
+  const isReviewValid = ALLOWED_CHARS_RE.test(trimmedReview) && trimmedReview.length > 0
   const canSubmit = selectedScore !== null && isReviewValid && !isSubmitting
 
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
     if (value.length > MAX_REVIEW_LENGTH) return
     setReviewText(value)
-    if (value.length === 0) {
+    const trimmed = value.trim()
+    if (trimmed.length === 0) {
       setValidationError(null)
-    } else if (!ALLOWED_CHARS_RE.test(value)) {
+    } else if (!ALLOWED_CHARS_RE.test(trimmed)) {
       setValidationError(t("nps.validationError"))
     } else {
       setValidationError(null)
@@ -54,6 +55,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
                 key={score}
                 type="button"
                 disabled={isSubmitting}
+                aria-label={`${score} out of 10`}
                 onClick={() => setSelectedScore(score)}
                 className={cn(
                   "flex-1 min-w-0 h-8 sm:h-10 rounded-md border text-sm font-bold transition-colors disabled:opacity-50",

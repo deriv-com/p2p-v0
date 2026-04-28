@@ -29,10 +29,15 @@ function FeedbackDialogContent({
   const { toast } = useToast()
   const { showAlert } = useAlertDialog()
   const userId = useUserDataStore((state) => state.userId)
+  const feedbackExist = useUserDataStore((state) => state.userData?.feedback_exist)
   const submitFeedback = useSubmitFeedback()
 
   const handleSubmit = async (npsScore: number, reviewText: string) => {
     if (!userId) return
+    if (feedbackExist) {
+      onClose()
+      return
+    }
     try {
       await submitFeedback.mutateAsync({ userId, nps_score: npsScore, review_text: reviewText })
       onClose()
@@ -48,7 +53,9 @@ function FeedbackDialogContent({
       })
     } catch (err) {
       const error = err as FeedbackError
-      const errorCode = error?.errors?.[0]?.code ?? "unknown"
+      const rawCode = error?.errors?.[0]?.code ?? "unknown"
+      const SAFE_CODE_RE = /^[a-zA-Z0-9_-]{1,64}$/
+      const errorCode = SAFE_CODE_RE.test(rawCode) ? rawCode : "unknown"
       showAlert({
         title: t("nps.errorTitle"),
         description: t("nps.errorMessage", { errorCode }),
