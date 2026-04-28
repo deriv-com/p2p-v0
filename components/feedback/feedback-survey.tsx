@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-const ALLOWED_CHARS_RE = new RegExp("^[\\p{L}\\p{Nd}\\s@\\-\\.\\!\\/%&,_()+:;]{0,300}$", "u")
+const ALLOWED_CHARS_RE = new RegExp("^[\\p{L}\\p{Nd}\\s@.!/%&,_()+:;-]{0,300}$", "u")
 const MAX_REVIEW_LENGTH = 300
 
 export interface FeedbackSurveyProps {
