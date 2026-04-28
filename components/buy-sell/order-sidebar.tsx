@@ -776,7 +776,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       {ad && (
         <AdvertChangedAlert
           isOpen={showAdvertChangedAlert}
-          onReview={() => { setShowAdvertChangedAlert(false); setAdvertChanged(false) }}
+          onReview={() => {
+            setShowAdvertChangedAlert(false)
+            setAdvertChanged(false)
+          }}
         />
       )}
 
@@ -791,7 +794,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
           paymentCurrency={ad.payment_currency}
-          oldRate={ad.effective_rate}
+          oldRate={Number(adEffectiveRateDisplay)}
           newRate={lockedConfirmationRate}
           isBuy={isBuy}
         />
