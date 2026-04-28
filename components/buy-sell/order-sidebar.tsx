@@ -214,7 +214,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [showAdvertChangedAlert, setShowAdvertChangedAlert] = useState(false)
   const [adPaymentMethods, setAdPaymentMethods] = useState<string[]>([])
   const currentPaymentMethodsRef = useRef<string[]>([])
-  const prevAdIdRef = useRef<number | undefined>(undefined)
   const [adVersion, setAdVersion] = useState<number | undefined>(ad?.version)
   const [adMinOrderAmount, setAdMinOrderAmount] = useState(ad?.minimum_order_amount ?? "0.00")
   const [adMaxOrderAmount, setAdMaxOrderAmount] = useState(ad?.maximum_order_amount ?? "0.00")
@@ -238,7 +237,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
       requestTimer = setTimeout(() => {
         requestExchangeRate(ad.account_currency, ad.payment_currency)
-      }, 400)
+      }, 50)
     }
 
     const unsubscribe = subscribe((data) => {
@@ -311,9 +310,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
   useEffect(() => {
     if (ad && isOpen) {
-      const isNewAd = prevAdIdRef.current !== ad.id
-      prevAdIdRef.current = ad.id
-
       const methods = ad.payment_methods || []
       setAdPaymentMethods(methods)
       currentPaymentMethodsRef.current = methods
@@ -323,12 +319,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setAdActualMaxOrderAmount(ad.actual_maximum_order_amount ?? "0.00")
       setAdOrderExpiryPeriod(ad.order_expiry_period ?? 0)
       setAdDescription(ad.description ?? "")
-      // For float ads on reopen of the same ad, keep last known rate — the WS will
-      // provide the fresh rate. Resetting from the prop would show a stale value
-      // because page.tsx doesn't subscribe to the exchange_rates channel.
-      if (isNewAd || ad.exchange_rate_type !== "float") {
-        setAdEffectiveRateDisplay(ad.effective_rate_display)
-      }
+      setAdEffectiveRateDisplay(ad.effective_rate_display)
     }
     if (!isOpen) {
       setShowAdvertChangedAlert(false)
