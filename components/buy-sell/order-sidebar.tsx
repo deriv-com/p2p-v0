@@ -376,14 +376,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const handleSubmit = async () => {
     if (!ad) return
 
-    if (advertChanged) {
-      setShowAdvertChangedAlert(true)
+    if (ad.exchange_rate_type == "float" && marketRate && marketRate != Number(adEffectiveRateDisplay)) {
+      setLockedConfirmationRate(marketRate)
+      setShowRateChangeConfirmation(true)
       return
     }
 
-    if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
-      setLockedConfirmationRate(marketRate)
-      setShowRateChangeConfirmation(true)
+    if (advertChanged) {
+      setShowAdvertChangedAlert(true)
       return
     }
 
