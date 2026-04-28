@@ -48,7 +48,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
     <div className="flex flex-col">
       <div className="flex-1 px-6 pb-4 space-y-6">
         <div className="space-y-4">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-nowrap gap-1 sm:gap-2">
             {Array.from({ length: 11 }, (_, i) => i).map((score) => (
               <button
                 key={score}
@@ -56,7 +56,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
                 disabled={isSubmitting}
                 onClick={() => setSelectedScore(score)}
                 className={cn(
-                  "h-10 w-10 rounded-md border text-sm font-bold transition-colors disabled:opacity-50",
+                  "flex-1 min-w-0 h-8 sm:h-10 rounded-md border text-sm font-bold transition-colors disabled:opacity-50",
                   selectedScore === score
                     ? "bg-primary text-white border-primary"
                     : "bg-transparent border-slate-300 text-slate-700 hover:border-primary hover:text-primary"
