@@ -315,6 +315,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     if (!isOpen) {
       setShowAdvertChangedAlert(false)
       setAdvertChanged(false)
+      setMarketRate(null)
     }
   }, [ad?.id, isOpen])
 
@@ -523,6 +524,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setLockedConfirmationRate(null)
       setShowAdvertChangedAlert(false)
       setAdvertChanged(false)
+      setMarketRate(null)
       onClose()
     }, 300)
   }
