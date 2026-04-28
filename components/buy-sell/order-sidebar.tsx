@@ -270,7 +270,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               setTempSelectedPaymentMethods([])
             }
 
-            if (updatedFields.length > 0) {
+            const rateFields = new Set(["exchange_rate", "effective_rate", "effective_rate_display"])
+            const hasNonRateUpdates = updatedFields.some((f) => !rateFields.has(f))
+            if (hasNonRateUpdates) {
               setAdvertChanged(true)
             }
           }
