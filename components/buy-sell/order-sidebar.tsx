@@ -246,18 +246,27 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
         if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
           const updatedAdvert = data.payload.data.advert
           if (ad.id == updatedAdvert.id) {
+            const updatedFields: string[] = data.payload.data.updated_fields || []
+
+            if (updatedFields.includes("version")) ad.version = updatedAdvert.version
+            if (updatedFields.includes("minimum_order_amount")) ad.minimum_order_amount = updatedAdvert.minimum_order_amount
+            if (updatedFields.includes("maximum_order_amount")) ad.maximum_order_amount = updatedAdvert.maximum_order_amount
+            if (updatedFields.includes("actual_maximum_order_amount")) ad.actual_maximum_order_amount = updatedAdvert.actual_maximum_order_amount
+            if (updatedFields.includes("order_expiry_period")) ad.order_expiry_period = updatedAdvert.order_expiry_period
+            if (updatedFields.includes("description")) ad.description = updatedAdvert.description
+
             if (ad.exchange_rate_type === "float") {
               setMarketRate(updatedAdvert.effective_rate)
               ad.effective_rate_display = updatedAdvert.effective_rate_display
             }
 
-            const newMethods: string[] = updatedAdvert.payment_methods || []
-            const currentMethods = currentPaymentMethodsRef.current
-            const hasChanged =
-              newMethods.length !== currentMethods.length ||
-              newMethods.some((m) => !currentMethods.includes(m))
-            if (hasChanged) {
+            if (updatedFields.includes("payment_method_names")) {
+              const newMethods: string[] = updatedAdvert.payment_methods || []
+              ad.payment_method_names = updatedAdvert.payment_method_names || ad.payment_method_names
+              currentPaymentMethodsRef.current = newMethods
               setAdPaymentMethods(newMethods)
+              setSelectedPaymentMethods([])
+              setTempSelectedPaymentMethods([])
               setShowPaymentMethodChangedAlert(true)
             }
           }
@@ -285,9 +294,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     }
   }, [ad?.id, isOpen])
 
-  useEffect(() => {
-    currentPaymentMethodsRef.current = adPaymentMethods
-  }, [adPaymentMethods])
 
 
   useEffect(() => {
@@ -371,7 +377,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       const numAmount = Number.parseFloat(amount)
 
       const rateToUse = lockedConfirmationRate || marketRate
-      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods)
+      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, ad.version)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
@@ -387,6 +393,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             onCancel: () => {
               router.push("/orders/" + order.errors[0].detail.order_id)
             }
+          })
+        } else if (errorCode === "OrderAdvertVersionChanged") {
+          showAlert({
+            title: "Ad updated",
+            description: "This ad changed after you opened it. Review the latest details before placing your order.",
+            confirmText: "Review changes",
+            type: "warning",
           })
         } else if (errorCode === "OrderFloatRateSlippage") {
           showAlert({

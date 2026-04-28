@@ -36,6 +36,7 @@ export interface Advertisement {
   user_rating_average?: number
   effective_rate_display?: number
   is_private?: boolean
+  version?: number
 }
 
 // Define the SearchParams interface

@@ -281,7 +281,7 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
   }
 }
 
-export async function createOrder(advertId: number, exchangeRate: number, amount: number, paymentMethodIds: []): Promise<Order> {
+export async function createOrder(advertId: number, exchangeRate: number, amount: number, paymentMethodIds: [], advertVersion?: number): Promise<Order> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}`
     const headers = {
@@ -295,6 +295,7 @@ export async function createOrder(advertId: number, exchangeRate: number, amount
         amount: amount,
         ...(exchangeRate && { exchange_rate: exchangeRate }),
         ...(paymentMethodIds.length > 0 && { payment_method_ids: paymentMethodIds }),
+        ...(advertVersion !== undefined && { advert_version: advertVersion }),
       },
     })
 
