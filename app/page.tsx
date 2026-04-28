@@ -241,6 +241,14 @@ export default function BuySellPage() {
     }
   }, [fetchedAdverts])
 
+  // Keep selectedAd in sync with adverts so the sidebar always gets the latest ad data
+  useEffect(() => {
+    if (selectedAd) {
+      const updated = adverts.find((a) => a.id === selectedAd.id)
+      if (updated) setSelectedAd(updated)
+    }
+  }, [adverts])
+
   // Reset scroll position when filters change so sentinel re-enters view and load more works
   useEffect(() => {
     if (scrollContainerRef.current) {
