@@ -243,7 +243,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
       if (ad.exchange_rate_type === "float") {
         if (data.options.channel === expectedChannel && data.payload?.rate) {
-          setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
+          const newRate = data.payload.rate * ((ad.exchange_rate / 100) + 1)
+          setMarketRate(newRate)
+          setAdEffectiveRateDisplay(Number(newRate).toFixed(6))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
           const newRate = data.payload.data.rate * ((ad.exchange_rate / 100) + 1)
           setMarketRate(newRate)
@@ -330,7 +332,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   useEffect(() => {
     if (ad && amount) {
       const numAmount = Number.parseFloat(amount)
-      const exchangeRate = Number(adEffectiveRateDisplay) || 0
+      const exchangeRate =
+        ad.exchange_rate_type === "float" && marketRate
+          ? marketRate
+          : Number(adEffectiveRateDisplay) || 0
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
