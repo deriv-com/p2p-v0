@@ -214,6 +214,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [showAdvertChangedAlert, setShowAdvertChangedAlert] = useState(false)
   const [adPaymentMethods, setAdPaymentMethods] = useState<string[]>([])
   const currentPaymentMethodsRef = useRef<string[]>([])
+  const [adVersion, setAdVersion] = useState<number | undefined>(ad?.version)
+  const [adMinOrderAmount, setAdMinOrderAmount] = useState(ad?.minimum_order_amount ?? "0.00")
+  const [adMaxOrderAmount, setAdMaxOrderAmount] = useState(ad?.maximum_order_amount ?? "0.00")
+  const [adActualMaxOrderAmount, setAdActualMaxOrderAmount] = useState(ad?.actual_maximum_order_amount ?? "0.00")
+  const [adOrderExpiryPeriod, setAdOrderExpiryPeriod] = useState(ad?.order_expiry_period ?? 0)
+  const [adDescription, setAdDescription] = useState(ad?.description ?? "")
+  const [adEffectiveRateDisplay, setAdEffectiveRateDisplay] = useState<number | string | undefined>(ad?.effective_rate_display)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -238,8 +245,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
         if (data.options.channel === expectedChannel && data.payload?.rate) {
           setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
         } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-          setMarketRate(data.payload.data.rate * ((ad.exchange_rate / 100) + 1))
-          ad.effective_rate_display = Number(data.payload.data.rate * ((ad.exchange_rate / 100) + 1)).toFixed(6)
+          const newRate = data.payload.data.rate * ((ad.exchange_rate / 100) + 1)
+          setMarketRate(newRate)
+          setAdEffectiveRateDisplay(Number(newRate).toFixed(6))
         }
       }
 
@@ -249,16 +257,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           if (ad.id == updatedAdvert.id) {
             const updatedFields: string[] = data.payload.data.updated_fields || []
 
-            if (updatedFields.includes("version")) ad.version = updatedAdvert.version
-            if (updatedFields.includes("minimum_order_amount")) ad.minimum_order_amount = updatedAdvert.minimum_order_amount
-            if (updatedFields.includes("maximum_order_amount")) ad.maximum_order_amount = updatedAdvert.maximum_order_amount
-            if (updatedFields.includes("actual_maximum_order_amount")) ad.actual_maximum_order_amount = updatedAdvert.actual_maximum_order_amount
-            if (updatedFields.includes("order_expiry_period")) ad.order_expiry_period = updatedAdvert.order_expiry_period
-            if (updatedFields.includes("description")) ad.description = updatedAdvert.description
+            if (updatedFields.includes("version")) setAdVersion(updatedAdvert.version)
+            if (updatedFields.includes("minimum_order_amount")) setAdMinOrderAmount(updatedAdvert.minimum_order_amount)
+            if (updatedFields.includes("maximum_order_amount")) setAdMaxOrderAmount(updatedAdvert.maximum_order_amount)
+            if (updatedFields.includes("actual_maximum_order_amount")) setAdActualMaxOrderAmount(updatedAdvert.actual_maximum_order_amount)
+            if (updatedFields.includes("order_expiry_period")) setAdOrderExpiryPeriod(updatedAdvert.order_expiry_period)
+            if (updatedFields.includes("description")) setAdDescription(updatedAdvert.description)
 
             if (ad.exchange_rate_type === "float") {
               setMarketRate(updatedAdvert.effective_rate)
-              ad.effective_rate_display = updatedAdvert.effective_rate_display
+              setAdEffectiveRateDisplay(updatedAdvert.effective_rate_display)
             }
 
             if (updatedFields.includes("payment_method_names")) {
@@ -294,6 +302,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       const methods = ad.payment_methods || []
       setAdPaymentMethods(methods)
       currentPaymentMethodsRef.current = methods
+      setAdVersion(ad.version)
+      setAdMinOrderAmount(ad.minimum_order_amount ?? "0.00")
+      setAdMaxOrderAmount(ad.maximum_order_amount ?? "0.00")
+      setAdActualMaxOrderAmount(ad.actual_maximum_order_amount ?? "0.00")
+      setAdOrderExpiryPeriod(ad.order_expiry_period ?? 0)
+      setAdDescription(ad.description ?? "")
+      setAdEffectiveRateDisplay(ad.effective_rate_display)
     }
     if (!isOpen) {
       setShowAdvertChangedAlert(false)
@@ -315,24 +330,21 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   useEffect(() => {
     if (ad && amount) {
       const numAmount = Number.parseFloat(amount)
-      const exchangeRate = ad.effective_rate_display || 0
+      const exchangeRate = Number(adEffectiveRateDisplay) || 0
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
-      const minLimit = ad.minimum_order_amount || "0.00"
-      const maxLimit = ad.actual_maximum_order_amount || "0.00"
-
       if (orderType === "buy" && numAmount > p2pBalance) {
         setValidationError(t("order.insufficientBalance"))
-      } else if (numAmount < minLimit || numAmount > maxLimit) {
-        setValidationError(t("order.orderLimitError", { min: minLimit, max: maxLimit, currency: ad.account_currency }))
+      } else if (numAmount < Number(adMinOrderAmount) || numAmount > Number(adActualMaxOrderAmount)) {
+        setValidationError(t("order.orderLimitError", { min: adMinOrderAmount, max: adActualMaxOrderAmount, currency: ad.account_currency }))
       } else {
         setValidationError(null)
       }
     }
 
     if (!amount) setTotalAmount(0)
-  }, [amount, ad, orderType, p2pBalance, t, marketRate])
+  }, [amount, ad?.account_currency, adEffectiveRateDisplay, adMinOrderAmount, adActualMaxOrderAmount, orderType, p2pBalance, t, marketRate])
 
   const handleShowPaymentSelection = () => {
     showAlert({
@@ -389,7 +401,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       const numAmount = Number.parseFloat(amount)
 
       const rateToUse = lockedConfirmationRate || marketRate
-      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, ad.version)
+      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, adVersion)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
@@ -550,8 +562,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const title = isBuy ? `${t("common.sell")} USD` : `${t("common.buy")} USD`
   const youSendText = isBuy ? t("order.youReceive") : t("order.youPay")
 
-  const minLimit = ad?.minimum_order_amount || "0.00"
-  const maxLimit = ad?.actual_maximum_order_amount || "0.00"
+  const minLimit = adMinOrderAmount
+  const maxLimit = adActualMaxOrderAmount
 
   // Filter and transform user payment methods based on ad's accepted methods
   const filteredPaymentMethods = useMemo(() => {
@@ -670,7 +682,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1200">
-                      {ad.effective_rate_display} {ad.payment_currency}
+                      {adEffectiveRateDisplay} {ad.payment_currency}
                       <span className="text-grayscale-text-muted"> /{ad.account_currency}</span>
                     </span>
                   </div>
@@ -683,7 +695,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.paymentTime")}</span>
                     <span className="text-slate-1200">
-                      {ad.order_expiry_period} {t("market.min")}
+                      {adOrderExpiryPeriod} {t("market.min")}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
@@ -714,7 +726,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                     {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
                   </h3>
                   <p className="text-slate-1200 break-words mt-2">
-                    {ad.description || "-"}
+                    {adDescription || "-"}
                   </p>
                 </div>
 
