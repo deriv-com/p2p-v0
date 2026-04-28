@@ -5,6 +5,7 @@ import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
 import * as AdsAPI from '@/services/api/api-my-ads'
 import * as ProfileAPI from '@/services/api/api-profile'
+import { useUserDataStore } from '@/stores/user-data-store'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
@@ -609,6 +610,20 @@ export function useToggleBlockAdvertiser() {
       BuySellAPI.toggleBlockAdvertiser(advertiserId, isBlocked),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.buySell.advertisements() })
+    },
+  })
+}
+
+export function useSubmitFeedback() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ userId, nps_score, review_text }: { userId: string; nps_score: number; review_text: string }) =>
+      AuthAPI.submitFeedback(userId, { nps_score, review_text: review_text.trim() }),
+    retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() })
+      const { updateUserData } = useUserDataStore.getState()
+      updateUserData({ feedback_exist: true })
     },
   })
 }

@@ -526,5 +526,17 @@
     "advertFloatRateMaximumTitle": "변동 환율을 확인하세요",
     "advertFloatRateMaximumMessage": "입력한 변동 환율이 허용 한도보다 높습니다. 환율을 낮춰 계속하세요.",
     "updateRate": "환율 업데이트"
+  },
+  "nps": {
+    "sendFeedback": "Send feedback",
+    "title": "How likely are you to recommend Deriv P2P?",
+    "notLikely": "Not likely",
+    "veryLikely": "Very likely",
+    "tellUsMore": "Tell us more",
+    "askMeLater": "Ask me later",
+    "successToast": "Thanks for your feedback.",
+    "errorTitle": "Something went wrong.",
+    "errorMessage": "Error code: {errorCode}. Please try again later or contact support.",
+    "validationError": "Only letters, numbers, spaces, and the following special characters are allowed: @ - . ! / % & , _ ( ) + : ;"
   }
 }

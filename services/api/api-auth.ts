@@ -430,6 +430,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           balances: balances,
           status: status,
           trade_band: tradeBand,
+          feedback_exist: result.data.feedback_exist ?? false,
         })
       }
     } else {
@@ -693,5 +694,34 @@ export async function getAdvertStatistics(accountCurrency: string): Promise<any>
   } catch (error) {
     console.error("Error fetching advert statistics:", error)
     throw error
+  }
+}
+
+export interface FeedbackError extends Error {
+  errors?: Array<{ code?: string; message?: string }>
+}
+
+export async function submitFeedback(userId: string, payload: { nps_score: number; review_text: string }): Promise<void> {
+  const response = await fetch(`${getCoreUrl()}/p2p/v1/users/${userId}/feedback`, {
+    method: "POST",
+    credentials: "include",
+    headers: getAuthHeader(),
+    body: JSON.stringify({ data: payload }),
+  })
+
+  const responseText = await response.text()
+  let responseData: any = {}
+  try {
+    responseData = JSON.parse(responseText)
+  } catch {
+    // non-JSON body — still check ok
+  }
+
+  if (!response.ok) {
+    const err: FeedbackError = new Error(
+      responseData?.errors?.[0]?.message ?? `Feedback submission failed: ${response.statusText}`
+    )
+    err.errors = responseData?.errors ?? []
+    throw err
   }
 }
