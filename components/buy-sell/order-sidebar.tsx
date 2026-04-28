@@ -19,7 +19,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
 import RateChangeConfirmation from "./rate-change-confirmation"
-import PaymentMethodChangedAlert from "./payment-method-changed-alert"
+import AdvertChangedAlert from "./advert-changed-alert"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -210,7 +210,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
-  const [showPaymentMethodChangedAlert, setShowPaymentMethodChangedAlert] = useState(false)
+  const [advertChanged, setAdvertChanged] = useState(false)
+  const [showAdvertChangedAlert, setShowAdvertChangedAlert] = useState(false)
   const [adPaymentMethods, setAdPaymentMethods] = useState<string[]>([])
   const currentPaymentMethodsRef = useRef<string[]>([])
 
@@ -267,7 +268,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               setAdPaymentMethods(newMethods)
               setSelectedPaymentMethods([])
               setTempSelectedPaymentMethods([])
-              setShowPaymentMethodChangedAlert(true)
+            }
+
+            if (updatedFields.length > 0) {
+              setAdvertChanged(true)
             }
           }
         }
@@ -290,7 +294,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       currentPaymentMethodsRef.current = methods
     }
     if (!isOpen) {
-      setShowPaymentMethodChangedAlert(false)
+      setShowAdvertChangedAlert(false)
+      setAdvertChanged(false)
     }
   }, [ad?.id, isOpen])
 
@@ -356,6 +361,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
   const handleSubmit = async () => {
     if (!ad) return
+
+    if (advertChanged) {
+      setShowAdvertChangedAlert(true)
+      return
+    }
 
     if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
       setLockedConfirmationRate(marketRate)
@@ -492,7 +502,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setTempSelectedPaymentMethods([])
       setShowRateChangeConfirmation(false)
       setLockedConfirmationRate(null)
-      setShowPaymentMethodChangedAlert(false)
+      setShowAdvertChangedAlert(false)
+      setAdvertChanged(false)
       onClose()
     }, 300)
   }
@@ -744,9 +755,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       )}
 
       {ad && (
-        <PaymentMethodChangedAlert
-          isOpen={showPaymentMethodChangedAlert}
-          onReview={() => setShowPaymentMethodChangedAlert(false)}
+        <AdvertChangedAlert
+          isOpen={showAdvertChangedAlert}
+          onReview={() => { setShowAdvertChangedAlert(false); setAdvertChanged(false) }}
         />
       )}
 

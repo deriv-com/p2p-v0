@@ -375,11 +375,25 @@ export default function BuySellPage() {
       if (data?.options?.channel?.startsWith("adverts/currency/")) {
         if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
           const updatedAdvert = data.payload.data.advert
+          const updatedFields: string[] = data.payload.data.updated_fields || []
 
           setAdverts((currentAdverts) =>
-            currentAdverts.map((ad) =>
-              ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
-            ),
+            currentAdverts.map((ad) => {
+              if (ad.id != updatedAdvert.id) return ad
+              const changes: Partial<typeof ad> = {}
+              if (updatedAdvert.effective_rate_display !== undefined) changes.effective_rate_display = updatedAdvert.effective_rate_display
+              if (updatedFields.includes("version")) changes.version = updatedAdvert.version
+              if (updatedFields.includes("minimum_order_amount")) changes.minimum_order_amount = updatedAdvert.minimum_order_amount
+              if (updatedFields.includes("maximum_order_amount")) changes.maximum_order_amount = updatedAdvert.maximum_order_amount
+              if (updatedFields.includes("actual_maximum_order_amount")) changes.actual_maximum_order_amount = updatedAdvert.actual_maximum_order_amount
+              if (updatedFields.includes("order_expiry_period")) changes.order_expiry_period = updatedAdvert.order_expiry_period
+              if (updatedFields.includes("description")) changes.description = updatedAdvert.description
+              if (updatedFields.includes("payment_method_names")) {
+                changes.payment_method_names = updatedAdvert.payment_method_names
+                changes.payment_methods = updatedAdvert.payment_methods
+              }
+              return { ...ad, ...changes }
+            }),
           )
         }
       }
