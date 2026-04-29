@@ -25,24 +25,26 @@ function NpsScoreSelector({ selectedScore, onSelect, isSubmitting }: NpsScoreSel
   const isMobile = useIsMobile()
 
   const renderButton = (score: number) => (
-    <button
+    <Button
       key={score}
       type="button"
+      variant="ghost"
+      size="icon"
       disabled={isSubmitting}
       aria-label={`${score} out of 10`}
       onClick={() => onSelect(score)}
       className={cn(
-        "h-10 rounded-md border text-sm font-bold transition-colors disabled:opacity-50",
+        "rounded-md border text-sm font-bold transition-colors disabled:opacity-50",
         isMobile
           ? "min-w-[44px] max-w-[56px] w-[clamp(44px,calc((100vw-88px)/6),56px)]"
-          : "flex-1 min-w-[36px]",
+          : "flex-1 w-auto min-w-[36px]",
         selectedScore === score
-          ? "bg-primary text-white border-primary"
-          : "bg-transparent border-slate-300 text-slate-700 hover:border-primary hover:text-primary"
+          ? "bg-primary text-white border-primary hover:bg-primary hover:text-white"
+          : "border-slate-300 text-slate-700 hover:bg-transparent hover:border-primary hover:text-primary"
       )}
     >
       {score}
-    </button>
+    </Button>
   )
 
   if (isMobile) {
