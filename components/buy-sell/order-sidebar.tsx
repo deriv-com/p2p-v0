@@ -224,6 +224,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const adRef = useRef(ad)
   useEffect(() => { adRef.current = ad }, [ad])
   const baseRateRef = useRef<number | undefined>(undefined)
+  const adEffectiveRateDisplayRef = useRef(adEffectiveRateDisplay)
+  useEffect(() => { adEffectiveRateDisplayRef.current = adEffectiveRateDisplay }, [adEffectiveRateDisplay])
+  const prevAdIdRef = useRef<number | undefined>(undefined)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -311,6 +314,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
   useEffect(() => {
     if (ad && isOpen) {
+      const isNewAd = prevAdIdRef.current !== ad.id
+      prevAdIdRef.current = ad.id
+
       const methods = ad.payment_methods || []
       setAdPaymentMethods(methods)
       currentPaymentMethodsRef.current = methods
@@ -320,8 +326,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setAdActualMaxOrderAmount(ad.actual_maximum_order_amount ?? "0.00")
       setAdOrderExpiryPeriod(ad.order_expiry_period ?? 0)
       setAdDescription(ad.description ?? "")
-      setAdEffectiveRateDisplay(ad.effective_rate_display)
-      baseRateRef.current = Number(Number(ad.effective_rate_display).toFixed(6))
+
+      if (isNewAd) {
+        setAdEffectiveRateDisplay(ad.effective_rate_display)
+        baseRateRef.current = Number(Number(ad.effective_rate_display).toFixed(6))
+      } else {
+        baseRateRef.current = Number(Number(adEffectiveRateDisplayRef.current).toFixed(6))
+      }
     }
     if (!isOpen) {
       setShowAdvertChangedAlert(false)
