@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
@@ -84,17 +85,22 @@ function AnnouncementContent({
   )
 }
 
+const MemoizedAnnouncementContent = memo(AnnouncementContent)
+MemoizedAnnouncementContent.displayName = "MemoizedAnnouncementContent"
+
 export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
+  const title = t(ANNOUNCEMENT_TRANSLATION_KEYS[kind].title)
 
   if (isMobile) {
     return (
       <Drawer open onOpenChange={(open) => { if (!open) onDismiss() }}>
         <DrawerContent className="p-0 rounded-t-2xl max-h-[90vh] overflow-y-auto">
           <DrawerTitle className="sr-only">
-            Announcement
+            {title}
           </DrawerTitle>
-          <AnnouncementContent kind={kind} onDismiss={onDismiss} layout="sheet" />
+          <MemoizedAnnouncementContent kind={kind} onDismiss={onDismiss} layout="sheet" />
         </DrawerContent>
       </Drawer>
     )
@@ -104,9 +110,9 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
     <Dialog open onOpenChange={(open) => { if (!open) onDismiss() }}>
       <DialogContent className="p-0 max-w-md rounded-2xl overflow-hidden">
         <DialogTitle className="sr-only">
-          Announcement
+          {title}
         </DialogTitle>
-        <AnnouncementContent kind={kind} onDismiss={onDismiss} layout="modal" />
+        <MemoizedAnnouncementContent kind={kind} onDismiss={onDismiss} layout="modal" />
       </DialogContent>
     </Dialog>
   )

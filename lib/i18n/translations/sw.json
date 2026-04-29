@@ -487,19 +487,19 @@
   },
   "p2pAnnouncement": {
     "whatsNew": {
-      "title": "What's new",
-      "bullet0": "See advertiser activity more clearly.",
-      "bullet1": "Enjoy a cleaner, improved experience.",
-      "bullet2": "We've made updates to improve your P2P flow.",
-      "primaryCta": "Got it"
+      "title": "Nini kipya",
+      "bullet0": "Ona shughuli za watangazaji kwa uwazi zaidi.",
+      "bullet1": "Furahia matumizi yaliyo safi na kuboreshwa.",
+      "bullet2": "Tumefanya masasisho ili kuboresha mtiririko wako wa P2P.",
+      "primaryCta": "Nimeelewa"
     },
     "whatsComing": {
-      "title": "What's coming",
-      "bullet0": "A refreshed P2P experience is on the way.",
-      "bullet1": "Improved visibility for advertiser activity.",
-      "bullet2": "More updates to make trading smoother.",
-      "primaryCta": "Got it",
-      "secondaryCta": "Maybe later"
+      "title": "Kinachokuja",
+      "bullet0": "Uzoefu mpya wa P2P uko njiani.",
+      "bullet1": "Mwonekano bora wa shughuli za watangazaji.",
+      "bullet2": "Masasisho zaidi ili kufanya biashara iwe laini zaidi.",
+      "primaryCta": "Nimeelewa",
+      "secondaryCta": "Labda baadaye"
     }
   },
   "nps": {

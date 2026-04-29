@@ -680,19 +680,19 @@
   },
   "p2pAnnouncement": {
     "whatsNew": {
-      "title": "What's new",
-      "bullet0": "See advertiser activity more clearly.",
-      "bullet1": "Enjoy a cleaner, improved experience.",
-      "bullet2": "We've made updates to improve your P2P flow.",
-      "primaryCta": "Got it"
+      "title": "Novità",
+      "bullet0": "Visualizza più chiaramente l'attività degli inserzionisti.",
+      "bullet1": "Goditi un'esperienza più chiara e migliorata.",
+      "bullet2": "Abbiamo apportato aggiornamenti per migliorare il tuo flusso P2P.",
+      "primaryCta": "Ho capito"
     },
     "whatsComing": {
-      "title": "What's coming",
-      "bullet0": "A refreshed P2P experience is on the way.",
-      "bullet1": "Improved visibility for advertiser activity.",
-      "bullet2": "More updates to make trading smoother.",
-      "primaryCta": "Got it",
-      "secondaryCta": "Maybe later"
+      "title": "In arrivo",
+      "bullet0": "Una nuova esperienza P2P è in arrivo.",
+      "bullet1": "Maggiore visibilità sull'attività degli inserzionisti.",
+      "bullet2": "Altri aggiornamenti per rendere il trading più semplice.",
+      "primaryCta": "Ho capito",
+      "secondaryCta": "Forse più tardi"
     }
   },
   "nps": {

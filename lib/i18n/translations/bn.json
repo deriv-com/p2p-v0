@@ -685,19 +685,19 @@
   },
   "p2pAnnouncement": {
     "whatsNew": {
-      "title": "What's new",
-      "bullet0": "See advertiser activity more clearly.",
-      "bullet1": "Enjoy a cleaner, improved experience.",
-      "bullet2": "We've made updates to improve your P2P flow.",
-      "primaryCta": "Got it"
+      "title": "নতুন কী আছে",
+      "bullet0": "বিজ্ঞাপনদাতার কার্যকলাপ আরও স্পষ্টভাবে দেখুন।",
+      "bullet1": "আরও পরিষ্কার ও উন্নত অভিজ্ঞতা উপভোগ করুন।",
+      "bullet2": "আপনার P2P প্রবাহ উন্নত করতে আমরা আপডেট করেছি।",
+      "primaryCta": "বুঝেছি"
     },
     "whatsComing": {
-      "title": "What's coming",
-      "bullet0": "A refreshed P2P experience is on the way.",
-      "bullet1": "Improved visibility for advertiser activity.",
-      "bullet2": "More updates to make trading smoother.",
-      "primaryCta": "Got it",
-      "secondaryCta": "Maybe later"
+      "title": "যা আসছে",
+      "bullet0": "একটি নতুন P2P অভিজ্ঞতা আসছে।",
+      "bullet1": "বিজ্ঞাপনদাতার কার্যকলাপের আরও ভালো দৃশ্যমানতা।",
+      "bullet2": "ট্রেডিং আরও মসৃণ করতে আরও আপডেট।",
+      "primaryCta": "বুঝেছি",
+      "secondaryCta": "পরে হয়তো"
     }
   },
   "nps": {

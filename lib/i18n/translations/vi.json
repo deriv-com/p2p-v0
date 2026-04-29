@@ -716,19 +716,19 @@
   },
   "p2pAnnouncement": {
     "whatsNew": {
-      "title": "What's new",
-      "bullet0": "See advertiser activity more clearly.",
-      "bullet1": "Enjoy a cleaner, improved experience.",
-      "bullet2": "We've made updates to improve your P2P flow.",
-      "primaryCta": "Got it"
+      "title": "Có gì mới",
+      "bullet0": "Xem hoạt động của nhà quảng cáo rõ ràng hơn.",
+      "bullet1": "Tận hưởng trải nghiệm gọn gàng và cải tiến hơn.",
+      "bullet2": "Chúng tôi đã cập nhật để cải thiện quy trình P2P của bạn.",
+      "primaryCta": "Đã hiểu"
     },
     "whatsComing": {
-      "title": "What's coming",
-      "bullet0": "A refreshed P2P experience is on the way.",
-      "bullet1": "Improved visibility for advertiser activity.",
-      "bullet2": "More updates to make trading smoother.",
-      "primaryCta": "Got it",
-      "secondaryCta": "Maybe later"
+      "title": "Sắp ra mắt",
+      "bullet0": "Một trải nghiệm P2P mới mẻ đang sắp ra mắt.",
+      "bullet1": "Hiển thị rõ hơn hoạt động của nhà quảng cáo.",
+      "bullet2": "Thêm nhiều cập nhật để giao dịch mượt mà hơn.",
+      "primaryCta": "Đã hiểu",
+      "secondaryCta": "Để sau"
     }
   },
   "nps": {
