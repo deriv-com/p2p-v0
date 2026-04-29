@@ -4,8 +4,11 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 type TranslateFn = (key: string, params?: Record<string, string | number>) => string
 
+/** Average days per month accounting for leap years. */
+const AVG_DAYS_PER_MONTH = 30.44
+
 export function formatLastSeen(lastOnlineAt: number | null | undefined, t: TranslateFn): string {
-  if (!lastOnlineAt) return ""
+  if (lastOnlineAt == null) return ""
 
   const diffMs = Date.now() - lastOnlineAt
   const minutes = Math.floor(diffMs / 60000)
@@ -35,7 +38,7 @@ export function formatLastSeen(lastOnlineAt: number | null | undefined, t: Trans
     })
   }
 
-  const months = Math.round(days / 30.44)
+  const months = Math.round(days / AVG_DAYS_PER_MONTH)
   if (months <= 6) {
     const clamped = Math.max(1, months)
     return t("presence.seenMonthsAgo", {

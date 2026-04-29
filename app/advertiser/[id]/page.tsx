@@ -30,6 +30,13 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
 
+interface UsersOnlineUpdate {
+  user_id: number
+  is_online: boolean
+  /** Server-provided epoch ms timestamp; only present on offline transitions. */
+  last_online_at?: number | null
+}
+
 interface AdvertiserProfile {
   id: string | number
   nickname: string
@@ -175,19 +182,27 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  const handleUsersOnlineUpdate = useCallback((data: any) => {
-    if (data?.options?.channel === "users_online") {
-      const update: { user_id: number; is_online: boolean; last_online_at?: number | null } | null = data?.payload?.data ?? null
-      if (update && String(update.user_id) === String(currentIdRef.current)) {
-        setProfile((prev) => {
-          if (!prev) return prev
-          const lastOnlineAt = update.is_online
-            ? prev.last_online_at
-            : (update.last_online_at ?? Date.now())
-          return { ...prev, is_online: update.is_online, last_online_at: lastOnlineAt }
-        })
-      }
-    }
+  const handleUsersOnlineUpdate = useCallback((data: unknown) => {
+    if (!data || typeof data !== "object") return
+    const channel = (data as Record<string, any>)?.options?.channel
+    if (channel !== "users_online") return
+
+    const payload = (data as Record<string, any>)?.payload?.data
+    if (!payload || typeof payload.user_id !== "number" || typeof payload.is_online !== "boolean") return
+
+    const update: UsersOnlineUpdate = payload
+
+    if (String(update.user_id) !== String(currentIdRef.current)) return
+
+    setProfile((prev) => {
+      if (!prev) return prev
+      // Prefer server-provided timestamp; fall back to Date.now() only as a
+      // last resort so the UI immediately reflects the offline state.
+      const lastOnlineAt = update.is_online
+        ? prev.last_online_at
+        : (update.last_online_at ?? Date.now())
+      return { ...prev, is_online: update.is_online, last_online_at: lastOnlineAt }
+    })
   }, [])
 
   useEffect(() => {
