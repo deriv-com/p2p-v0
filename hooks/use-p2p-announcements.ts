@@ -34,15 +34,34 @@ function writeStoredTag(key: string, value: string): void {
 function resolveEligible(): AnnouncementKind | null {
   const releaseTag = getReleaseTag()
   const whatsComingTag = getWhatsComingTag()
+  const whatsNewEnabled = isWhatsNewEnabled()
+  const seenTag = readStoredTag(ANNOUNCEMENT_STORAGE_KEYS.whatsNew)
+  const dismissedTag = readStoredTag(ANNOUNCEMENT_STORAGE_KEYS.whatsComing)
+
+  console.debug("[P2PAnnouncement] env", {
+    NEXT_PUBLIC_RELEASE_TAG: process.env.NEXT_PUBLIC_RELEASE_TAG,
+    NEXT_PUBLIC_DATADOG_VERSION: process.env.NEXT_PUBLIC_DATADOG_VERSION,
+    NEXT_PUBLIC_P2P_WHATS_NEW_ENABLED: process.env.NEXT_PUBLIC_P2P_WHATS_NEW_ENABLED,
+    NEXT_PUBLIC_P2P_WHATS_COMING_TAG: process.env.NEXT_PUBLIC_P2P_WHATS_COMING_TAG,
+  })
+  console.debug("[P2PAnnouncement] resolved", {
+    releaseTag,
+    whatsComingTag,
+    whatsNewEnabled,
+    seenTag,
+    dismissedTag,
+  })
 
   const whatsNewEligible =
-    isWhatsNewEnabled() &&
+    whatsNewEnabled &&
     Boolean(releaseTag) &&
-    readStoredTag(ANNOUNCEMENT_STORAGE_KEYS.whatsNew) !== releaseTag
+    seenTag !== releaseTag
 
   const whatsComingEligible =
     Boolean(whatsComingTag) &&
-    readStoredTag(ANNOUNCEMENT_STORAGE_KEYS.whatsComing) !== whatsComingTag
+    dismissedTag !== whatsComingTag
+
+  console.debug("[P2PAnnouncement] eligibility", { whatsNewEligible, whatsComingEligible })
 
   // What's New has priority. After it is dismissed the controller re-evaluates,
   // which surfaces What's Coming if still eligible.
