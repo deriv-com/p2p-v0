@@ -99,8 +99,8 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent className="sm:max-w-[512px] sm:rounded-[32px] p-0">
-        <DialogHeader className="px-6 pt-6 pb-0">
+      <DialogContent className="sm:max-w-[580px] sm:rounded-[32px] p-0">
+        <DialogHeader className="px-8 pt-6 pb-0">
           <div className="flex justify-between items-start">
             <DialogTitle className="tracking-normal font-bold text-2xl text-left pr-4">
               {title}
