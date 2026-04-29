@@ -368,7 +368,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, ad.version)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
-        if (errorCode === "OrderExists") {
+        if (errorCode === "OrderAdvertVersionChanged") {
+          setShowAdUpdatedModal(true)
+        } else if (errorCode === "OrderExists") {
           showAlert({
             title: "Active order detected",
             description: t("order.orderExists"),
