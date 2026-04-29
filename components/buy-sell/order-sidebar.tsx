@@ -253,8 +253,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               ad.version = updatedAdvert.version
               if (hasRateChanges) {
                 setPendingRateUpdate({
-                  effective_rate: updatedAdvert.effective_rate,
-                  effective_rate_display: updatedAdvert.effective_rate_display,
+                  effective_rate: updatedAdvert.effective_rate ?? updatedAdvert.exchange_rate,
+                  effective_rate_display: updatedAdvert.effective_rate_display ?? updatedAdvert.exchange_rate,
                 })
               }
               if (hasNonRateChanges) {
@@ -766,13 +766,12 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           onCancel={() => {
             setShowRateChangeConfirmation(false)
             setLockedConfirmationRate(null)
-            setPendingRateUpdate(null)
           }}
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
           paymentCurrency={ad.payment_currency}
-          oldRate={ad.effective_rate}
-          newRate={lockedConfirmationRate}
+          oldRate={ad.effective_rate ?? ad.exchange_rate ?? 0}
+          newRate={lockedConfirmationRate ?? 0}
           isBuy={isBuy}
         />
       )}
