@@ -223,6 +223,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [adEffectiveRateDisplay, setAdEffectiveRateDisplay] = useState<number | string | undefined>(ad?.effective_rate_display)
   const adRef = useRef(ad)
   useEffect(() => { adRef.current = ad }, [ad])
+  const baseRateRef = useRef<number | undefined>(undefined)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -320,6 +321,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setAdOrderExpiryPeriod(ad.order_expiry_period ?? 0)
       setAdDescription(ad.description ?? "")
       setAdEffectiveRateDisplay(ad.effective_rate_display)
+      baseRateRef.current = Number(Number(ad.effective_rate_display).toFixed(6))
     }
     if (!isOpen) {
       setShowAdvertChangedAlert(false)
@@ -327,6 +329,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setMarketRate(null)
       setShowRateChangeConfirmation(false)
       setLockedConfirmationRate(null)
+      baseRateRef.current = undefined
     }
   }, [ad?.id, isOpen])
 
@@ -393,7 +396,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const handleSubmit = async () => {
     if (!ad) return
 
-    if (ad.exchange_rate_type == "float" && marketRate && Number(marketRate.toFixed(6)) !== Number(Number(adEffectiveRateDisplay).toFixed(6))) {
+    if (ad.exchange_rate_type == "float" && marketRate && baseRateRef.current !== undefined && Number(marketRate.toFixed(6)) !== Number(baseRateRef.current.toFixed(6))) {
       setLockedConfirmationRate(marketRate)
       setShowRateChangeConfirmation(true)
       return
@@ -414,6 +417,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setIsSubmitting(true)
       setOrderStatus(null)
       setShowRateChangeConfirmation(false)
+      baseRateRef.current = lockedConfirmationRate !== null
+        ? Number(lockedConfirmationRate.toFixed(6))
+        : marketRate !== null
+          ? Number(marketRate.toFixed(6))
+          : baseRateRef.current
 
       const numAmount = Number.parseFloat(amount)
 
@@ -807,7 +815,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
           paymentCurrency={ad.payment_currency}
-          oldRate={Number(adEffectiveRateDisplay)}
+          oldRate={baseRateRef.current ?? Number(adEffectiveRateDisplay)}
           newRate={lockedConfirmationRate}
           isBuy={isBuy}
         />
