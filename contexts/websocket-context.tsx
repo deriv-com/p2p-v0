@@ -294,6 +294,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const hasInitializedRef = useRef(false)
   const [isConnected, setIsConnected] = useState(false)
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const shouldReconnectRef = useRef(true)
 
   useEffect(() => {
     if (hasInitializedRef.current) return
@@ -313,6 +315,12 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       },
       onClose: () => {
         setIsConnected(false)
+        if (shouldReconnectRef.current) {
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
+          reconnectTimeoutRef.current = setTimeout(() => {
+            wsClientRef.current?.connect().catch(() => {})
+          }, 3000)
+        }
       },
       onError: (error) => {
         console.error("WebSocket error:", error)
@@ -327,6 +335,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     })
 
     return () => {
+      shouldReconnectRef.current = false
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
       if (wsClientRef.current) {
         const userData = useUserDataStore.getState().userData
         if (userData?.signup === "v1") {
@@ -335,6 +345,17 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
+  }, [])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && wsClientRef.current && !wsClientRef.current.isConnected()) {
+        if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
+        wsClientRef.current.connect().catch(() => {})
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
   }, [])
 
   const joinChannel = useCallback((channel: string, id: number) => {
