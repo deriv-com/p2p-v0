@@ -69,7 +69,7 @@
     "noAdsDescription": "{currency} 광고를 만들거나 다른 통화로 변경하세요.",
     "following": "팔로잉",
     "verified": "인증됨",
-    "browseMarket": 0
+    "browseMarket": "마켓 둘러보기"
   },
   "order": {
     "placeOrder": "주문 생성",
@@ -472,7 +472,7 @@
     "deleteAdOpenOrdersTitle": "광고를 삭제할 수 없습니다",
     "deleteAdOpenOrders": "이 광고에 활성 주문이 있습니다. 주문이 완료되면 삭제할 수 있습니다.",
     "unableToUpdateAd": "광고를 업데이트할 수 없습니다",
-    "updateAdError": "광고를 업데이트할 수 없습니다",
+    "updateAdError": "광고를 업데이트할 때 오류가 발생했습니다. 다시 시도하세요.",
     "advertiserStats": "광고주 통계",
     "orderResponse": "주문 응답",
     "buyerAndSeller": "구매자/판매자",
@@ -502,7 +502,6 @@
     "selectCountriesDescription": "이 광고를 어느 국가의 사용자가 볼 수 있게 할지 선택하세요.",
     "allCountries": "모든 국가",
     "selectSpecificCountries": "특정 국가 선택",
-    "availableBalance": "사용 가능한 잔액",
     "setAmount": "금액 설정",
     "preview": "미리보기",
     "createAdSummary": "요약",
@@ -511,6 +510,7 @@
     "createAdError": "광고를 생성할 수 없습니다",
     "updateAdTitle": "광고 업데이트",
     "totalLimit": "총 한도",
+    "availableBalance": "사용 가능한 잔액",
     "yourAdvInfo": "광고 정보",
     "editAdvPaymentMethods": "결제 방법 수정",
     "editAdvCountries": "국가 수정",
