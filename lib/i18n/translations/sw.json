@@ -69,13 +69,7 @@
     "noAdsDescription": "Tengeneza tangazo la {currency} kuanza, au badili kwa waluta nyingine.",
     "following": "Inafuata",
     "verified": "Iliyothibitishwa",
-    "browseMarket": 0,
-    "seenJustNow": "Seen just now",
-    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
-    "seenHoursAgo": "Seen {hours} hour{plural} ago",
-    "seenDaysAgo": "Seen {days} day{plural} ago",
-    "seenMonthsAgo": "Seen {months} month{plural} ago",
-    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
+    "browseMarket": 0
   },
   "order": {
     "placeOrder": "Weka amri",

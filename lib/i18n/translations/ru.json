@@ -62,13 +62,7 @@
     "noAdsTitle": "Нет объявлений для этой валюты",
     "noAdsDescription": "Вы можете разместить свое объявление для других пользователей.",
     "following": "Подписки",
-    "verified": "Верифицирован",
-    "seenJustNow": "Seen just now",
-    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
-    "seenHoursAgo": "Seen {hours} hour{plural} ago",
-    "seenDaysAgo": "Seen {days} day{plural} ago",
-    "seenMonthsAgo": "Seen {months} month{plural} ago",
-    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
+    "verified": "Верифицирован"
   },
   "order": {
     "placeOrder": "Разместить заказ",

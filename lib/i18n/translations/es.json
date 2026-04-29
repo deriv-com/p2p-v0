@@ -62,13 +62,7 @@
     "noAdsTitle": "No hay anuncios para esta moneda",
     "noAdsDescription": "Puedes publicar tu propio anuncio para que otros respondan.",
     "following": "Siguiendo",
-    "verified": "Verificado",
-    "seenJustNow": "Seen just now",
-    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
-    "seenHoursAgo": "Seen {hours} hour{plural} ago",
-    "seenDaysAgo": "Seen {days} day{plural} ago",
-    "seenMonthsAgo": "Seen {months} month{plural} ago",
-    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
+    "verified": "Verificado"
   },
   "order": {
     "placeOrder": "Realizar orden",

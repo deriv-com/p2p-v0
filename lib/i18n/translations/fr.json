@@ -62,13 +62,7 @@
     "noAdsTitle": "Aucune annonce pour cette devise",
     "noAdsDescription": "Vous pouvez publier votre propre annonce pour que d'autres y répondent.",
     "following": "Suivi",
-    "verified": "Vérifié",
-    "seenJustNow": "Seen just now",
-    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
-    "seenHoursAgo": "Seen {hours} hour{plural} ago",
-    "seenDaysAgo": "Seen {days} day{plural} ago",
-    "seenMonthsAgo": "Seen {months} month{plural} ago",
-    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
+    "verified": "Vérifié"
   },
   "order": {
     "placeOrder": "Passer la commande",

@@ -69,13 +69,7 @@
     "noAdsDescription": "Utwórz ogłoszenie {currency}, aby zacząć, lub przejdź do innej waluty.",
     "following": "Obserwujesz",
     "verified": "Zweryfikowany",
-    "browseMarket": 0,
-    "seenJustNow": "Seen just now",
-    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
-    "seenHoursAgo": "Seen {hours} hour{plural} ago",
-    "seenDaysAgo": "Seen {days} day{plural} ago",
-    "seenMonthsAgo": "Seen {months} month{plural} ago",
-    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
+    "browseMarket": 0
   },
   "order": {
     "placeOrder": "Złóż zamówienie",
