@@ -212,35 +212,35 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
   const [hasAdvertUpdated, setHasAdvertUpdated] = useState(false)
   const [showAdUpdatedModal, setShowAdUpdatedModal] = useState(false)
+  const [pendingAdvertUpdate, setPendingAdvertUpdate] = useState<Advertisement | null>(null)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
   const { data: paymentMethodsResponse } = useUserPaymentMethods(isOpen)
 
   useEffect(() => {
-    if (
-      isOpen &&
-      ad &&
-      ad.payment_currency &&
-      ad.account_currency &&
-      ad.exchange_rate_type === "float" &&
-      isConnected
-    ) {
-      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+    if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
+      let requestTimer: ReturnType<typeof setTimeout> | undefined
 
-      const requestTimer = setTimeout(() => {
-        requestExchangeRate(ad.account_currency, ad.payment_currency)
-      }, 400)
+      if (ad.exchange_rate_type === "float") {
+        joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+        requestTimer = setTimeout(() => {
+          requestExchangeRate(ad.account_currency, ad.payment_currency)
+        }, 400)
+      }
 
       const unsubscribe = subscribe((data) => {
-        const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+        if (ad.exchange_rate_type === "float") {
+          const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+          if (data.options.channel === expectedChannel && data.payload?.rate) {
+            setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
+          } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
+            setMarketRate(data.payload.data.rate * ((ad.exchange_rate / 100) + 1))
+            ad.effective_rate_display = data.payload.data.rate * ((ad.exchange_rate / 100) + 1)
+          }
+        }
 
-        if (data.options.channel === expectedChannel && data.payload?.rate) {
-          setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
-        } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-          setMarketRate(data.payload.data.rate * ((ad.exchange_rate / 100) + 1))
-          ad.effective_rate_display = Number(data.payload.data.rate * ((ad.exchange_rate / 100) + 1)).toFixed(6)
-        } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
+        if (data?.options?.channel?.startsWith("adverts/currency/")) {
           if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
             const updatedAdvert = data.payload.data.advert
             const updatedFields: string[] = data.payload.data.updated_fields || []
@@ -253,22 +253,19 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 ad.effective_rate_display = updatedAdvert.effective_rate_display
               }
               if (hasNonRateChanges) {
-                ad.minimum_order_amount = updatedAdvert.minimum_order_amount
-                ad.actual_maximum_order_amount = updatedAdvert.actual_maximum_order_amount
-                ad.description = updatedAdvert.description
-                ad.payment_methods = updatedAdvert.payment_methods
-                ad.payment_method_names = updatedAdvert.payment_method_names
-                ad.order_expiry_period = updatedAdvert.order_expiry_period
-                ad.version = updatedAdvert.version
+                setPendingAdvertUpdate(updatedAdvert)
                 setHasAdvertUpdated(true)
               }
             }
           }
         }
       })
+
       return () => {
-        clearTimeout(requestTimer)
-        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+        if (requestTimer) clearTimeout(requestTimer)
+        if (ad.exchange_rate_type === "float") {
+          leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+        }
         unsubscribe()
       }
     }
@@ -350,6 +347,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   }
 
   const handleAdvertUpdateConfirm = () => {
+    if (ad && pendingAdvertUpdate) {
+      ad.minimum_order_amount = pendingAdvertUpdate.minimum_order_amount
+      ad.actual_maximum_order_amount = pendingAdvertUpdate.actual_maximum_order_amount
+      ad.description = pendingAdvertUpdate.description
+      ad.payment_methods = pendingAdvertUpdate.payment_methods
+      ad.payment_method_names = pendingAdvertUpdate.payment_method_names
+      ad.order_expiry_period = pendingAdvertUpdate.order_expiry_period
+      ad.version = pendingAdvertUpdate.version
+    }
+    setPendingAdvertUpdate(null)
     setHasAdvertUpdated(false)
     setShowAdUpdatedModal(false)
   }
