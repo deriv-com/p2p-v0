@@ -213,6 +213,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [hasAdvertUpdated, setHasAdvertUpdated] = useState(false)
   const [showAdUpdatedModal, setShowAdUpdatedModal] = useState(false)
   const [pendingAdvertUpdate, setPendingAdvertUpdate] = useState<Advertisement | null>(null)
+  const [pendingRateUpdate, setPendingRateUpdate] = useState<{ effective_rate: number; effective_rate_display: number } | null>(null)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -249,8 +250,12 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               const hasRateChanges = updatedFields.some((f) => rateFields.has(f))
               const hasNonRateChanges = updatedFields.some((f) => !rateFields.has(f))
               if (hasRateChanges) {
-                setMarketRate(updatedAdvert.effective_rate)
-                ad.effective_rate_display = updatedAdvert.effective_rate_display
+                setPendingRateUpdate({
+                  effective_rate: updatedAdvert.effective_rate,
+                  effective_rate_display: updatedAdvert.effective_rate_display,
+                })
+                setLockedConfirmationRate(updatedAdvert.effective_rate)
+                setShowRateChangeConfirmation(true)
               }
               if (hasNonRateChanges) {
                 setPendingAdvertUpdate(updatedAdvert)
@@ -344,6 +349,17 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     }
 
     await proceedWithOrder()
+  }
+
+  const handleWebSocketRateConfirm = () => {
+    if (pendingRateUpdate && ad) {
+      setMarketRate(pendingRateUpdate.effective_rate)
+      ad.effective_rate = pendingRateUpdate.effective_rate
+      ad.effective_rate_display = pendingRateUpdate.effective_rate_display
+    }
+    setPendingRateUpdate(null)
+    setLockedConfirmationRate(null)
+    setShowRateChangeConfirmation(false)
   }
 
   const handleAdvertUpdateConfirm = () => {
@@ -482,6 +498,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setTempSelectedPaymentMethods([])
       setShowRateChangeConfirmation(false)
       setLockedConfirmationRate(null)
+      setPendingRateUpdate(null)
       onClose()
     }, 300)
   }
@@ -743,10 +760,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       {ad && (
         <RateChangeConfirmation
           isOpen={showRateChangeConfirmation}
-          onConfirm={proceedWithOrder}
+          onConfirm={pendingRateUpdate ? handleWebSocketRateConfirm : proceedWithOrder}
           onCancel={() => {
             setShowRateChangeConfirmation(false)
             setLockedConfirmationRate(null)
+            setPendingRateUpdate(null)
           }}
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
