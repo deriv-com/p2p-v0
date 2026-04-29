@@ -670,5 +670,13 @@
     "errorTitle": "Algo correu mal.",
     "errorMessage": "Código de erro: {errorCode}. Tente novamente mais tarde ou contacte o apoio ao cliente.",
     "validationError": "Apenas são permitidas letras, números, espaços e os seguintes caracteres especiais: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Visto há pouco",
+    "seenMinutesAgo": "Visto há {count} minuto{plural}",
+    "seenHoursAgo": "Visto há {count} hora{plural}",
+    "seenDaysAgo": "Visto há {count} dia{plural}",
+    "seenMonthsAgo": "Visto há {count} mês{plural}",
+    "seenMoreThanSixMonthsAgo": "Visto há mais de 6 meses"
   }
 }

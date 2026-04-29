@@ -496,5 +496,13 @@
     "errorTitle": "Hitilafu imetokea.",
     "errorMessage": "Msimbo wa hitilafu: {errorCode}. Tafadhali jaribu tena baadaye au wasiliana na usaidizi.",
     "validationError": "Herufi, nambari, nafasi, na alama maalum zifuatazo pekee ndizo zinaruhusiwa: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Alionekana sasa hivi",
+    "seenMinutesAgo": "Alionekana dakika {count} zilizopita",
+    "seenHoursAgo": "Alionekana saa {count} zilizopita",
+    "seenDaysAgo": "Alionekana siku {count} zilizopita",
+    "seenMonthsAgo": "Alionekana miezi {count} iliyopita",
+    "seenMoreThanSixMonthsAgo": "Alionekana zaidi ya miezi 6 iliyopita"
   }
 }

@@ -35,6 +35,7 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { PresenceLastSeen } from "@/components/presence-last-seen"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
@@ -399,12 +400,16 @@ export default function BuySellPage() {
 
   const handleUsersOnlineUpdate = useCallback((data: any) => {
     if (data?.options?.channel === "users_online") {
-      const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+      const update: { user_id: number; is_online: boolean; last_online_at?: number | null } | null = data?.payload?.data ?? null
       if (update) {
         setAdverts((currentAdverts) =>
-          currentAdverts.map((ad) =>
-            update.user_id === ad.user?.id ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad,
-          ),
+          currentAdverts.map((ad) => {
+            if (update.user_id !== ad.user?.id) return ad
+            const lastOnlineAt = update.is_online
+              ? ad.user.last_online_at
+              : (update.last_online_at ?? Date.now())
+            return { ...ad, user: { ...ad.user, is_online: update.is_online, last_online_at: lastOnlineAt } }
+          }),
         )
       }
     }
@@ -740,6 +745,11 @@ export default function BuySellPage() {
                             )}
                           </div>
                         </div>
+                        <PresenceLastSeen
+                          isOnline={ad.user?.is_online}
+                          lastOnlineAt={ad.user?.last_online_at}
+                          className="text-xs text-slate-500 mt-[2px] block"
+                        />
                         <div className="flex items-center text-xs text-slate-500 mt-[4px]">
                           {ad.user.rating_average_lifetime && (
                             <span className="flex items-center">

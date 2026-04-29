@@ -715,5 +715,13 @@
     "errorTitle": "Etwas ist schiefgelaufen.",
     "errorMessage": "Fehlercode: {errorCode}. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.",
     "validationError": "Nur Buchstaben, Zahlen, Leerzeichen und die folgenden Sonderzeichen sind erlaubt: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Gerade eben gesehen",
+    "seenMinutesAgo": "Vor {count} Minute{plural} gesehen",
+    "seenHoursAgo": "Vor {count} Stunde{plural} gesehen",
+    "seenDaysAgo": "Vor {count} Tag{plural} gesehen",
+    "seenMonthsAgo": "Vor {count} Monat{plural} gesehen",
+    "seenMoreThanSixMonthsAgo": "Vor mehr als 6 Monaten gesehen"
   }
 }

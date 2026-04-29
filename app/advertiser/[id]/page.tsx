@@ -28,6 +28,7 @@ import { AdvertiserSkeleton } from "@/app/advertiser/components/advertiser-skele
 import { useAdvertiserAds, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { PresenceLastSeen } from "@/components/presence-last-seen"
 
 interface AdvertiserProfile {
   id: string | number
@@ -41,6 +42,7 @@ interface AdvertiserProfile {
   is_blocked: boolean
   is_favourite: boolean
   is_online?: boolean
+  last_online_at?: number | null
   temp_ban_until: number | null
   trade_band: string
   order_count_lifetime: number
@@ -175,9 +177,15 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   const handleUsersOnlineUpdate = useCallback((data: any) => {
     if (data?.options?.channel === "users_online") {
-      const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
+      const update: { user_id: number; is_online: boolean; last_online_at?: number | null } | null = data?.payload?.data ?? null
       if (update && String(update.user_id) === String(currentIdRef.current)) {
-        setProfile((prev) => prev ? { ...prev, is_online: update.is_online } : prev)
+        setProfile((prev) => {
+          if (!prev) return prev
+          const lastOnlineAt = update.is_online
+            ? prev.last_online_at
+            : (update.last_online_at ?? Date.now())
+          return { ...prev, is_online: update.is_online, last_online_at: lastOnlineAt }
+        })
       }
     }
   }, [])
@@ -450,11 +458,19 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       }
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
-                      <span className="mr-[8px]">
-                        {profile?.is_online ? t("advertiser.online") : t("advertiser.offline")}
+                      {!profile?.is_online && profile?.last_online_at && (
+                        <>
+                          <PresenceLastSeen
+                            isOnline={profile.is_online}
+                            lastOnlineAt={profile.last_online_at}
+                            className="text-xs text-grayscale-600 mr-[8px]"
+                          />
+                          <span className="opacity-[0.08]">|</span>
+                        </>
+                      )}
+                      <span className={!profile?.is_online && profile?.last_online_at ? "ml-[8px]" : ""}>
+                        {profile ? getJoinedDate(profile.created_at) : ""}
                       </span>
-                      <span className="opacity-[0.08]">|</span>
-                      <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
                       <div className="flex items-center">

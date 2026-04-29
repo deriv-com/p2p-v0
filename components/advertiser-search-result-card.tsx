@@ -9,6 +9,7 @@ import { formatPaymentMethodName } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { PresenceLastSeen } from "@/components/presence-last-seen"
 
 interface AdvertiserSearchResultCardProps {
     ad: Advertisement
@@ -51,6 +52,11 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                     </div>
                 </div>
             </div>
+            <PresenceLastSeen
+                isOnline={ad.user?.is_online}
+                lastOnlineAt={ad.user?.last_online_at}
+                className="text-xs text-slate-500 mt-[2px] mb-[2px] block"
+            />
             <div className="flex items-center text-xs text-slate-500 mb-2">
                 {ad.user.rating_average_lifetime && (
                     <span className="flex items-center">
