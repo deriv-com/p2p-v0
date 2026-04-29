@@ -730,7 +730,7 @@ export default function BuySellPage() {
                               >
                                 {ad.user?.nickname}
                               </button>
-                              {!ad.user?.is_online && ad.user?.last_online_at && (
+                              {Number(userId) !== ad.user?.id && !ad.user?.is_online && ad.user?.last_online_at && (
                                 <span className="text-xs text-slate-400">
                                   {formatLastSeen(ad.user.last_online_at, t)}
                                 </span>
