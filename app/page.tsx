@@ -378,7 +378,16 @@ export default function BuySellPage() {
 
           setAdverts((currentAdverts) =>
             currentAdverts.map((ad) =>
-              ad.id == updatedAdvert.id ? { ...ad, effective_rate_display: updatedAdvert.effective_rate_display } : ad,
+              ad.id == updatedAdvert.id
+                ? {
+                    ...ad,
+                    effective_rate_display: updatedAdvert.effective_rate_display,
+                    minimum_order_amount: updatedAdvert.minimum_order_amount,
+                    actual_maximum_order_amount: updatedAdvert.actual_maximum_order_amount,
+                    payment_methods: updatedAdvert.payment_methods,
+                    payment_method_names: updatedAdvert.payment_method_names,
+                  }
+                : ad,
             ),
           )
         }

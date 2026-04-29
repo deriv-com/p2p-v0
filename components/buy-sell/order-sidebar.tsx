@@ -19,6 +19,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
 import RateChangeConfirmation from "./rate-change-confirmation"
+import AdUpdatedConfirmation from "./ad-updated-confirmation"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -209,6 +210,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
+  const [hasAdvertUpdated, setHasAdvertUpdated] = useState(false)
+  const [showAdUpdatedModal, setShowAdUpdatedModal] = useState(false)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -240,9 +243,25 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
         } else if (data?.options?.channel?.startsWith("adverts/currency/")) {
           if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
             const updatedAdvert = data.payload.data.advert
+            const updatedFields: string[] = data.payload.data.updated_fields || []
             if (ad.id == updatedAdvert.id) {
-              setMarketRate(updatedAdvert.effective_rate)
-              ad.effective_rate_display = updatedAdvert.effective_rate_display
+              const rateFields = new Set(["exchange_rate", "effective_rate", "effective_rate_display"])
+              const hasRateChanges = updatedFields.some((f) => rateFields.has(f))
+              const hasNonRateChanges = updatedFields.some((f) => !rateFields.has(f))
+              if (hasRateChanges) {
+                setMarketRate(updatedAdvert.effective_rate)
+                ad.effective_rate_display = updatedAdvert.effective_rate_display
+              }
+              if (hasNonRateChanges) {
+                ad.minimum_order_amount = updatedAdvert.minimum_order_amount
+                ad.actual_maximum_order_amount = updatedAdvert.actual_maximum_order_amount
+                ad.description = updatedAdvert.description
+                ad.payment_methods = updatedAdvert.payment_methods
+                ad.payment_method_names = updatedAdvert.payment_method_names
+                ad.order_expiry_period = updatedAdvert.order_expiry_period
+                ad.version = updatedAdvert.version
+                setHasAdvertUpdated(true)
+              }
             }
           }
         }
@@ -316,6 +335,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const handleSubmit = async () => {
     if (!ad) return
 
+    if (hasAdvertUpdated) {
+      setShowAdUpdatedModal(true)
+      return
+    }
+
     if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
       setLockedConfirmationRate(marketRate)
       setShowRateChangeConfirmation(true)
@@ -323,6 +347,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     }
 
     await proceedWithOrder()
+  }
+
+  const handleAdvertUpdateConfirm = () => {
+    setHasAdvertUpdated(false)
+    setShowAdUpdatedModal(false)
   }
 
   const proceedWithOrder = async () => {
@@ -336,10 +365,12 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       const numAmount = Number.parseFloat(amount)
 
       const rateToUse = lockedConfirmationRate || marketRate
-      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods)
+      const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, ad.version)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
-        if (errorCode === "OrderExists") {
+        if (errorCode === "OrderAdvertVersionChanged") {
+          setShowAdUpdatedModal(true)
+        } else if (errorCode === "OrderExists") {
           showAlert({
             title: "Active order detected",
             description: t("order.orderExists"),
@@ -695,6 +726,12 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           selectedMethod={selectedPaymentMethodType}
         />
       )}
+
+      <AdUpdatedConfirmation
+        isOpen={showAdUpdatedModal}
+        onConfirm={handleAdvertUpdateConfirm}
+        onCancel={() => setShowAdUpdatedModal(false)}
+      />
 
       {ad && (
         <RateChangeConfirmation

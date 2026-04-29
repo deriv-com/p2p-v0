@@ -675,5 +675,17 @@
       "primaryCta": "Got it",
       "secondaryCta": "Maybe later"
     }
+  },
+  "nps": {
+    "sendFeedback": "Enviar feedback",
+    "title": "Qual é a probabilidade de recomendar o Deriv P2P?",
+    "notLikely": "Pouco provável",
+    "veryLikely": "Muito provável",
+    "tellUsMore": "Conte-nos mais",
+    "askMeLater": "Perguntar mais tarde",
+    "successToast": "Obrigado pelo seu feedback.",
+    "errorTitle": "Algo correu mal.",
+    "errorMessage": "Código de erro: {errorCode}. Tente novamente mais tarde ou contacte o apoio ao cliente.",
+    "validationError": "Apenas são permitidas letras, números, espaços e os seguintes caracteres especiais: @ - . ! / % & , _ ( ) + : ;"
   }
 }

@@ -540,5 +540,17 @@
       "primaryCta": "Got it",
       "secondaryCta": "Maybe later"
     }
+  },
+  "nps": {
+    "sendFeedback": "피드백 보내기",
+    "title": "Deriv P2P를 추천할 가능성이 얼마나 되나요?",
+    "notLikely": "가능성 낮음",
+    "veryLikely": "가능성 높음",
+    "tellUsMore": "자세히 알려주세요",
+    "askMeLater": "나중에 묻기",
+    "successToast": "피드백을 보내주셔서 감사합니다.",
+    "errorTitle": "문제가 발생했습니다.",
+    "errorMessage": "오류 코드: {errorCode}. 나중에 다시 시도하거나 지원팀에 문의하세요.",
+    "validationError": "문자, 숫자, 공백 및 다음 특수 문자만 사용할 수 있습니다: @ - . ! / % & , _ ( ) + : ;"
   }
 }

@@ -14,6 +14,7 @@ export interface UserData {
   is_online?: boolean
   balances?: { amount: string; currency: string }
   status?: string
+  feedback_exist?: boolean
 }
 
 export interface VerificationStatus {
