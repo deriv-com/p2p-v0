@@ -472,7 +472,7 @@
     "deleteAdOpenOrdersTitle": "광고를 삭제할 수 없습니다",
     "deleteAdOpenOrders": "이 광고에 활성 주문이 있습니다. 주문이 완료되면 삭제할 수 있습니다.",
     "unableToUpdateAd": "광고를 업데이트할 수 없습니다",
-    "updateAdError": "광고를 업데이트할 때 오류가 발생했습니다. 다시 시도하세요.",
+    "updateAdError": "광고를 업데이트할 수 없습니다",
     "advertiserStats": "광고주 통계",
     "orderResponse": "주문 응답",
     "buyerAndSeller": "구매자/판매자",
@@ -480,7 +480,6 @@
     "margin": "마진",
     "advType": "광고 유형",
     "rateType": "환율 유형",
-    "rate": "환율",
     "fixedRate": "고정 환율",
     "floatingRate": "변동 환율",
     "floatingRateTooltip": "+ 또는 -로 설정된 시장 환율의 백분율입니다.",
@@ -510,10 +509,8 @@
     "yourAdWillBePosted": "광고가 게시될 예정입니다.",
     "postAd": "광고 게시",
     "createAdError": "광고를 생성할 수 없습니다",
-    "updateAdError": "광고를 업데이트할 수 없습니다",
     "updateAdTitle": "광고 업데이트",
     "totalLimit": "총 한도",
-    "availableBalance": "사용 가능한 잔액",
     "yourAdvInfo": "광고 정보",
     "editAdvPaymentMethods": "결제 방법 수정",
     "editAdvCountries": "국가 수정",
@@ -526,5 +523,22 @@
     "advertFloatRateMaximumTitle": "변동 환율을 확인하세요",
     "advertFloatRateMaximumMessage": "입력한 변동 환율이 허용 한도보다 높습니다. 환율을 낮춰 계속하세요.",
     "updateRate": "환율 업데이트"
+  },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "What's new",
+      "bullet0": "See advertiser activity more clearly.",
+      "bullet1": "Enjoy a cleaner, improved experience.",
+      "bullet2": "We've made updates to improve your P2P flow.",
+      "primaryCta": "Got it"
+    },
+    "whatsComing": {
+      "title": "New update available",
+      "bullet0": "A refreshed P2P experience is on the way.",
+      "bullet1": "Improved visibility for advertiser activity.",
+      "bullet2": "More updates to make trading smoother.",
+      "primaryCta": "Got it",
+      "secondaryCta": "Maybe later"
+    }
   }
 }

@@ -703,5 +703,22 @@
     "submit": "Einreichen",
     "ratingRequiredTitle": "Bewertung erforderlich",
     "ratingRequiredDescription": "Bitte wählen Sie eine Sternebewertung aus, bevor Sie absenden."
+  },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "What's new",
+      "bullet0": "See advertiser activity more clearly.",
+      "bullet1": "Enjoy a cleaner, improved experience.",
+      "bullet2": "We've made updates to improve your P2P flow.",
+      "primaryCta": "Got it"
+    },
+    "whatsComing": {
+      "title": "New update available",
+      "bullet0": "A refreshed P2P experience is on the way.",
+      "bullet1": "Improved visibility for advertiser activity.",
+      "bullet2": "More updates to make trading smoother.",
+      "primaryCta": "Got it",
+      "secondaryCta": "Maybe later"
+    }
   }
 }
