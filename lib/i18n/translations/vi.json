@@ -715,15 +715,15 @@
     "ratingRequiredDescription": "Vui lòng chọn đánh giá sao trước khi gửi."
   },
   "nps": {
-    "sendFeedback": "Send feedback",
-    "title": "How likely are you to recommend Deriv P2P?",
-    "notLikely": "Not likely",
-    "veryLikely": "Very likely",
-    "tellUsMore": "Tell us more",
-    "askMeLater": "Ask me later",
-    "successToast": "Thanks for your feedback.",
-    "errorTitle": "Something went wrong.",
-    "errorMessage": "Error code: {errorCode}. Please try again later or contact support.",
-    "validationError": "Only letters, numbers, spaces, and the following special characters are allowed: @ - . ! / % & , _ ( ) + : ;"
+    "sendFeedback": "Gửi phản hồi",
+    "title": "Bạn có khả năng giới thiệu Deriv P2P đến mức nào?",
+    "notLikely": "Không có khả năng",
+    "veryLikely": "Rất có khả năng",
+    "tellUsMore": "Cho chúng tôi biết thêm",
+    "askMeLater": "Hỏi tôi sau",
+    "successToast": "Cảm ơn phản hồi của bạn.",
+    "errorTitle": "Đã xảy ra lỗi.",
+    "errorMessage": "Mã lỗi: {errorCode}. Vui lòng thử lại sau hoặc liên hệ bộ phận hỗ trợ.",
+    "validationError": "Chỉ cho phép chữ cái, chữ số, khoảng trắng và các ký tự đặc biệt sau: @ - . ! / % & , _ ( ) + : ;"
   }
 }

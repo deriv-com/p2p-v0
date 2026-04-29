@@ -486,15 +486,15 @@
     "updateRate": "Sasisha kiwango"
   },
   "nps": {
-    "sendFeedback": "Send feedback",
-    "title": "How likely are you to recommend Deriv P2P?",
-    "notLikely": "Not likely",
-    "veryLikely": "Very likely",
-    "tellUsMore": "Tell us more",
-    "askMeLater": "Ask me later",
-    "successToast": "Thanks for your feedback.",
-    "errorTitle": "Something went wrong.",
-    "errorMessage": "Error code: {errorCode}. Please try again later or contact support.",
-    "validationError": "Only letters, numbers, spaces, and the following special characters are allowed: @ - . ! / % & , _ ( ) + : ;"
+    "sendFeedback": "Tuma maoni",
+    "title": "Una uwezekano gani wa kupendekeza Deriv P2P?",
+    "notLikely": "Si rahisi",
+    "veryLikely": "Rahisi sana",
+    "tellUsMore": "Tuambie zaidi",
+    "askMeLater": "Niulize baadaye",
+    "successToast": "Asante kwa maoni yako.",
+    "errorTitle": "Hitilafu imetokea.",
+    "errorMessage": "Msimbo wa hitilafu: {errorCode}. Tafadhali jaribu tena baadaye au wasiliana na usaidizi.",
+    "validationError": "Herufi, nambari, nafasi, na alama maalum zifuatazo pekee ndizo zinaruhusiwa: @ - . ! / % & , _ ( ) + : ;"
   }
 }

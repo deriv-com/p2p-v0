@@ -679,15 +679,15 @@
     "ratingRequiredDescription": "Seleziona una valutazione a stelle prima di inviare."
   },
   "nps": {
-    "sendFeedback": "Send feedback",
-    "title": "How likely are you to recommend Deriv P2P?",
-    "notLikely": "Not likely",
-    "veryLikely": "Very likely",
-    "tellUsMore": "Tell us more",
-    "askMeLater": "Ask me later",
-    "successToast": "Thanks for your feedback.",
-    "errorTitle": "Something went wrong.",
-    "errorMessage": "Error code: {errorCode}. Please try again later or contact support.",
-    "validationError": "Only letters, numbers, spaces, and the following special characters are allowed: @ - . ! / % & , _ ( ) + : ;"
+    "sendFeedback": "Invia feedback",
+    "title": "Quanto è probabile che consiglieresti Deriv P2P?",
+    "notLikely": "Poco probabile",
+    "veryLikely": "Molto probabile",
+    "tellUsMore": "Dicci di più",
+    "askMeLater": "Chiedimelo più tardi",
+    "successToast": "Grazie per il tuo feedback.",
+    "errorTitle": "Qualcosa è andato storto.",
+    "errorMessage": "Codice errore: {errorCode}. Riprova più tardi o contatta l'assistenza.",
+    "validationError": "Sono consentiti solo lettere, numeri, spazi e i seguenti caratteri speciali: @ - . ! / % & , _ ( ) + : ;"
   }
 }
