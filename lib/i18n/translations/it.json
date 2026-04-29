@@ -62,7 +62,13 @@
     "noAdsTitle": "Nessun annuncio per questa valuta",
     "noAdsDescription": "Puoi pubblicare il tuo annuncio per far rispondere altri.",
     "following": "Seguendo",
-    "verified": "Verificato"
+    "verified": "Verificato",
+    "seenJustNow": "Seen just now",
+    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
+    "seenHoursAgo": "Seen {hours} hour{plural} ago",
+    "seenDaysAgo": "Seen {days} day{plural} ago",
+    "seenMonthsAgo": "Seen {months} month{plural} ago",
+    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
   },
   "order": {
     "placeOrder": "Effettua ordine",

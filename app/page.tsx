@@ -39,6 +39,19 @@ import { useIsMobile } from "@/hooks/use-mobile"
 type Ad = Advertisement
 type AdType = "buy" | "sell"
 
+function formatLastSeen(timestamp: number, t: (key: string, params?: Record<string, string | number>) => string): string {
+  const diffMs = Date.now() - timestamp
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMins / 60)
+  const diffDays = Math.floor(diffHours / 24)
+  const diffMonths = Math.floor(diffDays / 30)
+  if (diffMins < 1) return t("market.seenJustNow")
+  if (diffMins < 60) return t("market.seenMinutesAgo", { minutes: diffMins, plural: diffMins === 1 ? "" : "s" })
+  if (diffHours < 24) return t("market.seenHoursAgo", { hours: diffHours, plural: diffHours === 1 ? "" : "s" })
+  if (diffDays < 30) return t("market.seenDaysAgo", { days: diffDays, plural: diffDays === 1 ? "" : "s" })
+  if (diffMonths <= 6) return t("market.seenMonthsAgo", { months: diffMonths, plural: diffMonths === 1 ? "" : "s" })
+  return t("market.seenMoreThan6MonthsAgo")
+}
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -710,12 +723,19 @@ export default function BuySellPage() {
                             />
                           </div>
                           <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                              className="hover:underline cursor-pointer"
-                            >
-                              {ad.user?.nickname}
-                            </button>
+                            <div className="flex flex-col items-start">
+                              <button
+                                onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                className="hover:underline cursor-pointer"
+                              >
+                                {ad.user?.nickname}
+                              </button>
+                              {!ad.user?.is_online && ad.user?.last_online_at && (
+                                <span className="text-xs text-slate-400">
+                                  {formatLastSeen(ad.user.last_online_at, t)}
+                                </span>
+                              )}
+                            </div>
                             <VerifiedBadge />
                             {ad.user.trade_band && (
                               <TradeBandBadge

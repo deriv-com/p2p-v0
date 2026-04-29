@@ -62,7 +62,13 @@
     "noAdsTitle": "Không có tin đăng cho loại tiền tệ này",
     "noAdsDescription": "Bạn có thể đăng tin của riêng mình để người khác phản hồi.",
     "following": "Đang theo dõi",
-    "verified": "Đã xác minh"
+    "verified": "Đã xác minh",
+    "seenJustNow": "Seen just now",
+    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
+    "seenHoursAgo": "Seen {hours} hour{plural} ago",
+    "seenDaysAgo": "Seen {days} day{plural} ago",
+    "seenMonthsAgo": "Seen {months} month{plural} ago",
+    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
   },
   "order": {
     "placeOrder": "Đặt hàng",

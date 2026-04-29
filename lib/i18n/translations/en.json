@@ -70,7 +70,13 @@
     "noAdsDescription": "Create an {currency} ad to get started, or switch to another currency.",
     "following": "Following",
     "verified": "Verified",
-    "browseMarket": "Browse market"
+    "browseMarket": "Browse market",
+    "seenJustNow": "Seen just now",
+    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
+    "seenHoursAgo": "Seen {hours} hour{plural} ago",
+    "seenDaysAgo": "Seen {days} day{plural} ago",
+    "seenMonthsAgo": "Seen {months} month{plural} ago",
+    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
   },
   "order": {
     "placeOrder": "Place order",

@@ -62,7 +62,13 @@
     "noAdsTitle": "এই মুদ্রার জন্য কোন অ্যাড নেই",
     "noAdsDescription": "অন্যরা সাড়া দেওয়ার জন্য আপনি নিজের অ্যাড পোস্ট করতে পারেন।",
     "following": "অনুসরণ করা হচ্ছে",
-    "verified": "যাচাইকৃত"
+    "verified": "যাচাইকৃত",
+    "seenJustNow": "Seen just now",
+    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
+    "seenHoursAgo": "Seen {hours} hour{plural} ago",
+    "seenDaysAgo": "Seen {days} day{plural} ago",
+    "seenMonthsAgo": "Seen {months} month{plural} ago",
+    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
   },
   "order": {
     "placeOrder": "অর্ডার দিন",

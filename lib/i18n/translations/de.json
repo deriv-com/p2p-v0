@@ -62,7 +62,13 @@
     "noAdsTitle": "Keine Anzeigen für diese Währung",
     "noAdsDescription": "Sie können Ihre eigene Anzeige veröffentlichen, damit andere darauf antworten können.",
     "following": "Folge ich",
-    "verified": "Verifiziert"
+    "verified": "Verifiziert",
+    "seenJustNow": "Seen just now",
+    "seenMinutesAgo": "Seen {minutes} minute{plural} ago",
+    "seenHoursAgo": "Seen {hours} hour{plural} ago",
+    "seenDaysAgo": "Seen {days} day{plural} ago",
+    "seenMonthsAgo": "Seen {months} month{plural} ago",
+    "seenMoreThan6MonthsAgo": "Seen more than 6 months ago"
   },
   "order": {
     "placeOrder": "Bestellung aufgeben",
