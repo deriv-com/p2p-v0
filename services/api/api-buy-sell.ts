@@ -34,8 +34,10 @@ export interface Advertisement {
   payment_methods: string[]
   type: string
   user_rating_average?: number
+  effective_rate?: number
   effective_rate_display?: number
   is_private?: boolean
+  version?: number
 }
 
 // Define the SearchParams interface
