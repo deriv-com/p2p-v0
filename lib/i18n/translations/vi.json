@@ -713,5 +713,17 @@
     "submit": "Gửi",
     "ratingRequiredTitle": "Yêu cầu đánh giá",
     "ratingRequiredDescription": "Vui lòng chọn đánh giá sao trước khi gửi."
+  },
+  "nps": {
+    "sendFeedback": "Gửi phản hồi",
+    "title": "Bạn có khả năng giới thiệu Deriv P2P đến mức nào?",
+    "notLikely": "Không có khả năng",
+    "veryLikely": "Rất có khả năng",
+    "tellUsMore": "Cho chúng tôi biết thêm",
+    "askMeLater": "Hỏi tôi sau",
+    "successToast": "Cảm ơn phản hồi của bạn.",
+    "errorTitle": "Đã xảy ra lỗi.",
+    "errorMessage": "Mã lỗi: {errorCode}. Vui lòng thử lại sau hoặc liên hệ bộ phận hỗ trợ.",
+    "validationError": "Chỉ cho phép chữ cái, chữ số, khoảng trắng và các ký tự đặc biệt sau: @ - . ! / % & , _ ( ) + : ;"
   }
 }

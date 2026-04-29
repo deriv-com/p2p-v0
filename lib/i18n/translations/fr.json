@@ -674,5 +674,17 @@
     "submit": "Soumettre",
     "ratingRequiredTitle": "Évaluation requise",
     "ratingRequiredDescription": "Veuillez sélectionner une note en étoiles avant de soumettre."
+  },
+  "nps": {
+    "sendFeedback": "Envoyer un avis",
+    "title": "Quelle est la probabilité que vous recommandiez Deriv P2P ?",
+    "notLikely": "Peu probable",
+    "veryLikely": "Très probable",
+    "tellUsMore": "Dites-nous en plus",
+    "askMeLater": "Me le demander plus tard",
+    "successToast": "Merci pour votre avis.",
+    "errorTitle": "Une erreur s'est produite.",
+    "errorMessage": "Code d'erreur : {errorCode}. Veuillez réessayer plus tard ou contacter le support.",
+    "validationError": "Seules les lettres, les chiffres, les espaces et les caractères spéciaux suivants sont autorisés : @ - . ! / % & , _ ( ) + : ;"
   }
 }

@@ -518,5 +518,17 @@
     "blockDescription": "Ich ogłoszenia nie będą dla Ciebie widoczne, a oni nie będą mogli Ciebie znaleźć.",
     "blockedSuccessfully": "Użytkownik zablokowany pomyślnie.",
     "unblockedSuccessfully": "Użytkownik odblokowany pomyślnie."
+  },
+  "nps": {
+    "sendFeedback": "Prześlij opinię",
+    "title": "Jak bardzo prawdopodobne jest, że polecisz Deriv P2P?",
+    "notLikely": "Mało prawdopodobne",
+    "veryLikely": "Bardzo prawdopodobne",
+    "tellUsMore": "Powiedz nam więcej",
+    "askMeLater": "Zapytaj mnie później",
+    "successToast": "Dziękujemy za opinię.",
+    "errorTitle": "Coś poszło nie tak.",
+    "errorMessage": "Kod błędu: {errorCode}. Spróbuj ponownie później lub skontaktuj się z obsługą.",
+    "validationError": "Dozwolone są tylko litery, cyfry, spacje oraz następujące znaki specjalne: @ - . ! / % & , _ ( ) + : ;"
   }
 }

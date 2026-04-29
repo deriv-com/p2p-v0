@@ -703,5 +703,17 @@
     "submit": "Einreichen",
     "ratingRequiredTitle": "Bewertung erforderlich",
     "ratingRequiredDescription": "Bitte wählen Sie eine Sternebewertung aus, bevor Sie absenden."
+  },
+  "nps": {
+    "sendFeedback": "Feedback senden",
+    "title": "Wie wahrscheinlich ist es, dass Sie Deriv P2P weiterempfehlen?",
+    "notLikely": "Unwahrscheinlich",
+    "veryLikely": "Sehr wahrscheinlich",
+    "tellUsMore": "Erzählen Sie uns mehr",
+    "askMeLater": "Später fragen",
+    "successToast": "Vielen Dank für Ihr Feedback.",
+    "errorTitle": "Etwas ist schiefgelaufen.",
+    "errorMessage": "Fehlercode: {errorCode}. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.",
+    "validationError": "Nur Buchstaben, Zahlen, Leerzeichen und die folgenden Sonderzeichen sind erlaubt: @ - . ! / % & , _ ( ) + : ;"
   }
 }
