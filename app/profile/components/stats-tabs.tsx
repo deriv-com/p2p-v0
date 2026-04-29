@@ -413,7 +413,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   onClick={() => setShowFeedbackDialog(true)}
                   className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                 >
-                  <Image src="/icons/star-light.svg" width={20} height={20} alt="" />
+                  <Image src="/icons/ic-feedback.svg" width={20} height={20} alt="" />
                   <span className="text-sm font-normal text-gray-900 ml-4">{t("nps.sendFeedback")}</span>
                   <Image
                     src="/icons/chevron-right-gray.png"

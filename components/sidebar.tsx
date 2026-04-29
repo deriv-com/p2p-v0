@@ -383,7 +383,7 @@ export default function Sidebar({ className }: SidebarProps) {
             className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
           >
             <div className="h-5 w-5 flex items-center justify-center">
-              <Image src="/icons/star-light.svg" alt="" width={20} height={20} />
+              <Image src="/icons/ic-feedback.svg" alt="" width={20} height={20} />
             </div>
             {t("nps.sendFeedback")}
           </button>
