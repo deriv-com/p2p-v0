@@ -706,7 +706,7 @@ export async function submitFeedback(userId: string, payload: { nps_score: numbe
     method: "POST",
     credentials: "include",
     headers: getAuthHeader(),
-    body: JSON.stringify({ data: payload }),
+    body: JSON.stringify({ data: { ...payload, source: "web" } }),
   })
 
   const responseText = await response.text()
