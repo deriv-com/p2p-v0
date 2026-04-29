@@ -210,7 +210,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
-  const [pendingAdvertUpdate, setPendingAdvertUpdate] = useState<any>(null)
+  const [hasAdvertUpdated, setHasAdvertUpdated] = useState(false)
   const [showAdUpdatedModal, setShowAdUpdatedModal] = useState(false)
 
   // Use React Query hooks
@@ -253,8 +253,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 ad.effective_rate_display = updatedAdvert.effective_rate_display
               }
               if (hasNonRateChanges) {
-                setPendingAdvertUpdate(updatedAdvert)
-                setShowAdUpdatedModal(true)
+                ad.minimum_order_amount = updatedAdvert.minimum_order_amount
+                ad.actual_maximum_order_amount = updatedAdvert.actual_maximum_order_amount
+                ad.description = updatedAdvert.description
+                ad.payment_methods = updatedAdvert.payment_methods
+                ad.payment_method_names = updatedAdvert.payment_method_names
+                ad.order_expiry_period = updatedAdvert.order_expiry_period
+                ad.version = updatedAdvert.version
+                setHasAdvertUpdated(true)
               }
             }
           }
@@ -329,6 +335,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const handleSubmit = async () => {
     if (!ad) return
 
+    if (hasAdvertUpdated) {
+      setShowAdUpdatedModal(true)
+      return
+    }
+
     if (ad.exchange_rate_type == "float" && marketRate && marketRate != ad.effective_rate) {
       setLockedConfirmationRate(marketRate)
       setShowRateChangeConfirmation(true)
@@ -339,16 +350,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   }
 
   const handleAdvertUpdateConfirm = () => {
-    if (!pendingAdvertUpdate || !ad) return
-    ad.minimum_order_amount = pendingAdvertUpdate.minimum_order_amount
-    ad.actual_maximum_order_amount = pendingAdvertUpdate.actual_maximum_order_amount
-    ad.description = pendingAdvertUpdate.description
-    ad.payment_methods = pendingAdvertUpdate.payment_methods
-    ad.payment_method_names = pendingAdvertUpdate.payment_method_names
-    ad.order_expiry_period = pendingAdvertUpdate.order_expiry_period
-    ad.version = pendingAdvertUpdate.version
+    setHasAdvertUpdated(false)
     setShowAdUpdatedModal(false)
-    setPendingAdvertUpdate(null)
   }
 
   const proceedWithOrder = async () => {

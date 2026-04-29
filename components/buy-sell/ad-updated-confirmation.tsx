@@ -20,7 +20,7 @@ export default function AdUpdatedConfirmation({ isOpen, onConfirm, onCancel }: A
         The ad details changed while you were placing your order. Review the new details to continue.
       </p>
       <Button onClick={onConfirm} className="w-full">
-        Update changes
+        Review changes
       </Button>
     </div>
   )
