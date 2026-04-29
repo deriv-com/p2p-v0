@@ -34,7 +34,7 @@ function NpsScoreSelector({ selectedScore, onSelect, isSubmitting }: NpsScoreSel
       className={cn(
         "h-10 rounded-md border text-sm font-bold transition-colors disabled:opacity-50",
         isMobile
-          ? "min-w-[44px] max-w-[56px] w-[clamp(44px,calc((100vw-80px)/6),56px)]"
+          ? "min-w-[44px] max-w-[56px] w-[clamp(44px,calc((100vw-104px)/6),56px)]"
           : "flex-1 min-w-[36px]",
         selectedScore === score
           ? "bg-primary text-white border-primary"
@@ -102,7 +102,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
 
   return (
     <div className="flex flex-col">
-      <div className="flex-1 px-6 pb-4 space-y-6">
+      <div className="flex-1 px-8 pt-4 pb-4 space-y-6">
         <div className="space-y-4">
           <NpsScoreSelector
             selectedScore={selectedScore}
@@ -134,7 +134,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
         </div>
       </div>
 
-      <div className="px-6 pb-6 space-y-2">
+      <div className="px-8 pb-6 space-y-2">
         <Button onClick={handleSubmit} disabled={!canSubmit} className="w-full disabled:opacity-24">
           {isSubmitting ? (
             <Image src="/icons/spinner.png" alt="" width={20} height={20} className="animate-spin" />
