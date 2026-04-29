@@ -213,7 +213,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const [hasAdvertUpdated, setHasAdvertUpdated] = useState(false)
   const [showAdUpdatedModal, setShowAdUpdatedModal] = useState(false)
   const [pendingAdvertUpdate, setPendingAdvertUpdate] = useState<Advertisement | null>(null)
-  const [pendingRateUpdate, setPendingRateUpdate] = useState<{ effective_rate: number; effective_rate_display: number } | null>(null)
 
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
@@ -250,12 +249,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               const hasRateChanges = updatedFields.some((f) => rateFields.has(f))
               const hasNonRateChanges = updatedFields.some((f) => !rateFields.has(f))
               if (hasRateChanges) {
-                setPendingRateUpdate({
-                  effective_rate: updatedAdvert.effective_rate,
-                  effective_rate_display: updatedAdvert.effective_rate_display,
-                })
-                setLockedConfirmationRate(updatedAdvert.effective_rate)
-                setShowRateChangeConfirmation(true)
+                setMarketRate(updatedAdvert.effective_rate)
+                ad.effective_rate_display = updatedAdvert.effective_rate_display
               }
               if (hasNonRateChanges) {
                 setPendingAdvertUpdate(updatedAdvert)
@@ -351,17 +346,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     await proceedWithOrder()
   }
 
-  const handleWebSocketRateConfirm = () => {
-    if (pendingRateUpdate && ad) {
-      setMarketRate(pendingRateUpdate.effective_rate)
-      ad.effective_rate = pendingRateUpdate.effective_rate
-      ad.effective_rate_display = pendingRateUpdate.effective_rate_display
-    }
-    setPendingRateUpdate(null)
-    setLockedConfirmationRate(null)
-    setShowRateChangeConfirmation(false)
-  }
-
   const handleAdvertUpdateConfirm = () => {
     if (ad && pendingAdvertUpdate) {
       ad.minimum_order_amount = pendingAdvertUpdate.minimum_order_amount
@@ -388,6 +372,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       const numAmount = Number.parseFloat(amount)
 
       const rateToUse = lockedConfirmationRate || marketRate
+      if (lockedConfirmationRate) {
+        ad.effective_rate = lockedConfirmationRate
+        ad.effective_rate_display = lockedConfirmationRate
+        setLockedConfirmationRate(null)
+      }
       const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, ad.version)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
@@ -498,7 +487,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setTempSelectedPaymentMethods([])
       setShowRateChangeConfirmation(false)
       setLockedConfirmationRate(null)
-      setPendingRateUpdate(null)
       onClose()
     }, 300)
   }
@@ -760,11 +748,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       {ad && (
         <RateChangeConfirmation
           isOpen={showRateChangeConfirmation}
-          onConfirm={pendingRateUpdate ? handleWebSocketRateConfirm : proceedWithOrder}
+          onConfirm={proceedWithOrder}
           onCancel={() => {
             setShowRateChangeConfirmation(false)
             setLockedConfirmationRate(null)
-            setPendingRateUpdate(null)
           }}
           amount={amount || "0"}
           accountCurrency={ad.account_currency}
