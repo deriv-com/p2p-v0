@@ -39,7 +39,7 @@ describe("P2PAnnouncement", () => {
 
     it("renders whats-new title translation key", () => {
       render(<P2PAnnouncement kind="whatsNew" onDismiss={onDismiss} />)
-      expect(screen.getAllByText("p2pAnnouncement.whatsNew.title").length).toBeGreaterThan(0)
+      expect(screen.getByText("p2pAnnouncement.whatsNew.title")).toBeInTheDocument()
     })
 
     it("renders whats-new primary CTA", () => {
@@ -72,7 +72,7 @@ describe("P2PAnnouncement", () => {
 
     it("renders whats-new title in drawer", () => {
       render(<P2PAnnouncement kind="whatsNew" onDismiss={onDismiss} />)
-      expect(screen.getAllByText("p2pAnnouncement.whatsNew.title").length).toBeGreaterThan(0)
+      expect(screen.getByText("p2pAnnouncement.whatsNew.title")).toBeInTheDocument()
     })
 
     it("renders all three bullet keys", () => {

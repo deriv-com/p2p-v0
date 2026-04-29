@@ -26,11 +26,17 @@ interface P2PAnnouncementProps {
   onDismiss: () => void
 }
 
-function AnnouncementContent({
+interface AnnouncementContentProps extends P2PAnnouncementProps {
+  layout: "modal" | "sheet"
+}
+
+// Memoized so the content subtree is not recreated when the parent re-renders
+// due to useIsMobile returning a new value on viewport resize.
+const AnnouncementContent = memo(function AnnouncementContent({
   kind,
   onDismiss,
   layout,
-}: P2PAnnouncementProps & { layout: "modal" | "sheet" }) {
+}: AnnouncementContentProps) {
   const { t } = useTranslations()
   const keys = ANNOUNCEMENT_TRANSLATION_KEYS[kind]
   const imagePath = ANNOUNCEMENT_ASSET_PATHS[kind]
@@ -83,24 +89,21 @@ function AnnouncementContent({
       </div>
     </div>
   )
-}
-
-const MemoizedAnnouncementContent = memo(AnnouncementContent)
-MemoizedAnnouncementContent.displayName = "MemoizedAnnouncementContent"
+})
 
 export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
-  const isMobile = useIsMobile()
   const { t } = useTranslations()
-  const title = t(ANNOUNCEMENT_TRANSLATION_KEYS[kind].title)
+  const isMobile = useIsMobile()
+  const keys = ANNOUNCEMENT_TRANSLATION_KEYS[kind]
 
   if (isMobile) {
     return (
       <Drawer open onOpenChange={(open) => { if (!open) onDismiss() }}>
         <DrawerContent className="p-0 rounded-t-2xl max-h-[90vh] overflow-y-auto">
           <DrawerTitle className="sr-only">
-            {title}
+            {t(keys.title)}
           </DrawerTitle>
-          <MemoizedAnnouncementContent kind={kind} onDismiss={onDismiss} layout="sheet" />
+          <AnnouncementContent kind={kind} onDismiss={onDismiss} layout="sheet" />
         </DrawerContent>
       </Drawer>
     )
@@ -110,9 +113,9 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
     <Dialog open onOpenChange={(open) => { if (!open) onDismiss() }}>
       <DialogContent className="p-0 max-w-md rounded-2xl overflow-hidden">
         <DialogTitle className="sr-only">
-          {title}
+          {t(keys.title)}
         </DialogTitle>
-        <MemoizedAnnouncementContent kind={kind} onDismiss={onDismiss} layout="modal" />
+        <AnnouncementContent kind={kind} onDismiss={onDismiss} layout="modal" />
       </DialogContent>
     </Dialog>
   )
