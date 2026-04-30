@@ -169,7 +169,7 @@ const PaymentSelectionContent = ({
       </div>
       <Button
         className="w-full mt-12"
-        disabled={selectedPMs.length == 0}
+        disabled={selectedPMs.length === 0}
         onClick={() => {
           setSelectedPaymentMethods(selectedPMs)
           setTempSelectedPaymentMethods(selectedPMs)
@@ -231,6 +231,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     localAdRef.current = localAd
   }, [localAd])
 
+  const adId = ad?.id
   useEffect(() => {
     if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
       let requestTimer: ReturnType<typeof setTimeout> | undefined
@@ -265,7 +266,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
             const updatedAdvert = data.payload.data.advert
             const updatedFields: string[] = data.payload.data.updated_fields || []
-            if (current.id == updatedAdvert.id) {
+            if (current.id === updatedAdvert.id) {
               const rateFields = new Set(["exchange_rate", "effective_rate", "effective_rate_display"])
               const nonRateFields = new Set(["minimum_order_amount", "actual_maximum_order_amount", "description", "payment_methods", "payment_method_names", "order_expiry_period"])
               const hasRateChanges = updatedFields.some((f) => rateFields.has(f))
@@ -294,7 +295,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
         unsubscribe()
       }
     }
-  }, [isOpen, ad, isConnected])
+  }, [isOpen, adId, isConnected])
 
   useEffect(() => {
     if (isOpen) {
@@ -368,7 +369,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       return
     }
 
-    if (localAd.exchange_rate_type == "float" && marketRate && marketRate != localAd.effective_rate) {
+    if (localAd.exchange_rate_type === "float" && marketRate && marketRate !== localAd.effective_rate) {
       setLockedConfirmationRate(marketRate)
       setShowRateChangeConfirmation(true)
       return
