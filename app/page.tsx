@@ -728,42 +728,44 @@ export default function BuySellPage() {
                                 }`}
                             />
                           </div>
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                              className="hover:underline cursor-pointer"
-                            >
-                              {ad.user?.nickname}
-                            </button>
-                            <VerifiedBadge />
-                            {ad.user.trade_band && (
-                              <TradeBandBadge
-                                tradeBand={ad.user.trade_band}
-                                showLearnMore={true}
-                                size={18}
-                              />
-                            )}
-                            {userId != ad.user.id && ad.is_private && (
-                              <Image
-                                src="/icons/closed-group.svg"
-                                alt="Closed Group"
-                                width={32}
-                                height={32}
-                                className="cursor-pointer mr-1"
-                              />
-                            )}
-                            {ad.user?.is_favourite && (
-                              <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                {t("market.following")}
-                              </span>
-                            )}
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                className="hover:underline cursor-pointer"
+                              >
+                                {ad.user?.nickname}
+                              </button>
+                              <VerifiedBadge />
+                              {ad.user.trade_band && (
+                                <TradeBandBadge
+                                  tradeBand={ad.user.trade_band}
+                                  showLearnMore={true}
+                                  size={18}
+                                />
+                              )}
+                              {Number(userId) !== ad.user.id && ad.is_private && (
+                                <Image
+                                  src="/icons/closed-group.svg"
+                                  alt="Closed Group"
+                                  width={32}
+                                  height={32}
+                                  className="cursor-pointer mr-1"
+                                />
+                              )}
+                              {ad.user?.is_favourite && (
+                                <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                  {t("market.following")}
+                                </span>
+                              )}
+                            </div>
+                            <PresenceLastSeen
+                              isOnline={ad.user?.is_online}
+                              lastOnlineAt={ad.user?.last_online_at}
+                              className="text-xs text-slate-500 mt-[2px] block"
+                            />
                           </div>
                         </div>
-                        <PresenceLastSeen
-                          isOnline={ad.user?.is_online}
-                          lastOnlineAt={ad.user?.last_online_at}
-                          className="text-xs text-slate-500 mt-[2px] block"
-                        />
                         <div className="flex items-center text-xs text-slate-500 mt-[4px]">
                           {ad.user.rating_average_lifetime && (
                             <span className="flex items-center">
@@ -866,7 +868,7 @@ export default function BuySellPage() {
                         </div>
                       </TableCell>
                       <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                        {userId != ad.user.id && (
+                        {Number(userId) !== ad.user.id && (
                           <Button
                             variant={ad.type === "buy" ? "destructive" : "secondary"}
                             size="sm"
