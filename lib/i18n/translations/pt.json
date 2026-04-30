@@ -658,5 +658,42 @@
     "submit": "Enviar",
     "ratingRequiredTitle": "Avaliação necessária",
     "ratingRequiredDescription": "Por favor, selecione uma avaliação em estrelas antes de enviar."
+  },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "Novidades",
+      "bullet0": "Veja a atividade dos anunciantes com mais clareza.",
+      "bullet1": "Tenha uma experiência mais limpa e melhorada.",
+      "bullet2": "Fizemos atualizações para melhorar o seu fluxo P2P.",
+      "primaryCta": "Entendi"
+    },
+    "whatsComing": {
+      "title": "Em breve",
+      "bullet0": "Uma experiência P2P renovada está a caminho.",
+      "bullet1": "Melhor visibilidade da atividade dos anunciantes.",
+      "bullet2": "Mais atualizações para tornar a negociação mais simples.",
+      "primaryCta": "Entendi",
+      "secondaryCta": "Talvez mais tarde"
+    }
+  },
+  "nps": {
+    "sendFeedback": "Enviar feedback",
+    "title": "Qual é a probabilidade de recomendar o Deriv P2P?",
+    "notLikely": "Pouco provável",
+    "veryLikely": "Muito provável",
+    "tellUsMore": "Conte-nos mais",
+    "askMeLater": "Perguntar mais tarde",
+    "successToast": "Obrigado pelo seu feedback.",
+    "errorTitle": "Algo correu mal.",
+    "errorMessage": "Código de erro: {errorCode}. Tente novamente mais tarde ou contacte o apoio ao cliente.",
+    "validationError": "Apenas são permitidas letras, números, espaços e os seguintes caracteres especiais: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Visto há pouco",
+    "seenMinutesAgo": "Visto há {count} minuto{plural}",
+    "seenHoursAgo": "Visto há {count} hora{plural}",
+    "seenDaysAgo": "Visto há {count} dia{plural}",
+    "seenMonthsAgo": "Visto há {count} mês{plural}",
+    "seenMoreThanSixMonthsAgo": "Visto há mais de 6 meses"
   }
 }

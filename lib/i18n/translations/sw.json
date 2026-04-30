@@ -484,5 +484,42 @@
     "advertFloatRateMaximumTitle": "Angalia kiwango chako cha kuelea",
     "advertFloatRateMaximumMessage": "Kiwango cha kuelea ulichoweka ni juu ya kikomo kinachokubalika. Punguza kiwango ili kuendelea.",
     "updateRate": "Sasisha kiwango"
+  },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "Nini kipya",
+      "bullet0": "Ona shughuli za watangazaji kwa uwazi zaidi.",
+      "bullet1": "Furahia matumizi yaliyo safi na kuboreshwa.",
+      "bullet2": "Tumefanya masasisho ili kuboresha mtiririko wako wa P2P.",
+      "primaryCta": "Nimeelewa"
+    },
+    "whatsComing": {
+      "title": "Kinachokuja",
+      "bullet0": "Uzoefu mpya wa P2P uko njiani.",
+      "bullet1": "Mwonekano bora wa shughuli za watangazaji.",
+      "bullet2": "Masasisho zaidi ili kufanya biashara iwe laini zaidi.",
+      "primaryCta": "Nimeelewa",
+      "secondaryCta": "Labda baadaye"
+    }
+  },
+  "nps": {
+    "sendFeedback": "Tuma maoni",
+    "title": "Una uwezekano gani wa kupendekeza Deriv P2P?",
+    "notLikely": "Si rahisi",
+    "veryLikely": "Rahisi sana",
+    "tellUsMore": "Tuambie zaidi",
+    "askMeLater": "Niulize baadaye",
+    "successToast": "Asante kwa maoni yako.",
+    "errorTitle": "Hitilafu imetokea.",
+    "errorMessage": "Msimbo wa hitilafu: {errorCode}. Tafadhali jaribu tena baadaye au wasiliana na usaidizi.",
+    "validationError": "Herufi, nambari, nafasi, na alama maalum zifuatazo pekee ndizo zinaruhusiwa: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Alionekana sasa hivi",
+    "seenMinutesAgo": "Alionekana dakika {count} zilizopita",
+    "seenHoursAgo": "Alionekana saa {count} zilizopita",
+    "seenDaysAgo": "Alionekana siku {count} zilizopita",
+    "seenMonthsAgo": "Alionekana miezi {count} iliyopita",
+    "seenMoreThanSixMonthsAgo": "Alionekana zaidi ya miezi 6 iliyopita"
   }
 }

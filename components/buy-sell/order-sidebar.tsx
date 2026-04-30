@@ -370,7 +370,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
       const numAmount = Number.parseFloat(amount)
 
-      const rateToUse = lockedConfirmationRate || marketRate
+      const rateToUse = lockedConfirmationRate ?? marketRate ?? (ad.exchange_rate_type === "float" ? ad.effective_rate : undefined)
       const order = await createOrder(ad.id, rateToUse, numAmount, selectedPaymentMethods, ad.version)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code

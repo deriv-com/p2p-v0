@@ -713,5 +713,42 @@
     "submit": "Gửi",
     "ratingRequiredTitle": "Yêu cầu đánh giá",
     "ratingRequiredDescription": "Vui lòng chọn đánh giá sao trước khi gửi."
+  },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "Có gì mới",
+      "bullet0": "Xem hoạt động của nhà quảng cáo rõ ràng hơn.",
+      "bullet1": "Tận hưởng trải nghiệm gọn gàng và cải tiến hơn.",
+      "bullet2": "Chúng tôi đã cập nhật để cải thiện quy trình P2P của bạn.",
+      "primaryCta": "Đã hiểu"
+    },
+    "whatsComing": {
+      "title": "Sắp ra mắt",
+      "bullet0": "Một trải nghiệm P2P mới mẻ đang sắp ra mắt.",
+      "bullet1": "Hiển thị rõ hơn hoạt động của nhà quảng cáo.",
+      "bullet2": "Thêm nhiều cập nhật để giao dịch mượt mà hơn.",
+      "primaryCta": "Đã hiểu",
+      "secondaryCta": "Để sau"
+    }
+  },
+  "nps": {
+    "sendFeedback": "Gửi phản hồi",
+    "title": "Bạn có khả năng giới thiệu Deriv P2P đến mức nào?",
+    "notLikely": "Không có khả năng",
+    "veryLikely": "Rất có khả năng",
+    "tellUsMore": "Cho chúng tôi biết thêm",
+    "askMeLater": "Hỏi tôi sau",
+    "successToast": "Cảm ơn phản hồi của bạn.",
+    "errorTitle": "Đã xảy ra lỗi.",
+    "errorMessage": "Mã lỗi: {errorCode}. Vui lòng thử lại sau hoặc liên hệ bộ phận hỗ trợ.",
+    "validationError": "Chỉ cho phép chữ cái, chữ số, khoảng trắng và các ký tự đặc biệt sau: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Vừa mới hoạt động",
+    "seenMinutesAgo": "Hoạt động {count} phút trước",
+    "seenHoursAgo": "Hoạt động {count} giờ trước",
+    "seenDaysAgo": "Hoạt động {count} ngày trước",
+    "seenMonthsAgo": "Hoạt động {count} tháng trước",
+    "seenMoreThanSixMonthsAgo": "Hoạt động hơn 6 tháng trước"
   }
 }

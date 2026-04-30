@@ -22,6 +22,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
 import { useTrackers } from "@/analytics/useTrackers"
+import { FeedbackDialog } from "@/components/feedback/feedback-dialog"
 
 interface StatsTabsProps {
   stats?: any
@@ -49,6 +50,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
   const [showClosedGroupSidebar, setShowClosedGroupSidebar] = useState(false)
   const [showCounterpartiesSidebar, setShowCounterpartiesSidebar] = useState(false)
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
   const [selectedTab, setSelectedTab] = useState(activeTab)
   const { toast } = useToast()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
@@ -424,6 +426,25 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 className="justify-self-end"
               />
             </div>
+            {!userData?.feedback_exist && (
+              <>
+                <Divider className="ml-[60px]" />
+                <div
+                  onClick={() => setShowFeedbackDialog(true)}
+                  className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+                >
+                  <Image src="/icons/ic-feedback.svg" width={20} height={20} alt="" />
+                  <span className="text-sm font-normal text-gray-900 ml-4">{t("nps.sendFeedback")}</span>
+                  <Image
+                    src="/icons/chevron-right-gray.png"
+                    alt="Chevron right"
+                    width={20}
+                    height={20}
+                    className="justify-self-end"
+                  />
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <Tabs value={selectedTab} onValueChange={handleTabChange} className="h-full">
@@ -531,6 +552,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
           onClose={() => setShowAddPaymentPanel(false)}
         />
       )}
+      <FeedbackDialog isOpen={showFeedbackDialog} onClose={() => setShowFeedbackDialog(false)} />
     </div>
   )
 }

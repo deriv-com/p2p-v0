@@ -18,6 +18,7 @@ import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
+import { FeedbackDialog } from "@/components/feedback/feedback-dialog"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
 import { useTrackers } from "@/analytics/useTrackers"
@@ -37,7 +38,6 @@ import GuideIcon from "@/public/icons/ic-guide.svg"
 import GuideSelectedIcon from "@/public/icons/ic-guide-selected.svg"
 import HomeIcon from "@/public/icons/ic-house.svg"
 import LiveChatIcon from "@/public/icons/ic-livechat.svg"
-
 interface SidebarProps {
   className?: string
 }
@@ -46,6 +46,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const { isWalletAccount, userData, userId, verificationStatus, onboardingStatus } = useUserDataStore()
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
   const { t, locale } = useTranslations()
   const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
   const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
@@ -382,6 +383,17 @@ export default function Sidebar({ className }: SidebarProps) {
             )
           })}
         </ul>
+        {!userData?.feedback_exist && !isDisabled && (
+          <button
+            onClick={() => setShowFeedbackDialog(true)}
+            className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
+          >
+            <div className="h-5 w-5 flex items-center justify-center">
+              <Image src="/icons/ic-feedback.svg" alt="" width={20} height={20} />
+            </div>
+            {t("nps.sendFeedback")}
+          </button>
+        )}
       </nav>
       <div className="p-4">
         <a
@@ -401,6 +413,7 @@ export default function Sidebar({ className }: SidebarProps) {
           <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={14} height={24} />
         </a>
       </div>
+      <FeedbackDialog isOpen={showFeedbackDialog} onClose={() => setShowFeedbackDialog(false)} />
     </div>
   )
 }

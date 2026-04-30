@@ -36,9 +36,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTrackers } from "@/analytics/useTrackers"
+import { PresenceLastSeen } from "@/components/presence-last-seen"
 
 type Ad = Advertisement
 type AdType = "buy" | "sell"
+
+interface UsersOnlineUpdate {
+  user_id: number
+  is_online: boolean
+  /** Server-provided epoch ms timestamp; only present on offline transitions. */
+  last_online_at?: number | null
+}
 
 
 export default function BuySellPage() {
@@ -401,17 +409,27 @@ export default function BuySellPage() {
     return unsubscribe
   }, [subscribe])
 
-  const handleUsersOnlineUpdate = useCallback((data: any) => {
-    if (data?.options?.channel === "users_online") {
-      const update: { user_id: number; is_online: boolean } | null = data?.payload?.data ?? null
-      if (update) {
-        setAdverts((currentAdverts) =>
-          currentAdverts.map((ad) =>
-            update.user_id === ad.user?.id ? { ...ad, user: { ...ad.user, is_online: update.is_online } } : ad,
-          ),
-        )
-      }
-    }
+  const handleUsersOnlineUpdate = useCallback((data: unknown) => {
+    if (!data || typeof data !== "object") return
+    const channel = (data as Record<string, any>)?.options?.channel
+    if (channel !== "users_online") return
+
+    const payload = (data as Record<string, any>)?.payload?.data
+    if (!payload || typeof payload.user_id !== "number" || typeof payload.is_online !== "boolean") return
+
+    const update: UsersOnlineUpdate = payload
+
+    setAdverts((currentAdverts) =>
+      currentAdverts.map((ad) => {
+        if (update.user_id !== ad.user?.id) return ad
+        // Prefer server-provided timestamp; fall back to Date.now() only as a
+        // last resort so the UI immediately reflects the offline state.
+        const lastOnlineAt = update.is_online
+          ? ad.user.last_online_at
+          : (update.last_online_at ?? Date.now())
+        return { ...ad, user: { ...ad.user, is_online: update.is_online, last_online_at: lastOnlineAt } }
+      }),
+    )
   }, [])
 
   useEffect(() => {
@@ -751,6 +769,11 @@ export default function BuySellPage() {
                             )}
                           </div>
                         </div>
+                        <PresenceLastSeen
+                          isOnline={ad.user?.is_online}
+                          lastOnlineAt={ad.user?.last_online_at}
+                          className="text-xs text-slate-500 mt-[2px] block"
+                        />
                         <div className="flex items-center text-xs text-slate-500 mt-[4px]">
                           {ad.user.rating_average_lifetime && (
                             <span className="flex items-center">

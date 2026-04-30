@@ -674,5 +674,42 @@
     "submit": "Soumettre",
     "ratingRequiredTitle": "Évaluation requise",
     "ratingRequiredDescription": "Veuillez sélectionner une note en étoiles avant de soumettre."
+  },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "Nouveautés",
+      "bullet0": "Visualisez plus clairement l'activité des annonceurs.",
+      "bullet1": "Profitez d'une expérience plus claire et améliorée.",
+      "bullet2": "Nous avons apporté des mises à jour pour améliorer votre parcours P2P.",
+      "primaryCta": "Compris"
+    },
+    "whatsComing": {
+      "title": "À venir",
+      "bullet0": "Une expérience P2P repensée arrive bientôt.",
+      "bullet1": "Une meilleure visibilité sur l'activité des annonceurs.",
+      "bullet2": "D'autres améliorations pour rendre le trading plus fluide.",
+      "primaryCta": "Compris",
+      "secondaryCta": "Peut-être plus tard"
+    }
+  },
+  "nps": {
+    "sendFeedback": "Envoyer un avis",
+    "title": "Quelle est la probabilité que vous recommandiez Deriv P2P ?",
+    "notLikely": "Peu probable",
+    "veryLikely": "Très probable",
+    "tellUsMore": "Dites-nous en plus",
+    "askMeLater": "Me le demander plus tard",
+    "successToast": "Merci pour votre avis.",
+    "errorTitle": "Une erreur s'est produite.",
+    "errorMessage": "Code d'erreur : {errorCode}. Veuillez réessayer plus tard ou contacter le support.",
+    "validationError": "Seules les lettres, les chiffres, les espaces et les caractères spéciaux suivants sont autorisés : @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Vu il y a un instant",
+    "seenMinutesAgo": "Vu il y a {count} minute{plural}",
+    "seenHoursAgo": "Vu il y a {count} heure{plural}",
+    "seenDaysAgo": "Vu il y a {count} jour{plural}",
+    "seenMonthsAgo": "Vu il y a {count} mois",
+    "seenMoreThanSixMonthsAgo": "Vu il y a plus de 6 mois"
   }
 }
