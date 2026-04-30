@@ -20,6 +20,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
+import { useTrackers } from "@/analytics/useTrackers"
 import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
@@ -49,6 +50,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const { nickname, setNickname, currency, selectedAccountCurrency, activeTab } = useMarketFilterStore()
   const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
   const { hideAlert, showAlert } = useAlertDialog()
+  const { track } = useTrackers()
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [searchInput, setSearchInput] = useState(nickname)
@@ -129,6 +131,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
+    track("ek_advertiser_profile_markets_search")
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
@@ -152,6 +155,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleBuySellClick = (ad: Advertisement) => {
+    track("ek_advert_action_markets_search", { advert_type: ad.type === "buy" ? "sell" : "buy" })
     setPendingAd(ad)
     setIsSearchFocused(false)
     if (pathname.startsWith("/advertiser")) {
@@ -160,6 +164,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleClear = () => {
+    track("ek_clear_search_markets_search")
     setSearchInput("")
     setDebouncedSearchInput("")
     setNickname("")
@@ -231,6 +236,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleLiveChat = () => {
+    track("ek_ask_amy_markets")
     if (window.Intercom) {
       window.Intercom("show")
     }
@@ -241,7 +247,7 @@ export default function Sidebar({ className }: SidebarProps) {
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-p2p.png" alt="Deriv logo" width={128} height={24} />
         {userId && (
-          <div className="hidden md:block text-slate-600 hover:text-slate-700">
+          <div className="hidden md:block text-slate-600 hover:text-slate-700" onClick={() => track("ek_notifications_markets")}>
             <NovuNotifications />
           </div>
         )}
@@ -281,7 +287,7 @@ export default function Sidebar({ className }: SidebarProps) {
             {isSearchFocused && searchInput.length > 0 && (
               <div className="absolute top-full left-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
                 <div className="px-0 pt-3 pb-0">
-                  <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                  <Tabs value={searchTab} onValueChange={(v) => { if (v === "sell") track("ek_buy_tab_markets_search"); else track("ek_sell_tab_markets_search"); setSearchTab(v as "buy" | "sell") }}>
                     <TabsList className="w-full bg-transparent p-0">
                       <TabsTrigger
                         value="sell"
@@ -381,6 +387,7 @@ export default function Sidebar({ className }: SidebarProps) {
         <a
           className="flex items-center justify-between gap-3 rounded-md py-2 text-sm transition-colors"
           href={homeProfileUrl}
+          onClick={() => track("ek_profile_markets")}
         >
           <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">

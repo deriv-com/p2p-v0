@@ -18,6 +18,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useTrackers } from "@/analytics/useTrackers"
 
 interface MobileAdvertiserSearchProps {
     isOpen: boolean
@@ -106,8 +107,10 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
     const { hideAlert, showAlert } = useAlertDialog()
 
     const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
+    const { track } = useTrackers()
 
     const handleAdvertiserClick = (advertiserId: number) => {
+        track("ek_advertiser_profile_markets_search")
         if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
             setShouldReopenSearchOnReturn(true)
             router.push(`/advertiser/${advertiserId}`)
@@ -133,14 +136,21 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
     }
 
     const handleBuySellClick = (ad: Advertisement) => {
+        track("ek_advert_action_markets_search", { advert_type: ad.type === "buy" ? "sell" : "buy" })
         setPendingAd(ad, true)
         handleClose()
     }
 
     const handleClear = () => {
+        track("ek_clear_search_markets_search")
         setSearchInput("")
         setDebouncedSearchInput("")
         setNickname("")
+    }
+
+    const handleBack = () => {
+        track("ek_back_markets_search")
+        handleClose()
     }
 
     const handleClose = () => {
@@ -161,7 +171,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                     <Button
                         variant="ghost"
                         size="sm"
-                        onClick={handleClose}
+                        onClick={handleBack}
                         className="bg-grayscale-500 px-1 w-fit"
                     >
                         <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
@@ -197,7 +207,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
 
                 {/* Tabs */}
                 <div className="px-0 pt-3 pb-0 flex-shrink-0">
-                    <Tabs value={searchTab} onValueChange={(v) => setSearchTab(v as "buy" | "sell")}>
+                    <Tabs value={searchTab} onValueChange={(v) => { if (v === "sell") track("ek_buy_tab_markets_search"); else track("ek_sell_tab_markets_search"); setSearchTab(v as "buy" | "sell") }}>
                         <TabsList className="w-full bg-transparent p-0">
                             <TabsTrigger
                                 value="sell"

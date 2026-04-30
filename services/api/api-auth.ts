@@ -1,5 +1,6 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { Analytics } from "@deriv-com/analytics"
 import { queryClient } from "@/lib/react-query-client"
 import { queryKeys } from "@/hooks/use-api-queries"
 import { getCoreUrl } from "@/lib/get-core-url"
@@ -244,6 +245,7 @@ export async function logout(): Promise<void> {
     }
 
     useUserDataStore.getState().clearUserData()
+    Analytics.reset()
 
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")

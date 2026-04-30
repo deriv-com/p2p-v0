@@ -21,6 +21,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { useTrackers } from "@/analytics/useTrackers"
 
 interface StatsTabsProps {
   stats?: any
@@ -28,8 +29,18 @@ interface StatsTabsProps {
   activeTab: string
 }
 
+const profileTabTrackerMap: Record<string, string> = {
+  stats: "ek_my_stats_profile",
+  payment: "ek_payment_methods_profile",
+  follows: "ek_following_profile",
+  blocked: "ek_blocked_users_profile",
+  counterparties: "ek_trade_partners_profile",
+  "closed-group": "ek_closed_group_profile",
+}
+
 export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
   const router = useRouter()
+  const { track } = useTrackers()
   const isMobile = useIsMobile()
   const { hideAlert, showAlert } = useAlertDialog()
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -72,6 +83,8 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   }, [activeTab, isMobile])
 
   const handleTabChange = (tab: string) => {
+    const trackerId = profileTabTrackerMap[tab]
+    if (trackerId) track(trackerId)
     setSelectedTab(tab)
     router.push(`/profile?tab=${tab}`)
   }
@@ -159,6 +172,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.aboutYou")}</div>
             <div
               onClick={() => {
+                track("ek_my_stats_profile")
                 setShowStatsSidebar(true)
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -194,6 +208,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             <Divider className="ml-[60px]" />
             <div
               onClick={() => {
+                track("ek_payment_methods_profile")
                 setShowPaymentMethodsSidebar(true)
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -246,6 +261,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.settings")}</div>
             <div
               onClick={() => {
+                track("ek_following_profile")
                 setShowFollowsSidebar(true)
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -283,6 +299,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 <Divider className="ml-[60px]" />
                 <div
                   onClick={() => {
+                    track("ek_closed_group_profile")
                     setShowClosedGroupSidebar(true)
                   }}
                   className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -319,6 +336,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             <Divider className="ml-[60px]" />
             <div
               onClick={() => {
+                track("ek_blocked_users_profile")
                 setShowBlockedSidebar(true)
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -354,6 +372,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             <Divider className="ml-[60px]" />
             <div
               onClick={() => {
+                track("ek_trade_partners_profile")
                 setShowCounterpartiesSidebar(true)
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -390,6 +409,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.support")}</div>
             <div
               onClick={() => {
+                track("ek_help_centre_profile")
                 window.location.href = helpCentreUrl
               }}
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"

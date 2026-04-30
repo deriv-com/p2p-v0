@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import type { Ad } from "@/types"
+import { useTrackers } from "@/analytics/useTrackers"
 
 interface AdSuccessScreenProps {
   ad: Ad
@@ -14,6 +15,7 @@ interface AdSuccessScreenProps {
 export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenProps) {
   const router = useRouter()
   const { t } = useTranslations()
+  const { track } = useTrackers()
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col md:items-center md:justify-center"
@@ -61,7 +63,10 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
             {t("shareAdPage.shareAdTitle")}
           </Button>
           <Button
-            onClick={() => router.push("/ads")}
+            onClick={() => {
+              track("ek_go_to_my_ads_ad_created_sucess")
+              router.push("/ads")
+            }}
             variant="outline"
             className="w-full text-white border-white hover:bg-transparent rounded-full transition-colors"
           >
