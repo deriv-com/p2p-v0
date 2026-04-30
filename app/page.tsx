@@ -381,6 +381,7 @@ export default function BuySellPage() {
               ad.id == updatedAdvert.id
                 ? {
                     ...ad,
+                    version: updatedAdvert.version,
                     effective_rate_display: updatedAdvert.effective_rate_display,
                     minimum_order_amount: updatedAdvert.minimum_order_amount,
                     actual_maximum_order_amount: updatedAdvert.actual_maximum_order_amount,
