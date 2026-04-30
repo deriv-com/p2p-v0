@@ -659,6 +659,23 @@
     "ratingRequiredTitle": "Avaliação necessária",
     "ratingRequiredDescription": "Por favor, selecione uma avaliação em estrelas antes de enviar."
   },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "Novidades",
+      "bullet0": "Veja a atividade dos anunciantes com mais clareza.",
+      "bullet1": "Tenha uma experiência mais limpa e melhorada.",
+      "bullet2": "Fizemos atualizações para melhorar o seu fluxo P2P.",
+      "primaryCta": "Entendi"
+    },
+    "whatsComing": {
+      "title": "Em breve",
+      "bullet0": "Uma experiência P2P renovada está a caminho.",
+      "bullet1": "Melhor visibilidade da atividade dos anunciantes.",
+      "bullet2": "Mais atualizações para tornar a negociação mais simples.",
+      "primaryCta": "Entendi",
+      "secondaryCta": "Talvez mais tarde"
+    }
+  },
   "nps": {
     "sendFeedback": "Enviar feedback",
     "title": "Qual é a probabilidade de recomendar o Deriv P2P?",
