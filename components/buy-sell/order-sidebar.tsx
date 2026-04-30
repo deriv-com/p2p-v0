@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -208,6 +208,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     isConnected
   } = useWebSocketContext()
   const [localAd, setLocalAd] = useState<Advertisement | null>(ad)
+  const localAdRef = useRef(localAd)
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
   const [lockedConfirmationRate, setLockedConfirmationRate] = useState<number | null>(null)
@@ -225,6 +226,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     setLocalAd(ad)
   }, [ad])
 
+  // Keep ref in sync so the WebSocket callback always reads the latest localAd
+  useEffect(() => {
+    localAdRef.current = localAd
+  }, [localAd])
+
   useEffect(() => {
     if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
       let requestTimer: ReturnType<typeof setTimeout> | undefined
@@ -237,14 +243,21 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       }
 
       const unsubscribe = subscribe((data) => {
-        if (ad.exchange_rate_type === "float") {
-          const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+        const current = localAdRef.current
+        if (!current) return
+
+        if (current.exchange_rate_type === "float") {
+          const expectedChannel = `exchange_rates/${current.account_currency}/${current.payment_currency}`
           if (data.options.channel === expectedChannel && data.payload?.rate) {
-            setMarketRate(data.payload.rate * ((ad.exchange_rate / 100) + 1))
+            setMarketRate(data.payload.rate * ((current.exchange_rate / 100) + 1))
           } else if (data.options.channel === expectedChannel && data.payload?.data?.rate) {
-            const newRate = data.payload.data.rate * ((ad.exchange_rate / 100) + 1)
-            setMarketRate(newRate)
-            setLocalAd((prev) => prev ? { ...prev, effective_rate_display: newRate } : null)
+            const rawRate = data.payload.data.rate
+            setLocalAd((prev) => {
+              if (!prev) return null
+              const computedRate = rawRate * ((prev.exchange_rate / 100) + 1)
+              setMarketRate(computedRate)
+              return { ...prev, effective_rate_display: computedRate }
+            })
           }
         }
 
@@ -252,7 +265,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
             const updatedAdvert = data.payload.data.advert
             const updatedFields: string[] = data.payload.data.updated_fields || []
-            if (ad.id == updatedAdvert.id) {
+            if (current.id == updatedAdvert.id) {
               const rateFields = new Set(["exchange_rate", "effective_rate", "effective_rate_display"])
               const nonRateFields = new Set(["minimum_order_amount", "actual_maximum_order_amount", "description", "payment_methods", "payment_method_names", "order_expiry_period"])
               const hasRateChanges = updatedFields.some((f) => rateFields.has(f))
