@@ -388,14 +388,14 @@ export default function BuySellPage() {
             currentAdverts.map((ad) =>
               ad.id == updatedAdvert.id
                 ? {
-                    ...ad,
-                    version: updatedAdvert.version,
-                    effective_rate_display: updatedAdvert.effective_rate_display,
-                    minimum_order_amount: updatedAdvert.minimum_order_amount,
-                    actual_maximum_order_amount: updatedAdvert.actual_maximum_order_amount,
-                    payment_methods: updatedAdvert.payment_methods,
-                    payment_method_names: updatedAdvert.payment_method_names,
-                  }
+                  ...ad,
+                  version: updatedAdvert.version,
+                  effective_rate_display: updatedAdvert.effective_rate_display,
+                  minimum_order_amount: updatedAdvert.minimum_order_amount,
+                  actual_maximum_order_amount: updatedAdvert.actual_maximum_order_amount,
+                  payment_methods: updatedAdvert.payment_methods,
+                  payment_method_names: updatedAdvert.payment_method_names,
+                }
                 : ad,
             ),
           )
@@ -655,7 +655,7 @@ export default function BuySellPage() {
                     >
                       <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
-                          <Skeleton className="bg-grayscale-500 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
+                          <Skeleton className="bg-grayscale-500 h-[40px] w-[40px] flex-shrink-0 rounded-full mr-[8px]" />
                           <div className="flex-1">
                             <Skeleton className="bg-grayscale-500 h-4 w-32 mb-2" />
                             <Skeleton className="bg-grayscale-500 h-3 w-48" />
@@ -721,10 +721,10 @@ export default function BuySellPage() {
                     >
                       <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                          <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl mr-[8px]">
                             {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                             <div
-                              className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                              className={`absolute bottom-0 right-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
                                 }`}
                             />
                           </div>
@@ -762,7 +762,7 @@ export default function BuySellPage() {
                             <PresenceLastSeen
                               isOnline={ad.user?.is_online}
                               lastOnlineAt={ad.user?.last_online_at}
-                              className="text-xs text-slate-500 mt-[2px] block"
+                              className="text-xs text-slate-500 block"
                             />
                           </div>
                         </div>
