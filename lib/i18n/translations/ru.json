@@ -719,5 +719,13 @@
     "errorTitle": "Что-то пошло не так.",
     "errorMessage": "Код ошибки: {errorCode}. Повторите попытку позже или обратитесь в службу поддержки.",
     "validationError": "Разрешены только буквы, цифры, пробелы и следующие специальные символы: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Только что в сети",
+    "seenMinutesAgo": "В сети {count} минут{plural} назад",
+    "seenHoursAgo": "В сети {count} час{plural} назад",
+    "seenDaysAgo": "В сети {count} день{plural} назад",
+    "seenMonthsAgo": "В сети {count} месяц{plural} назад",
+    "seenMoreThanSixMonthsAgo": "В сети более 6 месяцев назад"
   }
 }

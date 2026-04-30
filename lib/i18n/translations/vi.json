@@ -725,5 +725,13 @@
     "errorTitle": "Đã xảy ra lỗi.",
     "errorMessage": "Mã lỗi: {errorCode}. Vui lòng thử lại sau hoặc liên hệ bộ phận hỗ trợ.",
     "validationError": "Chỉ cho phép chữ cái, chữ số, khoảng trắng và các ký tự đặc biệt sau: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Vừa mới hoạt động",
+    "seenMinutesAgo": "Hoạt động {count} phút trước",
+    "seenHoursAgo": "Hoạt động {count} giờ trước",
+    "seenDaysAgo": "Hoạt động {count} ngày trước",
+    "seenMonthsAgo": "Hoạt động {count} tháng trước",
+    "seenMoreThanSixMonthsAgo": "Hoạt động hơn 6 tháng trước"
   }
 }

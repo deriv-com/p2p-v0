@@ -689,5 +689,13 @@
     "errorTitle": "Qualcosa è andato storto.",
     "errorMessage": "Codice errore: {errorCode}. Riprova più tardi o contatta l'assistenza.",
     "validationError": "Sono consentiti solo lettere, numeri, spazi e i seguenti caratteri speciali: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Visto poco fa",
+    "seenMinutesAgo": "Visto {count} minut{plural} fa",
+    "seenHoursAgo": "Visto {count} ora{plural} fa",
+    "seenDaysAgo": "Visto {count} giorno{plural} fa",
+    "seenMonthsAgo": "Visto {count} mese{plural} fa",
+    "seenMoreThanSixMonthsAgo": "Visto più di 6 mesi fa"
   }
 }

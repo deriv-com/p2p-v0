@@ -692,5 +692,13 @@
     "errorTitle": "Algo salió mal.",
     "errorMessage": "Código de error: {errorCode}. Inténtalo de nuevo más tarde o contacta con soporte.",
     "validationError": "Solo se permiten letras, números, espacios y los siguientes caracteres especiales: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Visto hace un momento",
+    "seenMinutesAgo": "Visto hace {count} minuto{plural}",
+    "seenHoursAgo": "Visto hace {count} hora{plural}",
+    "seenDaysAgo": "Visto hace {count} día{plural}",
+    "seenMonthsAgo": "Visto hace {count} mes{plural}",
+    "seenMoreThanSixMonthsAgo": "Visto hace más de 6 meses"
   }
 }

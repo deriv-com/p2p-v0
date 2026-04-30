@@ -11,7 +11,7 @@ export interface Advertisement {
     created_at: number
     rating_average?: number
     is_online?: boolean
-    last_online_at?: number
+    last_online_at?: number | null
     rating_average_lifetime?: number
     order_count_lifetime?: number
     completion_average_30day?: number
