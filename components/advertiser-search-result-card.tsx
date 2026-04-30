@@ -50,13 +50,13 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                             </span>
                         )}
                     </div>
+                    <PresenceLastSeen
+                        isOnline={ad.user?.is_online}
+                        lastOnlineAt={ad.user?.last_online_at}
+                        className="text-xs text-slate-500 mt-[2px] mb-[2px] block"
+                    />
                 </div>
             </div>
-            <PresenceLastSeen
-                isOnline={ad.user?.is_online}
-                lastOnlineAt={ad.user?.last_online_at}
-                className="text-xs text-slate-500 mt-[2px] mb-[2px] block"
-            />
             <div className="flex items-center text-xs text-slate-500 mb-2">
                 {ad.user.rating_average_lifetime && (
                     <span className="flex items-center">
