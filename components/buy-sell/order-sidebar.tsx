@@ -501,6 +501,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       setShowRateChangeConfirmation(false)
       setLockedConfirmationRate(null)
       setPendingRateUpdate(null)
+      setHasAdvertUpdated(false)
+      setPendingAdvertUpdate(null)
+      setShowAdUpdatedModal(false)
       onClose()
     }, 300)
   }
