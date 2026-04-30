@@ -519,6 +519,23 @@
     "blockedSuccessfully": "Użytkownik zablokowany pomyślnie.",
     "unblockedSuccessfully": "Użytkownik odblokowany pomyślnie."
   },
+  "p2pAnnouncement": {
+    "whatsNew": {
+      "title": "Co nowego",
+      "bullet0": "Zobacz aktywność reklamodawców wyraźniej.",
+      "bullet1": "Korzystaj z prostszego i ulepszonego doświadczenia.",
+      "bullet2": "Wprowadziliśmy aktualizacje, aby usprawnić Twój przepływ P2P.",
+      "primaryCta": "Rozumiem"
+    },
+    "whatsComing": {
+      "title": "Już wkrótce",
+      "bullet0": "Odświeżone doświadczenie P2P jest w drodze.",
+      "bullet1": "Lepsza widoczność aktywności reklamodawców.",
+      "bullet2": "Więcej aktualizacji, aby handel był płynniejszy.",
+      "primaryCta": "Rozumiem",
+      "secondaryCta": "Może później"
+    }
+  },
   "nps": {
     "sendFeedback": "Prześlij opinię",
     "title": "Jak bardzo prawdopodobne jest, że polecisz Deriv P2P?",
@@ -530,5 +547,13 @@
     "errorTitle": "Coś poszło nie tak.",
     "errorMessage": "Kod błędu: {errorCode}. Spróbuj ponownie później lub skontaktuj się z obsługą.",
     "validationError": "Dozwolone są tylko litery, cyfry, spacje oraz następujące znaki specjalne: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "presence": {
+    "seenJustNow": "Widziano przed chwilą",
+    "seenMinutesAgo": "Widziano {count} minut{plural} temu",
+    "seenHoursAgo": "Widziano {count} godzin{plural} temu",
+    "seenDaysAgo": "Widziano {count} dzień{plural} temu",
+    "seenMonthsAgo": "Widziano {count} miesiąc{plural} temu",
+    "seenMoreThanSixMonthsAgo": "Widziano ponad 6 miesięcy temu"
   }
 }

@@ -207,6 +207,10 @@ export class WebSocketClient {
     return this.socket !== null && this.socket.readyState === WebSocket.OPEN
   }
 
+  public isConnectingNow(): boolean {
+    return this.isConnecting
+  }
+
   public hasValidToken(): boolean {
     const token = this.getSocketToken()
     return token !== null && token.trim() !== ""
@@ -294,6 +298,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const hasInitializedRef = useRef(false)
   const [isConnected, setIsConnected] = useState(false)
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const shouldReconnectRef = useRef(true)
+  const retryCountRef = useRef(0)
+  const maxRetries = 5
 
   useEffect(() => {
     if (hasInitializedRef.current) return
@@ -302,6 +310,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     const wsClient = getWebSocketClient({
       onOpen: () => {
+        retryCountRef.current = 0
         setIsConnected(true)
         const userData = useUserDataStore.getState().userData
         if (userData?.signup === "v1") {
@@ -311,8 +320,17 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       onMessage: (data) => {
         subscribersRef.current.forEach((callback) => callback(data))
       },
-      onClose: () => {
+      onClose: (event) => {
         setIsConnected(false)
+        const isCleanClose = event.code === 1000 || event.code === 1001
+        if (shouldReconnectRef.current && !isCleanClose && retryCountRef.current < maxRetries) {
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
+          const delay = Math.min(3000 * Math.pow(1.5, retryCountRef.current), 30000)
+          reconnectTimeoutRef.current = setTimeout(() => {
+            retryCountRef.current++
+            wsClientRef.current?.connect().catch((err) => console.warn("WebSocket reconnect failed:", err))
+          }, delay)
+        }
       },
       onError: (error) => {
         console.error("WebSocket error:", error)
@@ -327,6 +345,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     })
 
     return () => {
+      shouldReconnectRef.current = false
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
       if (wsClientRef.current) {
         const userData = useUserDataStore.getState().userData
         if (userData?.signup === "v1") {
@@ -335,6 +355,19 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
+  }, [])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const client = wsClientRef.current
+      if (document.visibilityState === "visible" && client && !client.isConnected() && !client.isConnectingNow()) {
+        if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
+        retryCountRef.current = 0
+        client.connect().catch((err) => console.warn("WebSocket reconnect failed:", err))
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
   }, [])
 
   const joinChannel = useCallback((channel: string, id: number) => {
