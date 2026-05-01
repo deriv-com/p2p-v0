@@ -10,6 +10,7 @@ import { OrdersAPI } from "@/services/api"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { getChatErrorMessage, formatTime } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { PresenceLastSeen } from "@/components/presence-last-seen"
 
 type Message = {
   attachment: {
@@ -192,15 +193,15 @@ export default function OrderChat({
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-xs text-slate-500 flex items-center gap-1">
-            <span>
-              {counterpartyOnlineStatus
-                ? t("chat.online")
-                : counterpartyLastOnlineAt
-                  ? `Seen ${formatLastSeen(counterpartyLastOnlineAt, t)}`
-                  : t("chat.offline")}
-            </span>
-          </div>
+          {counterpartyOnlineStatus ? (
+            <div className="text-xs text-slate-500">{t("chat.online")}</div>
+          ) : (
+            <PresenceLastSeen
+              isOnline={counterpartyOnlineStatus}
+              lastOnlineAt={counterpartyLastOnlineAt}
+              className="text-xs text-slate-500"
+            />
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
@@ -351,38 +352,4 @@ export default function OrderChat({
       )}
     </div>
   )
-}
-
-function formatLastSeen(
-  timestamp: number,
-  t: (key: string, params?: Record<string, string | number>) => string,
-): string {
-  const now = Date.now()
-  const lastSeenDate = new Date(timestamp)
-  const diffMs = now - lastSeenDate.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-  const diffHours = Math.floor(diffMins / 60)
-  const diffDays = Math.floor(diffHours / 24)
-
-  if (diffMins < 1) return t("chat.justNow")
-  if (diffMins < 60) {
-    return t("chat.seenMinutesAgo", {
-      minutes: diffMins.toString(),
-      plural: diffMins === 1 ? "" : "s",
-    })
-  }
-  if (diffHours < 24) {
-    return t("chat.seenHoursAgo", {
-      hours: diffHours.toString(),
-      plural: diffHours === 1 ? "" : "s",
-    })
-  }
-  if (diffDays < 7) {
-    return t("chat.seenDaysAgo", {
-      days: diffDays.toString(),
-      plural: diffDays === 1 ? "" : "s",
-    })
-  }
-
-  return lastSeenDate.toLocaleDateString()
 }
