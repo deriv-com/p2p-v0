@@ -105,14 +105,6 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
             <DialogTitle className="tracking-normal font-bold text-2xl text-left pr-4">
               {title}
             </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="px-1 min-w-[48px] shrink-0 hover:bg-transparent"
-              onClick={onClose}
-            >
-              <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
-            </Button>
           </div>
         </DialogHeader>
         <FeedbackDialogContent onClose={onClose} title="" />

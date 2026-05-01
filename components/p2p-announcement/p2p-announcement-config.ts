@@ -28,7 +28,6 @@ export const ANNOUNCEMENT_TRANSLATION_KEYS = {
       "p2pAnnouncement.whatsComing.bullet2",
     ],
     primaryCta: "p2pAnnouncement.whatsComing.primaryCta",
-    secondaryCta: "p2pAnnouncement.whatsComing.secondaryCta",
   },
 } as const
 

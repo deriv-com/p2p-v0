@@ -377,7 +377,7 @@ export default function Sidebar({ className }: SidebarProps) {
             )
           })}
         </ul>
-        {!userData?.feedback_exist && !isDisabled && (
+        {userData !== null && !userData.feedback_exist && !isDisabled && (
           <button
             onClick={() => setShowFeedbackDialog(true)}
             className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
