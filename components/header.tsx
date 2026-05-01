@@ -14,10 +14,12 @@ import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import MobileAdvertiserSearch from "./mobile-advertiser-search"
 import { Button } from "@/components/ui/button"
+import { useTrackers } from "@/analytics/useTrackers"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
+  const { track } = useTrackers()
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
   const pathname = usePathname()
@@ -90,7 +92,7 @@ export default function Header() {
         <div className="h-12 flex items-center space-x-2">
           {(pathname === "/" || pathname.startsWith("/advertiser")) && (
             <Button
-              onClick={() => setUserIsSearchOpen(true)}
+              onClick={() => { track("ek_search_markets"); setUserIsSearchOpen(true) }}
               variant="ghost"
               size="icon"
               className="h-8 w-8 rounded-full bg-[#ffffff0a]"
@@ -99,7 +101,7 @@ export default function Header() {
             </Button>
           )}
           {userId && (
-            <div className="text-slate-600 hover:text-slate-700">
+            <div className="text-slate-600 hover:text-slate-700" onClick={() => track("ek_notifications_markets")}>
               <NovuNotifications />
             </div>
           )}

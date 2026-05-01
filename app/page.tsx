@@ -35,6 +35,7 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useTrackers } from "@/analytics/useTrackers"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
 
 type Ad = Advertisement
@@ -96,6 +97,7 @@ export default function BuySellPage() {
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const { hideAlert, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
+  const { track } = useTrackers()
 
   const { isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
 
@@ -286,6 +288,7 @@ export default function BuySellPage() {
   }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
+    track("ek_advertiser_profile_markets")
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
@@ -309,6 +312,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
+    track("ek_advert_action_markets", { advert_type: ad.type === "buy" ? "sell" : "buy" })
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
@@ -442,6 +446,10 @@ export default function BuySellPage() {
   }, [isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
+    track("ek_open_markets")
+  }, []) // fires once on mount
+
+  useEffect(() => {
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
     if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
@@ -467,7 +475,7 @@ export default function BuySellPage() {
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
-                  <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+                  <Tabs value={activeTab} onValueChange={(value) => { if (value === "sell") track("ek_buy_markets"); else track("ek_sell_markets"); setActiveTab(value as "buy" | "sell") }}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
@@ -508,6 +516,7 @@ export default function BuySellPage() {
                           variant="outline"
                           size="sm"
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                          onClick={() => track("ek_payment_currency_markets")}
                         >
                           {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
                             <Image
@@ -574,6 +583,7 @@ export default function BuySellPage() {
                             ? "bg-black hover:bg-black text-white"
                             : "bg-transparent hover:bg-transparent",
                         )}
+                        onClick={() => track("ek_payment_method_filter_markets")}
                       >
                         <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                           {getPaymentMethodsDisplayText()}
@@ -615,6 +625,7 @@ export default function BuySellPage() {
                           "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
                           hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
                         )}
+                        onClick={() => track("ek_filter_markets")}
                       >
                         {hasActiveFilters ? (
                           <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} />
