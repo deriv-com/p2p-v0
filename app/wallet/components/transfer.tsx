@@ -20,6 +20,7 @@ import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useTrackers } from "@/analytics/useTrackers"
 
 interface TransferProps {
   currencySelected?: string
@@ -124,6 +125,7 @@ type CurrencyToggleType = "source" | "destination"
 
 export default function Transfer({ currencySelected, onClose, stepVal = "enterAmount" }: TransferProps) {
   const { t } = useTranslations()
+  const { track } = useTrackers()
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
 
   const [step, setStep] = useState<TransferStep>(stepVal)
@@ -468,6 +470,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }, [])
 
   const handleTransferClick = () => {
+    track("ek_transfer_transfer")
     toConfirm()
   }
 
@@ -477,6 +480,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       return
     }
 
+    track("ek_confirm_transfer_confirm_transfer_sheet")
     setIsSubmitting(true)
 
     try {
@@ -523,6 +527,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         setTransferErrorMessage(errorMessage)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
+        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: "transfer_failed", error_message: errorMessage })
         toUnsuccessful()
       } else if (!result?.data?.errors || result.data.errors.length === 0) {
         if (result?.data?.external_reference_id) {
@@ -532,19 +537,23 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         queryClient.invalidateQueries({ queryKey: queryKeys.auth.totalBalance() })
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
+        track("ek_transfer_successful_confirm_transfer_sheet")
         toSuccess()
       } else {
         const errorMessage = result.data.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
+        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: "transfer_failed", error_message: errorMessage })
         toUnsuccessful()
       }
     } catch (error) {
       console.error("Error during transfer:", error)
+      const transferErrorMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again."
       setTransferErrorMessage("An unexpected error occurred. Please try again.")
       setShowDesktopConfirmPopup(false)
       setShowMobileConfirmSheet(false)
+      track("ek_transfer_failed_confirm_transfer_sheet", { error_code: "network_error", error_message: transferErrorMessage })
       toUnsuccessful()
     } finally {
       setIsSubmitting(false)
@@ -589,6 +598,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
+    track("ek_select_wallet_wallet_selector_sheet", { wallet_currency: wallet.currency })
     if (type === "from") {
       setSourceWalletData({
         id: wallet.wallet_id,
@@ -613,6 +623,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   const handleInterchange = () => {
+    track("ek_swap_wallets_transfer")
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
@@ -1358,6 +1369,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   const handlePercentageClick = (percentage: number) => {
+    track("ek_percentage_fill_transfer", { percentage_value: percentage })
     const sourceBalance = getSourceWalletBalance()
     const calculatedAmount = (sourceBalance * percentage) / 100
 
@@ -1391,7 +1403,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
           <div className="hidden md:block w-8 h-8"></div>
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+          <Button variant="ghost" size="sm" className="px-0" onClick={() => { track("ek_close_transfer"); onClose() }} aria-label="Close">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
@@ -1403,6 +1415,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div
               className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px] relative"
               onClick={() => {
+                track("ek_from_wallet_transfer")
                 if (window.innerWidth < 768) {
                   setShowMobileSheet("from")
                 } else {
@@ -1464,6 +1477,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div
               className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px] relative"
               onClick={() => {
+                track("ek_to_wallet_transfer")
                 if (window.innerWidth < 768) {
                   setShowMobileSheet("to")
                 } else {
@@ -1557,13 +1571,15 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     value={selectedAmountCurrency}
                     onValueChange={(value) => {
                       if (value) {
-                        setTransferAmount("")
-                        setSelectedAmountCurrency(value as "source" | "destination")
                         if (value === "source") {
+                          track("ek_source_currency_segment_transfer")
                           setSelectedCurrency(sourceWalletData?.currency || null)
                         } else if (value === "destination") {
+                          track("ek_destination_currency_segment_transfer")
                           setSelectedCurrency(destinationWalletData?.currency || null)
                         }
+                        setTransferAmount("")
+                        setSelectedAmountCurrency(value as "source" | "destination")
                       }
                     }}
                     className="w-full h-full"
@@ -1751,25 +1767,25 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <p className="text-white text-center text-base font-normal">{transferText}</p>
             <div className="hidden md:flex gap-4 mt-6">
               <Button
-                onClick={handleViewDetails}
+                onClick={() => { track("ek_view_details_transfer_successful"); handleViewDetails() }}
                 className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
               >
                 {t("wallet.viewDetails")}
               </Button>
-              <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+              <Button onClick={() => { track("ek_got_it_transfer_successful"); handleDoneClick() }} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
                 {t("wallet.gotIt")}
               </Button>
             </div>
           </div>
           <div className="block md:hidden w-full space-y-3">
             <Button
-              onClick={handleDoneClick}
+              onClick={() => { track("ek_got_it_transfer_successful"); handleDoneClick() }}
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
             >
               {t("wallet.gotIt")}
             </Button>
             <Button
-              onClick={handleViewDetails}
+              onClick={() => { track("ek_view_details_transfer_successful"); handleViewDetails() }}
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
             >
               {t("wallet.viewDetails")}
@@ -1803,25 +1819,25 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           <p className="text-white text-center text-base font-normal">{transferText}</p>
           <div className="hidden md:flex gap-4 mt-6">
             <Button
-              onClick={handleDoneClick}
+              onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }}
               className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
             >
               {t("wallet.notNow")}
             </Button>
-            <Button onClick={toEnterAmount} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+            <Button onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
               {t("wallet.tryAgain")}
             </Button>
           </div>
         </div>
         <div className="block md:hidden w-full space-y-3">
           <Button
-            onClick={toEnterAmount}
+            onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
           >
             {t("wallet.tryAgain")}
           </Button>
           <Button
-            onClick={handleDoneClick}
+            onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
           >
             {t("wallet.notNow")}
