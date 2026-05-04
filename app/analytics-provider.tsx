@@ -20,7 +20,7 @@ import { useUserDataStore } from "@/stores/user-data-store";
  * <AnalyticsProvider>{children}</AnalyticsProvider>
  */
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
-  const { identifyEvent, backfillPersonProperties } = useAnalytics();
+  const { reset, identifyEvent, backfillPersonProperties } = useAnalytics();
 
   const externalId = useUserDataStore((state) => state.externalId); // ← verify: external_id source
   const email = useUserDataStore((state) => state.userData?.email); // ← verify: email source
@@ -30,6 +30,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!externalId) {
+      if (hasIdentified.current) reset();
       hasIdentified.current = false;
       return;
     }
