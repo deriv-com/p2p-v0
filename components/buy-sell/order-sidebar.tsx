@@ -49,6 +49,14 @@ interface PaymentMethodOption {
   value: string
 }
 
+const areStringArraysEqual = (first: string[] = [], second: string[] = []) => {
+  if (first.length !== second.length) return false
+
+  const sortedFirst = [...first].sort()
+  const sortedSecond = [...second].sort()
+  return sortedFirst.every((value, index) => value === sortedSecond[index])
+}
+
 const PAYMENT_METHOD_OPTIONS: PaymentMethodOption[] = [
   { name: "eWallet", value: "ewallet" },
   { name: "Bank transfer", value: "bank_transfer" },
@@ -221,6 +229,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   const addPaymentMethod = useAddPaymentMethod()
   const { data: paymentMethodsResponse } = useUserPaymentMethods(isOpen)
 
+  const clearSelectedPaymentMethods = () => {
+    setSelectedPaymentMethods([])
+    setTempSelectedPaymentMethods([])
+  }
+
   // Sync local ad copy with prop — keeps localAd current when parent updates the ad
   useEffect(() => {
     setLocalAd(ad)
@@ -380,6 +393,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
   const handleAdvertUpdateConfirm = () => {
     if (localAd && pendingAdvertUpdate) {
+      const paymentMethodsChanged =
+        !areStringArraysEqual(localAd.payment_methods, pendingAdvertUpdate.payment_methods) ||
+        !areStringArraysEqual(localAd.payment_method_names, pendingAdvertUpdate.payment_method_names)
+
+      if (paymentMethodsChanged) {
+        clearSelectedPaymentMethods()
+      }
+
       setLocalAd({
         ...localAd,
         minimum_order_amount: pendingAdvertUpdate.minimum_order_amount,
@@ -423,6 +444,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if (errorCode === "OrderAdvertVersionChanged") {
+          clearSelectedPaymentMethods()
           setShowAdUpdatedModal(true)
         } else if (errorCode === "OrderExists") {
           showAlert({
@@ -592,11 +614,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     })
   }, [paymentMethodsResponse?.data, localAd?.payment_methods])
 
-  // Set user payment methods and seller payment methods
+  // Set user payment methods and seller payment methods.
+  // Always sync even when empty — clears stale choices when advert payment methods are removed.
   useEffect(() => {
-    if (filteredPaymentMethods.length > 0) {
-      setUserPaymentMethods(filteredPaymentMethods)
-    }
+    setUserPaymentMethods(filteredPaymentMethods)
 
     const buyerAcceptedMethods = localAd?.payment_methods || []
     const sellerMethods: SellerPaymentMethod[] = buyerAcceptedMethods.map((method: string) => ({
@@ -605,6 +626,24 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     }))
     setSellerPaymentMethods(sellerMethods)
   }, [filteredPaymentMethods, localAd?.payment_methods])
+
+  // Prune any selected payment method IDs that are no longer compatible with the updated advert.
+  // Uses functional setState so this effect only depends on filteredPaymentMethods,
+  // avoiding the self-referential dependency loop that would occur if selectedPaymentMethods
+  // or tempSelectedPaymentMethods were listed here.
+  useEffect(() => {
+    const compatiblePaymentMethodIds = new Set(filteredPaymentMethods.map((method: PaymentMethod) => method.id))
+
+    setSelectedPaymentMethods((current: string[]) => {
+      const next = current.filter((id: string) => compatiblePaymentMethodIds.has(id))
+      return areStringArraysEqual(current, next) ? current : next
+    })
+
+    setTempSelectedPaymentMethods((current: string[]) => {
+      const next = current.filter((id: string) => compatiblePaymentMethodIds.has(id))
+      return areStringArraysEqual(current, next) ? current : next
+    })
+  }, [filteredPaymentMethods])
 
   if (!isOpen && !isAnimating) return null
 
@@ -653,7 +692,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                       label={t("order.amount")}
                     />
                   </div>
-                  {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
+                  {validationError && <p className="text-sm text-red-500 mb-2">{validationError}</p>}
                   <div className="flex items-center">
                     <span className="text-grayscale-text-muted">{youSendText}:&nbsp;</span>
                     <span className="text-slate-1200 font-bold">
