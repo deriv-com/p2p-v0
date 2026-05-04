@@ -607,6 +607,12 @@ export const currencyFlagMapper = {
   MDL: "/icons/flag-moldova.svg",
 }
 
+const getCookieValue = (name: string): string | undefined => {
+  if (typeof document === "undefined") return undefined
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
+  return match ? match[2] : undefined
+}
+
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false, fromParam = "", isTncAccepted = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   const currentDomain = typeof window !== "undefined" ? window.location.hostname : ""
@@ -627,12 +633,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
     baseUrl = isProduction ? `home.${domain}` : `staging-home.${domain}`
   }
 
-  const isWebApp =
-    typeof document !== "undefined" &&
-    document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("web_app="))
-      ?.split("=")[1] === "true"
+  const isWebApp = getCookieValue("web_app") === "true"
 
   if (section === "poi") {
     if (isV1Signup) {
