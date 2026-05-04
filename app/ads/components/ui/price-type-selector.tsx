@@ -127,7 +127,6 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                   <div className="flex flex-col">
                     <span className="text-base">Fixed</span>
                     <span className="text-xs">{t("order.fixedRateDescription")}</span>
-                    <span className="text-xs">{t("order.fixedRateDescription")}</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float">
