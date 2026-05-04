@@ -24,10 +24,10 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
     return (
         <div className="px-4 py-3">
             {/* Row 1: Advertiser info */}
-            <div className="flex items-start gap-2">
-                <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px] mt-[2px]">
+            <div className="flex items-center">
+                <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl mr-[8px]">
                     {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                    <div className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`} />
+                    <div className={`absolute bottom-0 right-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`} />
                 </div>
                 <div className="flex flex-col min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -53,7 +53,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                     <PresenceLastSeen
                         isOnline={ad.user?.is_online}
                         lastOnlineAt={ad.user?.last_online_at}
-                        className="text-xs text-slate-500 mt-[2px] mb-[2px] block"
+                        className="text-xs text-slate-500 block"
                     />
                 </div>
             </div>
