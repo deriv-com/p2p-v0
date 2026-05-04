@@ -627,6 +627,13 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
     baseUrl = isProduction ? `home.${domain}` : `staging-home.${domain}`
   }
 
+  const isWebApp =
+    typeof document !== "undefined" &&
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("web_app="))
+      ?.split("=")[1] === "true"
+
   if (section === "poi") {
     if (isV1Signup) {
       if (isWalletAccount) {
@@ -635,7 +642,11 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
         url = isProduction ? `https://app.${domain}/account/proof-of-identity` : `https://staging-app.${domain}/account/proof-of-identity`
       }
     } else {
-      url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
+      if (isWebApp && isTncAccepted) {
+        url = `https://${baseUrl}/dashboard/profile/kyc/poi?is_from_p2p=true&${fromParam}`
+      } else {
+        url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/confirm-detail?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poi?is_from_p2p=true&${fromParam}`
+      }
     }
   } else if (section === "poa") {
     if (isV1Signup) {
@@ -645,7 +656,11 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
         url = isProduction ? `https://app.${domain}/account/proof-of-address` : `https://staging-app.${domain}/account/proof-of-address`
       }
     } else {
-      url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
+      if (isWebApp && isTncAccepted) {
+        url = `https://${baseUrl}/dashboard/profile/kyc/poa?is_from_p2p=true&${fromParam}`
+      } else {
+        url = isTncAccepted ? `https://${baseUrl}/dashboard/kyc/address?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/kyc-poa?is_from_p2p=true&${fromParam}`
+      }
     }
   } else if (section === "home") {
     if (isV1Signup) {
@@ -669,7 +684,15 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
     if (isV1Signup) {
       url = `https://${baseUrl}/account/personal-details`
     } else {
-      url = isTncAccepted ? `https://${baseUrl}/dashboard/details?is_from_p2p=true&${fromParam}` : `https://${baseUrl}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`
+      if (isWebApp) {
+        url = isTncAccepted
+          ? `https://${baseUrl}/dashboard/profile/phone-number?is_from_p2p=true&${fromParam}`
+          : `https://${baseUrl}/dashboard/onboarding/verify-user?is_from_p2p=true&${fromParam}`
+      } else {
+        url = isTncAccepted
+          ? `https://${baseUrl}/dashboard/details?is_from_p2p=true&${fromParam}`
+          : `https://${baseUrl}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`
+      }
     }
   } else {
     url = baseUrl
