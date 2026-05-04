@@ -79,7 +79,22 @@ export const PaymentReceivedConfirmationSidebar = ({
             }),
           )
         } else if (error.code === "OrderCompleteVerificationTempLock" || error.code === "OrderVerificationTempLock") {
-          setWarning(t("orders.maxAttemptsReached"))
+          showAlert({
+            title: t("order.verificationLockedTitle"),
+            description: t("order.verificationLockedDescription"),
+            cancelText: t("common.gotIt"),
+            confirmText: t("common.close"),
+            type: "warning",
+            onCancel: () => {
+              onClose()
+            },
+            onConfirm: () => {
+              onClose()
+            },
+            onClose: () => {
+              onClose()
+            }
+          })
         } else {
           setError(error.message || "An error occurred. Please try again.")
         }
@@ -102,10 +117,14 @@ export const PaymentReceivedConfirmationSidebar = ({
         if (error.code === "OrderVerificationTempLock") {
           setOtpRequested(false)
           showAlert({
-            title: t("orders.tooManyAttempts"),
-            description: t("orders.tooManyAttemptsDescription"),
-            confirmText: t("orders.gotIt"),
+            title: t("order.verificationLockedTitle"),
+            description: t("order.verificationLockedDescription"),
+            cancelText: t("common.gotIt"),
+            confirmText: t("common.close"),
             type: "warning",
+            onCancel: () => {
+              onClose()
+            },
             onConfirm: () => {
               onClose()
             },
