@@ -95,6 +95,8 @@
     "orderExists": "Tayari una amri inayofanya kazi kwa tangazo hili. Kamilisha amri iliyopo kabla ya kuweka mpya.",
     "orderCreationError": "Kulikuwa na hitilafu wakati wa kuunda amri. Tafadhali jaribu tena.",
     "unableToCreateOrder": "Haiwezi kuunda amri",
+    "verificationLockedTitle": "Uthibitishaji umefungwa",
+    "verificationLockedDescription": "Kulikuwa na majaribio mengi sana yasiyo sahihi ya uthibitishaji. Jaribu tena baada ya saa 1.",
     "insufficientFunds": "Fedha haitoshi",
     "insufficientFundsDescription": "Hakuna fedha za kutosha kuweka amri hii kwa sasa. Jaribu tena baadaye au chagua tangazo lingine.",
     "viewOtherAds": "Tazama matangazo mengine",

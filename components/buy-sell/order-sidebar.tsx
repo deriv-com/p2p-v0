@@ -480,6 +480,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               track("ek_retry_order_markets_advert_sheet")
             },
           })
+        } else if (errorCode === "OrderVerificationTempLock") {
+          showAlert({
+            title: t("order.verificationLockedTitle"),
+            description: t("order.verificationLockedDescription"),
+            cancelText: t("common.gotIt"),
+            confirmText: t("common.close"),
+            type: "warning",
+          })
         } else if (errorCode === "v1InsufficientFunds") {
           showAlert({
             title: t("order.insufficientFunds"),

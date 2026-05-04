@@ -88,6 +88,8 @@
     "orderExists": "L'ordine esiste già.",
     "orderCreationError": "Si è verificato un errore durante la creazione dell'ordine. Riprova.",
     "unableToCreateOrder": "Impossibile creare un ordine",
+    "verificationLockedTitle": "Verifica bloccata",
+    "verificationLockedDescription": "Ci sono stati troppi tentativi di verifica errati. Riprova tra 1 ora.",
     "insufficientFunds": "Fondi insufficienti",
     "insufficientFundsDescription": "Non ci sono fondi sufficienti per effettuare questo ordine al momento. Riprova più tardi o scegli un altro annuncio.",
     "viewOtherAds": "Visualizza altri annunci",

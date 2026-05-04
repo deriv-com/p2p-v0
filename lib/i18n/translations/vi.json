@@ -89,6 +89,8 @@
     "orderExists": "Bạn chỉ có thể có một đơn hàng đang hoạt động cho mỗi tin đăng. Hoàn thành đơn hàng hiện tại để tiếp tục.",
     "orderCreationError": "Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại.",
     "unableToCreateOrder": "Không thể tạo đơn hàng",
+    "verificationLockedTitle": "Xác minh bị khóa",
+    "verificationLockedDescription": "Đã có quá nhiều lần xác minh không chính xác. Hãy thử lại sau 1 giờ.",
     "insufficientFunds": "Không đủ tiền",
     "insufficientFundsDescription": "Hiện không đủ tiền để đặt đơn hàng này. Vui lòng thử lại sau hoặc chọn tin đăng khác.",
     "viewOtherAds": "Xem tin đăng khác",
