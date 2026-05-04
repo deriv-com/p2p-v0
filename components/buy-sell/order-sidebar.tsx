@@ -614,7 +614,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     })
   }, [paymentMethodsResponse?.data, localAd?.payment_methods])
 
-  // Set user payment methods and seller payment methods
+  // Set user payment methods and seller payment methods.
+  // Always sync even when empty — clears stale choices when advert payment methods are removed.
   useEffect(() => {
     setUserPaymentMethods(filteredPaymentMethods)
 
@@ -626,19 +627,23 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
     setSellerPaymentMethods(sellerMethods)
   }, [filteredPaymentMethods, localAd?.payment_methods])
 
+  // Prune any selected payment method IDs that are no longer compatible with the updated advert.
+  // Uses functional setState so this effect only depends on filteredPaymentMethods,
+  // avoiding the self-referential dependency loop that would occur if selectedPaymentMethods
+  // or tempSelectedPaymentMethods were listed here.
   useEffect(() => {
     const compatiblePaymentMethodIds = new Set(filteredPaymentMethods.map((method: PaymentMethod) => method.id))
-    const validSelectedPaymentMethods = selectedPaymentMethods.filter((methodId) => compatiblePaymentMethodIds.has(methodId))
-    const validTempSelectedPaymentMethods = tempSelectedPaymentMethods.filter((methodId) => compatiblePaymentMethodIds.has(methodId))
 
-    if (validSelectedPaymentMethods.length !== selectedPaymentMethods.length) {
-      setSelectedPaymentMethods(validSelectedPaymentMethods)
-    }
+    setSelectedPaymentMethods((current: string[]) => {
+      const next = current.filter((id: string) => compatiblePaymentMethodIds.has(id))
+      return areStringArraysEqual(current, next) ? current : next
+    })
 
-    if (validTempSelectedPaymentMethods.length !== tempSelectedPaymentMethods.length) {
-      setTempSelectedPaymentMethods(validTempSelectedPaymentMethods)
-    }
-  }, [filteredPaymentMethods, selectedPaymentMethods, tempSelectedPaymentMethods])
+    setTempSelectedPaymentMethods((current: string[]) => {
+      const next = current.filter((id: string) => compatiblePaymentMethodIds.has(id))
+      return areStringArraysEqual(current, next) ? current : next
+    })
+  }, [filteredPaymentMethods])
 
   if (!isOpen && !isAnimating) return null
 
