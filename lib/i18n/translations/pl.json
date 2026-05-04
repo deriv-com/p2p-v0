@@ -95,6 +95,8 @@
     "orderExists": "Masz już aktywne zamówienie dla tego ogłoszenia. Dokończ istniejące zamówienie przed złożeniem nowego.",
     "orderCreationError": "Podczas tworzenia zamówienia wystąpił błąd. Spróbuj ponownie.",
     "unableToCreateOrder": "Nie można utworzyć zamówienia",
+    "verificationLockedTitle": "Weryfikacja zablokowana",
+    "verificationLockedDescription": "Zbyt wiele nieprawidłowych prób weryfikacji. Spróbuj ponownie za 1 godzinę.",
     "insufficientFunds": "Niewystarczające środki",
     "insufficientFundsDescription": "W tej chwili nie ma wystarczających środków, aby złożyć to zamówienie. Spróbuj ponownie później lub wybierz inne ogłoszenie.",
     "viewOtherAds": "Zobacz inne ogłoszenia",

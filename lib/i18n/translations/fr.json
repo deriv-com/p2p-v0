@@ -88,6 +88,8 @@
     "orderExists": "La commande existe déjà.",
     "orderCreationError": "Une erreur s'est produite lors de la création de la commande. Veuillez réessayer.",
     "unableToCreateOrder": "Impossible de créer une commande",
+    "verificationLockedTitle": "Vérification verrouillée",
+    "verificationLockedDescription": "Il y a eu trop de tentatives de vérification incorrectes. Réessayez dans 1 heure.",
     "insufficientFunds": "Fonds insuffisants",
     "insufficientFundsDescription": "Il n'y a pas suffisamment de fonds pour passer cette commande pour l'instant. Réessayez plus tard ou choisissez une autre annonce.",
     "viewOtherAds": "Voir d'autres annonces",

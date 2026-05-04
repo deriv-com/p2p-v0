@@ -96,6 +96,8 @@
     "orderExists": "You already have an active order for this ad. Complete the existing order before placing a new one.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
     "unableToCreateOrder": "Unable to create an order",
+    "verificationLockedTitle": "Verification locked",
+    "verificationLockedDescription": "There were too many incorrect verification attempts. Try again in 1 hour.",
     "insufficientFunds": "Not enough funds",
     "insufficientFundsDescription": "There aren't enough funds to place this order right now. Try again later or choose another ad.",
     "viewOtherAds": "View other ads",
