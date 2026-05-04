@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useTrackers } from "@/analytics/useTrackers"
 
 interface ShareAdPageProps {
   ad: Ad
@@ -17,6 +18,7 @@ interface ShareAdPageProps {
 
 export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const { t } = useTranslations()
+  const { track } = useTrackers()
   const { toast } = useToast()
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
@@ -52,6 +54,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }, [ad.id, toast, t])
 
   const handleShare = async (platform: string) => {
+    track("ek_share_methods_share_ad", { method_name: platform })
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     const rateValue = ad?.exchange_rate_type === "float"
@@ -105,6 +108,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
   const handleSaveImage = async () => {
     if (!cardRef.current) return
+    track("ek_save_image_share_ad")
 
     try {
       await waitForImages(cardRef.current)
@@ -122,6 +126,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       link.style.display = "none"
       document.body.appendChild(link)
       link.click()
+      track("ek_image_saved_share_ad")
 
       setTimeout(() => {
         document.body.removeChild(link)
@@ -162,6 +167,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
   const handleShareImage = async () => {
     if (!cardRef.current) return
+    track("ek_share_image_share_ad")
 
     await new Promise((r) => setTimeout(r, 300))
     await waitForImages(cardRef.current)
@@ -186,6 +192,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           title: "",
           files: [file],
         })
+        track("ek_image_shared_share_ad")
         toast({ description: t("shareAdPage.sharedSuccessfully") })
         return
       }
@@ -209,7 +216,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     <div className="fixed inset-0 z-50 bg-white">
       <div className="flex flex-col h-full max-w-xl mx-auto">
         <div className="flex items-center justify-end py-[12px] px-4 md:p-6 md:pb-4">
-          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+          <Button onClick={() => { track("ek_close_share_ad"); onClose() }} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>

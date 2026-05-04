@@ -213,7 +213,7 @@ export async function getSession(): Promise<boolean> {
     })
 
     const result = await response.json()
-    const externalId = result?.data?.identity?.external_id
+    const externalId = result?.identity?.external_id
     if (externalId) useUserDataStore.getState().setExternalId(externalId)
 
     const verifiableAddresses = result?.identity?.verifiable_addresses || []
@@ -244,7 +244,6 @@ export async function logout(): Promise<void> {
     }
 
     useUserDataStore.getState().clearUserData()
-
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")
     window.location.href = "/"

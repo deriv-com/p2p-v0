@@ -17,6 +17,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useTrackers } from "@/analytics/useTrackers"
 
 interface Currency {
   code: string
@@ -75,6 +76,7 @@ export default function WalletSummary({
   onTransactionSelect,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
+  const { track } = useTrackers()
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
@@ -258,6 +260,7 @@ export default function WalletSummary({
 
   const handleTransferClick = () => {
     if (!hasBalance) return
+    track("ek_transfer_wallets")
 
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("TRANSFER")
