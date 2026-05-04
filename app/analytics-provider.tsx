@@ -29,7 +29,11 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const hasIdentified = useRef(false);
 
   useEffect(() => {
-    if (!externalId || hasIdentified.current) return;
+    if (!externalId) {
+      hasIdentified.current = false;
+      return;
+    }
+    if (hasIdentified.current) return;
     hasIdentified.current = true;
 
     identifyEvent({
