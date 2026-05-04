@@ -25,7 +25,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
         <div className="px-4 py-3">
             {/* Row 1: Advertiser info */}
             <div className="flex items-center">
-                <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl mr-[8px]">
+                <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-xl mr-[8px]">
                     {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                     <div className={`absolute bottom-0 right-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`} />
                 </div>
