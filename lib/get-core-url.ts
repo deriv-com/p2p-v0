@@ -1,8 +1,11 @@
+import { getDerivTld, isDerivOrigin } from "@/lib/deriv-origin"
+
+const LOCAL_CORE_PROXY_URL = "/api/proxy/api"
+
 /**
- * Get the correct core URL based on the current domain
- * - .com domain → NEXT_PUBLIC_CORE_URL
- * - .me domain → NEXT_PUBLIC_CORE_ME_URL
- * - .be domain → NEXT_PUBLIC_CORE_BE_URL
+ * Get the correct Core URL based on the current domain.
+ * - localhost / preview hosts → same-origin BFF proxy to avoid CORS
+ * - Deriv domains → direct upstream URL
  */
 export function getCoreUrl(): string {
   if (typeof window === "undefined") {
@@ -10,10 +13,12 @@ export function getCoreUrl(): string {
     return process.env.NEXT_PUBLIC_CORE_URL || ""
   }
 
-  const domain = window.location.hostname
-  const tld = domain.split(".").pop()?.toLowerCase()
+  const hostname = window.location.hostname
+  if (!isDerivOrigin(hostname)) {
+    return LOCAL_CORE_PROXY_URL
+  }
 
-  switch (tld) {
+  switch (getDerivTld(hostname)) {
     case "me":
       return process.env.NEXT_PUBLIC_CORE_ME_URL || process.env.NEXT_PUBLIC_CORE_URL || ""
     case "be":

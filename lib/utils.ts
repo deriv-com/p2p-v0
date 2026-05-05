@@ -706,6 +706,14 @@ export const getLoginUrl = (isV1Signup = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   const currentDomain = typeof window !== "undefined" ? window.location.hostname : ""
 
+  if (
+    currentDomain === "localhost" ||
+    currentDomain === "127.0.0.1" ||
+    currentDomain.endsWith(".localhost")
+  ) {
+    return "/login"
+  }
+
   let domain = "deriv.com"
   if (currentDomain.includes("deriv.me")) {
     domain = "deriv.me"
