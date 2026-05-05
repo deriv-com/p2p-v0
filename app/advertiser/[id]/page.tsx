@@ -99,7 +99,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const { t } = useTranslations()
   const queryClient = useQueryClient()
 
-  const { isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel } = useWebSocketContext()
+  const { isConnected, subscribe, joinUsersOnlineChannel, leaveUsersOnlineChannel, joinAdvertsChannel, leaveAdvertsChannel } = useWebSocketContext()
 
   const currentIdRef = useRef(id)
   useEffect(() => { currentIdRef.current = id }, [id])
@@ -216,6 +216,60 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       leaveUsersOnlineChannel()
     }
   }, [isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
+
+  useEffect(() => {
+    if (!isConnected || !adverts.length) return
+
+    const uniqueChannels = [
+      ...new Map(
+        adverts.map((ad) => [`${ad.account_currency}|${ad.payment_currency}|${ad.type}`, ad])
+      ).values(),
+    ]
+
+    uniqueChannels.forEach(({ account_currency, payment_currency, type }) => {
+      joinAdvertsChannel(account_currency, payment_currency, type)
+    })
+
+    return () => {
+      uniqueChannels.forEach(({ account_currency, payment_currency, type }) => {
+        leaveAdvertsChannel(account_currency, payment_currency, type)
+      })
+    }
+  }, [isConnected, adverts, joinAdvertsChannel, leaveAdvertsChannel])
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.options?.channel?.startsWith("adverts/currency/")) {
+        if (data?.payload?.data?.event === "update" && data?.payload?.data?.advert) {
+          const updatedAdvert = data.payload.data.advert
+
+          queryClient.setQueryData(queryKeys.buySell.advertiserAds(id), (old: any) => {
+            if (!old) return old
+            return {
+              ...old,
+              pages: old.pages.map((page: Advertisement[]) =>
+                page.map((ad) =>
+                  ad.id == updatedAdvert.id
+                    ? {
+                        ...ad,
+                        version: updatedAdvert.version,
+                        effective_rate_display: updatedAdvert.effective_rate_display,
+                        minimum_order_amount: updatedAdvert.minimum_order_amount,
+                        actual_maximum_order_amount: updatedAdvert.actual_maximum_order_amount,
+                        payment_methods: updatedAdvert.payment_methods,
+                        payment_method_names: updatedAdvert.payment_method_names,
+                      }
+                    : ad,
+                ),
+              ),
+            }
+          })
+        }
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
