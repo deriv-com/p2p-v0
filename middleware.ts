@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { getDerivTld, shouldStripCookieDomain } from "@/lib/deriv-origin"
+import { getDerivTld, isDerivOrigin, shouldStripCookieDomain } from "@/lib/deriv-origin"
 
 const AUTH_PROXY_PREFIX = "/api/auth"
 
@@ -102,11 +102,24 @@ function appendSetCookies(target: Headers, upstream: Headers, hostname: string):
   }
 }
 
-export async function middleware(request: NextRequest) {
-  const upstreamPath = getUpstreamAuthPath(request.nextUrl.pathname)
-  if (!upstreamPath) return NextResponse.next()
+function getHomeLoginUrl(hostname: string): string {
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
+  const tld = getDerivTld(hostname)
+  return isProduction
+    ? `https://home.deriv.${tld}/dashboard/login`
+    : `https://staging-home.deriv.${tld}/dashboard/login`
+}
 
+export async function middleware(request: NextRequest) {
   const hostname = request.nextUrl.hostname
+  const { pathname } = request.nextUrl
+
+  if (pathname === "/login" && isDerivOrigin(hostname)) {
+    return NextResponse.redirect(getHomeLoginUrl(hostname), { status: 302 })
+  }
+
+  const upstreamPath = getUpstreamAuthPath(pathname)
+  if (!upstreamPath) return NextResponse.next()
   const authBaseUrl = getAuthBaseUrl(hostname)
   const upstreamUrl = `${authBaseUrl}${upstreamPath}${request.nextUrl.search}`
 
@@ -137,5 +150,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/auth/:path*"],
+  matcher: ["/api/auth/:path*", "/login"],
 }
