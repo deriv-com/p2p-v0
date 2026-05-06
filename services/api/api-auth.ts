@@ -82,38 +82,6 @@ const getAuthHeader = () => ({
   "Content-Type": "application/json",
 })
 
-const getAllowedOryOrigins = () =>
-  [
-    process.env.NEXT_PUBLIC_ORY_URL,
-    process.env.NEXT_PUBLIC_ORY_ME_URL,
-    process.env.NEXT_PUBLIC_ORY_BE_URL,
-  ].flatMap((url) => {
-    if (!url) return []
-    try {
-      return [new URL(url).origin]
-    } catch {
-      return []
-    }
-  })
-
-const getOryBrowserUrl = (url: string) => {
-  const parsedUrl = new URL(url)
-  if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
-    throw new Error("Unsupported Ory URL protocol")
-  }
-
-  if (!getAllowedOryOrigins().includes(parsedUrl.origin)) {
-    throw new Error("Unexpected Ory URL origin")
-  }
-
-  const oryBaseUrl = getOryUrl()
-  if (oryBaseUrl.startsWith("/")) {
-    return `${oryBaseUrl}${parsedUrl.pathname}${parsedUrl.search}`
-  }
-
-  return parsedUrl.toString()
-}
-
 /**
  * Initiate login with email
  */
@@ -189,7 +157,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const { data } = result
 
       if (data.recovery_link) {
-        const recoveryResponse = await fetch(getOryBrowserUrl(data.recovery_link), {
+        const recoveryResponse = await fetch(data.recovery_link, {
           method: "GET",
           redirect: "manual",
           credentials: "include",
