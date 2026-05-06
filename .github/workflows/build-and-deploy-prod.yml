@@ -37,11 +37,6 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Replace placeholders in wrangler.toml
-              run: |
-                sed -i "s/PROJECT_NAME/${{ secrets.CLOUDFLARE_PROJECT_NAME }}/g" wrangler.toml
-              shell: bash
-
             - name: Debug TypeScript version
               run: pnpm exec tsc --version
 
@@ -89,6 +84,11 @@ jobs:
             - name: Prepare Pages deployment bundle
               run: |
                 cp .open-next/worker.js .open-next/assets/_worker.js
+
+            - name: Replace placeholders in wrangler.toml
+              run: |
+                sed -i "s/PROJECT_NAME/${{ secrets.CLOUDFLARE_PROJECT_NAME }}/g" wrangler.toml
+              shell: bash
 
             - name: Publish to Cloudflare Pages
               uses: "deriv-com/shared-actions/.github/actions/publish_to_pages_branch@master"

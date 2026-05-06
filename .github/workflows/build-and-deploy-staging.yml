@@ -35,11 +35,6 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Replace placeholders in wrangler.toml
-              run: |
-                sed -i "s/PROJECT_NAME/${{ secrets.CLOUDFLARE_PROJECT_NAME }}/g" wrangler.toml
-              shell: bash
-
             - name: Build for Cloudflare
               run: pnpm run cf:build
               env:
@@ -84,6 +79,11 @@ jobs:
             - name: Prepare Pages deployment bundle
               run: |
                 cp .open-next/worker.js .open-next/assets/_worker.js
+
+            - name: Replace placeholders in wrangler.toml
+              run: |
+                sed -i "s/PROJECT_NAME/${{ secrets.CLOUDFLARE_PROJECT_NAME }}/g" wrangler.toml
+              shell: bash
 
             - name: List output folder contents for debugging
               run: ls -lR .open-next/assets
