@@ -468,16 +468,16 @@ export async function sendChatMessage(
     })
 
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true, message: { content: message, time: new Date().toISOString() } }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
     }
 
     if (!response.ok) {
-      const errorCode = data?.errors?.[0]?.code ?? response.statusText
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
       throw new Error(errorCode)
     }
 
@@ -485,8 +485,8 @@ export async function sendChatMessage(
 
     return {
       success: true,
-      message: data.data ||
-        data.message || {
+      message: data?.data ||
+        data?.message || {
         id: Date.now().toString(),
         orderId,
         senderId: 0,

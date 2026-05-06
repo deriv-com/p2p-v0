@@ -563,7 +563,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             type: "warning",
             onConfirm: () => {
               track("ek_retry_order_markets_advert_sheet")
-              handleSubmit()
             },
           })
         } else if (errorCode === "AdvertiserTempUnavailable") {
@@ -579,7 +578,6 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             },
             onCancel: () => {
               track("ek_retry_order_markets_advert_sheet")
-              handleSubmit()
             },
           })
         } else if (errorCode === "v1WithdrawalLimit") {
