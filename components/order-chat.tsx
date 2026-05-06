@@ -95,6 +95,16 @@ export default function OrderChat({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
+  const showOrderTempLockedAlert = () => {
+    showAlert({
+      title: t("order.tempLockedTitle"),
+      description: t("order.tempLockedDescription"),
+      confirmText: t("order.tryAgain"),
+      cancelText: t("order.goBack"),
+      type: "warning",
+    })
+  }
+
   const handleSendMessage = async () => {
     if (message.trim() === "" || isSending) return
 
@@ -106,6 +116,9 @@ export default function OrderChat({
 
       await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
     } catch (error) {
+      if (error instanceof Error && error.message === "OrderTempLocked") {
+        showOrderTempLockedAlert()
+      }
     } finally {
       setIsSending(false)
     }
@@ -150,6 +163,8 @@ export default function OrderChat({
       } catch (error) {
         if (error instanceof Error && error.message === "OrderChatFileSizeExceeded") {
           showFileTooLargeDialog()
+        } else if (error instanceof Error && error.message === "OrderTempLocked") {
+          showOrderTempLockedAlert()
         }
       } finally {
         setIsSending(false)

@@ -164,23 +164,33 @@ export default function OrderDetailsPage() {
   const handlePayOrder = async () => {
     setIsPaymentLoading(true)
     try {
-      const result = await OrdersAPI.payOrder(orderId)
-      if (result.errors.length == 0) {
-        fetchOrderDetails()
-        setShowPaymentConfirmation(false)
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{t("orderDetails.proofOfTransferSubmitted")}</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
-        })
-      }
+      await OrdersAPI.payOrder(orderId)
+      fetchOrderDetails()
+      setShowPaymentConfirmation(false)
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <span>{t("orderDetails.proofOfTransferSubmitted")}</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
+      })
     } catch (err) {
-      console.error("Error marking payment as sent:", err)
+      const errorCode = err instanceof Error ? err.message : "UnknownError"
+      if (errorCode === "OrderTempLocked") {
+        showAlert({
+          title: t("order.tempLockedTitle"),
+          description: t("order.tempLockedDescription"),
+          confirmText: t("order.tryAgain"),
+          cancelText: t("order.goBack"),
+          type: "warning",
+          onCancel: () => setShowPaymentConfirmation(false),
+        })
+      } else {
+        console.error("Error marking payment as sent:", err)
+      }
     } finally {
       setIsPaymentLoading(false)
     }
@@ -343,8 +353,19 @@ export default function OrderDetailsPage() {
             track("ek_order_cancellation_failed_order_cancel_sheet", { error_code: "cancellation_failed", error_message: "Order cancellation failed" })
           }
         } catch (error) {
-          track("ek_order_cancellation_failed_order_cancel_sheet", { error_code: "network_error", error_message: error instanceof Error ? error.message : "Cancellation failed" })
-          console.error("Failed to cancel order:", error)
+          const errorCode = error instanceof Error ? error.message : "UnknownError"
+          track("ek_order_cancellation_failed_order_cancel_sheet", { error_code: errorCode, error_message: errorCode })
+          if (errorCode === "OrderTempLocked") {
+            showAlert({
+              title: t("order.tempLockedTitle"),
+              description: t("order.tempLockedDescription"),
+              confirmText: t("order.tryAgain"),
+              cancelText: t("order.goBack"),
+              type: "warning",
+            })
+          } else {
+            console.error("Failed to cancel order:", error)
+          }
         }
       },
       type: "warning",
@@ -382,7 +403,18 @@ export default function OrderDetailsPage() {
           fetchOrderDetails()
         }
       } catch (error) {
-        console.error("Failed to complete order:", error)
+        const errorCode = error instanceof Error ? error.message : "UnknownError"
+        if (errorCode === "OrderTempLocked") {
+          showAlert({
+            title: t("order.tempLockedTitle"),
+            description: t("order.tempLockedDescription"),
+            confirmText: t("order.tryAgain"),
+            cancelText: t("order.goBack"),
+            type: "warning",
+          })
+        } else {
+          console.error("Failed to complete order:", error)
+        }
       } finally {
         setIsConfirmLoading(false)
       }

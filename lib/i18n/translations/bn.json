@@ -113,6 +113,9 @@
     "financialAssessmentTitle": "আপনার মূল্যায়ন সম্পন্ন করুন",
     "financialAssessmentDescription": "আরও উত্তোলন করতে আপনার আর্থিক মূল্যায়ন সম্পন্ন করুন।",
     "completeAssessment": "মূল্যায়ন সম্পন্ন করুন",
+    "tempLockedTitle": "একটু অপেক্ষা করুন",
+    "tempLockedDescription": "এই অর্ডারটি আপডেট হচ্ছে। কয়েক সেকেন্ড পরে আবার চেষ্টা করুন।",
+    "goBack": "ফিরে যান",
     "exchangeRateRequiredTitle": "বিনিময় হার যোগ করুন",
     "exchangeRateRequiredDescription": "এই অর্ডারে একটি বিনিময় হার প্রয়োজন। চালিয়ে যেতে সম্মত হার লিখুন।",
     "exchangeRateRequiredCta": "হার লিখুন"

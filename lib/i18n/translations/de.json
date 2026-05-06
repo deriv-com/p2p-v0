@@ -113,6 +113,9 @@
     "financialAssessmentTitle": "Schließe deine Bewertung ab",
     "financialAssessmentDescription": "Schließe deine Finanzbewertung ab, um mehr Auszahlungen vorzunehmen.",
     "completeAssessment": "Bewertung abschließen",
+    "tempLockedTitle": "Einen Moment bitte",
+    "tempLockedDescription": "Diese Bestellung wird gerade aktualisiert. Versuche es in wenigen Sekunden erneut.",
+    "goBack": "Zurück",
     "exchangeRateRequiredTitle": "Wechselkurs hinzufügen",
     "exchangeRateRequiredDescription": "Diese Bestellung benötigt einen Wechselkurs. Geben Sie den vereinbarten Kurs ein, um fortzufahren.",
     "exchangeRateRequiredCta": "Kurs eingeben"

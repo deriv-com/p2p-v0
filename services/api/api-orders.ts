@@ -124,17 +124,18 @@ export async function getOrderById(id: string): Promise<Order> {
       credentials: "include",
     })
 
-    if (!response.ok) {
-      throw new Error(`Error fetching order: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = {}
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
+    }
+
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
     }
 
     return data
@@ -157,20 +158,21 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
       headers,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error marking payment as sent: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
     }
 
-    return data
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
+    }
+
+    return data ?? { success: true }
   } catch (error) {
     throw error
   }
@@ -190,20 +192,21 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
       headers,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error releasing payment: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
     }
 
-    return data
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
+    }
+
+    return data ?? { success: true }
   } catch (error) {
     throw error
   }
@@ -223,17 +226,18 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
       headers,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error cancelling order: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
+    }
+
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
     }
 
     return { success: true }
@@ -262,20 +266,21 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
       body,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error disputing order: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
     }
 
-    return data
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
+    }
+
+    return data ?? { success: true }
   } catch (error) {
     throw error
   }
@@ -335,20 +340,21 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
       headers,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error paying for order: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
     }
 
-    return data
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
+    }
+
+    return data ?? { success: true }
   } catch (error) {
     throw error
   }
@@ -378,20 +384,21 @@ export async function reviewOrder(
       body,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error reviewing order: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
-    let data
+    let data: any = null
 
     try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true, errors: [] }
+      data = responseText ? JSON.parse(responseText) : null
+    } catch {
+      data = null
     }
 
-    return data
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code || response.statusText || "UnknownError"
+      throw new Error(errorCode)
+    }
+
+    return data ?? { success: true, errors: [] }
   } catch (error) {
     throw error
   }

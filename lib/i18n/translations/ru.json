@@ -114,6 +114,9 @@
     "financialAssessmentTitle": "Пройдите финансовую оценку",
     "financialAssessmentDescription": "Пройдите финансовую оценку, чтобы делать больше выводов.",
     "completeAssessment": "Пройти оценку",
+    "tempLockedTitle": "Подождите немного",
+    "tempLockedDescription": "Этот ордер обновляется. Повторите попытку через несколько секунд.",
+    "goBack": "Назад",
     "exchangeRateRequiredTitle": "Добавить обменный курс",
     "exchangeRateRequiredDescription": "Для этого заказа требуется обменный курс. Введите согласованный курс, чтобы продолжить.",
     "exchangeRateRequiredCta": "Ввести курс"
