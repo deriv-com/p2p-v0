@@ -11,6 +11,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import { getChatErrorMessage, formatTime } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 type Message = {
   attachment: {
@@ -45,6 +46,7 @@ export default function OrderChat({
   counterpartyLastOnlineAt,
 }: OrderChatProps) {
   const { t } = useTranslations()
+  const { showAlert } = useAlertDialog()
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -52,6 +54,7 @@ export default function OrderChat({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
+  const maxFileSizeBytes = 5 * 1024 * 1024 // 5 MB
 
   const { isConnected, getChatHistory, subscribe } = useWebSocketContext()
 
@@ -115,10 +118,29 @@ export default function OrderChat({
     }
   }
 
+  const showFileTooLargeDialog = () => {
+    showAlert({
+      title: t("chat.fileTooLargeTitle"),
+      description: t("chat.fileTooLargeDescription"),
+      confirmText: t("chat.chooseAnotherFile"),
+      cancelText: t("common.cancel"),
+      type: "warning",
+      onConfirm: () => {
+        fileInputRef.current?.click()
+      },
+    })
+  }
+
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files && files.length > 0) {
       const file = files[0]
+
+      if (file.size > maxFileSizeBytes) {
+        if (fileInputRef.current) fileInputRef.current.value = ""
+        showFileTooLargeDialog()
+        return
+      }
 
       setIsSending(true)
 
@@ -126,6 +148,9 @@ export default function OrderChat({
         const base64 = await fileToBase64(file)
         await OrdersAPI.sendChatMessage(orderId, "", base64)
       } catch (error) {
+        if (error instanceof Error && error.message === "OrderChatFileSizeExceeded") {
+          showFileTooLargeDialog()
+        }
       } finally {
         setIsSending(false)
         if (fileInputRef.current) {

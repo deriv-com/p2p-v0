@@ -467,10 +467,6 @@ export async function sendChatMessage(
       body,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error sending message: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
     let data
 
@@ -478,6 +474,11 @@ export async function sendChatMessage(
       data = JSON.parse(responseText)
     } catch (e) {
       data = { success: true, message: { content: message, time: new Date().toISOString() } }
+    }
+
+    if (!response.ok) {
+      const errorCode = data?.errors?.[0]?.code ?? response.statusText
+      throw new Error(errorCode)
     }
 
     const time = new Date().toISOString()

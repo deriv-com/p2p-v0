@@ -695,6 +695,14 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
           : `https://${baseUrl}/dashboard/onboarding/verify?is_from_p2p=true&${fromParam}`
       }
     }
+  } else if (section === "financialAssessment") {
+    if (isV1Signup) {
+      url = isProduction
+        ? `https://app.${domain}/account/financial-assessment`
+        : `https://staging-app.${domain}/account/financial-assessment`
+    } else {
+      url = `https://${baseUrl}/dashboard/profile/financial-assessment`
+    }
   } else {
     url = baseUrl
   }

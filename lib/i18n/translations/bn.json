@@ -100,6 +100,19 @@
     "userReadOnlyDescription": "আপনি আপনার বিদ্যমান P2P অর্ডারগুলি দেখতে পারবেন, কিন্তু এখন বিজ্ঞাপন তৈরি বা আপডেট করতে বা নতুন অর্ডার দিতে পারবেন না। সাহায্যের প্রয়োজন হলে আমাদের সাথে যোগাযোগ করুন।",
     "userReadOnlyOpenChat": "লাইভ চ্যাট খুলুন",
     "userReadOnlyMaybeLater": "হয়তো পরে",
+    "duplicateRequestTitle": "অর্ডার ইতিমধ্যে জমা দেওয়া হয়েছে",
+    "duplicateRequestDescription": "এই অর্ডারটি দুবার পাঠানো হয়েছে। আবার চেষ্টা করার আগে আপনার অর্ডারগুলি পরীক্ষা করুন।",
+    "viewMyOrders": "আমার অর্ডার দেখুন",
+    "migrationInProgressTitle": "অ্যাকাউন্ট আপডেট চলছে",
+    "migrationInProgressDescription": "আমরা আপনার অ্যাকাউন্ট আপডেট করছি। কয়েক মিনিট পরে আবার চেষ্টা করুন।",
+    "advertiserTempUnavailableTitle": "বিক্রেতা অনুপলব্ধ",
+    "advertiserTempUnavailableDescription": "এই বিক্রেতার অ্যাকাউন্ট আপডেট হচ্ছে। শীঘ্রই আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
+    "withdrawalLimitTitle": "উত্তোলন সীমা পৌঁছেছে",
+    "withdrawalLimitDescription": "আরও উত্তোলন করতে আপনার অ্যাকাউন্ট যাচাই করুন।",
+    "verifyAccount": "অ্যাকাউন্ট যাচাই করুন",
+    "financialAssessmentTitle": "আপনার মূল্যায়ন সম্পন্ন করুন",
+    "financialAssessmentDescription": "আরও উত্তোলন করতে আপনার আর্থিক মূল্যায়ন সম্পন্ন করুন।",
+    "completeAssessment": "মূল্যায়ন সম্পন্ন করুন",
     "exchangeRateRequiredTitle": "বিনিময় হার যোগ করুন",
     "exchangeRateRequiredDescription": "এই অর্ডারে একটি বিনিময় হার প্রয়োজন। চালিয়ে যেতে সম্মত হার লিখুন।",
     "exchangeRateRequiredCta": "হার লিখুন"
@@ -193,7 +206,10 @@
     "errorFakeIdentity": "কখনোই পাসওয়ার্ড, OTP বা লগইন শংসাপত্র শেয়ার করবেন না। Deriv স্টাফ চ্যাটে এই তথ্য কখনোই চাইবে না।",
     "errorSensitiveDataRequests": "আপনার বার্তার অতিরিক্ত পর্যালোচনা প্রয়োজন। অনুগ্রহ করে অপেক্ষা করুন যখন আমরা আপনাকে একজন বিশেষজ্ঞের সাথে সংযুক্ত করি।",
     "errorMiscellaneous": "আপনার বার্তা আমাদের সম্প্রদায়ের নির্দেশিকা পূরণ করে না। অনুগ্রহ করে আবার চেষ্টা করুন।",
-    "errorMultipleViolations": "এটি আমাদের চ্যাট নির্দেশিকা লঙ্ঘন করে।"
+    "errorMultipleViolations": "এটি আমাদের চ্যাট নির্দেশিকা লঙ্ঘন করে।",
+    "fileTooLargeTitle": "ফাইলটি অনেক বড়",
+    "fileTooLargeDescription": "সংযুক্তিগুলি ৫ MB বা তার কম হতে হবে। ফাইলটি সংকুচিত করুন বা একটি ছোট ফাইল পাঠান।",
+    "chooseAnotherFile": "অন্য ফাইল বেছে নিন"
   },
   "orderDetails": {
     "title": "অর্ডার বিবরণ",

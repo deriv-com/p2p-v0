@@ -101,6 +101,19 @@
     "userReadOnlyDescription": "Вы можете просматривать существующие P2P-заказы, но сейчас не можете создавать или обновлять объявления и размещать новые заказы. Свяжитесь с нами, если вам нужна помощь.",
     "userReadOnlyOpenChat": "Открыть онлайн-чат",
     "userReadOnlyMaybeLater": "Может быть позже",
+    "duplicateRequestTitle": "Заказ уже отправлен",
+    "duplicateRequestDescription": "Этот заказ был отправлен дважды. Проверьте свои заказы перед повторной попыткой.",
+    "viewMyOrders": "Посмотреть мои заказы",
+    "migrationInProgressTitle": "Обновление аккаунта выполняется",
+    "migrationInProgressDescription": "Мы обновляем ваш аккаунт. Повторите попытку через несколько минут.",
+    "advertiserTempUnavailableTitle": "Продавец недоступен",
+    "advertiserTempUnavailableDescription": "Аккаунт этого продавца обновляется. Повторите попытку позже или выберите другое объявление.",
+    "withdrawalLimitTitle": "Достигнут лимит вывода",
+    "withdrawalLimitDescription": "Верифицируйте аккаунт, чтобы делать больше выводов.",
+    "verifyAccount": "Верифицировать аккаунт",
+    "financialAssessmentTitle": "Пройдите финансовую оценку",
+    "financialAssessmentDescription": "Пройдите финансовую оценку, чтобы делать больше выводов.",
+    "completeAssessment": "Пройти оценку",
     "exchangeRateRequiredTitle": "Добавить обменный курс",
     "exchangeRateRequiredDescription": "Для этого заказа требуется обменный курс. Введите согласованный курс, чтобы продолжить.",
     "exchangeRateRequiredCta": "Ввести курс"
@@ -194,7 +207,10 @@
     "errorFakeIdentityDescription": "Никогда не делитесь паролями, OTP или учетными данными для входа. Сотрудники Deriv никогда не будут запрашивать эту информацию в чате.",
     "errorSensitiveDataRequests": "Ваше сообщение требует дополнительной проверки. Пожалуйста, подождите, пока мы свяжем вас со специалистом.",
     "errorMiscellaneous": "Ваше сообщение не соответствует нашим правилам сообщества. Пожалуйста, попробуйте снова.",
-    "errorMultipleViolations": "Оно нарушает наши правила чата."
+    "errorMultipleViolations": "Оно нарушает наши правила чата.",
+    "fileTooLargeTitle": "Файл слишком большой",
+    "fileTooLargeDescription": "Вложения должны быть размером не более 5 МБ. Сожмите файл или отправьте меньший.",
+    "chooseAnotherFile": "Выбрать другой файл"
   },
   "orderDetails": {
     "title": "Детали заказа",
