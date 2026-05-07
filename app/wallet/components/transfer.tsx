@@ -21,7 +21,7 @@ import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useTrackers } from "@/analytics/useTrackers"
-import { getWalletTransferRejectionInfo, type WalletWithdrawalRejectionCta } from "@/lib/wallet-transfer"
+import { getWalletTransferRejectionInfo, type WalletTransferApiError, type WalletWithdrawalRejectionCta } from "@/lib/wallet-transfer"
 
 interface TransferProps {
   currencySelected?: string
@@ -476,6 +476,35 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     toConfirm()
   }
 
+  const handleTransferFailure = (
+    errorObj: WalletTransferApiError | null,
+    overrideMessage?: string,
+    overrideErrorCode?: string,
+  ) => {
+    const rejectionInfo = errorObj ? getWalletTransferRejectionInfo(errorObj) : null
+    const errorMessage = overrideMessage || rejectionInfo?.message || errorObj?.message || "An error occurred during the transfer."
+    setTransferErrorMessage(errorMessage)
+    setTransferRejectionCta(rejectionInfo?.cta ?? null)
+    setShowDesktopConfirmPopup(false)
+    setShowMobileConfirmSheet(false)
+    track("ek_transfer_failed_confirm_transfer_sheet", {
+      error_code: overrideErrorCode ?? rejectionInfo?.code ?? "transfer_failed",
+      error_message: errorMessage,
+    })
+    toUnsuccessful()
+  }
+
+  const handleTransferSuccess = (data: any) => {
+    if (data?.external_reference_id) {
+      setExternalReferenceId(data.external_reference_id)
+    }
+    queryClient.invalidateQueries({ queryKey: queryKeys.auth.totalBalance() })
+    setShowDesktopConfirmPopup(false)
+    setShowMobileConfirmSheet(false)
+    track("ek_transfer_successful_confirm_transfer_sheet")
+    toSuccess()
+  }
+
   const handleConfirmTransfer = async () => {
     if (!transferAmount || !sourceWalletData || !destinationWalletData) {
       console.error("Missing required transfer data")
@@ -524,43 +553,18 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         result = await walletTransfer(transferParams)
       }
 
-      if (result?.errors && result.errors.length > 0) {
-        const rejectionInfo = getWalletTransferRejectionInfo(result.errors[0])
-        const errorMessage = rejectionInfo?.message || result.errors[0]?.message || "An error occurred during the transfer."
-        setTransferErrorMessage(errorMessage)
-        setTransferRejectionCta(rejectionInfo?.cta ?? null)
-        setShowDesktopConfirmPopup(false)
-        setShowMobileConfirmSheet(false)
-        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: rejectionInfo?.code ?? "transfer_failed", error_message: errorMessage })
-        toUnsuccessful()
-      } else if (!result?.data?.errors || result.data.errors.length === 0) {
-        if (result?.data?.external_reference_id) {
-          setExternalReferenceId(result.data.external_reference_id)
-        }
-        // Invalidate total balance cache after successful transfer
-        queryClient.invalidateQueries({ queryKey: queryKeys.auth.totalBalance() })
-        setShowDesktopConfirmPopup(false)
-        setShowMobileConfirmSheet(false)
-        track("ek_transfer_successful_confirm_transfer_sheet")
-        toSuccess()
+      if (result?.errors?.length > 0) {
+        handleTransferFailure(result.errors[0])
+      } else if (result?.data?.errors?.length > 0) {
+        handleTransferFailure(result.data.errors[0])
+      } else if (result?.data) {
+        handleTransferSuccess(result.data)
       } else {
-        const rejectionInfo = getWalletTransferRejectionInfo(result.data.errors[0])
-        const errorMessage = rejectionInfo?.message || result.data.errors[0]?.message || "An error occurred during the transfer."
-        setTransferErrorMessage(errorMessage)
-        setTransferRejectionCta(rejectionInfo?.cta ?? null)
-        setShowDesktopConfirmPopup(false)
-        setShowMobileConfirmSheet(false)
-        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: rejectionInfo?.code ?? "transfer_failed", error_message: errorMessage })
-        toUnsuccessful()
+        handleTransferFailure(null)
       }
     } catch (error) {
       console.error("Error during transfer:", error)
-      const transferErrorMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again."
-      setTransferErrorMessage("An unexpected error occurred. Please try again.")
-      setShowDesktopConfirmPopup(false)
-      setShowMobileConfirmSheet(false)
-      track("ek_transfer_failed_confirm_transfer_sheet", { error_code: "network_error", error_message: transferErrorMessage })
-      toUnsuccessful()
+      handleTransferFailure(null, "An unexpected error occurred. Please try again.", "network_error")
     } finally {
       setIsSubmitting(false)
     }
