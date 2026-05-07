@@ -15,22 +15,17 @@ function getRequiredHttpUrl(envName: string): string {
 }
 
 const nextConfig: NextConfig = {
+  experimental: {
+    turbo: false,
+  },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
     unoptimized: true,
-  },
-  turbopack: {
-    rules: {
-      "*.svg": {
-        loaders: ["@svgr/webpack"],
-        as: "*.js",
-      },
-    },
   },
   async rewrites() {
     const coreBaseUrl = getRequiredHttpUrl("NEXT_PUBLIC_CORE_URL")
