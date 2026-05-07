@@ -21,6 +21,7 @@ import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useTrackers } from "@/analytics/useTrackers"
+import { getWalletTransferRejectionInfo, type WalletWithdrawalRejectionCta } from "@/lib/wallet-transfer"
 
 interface TransferProps {
   currencySelected?: string
@@ -145,6 +146,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [requestId, setRequestId] = useState<string | null>(null)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
   const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null)
+  const [transferRejectionCta, setTransferRejectionCta] = useState<WalletWithdrawalRejectionCta | null>(null)
 
   const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
   const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
@@ -523,11 +525,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       }
 
       if (result?.errors && result.errors.length > 0) {
-        const errorMessage = result.errors[0]?.message || "An error occurred during the transfer."
+        const rejectionInfo = getWalletTransferRejectionInfo(result.errors[0])
+        const errorMessage = rejectionInfo?.message || result.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
+        setTransferRejectionCta(rejectionInfo?.cta ?? null)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
-        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: "transfer_failed", error_message: errorMessage })
+        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: rejectionInfo?.code ?? "transfer_failed", error_message: errorMessage })
         toUnsuccessful()
       } else if (!result?.data?.errors || result.data.errors.length === 0) {
         if (result?.data?.external_reference_id) {
@@ -540,11 +544,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         track("ek_transfer_successful_confirm_transfer_sheet")
         toSuccess()
       } else {
-        const errorMessage = result.data.errors[0]?.message || "An error occurred during the transfer."
+        const rejectionInfo = getWalletTransferRejectionInfo(result.data.errors[0])
+        const errorMessage = rejectionInfo?.message || result.data.errors[0]?.message || "An error occurred during the transfer."
         setTransferErrorMessage(errorMessage)
+        setTransferRejectionCta(rejectionInfo?.cta ?? null)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
-        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: "transfer_failed", error_message: errorMessage })
+        track("ek_transfer_failed_confirm_transfer_sheet", { error_code: rejectionInfo?.code ?? "transfer_failed", error_message: errorMessage })
         toUnsuccessful()
       }
     } catch (error) {
@@ -593,8 +599,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     setSelectedCurrency(null)
     setExternalReferenceId(null)
     setRequestId(null)
+    setTransferErrorMessage(null)
+    setTransferRejectionCta(null)
 
     onClose()
+  }
+
+  const handleOpenLiveChat = () => {
+    if (typeof window !== "undefined" && (window as any).Intercom) {
+      ;(window as any).Intercom("show")
+    }
   }
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
@@ -1800,8 +1814,104 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     )
   }
 
+  const renderUnsuccessfulCtaDesktop = () => {
+    const primary = "w-[276px] h-12 px-7 flex justify-center items-center gap-2"
+    const secondary = "w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+
+    if (transferRejectionCta === "contact_us") {
+      return (
+        <div className="hidden md:flex justify-center mt-6">
+          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "got_it") {
+      return (
+        <div className="hidden md:flex justify-center mt-6">
+          <Button onClick={handleDoneClick} className={primary}>{t("wallet.gotIt")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "deposit_now") {
+      return (
+        <div className="hidden md:flex justify-center mt-6">
+          <Button onClick={handleDoneClick} className={primary}>{t("wallet.depositNow")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "change_method" || transferRejectionCta === "make_changes") {
+      return (
+        <div className="hidden md:flex justify-center mt-6">
+          <Button onClick={handleDoneClick} className={primary}>{t("wallet.tryAgain")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "got_it_contact_us") {
+      return (
+        <div className="hidden md:flex gap-4 mt-6">
+          <Button onClick={handleDoneClick} className={secondary}>{t("wallet.gotIt")}</Button>
+          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+        </div>
+      )
+    }
+    return (
+      <div className="hidden md:flex gap-4 mt-6">
+        <Button onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }} className={secondary}>{t("wallet.notNow")}</Button>
+        <Button onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className={primary}>{t("wallet.tryAgain")}</Button>
+      </div>
+    )
+  }
+
+  const renderUnsuccessfulCtaMobile = () => {
+    const primary = "w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+    const secondary = "w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+
+    if (transferRejectionCta === "contact_us") {
+      return (
+        <div className="block md:hidden w-full space-y-3">
+          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "got_it") {
+      return (
+        <div className="block md:hidden w-full space-y-3">
+          <Button onClick={handleDoneClick} className={primary}>{t("wallet.gotIt")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "deposit_now") {
+      return (
+        <div className="block md:hidden w-full space-y-3">
+          <Button onClick={handleDoneClick} className={primary}>{t("wallet.depositNow")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "change_method" || transferRejectionCta === "make_changes") {
+      return (
+        <div className="block md:hidden w-full space-y-3">
+          <Button onClick={handleDoneClick} className={primary}>{t("wallet.tryAgain")}</Button>
+        </div>
+      )
+    }
+    if (transferRejectionCta === "got_it_contact_us") {
+      return (
+        <div className="block md:hidden w-full space-y-3">
+          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+          <Button onClick={handleDoneClick} className={secondary}>{t("wallet.gotIt")}</Button>
+        </div>
+      )
+    }
+    return (
+      <div className="block md:hidden w-full space-y-3">
+        <Button onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className={primary}>{t("wallet.tryAgain")}</Button>
+        <Button onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }} className={secondary}>{t("wallet.notNow")}</Button>
+      </div>
+    )
+  }
+
   if (step === "unsuccessful") {
-    const transferText = `${t("wallet.transferUnsuccessfulMessage")}`
+    const transferText = transferErrorMessage || t("wallet.transferUnsuccessfulMessage")
 
     return (
       <div
@@ -1817,32 +1927,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           </div>
           <h1 className="text-white text-center text-2xl font-extrabold mb-4">{t("wallet.transferUnsuccessful")}</h1>
           <p className="text-white text-center text-base font-normal">{transferText}</p>
-          <div className="hidden md:flex gap-4 mt-6">
-            <Button
-              onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }}
-              className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
-            >
-              {t("wallet.notNow")}
-            </Button>
-            <Button onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
-              {t("wallet.tryAgain")}
-            </Button>
-          </div>
+          {renderUnsuccessfulCtaDesktop()}
         </div>
-        <div className="block md:hidden w-full space-y-3">
-          <Button
-            onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }}
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-          >
-            {t("wallet.tryAgain")}
-          </Button>
-          <Button
-            onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }}
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
-          >
-            {t("wallet.notNow")}
-          </Button>
-        </div>
+        {renderUnsuccessfulCtaMobile()}
       </div>
     )
   }

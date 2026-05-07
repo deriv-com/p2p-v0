@@ -404,6 +404,8 @@
     "gotIt": "Entendi",
     "notNow": "Agora não",
     "tryAgain": "Tentar novamente",
+    "contactUs": "Fale conosco",
+    "depositNow": "Deposite agora",
     "p2pWallet": "Carteira P2P",
     "tradingWallet": "Carteira de Trading",
     "minimumTransfer": "A transferência mínima é {amount} {currency}",

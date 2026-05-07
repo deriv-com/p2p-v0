@@ -384,6 +384,8 @@
     "gotIt": "Verstanden",
     "notNow": "Nicht jetzt",
     "tryAgain": "Erneut versuchen",
+    "contactUs": "Kontaktieren Sie uns",
+    "depositNow": "Jetzt einzahlen",
     "p2pWallet": "P2P-Wallet",
     "tradingWallet": "Trading-Wallet",
     "minimumTransfer": "Mindestübertragung beträgt {amount} {currency}",

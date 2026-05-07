@@ -410,6 +410,8 @@
     "gotIt": "확인했습니다",
     "notNow": "나중에",
     "tryAgain": "다시 시도",
+    "contactUs": "문의하기",
+    "depositNow": "지금 입금",
     "p2pWallet": "P2P 지갑",
     "tradingWallet": "거래 지갑",
     "minimumTransfer": "최소 이체 금액은 {amount} {currency}입니다",
