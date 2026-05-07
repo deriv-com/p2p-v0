@@ -385,6 +385,8 @@
     "gotIt": "Понятно",
     "notNow": "Не сейчас",
     "tryAgain": "Попробовать снова",
+    "contactUs": "Свяжитесь с нами",
+    "depositNow": "Пополнить сейчас",
     "p2pWallet": "P2P Кошелек",
     "tradingWallet": "Торговый Кошелек",
     "minimumTransfer": "Минимальный перевод составляет {amount} {currency}",

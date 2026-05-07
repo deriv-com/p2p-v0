@@ -413,6 +413,8 @@
     "gotIt": "Rozumiem",
     "notNow": "Nie teraz",
     "tryAgain": "Spróbuj ponownie",
+    "contactUs": "Skontaktuj się z nami",
+    "depositNow": "Wpłać teraz",
     "p2pWallet": "Portfel P2P",
     "tradingWallet": "Portfel handlowy",
     "minimumTransfer": "Minimalny transfer to {amount} {currency}",

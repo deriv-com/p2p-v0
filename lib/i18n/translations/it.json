@@ -394,6 +394,8 @@
     "gotIt": "Capito",
     "notNow": "Non ora",
     "tryAgain": "Riprova",
+    "contactUs": "Contattaci",
+    "depositNow": "Deposita ora",
     "p2pWallet": "Portafoglio P2P",
     "tradingWallet": "Portafoglio di Trading",
     "minimumTransfer": "Il trasferimento minimo è {amount} {currency}",

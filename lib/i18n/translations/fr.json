@@ -402,6 +402,8 @@
     "gotIt": "Compris",
     "notNow": "Pas maintenant",
     "tryAgain": "Réessayer",
+    "contactUs": "Nous contacter",
+    "depositNow": "Déposer maintenant",
     "p2pWallet": "Portefeuille P2P",
     "tradingWallet": "Portefeuille de Trading",
     "minimumTransfer": "Le transfert minimum est de {amount} {currency}",

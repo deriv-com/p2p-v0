@@ -427,6 +427,8 @@
     "gotIt": "Got it",
     "notNow": "Not now",
     "tryAgain": "Try again",
+    "contactUs": "Contact us",
+    "depositNow": "Deposit now",
     "p2pWallet": "P2P Wallet",
     "tradingWallet": "Trading Wallet",
     "minimumTransfer": "Minimum transfer is {amount} {currency}",
