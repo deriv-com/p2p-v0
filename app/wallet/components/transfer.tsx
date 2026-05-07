@@ -21,7 +21,7 @@ import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useTrackers } from "@/analytics/useTrackers"
-import { getWalletTransferRejectionInfo, type WalletTransferApiError, type WalletWithdrawalRejectionCta } from "@/lib/wallet-transfer"
+import { getWalletTransferRejectionInfo, type WalletTransferApiError, type WalletWithdrawalRejectionAmounts, type WalletWithdrawalRejectionCode, type WalletWithdrawalRejectionCta } from "@/lib/wallet-transfer"
 
 interface TransferProps {
   currencySelected?: string
@@ -147,6 +147,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
   const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null)
   const [transferRejectionCta, setTransferRejectionCta] = useState<WalletWithdrawalRejectionCta | null>(null)
+  const [transferRejectionCode, setTransferRejectionCode] = useState<WalletWithdrawalRejectionCode | null>(null)
+  const [transferRejectionAmounts, setTransferRejectionAmounts] = useState<WalletWithdrawalRejectionAmounts>({})
 
   const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
   const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
@@ -485,6 +487,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     const errorMessage = overrideMessage || rejectionInfo?.message || errorObj?.message || "An error occurred during the transfer."
     setTransferErrorMessage(errorMessage)
     setTransferRejectionCta(rejectionInfo?.cta ?? null)
+    setTransferRejectionCode(rejectionInfo?.code ?? null)
+    setTransferRejectionAmounts(rejectionInfo?.amounts ?? {})
     setShowDesktopConfirmPopup(false)
     setShowMobileConfirmSheet(false)
     track("ek_transfer_failed_confirm_transfer_sheet", {
@@ -1915,7 +1919,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   if (step === "unsuccessful") {
-    const transferText = transferErrorMessage || t("wallet.transferUnsuccessfulMessage")
+    const amounts = Object.fromEntries(
+      Object.entries(transferRejectionAmounts).filter(([, v]) => v !== undefined)
+    ) as Record<string, string>
+    const codeSlug = transferRejectionCode ? transferRejectionCode.toLowerCase() : null
+    const title = codeSlug
+      ? t(`wallet.transfer_wr_err_${codeSlug}_title`)
+      : t("wallet.transferUnsuccessful")
+    const body = codeSlug
+      ? t(`wallet.transfer_wr_err_${codeSlug}_body`, amounts)
+      : transferErrorMessage || t("wallet.transferUnsuccessfulMessage")
 
     return (
       <div
@@ -1929,8 +1942,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           <div className="mb-6">
             <Image src="/icons/failed-transfer.png" alt="Unsuccessful" width={256} height={256} />
           </div>
-          <h1 className="text-white text-center text-2xl font-extrabold mb-4">{t("wallet.transferUnsuccessful")}</h1>
-          <p className="text-white text-center text-base font-normal">{transferText}</p>
+          <h1 className="text-white text-center text-2xl font-extrabold mb-4">{title}</h1>
+          <p className="text-white text-center text-base font-normal">{body}</p>
           {renderUnsuccessfulCtaDesktop()}
         </div>
         {renderUnsuccessfulCtaMobile()}
