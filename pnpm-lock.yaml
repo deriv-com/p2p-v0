@@ -57,8 +57,8 @@ importers:
         specifier: latest
         version: 6.33.0(@datadog/browser-logs@6.33.0)
       '@deriv-com/analytics':
-        specifier: 1.41.1
-        version: 1.41.1
+        specifier: 1.42.1
+        version: 1.42.1
       '@deriv-com/utils':
         specifier: ^0.0.42
         version: 0.0.42
@@ -1082,8 +1082,8 @@ packages:
   '@date-fns/tz@1.4.1':
     resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
 
-  '@deriv-com/analytics@1.41.1':
-    resolution: {integrity: sha512-rtY3y+VtfGae/aLCjzZpJG7w30OBRJtpmUXR4bM+tKzLG0MtMah59tKgSfUP84DwIDvVB+qwiW1PLWB+OTnk8w==}
+  '@deriv-com/analytics@1.42.1':
+    resolution: {integrity: sha512-+6/f4GHccr1d6tzc1OnVh8nAwmVjFoppobOdAHU6tyYkxXXsspYG2WNjPOU91jWrwOWZWbTEK25JWIiYKRoydw==}
     engines: {node: '>=24.13.0', npm: '>=11.7.0'}
 
   '@deriv-com/utils@0.0.42':
@@ -1849,24 +1849,28 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@next/swc-linux-arm64-musl@15.5.15':
     resolution: {integrity: sha512-RwSHKMQ7InLy5GfkY2/n5PcFycKA08qI1VST78n09nN36nUPqCvGSMiLXlfUmzmpQpF6XeBYP2KRWHi0UW3uNg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@next/swc-linux-x64-gnu@15.5.15':
     resolution: {integrity: sha512-nplqvY86LakS+eeiuWsNWvfmK8pFcOEW7ZtVRt4QH70lL+0x6LG/m1OpJ/tvrbwjmR8HH9/fH2jzW1GlL03TIg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@next/swc-linux-x64-musl@15.5.15':
     resolution: {integrity: sha512-eAgl9NKQ84/sww0v81DQINl/vL2IBxD7sMybd0cWRw6wqgouVI53brVRBrggqBRP/NWeIAE1dm5cbKYoiMlqDQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@next/swc-win32-arm64-msvc@15.5.15':
     resolution: {integrity: sha512-GJVZC86lzSquh0MtvZT+L7G8+jMnJcldloOjA8Kf3wXvBrvb6OGe2MzPuALxFshSm/IpwUtD2mIoof39ymf52A==}
@@ -2010,11 +2014,11 @@ packages:
   '@poppinss/exception@1.2.3':
     resolution: {integrity: sha512-dCED+QRChTVatE9ibtoaxc+WkdzOSjYTKi/+uacHWIsfodVfpsueo3+DKpgU5Px8qXjgmXkSvhXvSCz3fnP9lw==}
 
-  '@posthog/core@1.27.5':
-    resolution: {integrity: sha512-sYCcUDuYKumYTjwGqGCPT8aUy086v9PKw5wD+UXCRSfCsxWy5R/ic6W13kGTn4O5B2cD1V19wJv19oIH5kHUiQ==}
+  '@posthog/core@1.28.4':
+    resolution: {integrity: sha512-wmtUYHYqA3zIAKDKvYWRNWAQsWOIBwxV08e+bWzVy0wQQzpaS/LzzRupXWRMRrLOk+1x3JKFxbqA3n0QGvpqsQ==}
 
-  '@posthog/types@1.372.1':
-    resolution: {integrity: sha512-yl2x2HgtdhFk8bvf6HuRSDzXnKmKGrzNxUahKvA/0mcwheweINvmWy5MsN55NevrcCrNXA6m8GPHS9o/y1mn4A==}
+  '@posthog/types@1.372.10':
+    resolution: {integrity: sha512-KuT3vLu3LSFsNWCwasS4gqjH/ysAyIUcB/aJSmKyNhDd/85hAznHRz1eSSl0sMvtsDTYiQIq0I0ybduVbrpPew==}
 
   '@protobufjs/aspromise@1.1.2':
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -2748,24 +2752,28 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rolldown/binding-linux-arm64-musl@1.0.0-beta.59':
     resolution: {integrity: sha512-CCKEk+H+8c0WGe/8n1E20n85Tq4Pv+HNAbjP1KfUXW+01aCWSMjU56ChNrM2tvHnXicfm7QRNoZyfY8cWh7jLQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rolldown/binding-linux-x64-gnu@1.0.0-beta.59':
     resolution: {integrity: sha512-VlfwJ/HCskPmQi8R0JuAFndySKVFX7yPhE658o27cjSDWWbXVtGkSbwaxstii7Q+3Rz87ZXN+HLnb1kd4R9Img==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rolldown/binding-linux-x64-musl@1.0.0-beta.59':
     resolution: {integrity: sha512-kuO92hTRyGy0Ts3Nsqll0rfO8eFsEJe9dGQGktkQnZ2hrJrDVN0y419dMgKy/gB2S2o7F2dpWhpfQOBehZPwVA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rolldown/binding-openharmony-arm64@1.0.0-beta.59':
     resolution: {integrity: sha512-PXAebvNL4sYfCqi8LdY4qyFRacrRoiPZLo3NoUmiTxm7MPtYYR8CNtBGNokqDmMuZIQIecRaD/jbmFAIDz7DxQ==}
@@ -5546,8 +5554,8 @@ packages:
     resolution: {integrity: sha512-W62t/Se6rA0Az3DfCL0AqJwXuKwBeYg6nOaIgzP+xZ7N5BFCI7DYi1qs6ygUYT6rvfi6t9k65UMLJC+PHZpDAA==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.372.1:
-    resolution: {integrity: sha512-gP316wDc36YbieIEW48wfB6wq2ugBNQc+XwNkewN9QRPzhitX+9dG6lUjqHEhMx3A2Y41HjbZf5Vl0Ll0ju8UA==}
+  posthog-js@1.372.10:
+    resolution: {integrity: sha512-ZQslIenDM8UpwKhmeeEnJ+t2nXr8mOIjCG+Ej3DCJnTBk9NX9Sr5RMuwHeGG8UJitwvtGOADyiY7DignOXaZwg==}
 
   preact@10.28.2:
     resolution: {integrity: sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA==}
@@ -7584,11 +7592,11 @@ snapshots:
 
   '@date-fns/tz@1.4.1': {}
 
-  '@deriv-com/analytics@1.41.1':
+  '@deriv-com/analytics@1.42.1':
     dependencies:
       '@rudderstack/analytics-js': 3.31.0
       js-cookie: 3.0.5
-      posthog-js: 1.372.1
+      posthog-js: 1.372.10
     optionalDependencies:
       '@growthbook/growthbook': 1.6.5
 
@@ -8484,11 +8492,11 @@ snapshots:
 
   '@poppinss/exception@1.2.3': {}
 
-  '@posthog/core@1.27.5':
+  '@posthog/core@1.28.4':
     dependencies:
-      '@posthog/types': 1.372.1
+      '@posthog/types': 1.372.10
 
-  '@posthog/types@1.372.1': {}
+  '@posthog/types@1.372.10': {}
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -12540,15 +12548,15 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.372.1:
+  posthog-js@1.372.10:
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.208.0
       '@opentelemetry/exporter-logs-otlp-http': 0.208.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/resources': 2.5.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-logs': 0.208.0(@opentelemetry/api@1.9.0)
-      '@posthog/core': 1.27.5
-      '@posthog/types': 1.372.1
+      '@posthog/core': 1.28.4
+      '@posthog/types': 1.372.10
       core-js: 3.48.0
       dompurify: 3.4.0
       fflate: 0.4.8
