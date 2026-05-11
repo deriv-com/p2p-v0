@@ -70,7 +70,10 @@
     "noAdsDescription": "Create an {currency} ad to get started, or switch to another currency.",
     "following": "Following",
     "verified": "Verified",
-    "browseMarket": "Browse market"
+    "browseMarket": "Browse market",
+    "noBalanceTitle": "No P2P balance",
+    "noBalanceDescription": "Your ads pause automatically when your balance runs out. Transfer funds to keep them active.",
+    "noBalanceTransfer": "Transfer"
   },
   "order": {
     "placeOrder": "Place order",

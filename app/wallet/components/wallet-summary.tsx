@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
@@ -78,6 +78,7 @@ export default function WalletSummary({
   const { t } = useTranslations()
   const { track } = useTrackers()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const userId = useUserDataStore((state) => state.userId)
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
@@ -284,6 +285,39 @@ export default function WalletSummary({
       })
     }
   }
+
+  // Deep-link: Markets' zero-balance banner navigates here with
+  // `?operation=TRANSFER` to open the transfer sidebar directly. We bypass
+  // the hasBalance guard in handleTransferClick because the banner fires
+  // precisely when P2P balance is zero — the whole point is to transfer
+  // funds into it. The URL is cleaned immediately so a refresh doesn't
+  // re-open the sheet.
+  useEffect(() => {
+    if (searchParams.get("operation") !== "TRANSFER") return
+    if (!userId) return
+    router.replace("/wallet")
+    if (verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+      track("ek_transfer_wallets")
+      setCurrentOperation("TRANSFER")
+      setIsSidebarOpen(true)
+    } else {
+      let title = t("profile.gettingStarted")
+      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
+      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
+      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
+      showAlert({
+        title,
+        description: (
+          <div className="space-y-4 my-2">
+            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, userId])
 
   const handleBuyClick = () => {
     router.push("/?operation=buy")
