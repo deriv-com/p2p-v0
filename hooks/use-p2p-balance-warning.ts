@@ -50,14 +50,13 @@ export function useP2PBalanceWarning(
     // One-way latch — once we've confirmed a positive balance, stay
     // hidden for the rest of the session. Transient 0s can't re-show.
     if (hasConfirmedPositive.current) return
-    // Every decision is debounced — including `!isSignedUp`. A zustand
-    // selector returning a transiently stale `userData` on tab switch
-    // would otherwise flash the banner off and back on.
     const timeoutId = setTimeout(() => {
-      if (!isSignedUp) {
-        setShouldShow(false)
-        return
-      }
+      // `!isSignedUp` and `undefined` balance are UNKNOWN states, not
+      // commit signals. Skipping here means a transient stale selector
+      // return on tab switch cannot flip the banner — we only commit
+      // when we have a definitive positive/zero balance observation.
+      // Actual logout unmounts this hook, so no explicit hide needed.
+      if (!isSignedUp) return
       if (p2pBalance === undefined) return
       if (isBalancePositive(p2pBalance)) {
         hasConfirmedPositive.current = true
