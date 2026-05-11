@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
-import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber, cn } from "@/lib/utils"
+import { getCategoryDisplayName, formatPaymentMethodName, cn, getHomeUrl } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -540,6 +540,70 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               if (typeof window !== "undefined" && window.Intercom) {
                 window.Intercom("show")
               }
+            },
+          })
+        } else if (errorCode === "DuplicateRequestDetected") {
+          showAlert({
+            title: t("order.duplicateRequestTitle"),
+            description: t("order.duplicateRequestDescription"),
+            confirmText: t("order.viewMyOrders"),
+            cancelText: t("common.close"),
+            type: "warning",
+            onConfirm: () => {
+              track("ek_view_orders_markets_advert_sheet")
+              router.push("/orders")
+            },
+          })
+        } else if (errorCode === "v1MigrationInProgress" || errorCode === "v1MigrationInProgressOrCompleted") {
+          showAlert({
+            title: t("order.migrationInProgressTitle"),
+            description: t("order.migrationInProgressDescription"),
+            confirmText: t("order.tryAgain"),
+            cancelText: t("common.close"),
+            type: "warning",
+            onConfirm: () => {
+              track("ek_retry_order_markets_advert_sheet")
+            },
+          })
+        } else if (errorCode === "AdvertiserTempUnavailable") {
+          showAlert({
+            title: t("order.advertiserTempUnavailableTitle"),
+            description: t("order.advertiserTempUnavailableDescription"),
+            confirmText: t("order.viewOtherAds"),
+            cancelText: t("order.tryAgain"),
+            type: "warning",
+            onConfirm: () => {
+              track("ek_view_other_ads_markets_advert_sheet")
+              handleClose()
+            },
+            onCancel: () => {
+              track("ek_retry_order_markets_advert_sheet")
+            },
+          })
+        } else if (errorCode === "v1WithdrawalLimit") {
+          const isV1Signup = userData?.signup === "v1"
+          showAlert({
+            title: t("order.withdrawalLimitTitle"),
+            description: t("order.withdrawalLimitDescription"),
+            confirmText: t("order.verifyAccount"),
+            cancelText: t("common.close"),
+            type: "warning",
+            onConfirm: () => {
+              track("ek_verify_account_markets_advert_sheet")
+              window.location.href = getHomeUrl(isV1Signup, "poi")
+            },
+          })
+        } else if (errorCode === "v1FinancialAssessmentRequired") {
+          const isV1Signup = userData?.signup === "v1"
+          showAlert({
+            title: t("order.financialAssessmentTitle"),
+            description: t("order.financialAssessmentDescription"),
+            confirmText: t("order.completeAssessment"),
+            cancelText: t("common.close"),
+            type: "warning",
+            onConfirm: () => {
+              track("ek_complete_assessment_markets_advert_sheet")
+              window.location.href = getHomeUrl(isV1Signup, "financialAssessment")
             },
           })
         } else {
