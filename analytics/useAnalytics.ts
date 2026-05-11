@@ -121,7 +121,7 @@ export function useAnalytics() {
           },
         },
       }),
-      debug: false,
+      debug: true,
     });
 
     // PostHog captures page views automatically on every URL change.
