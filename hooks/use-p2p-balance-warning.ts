@@ -47,15 +47,18 @@ export function useP2PBalanceWarning(
   const hasConfirmedPositive = useRef(false)
 
   useEffect(() => {
-    if (!isSignedUp) {
-      setShouldShow(false)
-      return
-    }
     // One-way latch — once we've confirmed a positive balance, stay
     // hidden for the rest of the session. Transient 0s can't re-show.
     if (hasConfirmedPositive.current) return
-    if (p2pBalance === undefined) return
+    // Every decision is debounced — including `!isSignedUp`. A zustand
+    // selector returning a transiently stale `userData` on tab switch
+    // would otherwise flash the banner off and back on.
     const timeoutId = setTimeout(() => {
+      if (!isSignedUp) {
+        setShouldShow(false)
+        return
+      }
+      if (p2pBalance === undefined) return
       if (isBalancePositive(p2pBalance)) {
         hasConfirmedPositive.current = true
         setShouldShow(false)
