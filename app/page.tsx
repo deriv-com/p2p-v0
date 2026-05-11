@@ -483,7 +483,7 @@ export default function BuySellPage() {
                 <P2PBalanceWarning />
               </div>
             )}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
