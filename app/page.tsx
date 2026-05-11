@@ -25,6 +25,8 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -117,6 +119,7 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "trade_band_rank"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
+  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balance, Boolean(userData?.signup))
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -544,6 +547,7 @@ export default function BuySellPage() {
                 )}
               </div>
             </div>
+            {shouldShowBalanceWarning && <P2PBalanceWarning />}
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
