@@ -474,6 +474,15 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
+            {shouldShowBalanceWarning && (
+              // Pull the next row (dark balance card) up so it visually
+              // tucks under the banner's bottom edge. On md+, the parent's
+              // `gap-4` (16px) eats half the negative margin — so we need
+              // -mb-8 (32px) to still yield ~16px of visible overlap.
+              <div className="-mb-4 md:-mb-8">
+                <P2PBalanceWarning />
+              </div>
+            )}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
@@ -547,7 +556,6 @@ export default function BuySellPage() {
                 )}
               </div>
             </div>
-            {shouldShowBalanceWarning && <P2PBalanceWarning />}
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
