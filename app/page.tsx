@@ -30,7 +30,8 @@ import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
+import { usePaymentMethods, useAdvertisements, useTotalBalance, queryKeys } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -119,7 +120,24 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "trade_band_rank"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
-  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balance, Boolean(userData?.signup))
+
+  // Zero-balance banner: read the P2P wallet balance specifically (not the
+  // total account value which includes the main wallet). React Query caches
+  // the result so re-renders from unrelated state don't flicker the banner.
+  const queryClient = useQueryClient()
+  const { data: totalBalanceData } = useTotalBalance()
+  const p2pBalance = useMemo(() => {
+    // TotalBalanceResponse type is stale — actual shape includes wallets.items.
+    // Match the runtime cast used in app/wallet/page.tsx.
+    const items = (totalBalanceData as any)?.wallets?.items as Array<any> | undefined
+    if (!items) return undefined
+    const p2pWallet = items.find((wallet) => wallet?.type === "p2p")
+    return p2pWallet?.total_balance?.approximate_total_balance as string | undefined
+  }, [totalBalanceData])
+  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
+    p2pBalance,
+    Boolean(userData?.signup),
+  )
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -197,6 +215,10 @@ export default function BuySellPage() {
             amount: data.payload.data.user.total_account_value.amount?.toString() || "0.00",
             currency: data.payload.data.user.total_account_value.currency || "USD",
           })
+
+          // Refresh the P2P wallet balance (used by the zero-balance
+          // warning banner) so it reflects transfers in real time.
+          queryClient.invalidateQueries({ queryKey: queryKeys.auth.totalBalance() })
         }
       }
     })

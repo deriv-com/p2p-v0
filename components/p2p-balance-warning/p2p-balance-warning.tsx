@@ -11,7 +11,7 @@ export function P2PBalanceWarning() {
   const router = useRouter()
 
   return (
-    <Alert className="flex items-center gap-4 bg-error-light border-transparent text-grayscale-100 px-4 pt-4 pb-10">
+    <Alert className="flex items-center gap-4 bg-error-light border-transparent text-grayscale-100 px-6 pt-6 pb-12">
       <Image
         src="/icons/warning-triangle-red.svg"
         alt="Warning"
