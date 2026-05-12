@@ -124,11 +124,12 @@ export default function BuySellPage() {
   // `total_account_value.amount` from /users/me. That value flows into
   // the local `balance` state via `fetchBalance` (initial) and the
   // `balance_change` WebSocket handler (real-time updates). While the
-  // balance is still loading we pass `undefined` so the hook keeps the
-  // banner visible until a definitive value arrives.
+  // balance is still loading we pass `undefined` so the hook preserves
+  // its current state until a definitive value arrives.
+  const isSignedUp = useMemo(() => Boolean(userData?.signup), [userData?.signup])
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
     isLoadingBalance ? undefined : balance,
-    Boolean(userData?.signup),
+    isSignedUp,
   )
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&

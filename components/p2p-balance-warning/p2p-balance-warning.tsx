@@ -10,26 +10,35 @@ export function P2PBalanceWarning() {
   const { t } = useTranslations()
   const router = useRouter()
 
+  const title = t("market.noBalanceTitle")
+  const description = t("market.noBalanceDescription")
+  const transferLabel = t("market.noBalanceTransfer")
+
   return (
-    <Alert className="flex items-center gap-4 bg-error-light border-transparent text-grayscale-100 px-6 pt-6 pb-12">
+    <Alert
+      aria-live="polite"
+      className="flex items-center gap-4 bg-error-light border-transparent text-grayscale-100 px-6 pt-6 pb-12"
+    >
       <Image
         src="/icons/warning-triangle-red.svg"
-        alt="Warning"
+        alt=""
         height={32}
         width={32}
         className="flex-shrink-0"
+        aria-hidden="true"
       />
       <div className="flex-1 flex flex-col gap-1">
-        <div className="text-sm font-bold leading-tight">{t("market.noBalanceTitle")}</div>
-        <div className="text-sm leading-snug">{t("market.noBalanceDescription")}</div>
+        <div className="text-sm font-bold leading-tight">{title}</div>
+        <div className="text-sm leading-snug">{description}</div>
       </div>
       <Button
         variant="destructive"
         size="sm"
         className="flex-shrink-0 rounded-full px-6"
+        aria-label={`${transferLabel} — ${title}`}
         onClick={() => router.push("/wallet?operation=TRANSFER")}
       >
-        {t("market.noBalanceTransfer")}
+        {transferLabel}
       </Button>
     </Alert>
   )

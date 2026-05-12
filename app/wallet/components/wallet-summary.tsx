@@ -316,8 +316,18 @@ export default function WalletSummary({
         cancelText: undefined,
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, userId])
+  }, [
+    searchParams,
+    userId,
+    router,
+    verificationStatus,
+    isPoiExpired,
+    isPoaExpired,
+    track,
+    t,
+    showAlert,
+    hideAlert,
+  ])
 
   const handleBuyClick = () => {
     router.push("/?operation=buy")
