@@ -69,7 +69,10 @@
     "noAdsDescription": "Tengeneza tangazo la {currency} kuanza, au badili kwa waluta nyingine.",
     "following": "Inafuata",
     "verified": "Iliyothibitishwa",
-    "browseMarket": "Angalia soko"
+    "browseMarket": "Angalia soko",
+    "noBalanceTitle": "Hakuna salio katika Pochi ya P2P",
+    "noBalanceDescription": "Matangazo yako ya kuuza yamefichwa kutoka kwenye soko wakati salio la Pochi yako ya P2P ni sifuri. Hamisha fedha kwenye Pochi yako ya P2P ili yaonekane tena.",
+    "noBalanceTransfer": "Hamisha fedha"
   },
   "order": {
     "placeOrder": "Weka amri",

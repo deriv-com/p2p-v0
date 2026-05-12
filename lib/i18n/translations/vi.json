@@ -62,7 +62,10 @@
     "noAdsTitle": "Không có tin đăng cho loại tiền tệ này",
     "noAdsDescription": "Bạn có thể đăng tin của riêng mình để người khác phản hồi.",
     "following": "Đang theo dõi",
-    "verified": "Đã xác minh"
+    "verified": "Đã xác minh",
+    "noBalanceTitle": "Không có số dư trong Ví P2P",
+    "noBalanceDescription": "Quảng cáo bán của bạn sẽ bị ẩn khỏi thị trường khi số dư Ví P2P của bạn bằng không. Chuyển tiền vào Ví P2P của bạn để hiển thị lại.",
+    "noBalanceTransfer": "Chuyển tiền"
   },
   "order": {
     "placeOrder": "Đặt hàng",

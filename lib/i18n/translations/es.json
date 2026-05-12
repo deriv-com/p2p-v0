@@ -62,7 +62,10 @@
     "noAdsTitle": "No hay anuncios para esta moneda",
     "noAdsDescription": "Puedes publicar tu propio anuncio para que otros respondan.",
     "following": "Siguiendo",
-    "verified": "Verificado"
+    "verified": "Verificado",
+    "noBalanceTitle": "Sin saldo en el Monedero P2P",
+    "noBalanceDescription": "Tus anuncios de venta se ocultan del mercado cuando el saldo de tu Monedero P2P es cero. Transfiere fondos a tu Monedero P2P para que vuelvan a ser visibles.",
+    "noBalanceTransfer": "Transferir fondos"
   },
   "order": {
     "placeOrder": "Realizar orden",

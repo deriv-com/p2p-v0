@@ -62,7 +62,10 @@
     "noAdsTitle": "Nessun annuncio per questa valuta",
     "noAdsDescription": "Puoi pubblicare il tuo annuncio per far rispondere altri.",
     "following": "Seguendo",
-    "verified": "Verificato"
+    "verified": "Verificato",
+    "noBalanceTitle": "Nessun saldo nel Portafoglio P2P",
+    "noBalanceDescription": "I tuoi annunci di vendita vengono nascosti dal marketplace quando il saldo del tuo Portafoglio P2P è zero. Trasferisci fondi nel tuo Portafoglio P2P per renderli nuovamente visibili.",
+    "noBalanceTransfer": "Trasferisci fondi"
   },
   "order": {
     "placeOrder": "Effettua ordine",
