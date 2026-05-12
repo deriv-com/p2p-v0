@@ -117,6 +117,8 @@
     "migrationInProgressDescription": "계정을 업데이트하고 있습니다. 몇 분 후에 다시 시도하세요.",
     "advertiserTempUnavailableTitle": "판매자 이용 불가",
     "advertiserTempUnavailableDescription": "이 판매자의 계정이 업데이트 중입니다. 잠시 후 다시 시도하거나 다른 광고를 선택하세요.",
+    "advertiserFundsInsufficientTitle": "주문을 접수할 수 없습니다",
+    "advertiserFundsInsufficientDescription": "광고주의 잔액이 이 주문을 완료하기에 충분하지 않습니다. 다른 광고를 선택하거나 나중에 다시 시도하세요.",
     "withdrawalLimitTitle": "출금 한도 초과",
     "withdrawalLimitDescription": "더 많은 출금을 위해 계정을 인증하세요.",
     "verifyAccount": "계정 인증",

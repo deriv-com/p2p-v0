@@ -110,6 +110,8 @@
     "migrationInProgressDescription": "আমরা আপনার অ্যাকাউন্ট আপডেট করছি। কয়েক মিনিট পরে আবার চেষ্টা করুন।",
     "advertiserTempUnavailableTitle": "বিক্রেতা অনুপলব্ধ",
     "advertiserTempUnavailableDescription": "এই বিক্রেতার অ্যাকাউন্ট আপডেট হচ্ছে। শীঘ্রই আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
+    "advertiserFundsInsufficientTitle": "অর্ডার দেওয়া সম্ভব নয়",
+    "advertiserFundsInsufficientDescription": "বিজ্ঞাপনদাতার এই অর্ডারটি সম্পন্ন করার জন্য পর্যাপ্ত ব্যালেন্স নেই। অন্য একটি বিজ্ঞাপন বেছে নিন বা পরে আবার চেষ্টা করুন।",
     "withdrawalLimitTitle": "উত্তোলন সীমা পৌঁছেছে",
     "withdrawalLimitDescription": "আরও উত্তোলন করতে আপনার অ্যাকাউন্ট যাচাই করুন।",
     "verifyAccount": "অ্যাকাউন্ট যাচাই করুন",

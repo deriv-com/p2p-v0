@@ -118,6 +118,8 @@
     "migrationInProgressDescription": "We're updating your account. Try again in a few minutes.",
     "advertiserTempUnavailableTitle": "Seller unavailable",
     "advertiserTempUnavailableDescription": "This seller's account is updating. Try again soon or choose another ad.",
+    "advertiserFundsInsufficientTitle": "Order cannot be placed",
+    "advertiserFundsInsufficientDescription": "The advertiser does not have enough balance to complete this order. Choose another ad or try again later.",
     "withdrawalLimitTitle": "Withdrawal limit reached",
     "withdrawalLimitDescription": "Verify your account to make more withdrawals.",
     "verifyAccount": "Verify account",

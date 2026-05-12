@@ -110,6 +110,8 @@
     "migrationInProgressDescription": "Nous mettons à jour votre compte. Réessayez dans quelques minutes.",
     "advertiserTempUnavailableTitle": "Vendeur indisponible",
     "advertiserTempUnavailableDescription": "Le compte de ce vendeur est en cours de mise à jour. Réessayez bientôt ou choisissez une autre annonce.",
+    "advertiserFundsInsufficientTitle": "La commande ne peut pas être passée",
+    "advertiserFundsInsufficientDescription": "L'annonceur ne dispose pas d'un solde suffisant pour finaliser cette commande. Choisissez une autre annonce ou réessayez plus tard.",
     "withdrawalLimitTitle": "Limite de retrait atteinte",
     "withdrawalLimitDescription": "Vérifiez votre compte pour effectuer plus de retraits.",
     "verifyAccount": "Vérifier le compte",

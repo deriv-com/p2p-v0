@@ -111,6 +111,8 @@
     "migrationInProgressDescription": "Мы обновляем ваш аккаунт. Повторите попытку через несколько минут.",
     "advertiserTempUnavailableTitle": "Продавец недоступен",
     "advertiserTempUnavailableDescription": "Аккаунт этого продавца обновляется. Повторите попытку позже или выберите другое объявление.",
+    "advertiserFundsInsufficientTitle": "Не удаётся разместить заказ",
+    "advertiserFundsInsufficientDescription": "У рекламодателя недостаточно средств для выполнения этого заказа. Выберите другое объявление или повторите попытку позже.",
     "withdrawalLimitTitle": "Достигнут лимит вывода",
     "withdrawalLimitDescription": "Верифицируйте аккаунт, чтобы делать больше выводов.",
     "verifyAccount": "Верифицировать аккаунт",

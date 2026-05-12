@@ -580,6 +580,17 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               track("ek_retry_order_markets_advert_sheet")
             },
           })
+        } else if (errorCode === "OrderAdvertiserFundsInsufficient") {
+          showAlert({
+            title: t("order.advertiserFundsInsufficientTitle"),
+            description: t("order.advertiserFundsInsufficientDescription"),
+            confirmText: t("order.viewOtherAds"),
+            type: "warning",
+            onConfirm: () => {
+              track("ek_view_other_ads_markets_advert_sheet")
+              handleClose()
+            },
+          })
         } else if (errorCode === "v1WithdrawalLimit") {
           const isV1Signup = userData?.signup === "v1"
           showAlert({
