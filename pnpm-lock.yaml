@@ -57,8 +57,8 @@ importers:
         specifier: latest
         version: 7.0.0(@datadog/browser-logs@7.0.0)
       '@deriv-com/analytics':
-        specifier: 1.42.1
-        version: 1.42.1
+        specifier: 1.41.1
+        version: 1.41.1
       '@deriv-com/utils':
         specifier: ^0.0.42
         version: 0.0.42
@@ -1086,8 +1086,8 @@ packages:
   '@date-fns/tz@1.4.1':
     resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
 
-  '@deriv-com/analytics@1.42.1':
-    resolution: {integrity: sha512-+6/f4GHccr1d6tzc1OnVh8nAwmVjFoppobOdAHU6tyYkxXXsspYG2WNjPOU91jWrwOWZWbTEK25JWIiYKRoydw==}
+  '@deriv-com/analytics@1.41.1':
+    resolution: {integrity: sha512-rtY3y+VtfGae/aLCjzZpJG7w30OBRJtpmUXR4bM+tKzLG0MtMah59tKgSfUP84DwIDvVB+qwiW1PLWB+OTnk8w==}
     engines: {node: '>=24.13.0', npm: '>=11.7.0'}
 
   '@deriv-com/utils@0.0.42':
@@ -7608,7 +7608,7 @@ snapshots:
 
   '@date-fns/tz@1.4.1': {}
 
-  '@deriv-com/analytics@1.42.1':
+  '@deriv-com/analytics@1.41.1':
     dependencies:
       '@rudderstack/analytics-js': 3.31.0
       js-cookie: 3.0.5
