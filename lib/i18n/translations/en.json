@@ -76,6 +76,10 @@
     "noBalanceTransfer": "Transfer funds"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Quick reminders for a secure trade",
+      "description": "Stick to the time limit and stay on our platform. External contact risks your funds and may lead to account suspension."
+    },
     "placeOrder": "Place order",
     "amount": "Amount",
     "youReceive": "You receive",

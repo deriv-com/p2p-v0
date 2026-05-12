@@ -68,6 +68,10 @@
     "noBalanceTransfer": "Chuyển tiền"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Nhắc nhở nhanh cho giao dịch an toàn",
+      "description": "Tuân thủ giới hạn thời gian và ở lại trên nền tảng của chúng tôi. Liên hệ bên ngoài có thể gây rủi ro cho tiền của bạn và dẫn đến tạm khóa tài khoản."
+    },
     "placeOrder": "Đặt hàng",
     "amount": "Số tiền",
     "youReceive": "Bạn nhận được",

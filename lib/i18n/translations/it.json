@@ -68,6 +68,10 @@
     "noBalanceTransfer": "Trasferisci fondi"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Promemoria rapidi per un'operazione sicura",
+      "description": "Rispetta il limite di tempo e rimani sulla nostra piattaforma. I contatti esterni mettono a rischio i tuoi fondi e possono portare alla sospensione dell'account."
+    },
     "placeOrder": "Effettua ordine",
     "amount": "Importo",
     "youReceive": "Ricevi",
