@@ -69,7 +69,10 @@
     "noAdsDescription": "{currency} 광고를 만들거나 다른 통화로 변경하세요.",
     "following": "팔로잉",
     "verified": "인증됨",
-    "browseMarket": "마켓 둘러보기"
+    "browseMarket": "마켓 둘러보기",
+    "noBalanceTitle": "P2P 지갑에 잔액 없음",
+    "noBalanceDescription": "P2P 지갑 잔액이 0이면 판매 광고가 마켓플레이스에서 숨겨집니다. 다시 표시되도록 P2P 지갑으로 자금을 이체하세요.",
+    "noBalanceTransfer": "자금 이체"
   },
   "order": {
     "placeOrder": "주문 생성",

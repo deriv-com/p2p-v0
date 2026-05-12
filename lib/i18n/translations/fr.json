@@ -62,7 +62,10 @@
     "noAdsTitle": "Aucune annonce pour cette devise",
     "noAdsDescription": "Vous pouvez publier votre propre annonce pour que d'autres y répondent.",
     "following": "Suivi",
-    "verified": "Vérifié"
+    "verified": "Vérifié",
+    "noBalanceTitle": "Aucun solde dans le Portefeuille P2P",
+    "noBalanceDescription": "Vos annonces de vente sont masquées sur la place de marché lorsque le solde de votre Portefeuille P2P est nul. Transférez des fonds sur votre Portefeuille P2P pour les rendre à nouveau visibles.",
+    "noBalanceTransfer": "Transférer des fonds"
   },
   "order": {
     "placeOrder": "Passer la commande",

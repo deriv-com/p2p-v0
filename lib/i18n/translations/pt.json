@@ -62,7 +62,10 @@
     "noAdsTitle": "Sem anúncios para esta moeda",
     "noAdsDescription": "Você pode publicar seu próprio anúncio para que outros respondam.",
     "following": "Seguindo",
-    "verified": "Verificado"
+    "verified": "Verificado",
+    "noBalanceTitle": "Sem saldo na Carteira P2P",
+    "noBalanceDescription": "Seus anúncios de venda ficam ocultos do mercado quando o saldo da sua Carteira P2P é zero. Transfira fundos para a sua Carteira P2P para torná-los visíveis novamente.",
+    "noBalanceTransfer": "Transferir fundos"
   },
   "order": {
     "placeOrder": "Fazer pedido",

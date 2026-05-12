@@ -62,7 +62,10 @@
     "noAdsTitle": "Keine Anzeigen für diese Währung",
     "noAdsDescription": "Sie können Ihre eigene Anzeige veröffentlichen, damit andere darauf antworten können.",
     "following": "Folge ich",
-    "verified": "Verifiziert"
+    "verified": "Verifiziert",
+    "noBalanceTitle": "Kein Guthaben im P2P-Wallet",
+    "noBalanceDescription": "Deine Verkaufsanzeigen werden im Marktplatz ausgeblendet, solange dein P2P-Wallet-Guthaben null beträgt. Überweise Geld auf dein P2P-Wallet, um sie wieder sichtbar zu machen.",
+    "noBalanceTransfer": "Geld überweisen"
   },
   "order": {
     "placeOrder": "Bestellung aufgeben",

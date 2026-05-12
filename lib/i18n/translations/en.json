@@ -70,7 +70,10 @@
     "noAdsDescription": "Create an {currency} ad to get started, or switch to another currency.",
     "following": "Following",
     "verified": "Verified",
-    "browseMarket": "Browse market"
+    "browseMarket": "Browse market",
+    "noBalanceTitle": "No balance in P2P Wallet",
+    "noBalanceDescription": "Your sell ads are hidden from the marketplace when your P2P Wallet balance is zero. Transfer funds to your P2P Wallet to make them visible again.",
+    "noBalanceTransfer": "Transfer funds"
   },
   "order": {
     "placeOrder": "Place order",
