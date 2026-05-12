@@ -52,10 +52,10 @@ importers:
     dependencies:
       '@datadog/browser-logs':
         specifier: latest
-        version: 7.0.0(@datadog/browser-rum@7.0.0)
+        version: 7.1.0(@datadog/browser-rum@7.1.0)
       '@datadog/browser-rum':
         specifier: latest
-        version: 7.0.0(@datadog/browser-logs@7.0.0)
+        version: 7.1.0(@datadog/browser-logs@7.1.0)
       '@deriv-com/analytics':
         specifier: 1.41.1
         version: 1.41.1
@@ -1061,24 +1061,24 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@datadog/browser-core@7.0.0':
-    resolution: {integrity: sha512-msymElyeqNhpiWbQhSo7Dr9YJneZu7L60NOEclW1JCpvscM0Fyj940kz6/GcOU/5Azt7PAWv4ZCBhHwnmf0DcQ==}
+  '@datadog/browser-core@7.1.0':
+    resolution: {integrity: sha512-loR/1/ZpqczABeGHFW6Az4hgGYmWwUaA2ame8gwOa3W16BtXnk+67suzo+pbaiG5gNjMpwDIFpUAYQjGYcoxUg==}
 
-  '@datadog/browser-logs@7.0.0':
-    resolution: {integrity: sha512-a9RKNTMjpnXb7pApxa8wWr1psn0mNNYVpqssN4Y9HfY3aO+pJKVdnHfri8+/jZ6Ox8S7ATbqcZevaDppOLSVFA==}
+  '@datadog/browser-logs@7.1.0':
+    resolution: {integrity: sha512-l3omfIOWTemHQFBTCfkvljwSN3UzaUjqeSfnKCpX3rx7FP6qP3SKnRard0sno23bic6a5JY+AQ68GbXRfBEk4w==}
     peerDependencies:
-      '@datadog/browser-rum': 7.0.0
+      '@datadog/browser-rum': 7.1.0
     peerDependenciesMeta:
       '@datadog/browser-rum':
         optional: true
 
-  '@datadog/browser-rum-core@7.0.0':
-    resolution: {integrity: sha512-+WMly+KBAts9vmBRY1sVMzuG2iTrkxplb4H6U0QBNHMmf3ZEkXy+hbl6DT4WF1ieMogLNaiLmidz1eUOWSH/zQ==}
+  '@datadog/browser-rum-core@7.1.0':
+    resolution: {integrity: sha512-VHg8tpHAiWmuwUW7icBjeLcek/uM7EbTCoBc017Vp2RNzkLfqIiXfpmdm+vilWO1mYbW2adVR2AF2CTHQhVcgQ==}
 
-  '@datadog/browser-rum@7.0.0':
-    resolution: {integrity: sha512-f+pckXe4L47Fic/NbRIfg1hEwhfenP2Y2iBhqodgwTD1MVSQK9bk7c/LRFTWRStqZcZ3S8zAh+U9ULyf13ZDwA==}
+  '@datadog/browser-rum@7.1.0':
+    resolution: {integrity: sha512-JCtA7NWgH1XUvwBSKdsgU7qIeKFR68QtQVqPBoaNhyTx8Q5Ftec5Mz7cAKIYI/wvF0fSpwcqjp0JI1g1morWkw==}
     peerDependencies:
-      '@datadog/browser-logs': 7.0.0
+      '@datadog/browser-logs': 7.1.0
     peerDependenciesMeta:
       '@datadog/browser-logs':
         optional: true
@@ -7587,24 +7587,24 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@datadog/browser-core@7.0.0': {}
+  '@datadog/browser-core@7.1.0': {}
 
-  '@datadog/browser-logs@7.0.0(@datadog/browser-rum@7.0.0)':
+  '@datadog/browser-logs@7.1.0(@datadog/browser-rum@7.1.0)':
     dependencies:
-      '@datadog/browser-core': 7.0.0
+      '@datadog/browser-core': 7.1.0
     optionalDependencies:
-      '@datadog/browser-rum': 7.0.0(@datadog/browser-logs@7.0.0)
+      '@datadog/browser-rum': 7.1.0(@datadog/browser-logs@7.1.0)
 
-  '@datadog/browser-rum-core@7.0.0':
+  '@datadog/browser-rum-core@7.1.0':
     dependencies:
-      '@datadog/browser-core': 7.0.0
+      '@datadog/browser-core': 7.1.0
 
-  '@datadog/browser-rum@7.0.0(@datadog/browser-logs@7.0.0)':
+  '@datadog/browser-rum@7.1.0(@datadog/browser-logs@7.1.0)':
     dependencies:
-      '@datadog/browser-core': 7.0.0
-      '@datadog/browser-rum-core': 7.0.0
+      '@datadog/browser-core': 7.1.0
+      '@datadog/browser-rum-core': 7.1.0
     optionalDependencies:
-      '@datadog/browser-logs': 7.0.0(@datadog/browser-rum@7.0.0)
+      '@datadog/browser-logs': 7.1.0(@datadog/browser-rum@7.1.0)
 
   '@date-fns/tz@1.4.1': {}
 
