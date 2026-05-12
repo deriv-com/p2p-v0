@@ -111,6 +111,8 @@
     "migrationInProgressDescription": "Chúng tôi đang cập nhật tài khoản của bạn. Thử lại sau vài phút.",
     "advertiserTempUnavailableTitle": "Người bán không khả dụng",
     "advertiserTempUnavailableDescription": "Tài khoản của người bán này đang được cập nhật. Thử lại sớm hoặc chọn tin đăng khác.",
+    "advertiserFundsInsufficientTitle": "Không thể đặt lệnh",
+    "advertiserFundsInsufficientDescription": "Nhà quảng cáo không có đủ số dư để hoàn thành lệnh này. Chọn tin đăng khác hoặc thử lại sau.",
     "withdrawalLimitTitle": "Đã đạt giới hạn rút tiền",
     "withdrawalLimitDescription": "Xác minh tài khoản của bạn để thực hiện thêm giao dịch rút tiền.",
     "verifyAccount": "Xác minh tài khoản",

@@ -117,6 +117,8 @@
     "migrationInProgressDescription": "Aktualizujemy Twoje konto. Spróbuj ponownie za kilka minut.",
     "advertiserTempUnavailableTitle": "Sprzedawca niedostępny",
     "advertiserTempUnavailableDescription": "Konto tego sprzedawcy jest aktualizowane. Spróbuj wkrótce lub wybierz inną ofertę.",
+    "advertiserFundsInsufficientTitle": "Nie można złożyć zamówienia",
+    "advertiserFundsInsufficientDescription": "Reklamodawca nie ma wystarczającego salda, aby zrealizować to zamówienie. Wybierz inną ofertę lub spróbuj ponownie później.",
     "withdrawalLimitTitle": "Osiągnięto limit wypłat",
     "withdrawalLimitDescription": "Zweryfikuj swoje konto, aby dokonywać kolejnych wypłat.",
     "verifyAccount": "Zweryfikuj konto",

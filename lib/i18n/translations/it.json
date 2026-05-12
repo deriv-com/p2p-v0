@@ -110,6 +110,8 @@
     "migrationInProgressDescription": "Stiamo aggiornando il tuo account. Riprova tra qualche minuto.",
     "advertiserTempUnavailableTitle": "Venditore non disponibile",
     "advertiserTempUnavailableDescription": "L'account di questo venditore è in fase di aggiornamento. Riprova presto o scegli un altro annuncio.",
+    "advertiserFundsInsufficientTitle": "Impossibile effettuare l'ordine",
+    "advertiserFundsInsufficientDescription": "L'inserzionista non ha saldo sufficiente per completare questo ordine. Scegli un altro annuncio o riprova più tardi.",
     "withdrawalLimitTitle": "Limite di prelievo raggiunto",
     "withdrawalLimitDescription": "Verifica il tuo account per effettuare ulteriori prelievi.",
     "verifyAccount": "Verifica account",

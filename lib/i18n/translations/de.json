@@ -110,6 +110,8 @@
     "migrationInProgressDescription": "Wir aktualisieren dein Konto. Versuche es in ein paar Minuten erneut.",
     "advertiserTempUnavailableTitle": "Verkäufer nicht verfügbar",
     "advertiserTempUnavailableDescription": "Das Konto dieses Verkäufers wird aktualisiert. Versuche es bald erneut oder wähle eine andere Anzeige.",
+    "advertiserFundsInsufficientTitle": "Bestellung kann nicht aufgegeben werden",
+    "advertiserFundsInsufficientDescription": "Der Anbieter hat nicht genug Guthaben, um diese Bestellung abzuschließen. Wähle eine andere Anzeige oder versuche es später erneut.",
     "withdrawalLimitTitle": "Auszahlungslimit erreicht",
     "withdrawalLimitDescription": "Verifiziere dein Konto, um mehr Auszahlungen vorzunehmen.",
     "verifyAccount": "Konto verifizieren",

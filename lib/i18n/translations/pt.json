@@ -110,6 +110,8 @@
     "migrationInProgressDescription": "Estamos atualizando sua conta. Tente novamente em alguns minutos.",
     "advertiserTempUnavailableTitle": "Vendedor indisponível",
     "advertiserTempUnavailableDescription": "A conta deste vendedor está sendo atualizada. Tente novamente em breve ou escolha outro anúncio.",
+    "advertiserFundsInsufficientTitle": "O pedido não pode ser feito",
+    "advertiserFundsInsufficientDescription": "O anunciante não tem saldo suficiente para concluir este pedido. Escolha outro anúncio ou tente novamente mais tarde.",
     "withdrawalLimitTitle": "Limite de saque atingido",
     "withdrawalLimitDescription": "Verifique sua conta para fazer mais saques.",
     "verifyAccount": "Verificar conta",
