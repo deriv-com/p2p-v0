@@ -1,12 +1,6 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: false,
-  },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -24,8 +18,6 @@ const nextConfig: NextConfig = {
       config.externals = config.externals || [];
       if (Array.isArray(config.externals)) {
         config.externals.push('cookie');
-      } else if (typeof config.externals === 'object') {
-        config.externals['cookie'] = 'commonjs cookie';
       }
     }
     return config;
