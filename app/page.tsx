@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
+import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -120,16 +121,20 @@ export default function BuySellPage() {
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
 
-  // Zero-balance banner: mirror the mobile app's source by reading
-  // `total_account_value.amount` from /users/me. That value flows into
-  // the local `balance` state via `fetchBalance` (initial) and the
-  // `balance_change` WebSocket handler (real-time updates). While the
-  // balance is still loading we pass `undefined` so the hook preserves
-  // its current state until a definitive value arrives.
-  const isSignedUp = useMemo(() => Boolean(userData?.signup), [userData?.signup])
+  // Zero-balance banner. Two gates:
+  //   1. Onboarding gate — banner only shows for fully-onboarded P2P
+  //      advertisers (POI/POA approved, PNV verified, TnC accepted,
+  //      profile complete, p2p.allowed). Mirrors the mobile gate so the
+  //      banner stays hidden while the KYC onboarding sheet is shown.
+  //   2. Balance source — `total_account_value.amount` from /users/me,
+  //      which flows into local `balance` state via `fetchBalance` and
+  //      the `balance_change` WebSocket handler. Pass `undefined` while
+  //      loading so the hook preserves its state until a definitive
+  //      value arrives.
+  const { isFullyOnboarded } = useOnboardingGate()
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
     isLoadingBalance ? undefined : balance,
-    isSignedUp,
+    isFullyOnboarded,
   )
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
