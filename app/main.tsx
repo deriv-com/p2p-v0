@@ -15,6 +15,9 @@ import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
 import { P2PAnnouncementController } from "@/components/p2p-announcement"
+import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
+import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import "./globals.css"
 
 export default function Main({
@@ -38,6 +41,13 @@ export default function Main({
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
 
   const isDisabled = userData?.status === "disabled"
+
+  // Mobile-only balance warning banner (appears above the Header on mobile).
+  // Desktop version lives in page.tsx where it can overlap the dark balance card.
+  const balanceAmount = userData?.balances?.amount
+  const { isFullyOnboarded } = useOnboardingGate()
+  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded)
+  const isMarketsPage = pathname === "/"
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")
@@ -208,6 +218,7 @@ export default function Main({
         </div>
       </div>
       <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
+        {isMarketsPage && shouldShowBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>
         {!pathname.startsWith("/profile") && <MobileFooterNav className="flex-shrink-0" />}
