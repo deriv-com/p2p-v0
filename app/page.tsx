@@ -25,6 +25,8 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -117,6 +119,18 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "trade_band_rank"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
+
+  // Zero-balance banner: mirror the mobile app's source by reading
+  // `total_account_value.amount` from /users/me. That value flows into
+  // the local `balance` state via `fetchBalance` (initial) and the
+  // `balance_change` WebSocket handler (real-time updates). While the
+  // balance is still loading we pass `undefined` so the hook preserves
+  // its current state until a definitive value arrives.
+  const isSignedUp = useMemo(() => Boolean(userData?.signup), [userData?.signup])
+  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
+    isLoadingBalance ? undefined : balance,
+    isSignedUp,
+  )
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -471,7 +485,16 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            {shouldShowBalanceWarning && (
+              // Pull the next row (dark balance card) up so it visually
+              // tucks under the banner's bottom edge. On md+, the parent's
+              // `gap-4` (16px) eats half the negative margin — so we need
+              // -mb-8 (32px) to still yield ~16px of visible overlap.
+              <div className="-mb-4 md:-mb-8">
+                <P2PBalanceWarning />
+              </div>
+            )}
+            <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
