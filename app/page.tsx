@@ -491,13 +491,9 @@ export default function BuySellPage() {
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             {shouldShowBalanceWarning && (
-              // Mobile: full-bleed — escape the parent's `px-3` page
-              // gutter via `-mx-3` so the banner runs edge-to-edge with
-              // no border radius (matches the native mobile app).
-              // Desktop: respect the page gutter and tuck the dark card
-              // under the banner's bottom edge via `md:-mb-8` (parent
-              // `gap-4` of 16px nets ~16px of visible overlap).
-              <div className="-mx-3 md:mx-0 md:-mb-8">
+              // Desktop only — mobile banner is rendered above the Header in main.tsx.
+              // Tuck the dark balance card under the banner's bottom edge via `-mb-8`.
+              <div className="hidden md:block md:-mb-8">
                 <P2PBalanceWarning />
               </div>
             )}
