@@ -3,6 +3,12 @@
 import { useMemo } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 
+const ONBOARDING_STATUS = {
+  KYC_APPROVED: "approved",
+  PROFILE_COMPLETE: "complete",
+  PHONE_VERIFIED: "phone_verified",
+} as const
+
 export interface OnboardingGate {
   /** True while the user may NOT perform P2P actions yet (or status is still loading). */
   isBlocked: boolean
@@ -40,20 +46,7 @@ export function useOnboardingGate(): OnboardingGate {
   return useMemo(() => {
     if (!onboardingStatus) return { isBlocked: true, isFullyOnboarded: false }
 
-    // Cast: OnboardingStatusResponse type is stale — actual runtime shape
-    // includes `tnc.accepted`, `profile.status`, `kyc.poi_status`,
-    // `kyc.poa_status` (used by KycOnboardingSheet today).
-    const o = onboardingStatus as unknown as {
-      kyc?: { poi_status?: string; poa_status?: string }
-      tnc?: { accepted?: boolean }
-      profile?: { status?: string }
-      p2p?: {
-        allowed?: boolean
-        criteria?: Array<{ code?: string; passed?: boolean }>
-      }
-    }
-
-    const p2pAllowed = o.p2p?.allowed === true
+    const p2pAllowed = onboardingStatus.p2p?.allowed === true
 
     if (isV1) {
       // v1 (migrated) users: trust isP2PAllowed because backend may not
@@ -61,12 +54,12 @@ export function useOnboardingGate(): OnboardingGate {
       return { isBlocked: !p2pAllowed, isFullyOnboarded: p2pAllowed }
     }
 
-    const tncOk = o.tnc?.accepted === true
-    const profileOk = o.profile?.status === "complete"
-    const poiOk = o.kyc?.poi_status === "approved"
-    const poaOk = o.kyc?.poa_status === "approved"
+    const tncOk = onboardingStatus.tnc?.accepted === true
+    const profileOk = onboardingStatus.profile?.status === ONBOARDING_STATUS.PROFILE_COMPLETE
+    const poiOk = onboardingStatus.kyc?.poi_status === ONBOARDING_STATUS.KYC_APPROVED
+    const poaOk = onboardingStatus.kyc?.poa_status === ONBOARDING_STATUS.KYC_APPROVED
     const phoneOk =
-      o.p2p?.criteria?.find((c) => c?.code === "phone_verified")?.passed === true
+      onboardingStatus.p2p?.criteria?.find((c) => c?.code === ONBOARDING_STATUS.PHONE_VERIFIED)?.passed === true
 
     const isFullyOnboarded =
       p2pAllowed && tncOk && profileOk && poiOk && poaOk && phoneOk

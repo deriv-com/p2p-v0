@@ -58,6 +58,14 @@ export interface TotalBalanceResponse {
 export interface OnboardingStatusResponse {
   kyc: {
     status: string
+    poi_status?: string
+    poa_status?: string
+  }
+  tnc?: {
+    accepted?: boolean
+  }
+  profile?: {
+    status?: string
   }
   verification: {
     email_verified: boolean
