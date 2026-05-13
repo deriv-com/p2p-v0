@@ -30,7 +30,7 @@ export function P2PBalanceWarning() {
   return (
     <Alert
       aria-live="polite"
-      className="flex flex-col gap-3 rounded-none border-transparent px-4 pt-4 pb-8 bg-[#2d1820] text-white md:flex-row md:items-center md:gap-4 md:rounded-2xl md:bg-error-light md:text-grayscale-100 md:px-6 md:pt-6 md:pb-12"
+      className="flex flex-col gap-3 rounded-none border-transparent px-4 pt-4 pb-4 bg-[#2d1820] text-white md:flex-row md:items-center md:gap-4 md:rounded-2xl md:bg-error-light md:text-grayscale-100 md:px-6 md:pt-6 md:pb-12"
     >
       <div className="flex items-start gap-3 md:flex-1 md:items-center md:gap-4">
         <Image
