@@ -13,7 +13,7 @@ describe("useP2PBalanceWarning", () => {
     jest.useRealTimers()
   })
 
-  it("hides banner when user is not signed up", () => {
+  it("hides banner when user is not fully onboarded", () => {
     const { result } = renderHook(() => useP2PBalanceWarning("0.00", false))
     expect(result.current.shouldShow).toBe(false)
     act(() => {
@@ -22,7 +22,7 @@ describe("useP2PBalanceWarning", () => {
     expect(result.current.shouldShow).toBe(false)
   })
 
-  it("shows banner when balance is '0.00' and user is signed up (after debounce)", () => {
+  it("shows banner when balance is '0.00' and user is fully onboarded (after debounce)", () => {
     const { result } = renderHook(() => useP2PBalanceWarning("0.00", true))
     // Default state is hidden; the first debounced observation commits show.
     expect(result.current.shouldShow).toBe(false)
@@ -34,16 +34,16 @@ describe("useP2PBalanceWarning", () => {
 
   it("hides banner and latches when balance becomes positive", () => {
     const { result, rerender } = renderHook(
-      ({ balance, signed }: { balance: string | undefined; signed: boolean }) =>
-        useP2PBalanceWarning(balance, signed),
-      { initialProps: { balance: "0.00" as string | undefined, signed: true } },
+      ({ balance, onboarded }: { balance: string | undefined; onboarded: boolean }) =>
+        useP2PBalanceWarning(balance, onboarded),
+      { initialProps: { balance: "0.00" as string | undefined, onboarded: true } },
     )
     act(() => {
       jest.advanceTimersByTime(STABILITY_WINDOW_MS)
     })
     expect(result.current.shouldShow).toBe(true)
 
-    rerender({ balance: "100.00", signed: true })
+    rerender({ balance: "100.00", onboarded: true })
     act(() => {
       jest.advanceTimersByTime(STABILITY_WINDOW_MS)
     })
@@ -134,25 +134,25 @@ describe("useP2PBalanceWarning", () => {
     }
   })
 
-  it("transient not-signed-up does not hide once banner is shown", () => {
+  it("transient not-onboarded does not hide once banner is shown", () => {
     const { result, rerender } = renderHook(
-      ({ signed }: { signed: boolean }) =>
-        useP2PBalanceWarning("0.00", signed),
-      { initialProps: { signed: true } },
+      ({ onboarded }: { onboarded: boolean }) =>
+        useP2PBalanceWarning("0.00", onboarded),
+      { initialProps: { onboarded: true } },
     )
     act(() => {
       jest.advanceTimersByTime(STABILITY_WINDOW_MS)
     })
     expect(result.current.shouldShow).toBe(true)
 
-    // A transient `!isSignedUp` within the debounce window must not
+    // A transient `!isFullyOnboarded` within the debounce window must not
     // flash the banner off and back on — the debounced decision is
     // cancelled when the prop flips back before the timer fires.
-    rerender({ signed: false })
+    rerender({ onboarded: false })
     act(() => {
       jest.advanceTimersByTime(200)
     })
-    rerender({ signed: true })
+    rerender({ onboarded: true })
     act(() => {
       jest.advanceTimersByTime(STABILITY_WINDOW_MS)
     })

@@ -13,9 +13,10 @@ function isBalancePositive(balance: string | undefined): boolean {
 /**
  * Zero-balance warning banner gate for the Markets page.
  *
- * Shows when the user has a P2P profile AND their P2P balance is zero.
- * Mirrors the mobile app which reads `total_account_value.amount` from
- * `/users/me` — the same value flows into web's local `balance` state.
+ * Shows when the user is a fully-onboarded P2P advertiser AND their P2P
+ * balance is zero. Mirrors the mobile app which reads
+ * `total_account_value.amount` from `/users/me` — the same value flows
+ * into web's local `balance` state.
  *
  * ## Latched one-way, debounced
  *
@@ -41,7 +42,7 @@ function isBalancePositive(balance: string | undefined): boolean {
  */
 export function useP2PBalanceWarning(
   p2pBalance: string | undefined,
-  isSignedUp: boolean,
+  isFullyOnboarded: boolean,
 ): { shouldShow: boolean } {
   const [shouldShow, setShouldShow] = useState(false)
   const hasConfirmedPositive = useRef(false)
@@ -51,12 +52,13 @@ export function useP2PBalanceWarning(
     // hidden for the rest of the session. Transient 0s can't re-show.
     if (hasConfirmedPositive.current) return
     const timeoutId = setTimeout(() => {
-      // `!isSignedUp` and `undefined` balance are UNKNOWN states, not
-      // commit signals. Skipping here means a transient stale selector
-      // return on tab switch cannot flip the banner — we only commit
-      // when we have a definitive positive/zero balance observation.
-      // Actual logout unmounts this hook, so no explicit hide needed.
-      if (!isSignedUp) return
+      // `!isFullyOnboarded` and `undefined` balance are UNKNOWN states,
+      // not commit signals. Skipping here means a transient stale
+      // selector return on tab switch cannot flip the banner — we only
+      // commit when we have a definitive positive/zero balance
+      // observation. Actual logout unmounts this hook, so no explicit
+      // hide needed.
+      if (!isFullyOnboarded) return
       if (p2pBalance === undefined) return
       if (isBalancePositive(p2pBalance)) {
         hasConfirmedPositive.current = true
@@ -66,7 +68,7 @@ export function useP2PBalanceWarning(
       }
     }, STABILITY_WINDOW_MS)
     return () => clearTimeout(timeoutId)
-  }, [p2pBalance, isSignedUp])
+  }, [p2pBalance, isFullyOnboarded])
 
   return { shouldShow }
 }
