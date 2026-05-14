@@ -14,7 +14,7 @@ export interface OrderErrorMapCtx {
 export function mapOrderError(
   code: string,
   t: Translator,
-  _ctx: OrderErrorMapCtx = {},
+  ctx: OrderErrorMapCtx = {},
 ): OrderErrorMessage {
   switch (code) {
     case "9001":
@@ -292,6 +292,22 @@ export function mapOrderError(
         secondaryCta: t("common.close"),
         secondaryAction: OrderErrorAction.Dismiss,
       }
+
+    case "OrderCreateFailRateSlippage":
+    case "OrderFloatRateSlippage": {
+      const pay = ctx.paymentCurrency ?? ""
+      const acc = ctx.accountCurrency ?? ""
+      return {
+        title: t("order.rateUpdatedTitle"),
+        message: ctx.isBuyAdvert
+          ? t("order.rateSlippageSellMessage", { pay, acc })
+          : t("order.rateSlippageBuyMessage", { pay, acc }),
+        primaryCta: t("order.confirmAndContinue"),
+        primaryAction: OrderErrorAction.ConfirmRateSlippage,
+        secondaryCta: t("order.goBack"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+    }
 
     case "OrderExists":
       return {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface RateChangeConfirmationProps {
   isOpen: boolean
@@ -29,6 +30,7 @@ export default function RateChangeConfirmation({
   isBuy,
 }: RateChangeConfirmationProps) {
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
 
   const oldTotal = (Number.parseFloat(amount) * oldRate)
   const newTotal = (Number.parseFloat(amount) * newRate)
@@ -52,14 +54,14 @@ export default function RateChangeConfirmation({
           onClick={onConfirm}
           className="w-full"
         >
-          Confirm and continue
+          {t("order.confirmAndContinue")}
         </Button>
         <Button
           onClick={onCancel}
           variant="outline"
           className="w-full hover:bg-slate-50"
         >
-          Cancel order
+          {t("order.goBack")}
         </Button>
       </div>
     </div>
@@ -71,7 +73,7 @@ export default function RateChangeConfirmation({
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
         <DrawerContent className="px-6 pb-8">
-          <DrawerTitle className="text-2xl font-bold my-4">Exchange rate updated</DrawerTitle>
+          <DrawerTitle className="text-2xl font-bold my-4">{t("order.rateUpdatedTitle")}</DrawerTitle>
           {content}
         </DrawerContent>
       </Drawer>
@@ -81,7 +83,7 @@ export default function RateChangeConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
       <DialogContent className="p-[32px] sm:rounded-[32px]">
-        <DialogTitle className="font-bold text-2xl mb-4">Exchange rate updated</DialogTitle>
+        <DialogTitle className="font-bold text-2xl mb-4">{t("order.rateUpdatedTitle")}</DialogTitle>
         {content}
       </DialogContent>
     </Dialog>

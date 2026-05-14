@@ -459,18 +459,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
         if (errorCode === "OrderAdvertVersionChanged") {
           clearSelectedPaymentMethods()
           setShowAdUpdatedModal(true)
-        } else if (errorCode === "OrderFloatRateSlippage") {
-          // Phase 6 will replace this with the proper RateChangeConfirmation flow.
-          showAlert({
-            title: "The rate moved too much",
-            description:
-              "The market rate moved significantly before we could place your order. Try again with the latest rate.",
-            confirmText: "Try again",
-            type: "warning",
-            onConfirm: () => {
-              track("ek_retry_order_markets_advert_sheet")
-            },
-          })
+        } else if (errorCode === "OrderFloatRateSlippage" || errorCode === "OrderCreateFailRateSlippage") {
+          track("ek_order_rate_slippage_server_markets_advert_sheet")
+          setLockedConfirmationRate(marketRate ?? localAd.effective_rate ?? null)
+          setShowRateChangeConfirmation(true)
         } else {
           // Mapper-driven path: every other code routes through mapOrderError +
           // dispatchOrderErrorAction. The dispatcher is the single place that
