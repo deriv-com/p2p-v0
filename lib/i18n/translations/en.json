@@ -181,7 +181,12 @@
     "scheduleConflictMessage": "Your schedule doesn't overlap with this advertiser's available hours. Update your schedule or try another ad.",
     "editSchedule": "Edit schedule",
     "orderTypeNotAllowedTitle": "Order type not allowed",
-    "orderTypeNotAllowedMessage": "You're not allowed to place this type of order. Contact support for more information."
+    "orderTypeNotAllowedMessage": "You're not allowed to place this type of order. Contact support for more information.",
+    "accountIssueTitle": "Account issue detected",
+    "accountIssueMessage": "Your account has been disabled. Contact support for help.",
+    "accountRestrictedTitle": "Account restricted",
+    "accountRestrictedMessage": "Your account has been temporarily restricted. View your profile for more details.",
+    "viewProfile": "View profile"
   },
   "paymentMethod": {
     "title": "Payment method",

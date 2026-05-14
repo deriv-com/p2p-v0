@@ -234,6 +234,36 @@ export function mapOrderError(
         secondaryAction: OrderErrorAction.ViewActiveOrder,
       }
 
+    case "UserDisabled":
+      return {
+        title: t("order.accountIssueTitle"),
+        message: t("order.accountIssueMessage"),
+        primaryCta: t("order.openLiveChat"),
+        primaryAction: OrderErrorAction.OpenLiveChat,
+        secondaryCta: t("order.maybeLater"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "UserTempBan":
+      return {
+        title: t("order.accountRestrictedTitle"),
+        message: t("order.accountRestrictedMessage"),
+        primaryCta: t("order.viewProfile"),
+        primaryAction: OrderErrorAction.ViewProfile,
+        secondaryCta: t("order.maybeLater"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderTempLocked":
+      return {
+        title: t("order.tempLockedTitle"),
+        message: t("order.tempLockedDescription"),
+        primaryCta: t("order.tryAgain"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("order.goBack"),
+        secondaryAction: OrderErrorAction.GoBack,
+      }
+
     case "OrderVerificationTempLock":
       return {
         title: t("order.verificationLockedTitle"),
