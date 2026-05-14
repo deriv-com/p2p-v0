@@ -297,10 +297,10 @@ export function mapOrderError(
       return {
         title: t("order.orderExistsTitle"),
         message: t("order.orderExistsMessage"),
-        primaryCta: t("order.viewOtherAds"),
-        primaryAction: OrderErrorAction.ViewOtherAds,
-        secondaryCta: t("order.viewActiveOrder"),
-        secondaryAction: OrderErrorAction.ViewActiveOrder,
+        primaryCta: t("order.viewActiveOrder"),
+        primaryAction: OrderErrorAction.ViewActiveOrder,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
       }
 
     case "UserDisabled":
@@ -355,10 +355,12 @@ export function mapOrderError(
 
     case "OrderCountryInvalid":
       return {
-        title: t("order.adNotAvailableTitle"),
+        title: t("order.adRestrictedTitle"),
         message: t("order.adCountryInvalidDescription"),
         primaryCta: t("order.viewOtherAds"),
         primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
       }
 
     case "v1DebitFailed":
@@ -377,6 +379,8 @@ export function mapOrderError(
         message: t("order.exchangeRateRequiredDescription"),
         primaryCta: t("order.exchangeRateRequiredCta"),
         primaryAction: OrderErrorAction.AdjustAmount,
+        secondaryCta: t("common.cancel"),
+        secondaryAction: OrderErrorAction.Dismiss,
       }
 
     case "UserReadOnly":

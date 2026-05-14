@@ -549,11 +549,11 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           showAlert({
             title: err.title,
             description: err.message,
-            confirmText: err.primaryCta,
-            cancelText: err.secondaryCta,
-            type: "warning",
-            onConfirm: () => dispatchOrderErrorAction(err.primaryAction, { orderId: existingOrderId }),
-            onCancel: err.secondaryAction
+            cancelText: err.primaryCta,
+            confirmText: err.secondaryCta,
+            type: err.secondaryCta ? "warning" : undefined,
+            onCancel: () => dispatchOrderErrorAction(err.primaryAction, { orderId: existingOrderId }),
+            onConfirm: err.secondaryAction
               ? () => dispatchOrderErrorAction(err.secondaryAction!, { orderId: existingOrderId })
               : undefined,
           })
