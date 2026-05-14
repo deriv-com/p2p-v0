@@ -17,6 +17,94 @@ export function mapOrderError(
   _ctx: OrderErrorMapCtx = {},
 ): OrderErrorMessage {
   switch (code) {
+    case "OrderAdvertiserBlocked":
+      return {
+        title: t("order.advertiserBlockedTitle"),
+        message: t("order.advertiserBlockedMessage"),
+        primaryCta: t("order.manageBlockedUsers"),
+        primaryAction: OrderErrorAction.ManageBlocked,
+        secondaryCta: t("order.viewOtherAds"),
+        secondaryAction: OrderErrorAction.ViewOtherAds,
+      }
+
+    case "OrderAdvertiserFundTransferError":
+      return {
+        title: t("order.transferUnsuccessfulTitle"),
+        message: t("order.transferUnsuccessfulMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("order.tryAgain"),
+        secondaryAction: OrderErrorAction.Retry,
+      }
+
+    case "OrderAdvertiserNotOnline":
+      return {
+        title: t("order.advertiserOfflineTitle"),
+        message: t("order.advertiserOfflineMessage"),
+        primaryCta: t("common.gotIt"),
+        primaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderAdvertiserScheduleUnavailable":
+      return {
+        title: t("order.advertiserUnavailableTitle"),
+        message: t("order.advertiserUnavailableMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderAdvertNotFound":
+      return {
+        title: t("order.adNotAvailableTitle"),
+        message: t("order.adNotAvailableMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderAdvertOwn":
+      return {
+        title: t("order.ownAdTitle"),
+        message: t("order.ownAdMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderAdvertPrivate":
+      return {
+        title: t("order.adRestrictedTitle"),
+        message: t("order.adPrivateMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderAdvertUnlisted":
+      return {
+        title: t("order.adNotAvailableTitle"),
+        message: t("order.adUnlistedMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderUserNotFavourite":
+      return {
+        title: t("order.adRestrictedTitle"),
+        message: t("order.userNotFavouriteMessage"),
+        primaryCta: t("order.viewOtherAds"),
+        primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
     case "OrderExists":
       // Hardcoded English here mirrors today's inline branch — Phase 5 will i18n.
       return {
@@ -44,6 +132,8 @@ export function mapOrderError(
         message: t("order.insufficientFundsDescription"),
         primaryCta: t("order.viewOtherAds"),
         primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
       }
 
     case "OrderCountryInvalid":
@@ -117,6 +207,8 @@ export function mapOrderError(
         message: t("order.advertiserFundsInsufficientDescription"),
         primaryCta: t("order.viewOtherAds"),
         primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
       }
 
     case "v1WithdrawalLimit":
