@@ -209,7 +209,10 @@
     "orderExistsMessage": "Masz już aktywne zamówienie dla tej oferty. Zakończ istniejące zamówienie przed złożeniem nowego.",
     "viewActiveOrder": "Wyświetl aktywne zamówienie",
     "v1DebitFailedTitle": "Płatność nieudana",
-    "v1DebitFailedMessage": "Nie udało się przetworzyć płatności dla tego zamówienia. Spróbuj ponownie lub wybierz inną ofertę."
+    "v1DebitFailedMessage": "Nie udało się przetworzyć płatności dla tego zamówienia. Spróbuj ponownie lub wybierz inną ofertę.",
+    "rateChangeIntro": "Kurs wymiany dla Twojego zamówienia zmienił się.",
+    "rateChangeDetails": "{action} {amount} {accountCurrency} za {total} {paymentCurrency}, ale nowy kurs wynosi {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Czy chcesz kontynuować z nowym kursem?"
   },
   "paymentMethod": {
     "title": "Metoda płatności",

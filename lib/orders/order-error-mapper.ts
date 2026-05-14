@@ -6,9 +6,6 @@ export interface OrderErrorMapCtx {
   isBuyAdvert?: boolean
   accountCurrency?: string
   paymentCurrency?: string
-  detail?: Record<string, unknown> | null
-  payDisplay?: string
-  accDisplay?: string
 }
 
 export function mapOrderError(

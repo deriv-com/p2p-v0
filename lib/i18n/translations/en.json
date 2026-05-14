@@ -210,7 +210,10 @@
     "orderExistsMessage": "You already have an active order for this ad. Complete the existing order before placing a new one.",
     "viewActiveOrder": "View active order",
     "v1DebitFailedTitle": "Payment failed",
-    "v1DebitFailedMessage": "We couldn't process the payment for this order. Try again or choose another ad."
+    "v1DebitFailedMessage": "We couldn't process the payment for this order. Try again or choose another ad.",
+    "rateChangeIntro": "The exchange rate for your order has changed.",
+    "rateChangeDetails": "You're {action} {amount} {accountCurrency} for {total} {paymentCurrency}, but the new rate is {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Would you like to continue with the new rate?"
   },
   "paymentMethod": {
     "title": "Payment method",

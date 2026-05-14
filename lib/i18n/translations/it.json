@@ -209,7 +209,10 @@
     "orderExistsMessage": "Hai già un ordine attivo per questo annuncio. Completa l'ordine esistente prima di effettuarne uno nuovo.",
     "viewActiveOrder": "Visualizza ordine attivo",
     "v1DebitFailedTitle": "Pagamento non riuscito",
-    "v1DebitFailedMessage": "Non siamo riusciti a elaborare il pagamento per questo ordine. Riprova o scegli un altro annuncio."
+    "v1DebitFailedMessage": "Non siamo riusciti a elaborare il pagamento per questo ordine. Riprova o scegli un altro annuncio.",
+    "rateChangeIntro": "Il tasso di cambio per il tuo ordine è cambiato.",
+    "rateChangeDetails": "Stai {action} {amount} {accountCurrency} per {total} {paymentCurrency}, ma il nuovo tasso è {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Vuoi continuare con il nuovo tasso?"
   },
   "paymentMethod": {
     "title": "Metodo di pagamento",

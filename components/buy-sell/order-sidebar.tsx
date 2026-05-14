@@ -535,9 +535,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             isBuyAdvert: orderType === "buy",
             accountCurrency: localAd.account_currency,
             paymentCurrency: localAd.payment_currency,
-            detail: order.errors[0]?.detail as Record<string, unknown> | undefined,
           })
 
+          // cancelText renders as the filled/top button; confirmText as outline/bottom.
+          // We map primaryCta → cancelText so the recommended action gets the prominent style.
           showAlert({
             title: err.title,
             description: err.message,

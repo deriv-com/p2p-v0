@@ -209,7 +209,10 @@
     "orderExistsMessage": "Ya tienes un pedido activo para este anuncio. Completa el pedido existente antes de realizar uno nuevo.",
     "viewActiveOrder": "Ver pedido activo",
     "v1DebitFailedTitle": "Pago fallido",
-    "v1DebitFailedMessage": "No pudimos procesar el pago para este pedido. Inténtalo de nuevo o elige otro anuncio."
+    "v1DebitFailedMessage": "No pudimos procesar el pago para este pedido. Inténtalo de nuevo o elige otro anuncio.",
+    "rateChangeIntro": "El tipo de cambio para tu pedido ha cambiado.",
+    "rateChangeDetails": "Estás {action} {amount} {accountCurrency} por {total} {paymentCurrency}, pero el nuevo tipo es {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "¿Te gustaría continuar con el nuevo tipo de cambio?"
   },
   "paymentMethod": {
     "title": "Método de pago",

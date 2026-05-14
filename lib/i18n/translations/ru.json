@@ -125,8 +125,8 @@
     "exchangeRateRequiredTitle": "Добавить обменный курс",
     "exchangeRateRequiredDescription": "Для этого заказа требуется обменный курс. Введите согласованный курс, чтобы продолжить.",
     "exchangeRateRequiredCta": "Ввести курс",
-    "fixedRateDescription": "Set a constant rate, unaffected by market fluctuations.",
-    "floatingRateDescription": "Set a rate that changes with market movements.",
+    "fixedRateDescription": "Установите постоянный курс, не зависящий от колебаний рынка.",
+    "floatingRateDescription": "Установите курс, который изменяется вместе с рыночными движениями.",
     "tryAgain": "Попробовать снова",
     "advertiserBlockedTitle": "Вы заблокировали этого рекламодателя",
     "advertiserBlockedMessage": "Вы не можете разместить заказ у этого рекламодателя. Чтобы разблокировать его, перейдите в свой профиль.",
@@ -203,7 +203,10 @@
     "orderExistsMessage": "У вас уже есть активный заказ для этого объявления. Завершите существующий заказ, прежде чем размещать новый.",
     "viewActiveOrder": "Просмотреть активный заказ",
     "v1DebitFailedTitle": "Платёж не выполнен",
-    "v1DebitFailedMessage": "Не удалось обработать платёж для этого заказа. Повторите попытку или выберите другое объявление."
+    "v1DebitFailedMessage": "Не удалось обработать платёж для этого заказа. Повторите попытку или выберите другое объявление.",
+    "rateChangeIntro": "Обменный курс для вашего заказа изменился.",
+    "rateChangeDetails": "Вы {action} {amount} {accountCurrency} за {total} {paymentCurrency}, но новый курс составляет {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Хотите продолжить с новым курсом?"
   },
   "paymentMethod": {
     "title": "Способ оплаты",

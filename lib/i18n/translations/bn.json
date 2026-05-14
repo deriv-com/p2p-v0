@@ -124,8 +124,8 @@
     "exchangeRateRequiredTitle": "বিনিময় হার যোগ করুন",
     "exchangeRateRequiredDescription": "এই অর্ডারে একটি বিনিময় হার প্রয়োজন। চালিয়ে যেতে সম্মত হার লিখুন।",
     "exchangeRateRequiredCta": "হার লিখুন",
-    "fixedRateDescription": "Set a constant rate, unaffected by market fluctuations.",
-    "floatingRateDescription": "Set a rate that changes with market movements.",
+    "fixedRateDescription": "একটি স্থির হার নির্ধারণ করুন, যা বাজারের ওঠানামার দ্বারা প্রভাবিত হয় না।",
+    "floatingRateDescription": "এমন একটি হার নির্ধারণ করুন যা বাজারের গতিবিধির সাথে পরিবর্তিত হয়।",
     "tryAgain": "আবার চেষ্টা করুন",
     "advertiserBlockedTitle": "আপনি এই বিজ্ঞাপনদাতাকে ব্লক করেছেন",
     "advertiserBlockedMessage": "আপনি এই বিজ্ঞাপনদাতার সাথে অর্ডার দিতে পারবেন না। আনব্লক করতে আপনার প্রোফাইলে যান।",
@@ -202,7 +202,10 @@
     "orderExistsMessage": "এই বিজ্ঞাপনের জন্য আপনার ইতোমধ্যে একটি সক্রিয় অর্ডার রয়েছে। নতুন অর্ডার দেওয়ার আগে বিদ্যমান অর্ডারটি সম্পূর্ণ করুন।",
     "viewActiveOrder": "সক্রিয় অর্ডার দেখুন",
     "v1DebitFailedTitle": "পেমেন্ট ব্যর্থ হয়েছে",
-    "v1DebitFailedMessage": "এই অর্ডারের পেমেন্ট প্রক্রিয়া করা সম্ভব হয়নি। আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।"
+    "v1DebitFailedMessage": "এই অর্ডারের পেমেন্ট প্রক্রিয়া করা সম্ভব হয়নি। আবার চেষ্টা করুন বা অন্য বিজ্ঞাপন বেছে নিন।",
+    "rateChangeIntro": "আপনার অর্ডারের বিনিময় হার পরিবর্তিত হয়েছে।",
+    "rateChangeDetails": "আপনি {amount} {accountCurrency} {action} করছেন {total} {paymentCurrency} এর জন্য, কিন্তু নতুন হার হল {newRate} {paymentCurrency}।",
+    "rateChangeContinue": "আপনি কি নতুন হারে চালিয়ে যেতে চান?"
   },
   "paymentMethod": {
     "title": "পেমেন্ট পদ্ধতি",

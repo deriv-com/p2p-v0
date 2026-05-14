@@ -125,8 +125,8 @@
     "exchangeRateRequiredTitle": "Thêm tỷ giá hối đoái",
     "exchangeRateRequiredDescription": "Đơn hàng này cần tỷ giá hối đoái. Nhập tỷ giá đã thỏa thuận để tiếp tục.",
     "exchangeRateRequiredCta": "Nhập tỷ giá",
-    "fixedRateDescription": "Set a constant rate, unaffected by market fluctuations.",
-    "floatingRateDescription": "Set a rate that changes with market movements.",
+    "fixedRateDescription": "Đặt mức tỷ giá cố định, không bị ảnh hưởng bởi biến động thị trường.",
+    "floatingRateDescription": "Đặt tỷ giá thay đổi theo biến động thị trường.",
     "tryAgain": "Thử lại",
     "advertiserBlockedTitle": "Bạn đã chặn người đăng quảng cáo này",
     "advertiserBlockedMessage": "Bạn không thể đặt lệnh với người đăng quảng cáo này. Để bỏ chặn, hãy vào trang hồ sơ của bạn.",
@@ -203,7 +203,10 @@
     "orderExistsMessage": "Bạn đã có lệnh đang hoạt động cho quảng cáo này. Hãy hoàn tất lệnh hiện có trước khi đặt lệnh mới.",
     "viewActiveOrder": "Xem lệnh đang hoạt động",
     "v1DebitFailedTitle": "Thanh toán thất bại",
-    "v1DebitFailedMessage": "Chúng tôi không thể xử lý thanh toán cho lệnh này. Hãy thử lại hoặc chọn quảng cáo khác."
+    "v1DebitFailedMessage": "Chúng tôi không thể xử lý thanh toán cho lệnh này. Hãy thử lại hoặc chọn quảng cáo khác.",
+    "rateChangeIntro": "Tỷ giá hối đoái cho lệnh của bạn đã thay đổi.",
+    "rateChangeDetails": "Bạn đang {action} {amount} {accountCurrency} với {total} {paymentCurrency}, nhưng tỷ giá mới là {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Bạn có muốn tiếp tục với tỷ giá mới không?"
   },
   "paymentMethod": {
     "title": "Phương thức thanh toán",

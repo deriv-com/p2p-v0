@@ -40,13 +40,20 @@ export default function RateChangeConfirmation({
     <div className="flex flex-col gap-8">
       <div className="space-y-4">
         <p className="text-grayscale-100 text-base">
-        The exchange rate for your order has changed.
+          {t("order.rateChangeIntro")}
         </p>
         <p className="text-grayscale-100 text-base">
-          You’re {buySellLabel} {amount} {accountCurrency} for {newTotal?.toFixed(2)} {paymentCurrency}, but the new rate is <span className="font-bold">{newRate?.toFixed(6)} {paymentCurrency}</span>.
+          {t("order.rateChangeDetails", {
+            action: buySellLabel,
+            amount,
+            accountCurrency,
+            total: newTotal?.toFixed(2) ?? "0",
+            paymentCurrency,
+            newRate: newRate?.toFixed(6) ?? "0",
+          })}
         </p>
         <p className="text-grayscale-100 text-base">
-        Would you like to continue with the new rate?
+          {t("order.rateChangeContinue")}
         </p>
       </div>
       <div className="flex flex-col gap-3">

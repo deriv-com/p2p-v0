@@ -131,8 +131,8 @@
     "fileTypes": "JPEG, JPG, PNG, PDF (jusqu'à 5 Mo)",
     "fileTooLarge": "Le fichier doit faire 5 Mo ou moins.",
     "submit": "Soumettre",
-    "fixedRateDescription": "Set a constant rate, unaffected by market fluctuations.",
-    "floatingRateDescription": "Set a rate that changes with market movements.",
+    "fixedRateDescription": "Définissez un taux constant, non affecté par les fluctuations du marché.",
+    "floatingRateDescription": "Définissez un taux qui évolue avec les mouvements du marché.",
     "tryAgain": "Réessayer",
     "advertiserBlockedTitle": "Vous avez bloqué cet annonceur",
     "advertiserBlockedMessage": "Vous ne pouvez pas passer de commande avec cet annonceur. Pour le débloquer, allez dans votre profil.",
@@ -209,7 +209,10 @@
     "orderExistsMessage": "Vous avez déjà une commande active pour cette annonce. Finalisez la commande existante avant d'en passer une nouvelle.",
     "viewActiveOrder": "Voir la commande active",
     "v1DebitFailedTitle": "Paiement échoué",
-    "v1DebitFailedMessage": "Nous n'avons pas pu traiter le paiement pour cette commande. Réessayez ou choisissez une autre annonce."
+    "v1DebitFailedMessage": "Nous n'avons pas pu traiter le paiement pour cette commande. Réessayez ou choisissez une autre annonce.",
+    "rateChangeIntro": "Le taux de change pour votre commande a changé.",
+    "rateChangeDetails": "Vous {action} {amount} {accountCurrency} pour {total} {paymentCurrency}, mais le nouveau taux est {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Voulez-vous continuer avec le nouveau taux ?"
   },
   "paymentMethod": {
     "title": "Méthode de paiement",

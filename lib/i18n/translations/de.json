@@ -202,7 +202,10 @@
     "orderExistsMessage": "Du hast bereits eine aktive Bestellung für diese Anzeige. Schließe die bestehende Bestellung ab, bevor du eine neue aufgibst.",
     "viewActiveOrder": "Aktive Bestellung anzeigen",
     "v1DebitFailedTitle": "Zahlung fehlgeschlagen",
-    "v1DebitFailedMessage": "Wir konnten die Zahlung für diese Bestellung nicht verarbeiten. Versuche es erneut oder wähle eine andere Anzeige."
+    "v1DebitFailedMessage": "Wir konnten die Zahlung für diese Bestellung nicht verarbeiten. Versuche es erneut oder wähle eine andere Anzeige.",
+    "rateChangeIntro": "Der Wechselkurs für deine Bestellung hat sich geändert.",
+    "rateChangeDetails": "Du {action} {amount} {accountCurrency} für {total} {paymentCurrency}, aber der neue Kurs beträgt {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Möchtest du mit dem neuen Kurs fortfahren?"
   },
   "paymentMethod": {
     "title": "Zahlungsmethode",

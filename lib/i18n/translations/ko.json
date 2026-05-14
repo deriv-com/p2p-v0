@@ -209,7 +209,10 @@
     "orderExistsMessage": "이미 이 광고에 대한 활성 주문이 있습니다. 새 주문을 하기 전에 기존 주문을 완료하세요.",
     "viewActiveOrder": "활성 주문 보기",
     "v1DebitFailedTitle": "결제 실패",
-    "v1DebitFailedMessage": "이 주문의 결제를 처리하지 못했습니다. 다시 시도하거나 다른 광고를 선택하세요."
+    "v1DebitFailedMessage": "이 주문의 결제를 처리하지 못했습니다. 다시 시도하거나 다른 광고를 선택하세요.",
+    "rateChangeIntro": "주문의 환율이 변경되었습니다.",
+    "rateChangeDetails": "{amount} {accountCurrency}를 {total} {paymentCurrency}로 {action}하고 있으나 새 환율은 {newRate} {paymentCurrency}입니다.",
+    "rateChangeContinue": "새 환율로 계속하시겠습니까?"
   },
   "paymentMethod": {
     "title": "결제 방법",

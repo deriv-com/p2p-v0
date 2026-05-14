@@ -209,7 +209,10 @@
     "orderExistsMessage": "Una agizo amilifu tayari kwa tangazo hili. Kamilisha agizo lililopo kabla ya kuweka jipya.",
     "viewActiveOrder": "Angalia agizo amilifu",
     "v1DebitFailedTitle": "Malipo hayakufanikiwa",
-    "v1DebitFailedMessage": "Hatukuweza kuchakata malipo kwa agizo hili. Jaribu tena au chagua tangazo lingine."
+    "v1DebitFailedMessage": "Hatukuweza kuchakata malipo kwa agizo hili. Jaribu tena au chagua tangazo lingine.",
+    "rateChangeIntro": "Kiwango cha ubadilishaji kwa agizo lako kimebadilika.",
+    "rateChangeDetails": "Unafanya {action} {amount} {accountCurrency} kwa {total} {paymentCurrency}, lakini kiwango kipya ni {newRate} {paymentCurrency}.",
+    "rateChangeContinue": "Je, ungependa kuendelea na kiwango kipya?"
   },
   "paymentMethod": {
     "title": "Njia ya kulipa",
