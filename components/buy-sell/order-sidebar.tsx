@@ -17,10 +17,13 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
 import RateChangeConfirmation from "./rate-change-confirmation"
 import AdUpdatedConfirmation from "./ad-updated-confirmation"
 import { useTrackers } from "@/analytics/useTrackers"
+import { mapOrderError } from "@/lib/orders/order-error-mapper"
+import { OrderErrorAction } from "@/lib/orders/order-error-actions"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -230,6 +233,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
   const { data: paymentMethodsResponse } = useUserPaymentMethods(isOpen)
+  const queryClient = useQueryClient()
 
   const clearSelectedPaymentMethods = () => {
     setSelectedPaymentMethods([])
@@ -450,26 +454,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         track("ek_order_creation_failed_markets_advert_sheet", { error_code: errorCode, error_message: errorCode })
+
+        // Special-case branches that don't fit the mapper's generic shape.
         if (errorCode === "OrderAdvertVersionChanged") {
           clearSelectedPaymentMethods()
           setShowAdUpdatedModal(true)
-        } else if (errorCode === "OrderExists") {
-          showAlert({
-            title: "Active order detected",
-            description: t("order.orderExists"),
-            cancelText: "View order",
-            confirmText: "Try different ad",
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-            onCancel: () => {
-              track("ek_view_active_order_markets_advert_sheet")
-              router.push("/orders/" + order.errors[0].detail.order_id)
-            }
-          })
         } else if (errorCode === "OrderFloatRateSlippage") {
+          // Phase 6 will replace this with the proper RateChangeConfirmation flow.
           showAlert({
             title: "The rate moved too much",
             description:
@@ -480,149 +471,91 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               track("ek_retry_order_markets_advert_sheet")
             },
           })
-        } else if (errorCode === "OrderVerificationTempLock") {
-          showAlert({
-            title: t("order.verificationLockedTitle"),
-            description: t("order.verificationLockedDescription"),
-            cancelText: t("common.gotIt"),
-            confirmText: t("common.close"),
-            type: "warning",
-          })
-        } else if (errorCode === "v1InsufficientFunds") {
-          showAlert({
-            title: t("order.insufficientFunds"),
-            description: t("order.insufficientFundsDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "OrderCountryInvalid") {
-          showAlert({
-            title: t("order.adNotAvailableTitle"),
-            description: t("order.adCountryInvalidDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "v1DebitFailed") {
-          showAlert({
-            title: t("order.adNotAvailableTitle"),
-            description: t("order.adNotAvailableDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "OrderExchangeRateRequired") {
-          showAlert({
-            title: t("order.exchangeRateRequiredTitle"),
-            description: t("order.exchangeRateRequiredDescription"),
-            confirmText: t("order.exchangeRateRequiredCta"),
-            type: "warning",
-          })
-        } else if (errorCode === "UserReadOnly") {
-          showAlert({
-            title: t("order.userReadOnlyTitle"),
-            description: t("order.userReadOnlyDescription"),
-            confirmText: t("order.userReadOnlyOpenChat"),
-            cancelText: t("order.userReadOnlyMaybeLater"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_open_live_chat_markets_advert_sheet")
-              if (typeof window !== "undefined" && window.Intercom) {
-                window.Intercom("show")
-              }
-            },
-          })
-        } else if (errorCode === "DuplicateRequestDetected") {
-          showAlert({
-            title: t("order.duplicateRequestTitle"),
-            description: t("order.duplicateRequestDescription"),
-            confirmText: t("order.viewMyOrders"),
-            cancelText: t("common.close"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_orders_markets_advert_sheet")
-              router.push("/orders")
-            },
-          })
-        } else if (errorCode === "v1MigrationInProgress" || errorCode === "v1MigrationInProgressOrCompleted") {
-          showAlert({
-            title: t("order.migrationInProgressTitle"),
-            description: t("order.migrationInProgressDescription"),
-            confirmText: t("order.tryAgain"),
-            cancelText: t("common.close"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_retry_order_markets_advert_sheet")
-            },
-          })
-        } else if (errorCode === "AdvertiserTempUnavailable") {
-          showAlert({
-            title: t("order.advertiserTempUnavailableTitle"),
-            description: t("order.advertiserTempUnavailableDescription"),
-            confirmText: t("order.viewOtherAds"),
-            cancelText: t("order.tryAgain"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-            onCancel: () => {
-              track("ek_retry_order_markets_advert_sheet")
-            },
-          })
-        } else if (errorCode === "OrderAdvertiserFundsInsufficient") {
-          showAlert({
-            title: t("order.advertiserFundsInsufficientTitle"),
-            description: t("order.advertiserFundsInsufficientDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "v1WithdrawalLimit") {
-          const isV1Signup = userData?.signup === "v1"
-          showAlert({
-            title: t("order.withdrawalLimitTitle"),
-            description: t("order.withdrawalLimitDescription"),
-            confirmText: t("order.verifyAccount"),
-            cancelText: t("common.close"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_verify_account_markets_advert_sheet")
-              window.location.href = getHomeUrl(isV1Signup, "poi")
-            },
-          })
-        } else if (errorCode === "v1FinancialAssessmentRequired") {
-          const isV1Signup = userData?.signup === "v1"
-          showAlert({
-            title: t("order.financialAssessmentTitle"),
-            description: t("order.financialAssessmentDescription"),
-            confirmText: t("order.completeAssessment"),
-            cancelText: t("common.close"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_complete_assessment_markets_advert_sheet")
-              window.location.href = getHomeUrl(isV1Signup, "financialAssessment")
-            },
-          })
         } else {
+          // Mapper-driven path: every other code routes through mapOrderError +
+          // dispatchOrderErrorAction. The dispatcher is the single place that
+          // wires CTA actions (route, intercom, retry, list-invalidate, etc).
+          const isV1Signup = userData?.signup === "v1"
+          const existingOrderId = (order.errors[0]?.detail?.order_id as number | undefined)
+
+          const dispatchOrderErrorAction = (
+            action: OrderErrorAction,
+            ctx: { orderId?: number } = {},
+          ): void => {
+            switch (action) {
+              case OrderErrorAction.Dismiss:
+              case OrderErrorAction.GoBack:
+              case OrderErrorAction.AdjustAmount:
+                return
+              case OrderErrorAction.Retry:
+                track("ek_retry_order_markets_advert_sheet")
+                proceedWithOrder()
+                return
+              case OrderErrorAction.OpenLiveChat:
+                track("ek_open_live_chat_markets_advert_sheet")
+                if (typeof window !== "undefined" && window.Intercom) {
+                  window.Intercom("show")
+                }
+                return
+              case OrderErrorAction.ViewOtherAds:
+                track("ek_view_other_ads_markets_advert_sheet")
+                // ★ Stale-list bug fix: invalidate the markets adverts query
+                // so the next render fetches fresh data and the now-invalid
+                // advert disappears from the list.
+                queryClient.invalidateQueries({ queryKey: queryKeys.buySell.advertisements() })
+                handleClose()
+                return
+              case OrderErrorAction.ManageBlocked:
+                track("ek_manage_blocked_markets_advert_sheet")
+                handleClose()
+                router.push("/profile?tab=blocked")
+                return
+              case OrderErrorAction.ViewActiveOrder:
+                track("ek_view_active_order_markets_advert_sheet")
+                handleClose()
+                router.push(ctx.orderId ? `/orders/${ctx.orderId}` : "/orders")
+                return
+              case OrderErrorAction.ViewProfile:
+                track("ek_view_profile_markets_advert_sheet")
+                handleClose()
+                router.push("/profile")
+                return
+              case OrderErrorAction.ViewOrders:
+                track("ek_view_orders_markets_advert_sheet")
+                handleClose()
+                router.push("/orders")
+                return
+              case OrderErrorAction.VerifyAccount:
+                track("ek_verify_account_markets_advert_sheet")
+                window.location.href = getHomeUrl(isV1Signup, "poi")
+                return
+              case OrderErrorAction.CompleteAssessment:
+                track("ek_complete_assessment_markets_advert_sheet")
+                window.location.href = getHomeUrl(isV1Signup, "financialAssessment")
+                return
+              case OrderErrorAction.ConfirmRateSlippage:
+                // Phase 6 will wire this up to RateChangeConfirmation.
+                return
+            }
+          }
+
+          const err = mapOrderError(errorCode, t, {
+            isBuyAdvert: orderType === "buy",
+            accountCurrency: localAd.account_currency,
+            paymentCurrency: localAd.payment_currency,
+            detail: order.errors[0]?.detail as Record<string, unknown> | undefined,
+          })
+
           showAlert({
-            title: t("order.unableToCreateOrder"),
-            description: `${t("order.orderCreationError")} (${errorCode})`,
-            confirmText: t("common.ok"),
+            title: err.title,
+            description: err.message,
+            confirmText: err.primaryCta,
+            cancelText: err.secondaryCta,
             type: "warning",
+            onConfirm: () => dispatchOrderErrorAction(err.primaryAction, { orderId: existingOrderId }),
+            onCancel: err.secondaryAction
+              ? () => dispatchOrderErrorAction(err.secondaryAction!, { orderId: existingOrderId })
+              : undefined,
           })
         }
       } else {
