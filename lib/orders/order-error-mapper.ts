@@ -17,6 +17,124 @@ export function mapOrderError(
   _ctx: OrderErrorMapCtx = {},
 ): OrderErrorMessage {
   switch (code) {
+    case "OrderAmountMaximum":
+      return {
+        title: t("order.amountTooHighTitle"),
+        message: t("order.amountTooHighMessage"),
+        primaryCta: t("order.updateAmount"),
+        primaryAction: OrderErrorAction.AdjustAmount,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderAmountMinimum":
+      return {
+        title: t("order.amountTooLowTitle"),
+        message: t("order.amountTooLowMessage"),
+        primaryCta: t("order.updateAmount"),
+        primaryAction: OrderErrorAction.AdjustAmount,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderDailyBuyLimit":
+      return {
+        title: t("order.buyLimitTitle"),
+        message: t("order.buyLimitMessage"),
+        primaryCta: t("order.adjustAmount"),
+        primaryAction: OrderErrorAction.AdjustAmount,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderDailySellLimit":
+      return {
+        title: t("order.sellLimitTitle"),
+        message: t("order.sellLimitMessage"),
+        primaryCta: t("order.adjustAmount"),
+        primaryAction: OrderErrorAction.AdjustAmount,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderDailyCountLimit":
+      return {
+        title: t("order.orderLimitTitle"),
+        message: t("order.orderLimitMessage"),
+        primaryCta: t("common.gotIt"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderPaymentMethodInvalid":
+      return {
+        title: t("order.paymentMethodNotSupportedTitle"),
+        message: t("order.paymentMethodNotSupportedMessage"),
+        primaryCta: t("order.changePaymentMethod"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.cancel"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderUserPaymentMethodInvalid":
+      return {
+        title: t("order.paymentMethodNotAvailableTitle"),
+        message: t("order.paymentMethodNotAvailableMessage"),
+        primaryCta: t("order.changePaymentMethod"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.cancel"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderTradeBandInvalid":
+      return {
+        title: t("order.tradeBandTitle"),
+        message: t("order.tradeBandMessage"),
+        primaryCta: t("order.viewLimits"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.cancel"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderTemporarilyBarred":
+      return {
+        title: t("order.temporarilyBarredTitle"),
+        message: t("order.temporarilyBarredMessage"),
+        primaryCta: t("common.gotIt"),
+        primaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderUserScheduleUnavailable":
+      return {
+        title: t("order.scheduleConflictTitle"),
+        message: t("order.scheduleConflictMessage"),
+        primaryCta: t("order.editSchedule"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("order.maybeLater"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderUserTransactionTypeNotAllowed":
+      return {
+        title: t("order.orderTypeNotAllowedTitle"),
+        message: t("order.orderTypeNotAllowedMessage"),
+        primaryCta: t("order.openLiveChat"),
+        primaryAction: OrderErrorAction.OpenLiveChat,
+        secondaryCta: t("order.maybeLater"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "OrderUserFundsInsufficient":
+      return {
+        title: t("order.userInsufficientFundsTitle"),
+        message: t("order.userInsufficientFundsMessage"),
+        primaryCta: t("order.tryAgain"),
+        primaryAction: OrderErrorAction.Retry,
+        secondaryCta: t("order.openLiveChat"),
+        secondaryAction: OrderErrorAction.OpenLiveChat,
+      }
+
     case "OrderAdvertiserBlocked":
       return {
         title: t("order.advertiserBlockedTitle"),
