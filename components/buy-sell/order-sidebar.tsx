@@ -23,7 +23,7 @@ import RateChangeConfirmation from "./rate-change-confirmation"
 import AdUpdatedConfirmation from "./ad-updated-confirmation"
 import { useTrackers } from "@/analytics/useTrackers"
 import { mapOrderError } from "@/lib/orders/order-error-mapper"
-import { OrderErrorAction } from "@/lib/orders/order-error-actions"
+import { createOrderErrorDispatcher } from "@/lib/orders/order-error-dispatcher"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -470,66 +470,16 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           const isV1Signup = userData?.signup === "v1"
           const existingOrderId = (order.errors[0]?.detail?.order_id as number | undefined)
 
-          const dispatchOrderErrorAction = (
-            action: OrderErrorAction,
-            ctx: { orderId?: number } = {},
-          ): void => {
-            switch (action) {
-              case OrderErrorAction.Dismiss:
-              case OrderErrorAction.GoBack:
-              case OrderErrorAction.AdjustAmount:
-                return
-              case OrderErrorAction.Retry:
-                track("ek_retry_order_markets_advert_sheet")
-                proceedWithOrder()
-                return
-              case OrderErrorAction.OpenLiveChat:
-                track("ek_open_live_chat_markets_advert_sheet")
-                if (typeof window !== "undefined" && window.Intercom) {
-                  window.Intercom("show")
-                }
-                return
-              case OrderErrorAction.ViewOtherAds:
-                track("ek_view_other_ads_markets_advert_sheet")
-                // ★ Stale-list bug fix: invalidate the markets adverts query
-                // so the next render fetches fresh data and the now-invalid
-                // advert disappears from the list.
-                queryClient.invalidateQueries({ queryKey: queryKeys.buySell.advertisements() })
-                handleClose()
-                return
-              case OrderErrorAction.ManageBlocked:
-                track("ek_manage_blocked_markets_advert_sheet")
-                handleClose()
-                router.push("/profile?tab=blocked")
-                return
-              case OrderErrorAction.ViewActiveOrder:
-                track("ek_view_active_order_markets_advert_sheet")
-                handleClose()
-                router.push(ctx.orderId ? `/orders/${ctx.orderId}` : "/orders")
-                return
-              case OrderErrorAction.ViewProfile:
-                track("ek_view_profile_markets_advert_sheet")
-                handleClose()
-                router.push("/profile")
-                return
-              case OrderErrorAction.ViewOrders:
-                track("ek_view_orders_markets_advert_sheet")
-                handleClose()
-                router.push("/orders")
-                return
-              case OrderErrorAction.VerifyAccount:
-                track("ek_verify_account_markets_advert_sheet")
-                window.location.href = getHomeUrl(isV1Signup, "poi")
-                return
-              case OrderErrorAction.CompleteAssessment:
-                track("ek_complete_assessment_markets_advert_sheet")
-                window.location.href = getHomeUrl(isV1Signup, "financialAssessment")
-                return
-              case OrderErrorAction.ConfirmRateSlippage:
-                // Phase 6 will wire this up to RateChangeConfirmation.
-                return
-            }
-          }
+          const dispatch = createOrderErrorDispatcher({
+            queryClient,
+            router,
+            handleClose,
+            track,
+            retry: proceedWithOrder,
+            isV1Signup,
+            advertisementsQueryKey: queryKeys.buySell.advertisements(),
+            getHomeUrl,
+          })
 
           const err = mapOrderError(errorCode, t, {
             isBuyAdvert: orderType === "buy",
@@ -537,17 +487,15 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             paymentCurrency: localAd.payment_currency,
           })
 
-          // cancelText renders as the filled/top button; confirmText as outline/bottom.
-          // We map primaryCta → cancelText so the recommended action gets the prominent style.
           showAlert({
             title: err.title,
             description: err.message,
-            cancelText: err.primaryCta,
-            confirmText: err.secondaryCta,
-            type: err.secondaryCta ? "warning" : undefined,
-            onCancel: () => dispatchOrderErrorAction(err.primaryAction, { orderId: existingOrderId }),
-            onConfirm: err.secondaryAction
-              ? () => dispatchOrderErrorAction(err.secondaryAction!, { orderId: existingOrderId })
+            confirmText: err.primaryCta,
+            cancelText: err.secondaryCta,
+            type: "warning",
+            onConfirm: () => dispatch(err.primaryAction, { orderId: existingOrderId }),
+            onCancel: err.secondaryAction
+              ? () => dispatch(err.secondaryAction!, { orderId: existingOrderId })
               : undefined,
           })
         }
