@@ -17,6 +17,76 @@ export function mapOrderError(
   _ctx: OrderErrorMapCtx = {},
 ): OrderErrorMessage {
   switch (code) {
+    case "9001":
+      return {
+        title: t("order.genericTitle"),
+        message: t("order.err9001Message"),
+        primaryCta: t("order.tryAgain"),
+        primaryAction: OrderErrorAction.Retry,
+        secondaryCta: t("order.openLiveChat"),
+        secondaryAction: OrderErrorAction.OpenLiveChat,
+      }
+
+    case "9002":
+      return {
+        title: t("order.genericTitle"),
+        message: t("order.err9002Message"),
+        primaryCta: t("order.tryAgain"),
+        primaryAction: OrderErrorAction.Retry,
+        secondaryCta: t("order.openLiveChat"),
+        secondaryAction: OrderErrorAction.OpenLiveChat,
+      }
+
+    case "9003":
+      return {
+        title: t("order.genericTitle"),
+        message: t("order.err9003Message"),
+        primaryCta: t("order.tryAgain"),
+        primaryAction: OrderErrorAction.Retry,
+        secondaryCta: t("order.openLiveChat"),
+        secondaryAction: OrderErrorAction.OpenLiveChat,
+      }
+
+    case "9004":
+      return {
+        title: t("order.genericTitle"),
+        message: t("order.err9004Message"),
+        primaryCta: t("order.tryAgain"),
+        primaryAction: OrderErrorAction.Retry,
+        secondaryCta: t("order.openLiveChat"),
+        secondaryAction: OrderErrorAction.OpenLiveChat,
+      }
+
+    case "AdvertAccountCurrencyInvalid":
+      return {
+        title: t("order.chooseCurrencyTitle"),
+        message: t("order.chooseCurrencyMessage"),
+        primaryCta: t("order.changeCurrency"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "AdvertFloatRateDisabled":
+      return {
+        title: t("order.floatRateTitle"),
+        message: t("order.floatRateMessage"),
+        primaryCta: t("order.updateAd"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
+    case "AdvertPaymentCurrencyInvalid":
+      return {
+        title: t("order.choosePaymentCurrencyTitle"),
+        message: t("order.choosePaymentCurrencyMessage"),
+        primaryCta: t("order.changeCurrency"),
+        primaryAction: OrderErrorAction.Dismiss,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
     case "OrderAmountMaximum":
       return {
         title: t("order.amountTooHighTitle"),
@@ -224,13 +294,12 @@ export function mapOrderError(
       }
 
     case "OrderExists":
-      // Hardcoded English here mirrors today's inline branch — Phase 5 will i18n.
       return {
-        title: "Active order detected",
-        message: t("order.orderExists"),
-        primaryCta: "Try different ad",
+        title: t("order.orderExistsTitle"),
+        message: t("order.orderExistsMessage"),
+        primaryCta: t("order.viewOtherAds"),
         primaryAction: OrderErrorAction.ViewOtherAds,
-        secondaryCta: "View order",
+        secondaryCta: t("order.viewActiveOrder"),
         secondaryAction: OrderErrorAction.ViewActiveOrder,
       }
 
@@ -294,10 +363,12 @@ export function mapOrderError(
 
     case "v1DebitFailed":
       return {
-        title: t("order.adNotAvailableTitle"),
-        message: t("order.adNotAvailableDescription"),
+        title: t("order.v1DebitFailedTitle"),
+        message: t("order.v1DebitFailedMessage"),
         primaryCta: t("order.viewOtherAds"),
         primaryAction: OrderErrorAction.ViewOtherAds,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
       }
 
     case "OrderExchangeRateRequired":
@@ -381,11 +452,11 @@ export function mapOrderError(
 
     default:
       return {
-        title: t("order.unableToCreateOrder"),
+        title: t("order.genericTitle"),
         message: code
-          ? `${t("order.orderCreationError")} (${code})`
-          : t("order.orderCreationError"),
-        primaryCta: t("common.ok"),
+          ? t("order.genericWithCodeMessage", { code })
+          : t("order.genericMessage"),
+        primaryCta: t("common.gotIt"),
         primaryAction: OrderErrorAction.Dismiss,
       }
   }
