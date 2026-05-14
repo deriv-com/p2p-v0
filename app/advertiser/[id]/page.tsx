@@ -85,6 +85,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const p2pBalance = Number.parseFloat(userData?.balances?.amount ?? "0")
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [isFollowing, setIsFollowing] = useState(false)
   const [isGroupMember, setIsGroupMember] = useState(false)
@@ -675,6 +676,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
               onClose={() => setIsOrderSidebarOpen(false)}
               ad={selectedAd}
               orderType={orderType}
+              p2pBalance={p2pBalance}
             />
           </div>
         </div>
