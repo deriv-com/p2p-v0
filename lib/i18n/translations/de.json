@@ -68,6 +68,10 @@
     "noBalanceTransfer": "Geld überweisen"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Kurze Hinweise für einen sicheren Handel",
+      "description": "Halte dich an das Zeitlimit und bleibe auf unserer Plattform. Externer Kontakt gefährdet dein Guthaben und kann zur Kontosperrung führen."
+    },
     "placeOrder": "Bestellung aufgeben",
     "amount": "Betrag",
     "youReceive": "Sie erhalten",

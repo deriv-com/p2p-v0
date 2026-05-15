@@ -75,6 +75,10 @@
     "noBalanceTransfer": "자금 이체"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "안전한 거래를 위한 빠른 안내",
+      "description": "시간 제한을 준수하고 플랫폼 내에서만 거래하세요. 외부 접촉은 자금 손실 위험이 있으며 계정 정지로 이어질 수 있습니다."
+    },
     "placeOrder": "주문 생성",
     "amount": "금액",
     "youReceive": "받는 금액",

@@ -68,6 +68,10 @@
     "noBalanceTransfer": "Transférer des fonds"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Rappels rapides pour un échange sécurisé",
+      "description": "Respectez le délai imparti et restez sur notre plateforme. Tout contact externe met vos fonds en danger et peut entraîner la suspension de votre compte."
+    },
     "placeOrder": "Passer la commande",
     "amount": "Montant",
     "youReceive": "Vous recevez",

@@ -75,6 +75,10 @@
     "noBalanceTransfer": "Przelej środki"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Szybkie przypomnienia dla bezpiecznej transakcji",
+      "description": "Przestrzegaj limitu czasu i pozostań na naszej platformie. Kontakt zewnętrzny naraża Twoje środki i może prowadzić do zawieszenia konta."
+    },
     "placeOrder": "Złóż zamówienie",
     "amount": "Kwota",
     "youReceive": "Otrzymujesz",

@@ -3,6 +3,8 @@
 import type React from "react"
 import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
+import { Alert } from "@/components/ui/alert"
+import { InfoCircleIcon } from "@/components/icons/info-circle"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -644,6 +646,19 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               </div>
 
               <div className="flex flex-col h-auto overflow-y-auto">
+                <div className="p-4 pb-0">
+                  <Alert variant="warning" className="flex items-start gap-3">
+                    <InfoCircleIcon className="shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-bold text-sm mb-1">
+                        {t("order.secureTradeReminder.title")}
+                      </h3>
+                      <div className="text-sm">
+                        {t("order.secureTradeReminder.description")}
+                      </div>
+                    </div>
+                  </Alert>
+                </div>
                 <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
                 <div className="p-4">
                   <div className="mb-4">

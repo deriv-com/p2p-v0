@@ -75,6 +75,10 @@
     "noBalanceTransfer": "Hamisha fedha"
   },
   "order": {
+    "secureTradeReminder": {
+      "title": "Vikumbusho vya haraka kwa biashara salama",
+      "description": "Fuata kikomo cha muda na ukae kwenye jukwaa letu. Mawasiliano ya nje yanaweza kuhatarisha fedha zako na kusababisha kusimamishwa kwa akaunti."
+    },
     "placeOrder": "Weka amri",
     "amount": "Kiasi",
     "youReceive": "Utapokea",
