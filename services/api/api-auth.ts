@@ -476,7 +476,7 @@ export async function getClientProfile(): Promise<void> {
       nickname: data.nickname,
     }
 
-    useUserDataStore.getState().setUserData(userData)
+    useUserDataStore.getState().updateUserData(userData)
 
     if (data.residence) {
       useUserDataStore.getState().setResidenceCountry(data.residence)

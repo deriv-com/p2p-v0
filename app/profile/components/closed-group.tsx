@@ -26,7 +26,8 @@ interface ClosedGroupTabProps {
 export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
   const { hideAlert } = useAlertDialog()
-  const { data: closedGroups = [], isLoading, refetch } = useFavouriteUsers()
+  const { data, isLoading, refetch } = useFavouriteUsers()
+  const closedGroups: ClosedGroup[] = data?.pages.flat() ?? []
   const [searchQuery, setSearchQuery] = useState("")
   const [isRemoving, setIsRemoving] = useState(false)
 
