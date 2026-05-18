@@ -634,7 +634,34 @@
     "updateAdError": "There was an error when updating the advert. Please try again.",
     "visibilityStatus": "Your ad isn't visible",
     "visibilityStatusDescription": "Your ad isn't visible to others. Here's why:",
-    "visibilityStatusMultipleReasons": "Your ad isn't listed on Market due to the following reasons:"
+    "visibilityStatusMultipleReasons": "Your ad isn't listed on Market due to the following reasons:",
+    "businessHours": {
+      "title": "Business hours",
+      "description": "Your ads are visible on the market only during the hours you set. Buyers outside this window see them as unavailable.",
+      "headerLabel": "Business hour: {summary}",
+      "alwaysOpen": "Always open",
+      "closedSubtitle": "Closed",
+      "enableLabel": "Enable business hours",
+      "daysLabel": "Days",
+      "hoursLabel": "Hours",
+      "openLabel": "Open",
+      "closeLabel": "Close",
+      "saveChanges": "Save changes",
+      "timezoneSuffix": "{tz} — based on your location",
+      "dayMon": "M",
+      "dayTue": "T",
+      "dayWed": "W",
+      "dayThu": "T",
+      "dayFri": "F",
+      "daySat": "S",
+      "daySun": "S",
+      "schedulePeriodInvalidTitle": "Schedule period not valid",
+      "schedulePeriodInvalidMessage": "The start and end times for this day are not valid. Make sure the start time is before the end time and within 24 hours.",
+      "editSchedule": "Edit schedule",
+      "resetSchedule": "Reset schedule",
+      "errorGenericTitle": "Something went wrong. Please try again.",
+      "errorGenericMessage": "We couldn't save your business hours ({code}). Please try again."
+    }
   },
   "visibilityStatus": {
     "advertInactive": {

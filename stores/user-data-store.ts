@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import type { OnboardingStatusResponse } from "@/services/api/api-auth"
+import type { BusinessHoursSchedule } from "@/lib/business-hours-codec"
 
 export interface UserData {
   adverts_are_listed?: boolean
@@ -16,6 +17,7 @@ export interface UserData {
   status?: string
   feedback_exist?: boolean
   trade_band?: string
+  schedule?: BusinessHoursSchedule
 }
 
 export interface VerificationStatus {
