@@ -14,4 +14,5 @@ export interface AdFormData {
   buyCurrency: string
   order_expiry_period?: number
   available_countries?: string[]
+  minimum_trade_band?: "silver" | "gold" | "diamond" | null
 }

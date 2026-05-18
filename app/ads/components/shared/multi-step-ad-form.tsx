@@ -14,6 +14,7 @@ import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
 import AdVisibilitySelector from "./ad-visibility-selector"
+import MinimumTierSelector, { type MinimumTradeBand } from "./minimum-tier-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import CountrySelection from "./country-selection"
@@ -72,6 +73,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
+  const [minimumTradeBand, setMinimumTradeBand] = useState<MinimumTradeBand>(null)
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
   const [showSuccessScreen, setShowSuccessScreen] = useState(false)
@@ -215,6 +217,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             } else {
               setAdVisibility("everyone")
             }
+
+            setMinimumTradeBand((data.minimum_trade_band as MinimumTradeBand) ?? null)
           }
 
           setIsLoadingInitialData(false)
@@ -355,6 +359,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         order_expiry_period: orderTimeLimit,
         available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
         is_private: isPrivate,
+        ...(minimumTradeBand ? { minimum_trade_band: minimumTradeBand } : {}),
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -401,6 +406,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         available_countries: selectedCountries,
         description: finalData.instructions || "",
         is_private: isPrivate,
+        ...(minimumTradeBand ? { minimum_trade_band: minimumTradeBand } : {}),
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -770,6 +776,42 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           isLoading={isLoadingCountries}
                         />
                       </div>
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-[4px] items-center mb-4">
+                        <h3 className="text-base font-bold leading-6 tracking-normal">
+                          {formData.type === "sell"
+                            ? t("adForm.minimumBuyerTier")
+                            : t("adForm.minimumSellerTier")}
+                        </h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white">
+                                {formData.type === "sell"
+                                  ? t("adForm.minimumBuyerTierHelper")
+                                  : t("adForm.minimumSellerTierHelper")}
+                              </p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <MinimumTierSelector
+                        value={minimumTradeBand}
+                        onValueChange={setMinimumTradeBand}
+                        adType={(formData.type as "buy" | "sell") || "buy"}
+                      />
                     </div>
                     {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
                       <div className="flex gap-[4px] items-center mb-4">
