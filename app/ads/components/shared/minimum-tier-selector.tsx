@@ -100,7 +100,7 @@ function TierRow({
         <span className="text-base text-grayscale-100">{t(option.titleKey)}</span>
         <OverlappingTierIcons icons={option.icons} />
       </div>
-      <div className="mt-1 text-sm text-grayscale-300">{t(option.descriptionKey)}</div>
+      <div className="mt-1 text-sm text-grayscale-text-muted">{t(option.descriptionKey)}</div>
     </button>
   )
 }
@@ -225,7 +225,7 @@ export default function MinimumTierSelector({
         />
       </div>
       {isOpen && (
-        <div className="mt-2">
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-lg bg-white shadow-lg p-2 border border-grayscale-200">
           <TierList />
         </div>
       )}
