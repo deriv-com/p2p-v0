@@ -97,10 +97,10 @@ function TierRow({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-base text-grayscale-100">{t(option.titleKey)}</span>
+        <span className="text-base text-black">{t(option.titleKey)}</span>
         <OverlappingTierIcons icons={option.icons} />
       </div>
-      <div className="mt-1 text-sm text-grayscale-text-muted">{t(option.descriptionKey)}</div>
+      <div className="mt-1 text-sm text-grayscale-100">{t(option.descriptionKey)}</div>
     </button>
   )
 }
@@ -140,7 +140,7 @@ export default function MinimumTierSelector({
   const TierList = ({ withTitle }: { withTitle?: boolean }) => (
     <div className="space-y-2">
       {withTitle && (
-        <h3 className="text-2xl font-extrabold text-grayscale-100 mb-4">
+        <h3 className="text-2xl font-extrabold text-black mb-4">
           {t("adForm.minimumTierSheetTitle")}
         </h3>
       )}
