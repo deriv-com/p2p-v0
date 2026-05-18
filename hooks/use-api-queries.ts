@@ -627,3 +627,20 @@ export function useSubmitFeedback() {
     },
   })
 }
+
+export function useUpdateBusinessHours() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (schedule: import('@/lib/business-hours-codec').BusinessHoursSchedule) => {
+      const userId = useUserDataStore.getState().userId
+      if (!userId) throw new Error('User not authenticated')
+      await ProfileAPI.updateBusinessHours(userId, schedule)
+      return schedule
+    },
+    retry: 0,
+    onSuccess: (schedule) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() })
+      useUserDataStore.getState().updateUserData({ schedule })
+    },
+  })
+}

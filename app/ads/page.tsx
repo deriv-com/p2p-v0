@@ -11,6 +11,8 @@ import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
+import { BusinessHoursRow } from "./components/business-hours-row"
+import { BusinessHoursModal } from "./components/business-hours-modal"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
@@ -44,6 +46,7 @@ export default function AdsPage() {
   })
   const { hideAlert, showAlert } = useAlertDialog()
   const [showKycPopup, setShowKycPopup] = useState(false)
+  const [showBusinessHours, setShowBusinessHours] = useState(false)
   const errorAlertShownRef = useRef(false)
 
   const isMobile = useIsMobile()
@@ -272,8 +275,9 @@ export default function AdsPage() {
     <>
       <div className="flex flex-col h-screen bg-white px-3">
         <div className="flex-none container mx-auto">
-          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
-            {t("myAds.title")}
+          <div className="w-[calc(100%+24px)] md:w-full bg-slate-1200 px-6 py-5 rounded-b-3xl md:rounded-3xl text-white -m-3 mb-4 md:mx-0 md:mt-0 flex flex-col gap-2">
+            <span className="text-xl font-bold">{t("myAds.title")}</span>
+            <BusinessHoursRow onClick={() => setShowBusinessHours(true)} />
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
@@ -305,6 +309,11 @@ export default function AdsPage() {
           )}
           <div ref={sentinelRef} className="h-1" />
         </div>
+
+        <BusinessHoursModal
+          open={showBusinessHours}
+          onOpenChange={setShowBusinessHours}
+        />
 
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
