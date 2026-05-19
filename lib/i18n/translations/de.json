@@ -382,7 +382,7 @@
     "tradePartnersTooltip": "Gesamtzahl der Nutzer, mit denen Sie erfolgreich gehandelt haben.",
     "tradeVolumeLifetimeTooltip": "Der Gesamtwert aller jemals abgeschlossenen Trades.",
     "tradeVolume30DaysTooltip": "Der Gesamtwert aller in den letzten 30 Tagen abgeschlossenen Trades.",
-    "lessThanOneMin": "< 1 min",
+    "lessThanOneMin": "< 1 Min.",
     "mins": "Min.",
     "gettingStarted": "Erste Schritte mit P2P",
     "verificationExpired": "Verifizierung abgelaufen",
@@ -714,7 +714,7 @@
     "tryAgain": "Bitte versuchen Sie es erneut.",
     "updateAd": "Anzeige aktualisieren",
     "updateRate": "Kurs aktualisieren",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Limits bearbeiten",
     "duplicatePaymentMethodTitle": "Überprüfen Sie Ihre Zahlungsmethoden",
     "duplicatePaymentMethodMessage": "Sie können für jede Anzeige nur eine Zahlungsmethode desselben Typs verwenden.",
     "updatePaymentMethods": "Zahlungsmethoden aktualisieren",
@@ -749,7 +749,9 @@
     "genericProcessingErrorMessage": "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten",
     "adVisibilityUpdate": "Anzeigensichtbarkeit aktualisiert",
-    "adVisibilityUpdateDescription": "Sie können diese Anzeige nicht auf eine Auflistung für geschlossene Gruppen zurückändern, es sei denn, Sie werden erneut ein Diamond-Tier-Mitglied."
+    "adVisibilityUpdateDescription": "Sie können diese Anzeige nicht auf eine Auflistung für geschlossene Gruppen zurückändern, es sei denn, Sie werden erneut ein Diamond-Tier-Mitglied.",
+    "adVisibility": "Anzeigensichtbarkeit",
+    "adVisibilityTooltip": "Wählen Sie, wer Ihre Anzeigen auf dem Marktplatz sehen und mit ihnen interagieren kann."
   },
   "advertiser": {
     "goBack": "Zurück",

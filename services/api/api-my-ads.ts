@@ -21,7 +21,7 @@ export interface APIAdvert {
   is_active: boolean
   maximum_order_amount: number
   minimum_order_amount: number
-  minimum_trade_band?: "silver" | "gold" | "diamond" | null
+  minimum_trade_band?: "bronze" | "silver" | "gold" | "diamond" | null
   order_expiry_period: number
   payment_currency?: string
   payment_method_names: string[]

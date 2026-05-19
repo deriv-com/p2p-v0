@@ -218,7 +218,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               setAdVisibility("everyone")
             }
 
-            setMinimumTradeBand((data.minimum_trade_band as MinimumTradeBand) ?? null)
+            // BE may return 'bronze' (= no restriction), null, or any tier.
+            // Normalize to the UI's MinimumTradeBand: only silver/gold/diamond
+            // are surfaced as selections; everything else (bronze, null, an
+            // unknown tier name) maps to null = "All tiers".
+            const apiBand = data.minimum_trade_band as string | null | undefined
+            const KNOWN_TIERS = new Set(["silver", "gold", "diamond"])
+            setMinimumTradeBand(
+              apiBand && KNOWN_TIERS.has(apiBand) ? (apiBand as MinimumTradeBand) : null,
+            )
           }
 
           setIsLoadingInitialData(false)
@@ -818,7 +826,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                     </div>
                     {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
                       <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">Ad visibility</h3>
+                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.adVisibility")}</h3>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -831,7 +839,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p className="text-white">Choose who can see and interact with your ads on the marketplace.</p>
+                              <p className="text-white">{t("adForm.adVisibilityTooltip")}</p>
                               <TooltipArrow className="fill-black" />
                             </TooltipContent>
                           </Tooltip>

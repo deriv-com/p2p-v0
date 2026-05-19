@@ -700,7 +700,7 @@
     "tryAgain": "Пожалуйста, попробуйте снова.",
     "updateAd": "Обновить объявление",
     "updateRate": "Обновить курс",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Изменить лимиты",
     "duplicatePaymentMethodTitle": "Проверьте ваши способы оплаты",
     "duplicatePaymentMethodMessage": "Для каждого объявления можно использовать только один способ оплаты одного типа.",
     "updatePaymentMethods": "Обновить способы оплаты",
@@ -747,7 +747,9 @@
     "allCounterparties": "Все контрагенты",
     "genericErrorCodeMessage": "Произошла ошибка ({code}). Повторите попытку или обратитесь в службу поддержки.",
     "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку.",
-    "unknownErrorMessage": "Произошла неизвестная ошибка"
+    "unknownErrorMessage": "Произошла неизвестная ошибка",
+    "adVisibility": "Видимость объявления",
+    "adVisibilityTooltip": "Выберите, кто может видеть ваши объявления и взаимодействовать с ними на маркетплейсе."
   },
   "advertiser": {
     "profile": "Профиль рекламодателя",

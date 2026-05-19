@@ -56,7 +56,7 @@
     "paymentMethods": "Métodos de pago",
     "orders": "órdenes",
     "completion": "completación",
-    "min": "min",
+    "min": "mín",
     "orderLimits": "Límites de orden",
     "loadingAds": "Cargando anuncios...",
     "noAdsTitle": "No hay anuncios para esta moneda",
@@ -761,7 +761,7 @@
     "tryAgain": "Por favor, inténtalo de nuevo.",
     "updateAd": "Actualizar anuncio",
     "updateRate": "Actualizar tasa",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Editar límites",
     "duplicatePaymentMethodTitle": "Comprueba tus métodos de pago",
     "duplicatePaymentMethodMessage": "Solo puedes usar un método de pago del mismo tipo para cada anuncio.",
     "updatePaymentMethods": "Actualizar métodos de pago",
@@ -792,7 +792,9 @@
     "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo.",
     "unknownErrorMessage": "Ocurrió un error desconocido",
     "adVisibilityUpdate": "Actualizar visibilidad del anuncio",
-    "adVisibilityUpdateDescription": "No podrás cambiar este anuncio a una lista de grupo cerrado a menos que vuelvas a convertirte en miembro de nivel Diamond."
+    "adVisibilityUpdateDescription": "No podrás cambiar este anuncio a una lista de grupo cerrado a menos que vuelvas a convertirte en miembro de nivel Diamond.",
+    "adVisibility": "Visibilidad del anuncio",
+    "adVisibilityTooltip": "Elige quién puede ver e interactuar con tus anuncios en el mercado."
   },
   "kyc": {
     "title": "Verificación de identidad",

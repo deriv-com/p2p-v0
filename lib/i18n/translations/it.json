@@ -710,7 +710,7 @@
     "tryAgain": "Riprova.",
     "updateAd": "Aggiorna annuncio",
     "updateRate": "Aggiorna tasso",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Modifica limiti",
     "duplicatePaymentMethodTitle": "Controlla i tuoi metodi di pagamento",
     "duplicatePaymentMethodMessage": "Puoi utilizzare solo un metodo di pagamento dello stesso tipo per ogni annuncio.",
     "updatePaymentMethods": "Aggiorna metodi di pagamento",
@@ -739,7 +739,9 @@
     "noPaymentMethodsFound": "Nessun metodo di pagamento trovato",
     "genericErrorCodeMessage": "Si è verificato un errore ({code}). Riprova o contatta l'assistenza.",
     "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova.",
-    "unknownErrorMessage": "Si è verificato un errore sconosciuto"
+    "unknownErrorMessage": "Si è verificato un errore sconosciuto",
+    "adVisibility": "Visibilità dell'annuncio",
+    "adVisibilityTooltip": "Scegli chi può vedere e interagire con i tuoi annunci sul marketplace."
   },
   "advertiser": {
     "goBack": "Torna Indietro",

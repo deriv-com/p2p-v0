@@ -856,7 +856,9 @@
     "cancelAdCreationDescription": "If you cancel, the details you've entered will be lost.",
     "continueAdCreation": "Continue ad creation",
     "adVisibilityUpdate": "Ad visibility update",
-    "adVisibilityUpdateDescription": "You won't be able to change this ad back to a closed group listing unless you become a Diamond tier member again."
+    "adVisibilityUpdateDescription": "You won't be able to change this ad back to a closed group listing unless you become a Diamond tier member again.",
+    "adVisibility": "Ad visibility",
+    "adVisibilityTooltip": "Choose who can see and interact with your ads on the marketplace."
   },
   "advertiser": {
     "goBack": "Go Back",

@@ -704,7 +704,7 @@
     "tryAgain": "Vui lòng thử lại.",
     "updateAd": "Cập nhật quảng cáo",
     "updateRate": "Cập nhật tỷ giá",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Chỉnh sửa giới hạn",
     "duplicatePaymentMethodTitle": "Kiểm tra phương thức thanh toán của bạn",
     "duplicatePaymentMethodMessage": "Bạn chỉ có thể sử dụng một phương thức thanh toán cùng loại cho mỗi quảng cáo.",
     "updatePaymentMethods": "Cập nhật phương thức thanh toán",
@@ -743,7 +743,9 @@
     "counterparty": "Đối tác",
     "allCounterparties": "Tất cả đối tác",
     "genericErrorCodeMessage": "Đã xảy ra lỗi ({code}). Vui lòng thử lại hoặc liên hệ hỗ trợ.",
-    "genericProcessingErrorMessage": "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại."
+    "genericProcessingErrorMessage": "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại.",
+    "adVisibility": "Hiển thị quảng cáo",
+    "adVisibilityTooltip": "Chọn ai có thể xem và tương tác với quảng cáo của bạn trên thị trường."
   },
   "audience": {
     "title": "Đối tượng",

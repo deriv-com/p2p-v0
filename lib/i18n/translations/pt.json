@@ -772,7 +772,9 @@
     "updateRate": "Atualizar taxa",
     "unknownErrorMessage": "Ocorreu um erro desconhecido",
     "adVisibilityUpdate": "Atualização de visibilidade do anúncio",
-    "adVisibilityUpdateDescription": "Você não poderá alterar este anúncio para uma listagem de grupo fechado a menos que se torne um membro Diamond novamente."
+    "adVisibilityUpdateDescription": "Você não poderá alterar este anúncio para uma listagem de grupo fechado a menos que se torne um membro Diamond novamente.",
+    "adVisibility": "Visibilidade do anúncio",
+    "adVisibilityTooltip": "Escolha quem pode ver e interagir com seus anúncios no mercado."
   },
   "kyc": {
     "title": "Verificação de identidade",
