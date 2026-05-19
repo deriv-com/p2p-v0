@@ -824,7 +824,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         adType={(formData.type as "buy" | "sell") || "buy"}
                       />
                     </div>
-                    {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
+                    {(userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
                       <div className="flex gap-[4px] items-center mb-4">
                         <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.adVisibility")}</h3>
                         <TooltipProvider>
