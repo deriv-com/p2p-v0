@@ -73,7 +73,7 @@ export interface CreateAdPayload {
   is_active: number
   order_expiry_period: number
   payment_method_names: string[]
-  minimum_trade_band?: "silver" | "gold" | "diamond"
+  minimum_trade_band?: "bronze" | "silver" | "gold" | "diamond"
 }
 
 export interface CreateAdResponse {

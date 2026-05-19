@@ -406,7 +406,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         available_countries: selectedCountries,
         description: finalData.instructions || "",
         is_private: isPrivate,
-        ...(minimumTradeBand ? { minimum_trade_band: minimumTradeBand } : {}),
+        // Edit mode: BE keeps previous value if key is omitted, so send
+        // 'bronze' (lowest tier = effectively no restriction) when user picks
+        // "All tiers" to clear an existing restriction.
+        minimum_trade_band: minimumTradeBand ?? "bronze",
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
