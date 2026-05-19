@@ -15,6 +15,7 @@ export interface UserData {
   balances?: { amount: string; currency: string }
   status?: string
   feedback_exist?: boolean
+  trade_band?: string
 }
 
 export interface VerificationStatus {

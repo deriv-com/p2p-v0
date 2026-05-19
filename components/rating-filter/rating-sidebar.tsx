@@ -7,6 +7,7 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { RatingSidebarProps, RatingData } from "./types"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -142,6 +143,7 @@ export function RatingSidebar({
 
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const { showAlert } = useAlertDialog()
 
   const handleSubmit = async () => {
     if (rating === 0) {
@@ -168,7 +170,19 @@ export function RatingSidebar({
       setHoverRating(0)
       setRecommend(null)
     } catch (error) {
-      console.error("Error submitting rating:", error)
+      const errorCode = error instanceof Error ? error.message : "UnknownError"
+      if (errorCode === "OrderTempLocked") {
+        showAlert({
+          title: t("order.tempLockedTitle"),
+          description: t("order.tempLockedDescription"),
+          confirmText: t("order.tryAgain"),
+          cancelText: t("order.goBack"),
+          type: "warning",
+          onCancel: () => handleClose(),
+        })
+      } else {
+        console.error("Error submitting rating:", error)
+      }
     } finally {
       setIsSubmitting(false)
     }

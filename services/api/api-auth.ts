@@ -58,6 +58,14 @@ export interface TotalBalanceResponse {
 export interface OnboardingStatusResponse {
   kyc: {
     status: string
+    poi_status?: string
+    poa_status?: string
+  }
+  tnc?: {
+    accepted?: boolean
+  }
+  profile?: {
+    status?: string
   }
   verification: {
     email_verified: boolean
@@ -500,7 +508,7 @@ export async function getClientProfile(): Promise<void> {
       nickname: data.nickname,
     }
 
-    useUserDataStore.getState().setUserData(userData)
+    useUserDataStore.getState().updateUserData(userData)
 
     if (data.residence) {
       useUserDataStore.getState().setResidenceCountry(data.residence)

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 
 export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: ComplaintProps) {
@@ -17,6 +18,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const { showAlert } = useAlertDialog()
 
   const handleSubmit = async () => {
     if (selectedOption && !isSubmitting) {
@@ -29,8 +31,20 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         setSelectedOption("")
         onClose()
       } catch (error) {
-        console.error("Error submitting complaint:", error)
-        onClose()
+        const errorCode = error instanceof Error ? error.message : "UnknownError"
+        if (errorCode === "OrderTempLocked") {
+          showAlert({
+            title: t("order.tempLockedTitle"),
+            description: t("order.tempLockedDescription"),
+            confirmText: t("order.tryAgain"),
+            cancelText: t("order.goBack"),
+            type: "warning",
+            onCancel: () => handleClose(),
+          })
+        } else {
+          console.error("Error submitting complaint:", error)
+          onClose()
+        }
       } finally {
         setIsSubmitting(false)
       }

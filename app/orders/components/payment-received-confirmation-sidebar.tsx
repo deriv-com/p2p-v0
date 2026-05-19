@@ -95,6 +95,15 @@ export const PaymentReceivedConfirmationSidebar = ({
               onClose()
             }
           })
+        } else if (error.code === "OrderTempLocked") {
+          showAlert({
+            title: t("order.tempLockedTitle"),
+            description: t("order.tempLockedDescription"),
+            confirmText: t("order.tryAgain"),
+            cancelText: t("order.goBack"),
+            type: "warning",
+            onCancel: () => onClose(),
+          })
         } else {
           setError(error.message || "An error occurred. Please try again.")
         }
@@ -137,6 +146,16 @@ export const PaymentReceivedConfirmationSidebar = ({
           const time = Math.floor(error.detail.next_request_at / 1000)
           setResendTimer(time)
           setError(error.message || "An error occurred. Please try again.")
+        } else if (error.code === "OrderTempLocked") {
+          setOtpRequested(false)
+          showAlert({
+            title: t("order.tempLockedTitle"),
+            description: t("order.tempLockedDescription"),
+            confirmText: t("order.tryAgain"),
+            cancelText: t("order.goBack"),
+            type: "warning",
+            onCancel: () => onClose(),
+          })
         } else {
           setOtpRequested(false)
           setError(error.message || "An error occurred. Please try again.")

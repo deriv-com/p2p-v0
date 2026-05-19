@@ -13,6 +13,7 @@ import { OrdersAPI } from "@/services/api"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
@@ -30,6 +31,7 @@ export const PaymentConfirmationSidebar = ({
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
   const { t } = useTranslations()
+  const { showAlert } = useAlertDialog()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isUploadLoading, setIsUploadLoading] = useState<boolean>(false)
   const [fileError, setFileError] = useState<string | null>(null)
@@ -79,9 +81,22 @@ export const PaymentConfirmationSidebar = ({
       await OrdersAPI.sendChatMessage(order.id, "", base64, true)
 
       onConfirm()
-      setIsUploadLoading(false)
     } catch (error) {
-      console.error("Error uploading file to chat:", error)
+      const errorCode = error instanceof Error ? error.message : "UnknownError"
+      if (errorCode === "OrderTempLocked") {
+        showAlert({
+          title: t("order.tempLockedTitle"),
+          description: t("order.tempLockedDescription"),
+          confirmText: t("order.tryAgain"),
+          cancelText: t("order.goBack"),
+          type: "warning",
+          onCancel: () => onClose(),
+        })
+      } else {
+        console.error("Error uploading file to chat:", error)
+      }
+    } finally {
+      setIsUploadLoading(false)
     }
   }
 

@@ -3,13 +3,15 @@
 import type React from "react"
 import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
+import { Alert } from "@/components/ui/alert"
+import { InfoCircleIcon } from "@/components/icons/info-circle"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
-import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber, cn } from "@/lib/utils"
+import { getCategoryDisplayName, formatPaymentMethodName, cn, getHomeUrl } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -17,10 +19,13 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { useAddPaymentMethod, useUserPaymentMethods } from "@/hooks/use-api-queries"
+import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
+import { useQueryClient } from "@tanstack/react-query"
 import RateChangeConfirmation from "./rate-change-confirmation"
 import AdUpdatedConfirmation from "./ad-updated-confirmation"
 import { useTrackers } from "@/analytics/useTrackers"
+import { mapOrderError } from "@/lib/orders/order-error-mapper"
+import { createOrderErrorDispatcher } from "@/lib/orders/order-error-dispatcher"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -230,6 +235,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
   // Use React Query hooks
   const addPaymentMethod = useAddPaymentMethod()
   const { data: paymentMethodsResponse } = useUserPaymentMethods(isOpen)
+  const queryClient = useQueryClient()
 
   const clearSelectedPaymentMethods = () => {
     setSelectedPaymentMethods([])
@@ -450,104 +456,49 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         track("ek_order_creation_failed_markets_advert_sheet", { error_code: errorCode, error_message: errorCode })
+
+        // Special-case branches that don't fit the mapper's generic shape.
         if (errorCode === "OrderAdvertVersionChanged") {
           clearSelectedPaymentMethods()
           setShowAdUpdatedModal(true)
-        } else if (errorCode === "OrderExists") {
-          showAlert({
-            title: "Active order detected",
-            description: t("order.orderExists"),
-            cancelText: "View order",
-            confirmText: "Try different ad",
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-            onCancel: () => {
-              track("ek_view_active_order_markets_advert_sheet")
-              router.push("/orders/" + order.errors[0].detail.order_id)
-            }
-          })
-        } else if (errorCode === "OrderFloatRateSlippage") {
-          showAlert({
-            title: "The rate moved too much",
-            description:
-              "The market rate moved significantly before we could place your order. Try again with the latest rate.",
-            confirmText: "Try again",
-            type: "warning",
-            onConfirm: () => {
-              track("ek_retry_order_markets_advert_sheet")
-            },
-          })
-        } else if (errorCode === "OrderVerificationTempLock") {
-          showAlert({
-            title: t("order.verificationLockedTitle"),
-            description: t("order.verificationLockedDescription"),
-            cancelText: t("common.gotIt"),
-            confirmText: t("common.close"),
-            type: "warning",
-          })
-        } else if (errorCode === "v1InsufficientFunds") {
-          showAlert({
-            title: t("order.insufficientFunds"),
-            description: t("order.insufficientFundsDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "OrderCountryInvalid") {
-          showAlert({
-            title: t("order.adNotAvailableTitle"),
-            description: t("order.adCountryInvalidDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "v1DebitFailed") {
-          showAlert({
-            title: t("order.adNotAvailableTitle"),
-            description: t("order.adNotAvailableDescription"),
-            confirmText: t("order.viewOtherAds"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_view_other_ads_markets_advert_sheet")
-              handleClose()
-            },
-          })
-        } else if (errorCode === "OrderExchangeRateRequired") {
-          showAlert({
-            title: t("order.exchangeRateRequiredTitle"),
-            description: t("order.exchangeRateRequiredDescription"),
-            confirmText: t("order.exchangeRateRequiredCta"),
-            type: "warning",
-          })
-        } else if (errorCode === "UserReadOnly") {
-          showAlert({
-            title: t("order.userReadOnlyTitle"),
-            description: t("order.userReadOnlyDescription"),
-            confirmText: t("order.userReadOnlyOpenChat"),
-            cancelText: t("order.userReadOnlyMaybeLater"),
-            type: "warning",
-            onConfirm: () => {
-              track("ek_open_live_chat_markets_advert_sheet")
-              if (typeof window !== "undefined" && window.Intercom) {
-                window.Intercom("show")
-              }
-            },
-          })
+        } else if (errorCode === "OrderFloatRateSlippage" || errorCode === "OrderCreateFailRateSlippage") {
+          track("ek_order_rate_slippage_server_markets_advert_sheet")
+          setLockedConfirmationRate(marketRate ?? localAd.effective_rate ?? null)
+          setShowRateChangeConfirmation(true)
         } else {
+          // Mapper-driven path: every other code routes through mapOrderError +
+          // dispatchOrderErrorAction. The dispatcher is the single place that
+          // wires CTA actions (route, intercom, retry, list-invalidate, etc).
+          const isV1Signup = userData?.signup === "v1"
+          const existingOrderId = (order.errors[0]?.detail?.order_id as number | undefined)
+
+          const dispatch = createOrderErrorDispatcher({
+            queryClient,
+            router,
+            handleClose,
+            track,
+            retry: proceedWithOrder,
+            isV1Signup,
+            advertisementsQueryKey: queryKeys.buySell.advertisements(),
+            getHomeUrl,
+          })
+
+          const err = mapOrderError(errorCode, t, {
+            isBuyAdvert: orderType === "buy",
+            accountCurrency: localAd.account_currency,
+            paymentCurrency: localAd.payment_currency,
+          })
+
           showAlert({
-            title: t("order.unableToCreateOrder"),
-            description: `${t("order.orderCreationError")} (${errorCode})`,
-            confirmText: t("common.ok"),
+            title: err.title,
+            description: err.message,
+            confirmText: err.primaryCta,
+            cancelText: err.secondaryCta,
             type: "warning",
+            onConfirm: () => dispatch(err.primaryAction, { orderId: existingOrderId }),
+            onCancel: err.secondaryAction
+              ? () => dispatch(err.secondaryAction!, { orderId: existingOrderId })
+              : undefined,
           })
         }
       } else {
@@ -695,6 +646,19 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
               </div>
 
               <div className="flex flex-col h-auto overflow-y-auto">
+                <div className="p-4 pb-0">
+                  <Alert variant="warning" className="flex items-start gap-3">
+                    <InfoCircleIcon className="shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-bold text-sm mb-1">
+                        {t("order.secureTradeReminder.title")}
+                      </h3>
+                      <div className="text-sm">
+                        {t("order.secureTradeReminder.description")}
+                      </div>
+                    </div>
+                  </Alert>
+                </div>
                 <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
                 <div className="p-4">
                   <div className="mb-4">
