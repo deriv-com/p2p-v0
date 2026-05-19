@@ -476,7 +476,7 @@
     "estTotalValue": "Szacunkowa całkowita wartość",
     "deposit": "Wpłata",
     "withdraw": "Wypłata",
-    "transfer": "Transfer",
+    "transfer": "Przelew",
     "amount": "Kwota",
     "loadingAssets": "Ładowanie aktywów...",
     "noAssetsTitle": "Jeszcze brak aktywów",
@@ -697,5 +697,22 @@
     "seenDaysAgo": "Widziano {count} dzień{plural} temu",
     "seenMonthsAgo": "Widziano {count} miesiąc{plural} temu",
     "seenMoreThanSixMonthsAgo": "Widziano ponad 6 miesięcy temu"
+  },
+  "adForm": {
+    "minimumSellerTier": "Minimalny poziom sprzedawcy",
+    "minimumSellerTierHelper": "Tylko sprzedawcy na tym poziomie i wyższym zobaczą Twoje ogłoszenie.",
+    "minimumBuyerTier": "Minimalny poziom kupującego",
+    "minimumBuyerTierHelper": "Tylko kupujący na tym poziomie i wyższym zobaczą Twoje ogłoszenie.",
+    "minimumTierSheetTitle": "Minimalny poziom",
+    "tierAllTiers": "Wszystkie poziomy",
+    "tierAllTiersDescription": "Widoczne dla wszystkich sprzedawców",
+    "tierSilverAndAbove": "Srebrny i wyżej",
+    "tierSilverDescription": "Dołączył 45+ dni temu • 80%+ wskaźnik realizacji",
+    "tierGoldAndAbove": "Złoty i wyżej",
+    "tierGoldDescription": "Dołączył 90+ dni temu • 90%+ wskaźnik realizacji",
+    "tierDiamondOnly": "Tylko diamentowy",
+    "tierDiamondDescription": "Dołączył 180+ dni temu • 98%+ wskaźnik realizacji",
+    "adVisibility": "Widoczność ogłoszenia",
+    "adVisibilityTooltip": "Wybierz, kto może zobaczyć Twoje ogłoszenia i wchodzić z nimi w interakcję na rynku."
   }
 }

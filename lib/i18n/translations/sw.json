@@ -663,5 +663,22 @@
     "seenDaysAgo": "Alionekana siku {count} zilizopita",
     "seenMonthsAgo": "Alionekana miezi {count} iliyopita",
     "seenMoreThanSixMonthsAgo": "Alionekana zaidi ya miezi 6 iliyopita"
+  },
+  "adForm": {
+    "minimumSellerTier": "Kiwango cha chini cha muuzaji",
+    "minimumSellerTierHelper": "Wauzaji wa kiwango hiki na zaidi pekee wataona tangazo lako.",
+    "minimumBuyerTier": "Kiwango cha chini cha mnunuzi",
+    "minimumBuyerTierHelper": "Wanunuzi wa kiwango hiki na zaidi pekee wataona tangazo lako.",
+    "minimumTierSheetTitle": "Kiwango cha chini",
+    "tierAllTiers": "Viwango vyote",
+    "tierAllTiersDescription": "Inaonekana kwa wauzaji wote",
+    "tierSilverAndAbove": "Fedha na zaidi",
+    "tierSilverDescription": "Alijiunga siku 45+ zilizopita • 80%+ kiwango cha kukamilisha",
+    "tierGoldAndAbove": "Dhahabu na zaidi",
+    "tierGoldDescription": "Alijiunga siku 90+ zilizopita • 90%+ kiwango cha kukamilisha",
+    "tierDiamondOnly": "Almasi pekee",
+    "tierDiamondDescription": "Alijiunga siku 180+ zilizopita • 98%+ kiwango cha kukamilisha",
+    "adVisibility": "Mwonekano wa tangazo",
+    "adVisibilityTooltip": "Chagua nani anaweza kuona na kushirikiana na matangazo yako kwenye soko."
   }
 }
