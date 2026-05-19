@@ -15,9 +15,7 @@ function getRequiredHttpUrl(envName: string): string {
 }
 
 const nextConfig: NextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Note: `eslint` config is deprecated in Next 16 — lint via `pnpm lint` in CI instead.
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -46,23 +44,12 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  webpack: (config, { isServer }) => {
-    config.module?.rules?.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
-    });
-
-    if (isServer) {
-      config.externals = config.externals || [];
-      if (Array.isArray(config.externals)) {
-        config.externals.push('cookie');
-      } else if (typeof config.externals === 'object') {
-        config.externals['cookie'] = 'commonjs cookie';
-      }
-    }
-    return config;
-  },
+  // Note: legacy `webpack(...)` config removed — Next 16 uses Turbopack by
+  // default and the SVG rule already exists in the `turbopack` block above.
+  // If a future runtime issue surfaces around the `cookie` package on the
+  // server, prefer a Turbopack-native solution (e.g. `serverExternalPackages`)
+  // rather than re-adding the legacy webpack hook.
+  serverExternalPackages: ["cookie"],
 }
 
 export default nextConfig
