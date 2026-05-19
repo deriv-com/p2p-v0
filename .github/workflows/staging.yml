@@ -40,12 +40,35 @@ jobs:
       - name: Build for staging
         run: pnpm cf:build
         env:
-          # TODO: configure p2p-v0 staging env vars in the GitHub `staging`
-          # environment (Settings → Environments → staging → Variables).
-          # Replace these placeholders with the actual NEXT_PUBLIC_* keys p2p-v0 reads.
-          NEXT_PUBLIC_API_BASE_URL: ${{ vars.NEXT_PUBLIC_API_BASE_URL }}
-          NEXT_PUBLIC_AUTH_BASE_URL: ${{ vars.NEXT_PUBLIC_AUTH_BASE_URL }}
-          NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL }}
+          # ── Build-time required (next.config.ts rewrites read NEXT_PUBLIC_CORE_URL) ──
+          NEXT_PUBLIC_CORE_URL: ${{ vars.NEXT_PUBLIC_CORE_URL || 'https://staging-api-core.deriv.com' }}
+          NEXT_PUBLIC_CORE_ME_URL: ${{ vars.NEXT_PUBLIC_CORE_ME_URL || 'https://staging-api-core.deriv.me' }}
+          NEXT_PUBLIC_CORE_BE_URL: ${{ vars.NEXT_PUBLIC_CORE_BE_URL || 'https://staging-api-core.deriv.be' }}
+          # ── Auth (Ory Kratos) ────────────────────────────────────────────
+          NEXT_PUBLIC_IS_ORY_ENABLED: ${{ vars.NEXT_PUBLIC_IS_ORY_ENABLED || '1' }}
+          NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL || 'https://staging-auth.deriv.com' }}
+          NEXT_PUBLIC_ORY_ME_URL: ${{ vars.NEXT_PUBLIC_ORY_ME_URL || 'https://staging-auth.deriv.me' }}
+          NEXT_PUBLIC_ORY_BE_URL: ${{ vars.NEXT_PUBLIC_ORY_BE_URL || 'https://staging-auth.deriv.be' }}
+          # ── WebSocket ────────────────────────────────────────────────────
+          NEXT_PUBLIC_SOCKET_URL: ${{ vars.NEXT_PUBLIC_SOCKET_URL || 'wss://staging-blue.deriv.com' }}
+          NEXT_PUBLIC_SOCKET_ME_URL: ${{ vars.NEXT_PUBLIC_SOCKET_ME_URL || 'wss://staging-blue.deriv.me' }}
+          NEXT_PUBLIC_SOCKET_BE_URL: ${{ vars.NEXT_PUBLIC_SOCKET_BE_URL || 'wss://staging-blue.deriv.be' }}
+          # ── Environment metadata ─────────────────────────────────────────
+          NEXT_PUBLIC_NODE_ENV: ${{ vars.NEXT_PUBLIC_NODE_ENV || 'staging' }}
+          NEXT_PUBLIC_RELEASE_TAG: staging-${{ github.sha }}
+          # ── Optional integrations (set in GitHub `staging` environment when ready) ──
+          NEXT_PUBLIC_DATADOG_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_DATADOG_APPLICATION_ID }}
+          NEXT_PUBLIC_DATADOG_CLIENT_TOKEN: ${{ vars.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN }}
+          NEXT_PUBLIC_DATADOG_SERVICE: ${{ vars.NEXT_PUBLIC_DATADOG_SERVICE }}
+          NEXT_PUBLIC_DATADOG_ENV: staging
+          NEXT_PUBLIC_DATADOG_VERSION: ${{ github.sha }}
+          NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE: ${{ vars.NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE }}
+          NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ vars.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+          NEXT_PUBLIC_POSTHOG_KEY: ${{ vars.NEXT_PUBLIC_POSTHOG_KEY }}
+          NEXT_PUBLIC_POSTHOG_HOST: ${{ vars.NEXT_PUBLIC_POSTHOG_HOST }}
+          NEXT_PUBLIC_RUDDERSTACK_KEY: ${{ vars.NEXT_PUBLIC_RUDDERSTACK_KEY }}
+          NEXT_PUBLIC_INTERCOM_APP_ID: ${{ vars.NEXT_PUBLIC_INTERCOM_APP_ID }}
+          NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID }}
 
       - name: Deploy to staging
         run: npx wrangler deploy --env staging
