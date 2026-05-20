@@ -17,6 +17,11 @@ export interface Advertisement {
     completion_average_30day?: number
     completion_rate_all_30day?: number
     trade_band?: string
+    completion_rate_buy_30day?: number | null
+    completion_rate_sell_30day?: number | null
+    order_count_buy_30day?: number
+    order_count_sell_30day?: number
+    blocked_by_count?: number
   }
   account_currency: string
   actual_maximum_order_amount: string
@@ -54,6 +59,7 @@ export interface SearchParams {
   favourites_only?: number
   page?: number
   per_page?: number
+  is_private?: boolean
 }
 
 // Define the PaymentMethod interface

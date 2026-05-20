@@ -65,7 +65,24 @@
     "verified": "Verificato",
     "noBalanceTitle": "Nessun saldo nel Portafoglio P2P",
     "noBalanceDescription": "I tuoi annunci di vendita vengono nascosti dal marketplace quando il saldo del tuo Portafoglio P2P è zero. Trasferisci fondi nel tuo Portafoglio P2P per renderli nuovamente visibili.",
-    "noBalanceTransfer": "Trasferisci fondi"
+    "noBalanceTransfer": "Trasferisci fondi",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Questo inserzionista ha un basso tasso di completamento",
+        "body": "Completa il {rate}% delle sue operazioni. Controlla il suo profilo prima di continuare."
+      },
+      "highBlockCount": {
+        "title": "Molti trader hanno bloccato questo inserzionista",
+        "body": "{threshold} o più trader hanno scelto di non operare con lui. Controlla il suo profilo prima di continuare."
+      },
+      "advertiserLabel": "Inserzionista",
+      "buyCompletionRateLabel": "Tasso di completamento acquisti",
+      "sellCompletionRateLabel": "Tasso di completamento vendite",
+      "blockCountLabel": "Blocchi",
+      "orderCompletedLabel": "Ordini completati",
+      "continueAnyway": "Continua comunque",
+      "goBack": "Indietro"
+    }
   },
   "order": {
     "secureTradeReminder": {
