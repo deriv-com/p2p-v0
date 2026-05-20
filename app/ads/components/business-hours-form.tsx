@@ -1,5 +1,6 @@
 "use client"
 
+import { AlertCircle } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -15,6 +16,7 @@ import {
   type DayKey,
   decodeSchedule,
   encodeSchedule,
+  hasTimeOrderError,
   isStateValid,
   statesEqual,
 } from "@/lib/business-hours-codec"
@@ -55,6 +57,7 @@ export function BusinessHoursForm({ onClose }: BusinessHoursFormProps) {
   const valid = isStateValid(state)
   const dirty = !statesEqual(state, initial)
   const canSave = valid && dirty && !mutation.isPending
+  const timeOrderError = hasTimeOrderError(state)
 
   const toggleDay = (day: DayKey) => {
     setState((prev) => {
@@ -174,6 +177,8 @@ export function BusinessHoursForm({ onClose }: BusinessHoursFormProps) {
             label={t("myAds.businessHours.openLabel")}
             value={state.openTime}
             enabled={state.enabled}
+            range="am"
+            hasError={timeOrderError}
             onChange={(v) => setState((p) => ({ ...p, openTime: v }))}
             ariaLabel="business-hours-open"
           />
@@ -181,10 +186,21 @@ export function BusinessHoursForm({ onClose }: BusinessHoursFormProps) {
             label={t("myAds.businessHours.closeLabel")}
             value={state.closeTime}
             enabled={state.enabled}
+            range="pm"
+            hasError={timeOrderError}
             onChange={(v) => setState((p) => ({ ...p, closeTime: v }))}
             ariaLabel="business-hours-close"
           />
         </div>
+        {timeOrderError && (
+          <p
+            className="flex items-center gap-1 text-xs text-red-600"
+            role="alert"
+          >
+            <AlertCircle size={14} aria-hidden />
+            {t("myAds.businessHours.closeAfterOpenError")}
+          </p>
+        )}
         <p
           className={
             state.enabled

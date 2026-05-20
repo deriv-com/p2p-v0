@@ -678,7 +678,8 @@
       "editSchedule": "Edit schedule",
       "resetSchedule": "Reset schedule",
       "errorGenericTitle": "Something went wrong. Please try again.",
-      "errorGenericMessage": "We couldn't save your business hours ({code}). Please try again."
+      "errorGenericMessage": "We couldn't save your business hours ({code}). Please try again.",
+      "closeAfterOpenError": "Close time must be after open time"
     }
   },
   "visibilityStatus": {

@@ -138,12 +138,29 @@ export function encodeSchedule(
   return out
 }
 
+function toMinutes(hhmm: string): number {
+  const [h, m] = hhmm.split(":").map((p) => Number.parseInt(p, 10))
+  return (Number.isNaN(h) ? 0 : h) * 60 + (Number.isNaN(m) ? 0 : m)
+}
+
+/**
+ * True when close is at or before open (overnight windows aren't supported
+ * by the backend). Drives the inline error `"Close time must be after open
+ * time"` and the red field state. Same-day only — close caps at 23:59 by
+ * the input itself.
+ */
+export function hasTimeOrderError(state: BusinessHoursUiState): boolean {
+  if (!state.enabled) return false
+  if (!state.openTime || !state.closeTime) return false
+  return toMinutes(state.closeTime) <= toMinutes(state.openTime)
+}
+
 /** True when [state] can be saved (enables the Save changes button). */
 export function isStateValid(state: BusinessHoursUiState): boolean {
   if (!state.enabled) return true
   if (state.selectedDays.size === 0) return false
   if (!state.openTime || !state.closeTime) return false
-  if (state.openTime === state.closeTime) return false
+  if (toMinutes(state.closeTime) <= toMinutes(state.openTime)) return false
   return true
 }
 
