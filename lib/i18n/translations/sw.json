@@ -27,6 +27,7 @@
     "yes": "Ndiyo",
     "no": "Hapana",
     "ok": "Sawa",
+    "done": "Imekamilika",
     "learnMore": "Jifunze Zaidi",
     "gotIt": "Nimepata",
     "removeAll": "Ondoa Zote",
@@ -696,6 +697,12 @@
     "tierDiamondOnly": "Almasi pekee",
     "tierDiamondDescription": "Alijiunga siku 180+ zilizopita • 98%+ kiwango cha kukamilisha",
     "adVisibility": "Mwonekano wa tangazo",
-    "adVisibilityTooltip": "Chagua nani anaweza kuona na kushirikiana na matangazo yako kwenye soko."
+    "adVisibilityTooltip": "Chagua nani anaweza kuona na kushirikiana na matangazo yako kwenye soko.",
+    "closedGroup": "Kikundi kilichofungwa",
+    "visibilityEveryone": "Kila mtu",
+    "visibilityEveryoneDesc": "Tangazo lako litaonekana kwa kila mtu kwenye soko.",
+    "visibilityClosedGroup": "Kikundi kilichofungwa",
+    "visibilityClosedGroupDesc": "Tangazo lako litaonekana tu kwa watumiaji walio kwenye orodha yako ya kikundi kilichofungwa.",
+    "editList": "Hariri orodha"
   }
 }

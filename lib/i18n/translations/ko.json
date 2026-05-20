@@ -27,6 +27,7 @@
     "yes": "예",
     "no": "아니오",
     "ok": "확인",
+    "done": "완료",
     "learnMore": "자세히 알아보기",
     "gotIt": "확인했습니다",
     "removeAll": "모두 제거",
@@ -734,6 +735,12 @@
     "tierDiamondOnly": "다이아몬드 전용",
     "tierDiamondDescription": "180일 이상 가입 • 98% 이상 완료율",
     "adVisibility": "광고 표시",
-    "adVisibilityTooltip": "마켓플레이스에서 누가 귀하의 광고를 보고 상호작용할 수 있는지 선택하세요."
+    "adVisibilityTooltip": "마켓플레이스에서 누가 귀하의 광고를 보고 상호작용할 수 있는지 선택하세요.",
+    "closedGroup": "비공개 그룹",
+    "visibilityEveryone": "모두",
+    "visibilityEveryoneDesc": "광고가 마켓플레이스의 모든 사람에게 표시됩니다.",
+    "visibilityClosedGroup": "비공개 그룹",
+    "visibilityClosedGroupDesc": "광고가 비공개 그룹 목록의 사용자에게만 표시됩니다.",
+    "editList": "목록 편집"
   }
 }

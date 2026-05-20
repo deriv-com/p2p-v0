@@ -23,6 +23,7 @@
     "yes": "Có",
     "no": "Không",
     "ok": "OK",
+    "done": "Xong",
     "learnMore": "Tìm hiểu thêm",
     "gotIt": "Rồi",
     "verifiedBadge": {
@@ -762,7 +763,13 @@
     "genericErrorCodeMessage": "Đã xảy ra lỗi ({code}). Vui lòng thử lại hoặc liên hệ hỗ trợ.",
     "genericProcessingErrorMessage": "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại.",
     "adVisibility": "Hiển thị quảng cáo",
-    "adVisibilityTooltip": "Chọn ai có thể xem và tương tác với quảng cáo của bạn trên thị trường."
+    "adVisibilityTooltip": "Chọn ai có thể xem và tương tác với quảng cáo của bạn trên thị trường.",
+    "closedGroup": "Nhóm đóng",
+    "visibilityEveryone": "Mọi người",
+    "visibilityEveryoneDesc": "Quảng cáo của bạn sẽ hiển thị cho mọi người trên thị trường.",
+    "visibilityClosedGroup": "Nhóm đóng",
+    "visibilityClosedGroupDesc": "Quảng cáo của bạn sẽ chỉ hiển thị cho người dùng trong danh sách nhóm đóng của bạn.",
+    "editList": "Chỉnh sửa danh sách"
   },
   "audience": {
     "title": "Đối tượng",
@@ -833,6 +840,11 @@
     "unblockDescription": "Bỏ chặn họ nếu bạn muốn tương tác lại với nhà quảng cáo này.",
     "successfullyFollowed": "Đã theo dõi thành công",
     "successfullyUnfollowed": "Đã bỏ theo dõi thành công",
+    "addToClosedGroup": "Thêm vào nhóm đóng",
+    "removeFromClosedGroup": "Xóa khỏi nhóm đóng",
+    "unfollow": "Bỏ theo dõi",
+    "addedToClosedGroup": "Đã thêm vào nhóm đóng thành công.",
+    "removedFromClosedGroup": "Đã xóa khỏi nhóm đóng thành công.",
     "userBlocked": "Đã chặn {nickname}.",
     "userUnblocked": "Đã bỏ chặn {nickname}."
   },

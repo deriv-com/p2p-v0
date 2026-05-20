@@ -45,9 +45,11 @@ export default function Main({
   // Mobile-only balance warning banner (appears above the Header on mobile).
   // Desktop version lives in page.tsx where it can overlap the dark balance card.
   const balanceAmount = userData?.balances?.amount
+  const isV2User = userData?.signup === "v2"
   const { isFullyOnboarded } = useOnboardingGate()
-  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded)
+  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded, isV2User)
   const isMarketsPage = pathname === "/"
+  const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")
@@ -218,7 +220,7 @@ export default function Main({
         </div>
       </div>
       <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
-        {isMarketsPage && shouldShowBalanceWarning && <P2PBalanceWarning />}
+        {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>
         {!pathname.startsWith("/profile") && <MobileFooterNav className="flex-shrink-0" />}

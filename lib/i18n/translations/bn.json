@@ -23,6 +23,7 @@
     "yes": "হ্যাঁ",
     "no": "না",
     "ok": "ঠিক আছে",
+    "done": "সম্পন্ন",
     "learnMore": "আরও জানুন",
     "gotIt": "বুঝেছি",
     "verifiedBadge": {
@@ -755,7 +756,13 @@
     "adVisibilityUpdate": "বিজ্ঞাপন দৃশ্যমানতা আপডেট",
     "adVisibilityUpdateDescription": "আপনি আবার হীরা স্তরের সদস্য না হওয়া পর্যন্ত এই বিজ্ঞাপনটি একটি বন্ধ গোষ্ঠী তালিকা হিসাবে ফিরিয়ে আনতে পারবেন না।",
     "adVisibility": "বিজ্ঞাপনের দৃশ্যমানতা",
-    "adVisibilityTooltip": "মার্কেটপ্লেসে কে আপনার বিজ্ঞাপন দেখতে এবং তার সাথে ইন্টারঅ্যাক্ট করতে পারবে তা চয়ন করুন।"
+    "adVisibilityTooltip": "মার্কেটপ্লেসে কে আপনার বিজ্ঞাপন দেখতে এবং তার সাথে ইন্টারঅ্যাক্ট করতে পারবে তা চয়ন করুন।",
+    "closedGroup": "ক্লোজড গ্রুপ",
+    "visibilityEveryone": "সবাই",
+    "visibilityEveryoneDesc": "আপনার বিজ্ঞাপন মার্কেটপ্লেসে সবার কাছে দৃশ্যমান হবে।",
+    "visibilityClosedGroup": "ক্লোজড গ্রুপ",
+    "visibilityClosedGroupDesc": "আপনার বিজ্ঞাপন শুধুমাত্র আপনার ক্লোজ গ্রুপ তালিকার ব্যবহারকারীদের কাছে দৃশ্যমান হবে।",
+    "editList": "তালিকা সম্পাদনা করুন"
   },
   "advertiser": {
     "goBack": "ফিরে যান",
@@ -790,6 +797,11 @@
     "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে পুনরায় যোগাযোগ করতে চান তাহলে তাদের আনব্লক করুন।",
     "successfullyFollowed": "সফলভাবে ফলো করা হয়েছে",
     "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে",
+    "addToClosedGroup": "ক্লোজড গ্রুপে যোগ করুন",
+    "removeFromClosedGroup": "ক্লোজড গ্রুপ থেকে সরান",
+    "unfollow": "আনফলো করুন",
+    "addedToClosedGroup": "সফলভাবে ক্লোজড গ্রুপে যোগ করা হয়েছে।",
+    "removedFromClosedGroup": "সফলভাবে ক্লোজড গ্রুপ থেকে সরানো হয়েছে।",
     "userBlocked": "{nickname} ব্লক করা হয়েছে।",
     "userUnblocked": "{nickname} আনব্লক করা হয়েছে।"
   },

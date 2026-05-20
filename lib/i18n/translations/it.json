@@ -23,6 +23,7 @@
     "yes": "Sì",
     "no": "No",
     "ok": "OK",
+    "done": "Fatto",
     "learnMore": "Scopri di più",
     "gotIt": "Capito",
     "verifiedBadge": {
@@ -758,7 +759,13 @@
     "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova.",
     "unknownErrorMessage": "Si è verificato un errore sconosciuto",
     "adVisibility": "Visibilità dell'annuncio",
-    "adVisibilityTooltip": "Scegli chi può vedere e interagire con i tuoi annunci sul marketplace."
+    "adVisibilityTooltip": "Scegli chi può vedere e interagire con i tuoi annunci sul marketplace.",
+    "closedGroup": "Gruppo chiuso",
+    "visibilityEveryone": "Tutti",
+    "visibilityEveryoneDesc": "Il tuo annuncio sarà visibile a tutti nel marketplace.",
+    "visibilityClosedGroup": "Gruppo chiuso",
+    "visibilityClosedGroupDesc": "Il tuo annuncio sarà visibile solo agli utenti della tua lista di gruppo chiuso.",
+    "editList": "Modifica elenco"
   },
   "advertiser": {
     "goBack": "Torna Indietro",
@@ -794,6 +801,11 @@
     "unblockDescription": "Sbloccali se desideri interagire nuovamente con questo inserzionista.",
     "successfullyFollowed": "Seguito con successo",
     "successfullyUnfollowed": "Non più seguito con successo",
+    "addToClosedGroup": "Aggiungi al gruppo chiuso",
+    "removeFromClosedGroup": "Rimuovi dal gruppo chiuso",
+    "unfollow": "Smetti di seguire",
+    "addedToClosedGroup": "Aggiunto con successo al gruppo chiuso.",
+    "removedFromClosedGroup": "Rimosso con successo dal gruppo chiuso.",
     "userBlocked": "{nickname} bloccato.",
     "userUnblocked": "{nickname} sbloccato."
   },
