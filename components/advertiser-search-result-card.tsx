@@ -10,6 +10,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
+import { FEATURE_FLAGS } from "@/lib/feature-flags"
 
 interface AdvertiserSearchResultCardProps {
     ad: Advertisement
@@ -41,7 +42,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         {ad.user.trade_band && (
                             <TradeBandBadge tradeBand={ad.user.trade_band} showLearnMore={true} size={18} />
                         )}
-                        {ad.is_private && (
+                        {FEATURE_FLAGS.closedGroup && ad.is_private && (
                             <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} className="cursor-pointer mr-1" />
                         )}
                         {ad.user?.is_favourite && (

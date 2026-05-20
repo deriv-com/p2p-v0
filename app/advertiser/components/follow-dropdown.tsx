@@ -13,6 +13,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { cn } from "@/lib/utils"
+import { FEATURE_FLAGS } from "@/lib/feature-flags"
 interface FollowDropdownProps {
   isFollowing: boolean
   isGroupMember: boolean
@@ -35,7 +36,7 @@ export default function FollowDropdown({
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useIsMobile()
   const userData = useUserDataStore((state) => state.userData)
-  const isClosedGroupEnabled = userData?.trade_band === "diamond"
+  const isClosedGroupEnabled = userData?.trade_band === "diamond" && FEATURE_FLAGS.closedGroup
 
   const handleUnfollow = () => {
     onUnfollow()

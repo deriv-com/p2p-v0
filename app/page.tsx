@@ -33,6 +33,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
+import { FEATURE_FLAGS } from "@/lib/feature-flags"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -521,8 +522,9 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-            {shouldShowBalanceWarning && (
+            {shouldShowBalanceWarning && !isV1Signup && (
               // Desktop only — mobile banner is rendered above the Header in main.tsx.
+              // Hidden for v1 users — they have no wallet, so Transfer CTA would dead-end.
               // Tuck the dark balance card under the banner's bottom edge via `-mb-8`.
               <div className="hidden md:block md:-mb-8">
                 <P2PBalanceWarning />
@@ -812,7 +814,7 @@ export default function BuySellPage() {
                                   size={18}
                                 />
                               )}
-                              {Number(userId) !== ad.user.id && ad.is_private && (
+                              {FEATURE_FLAGS.closedGroup && Number(userId) !== ad.user.id && ad.is_private && (
                                 <Image
                                   src="/icons/closed-group.svg"
                                   alt="Closed Group"
