@@ -659,6 +659,7 @@
       "headerLabel": "Business hour: {summary}",
       "alwaysOpen": "Always open",
       "closedSubtitle": "Closed",
+      "offlineSubtitle": "Offline",
       "enableLabel": "Enable business hours",
       "daysLabel": "Days",
       "hoursLabel": "Hours",

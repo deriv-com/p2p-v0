@@ -209,3 +209,41 @@ export function summaryFor(
   if (state.selectedDays.size === 0) return copy.closed
   return `${formatTime(state.openTime, locale)} – ${formatTime(state.closeTime, locale)}`
 }
+
+/**
+ * Live business-hours status for the header summary row.
+ *
+ * - `alwaysOpen` — toggle off / no schedule restriction. Show as green.
+ * - `openNow` — schedule is set, today is selected, and current local time
+ *   falls inside `[openTime, closeTime)`. Show formatted range + green.
+ * - `offline` — anything else (today not selected, currently outside the
+ *   window, or no days selected at all). Show as gray.
+ */
+export type BusinessHoursLiveStatus = "alwaysOpen" | "openNow" | "offline"
+
+const WEEKDAY_TO_KEY: Record<number, DayKey> = {
+  0: "sun",
+  1: "mon",
+  2: "tue",
+  3: "wed",
+  4: "thu",
+  5: "fri",
+  6: "sat",
+}
+
+/** Computes the live status for the header row given the current device time. */
+export function computeLiveStatus(
+  state: BusinessHoursUiState,
+  now: Date,
+): BusinessHoursLiveStatus {
+  if (!state.enabled) return "alwaysOpen"
+  if (state.selectedDays.size === 0) return "offline"
+  const todayKey = WEEKDAY_TO_KEY[now.getDay()]
+  if (!todayKey || !state.selectedDays.has(todayKey)) return "offline"
+  if (!state.openTime || !state.closeTime) return "offline"
+  const nowMins = now.getHours() * 60 + now.getMinutes()
+  const openMins = toMinutes(state.openTime)
+  const closeMins = toMinutes(state.closeTime)
+  if (nowMins >= openMins && nowMins < closeMins) return "openNow"
+  return "offline"
+}
