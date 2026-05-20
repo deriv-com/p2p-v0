@@ -72,7 +72,24 @@
     "browseMarket": "Przeglądaj rynek",
     "noBalanceTitle": "Brak środków w Portfelu P2P",
     "noBalanceDescription": "Twoje ogłoszenia sprzedaży są ukrywane na rynku, gdy saldo Twojego Portfela P2P wynosi zero. Przelej środki do swojego Portfela P2P, aby ponownie były widoczne.",
-    "noBalanceTransfer": "Przelej środki"
+    "noBalanceTransfer": "Przelej środki",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Ten reklamodawca ma niski wskaźnik realizacji",
+        "body": "Realizuje {rate}% swoich transakcji. Sprawdź jego profil przed kontynuacją."
+      },
+      "highBlockCount": {
+        "title": "Wielu traderów zablokowało tego reklamodawcę",
+        "body": "{threshold} lub więcej traderów zdecydowało się nie handlować z nim. Sprawdź jego profil przed kontynuacją."
+      },
+      "advertiserLabel": "Reklamodawca",
+      "buyCompletionRateLabel": "Wskaźnik realizacji zakupów",
+      "sellCompletionRateLabel": "Wskaźnik realizacji sprzedaży",
+      "blockCountLabel": "Liczba blokad",
+      "orderCompletedLabel": "Zrealizowane zlecenia",
+      "continueAnyway": "Mimo to kontynuuj",
+      "goBack": "Wróć"
+    }
   },
   "order": {
     "secureTradeReminder": {

@@ -65,7 +65,24 @@
     "verified": "Verifiziert",
     "noBalanceTitle": "Kein Guthaben im P2P-Wallet",
     "noBalanceDescription": "Deine Verkaufsanzeigen werden im Marktplatz ausgeblendet, solange dein P2P-Wallet-Guthaben null beträgt. Überweise Geld auf dein P2P-Wallet, um sie wieder sichtbar zu machen.",
-    "noBalanceTransfer": "Geld überweisen"
+    "noBalanceTransfer": "Geld überweisen",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Dieser Inserent hat eine niedrige Abschlussrate",
+        "body": "Er schließt {rate}% seiner Trades ab. Überprüfen Sie sein Profil, bevor Sie fortfahren."
+      },
+      "highBlockCount": {
+        "title": "Viele Händler haben diesen Inserenten blockiert",
+        "body": "{threshold} oder mehr Händler haben sich entschieden, nicht mit ihm zu handeln. Überprüfen Sie sein Profil, bevor Sie fortfahren."
+      },
+      "advertiserLabel": "Inserent",
+      "buyCompletionRateLabel": "Kauf-Abschlussrate",
+      "sellCompletionRateLabel": "Verkauf-Abschlussrate",
+      "blockCountLabel": "Anzahl Blockierungen",
+      "orderCompletedLabel": "Abgeschlossene Aufträge",
+      "continueAnyway": "Trotzdem fortfahren",
+      "goBack": "Zurück"
+    }
   },
   "order": {
     "secureTradeReminder": {

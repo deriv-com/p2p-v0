@@ -9,6 +9,11 @@ import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
+import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
+import {
+  evaluateRisk,
+  type RiskWarningResult,
+} from "@/components/buy-sell/risk-warning/risk-warning-rules"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -76,6 +81,9 @@ export default function BuySellPage() {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const [pendingRiskAd, setPendingRiskAd] = useState<Advertisement | null>(null)
+  const [riskResult, setRiskResult] = useState<RiskWarningResult | null>(null)
+  const [isRiskWarningOpen, setIsRiskWarningOpen] = useState(false)
   const [isOpenedFromSearch, setIsOpenedFromSearch] = useState(false)
   const { pendingAd, openedFromSearch, setPendingAd, setTriggerSearchReopen } = useOrderSidebarStore()
   const [balance, setBalance] = useState<string>("0.00")
@@ -330,9 +338,32 @@ export default function BuySellPage() {
     }
   }
 
+  const handleRiskContinue = () => {
+    if (pendingRiskAd) {
+      setSelectedAd(pendingRiskAd)
+      setIsOrderSidebarOpen(true)
+    }
+    setIsRiskWarningOpen(false)
+    setPendingRiskAd(null)
+    setRiskResult(null)
+  }
+
+  const handleRiskClose = () => {
+    setIsRiskWarningOpen(false)
+    setPendingRiskAd(null)
+    setRiskResult(null)
+  }
+
   const handleOrderClick = (ad: Advertisement) => {
     track("ek_advert_action_markets", { advert_type: ad.type === "buy" ? "sell" : "buy" })
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
+      const risk = evaluateRisk(ad)
+      if (risk) {
+        setPendingRiskAd(ad)
+        setRiskResult(risk)
+        setIsRiskWarningOpen(true)
+        return
+      }
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
     } else {
@@ -949,6 +980,16 @@ export default function BuySellPage() {
           orderType={(selectedAd?.type ?? activeTab) as "buy" | "sell"}
           p2pBalance={Number.parseFloat(balance)}
         />
+
+        {riskResult && (
+          <RiskWarningModal
+            isOpen={isRiskWarningOpen}
+            result={riskResult}
+            advertiserNickname={pendingRiskAd?.user.nickname ?? ""}
+            onContinue={handleRiskContinue}
+            onClose={handleRiskClose}
+          />
+        )}
       </div>
     </>
   )

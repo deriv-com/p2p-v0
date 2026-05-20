@@ -73,7 +73,24 @@
     "browseMarket": "Browse market",
     "noBalanceTitle": "No balance in P2P Wallet",
     "noBalanceDescription": "Your sell ads are hidden from the marketplace when your P2P Wallet balance is zero. Transfer funds to your P2P Wallet to make them visible again.",
-    "noBalanceTransfer": "Transfer funds"
+    "noBalanceTransfer": "Transfer funds",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "This advertiser has a low completion rate",
+        "body": "They complete {rate}% of their trades. Check their profile before you continue."
+      },
+      "highBlockCount": {
+        "title": "Many traders have blocked this advertiser",
+        "body": "{threshold} or more traders have chosen not to trade with them. Check their profile before you continue."
+      },
+      "advertiserLabel": "Advertiser",
+      "buyCompletionRateLabel": "Buy completion rate",
+      "sellCompletionRateLabel": "Sell completion rate",
+      "blockCountLabel": "Block count",
+      "orderCompletedLabel": "Order completed",
+      "continueAnyway": "Continue anyway",
+      "goBack": "Go back"
+    }
   },
   "order": {
     "secureTradeReminder": {

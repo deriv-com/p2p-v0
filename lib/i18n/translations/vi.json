@@ -65,7 +65,24 @@
     "verified": "Đã xác minh",
     "noBalanceTitle": "Không có số dư trong Ví P2P",
     "noBalanceDescription": "Quảng cáo bán của bạn sẽ bị ẩn khỏi thị trường khi số dư Ví P2P của bạn bằng không. Chuyển tiền vào Ví P2P của bạn để hiển thị lại.",
-    "noBalanceTransfer": "Chuyển tiền"
+    "noBalanceTransfer": "Chuyển tiền",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Người đăng tin này có tỷ lệ hoàn thành thấp",
+        "body": "Họ hoàn thành {rate}% giao dịch của mình. Kiểm tra hồ sơ của họ trước khi tiếp tục."
+      },
+      "highBlockCount": {
+        "title": "Nhiều nhà giao dịch đã chặn người đăng tin này",
+        "body": "{threshold} nhà giao dịch trở lên đã chọn không giao dịch với họ. Kiểm tra hồ sơ của họ trước khi tiếp tục."
+      },
+      "advertiserLabel": "Người đăng tin",
+      "buyCompletionRateLabel": "Tỷ lệ hoàn thành mua",
+      "sellCompletionRateLabel": "Tỷ lệ hoàn thành bán",
+      "blockCountLabel": "Số lần chặn",
+      "orderCompletedLabel": "Đơn hàng đã hoàn thành",
+      "continueAnyway": "Vẫn tiếp tục",
+      "goBack": "Quay lại"
+    }
   },
   "order": {
     "secureTradeReminder": {

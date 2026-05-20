@@ -72,7 +72,24 @@
     "browseMarket": "Angalia soko",
     "noBalanceTitle": "Hakuna salio katika Pochi ya P2P",
     "noBalanceDescription": "Matangazo yako ya kuuza yamefichwa kutoka kwenye soko wakati salio la Pochi yako ya P2P ni sifuri. Hamisha fedha kwenye Pochi yako ya P2P ili yaonekane tena.",
-    "noBalanceTransfer": "Hamisha fedha"
+    "noBalanceTransfer": "Hamisha fedha",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Mtangazaji huyu ana kiwango cha chini cha kukamilisha",
+        "body": "Wanakamilisha {rate}% ya biashara zao. Angalia wasifu wao kabla ya kuendelea."
+      },
+      "highBlockCount": {
+        "title": "Wafanyabiashara wengi wamemzuia mtangazaji huyu",
+        "body": "Wafanyabiashara {threshold} au zaidi wamechagua kutofanya biashara naye. Angalia wasifu wake kabla ya kuendelea."
+      },
+      "advertiserLabel": "Mtangazaji",
+      "buyCompletionRateLabel": "Kiwango cha kukamilisha ununuzi",
+      "sellCompletionRateLabel": "Kiwango cha kukamilisha mauzo",
+      "blockCountLabel": "Idadi ya kuzuia",
+      "orderCompletedLabel": "Maagizo yaliyokamilika",
+      "continueAnyway": "Endelea hata hivyo",
+      "goBack": "Rudi nyuma"
+    }
   },
   "order": {
     "secureTradeReminder": {

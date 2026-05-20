@@ -72,7 +72,24 @@
     "browseMarket": "마켓 둘러보기",
     "noBalanceTitle": "P2P 지갑에 잔액 없음",
     "noBalanceDescription": "P2P 지갑 잔액이 0이면 판매 광고가 마켓플레이스에서 숨겨집니다. 다시 표시되도록 P2P 지갑으로 자금을 이체하세요.",
-    "noBalanceTransfer": "자금 이체"
+    "noBalanceTransfer": "자금 이체",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "이 광고주의 거래 완료율이 낮습니다",
+        "body": "거래의 {rate}%만 완료합니다. 계속하기 전에 프로필을 확인하세요."
+      },
+      "highBlockCount": {
+        "title": "많은 트레이더가 이 광고주를 차단했습니다",
+        "body": "{threshold}명 이상의 트레이더가 이 광고주와 거래하지 않기로 했습니다. 계속하기 전에 프로필을 확인하세요."
+      },
+      "advertiserLabel": "광고주",
+      "buyCompletionRateLabel": "구매 완료율",
+      "sellCompletionRateLabel": "판매 완료율",
+      "blockCountLabel": "차단 수",
+      "orderCompletedLabel": "완료된 주문",
+      "continueAnyway": "그래도 계속하기",
+      "goBack": "뒤로"
+    }
   },
   "order": {
     "secureTradeReminder": {

@@ -65,7 +65,24 @@
     "verified": "Verificado",
     "noBalanceTitle": "Sin saldo en el Monedero P2P",
     "noBalanceDescription": "Tus anuncios de venta se ocultan del mercado cuando el saldo de tu Monedero P2P es cero. Transfiere fondos a tu Monedero P2P para que vuelvan a ser visibles.",
-    "noBalanceTransfer": "Transferir fondos"
+    "noBalanceTransfer": "Transferir fondos",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Este anunciante tiene una tasa de finalización baja",
+        "body": "Completa el {rate}% de sus operaciones. Revisa su perfil antes de continuar."
+      },
+      "highBlockCount": {
+        "title": "Muchos operadores han bloqueado a este anunciante",
+        "body": "{threshold} o más operadores han decidido no operar con él. Revisa su perfil antes de continuar."
+      },
+      "advertiserLabel": "Anunciante",
+      "buyCompletionRateLabel": "Tasa de finalización de compra",
+      "sellCompletionRateLabel": "Tasa de finalización de venta",
+      "blockCountLabel": "Bloqueos",
+      "orderCompletedLabel": "Órdenes completadas",
+      "continueAnyway": "Continuar de todos modos",
+      "goBack": "Volver"
+    }
   },
   "order": {
     "secureTradeReminder": {

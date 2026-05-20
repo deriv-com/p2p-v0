@@ -65,7 +65,24 @@
     "verified": "Verificado",
     "noBalanceTitle": "Sem saldo na Carteira P2P",
     "noBalanceDescription": "Seus anúncios de venda ficam ocultos do mercado quando o saldo da sua Carteira P2P é zero. Transfira fundos para a sua Carteira P2P para torná-los visíveis novamente.",
-    "noBalanceTransfer": "Transferir fundos"
+    "noBalanceTransfer": "Transferir fundos",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Este anunciante tem uma baixa taxa de conclusão",
+        "body": "Ele conclui {rate}% das suas negociações. Verifique o perfil dele antes de continuar."
+      },
+      "highBlockCount": {
+        "title": "Muitos traders bloquearam este anunciante",
+        "body": "{threshold} ou mais traders escolheram não negociar com ele. Verifique o perfil dele antes de continuar."
+      },
+      "advertiserLabel": "Anunciante",
+      "buyCompletionRateLabel": "Taxa de conclusão de compra",
+      "sellCompletionRateLabel": "Taxa de conclusão de venda",
+      "blockCountLabel": "Bloqueios",
+      "orderCompletedLabel": "Pedidos concluídos",
+      "continueAnyway": "Continuar mesmo assim",
+      "goBack": "Voltar"
+    }
   },
   "order": {
     "secureTradeReminder": {
