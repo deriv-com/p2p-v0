@@ -22,9 +22,15 @@ export function evaluateRisk(ad: Advertisement): RiskWarningResult | null {
     return { type: "high_block_count", isBuyAdvert, blockCount }
   }
 
+  // ad.type is the advertiser's side. The user takes the opposite side, so the
+  // metric that matters is the advertiser's performance on the side they're
+  // offering — buy advert → check sell rate, sell advert → check buy rate.
   const rate = isBuyAdvert
     ? ad.user.completion_rate_sell_30day
     : ad.user.completion_rate_buy_30day
+  // Combined buy+sell volume is intentional: gates "is this advertiser
+  // established enough to be judged on completion rate", not direction-specific
+  // throughput. Matches the mobile predicate.
   const count =
     (ad.user.order_count_buy_30day ?? 0) + (ad.user.order_count_sell_30day ?? 0)
 

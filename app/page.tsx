@@ -981,11 +981,11 @@ export default function BuySellPage() {
           p2pBalance={Number.parseFloat(balance)}
         />
 
-        {riskResult && (
+        {pendingRiskAd && riskResult && (
           <RiskWarningModal
             isOpen={isRiskWarningOpen}
             result={riskResult}
-            advertiserNickname={pendingRiskAd?.user.nickname ?? ""}
+            advertiserNickname={pendingRiskAd.user.nickname}
             onContinue={handleRiskContinue}
             onClose={handleRiskClose}
           />

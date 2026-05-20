@@ -59,6 +59,7 @@ export interface SearchParams {
   favourites_only?: number
   page?: number
   per_page?: number
+  is_private?: boolean
 }
 
 // Define the PaymentMethod interface

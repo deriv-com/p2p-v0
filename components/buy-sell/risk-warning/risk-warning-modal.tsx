@@ -103,7 +103,7 @@ export default function RiskWarningModal({
     </div>
   )
 
-  const body_block = (
+  const bodyContent = (
     <div className="flex flex-col gap-6">
       <p className="text-grayscale-100 text-base">{body}</p>
       {fieldRows}
@@ -116,7 +116,7 @@ export default function RiskWarningModal({
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
         <DrawerContent className="px-6 pb-8">
           <DrawerTitle className="text-2xl font-bold my-4">{title}</DrawerTitle>
-          {body_block}
+          {bodyContent}
         </DrawerContent>
       </Drawer>
     )
@@ -134,7 +134,7 @@ export default function RiskWarningModal({
         <DialogTitle className="text-2xl font-bold mb-2 pr-10">
           {title}
         </DialogTitle>
-        {body_block}
+        {bodyContent}
       </DialogContent>
     </Dialog>
   )
