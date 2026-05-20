@@ -151,7 +151,7 @@ function FieldRow({
 }) {
   return (
     <div className="flex justify-between items-center">
-      <span className="text-grayscale-300 text-sm">{label}</span>
+      <span className="text-grayscale-text-muted text-sm">{label}</span>
       {trailing ?? <span className="text-grayscale-100 text-sm">{value}</span>}
     </div>
   )
