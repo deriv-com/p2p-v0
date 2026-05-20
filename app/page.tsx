@@ -144,6 +144,7 @@ export default function BuySellPage() {
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
     isLoadingBalance ? undefined : balance,
     isFullyOnboarded,
+    !isV1Signup,
   )
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
@@ -522,10 +523,9 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-            {shouldShowBalanceWarning && !isV1Signup && (
-              // Desktop only — mobile banner is rendered above the Header in main.tsx.
-              // Hidden for v1 users — they have no wallet, so Transfer CTA would dead-end.
-              // Tuck the dark balance card under the banner's bottom edge via `-mb-8`.
+            {/* Desktop only — mobile banner is rendered above the Header in main.tsx. */}
+            {/* Tuck the dark balance card under the banner's bottom edge via `-mb-8`. */}
+            {shouldShowBalanceWarning && (
               <div className="hidden md:block md:-mb-8">
                 <P2PBalanceWarning />
               </div>
@@ -814,7 +814,7 @@ export default function BuySellPage() {
                                   size={18}
                                 />
                               )}
-                              {FEATURE_FLAGS.closedGroup && Number(userId) !== ad.user.id && ad.is_private && (
+                              {FEATURE_FLAGS.closedGroup && ad.is_private && (
                                 <Image
                                   src="/icons/closed-group.svg"
                                   alt="Closed Group"

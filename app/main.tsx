@@ -44,13 +44,12 @@ export default function Main({
 
   // Mobile-only balance warning banner (appears above the Header on mobile).
   // Desktop version lives in page.tsx where it can overlap the dark balance card.
-  // Hidden for v1 users — they have no wallet, so Transfer CTA would dead-end.
   const balanceAmount = userData?.balances?.amount
   const isV2User = userData?.signup === "v2"
   const { isFullyOnboarded } = useOnboardingGate()
-  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded)
+  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded, isV2User)
   const isMarketsPage = pathname === "/"
-  const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning && isV2User
+  const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")

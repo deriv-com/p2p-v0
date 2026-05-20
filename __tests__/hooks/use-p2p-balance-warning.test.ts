@@ -14,7 +14,7 @@ describe("useP2PBalanceWarning", () => {
   })
 
   it("hides banner when user is not fully onboarded", () => {
-    const { result } = renderHook(() => useP2PBalanceWarning("0.00", false))
+    const { result } = renderHook(() => useP2PBalanceWarning("0.00", false, true))
     expect(result.current.shouldShow).toBe(false)
     act(() => {
       jest.advanceTimersByTime(STABILITY_WINDOW_MS)
@@ -22,8 +22,16 @@ describe("useP2PBalanceWarning", () => {
     expect(result.current.shouldShow).toBe(false)
   })
 
-  it("shows banner when balance is '0.00' and user is fully onboarded (after debounce)", () => {
-    const { result } = renderHook(() => useP2PBalanceWarning("0.00", true))
+  it("hides banner for v1 users (isV2User=false) even with zero balance", () => {
+    const { result } = renderHook(() => useP2PBalanceWarning("0.00", true, false))
+    act(() => {
+      jest.advanceTimersByTime(STABILITY_WINDOW_MS)
+    })
+    expect(result.current.shouldShow).toBe(false)
+  })
+
+  it("shows banner when balance is '0.00' and user is fully onboarded v2 (after debounce)", () => {
+    const { result } = renderHook(() => useP2PBalanceWarning("0.00", true, true))
     // Default state is hidden; the first debounced observation commits show.
     expect(result.current.shouldShow).toBe(false)
     act(() => {
@@ -35,7 +43,7 @@ describe("useP2PBalanceWarning", () => {
   it("hides banner and latches when balance becomes positive", () => {
     const { result, rerender } = renderHook(
       ({ balance, onboarded }: { balance: string | undefined; onboarded: boolean }) =>
-        useP2PBalanceWarning(balance, onboarded),
+        useP2PBalanceWarning(balance, onboarded, true),
       { initialProps: { balance: "0.00" as string | undefined, onboarded: true } },
     )
     act(() => {
@@ -53,7 +61,7 @@ describe("useP2PBalanceWarning", () => {
   it("debounces rapid balance changes within the stability window", () => {
     const { result, rerender } = renderHook(
       ({ balance }: { balance: string | undefined }) =>
-        useP2PBalanceWarning(balance, true),
+        useP2PBalanceWarning(balance, true, true),
       { initialProps: { balance: "0.00" as string | undefined } },
     )
     // 0 -> 100 -> 0 within the window. Only the final value should settle.
@@ -75,7 +83,7 @@ describe("useP2PBalanceWarning", () => {
   it("one-way latch: stays hidden after confirmed positive balance", () => {
     const { result, rerender } = renderHook(
       ({ balance }: { balance: string | undefined }) =>
-        useP2PBalanceWarning(balance, true),
+        useP2PBalanceWarning(balance, true, true),
       { initialProps: { balance: "100.00" as string | undefined } },
     )
     act(() => {
@@ -94,7 +102,7 @@ describe("useP2PBalanceWarning", () => {
   it("ignores transient undefined values during loading", () => {
     const { result, rerender } = renderHook(
       ({ balance }: { balance: string | undefined }) =>
-        useP2PBalanceWarning(balance, true),
+        useP2PBalanceWarning(balance, true, true),
       { initialProps: { balance: "0.00" as string | undefined } },
     )
     act(() => {
@@ -112,7 +120,7 @@ describe("useP2PBalanceWarning", () => {
 
   it("treats negative balance as non-positive (shows banner)", () => {
     const { result } = renderHook(() =>
-      useP2PBalanceWarning("-10.00", true),
+      useP2PBalanceWarning("-10.00", true, true),
     )
     act(() => {
       jest.advanceTimersByTime(STABILITY_WINDOW_MS)
@@ -124,7 +132,7 @@ describe("useP2PBalanceWarning", () => {
     const cases = ["NaN", "", "abc"]
     for (const balance of cases) {
       const { result, unmount } = renderHook(() =>
-        useP2PBalanceWarning(balance, true),
+        useP2PBalanceWarning(balance, true, true),
       )
       act(() => {
         jest.advanceTimersByTime(STABILITY_WINDOW_MS)
@@ -137,7 +145,7 @@ describe("useP2PBalanceWarning", () => {
   it("transient not-onboarded does not hide once banner is shown", () => {
     const { result, rerender } = renderHook(
       ({ onboarded }: { onboarded: boolean }) =>
-        useP2PBalanceWarning("0.00", onboarded),
+        useP2PBalanceWarning("0.00", onboarded, true),
       { initialProps: { onboarded: true } },
     )
     act(() => {
