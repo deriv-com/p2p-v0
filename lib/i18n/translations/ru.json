@@ -23,6 +23,7 @@
     "yes": "Да",
     "no": "Нет",
     "ok": "ОК",
+    "done": "Готово",
     "learnMore": "Узнать больше",
     "gotIt": "Понял",
     "verifiedBadge": {
@@ -65,7 +66,24 @@
     "verified": "Верифицирован",
     "noBalanceTitle": "Нет средств в P2P-кошельке",
     "noBalanceDescription": "Ваши объявления о продаже скрыты с торговой площадки, пока баланс вашего P2P-кошелька равен нулю. Пополните P2P-кошелёк, чтобы они снова стали видимыми.",
-    "noBalanceTransfer": "Перевести средства"
+    "noBalanceTransfer": "Перевести средства",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "У этого рекламодателя низкий процент завершенных сделок",
+        "body": "Он завершает {rate}% своих сделок. Проверьте его профиль перед продолжением."
+      },
+      "highBlockCount": {
+        "title": "Многие трейдеры заблокировали этого рекламодателя",
+        "body": "{threshold} или более трейдеров решили не торговать с ним. Проверьте его профиль перед продолжением."
+      },
+      "advertiserLabel": "Рекламодатель",
+      "buyCompletionRateLabel": "Процент завершенных покупок",
+      "sellCompletionRateLabel": "Процент завершенных продаж",
+      "blockCountLabel": "Количество блокировок",
+      "orderCompletedLabel": "Завершенные ордера",
+      "continueAnyway": "Все равно продолжить",
+      "goBack": "Назад"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -659,12 +677,25 @@
     "maximumOrder": "Максимальный заказ",
     "orderTimeLimit": "Временной лимит заказа",
     "orderTimeLimitTooltip": "Заказы истекут, если они не будут завершены в течение этого времени.",
-    "timeLimit15Minutes": "15 минут",
-    "timeLimit30Minutes": "30 минут",
-    "timeLimit45Minutes": "45 минут",
-    "timeLimit60Minutes": "60 минут",
+    "timeLimit15Minutes": "15 мин",
+    "timeLimit30Minutes": "30 мин",
+    "timeLimit45Minutes": "45 мин",
+    "timeLimit60Minutes": "60 мин",
     "chooseYourAudience": "Выберите вашу аудиторию",
     "audienceTooltip": "Вы можете фильтровать, кто взаимодействует с вашими объявлениями, на основе их местоположения или истории P2P. Более строгие фильтры могут снизить видимость объявления.",
+    "minimumSellerTier": "Минимальный уровень продавца",
+    "minimumSellerTierHelper": "Только продавцы этого уровня и выше увидят ваше объявление.",
+    "minimumBuyerTier": "Минимальный уровень покупателя",
+    "minimumBuyerTierHelper": "Только покупатели этого уровня и выше увидят ваше объявление.",
+    "minimumTierSheetTitle": "Минимальный уровень",
+    "tierAllTiers": "Все уровни",
+    "tierAllTiersDescription": "Видно всем продавцам",
+    "tierSilverAndAbove": "Серебряный и выше",
+    "tierSilverDescription": "Зарегистрирован 45+ дней назад • 80%+ завершённых сделок",
+    "tierGoldAndAbove": "Золотой и выше",
+    "tierGoldDescription": "Зарегистрирован 90+ дней назад • 90%+ завершённых сделок",
+    "tierDiamondOnly": "Только бриллиантовый",
+    "tierDiamondDescription": "Зарегистрирован 180+ дней назад • 98%+ завершённых сделок",
     "sellerInstructions": "Инструкции (hеобязательно)",
     "instructionsDisclaimer": "Эта информация будет видна всем. Не делитесь своим номером телефона или личными данными.",
     "instructionsInvalidCharsMessage": "Используйте только буквы, цифры и эти символы: @ - . ! / % & , _ ( ) + : ; максимум 300 символов.",
@@ -687,7 +718,7 @@
     "tryAgain": "Пожалуйста, попробуйте снова.",
     "updateAd": "Обновить объявление",
     "updateRate": "Обновить курс",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Изменить лимиты",
     "duplicatePaymentMethodTitle": "Проверьте ваши способы оплаты",
     "duplicatePaymentMethodMessage": "Для каждого объявления можно использовать только один способ оплаты одного типа.",
     "updatePaymentMethods": "Обновить способы оплаты",
@@ -734,7 +765,15 @@
     "allCounterparties": "Все контрагенты",
     "genericErrorCodeMessage": "Произошла ошибка ({code}). Повторите попытку или обратитесь в службу поддержки.",
     "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку.",
-    "unknownErrorMessage": "Произошла неизвестная ошибка"
+    "unknownErrorMessage": "Произошла неизвестная ошибка",
+    "adVisibility": "Видимость объявления",
+    "adVisibilityTooltip": "Выберите, кто может видеть ваши объявления и взаимодействовать с ними на маркетплейсе.",
+    "closedGroup": "Закрытая группа",
+    "visibilityEveryone": "Все",
+    "visibilityEveryoneDesc": "Ваше объявление будет видно всем на маркетплейсе.",
+    "visibilityClosedGroup": "Закрытая группа",
+    "visibilityClosedGroupDesc": "Ваше объявление будет видно только пользователям из вашего списка закрытой группы.",
+    "editList": "Изменить список"
   },
   "advertiser": {
     "profile": "Профиль рекламодателя",
@@ -748,6 +787,11 @@
     "unblockDescription": "Разблокируйте их, если хотите снова взаимодействовать с этим рекламодателем.",
     "successfullyFollowed": "Успешно подписались",
     "successfullyUnfollowed": "Успешно отписались",
+    "addToClosedGroup": "Добавить в закрытую группу",
+    "removeFromClosedGroup": "Удалить из закрытой группы",
+    "unfollow": "Отписаться",
+    "addedToClosedGroup": "Успешно добавлено в закрытую группу.",
+    "removedFromClosedGroup": "Успешно удалено из закрытой группы.",
     "userBlocked": "{nickname} заблокирован.",
     "userUnblocked": "{nickname} разблокирован.",
     "noAds": "Нет доступных объявлений",

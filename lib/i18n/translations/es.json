@@ -23,6 +23,7 @@
     "yes": "Sí",
     "no": "No",
     "ok": "OK",
+    "done": "Listo",
     "learnMore": "Más información",
     "gotIt": "Entendido",
     "verifiedBadge": {
@@ -56,7 +57,7 @@
     "paymentMethods": "Métodos de pago",
     "orders": "órdenes",
     "completion": "completación",
-    "min": "min",
+    "min": "mín",
     "orderLimits": "Límites de orden",
     "loadingAds": "Cargando anuncios...",
     "noAdsTitle": "No hay anuncios para esta moneda",
@@ -65,7 +66,24 @@
     "verified": "Verificado",
     "noBalanceTitle": "Sin saldo en el Monedero P2P",
     "noBalanceDescription": "Tus anuncios de venta se ocultan del mercado cuando el saldo de tu Monedero P2P es cero. Transfiere fondos a tu Monedero P2P para que vuelvan a ser visibles.",
-    "noBalanceTransfer": "Transferir fondos"
+    "noBalanceTransfer": "Transferir fondos",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Este anunciante tiene una tasa de finalización baja",
+        "body": "Completa el {rate}% de sus operaciones. Revisa su perfil antes de continuar."
+      },
+      "highBlockCount": {
+        "title": "Muchos operadores han bloqueado a este anunciante",
+        "body": "{threshold} o más operadores han decidido no operar con él. Revisa su perfil antes de continuar."
+      },
+      "advertiserLabel": "Anunciante",
+      "buyCompletionRateLabel": "Tasa de finalización de compra",
+      "sellCompletionRateLabel": "Tasa de finalización de venta",
+      "blockCountLabel": "Bloqueos",
+      "orderCompletedLabel": "Órdenes completadas",
+      "continueAnyway": "Continuar de todos modos",
+      "goBack": "Volver"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -589,6 +607,11 @@
     "unblockDescription": "Desbloquéalo si deseas interactuar con este anunciante nuevamente.",
     "successfullyFollowed": "Seguido con éxito",
     "successfullyUnfollowed": "Dejó de seguir con éxito",
+    "addToClosedGroup": "Añadir al grupo cerrado",
+    "removeFromClosedGroup": "Eliminar del grupo cerrado",
+    "unfollow": "Dejar de seguir",
+    "addedToClosedGroup": "Añadido al grupo cerrado correctamente.",
+    "removedFromClosedGroup": "Eliminado del grupo cerrado correctamente.",
     "userBlocked": "{nickname} bloqueado.",
     "userUnblocked": "{nickname} desbloqueado."
   },
@@ -720,12 +743,25 @@
     "orderTimeLimit": "Límite de tiempo del pedido",
     "orderTimeLimitTooltip": "Los pedidos expirarán si no se completan dentro de este plazo.",
     "orderTimeLimitPlaceholder": "Los pedidos deben completarse en",
-    "timeLimit15Minutes": "15 minutos",
-    "timeLimit30Minutes": "30 minutos",
-    "timeLimit45Minutes": "45 minutos",
-    "timeLimit60Minutes": "60 minutos",
+    "timeLimit15Minutes": "15 min",
+    "timeLimit30Minutes": "30 min",
+    "timeLimit45Minutes": "45 min",
+    "timeLimit60Minutes": "60 min",
     "chooseYourAudience": "Elige tu audiencia",
     "audienceTooltip": "Puedes filtrar quién interactúa con tus anuncios según su ubicación o historial P2P. Los filtros más estrictos pueden reducir la visibilidad del anuncio.",
+    "minimumSellerTier": "Nivel mínimo del vendedor",
+    "minimumSellerTierHelper": "Solo los vendedores de este nivel o superior verán tu anuncio.",
+    "minimumBuyerTier": "Nivel mínimo del comprador",
+    "minimumBuyerTierHelper": "Solo los compradores de este nivel o superior verán tu anuncio.",
+    "minimumTierSheetTitle": "Nivel mínimo",
+    "tierAllTiers": "Todos los niveles",
+    "tierAllTiersDescription": "Visible para todos los vendedores",
+    "tierSilverAndAbove": "Plata y superior",
+    "tierSilverDescription": "Se unió hace 45+ días • 80%+ tasa de finalización",
+    "tierGoldAndAbove": "Oro y superior",
+    "tierGoldDescription": "Se unió hace 90+ días • 90%+ tasa de finalización",
+    "tierDiamondOnly": "Solo diamante",
+    "tierDiamondDescription": "Se unió hace 180+ días • 98%+ tasa de finalización",
     "sellerInstructions": "Instrucciones (opcional)",
     "instructionsDisclaimer": "Esta información será visible para todos. No compartas tu número de teléfono o detalles personales.",
     "instructionsInvalidCharsMessage": "Usa solo letras, números y estos símbolos: @ - . ! / % & , _ ( ) + : ; con un máximo de 300 caracteres.",
@@ -748,7 +784,7 @@
     "tryAgain": "Por favor, inténtalo de nuevo.",
     "updateAd": "Actualizar anuncio",
     "updateRate": "Actualizar tasa",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Editar límites",
     "duplicatePaymentMethodTitle": "Comprueba tus métodos de pago",
     "duplicatePaymentMethodMessage": "Solo puedes usar un método de pago del mismo tipo para cada anuncio.",
     "updatePaymentMethods": "Actualizar métodos de pago",
@@ -779,7 +815,15 @@
     "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo.",
     "unknownErrorMessage": "Ocurrió un error desconocido",
     "adVisibilityUpdate": "Actualizar visibilidad del anuncio",
-    "adVisibilityUpdateDescription": "No podrás cambiar este anuncio a una lista de grupo cerrado a menos que vuelvas a convertirte en miembro de nivel Diamond."
+    "adVisibilityUpdateDescription": "No podrás cambiar este anuncio a una lista de grupo cerrado a menos que vuelvas a convertirte en miembro de nivel Diamond.",
+    "adVisibility": "Visibilidad del anuncio",
+    "adVisibilityTooltip": "Elige quién puede ver e interactuar con tus anuncios en el mercado.",
+    "closedGroup": "Grupo cerrado",
+    "visibilityEveryone": "Todos",
+    "visibilityEveryoneDesc": "Tu anuncio será visible para todos en el mercado.",
+    "visibilityClosedGroup": "Grupo cerrado",
+    "visibilityClosedGroupDesc": "Tu anuncio solo será visible para los usuarios de tu lista de grupo cerrado.",
+    "editList": "Editar lista"
   },
   "kyc": {
     "title": "Verificación de identidad",

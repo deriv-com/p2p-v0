@@ -27,6 +27,7 @@
     "yes": "예",
     "no": "아니오",
     "ok": "확인",
+    "done": "완료",
     "learnMore": "자세히 알아보기",
     "gotIt": "확인했습니다",
     "removeAll": "모두 제거",
@@ -72,7 +73,24 @@
     "browseMarket": "마켓 둘러보기",
     "noBalanceTitle": "P2P 지갑에 잔액 없음",
     "noBalanceDescription": "P2P 지갑 잔액이 0이면 판매 광고가 마켓플레이스에서 숨겨집니다. 다시 표시되도록 P2P 지갑으로 자금을 이체하세요.",
-    "noBalanceTransfer": "자금 이체"
+    "noBalanceTransfer": "자금 이체",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "이 광고주의 거래 완료율이 낮습니다",
+        "body": "거래의 {rate}%만 완료합니다. 계속하기 전에 프로필을 확인하세요."
+      },
+      "highBlockCount": {
+        "title": "많은 트레이더가 이 광고주를 차단했습니다",
+        "body": "{threshold}명 이상의 트레이더가 이 광고주와 거래하지 않기로 했습니다. 계속하기 전에 프로필을 확인하세요."
+      },
+      "advertiserLabel": "광고주",
+      "buyCompletionRateLabel": "구매 완료율",
+      "sellCompletionRateLabel": "판매 완료율",
+      "blockCountLabel": "차단 수",
+      "orderCompletedLabel": "완료된 주문",
+      "continueAnyway": "그래도 계속하기",
+      "goBack": "뒤로"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -701,5 +719,28 @@
     "seenDaysAgo": "{count}일 전 접속",
     "seenMonthsAgo": "{count}개월 전 접속",
     "seenMoreThanSixMonthsAgo": "6개월 이상 전 접속"
+  },
+  "adForm": {
+    "minimumSellerTier": "최소 판매자 등급",
+    "minimumSellerTierHelper": "이 등급 이상의 판매자만 귀하의 광고를 볼 수 있습니다.",
+    "minimumBuyerTier": "최소 구매자 등급",
+    "minimumBuyerTierHelper": "이 등급 이상의 구매자만 귀하의 광고를 볼 수 있습니다.",
+    "minimumTierSheetTitle": "최소 등급",
+    "tierAllTiers": "모든 등급",
+    "tierAllTiersDescription": "모든 판매자에게 표시",
+    "tierSilverAndAbove": "실버 이상",
+    "tierSilverDescription": "45일 이상 가입 • 80% 이상 완료율",
+    "tierGoldAndAbove": "골드 이상",
+    "tierGoldDescription": "90일 이상 가입 • 90% 이상 완료율",
+    "tierDiamondOnly": "다이아몬드 전용",
+    "tierDiamondDescription": "180일 이상 가입 • 98% 이상 완료율",
+    "adVisibility": "광고 표시",
+    "adVisibilityTooltip": "마켓플레이스에서 누가 귀하의 광고를 보고 상호작용할 수 있는지 선택하세요.",
+    "closedGroup": "비공개 그룹",
+    "visibilityEveryone": "모두",
+    "visibilityEveryoneDesc": "광고가 마켓플레이스의 모든 사람에게 표시됩니다.",
+    "visibilityClosedGroup": "비공개 그룹",
+    "visibilityClosedGroupDesc": "광고가 비공개 그룹 목록의 사용자에게만 표시됩니다.",
+    "editList": "목록 편집"
   }
 }

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import ClosedGroupTab from "@/app/profile/components/closed-group"
+import { FEATURE_FLAGS } from "@/lib/feature-flags"
 interface AdVisibilitySelectorProps {
   value: string
   onValueChange: (value: string) => void
@@ -19,9 +20,9 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
 
   const handleEditListClick = () => {
     showAlert({
-      title: "Closed group",
+      title: t("adForm.closedGroup"),
       content: <ClosedGroupTab isInAlert={true} />,
-      confirmText: "Done",
+      confirmText: t("common.done"),
       cancelText: undefined,
       type: "warning",
       onConfirm: hideAlert,
@@ -40,43 +41,45 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           ? "border-black"
           : "border-grayscale-500"}`}
       >
-        <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
+        <Image src="/icons/global.svg" alt={t("adForm.visibilityEveryone")} width={32} height={32} />
         <div className="text-left flex-1">
-          <div className="text-base mb-1 text-slate-1200">Everyone</div>
+          <div className="text-base mb-1 text-slate-1200">{t("adForm.visibilityEveryone")}</div>
           <div className="text-xs text-grayscale-text-muted">
-            Your ad will be visible to everyone on the marketplace.
+            {t("adForm.visibilityEveryoneDesc")}
           </div>
         </div>
         <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
 
-      <Label
-        htmlFor="closed-group"
-        className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "closed-group"
-          ? "border-black"
-          : "border-grayscale-500"
-          }`}
-      >
-        <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
-        <div className="text-left flex-1">
-          <div className="text-base text-slate-1200 mb-1">Closed group</div>
-          <div className="text-xs text-grayscale-text-muted">
-            Your ad will be visible only to users in your close group list.{" "}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleEditListClick()
-              }}
-              className="font-normal p-0 h-auto text-xs text-grayscale-text-muted underline hover:opacity-100 hover:bg-transparent"
-            >
-              Edit list
-            </Button>
+      {FEATURE_FLAGS.closedGroup && (
+        <Label
+          htmlFor="closed-group"
+          className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "closed-group"
+            ? "border-black"
+            : "border-grayscale-500"
+            }`}
+        >
+          <Image src="/icons/closed-group.svg" alt={t("adForm.visibilityClosedGroup")} width={32} height={32} />
+          <div className="text-left flex-1">
+            <div className="text-base text-slate-1200 mb-1">{t("adForm.visibilityClosedGroup")}</div>
+            <div className="text-xs text-grayscale-text-muted">
+              {t("adForm.visibilityClosedGroupDesc")}{" "}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleEditListClick()
+                }}
+                className="font-normal p-0 h-auto text-xs text-grayscale-text-muted underline hover:opacity-100 hover:bg-transparent"
+              >
+                {t("adForm.editList")}
+              </Button>
+            </div>
           </div>
-        </div>
-        <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
-      </Label>
+          <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
+        </Label>
+      )}
     </RadioGroup>
   )
 }

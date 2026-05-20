@@ -13,10 +13,12 @@ function isBalancePositive(balance: string | undefined): boolean {
 /**
  * Zero-balance warning banner gate for the Markets page.
  *
- * Shows when the user is a fully-onboarded P2P advertiser AND their P2P
- * balance is zero. Mirrors the mobile app which reads
+ * Shows when the user is a v2 (wallet) advertiser, fully onboarded, AND
+ * their P2P balance is zero. Mirrors the mobile app which reads
  * `total_account_value.amount` from `/users/me` — the same value flows
- * into web's local `balance` state.
+ * into web's local `balance` state. v1 (migrated) users are excluded
+ * because they cannot access the wallet page, so the banner's Transfer
+ * CTA would dead-end for them.
  *
  * ## Latched one-way, debounced
  *
@@ -43,6 +45,7 @@ function isBalancePositive(balance: string | undefined): boolean {
 export function useP2PBalanceWarning(
   p2pBalance: string | undefined,
   isFullyOnboarded: boolean,
+  isV2User: boolean,
 ): { shouldShow: boolean } {
   const [shouldShow, setShouldShow] = useState(false)
   const hasConfirmedPositive = useRef(false)
@@ -52,12 +55,13 @@ export function useP2PBalanceWarning(
     // hidden for the rest of the session. Transient 0s can't re-show.
     if (hasConfirmedPositive.current) return
     const timeoutId = setTimeout(() => {
-      // `!isFullyOnboarded` and `undefined` balance are UNKNOWN states,
-      // not commit signals. Skipping here means a transient stale
-      // selector return on tab switch cannot flip the banner — we only
-      // commit when we have a definitive positive/zero balance
-      // observation. Actual logout unmounts this hook, so no explicit
-      // hide needed.
+      // `!isFullyOnboarded`, `!isV2User`, and `undefined` balance are
+      // UNKNOWN/ineligible states, not commit signals. Skipping here
+      // means a transient stale selector return on tab switch cannot
+      // flip the banner — we only commit when we have a definitive
+      // positive/zero balance observation for an eligible user. Actual
+      // logout unmounts this hook, so no explicit hide needed.
+      if (!isV2User) return
       if (!isFullyOnboarded) return
       if (p2pBalance === undefined) return
       if (isBalancePositive(p2pBalance)) {
@@ -68,7 +72,7 @@ export function useP2PBalanceWarning(
       }
     }, STABILITY_WINDOW_MS)
     return () => clearTimeout(timeoutId)
-  }, [p2pBalance, isFullyOnboarded])
+  }, [p2pBalance, isFullyOnboarded, isV2User])
 
   return { shouldShow }
 }

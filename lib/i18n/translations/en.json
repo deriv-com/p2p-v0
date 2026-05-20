@@ -27,6 +27,7 @@
     "yes": "Yes",
     "no": "No",
     "ok": "OK",
+    "done": "Done",
     "learnMore": "Learn More",
     "gotIt": "Got it",
     "removeAll": "Remove all",
@@ -73,7 +74,24 @@
     "browseMarket": "Browse market",
     "noBalanceTitle": "No balance in P2P Wallet",
     "noBalanceDescription": "Your sell ads are hidden from the marketplace when your P2P Wallet balance is zero. Transfer funds to your P2P Wallet to make them visible again.",
-    "noBalanceTransfer": "Transfer funds"
+    "noBalanceTransfer": "Transfer funds",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "This advertiser has a low completion rate",
+        "body": "They complete {rate}% of their trades. Check their profile before you continue."
+      },
+      "highBlockCount": {
+        "title": "Many traders have blocked this advertiser",
+        "body": "{threshold} or more traders have chosen not to trade with them. Check their profile before you continue."
+      },
+      "advertiserLabel": "Advertiser",
+      "buyCompletionRateLabel": "Buy completion rate",
+      "sellCompletionRateLabel": "Sell completion rate",
+      "blockCountLabel": "Block count",
+      "orderCompletedLabel": "Order completed",
+      "continueAnyway": "Continue anyway",
+      "goBack": "Go back"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -805,12 +823,25 @@
     "orderTimeLimit": "Order time limit",
     "orderTimeLimitTooltip": "Orders will expire if they aren't completed within this timeframe.",
     "orderTimeLimitPlaceholder": "Orders must be completed in",
-    "timeLimit15Minutes": "15 minutes",
-    "timeLimit30Minutes": "30 minutes",
-    "timeLimit45Minutes": "45 minutes",
-    "timeLimit60Minutes": "60 minutes",
+    "timeLimit15Minutes": "15 min",
+    "timeLimit30Minutes": "30 min",
+    "timeLimit45Minutes": "45 min",
+    "timeLimit60Minutes": "60 min",
     "chooseYourAudience": "Choose your audience",
     "audienceTooltip": "You can filter who interacts with your ads based on their location or P2P history. Stricter filters may reduce ad visibility.",
+    "minimumSellerTier": "Minimum seller tier",
+    "minimumSellerTierHelper": "Only sellers in this tier and above will see your ad.",
+    "minimumBuyerTier": "Minimum buyer tier",
+    "minimumBuyerTierHelper": "Only buyers in this tier and above will see your ad.",
+    "minimumTierSheetTitle": "Minimum tier",
+    "tierAllTiers": "All tiers",
+    "tierAllTiersDescription": "Visible to all sellers",
+    "tierSilverAndAbove": "Silver and above",
+    "tierSilverDescription": "Joined 45+ days ago • 80%+ completion rate",
+    "tierGoldAndAbove": "Gold and above",
+    "tierGoldDescription": "Joined 90+ days ago • 90%+ completion rate",
+    "tierDiamondOnly": "Diamond only",
+    "tierDiamondDescription": "Joined 180+ days ago • 98%+ completion rate",
     "sellerInstructions": "Instructions for seller (optional)",
     "buyerInstructions": "Instructions for buyer (optional)",
     "instructionsDisclaimer": "This information will be visible to everyone. Don't share your phone number or personal details.",
@@ -870,7 +901,15 @@
     "cancelAdCreationDescription": "If you cancel, the details you've entered will be lost.",
     "continueAdCreation": "Continue ad creation",
     "adVisibilityUpdate": "Ad visibility update",
-    "adVisibilityUpdateDescription": "You won't be able to change this ad back to a closed group listing unless you become a Diamond tier member again."
+    "adVisibilityUpdateDescription": "You won't be able to change this ad back to a closed group listing unless you become a Diamond tier member again.",
+    "adVisibility": "Ad visibility",
+    "adVisibilityTooltip": "Choose who can see and interact with your ads on the marketplace.",
+    "closedGroup": "Closed group",
+    "visibilityEveryone": "Everyone",
+    "visibilityEveryoneDesc": "Your ad will be visible to everyone on the marketplace.",
+    "visibilityClosedGroup": "Closed group",
+    "visibilityClosedGroupDesc": "Your ad will be visible only to users in your close group list.",
+    "editList": "Edit list"
   },
   "advertiser": {
     "goBack": "Go Back",
@@ -905,6 +944,11 @@
     "unblockDescription": "Unblock them if you'd like to interact with this advertiser again.",
     "successfullyFollowed": "Successfully followed",
     "successfullyUnfollowed": "Successfully unfollowed",
+    "addToClosedGroup": "Add to closed group",
+    "removeFromClosedGroup": "Remove from closed group",
+    "unfollow": "Unfollow",
+    "addedToClosedGroup": "Successfully added to closed group.",
+    "removedFromClosedGroup": "Successfully removed from closed group.",
     "userBlocked": "{nickname} blocked.",
     "userUnblocked": "{nickname} unblocked."
   },

@@ -7,6 +7,7 @@ import PaymentMethodsTab from "./payment-methods-tab"
 import FollowsTab from "./follows-tab"
 import BlockedTab from "./blocked-tab"
 import ClosedGroupTab from "./closed-group"
+import { FEATURE_FLAGS } from "@/lib/feature-flags"
 import CounterpartiesTab from "./counterparties-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -92,7 +93,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   }
 
   const isDiamond = userData.trade_band === "diamond"
-  const showClosedGroupTab = isDiamond
+  const showClosedGroupTab = isDiamond && FEATURE_FLAGS.closedGroup
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },

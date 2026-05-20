@@ -23,6 +23,7 @@
     "yes": "হ্যাঁ",
     "no": "না",
     "ok": "ঠিক আছে",
+    "done": "সম্পন্ন",
     "learnMore": "আরও জানুন",
     "gotIt": "বুঝেছি",
     "verifiedBadge": {
@@ -65,7 +66,24 @@
     "verified": "যাচাইকৃত",
     "noBalanceTitle": "P2P ওয়ালেটে কোনো ব্যালেন্স নেই",
     "noBalanceDescription": "আপনার P2P ওয়ালেটের ব্যালেন্স শূন্য থাকলে আপনার বিক্রয় বিজ্ঞাপনগুলি মার্কেটপ্লেস থেকে আড়াল করা হয়। আবার দৃশ্যমান করতে আপনার P2P ওয়ালেটে তহবিল স্থানান্তর করুন।",
-    "noBalanceTransfer": "তহবিল স্থানান্তর করুন"
+    "noBalanceTransfer": "তহবিল স্থানান্তর করুন",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "এই বিজ্ঞাপনদাতার সম্পূর্ণতার হার কম",
+        "body": "তারা তাদের ট্রেডের {rate}% সম্পূর্ণ করে। চালিয়ে যাওয়ার আগে তাদের প্রোফাইল চেক করুন।"
+      },
+      "highBlockCount": {
+        "title": "অনেক ট্রেডার এই বিজ্ঞাপনদাতাকে ব্লক করেছেন",
+        "body": "{threshold} বা তার বেশি ট্রেডার তাদের সাথে ট্রেড না করার সিদ্ধান্ত নিয়েছেন। চালিয়ে যাওয়ার আগে তাদের প্রোফাইল চেক করুন।"
+      },
+      "advertiserLabel": "বিজ্ঞাপনদাতা",
+      "buyCompletionRateLabel": "ক্রয় সম্পূর্ণতার হার",
+      "sellCompletionRateLabel": "বিক্রয় সম্পূর্ণতার হার",
+      "blockCountLabel": "ব্লকের সংখ্যা",
+      "orderCompletedLabel": "সম্পূর্ণ অর্ডার",
+      "continueAnyway": "তারপরও চালিয়ে যান",
+      "goBack": "ফিরে যান"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -661,6 +679,19 @@
     "timeLimit60Minutes": "৬০ মিনিট",
     "chooseYourAudience": "আপনার দর্শক চয়ন করুন",
     "audienceTooltip": "আপনি তাদের অবস্থান বা P2P ইতিহাসের উপর ভিত্তি করে আপনার বিজ্ঞাপনের সাথে কে ইন্টারঅ্যাক্ট করবে তা ফিল্টার করতে পারেন। কঠোর ফিল্টার বিজ্ঞাপন দৃশ্যমানতা হ্রাস করতে পারে।",
+    "minimumSellerTier": "ন্যূনতম বিক্রেতা স্তর",
+    "minimumSellerTierHelper": "শুধুমাত্র এই স্তরের এবং উপরের বিক্রেতারা আপনার বিজ্ঞাপন দেখতে পাবেন।",
+    "minimumBuyerTier": "ন্যূনতম ক্রেতা স্তর",
+    "minimumBuyerTierHelper": "শুধুমাত্র এই স্তরের এবং উপরের ক্রেতারা আপনার বিজ্ঞাপন দেখতে পাবেন।",
+    "minimumTierSheetTitle": "ন্যূনতম স্তর",
+    "tierAllTiers": "সব স্তর",
+    "tierAllTiersDescription": "সব বিক্রেতার কাছে দৃশ্যমান",
+    "tierSilverAndAbove": "সিলভার এবং উপরে",
+    "tierSilverDescription": "৪৫+ দিন আগে যোগ দিয়েছে • ৮০%+ সম্পূর্ণতা হার",
+    "tierGoldAndAbove": "গোল্ড এবং উপরে",
+    "tierGoldDescription": "৯০+ দিন আগে যোগ দিয়েছে • ৯০%+ সম্পূর্ণতা হার",
+    "tierDiamondOnly": "শুধুমাত্র ডায়মন্ড",
+    "tierDiamondDescription": "১৮০+ দিন আগে যোগ দিয়েছে • ৯৮%+ সম্পূর্ণতা হার",
     "sellerInstructions": "নির্দেশনা (ঐচ্ছিক)",
     "instructionsDisclaimer": "এই তথ্য সবার কাছে দৃশ্যমান হবে। আপনার ফোন নম্বর বা ব্যক্তিগত বিবরণ শেয়ার করবেন না।",
     "instructionsInvalidCharsMessage": "শুধুমাত্র অক্ষর, সংখ্যা এবং এই চিহ্নগুলি ব্যবহার করুন: @ - . ! / % & , _ ( ) + : ; সর্বোচ্চ ৩০০ অক্ষর।",
@@ -683,7 +714,7 @@
     "tryAgain": "অনুগ্রহ করে আবার চেষ্টা করুন।",
     "updateAd": "বিজ্ঞাপন আপডেট করুন",
     "updateRate": "রেট আপডেট করুন",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "সীমা সম্পাদনা করুন",
     "duplicatePaymentMethodTitle": "আপনার পেমেন্ট পদ্ধতি পরীক্ষা করুন",
     "duplicatePaymentMethodMessage": "প্রতিটি বিজ্ঞাপনের জন্য আপনি একই ধরনের শুধুমাত্র একটি পেমেন্ট পদ্ধতি ব্যবহার করতে পারবেন।",
     "updatePaymentMethods": "পেমেন্ট পদ্ধতি আপডেট করুন",
@@ -723,7 +754,15 @@
     "allCounterparties": "সমস্ত প্রতিপক্ষ",
     "genericErrorCodeMessage": "একটি ত্রুটি ঘটেছে ({code})। অনুগ্রহ করে আবার চেষ্টা করুন বা সহায়তার সাথে যোগাযোগ করুন।",
     "adVisibilityUpdate": "বিজ্ঞাপন দৃশ্যমানতা আপডেট",
-    "adVisibilityUpdateDescription": "আপনি আবার হীরা স্তরের সদস্য না হওয়া পর্যন্ত এই বিজ্ঞাপনটি একটি বন্ধ গোষ্ঠী তালিকা হিসাবে ফিরিয়ে আনতে পারবেন না।"
+    "adVisibilityUpdateDescription": "আপনি আবার হীরা স্তরের সদস্য না হওয়া পর্যন্ত এই বিজ্ঞাপনটি একটি বন্ধ গোষ্ঠী তালিকা হিসাবে ফিরিয়ে আনতে পারবেন না।",
+    "adVisibility": "বিজ্ঞাপনের দৃশ্যমানতা",
+    "adVisibilityTooltip": "মার্কেটপ্লেসে কে আপনার বিজ্ঞাপন দেখতে এবং তার সাথে ইন্টারঅ্যাক্ট করতে পারবে তা চয়ন করুন।",
+    "closedGroup": "ক্লোজড গ্রুপ",
+    "visibilityEveryone": "সবাই",
+    "visibilityEveryoneDesc": "আপনার বিজ্ঞাপন মার্কেটপ্লেসে সবার কাছে দৃশ্যমান হবে।",
+    "visibilityClosedGroup": "ক্লোজড গ্রুপ",
+    "visibilityClosedGroupDesc": "আপনার বিজ্ঞাপন শুধুমাত্র আপনার ক্লোজ গ্রুপ তালিকার ব্যবহারকারীদের কাছে দৃশ্যমান হবে।",
+    "editList": "তালিকা সম্পাদনা করুন"
   },
   "advertiser": {
     "goBack": "ফিরে যান",
@@ -758,6 +797,11 @@
     "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে পুনরায় যোগাযোগ করতে চান তাহলে তাদের আনব্লক করুন।",
     "successfullyFollowed": "সফলভাবে ফলো করা হয়েছে",
     "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে",
+    "addToClosedGroup": "ক্লোজড গ্রুপে যোগ করুন",
+    "removeFromClosedGroup": "ক্লোজড গ্রুপ থেকে সরান",
+    "unfollow": "আনফলো করুন",
+    "addedToClosedGroup": "সফলভাবে ক্লোজড গ্রুপে যোগ করা হয়েছে।",
+    "removedFromClosedGroup": "সফলভাবে ক্লোজড গ্রুপ থেকে সরানো হয়েছে।",
     "userBlocked": "{nickname} ব্লক করা হয়েছে।",
     "userUnblocked": "{nickname} আনব্লক করা হয়েছে।"
   },
@@ -767,11 +811,11 @@
     "proofOfIdentity": "পরিচয়ের প্রমাণ",
     "proofOfAddress": "ঠিকানার প্রমাণ",
     "phoneNumber": "ফোন নম্বর",
-    "resubmitIdentityAndAddress": "Resubmit your proof of identity and address to continue using P2P.",
-    "resubmitIdentity": "Resubmit your proof of identity to continue using P2P.",
-    "resubmitAddress": "Resubmit your proof of address to continue using P2P.",
-    "unverified": "Unverified",
-    "resubmitNow": "Resubmit now"
+    "resubmitIdentityAndAddress": "P2P ব্যবহার চালিয়ে যেতে আপনার পরিচয় ও ঠিকানার প্রমাণ পুনরায় জমা দিন।",
+    "resubmitIdentity": "P2P ব্যবহার চালিয়ে যেতে আপনার পরিচয়ের প্রমাণ পুনরায় জমা দিন।",
+    "resubmitAddress": "P2P ব্যবহার চালিয়ে যেতে আপনার ঠিকানার প্রমাণ পুনরায় জমা দিন।",
+    "unverified": "অযাচাইকৃত",
+    "resubmitNow": "এখনই পুনরায় জমা দিন"
   },
   "status": {
     "refunded": "ফেরত দেওয়া হয়েছে",

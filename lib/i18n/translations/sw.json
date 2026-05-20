@@ -27,6 +27,7 @@
     "yes": "Ndiyo",
     "no": "Hapana",
     "ok": "Sawa",
+    "done": "Imekamilika",
     "learnMore": "Jifunze Zaidi",
     "gotIt": "Nimepata",
     "removeAll": "Ondoa Zote",
@@ -72,7 +73,24 @@
     "browseMarket": "Angalia soko",
     "noBalanceTitle": "Hakuna salio katika Pochi ya P2P",
     "noBalanceDescription": "Matangazo yako ya kuuza yamefichwa kutoka kwenye soko wakati salio la Pochi yako ya P2P ni sifuri. Hamisha fedha kwenye Pochi yako ya P2P ili yaonekane tena.",
-    "noBalanceTransfer": "Hamisha fedha"
+    "noBalanceTransfer": "Hamisha fedha",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Mtangazaji huyu ana kiwango cha chini cha kukamilisha",
+        "body": "Wanakamilisha {rate}% ya biashara zao. Angalia wasifu wao kabla ya kuendelea."
+      },
+      "highBlockCount": {
+        "title": "Wafanyabiashara wengi wamemzuia mtangazaji huyu",
+        "body": "Wafanyabiashara {threshold} au zaidi wamechagua kutofanya biashara naye. Angalia wasifu wake kabla ya kuendelea."
+      },
+      "advertiserLabel": "Mtangazaji",
+      "buyCompletionRateLabel": "Kiwango cha kukamilisha ununuzi",
+      "sellCompletionRateLabel": "Kiwango cha kukamilisha mauzo",
+      "blockCountLabel": "Idadi ya kuzuia",
+      "orderCompletedLabel": "Maagizo yaliyokamilika",
+      "continueAnyway": "Endelea hata hivyo",
+      "goBack": "Rudi nyuma"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -663,5 +681,28 @@
     "seenDaysAgo": "Alionekana siku {count} zilizopita",
     "seenMonthsAgo": "Alionekana miezi {count} iliyopita",
     "seenMoreThanSixMonthsAgo": "Alionekana zaidi ya miezi 6 iliyopita"
+  },
+  "adForm": {
+    "minimumSellerTier": "Kiwango cha chini cha muuzaji",
+    "minimumSellerTierHelper": "Wauzaji wa kiwango hiki na zaidi pekee wataona tangazo lako.",
+    "minimumBuyerTier": "Kiwango cha chini cha mnunuzi",
+    "minimumBuyerTierHelper": "Wanunuzi wa kiwango hiki na zaidi pekee wataona tangazo lako.",
+    "minimumTierSheetTitle": "Kiwango cha chini",
+    "tierAllTiers": "Viwango vyote",
+    "tierAllTiersDescription": "Inaonekana kwa wauzaji wote",
+    "tierSilverAndAbove": "Fedha na zaidi",
+    "tierSilverDescription": "Alijiunga siku 45+ zilizopita • 80%+ kiwango cha kukamilisha",
+    "tierGoldAndAbove": "Dhahabu na zaidi",
+    "tierGoldDescription": "Alijiunga siku 90+ zilizopita • 90%+ kiwango cha kukamilisha",
+    "tierDiamondOnly": "Almasi pekee",
+    "tierDiamondDescription": "Alijiunga siku 180+ zilizopita • 98%+ kiwango cha kukamilisha",
+    "adVisibility": "Mwonekano wa tangazo",
+    "adVisibilityTooltip": "Chagua nani anaweza kuona na kushirikiana na matangazo yako kwenye soko.",
+    "closedGroup": "Kikundi kilichofungwa",
+    "visibilityEveryone": "Kila mtu",
+    "visibilityEveryoneDesc": "Tangazo lako litaonekana kwa kila mtu kwenye soko.",
+    "visibilityClosedGroup": "Kikundi kilichofungwa",
+    "visibilityClosedGroupDesc": "Tangazo lako litaonekana tu kwa watumiaji walio kwenye orodha yako ya kikundi kilichofungwa.",
+    "editList": "Hariri orodha"
   }
 }

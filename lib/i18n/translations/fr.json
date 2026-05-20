@@ -23,6 +23,7 @@
     "yes": "Oui",
     "no": "Non",
     "ok": "OK",
+    "done": "Terminé",
     "learnMore": "En savoir plus",
     "gotIt": "Compris",
     "verifiedBadge": {
@@ -65,7 +66,24 @@
     "verified": "Vérifié",
     "noBalanceTitle": "Aucun solde dans le Portefeuille P2P",
     "noBalanceDescription": "Vos annonces de vente sont masquées sur la place de marché lorsque le solde de votre Portefeuille P2P est nul. Transférez des fonds sur votre Portefeuille P2P pour les rendre à nouveau visibles.",
-    "noBalanceTransfer": "Transférer des fonds"
+    "noBalanceTransfer": "Transférer des fonds",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Cet annonceur a un faible taux de réalisation",
+        "body": "Il finalise {rate}% de ses transactions. Vérifiez son profil avant de continuer."
+      },
+      "highBlockCount": {
+        "title": "De nombreux traders ont bloqué cet annonceur",
+        "body": "{threshold} traders ou plus ont choisi de ne pas trader avec lui. Vérifiez son profil avant de continuer."
+      },
+      "advertiserLabel": "Annonceur",
+      "buyCompletionRateLabel": "Taux de réalisation à l'achat",
+      "sellCompletionRateLabel": "Taux de réalisation à la vente",
+      "blockCountLabel": "Blocages",
+      "orderCompletedLabel": "Ordres complétés",
+      "continueAnyway": "Continuer quand même",
+      "goBack": "Retour"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -679,12 +697,25 @@
     "orderTimeLimit": "Limite de temps de commande",
     "orderTimeLimitTooltip": "Les commandes expireront si elles ne sont pas terminées dans ce délai.",
     "orderTimeLimitPlaceholder": "Les commandes doivent être terminées dans",
-    "timeLimit15Minutes": "15 minutes",
-    "timeLimit30Minutes": "30 minutes",
-    "timeLimit45Minutes": "45 minutes",
-    "timeLimit60Minutes": "60 minutes",
+    "timeLimit15Minutes": "15 min",
+    "timeLimit30Minutes": "30 min",
+    "timeLimit45Minutes": "45 min",
+    "timeLimit60Minutes": "60 min",
     "chooseYourAudience": "Choisissez votre public",
     "audienceTooltip": "Vous pouvez filtrer qui interagit avec vos annonces en fonction de leur emplacement ou de leur historique P2P. Des filtres plus stricts peuvent réduire la visibilité de l'annonce.",
+    "minimumSellerTier": "Niveau minimum du vendeur",
+    "minimumSellerTierHelper": "Seuls les vendeurs de ce niveau et au-dessus verront votre annonce.",
+    "minimumBuyerTier": "Niveau minimum de l'acheteur",
+    "minimumBuyerTierHelper": "Seuls les acheteurs de ce niveau et au-dessus verront votre annonce.",
+    "minimumTierSheetTitle": "Niveau minimum",
+    "tierAllTiers": "Tous les niveaux",
+    "tierAllTiersDescription": "Visible par tous les vendeurs",
+    "tierSilverAndAbove": "Argent et plus",
+    "tierSilverDescription": "Inscrit depuis 45+ jours • 80%+ de taux de complétion",
+    "tierGoldAndAbove": "Or et plus",
+    "tierGoldDescription": "Inscrit depuis 90+ jours • 90%+ de taux de complétion",
+    "tierDiamondOnly": "Diamant uniquement",
+    "tierDiamondDescription": "Inscrit depuis 180+ jours • 98%+ de taux de complétion",
     "sellerInstructions": "Instructions (facultatif)",
     "instructionsDisclaimer": "Ces informations seront visibles par tous. Ne partagez pas votre numéro de téléphone ou vos informations personnelles.",
     "instructionsInvalidCharsMessage": "Utilisez uniquement des lettres, des chiffres et ces symboles : @ - . ! / % & , _ ( ) + : ; avec un maximum de 300 caractères.",
@@ -707,7 +738,7 @@
     "tryAgain": "Veuillez réessayer.",
     "updateAd": "Mettre à jour l'annonce",
     "updateRate": "Mettre à jour le taux",
-    "editLimitsForRangeOverlap": "Edit limits",
+    "editLimitsForRangeOverlap": "Modifier les limites",
     "duplicatePaymentMethodTitle": "Vérifiez vos méthodes de paiement",
     "duplicatePaymentMethodMessage": "Vous ne pouvez utiliser qu'une seule méthode de paiement du même type par annonce.",
     "updatePaymentMethods": "Mettre à jour les méthodes de paiement",
@@ -738,7 +769,15 @@
     "genericProcessingErrorMessage": "Une erreur s'est produite lors du traitement de votre demande. Veuillez réessayer.",
     "unknownErrorMessage": "Une erreur inconnue s'est produite",
     "adVisibilityUpdate": "Mise à jour de la visibilité de l'annonce",
-    "adVisibilityUpdateDescription": "Vous ne pourrez pas reclasser cette annonce en annonce de groupe fermé à moins de devenir à nouveau un membre Diamond."
+    "adVisibilityUpdateDescription": "Vous ne pourrez pas reclasser cette annonce en annonce de groupe fermé à moins de devenir à nouveau un membre Diamond.",
+    "adVisibility": "Visibilité de l'annonce",
+    "adVisibilityTooltip": "Choisissez qui peut voir et interagir avec vos annonces sur la place de marché.",
+    "closedGroup": "Groupe fermé",
+    "visibilityEveryone": "Tout le monde",
+    "visibilityEveryoneDesc": "Votre annonce sera visible par tous sur la place de marché.",
+    "visibilityClosedGroup": "Groupe fermé",
+    "visibilityClosedGroupDesc": "Votre annonce ne sera visible que par les utilisateurs de votre liste de groupe fermé.",
+    "editList": "Modifier la liste"
   },
   "advertiser": {
     "goBack": "Retour",
@@ -774,6 +813,11 @@
     "unblockDescription": "Débloquez-les si vous souhaitez interagir à nouveau avec cet annonceur.",
     "successfullyFollowed": "Suivi avec succès",
     "successfullyUnfollowed": "Ne suit plus avec succès",
+    "addToClosedGroup": "Ajouter au groupe fermé",
+    "removeFromClosedGroup": "Retirer du groupe fermé",
+    "unfollow": "Ne plus suivre",
+    "addedToClosedGroup": "Ajouté avec succès au groupe fermé.",
+    "removedFromClosedGroup": "Retiré avec succès du groupe fermé.",
     "userBlocked": "{nickname} bloqué.",
     "userUnblocked": "{nickname} débloqué."
   },

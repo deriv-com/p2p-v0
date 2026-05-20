@@ -23,6 +23,7 @@
     "yes": "Sim",
     "no": "Não",
     "ok": "OK",
+    "done": "Concluído",
     "learnMore": "Saiba mais",
     "gotIt": "Entendi",
     "verifiedBadge": {
@@ -65,7 +66,24 @@
     "verified": "Verificado",
     "noBalanceTitle": "Sem saldo na Carteira P2P",
     "noBalanceDescription": "Seus anúncios de venda ficam ocultos do mercado quando o saldo da sua Carteira P2P é zero. Transfira fundos para a sua Carteira P2P para torná-los visíveis novamente.",
-    "noBalanceTransfer": "Transferir fundos"
+    "noBalanceTransfer": "Transferir fundos",
+    "riskWarning": {
+      "lowCompletion": {
+        "title": "Este anunciante tem uma baixa taxa de conclusão",
+        "body": "Ele conclui {rate}% das suas negociações. Verifique o perfil dele antes de continuar."
+      },
+      "highBlockCount": {
+        "title": "Muitos traders bloquearam este anunciante",
+        "body": "{threshold} ou mais traders escolheram não negociar com ele. Verifique o perfil dele antes de continuar."
+      },
+      "advertiserLabel": "Anunciante",
+      "buyCompletionRateLabel": "Taxa de conclusão de compra",
+      "sellCompletionRateLabel": "Taxa de conclusão de venda",
+      "blockCountLabel": "Bloqueios",
+      "orderCompletedLabel": "Pedidos concluídos",
+      "continueAnyway": "Continuar mesmo assim",
+      "goBack": "Voltar"
+    }
   },
   "order": {
     "secureTradeReminder": {
@@ -587,6 +605,11 @@
     "unblockDescription": "Desbloqueie-os se quiser interagir com este anunciante novamente.",
     "successfullyFollowed": "Seguido com sucesso",
     "successfullyUnfollowed": "Deixou de seguir com sucesso",
+    "addToClosedGroup": "Adicionar ao grupo fechado",
+    "removeFromClosedGroup": "Remover do grupo fechado",
+    "unfollow": "Deixar de seguir",
+    "addedToClosedGroup": "Adicionado ao grupo fechado com sucesso.",
+    "removedFromClosedGroup": "Removido do grupo fechado com sucesso.",
     "userBlocked": "{nickname} bloqueado.",
     "userUnblocked": "{nickname} desbloqueado."
   },
@@ -718,12 +741,25 @@
     "orderTimeLimit": "Limite de tempo do pedido",
     "orderTimeLimitTooltip": "Os pedidos expirarão se não forem concluídos dentro deste prazo.",
     "orderTimeLimitPlaceholder": "Os pedidos devem ser concluídos em",
-    "timeLimit15Minutes": "15 minutos",
-    "timeLimit30Minutes": "30 minutos",
-    "timeLimit45Minutes": "45 minutos",
-    "timeLimit60Minutes": "60 minutos",
+    "timeLimit15Minutes": "15 min",
+    "timeLimit30Minutes": "30 min",
+    "timeLimit45Minutes": "45 min",
+    "timeLimit60Minutes": "60 min",
     "chooseYourAudience": "Escolha seu público",
     "audienceTooltip": "Você pode filtrar quem interage com seus anúncios com base em sua localização ou histórico P2P. Filtros mais rigorosos podem reduzir a visibilidade do anúncio.",
+    "minimumSellerTier": "Nível mínimo do vendedor",
+    "minimumSellerTierHelper": "Apenas vendedores deste nível ou superior verão seu anúncio.",
+    "minimumBuyerTier": "Nível mínimo do comprador",
+    "minimumBuyerTierHelper": "Apenas compradores deste nível ou superior verão seu anúncio.",
+    "minimumTierSheetTitle": "Nível mínimo",
+    "tierAllTiers": "Todos os níveis",
+    "tierAllTiersDescription": "Visível para todos os vendedores",
+    "tierSilverAndAbove": "Prata e superior",
+    "tierSilverDescription": "Inscrito há 45+ dias • 80%+ de taxa de conclusão",
+    "tierGoldAndAbove": "Ouro e superior",
+    "tierGoldDescription": "Inscrito há 90+ dias • 90%+ de taxa de conclusão",
+    "tierDiamondOnly": "Apenas diamante",
+    "tierDiamondDescription": "Inscrito há 180+ dias • 98%+ de taxa de conclusão",
     "sellerInstructions": "Instruções (opcional)",
     "instructionsDisclaimer": "Esta informação será visível para todos. Não compartilhe seu número de telefone ou detalhes pessoais.",
     "instructionsInvalidCharsMessage": "Use apenas letras, números e estes símbolos: @ - . ! / % & , _ ( ) + : ; com no máximo 300 caracteres.",
@@ -759,7 +795,15 @@
     "updateRate": "Atualizar taxa",
     "unknownErrorMessage": "Ocorreu um erro desconhecido",
     "adVisibilityUpdate": "Atualização de visibilidade do anúncio",
-    "adVisibilityUpdateDescription": "Você não poderá alterar este anúncio para uma listagem de grupo fechado a menos que se torne um membro Diamond novamente."
+    "adVisibilityUpdateDescription": "Você não poderá alterar este anúncio para uma listagem de grupo fechado a menos que se torne um membro Diamond novamente.",
+    "adVisibility": "Visibilidade do anúncio",
+    "adVisibilityTooltip": "Escolha quem pode ver e interagir com seus anúncios no mercado.",
+    "closedGroup": "Grupo fechado",
+    "visibilityEveryone": "Todos",
+    "visibilityEveryoneDesc": "Seu anúncio será visível para todos no mercado.",
+    "visibilityClosedGroup": "Grupo fechado",
+    "visibilityClosedGroupDesc": "Seu anúncio será visível apenas para os usuários da sua lista de grupo fechado.",
+    "editList": "Editar lista"
   },
   "kyc": {
     "title": "Verificação de identidade",
