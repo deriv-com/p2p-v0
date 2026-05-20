@@ -23,6 +23,7 @@
     "yes": "Oui",
     "no": "Non",
     "ok": "OK",
+    "done": "Terminé",
     "learnMore": "En savoir plus",
     "gotIt": "Compris",
     "verifiedBadge": {
@@ -770,7 +771,13 @@
     "adVisibilityUpdate": "Mise à jour de la visibilité de l'annonce",
     "adVisibilityUpdateDescription": "Vous ne pourrez pas reclasser cette annonce en annonce de groupe fermé à moins de devenir à nouveau un membre Diamond.",
     "adVisibility": "Visibilité de l'annonce",
-    "adVisibilityTooltip": "Choisissez qui peut voir et interagir avec vos annonces sur la place de marché."
+    "adVisibilityTooltip": "Choisissez qui peut voir et interagir avec vos annonces sur la place de marché.",
+    "closedGroup": "Groupe fermé",
+    "visibilityEveryone": "Tout le monde",
+    "visibilityEveryoneDesc": "Votre annonce sera visible par tous sur la place de marché.",
+    "visibilityClosedGroup": "Groupe fermé",
+    "visibilityClosedGroupDesc": "Votre annonce ne sera visible que par les utilisateurs de votre liste de groupe fermé.",
+    "editList": "Modifier la liste"
   },
   "advertiser": {
     "goBack": "Retour",
@@ -806,6 +813,11 @@
     "unblockDescription": "Débloquez-les si vous souhaitez interagir à nouveau avec cet annonceur.",
     "successfullyFollowed": "Suivi avec succès",
     "successfullyUnfollowed": "Ne suit plus avec succès",
+    "addToClosedGroup": "Ajouter au groupe fermé",
+    "removeFromClosedGroup": "Retirer du groupe fermé",
+    "unfollow": "Ne plus suivre",
+    "addedToClosedGroup": "Ajouté avec succès au groupe fermé.",
+    "removedFromClosedGroup": "Retiré avec succès du groupe fermé.",
     "userBlocked": "{nickname} bloqué.",
     "userUnblocked": "{nickname} débloqué."
   },

@@ -23,6 +23,7 @@
     "yes": "Ja",
     "no": "Nein",
     "ok": "OK",
+    "done": "Fertig",
     "learnMore": "Mehr erfahren",
     "gotIt": "Verstanden",
     "verifiedBadge": {
@@ -768,7 +769,13 @@
     "adVisibilityUpdate": "Anzeigensichtbarkeit aktualisiert",
     "adVisibilityUpdateDescription": "Sie können diese Anzeige nicht auf eine Auflistung für geschlossene Gruppen zurückändern, es sei denn, Sie werden erneut ein Diamond-Tier-Mitglied.",
     "adVisibility": "Anzeigensichtbarkeit",
-    "adVisibilityTooltip": "Wählen Sie, wer Ihre Anzeigen auf dem Marktplatz sehen und mit ihnen interagieren kann."
+    "adVisibilityTooltip": "Wählen Sie, wer Ihre Anzeigen auf dem Marktplatz sehen und mit ihnen interagieren kann.",
+    "closedGroup": "Geschlossene Gruppe",
+    "visibilityEveryone": "Alle",
+    "visibilityEveryoneDesc": "Ihre Anzeige wird für alle auf dem Marktplatz sichtbar sein.",
+    "visibilityClosedGroup": "Geschlossene Gruppe",
+    "visibilityClosedGroupDesc": "Ihre Anzeige wird nur für Nutzer in Ihrer geschlossenen Gruppenliste sichtbar sein.",
+    "editList": "Liste bearbeiten"
   },
   "advertiser": {
     "goBack": "Zurück",
@@ -803,6 +810,11 @@
     "unblockDescription": "Entsperren Sie sie, wenn Sie wieder mit diesem Inserenten interagieren möchten.",
     "successfullyFollowed": "Erfolgreich gefolgt",
     "successfullyUnfollowed": "Nicht mehr gefolgt",
+    "addToClosedGroup": "Zu geschlossener Gruppe hinzufügen",
+    "removeFromClosedGroup": "Aus geschlossener Gruppe entfernen",
+    "unfollow": "Nicht mehr folgen",
+    "addedToClosedGroup": "Erfolgreich zu geschlossener Gruppe hinzugefügt.",
+    "removedFromClosedGroup": "Erfolgreich aus geschlossener Gruppe entfernt.",
     "userBlocked": "{nickname} blockiert.",
     "userUnblocked": "{nickname} entsperrt.",
     "profile": "Inserentenprofil",

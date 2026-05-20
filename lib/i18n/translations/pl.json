@@ -27,6 +27,7 @@
     "yes": "Tak",
     "no": "Nie",
     "ok": "OK",
+    "done": "Gotowe",
     "learnMore": "Dowiedz się więcej",
     "gotIt": "Rozumiem",
     "removeAll": "Usuń wszystkie",
@@ -730,6 +731,12 @@
     "tierDiamondOnly": "Tylko diamentowy",
     "tierDiamondDescription": "Dołączył 180+ dni temu • 98%+ wskaźnik realizacji",
     "adVisibility": "Widoczność ogłoszenia",
-    "adVisibilityTooltip": "Wybierz, kto może zobaczyć Twoje ogłoszenia i wchodzić z nimi w interakcję na rynku."
+    "adVisibilityTooltip": "Wybierz, kto może zobaczyć Twoje ogłoszenia i wchodzić z nimi w interakcję na rynku.",
+    "closedGroup": "Grupa zamknięta",
+    "visibilityEveryone": "Wszyscy",
+    "visibilityEveryoneDesc": "Twoje ogłoszenie będzie widoczne dla wszystkich na rynku.",
+    "visibilityClosedGroup": "Grupa zamknięta",
+    "visibilityClosedGroupDesc": "Twoje ogłoszenie będzie widoczne tylko dla użytkowników z Twojej listy grupy zamkniętej.",
+    "editList": "Edytuj listę"
   }
 }

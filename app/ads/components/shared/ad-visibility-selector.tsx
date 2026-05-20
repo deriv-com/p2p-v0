@@ -20,9 +20,9 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
 
   const handleEditListClick = () => {
     showAlert({
-      title: "Closed group",
+      title: t("adForm.closedGroup"),
       content: <ClosedGroupTab isInAlert={true} />,
-      confirmText: "Done",
+      confirmText: t("common.done"),
       cancelText: undefined,
       type: "warning",
       onConfirm: hideAlert,
@@ -41,11 +41,11 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           ? "border-black"
           : "border-grayscale-500"}`}
       >
-        <Image src="/icons/global.svg" alt="Everyone" width={32} height={32} />
+        <Image src="/icons/global.svg" alt={t("adForm.visibilityEveryone")} width={32} height={32} />
         <div className="text-left flex-1">
-          <div className="text-base mb-1 text-slate-1200">Everyone</div>
+          <div className="text-base mb-1 text-slate-1200">{t("adForm.visibilityEveryone")}</div>
           <div className="text-xs text-grayscale-text-muted">
-            Your ad will be visible to everyone on the marketplace.
+            {t("adForm.visibilityEveryoneDesc")}
           </div>
         </div>
         <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ml-4 h-6 w-6" />
@@ -59,11 +59,11 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
             : "border-grayscale-500"
             }`}
         >
-          <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} />
+          <Image src="/icons/closed-group.svg" alt={t("adForm.visibilityClosedGroup")} width={32} height={32} />
           <div className="text-left flex-1">
-            <div className="text-base text-slate-1200 mb-1">Closed group</div>
+            <div className="text-base text-slate-1200 mb-1">{t("adForm.visibilityClosedGroup")}</div>
             <div className="text-xs text-grayscale-text-muted">
-              Your ad will be visible only to users in your close group list.{" "}
+              {t("adForm.visibilityClosedGroupDesc")}{" "}
               <Button
                 variant="ghost"
                 size="sm"
@@ -73,7 +73,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
                 }}
                 className="font-normal p-0 h-auto text-xs text-grayscale-text-muted underline hover:opacity-100 hover:bg-transparent"
               >
-                Edit list
+                {t("adForm.editList")}
               </Button>
             </div>
           </div>

@@ -23,6 +23,7 @@
     "yes": "Sim",
     "no": "Não",
     "ok": "OK",
+    "done": "Concluído",
     "learnMore": "Saiba mais",
     "gotIt": "Entendi",
     "verifiedBadge": {
@@ -604,6 +605,11 @@
     "unblockDescription": "Desbloqueie-os se quiser interagir com este anunciante novamente.",
     "successfullyFollowed": "Seguido com sucesso",
     "successfullyUnfollowed": "Deixou de seguir com sucesso",
+    "addToClosedGroup": "Adicionar ao grupo fechado",
+    "removeFromClosedGroup": "Remover do grupo fechado",
+    "unfollow": "Deixar de seguir",
+    "addedToClosedGroup": "Adicionado ao grupo fechado com sucesso.",
+    "removedFromClosedGroup": "Removido do grupo fechado com sucesso.",
     "userBlocked": "{nickname} bloqueado.",
     "userUnblocked": "{nickname} desbloqueado."
   },
@@ -791,7 +797,13 @@
     "adVisibilityUpdate": "Atualização de visibilidade do anúncio",
     "adVisibilityUpdateDescription": "Você não poderá alterar este anúncio para uma listagem de grupo fechado a menos que se torne um membro Diamond novamente.",
     "adVisibility": "Visibilidade do anúncio",
-    "adVisibilityTooltip": "Escolha quem pode ver e interagir com seus anúncios no mercado."
+    "adVisibilityTooltip": "Escolha quem pode ver e interagir com seus anúncios no mercado.",
+    "closedGroup": "Grupo fechado",
+    "visibilityEveryone": "Todos",
+    "visibilityEveryoneDesc": "Seu anúncio será visível para todos no mercado.",
+    "visibilityClosedGroup": "Grupo fechado",
+    "visibilityClosedGroupDesc": "Seu anúncio será visível apenas para os usuários da sua lista de grupo fechado.",
+    "editList": "Editar lista"
   },
   "kyc": {
     "title": "Verificação de identidade",

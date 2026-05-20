@@ -27,6 +27,7 @@
     "yes": "Yes",
     "no": "No",
     "ok": "OK",
+    "done": "Done",
     "learnMore": "Learn More",
     "gotIt": "Got it",
     "removeAll": "Remove all",
@@ -875,7 +876,13 @@
     "adVisibilityUpdate": "Ad visibility update",
     "adVisibilityUpdateDescription": "You won't be able to change this ad back to a closed group listing unless you become a Diamond tier member again.",
     "adVisibility": "Ad visibility",
-    "adVisibilityTooltip": "Choose who can see and interact with your ads on the marketplace."
+    "adVisibilityTooltip": "Choose who can see and interact with your ads on the marketplace.",
+    "closedGroup": "Closed group",
+    "visibilityEveryone": "Everyone",
+    "visibilityEveryoneDesc": "Your ad will be visible to everyone on the marketplace.",
+    "visibilityClosedGroup": "Closed group",
+    "visibilityClosedGroupDesc": "Your ad will be visible only to users in your close group list.",
+    "editList": "Edit list"
   },
   "advertiser": {
     "goBack": "Go Back",
@@ -910,6 +917,11 @@
     "unblockDescription": "Unblock them if you'd like to interact with this advertiser again.",
     "successfullyFollowed": "Successfully followed",
     "successfullyUnfollowed": "Successfully unfollowed",
+    "addToClosedGroup": "Add to closed group",
+    "removeFromClosedGroup": "Remove from closed group",
+    "unfollow": "Unfollow",
+    "addedToClosedGroup": "Successfully added to closed group.",
+    "removedFromClosedGroup": "Successfully removed from closed group.",
     "userBlocked": "{nickname} blocked.",
     "userUnblocked": "{nickname} unblocked."
   },

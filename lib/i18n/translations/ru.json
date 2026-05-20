@@ -23,6 +23,7 @@
     "yes": "Да",
     "no": "Нет",
     "ok": "ОК",
+    "done": "Готово",
     "learnMore": "Узнать больше",
     "gotIt": "Понял",
     "verifiedBadge": {
@@ -766,7 +767,13 @@
     "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку.",
     "unknownErrorMessage": "Произошла неизвестная ошибка",
     "adVisibility": "Видимость объявления",
-    "adVisibilityTooltip": "Выберите, кто может видеть ваши объявления и взаимодействовать с ними на маркетплейсе."
+    "adVisibilityTooltip": "Выберите, кто может видеть ваши объявления и взаимодействовать с ними на маркетплейсе.",
+    "closedGroup": "Закрытая группа",
+    "visibilityEveryone": "Все",
+    "visibilityEveryoneDesc": "Ваше объявление будет видно всем на маркетплейсе.",
+    "visibilityClosedGroup": "Закрытая группа",
+    "visibilityClosedGroupDesc": "Ваше объявление будет видно только пользователям из вашего списка закрытой группы.",
+    "editList": "Изменить список"
   },
   "advertiser": {
     "profile": "Профиль рекламодателя",
@@ -780,6 +787,11 @@
     "unblockDescription": "Разблокируйте их, если хотите снова взаимодействовать с этим рекламодателем.",
     "successfullyFollowed": "Успешно подписались",
     "successfullyUnfollowed": "Успешно отписались",
+    "addToClosedGroup": "Добавить в закрытую группу",
+    "removeFromClosedGroup": "Удалить из закрытой группы",
+    "unfollow": "Отписаться",
+    "addedToClosedGroup": "Успешно добавлено в закрытую группу.",
+    "removedFromClosedGroup": "Успешно удалено из закрытой группы.",
     "userBlocked": "{nickname} заблокирован.",
     "userUnblocked": "{nickname} разблокирован.",
     "noAds": "Нет доступных объявлений",

@@ -361,7 +361,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>Successfully added to closed group.</span>
+              <span>{t("advertiser.addedToClosedGroup")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -385,7 +385,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>Successfully removed from closed group.</span>
+              <span>{t("advertiser.removedFromClosedGroup")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
