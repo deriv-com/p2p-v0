@@ -195,6 +195,12 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 side="top"
                 hideCloseButton
                 className="h-full w-full p-0 flex flex-col gap-0 rounded-none"
+                onPointerDownOutside={(e) => {
+                    if (isRiskWarningOpen) e.preventDefault()
+                }}
+                onInteractOutside={(e) => {
+                    if (isRiskWarningOpen) e.preventDefault()
+                }}
             >
                 {/* Header */}
                 <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0">
