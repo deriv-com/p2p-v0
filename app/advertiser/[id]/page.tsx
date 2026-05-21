@@ -14,6 +14,8 @@ import { addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-prof
 import { formatPaymentMethodName } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
+import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
+import { evaluateRisk, type RiskWarningResult } from "@/components/buy-sell/risk-warning/risk-warning-rules"
 import EmptyState from "@/components/empty-state"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
@@ -98,6 +100,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
+  const [pendingRiskAd, setPendingRiskAd] = useState<Advertisement | null>(null)
+  const [pendingRiskOrderType, setPendingRiskOrderType] = useState<"buy" | "sell">("buy")
+  const [riskResult, setRiskResult] = useState<RiskWarningResult | null>(null)
+  const [isRiskWarningOpen, setIsRiskWarningOpen] = useState(false)
   const { t } = useTranslations()
   const queryClient = useQueryClient()
 
@@ -401,9 +407,34 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
 
   const handleOrderClick = (ad: Advertisement, type: "buy" | "sell") => {
+    const risk = evaluateRisk(ad)
+    if (risk) {
+      setPendingRiskAd(ad)
+      setPendingRiskOrderType(type)
+      setRiskResult(risk)
+      setIsRiskWarningOpen(true)
+      return
+    }
     setSelectedAd(ad)
     setOrderType(type)
     setIsOrderSidebarOpen(true)
+  }
+
+  const handleRiskContinue = () => {
+    if (pendingRiskAd) {
+      setSelectedAd(pendingRiskAd)
+      setOrderType(pendingRiskOrderType)
+      setIsOrderSidebarOpen(true)
+    }
+    setIsRiskWarningOpen(false)
+    setPendingRiskAd(null)
+    setRiskResult(null)
+  }
+
+  const handleRiskClose = () => {
+    setIsRiskWarningOpen(false)
+    setPendingRiskAd(null)
+    setRiskResult(null)
   }
 
   const getJoinedDate = (timestamp: number) => {
@@ -679,6 +710,16 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
               orderType={orderType}
               p2pBalance={p2pBalance}
             />
+
+            {pendingRiskAd && riskResult && (
+              <RiskWarningModal
+                isOpen={isRiskWarningOpen}
+                result={riskResult}
+                advertiserNickname={pendingRiskAd.user.nickname}
+                onContinue={handleRiskContinue}
+                onClose={handleRiskClose}
+              />
+            )}
           </div>
         </div>
       </div>

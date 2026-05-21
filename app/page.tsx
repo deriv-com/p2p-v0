@@ -85,6 +85,7 @@ export default function BuySellPage() {
   const [pendingRiskAd, setPendingRiskAd] = useState<Advertisement | null>(null)
   const [riskResult, setRiskResult] = useState<RiskWarningResult | null>(null)
   const [isRiskWarningOpen, setIsRiskWarningOpen] = useState(false)
+  const [pendingRiskFromSearch, setPendingRiskFromSearch] = useState(false)
   const [isOpenedFromSearch, setIsOpenedFromSearch] = useState(false)
   const { pendingAd, openedFromSearch, setPendingAd, setTriggerSearchReopen } = useOrderSidebarStore()
   const [balance, setBalance] = useState<string>("0.00")
@@ -197,6 +198,15 @@ export default function BuySellPage() {
 
   useEffect(() => {
     if (pendingAd) {
+      const risk = evaluateRisk(pendingAd)
+      if (risk) {
+        setPendingRiskAd(pendingAd)
+        setRiskResult(risk)
+        setPendingRiskFromSearch(openedFromSearch)
+        setIsRiskWarningOpen(true)
+        setPendingAd(null)
+        return
+      }
       setIsOpenedFromSearch(openedFromSearch)
       setSelectedAd(pendingAd)
       setIsOrderSidebarOpen(true)
@@ -342,18 +352,21 @@ export default function BuySellPage() {
 
   const handleRiskContinue = () => {
     if (pendingRiskAd) {
+      setIsOpenedFromSearch(pendingRiskFromSearch)
       setSelectedAd(pendingRiskAd)
       setIsOrderSidebarOpen(true)
     }
     setIsRiskWarningOpen(false)
     setPendingRiskAd(null)
     setRiskResult(null)
+    setPendingRiskFromSearch(false)
   }
 
   const handleRiskClose = () => {
     setIsRiskWarningOpen(false)
     setPendingRiskAd(null)
     setRiskResult(null)
+    setPendingRiskFromSearch(false)
   }
 
   const handleOrderClick = (ad: Advertisement) => {
