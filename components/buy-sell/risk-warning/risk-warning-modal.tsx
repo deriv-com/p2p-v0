@@ -48,8 +48,8 @@ export default function RiskWarningModal({
         })
 
   const completionRateLabel = result.isBuyAdvert
-    ? t("market.riskWarning.sellCompletionRateLabel")
-    : t("market.riskWarning.buyCompletionRateLabel")
+    ? t("market.riskWarning.buyCompletionRateLabel")
+    : t("market.riskWarning.sellCompletionRateLabel")
 
   const fieldRows = (
     <div className="rounded-xl border p-6 space-y-4">
