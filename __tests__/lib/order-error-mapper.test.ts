@@ -127,9 +127,10 @@ describe("mapOrderError", () => {
   // ─── Trade / schedule / barred errors ───────────────────────────────────────
 
   describe("trade and schedule errors", () => {
-    it("maps OrderTradeBandInvalid to Dismiss", () => {
+    it("maps OrderTradeBandInvalid to ViewProfile", () => {
       const result = mapOrderError("OrderTradeBandInvalid", t)
-      expect(result.primaryAction).toBe(OrderErrorAction.Dismiss)
+      expect(result.primaryAction).toBe(OrderErrorAction.ViewProfile)
+      expect(result.secondaryAction).toBe(OrderErrorAction.Dismiss)
     })
 
     it("maps OrderTemporarilyBarred to Dismiss only", () => {
