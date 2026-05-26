@@ -55,8 +55,8 @@ export function KycOnboardingVisualPanel({
   return (
     <div
       className={cn(
-        "relative shrink-0 overflow-hidden bg-slate-1200",
-        isDesktop ? "hidden h-[600px] w-[460px] md:flex" : "flex h-[220px] w-full md:hidden",
+        "relative overflow-hidden bg-slate-1200",
+        isDesktop ? "hidden h-[600px] md:flex md:w-1/2 md:shrink-0" : "flex h-[220px] w-full shrink-0 md:hidden",
       )}
     >
       <KycOnboardingGradient variant={variant} />
@@ -70,13 +70,13 @@ export function KycOnboardingVisualPanel({
       {isDesktop ? (
         <>
           {/* Logo, headline, chips — top-left, above the screen mockup */}
-          <div className="absolute left-[68px] right-12 top-[84px] z-[2] flex flex-col items-start">
+          <div className="absolute left-12 right-10 top-[84px] z-[2] flex flex-col items-start">
             <Image
-              src="/icons/p2p-logo-white.svg"
+              src="/images/onboarding/deriv-p2p-logo.svg"
               alt={logoAlt}
-              width={120}
-              height={14}
-              className="h-[14px] w-auto"
+              width={96}
+              height={18}
+              className="h-[18px] w-auto"
             />
             <p className="mt-3 max-w-[320px] text-base font-semibold leading-snug text-white">
               {headline}
@@ -94,7 +94,7 @@ export function KycOnboardingVisualPanel({
           </div>
 
           {/* Desktop mockup — bottom-left, does not overlap hero copy */}
-          <div className="absolute bottom-[72px] left-[68px] z-[1] w-[384px]">
+          <div className="absolute bottom-[72px] left-12 z-[1] w-[384px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={screenSrc} alt="" aria-hidden className="h-auto w-full object-contain" />
           </div>
@@ -108,7 +108,7 @@ export function KycOnboardingVisualPanel({
 
           <div className="absolute bottom-4 left-[144px] right-6 top-[88px] z-[2] flex flex-col items-start">
             <Image
-              src="/icons/p2p-logo-white.svg"
+              src="/images/onboarding/deriv-p2p-logo.svg"
               alt={logoAlt}
               width={120}
               height={14}

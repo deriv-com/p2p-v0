@@ -31,9 +31,9 @@ export function KycOnboardingContentPanel({
   return (
     <div
       className={cn(
-        "relative flex min-h-0 flex-1 flex-col bg-background",
+        "relative flex min-h-0 flex-1 flex-col bg-background md:w-1/2",
         "px-6 pb-6 pt-6",
-        "md:h-[600px] md:px-[50px] md:pb-[42px] md:pt-[80px]",
+        "md:h-[600px] md:px-12 md:pb-[42px] md:pt-[80px]",
       )}
     >
       {onClose && (
@@ -47,7 +47,7 @@ export function KycOnboardingContentPanel({
         </Button>
       )}
 
-      <div className="flex min-h-0 flex-1 flex-col md:pr-6">
+      <div className="flex min-h-0 flex-1 flex-col">
         <h2 className="text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
           {title}
         </h2>
