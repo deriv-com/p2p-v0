@@ -132,7 +132,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       return (
         <div
           className={cn(
-            "max-h-[90vh] overflow-y-auto md:max-h-none md:overflow-hidden",
+            "flex flex-1 flex-col overflow-hidden",
             config.contentClassName,
           )}
         >
@@ -180,11 +180,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           if (!open) config.onClose?.()
         }}>
           <DrawerContent
-            side="bottom"
+            hideHandle={isKycOnboarding}
             className={cn(
               "p-0",
               isKycOnboarding
-                ? "max-h-[90vh] rounded-t-2xl [&>div:first-child]:hidden"
+                ? "max-h-[90vh] overflow-hidden rounded-t-2xl"
                 : "rounded-t-[16px]",
             )}
           >
@@ -198,7 +198,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             className={cn(
               "p-0",
               isKycOnboarding &&
-                "!max-w-[880px] !w-[880px] !p-0 overflow-hidden rounded-3xl border-0",
+                "!w-[min(880px,95vw)] !max-w-[880px] !p-0 overflow-hidden rounded-3xl border-0",
               config.contentClassName,
             )}
           >

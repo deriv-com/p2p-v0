@@ -69,7 +69,7 @@ export function KycOnboardingVisualPanel({
 
       {isDesktop ? (
         /* Two-section column: logo+title+chips pushed to top, screen anchored to bottom */
-        <div className="absolute inset-0 z-[2] flex flex-col justify-between px-6 py-[9%]">
+        <div className="absolute inset-0 z-[2] flex flex-col justify-between px-6 py-[12%]">
           {/* Top section — Logo, headline, chips */}
           <div className="flex flex-col gap-8">
             <Image
@@ -77,7 +77,7 @@ export function KycOnboardingVisualPanel({
               alt={logoAlt}
               width={96}
               height={18}
-              className="h-[18px] w-auto shrink-0"
+              className="h-[18px] w-auto self-start shrink-0"
             />
 
             <div className="flex flex-col gap-3">
@@ -103,18 +103,19 @@ export function KycOnboardingVisualPanel({
         </div>
       ) : (
         <>
-          <div className="absolute left-6 top-8 z-[1] w-[88px]">
+          {/* Phone screen anchored to bottom, top clips naturally via overflow-hidden */}
+          <div className="absolute bottom-0 left-6 z-[1] w-[88px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={screenSrc} alt="" aria-hidden className="h-auto w-full object-contain" />
           </div>
 
-          <div className="absolute bottom-4 left-[144px] right-6 top-[88px] z-[2] flex flex-col items-start">
+          <div className="absolute bottom-4 left-[144px] right-6 top-8 z-[2] flex flex-col items-start justify-center">
             <Image
               src="/images/onboarding/deriv-p2p-logo.svg"
               alt={logoAlt}
               width={120}
               height={14}
-              className="h-[14px] w-auto"
+              className="h-[14px] w-auto self-start"
             />
             <p className="mt-2 text-sm font-semibold leading-snug text-white">{headline}</p>
             <div className="mt-2 flex flex-col gap-1">

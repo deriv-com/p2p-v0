@@ -8,7 +8,7 @@ const config: Config = {
     "./lib/utils.ts",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet", "!w-[880px]", "!max-w-[880px]"],
+  safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet", "!w-[880px]", "!max-w-[880px]", "!w-[min(880px,95vw)]"],
   theme: {
     extend: {
       opacity: {
