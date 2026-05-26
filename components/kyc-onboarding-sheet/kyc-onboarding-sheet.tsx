@@ -231,7 +231,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   }
 
   return (
-    <div className="flex h-full w-full flex-col md:h-[600px] md:flex-row md:overflow-hidden">
+        <div className="flex h-full w-full flex-col md:flex-row md:overflow-hidden">
       <KycOnboardingVisualPanel
         variant="mobile"
         showDragHandle

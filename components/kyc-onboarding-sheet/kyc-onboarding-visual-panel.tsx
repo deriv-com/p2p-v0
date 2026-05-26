@@ -56,7 +56,7 @@ export function KycOnboardingVisualPanel({
     <div
       className={cn(
         "relative overflow-hidden bg-slate-1200",
-        isDesktop ? "hidden h-[600px] md:flex md:w-1/2 md:shrink-0" : "flex h-[220px] w-full shrink-0 md:hidden",
+        isDesktop ? "hidden md:flex md:w-1/2 md:shrink-0 md:self-stretch" : "flex h-[220px] w-full shrink-0 md:hidden",
       )}
     >
       <KycOnboardingGradient variant={variant} />
@@ -68,37 +68,39 @@ export function KycOnboardingVisualPanel({
       )}
 
       {isDesktop ? (
-        <>
-          {/* Logo, headline, chips — top-left, above the screen mockup */}
-          <div className="absolute left-6 right-6 top-6 z-[2] flex flex-col items-start">
+        /* Two-section column: logo+title+chips pushed to top, screen anchored to bottom */
+        <div className="absolute inset-0 z-[2] flex flex-col justify-between px-6 py-[9%]">
+          {/* Top section — Logo, headline, chips */}
+          <div className="flex flex-col gap-8">
             <Image
               src="/images/onboarding/deriv-p2p-logo.svg"
               alt={logoAlt}
               width={96}
               height={18}
-              className="h-[18px] w-auto"
+              className="h-[18px] w-auto shrink-0"
             />
-            <p className="mt-8 max-w-[320px] text-2xl font-semibold leading-snug text-white">
-              {headline}
-            </p>
-            <div className="mt-3 flex flex-col gap-2">
-              <div className="flex flex-wrap gap-2">
-                <BenefitChip label={benefits[0]} size="desktop" />
-                <BenefitChip label={benefits[1]} size="desktop" />
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <BenefitChip label={benefits[2]} size="desktop" />
-                <BenefitChip label={benefits[3]} size="desktop" />
+
+            <div className="flex flex-col gap-3">
+              <p className="w-full text-2xl font-semibold leading-snug text-white">{headline}</p>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-wrap gap-2">
+                  <BenefitChip label={benefits[0]} size="desktop" />
+                  <BenefitChip label={benefits[1]} size="desktop" />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <BenefitChip label={benefits[2]} size="desktop" />
+                  <BenefitChip label={benefits[3]} size="desktop" />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Desktop mockup — bottom-left, does not overlap hero copy */}
-          <div className="absolute bottom-6 left-6 z-[1] w-[384px]">
+          {/* Bottom section — Desktop screen mockup */}
+          <div className="min-h-0 w-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={screenSrc} alt="" aria-hidden className="h-auto w-full object-contain" />
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div className="absolute left-6 top-8 z-[1] w-[88px]">
