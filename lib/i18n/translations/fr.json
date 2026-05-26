@@ -838,7 +838,17 @@
     "resubmitIdentity": "Soumettez à nouveau votre preuve d'identité pour continuer à utiliser P2P.",
     "resubmitAddress": "Soumettez à nouveau votre preuve d'adresse pour continuer à utiliser P2P.",
     "unverified": "Non vérifié",
-    "resubmitNow": "Soumettre maintenant"
+    "resubmitNow": "Soumettre maintenant",
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   },
   "status": {
     "refunded": "Remboursé",

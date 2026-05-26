@@ -943,7 +943,17 @@
     "email": "Email address",
     "gotIt": "Got it",
     "checkProofOfIdentity": "Check proof of identity",
-    "checkProofOfAddress": "Check proof of address"
+    "checkProofOfAddress": "Check proof of address",
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   },
   "status": {
     "refunded": "Refunded",

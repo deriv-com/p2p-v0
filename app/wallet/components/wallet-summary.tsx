@@ -15,7 +15,7 @@ import WalletActionStep from "./wallet-action-step"
 import TransactionDetails from "./transaction-details"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useTrackers } from "@/analytics/useTrackers"
 
@@ -216,22 +216,8 @@ export default function WalletSummary({
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "wallets",
+        onClose: hideAlert }))
     }
   }
 
@@ -240,22 +226,8 @@ export default function WalletSummary({
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "wallets",
+        onClose: hideAlert }))
     }
   }
 
@@ -267,22 +239,8 @@ export default function WalletSummary({
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "wallets",
+        onClose: hideAlert }))
     }
   }
 
@@ -301,20 +259,8 @@ export default function WalletSummary({
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
-      let title = t("profile.gettingStarted")
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "wallets",
+        onClose: hideAlert }))
     }
   }, [
     searchParams,
