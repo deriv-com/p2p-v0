@@ -96,7 +96,7 @@ export function KycOnboardingVisualPanel({
           </div>
 
           {/* Bottom section — Desktop screen mockup */}
-          <div className="min-h-0 w-full">
+          <div className="mt-8 min-h-0 w-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={screenSrc} alt="" aria-hidden className="h-auto w-full object-contain" />
           </div>
@@ -104,7 +104,7 @@ export function KycOnboardingVisualPanel({
       ) : (
         <>
           {/* Phone screen anchored to bottom, top clips naturally via overflow-hidden */}
-          <div className="absolute bottom-0 left-6 z-[1] w-[88px]">
+          <div className="absolute bottom-[-1rem] left-6 z-[1] w-[95px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={screenSrc} alt="" aria-hidden className="h-auto w-full object-contain" />
           </div>

@@ -63,7 +63,7 @@ export function KycOnboardingContentPanel({
 
         {/* Bottom: CTA pinned to bottom */}
         <Button
-          className="mt-6 w-full shrink-0 md:mt-0 md:h-12 md:rounded-full"
+          className="mt-8 w-full shrink-0 md:mt-0 md:h-12 md:rounded-full"
           onClick={onButtonClick}
         >
           {buttonLabel}
