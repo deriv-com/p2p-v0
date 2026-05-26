@@ -24,7 +24,6 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { TradeBandBadge } from "@/components/trade-band-badge"
 import { ClosedGroupBadge } from "@/components/closed-group-badge"
-import { FEATURE_FLAGS } from "@/lib/feature-flags"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import FollowDropdown from "@/app/advertiser/components/follow-dropdown"
 import { AdvertiserSkeleton } from "@/app/advertiser/components/advertiser-skeleton"
@@ -501,7 +500,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           size={18}
                         />
                       )}
-                      {FEATURE_FLAGS.closedGroup && isGroupMember &&
+                      {isGroupMember &&
                         <ClosedGroupBadge />
                       }
                     </div>
