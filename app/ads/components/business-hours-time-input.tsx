@@ -1,7 +1,7 @@
 "use client"
 
 import { Clock } from "lucide-react"
-import { useId } from "react"
+import { useId, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { formatTime } from "@/lib/business-hours-codec"
 
@@ -38,7 +38,19 @@ export function BusinessHoursTimeInput({
   ariaLabel,
 }: BusinessHoursTimeInputProps) {
   const id = useId()
+  const inputRef = useRef<HTMLInputElement>(null)
   const display = value ? formatTime(value) : ""
+
+  const handleWrapperClick = () => {
+    if (!enabled) return
+    // showPicker() opens the native time picker on desktop browsers (Chrome 99+,
+    // Safari 16+, Firefox 101+). On mobile the input already opens on tap.
+    try {
+      inputRef.current?.showPicker()
+    } catch {
+      inputRef.current?.focus()
+    }
+  }
 
   return (
     <div className="flex flex-col gap-1">
@@ -52,24 +64,28 @@ export function BusinessHoursTimeInput({
         {label}
       </label>
       <div
+        role="button"
+        tabIndex={enabled ? 0 : -1}
+        aria-label={ariaLabel ?? label}
+        onClick={handleWrapperClick}
+        onKeyDown={(e) => e.key === "Enter" || e.key === " " ? handleWrapperClick() : undefined}
         className={cn(
-          "relative h-12 rounded-lg border bg-transparent",
-          !enabled && "border-gray-200",
+          "relative h-12 rounded-lg border bg-transparent cursor-pointer",
+          !enabled && "border-gray-200 cursor-not-allowed",
           enabled && hasError && "border-red-500 bg-red-50",
           enabled && !hasError && "border-gray-300",
         )}
       >
         <input
+          ref={inputRef}
           id={id}
           type="time"
           step={60}
           value={value ?? ""}
           disabled={!enabled}
           onChange={(e) => onChange(e.target.value)}
-          aria-label={ariaLabel ?? label}
-          // Native picker handle — kept invisible but covering the field so
-          // the user can tap anywhere on the surface to pick a time.
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+          tabIndex={-1}
+          className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
         />
         <div
           className={cn(
