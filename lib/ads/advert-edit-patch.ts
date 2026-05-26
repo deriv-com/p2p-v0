@@ -1,3 +1,5 @@
+import type { AdFormData } from "@/app/ads/types"
+
 export type MinimumTradeBand = "silver" | "gold" | "diamond" | null
 
 export interface AdvertEditSnapshot {
@@ -58,7 +60,7 @@ export function createAdvertEditSnapshot(params: {
 }
 
 export function buildCurrentEditState(
-  formData: Record<string, unknown>,
+  formData: Partial<AdFormData>,
   options: {
     orderTimeLimit: number
     selectedCountries: string[]
@@ -190,13 +192,13 @@ export function normalizeUpdateAdPayload(
   }
 
   if (Object.prototype.hasOwnProperty.call(payload, "payment_method_ids")) {
-    if (!payload.payment_method_ids) {
+    if (payload.payment_method_ids == null) {
       payload.payment_method_ids = null
     }
   }
 
   if (Object.prototype.hasOwnProperty.call(payload, "available_countries")) {
-    if (!payload.available_countries) {
+    if (payload.available_countries == null) {
       payload.available_countries = null
     }
   }

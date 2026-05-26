@@ -725,6 +725,7 @@
     "adUpdatedSuccess": "I dettagli dell'annuncio sono stati aggiornati.",
     "failedToCreateAd": "Impossibile creare l'annuncio",
     "failedToUpdateAd": "Impossibile aggiornare l'annuncio",
+    "failedToLoadAd": "Impossibile caricare i dettagli dell'annuncio. Riprova.",
     "tryAgain": "Riprova.",
     "updateAd": "Aggiorna annuncio",
     "updateRate": "Aggiorna tasso",

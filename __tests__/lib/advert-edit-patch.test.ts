@@ -221,4 +221,12 @@ describe("normalizeUpdateAdPayload", () => {
       available_countries: null,
     })
   })
+
+  it("preserves empty available_countries array", () => {
+    const payload = normalizeUpdateAdPayload({
+      available_countries: [],
+    })
+
+    expect(payload).toEqual({ available_countries: [] })
+  })
 })

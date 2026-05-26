@@ -737,6 +737,7 @@
     "visibilityEveryoneDesc": "Twoje ogłoszenie będzie widoczne dla wszystkich na rynku.",
     "visibilityClosedGroup": "Grupa zamknięta",
     "visibilityClosedGroupDesc": "Twoje ogłoszenie będzie widoczne tylko dla użytkowników z Twojej listy grupy zamkniętej.",
-    "editList": "Edytuj listę"
+    "editList": "Edytuj listę",
+    "failedToLoadAd": "Nie udało się załadować szczegółów ogłoszenia. Spróbuj ponownie."
   }
 }

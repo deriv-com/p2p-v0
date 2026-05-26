@@ -28,6 +28,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useCreateAd, useUpdateAd, useSettings, useUserPaymentMethods, usePaymentMethods } from "@/hooks/use-api-queries"
 import type { Ad } from "@/types"
 import { useTrackers } from "@/analytics/useTrackers"
+import type { AdFormData } from "@/app/ads/types"
 import {
   buildAdvertEditPatch,
   buildCurrentEditState,
@@ -66,7 +67,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState(initialType ? { type: initialType } : {})
+  const [formData, setFormData] = useState<Partial<AdFormData>>(
+    initialType ? { type: initialType } : {},
+  )
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
@@ -95,7 +98,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const { data: userPaymentMethodsData, refetch: refetchUserPaymentMethods } = useUserPaymentMethods()
   const { data: paymentMethodsData } = usePaymentMethods()
 
-  const formDataRef = useRef({})
+  const formDataRef = useRef<Partial<AdFormData>>({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
 
   const isLoadingCountries = isLoadingSettings
@@ -251,8 +254,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             )
           }
 
+        } catch (error) {
+          toast({
+            description: t("adForm.failedToLoadAd"),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+        } finally {
           setIsLoadingInitialData(false)
-        } catch (error) { }
+        }
       }
 
       loadInitialData()
@@ -273,13 +283,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       return false
     }
 
-    const current = buildCurrentEditState(formDataRef.current, {
+    const current = buildCurrentEditState(formData, {
       orderTimeLimit,
       selectedCountries,
       minimumTradeBand,
       isPrivate: adVisibility === "closed-group",
       selectedPaymentMethodIds:
-        formDataRef.current.type === "sell" ? selectedPaymentMethodIds : [],
+        formData.type === "sell" ? selectedPaymentMethodIds : [],
     })
 
     return hasAdvertEditChanges(originalEditSnapshot, current)

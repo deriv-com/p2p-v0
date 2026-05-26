@@ -741,6 +741,7 @@
     "visibilityEveryoneDesc": "광고가 마켓플레이스의 모든 사람에게 표시됩니다.",
     "visibilityClosedGroup": "비공개 그룹",
     "visibilityClosedGroupDesc": "광고가 비공개 그룹 목록의 사용자에게만 표시됩니다.",
-    "editList": "목록 편집"
+    "editList": "목록 편집",
+    "failedToLoadAd": "광고 세부정보를 불러오지 못했습니다. 다시 시도하세요."
   }
 }

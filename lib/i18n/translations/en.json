@@ -835,6 +835,7 @@
     "adUpdatedSuccess": "Ad details have been updated.",
     "failedToCreateAd": "Failed to create ad",
     "failedToUpdateAd": "Failed to update ad",
+    "failedToLoadAd": "Failed to load ad details. Please try again.",
     "tryAgain": "Please try again.",
     "updateAd": "Update ad",
     "editLimitsForRangeOverlap": "Edit limits",
