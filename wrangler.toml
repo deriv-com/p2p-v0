@@ -1,4 +1,52 @@
-name = "PROJECT_NAME"
-compatibility_date = "2025-08-20"
-pages_build_output_dir = ".vercel/output/static"
-compatibility_flags = ["nodejs_compat"]
+name = "dp2p"
+main = ".open-next/worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "dp2p"
+
+# ── Production ────────────────────────────────────────────────────────────────
+routes = [
+  "dp2p.deriv.com/*",
+]
+
+[vars]
+NEXT_PUBLIC_URL = "https://dp2p.deriv.com"
+
+# ── Staging ───────────────────────────────────────────────────────────────────
+# Worker name MUST end with "-staging" so Cloudflare does not treat staging and
+# production as the same worker (production deploys would otherwise overwrite
+# staging). Enforced by .github/workflows/validate-wrangler.yml.
+[env.staging]
+name = "dp2p-staging"
+routes = [
+  { pattern = "staging-dp2p.deriv.com/*", zone_name = "deriv.com" },
+]
+
+[[env.staging.services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "dp2p-staging"
+
+[env.staging.vars]
+NEXT_PUBLIC_URL = "https://staging-dp2p.deriv.com"
+
+# ── Preview (per-PR) ──────────────────────────────────────────────────────────
+# Dedicated worker so workers_dev is always active and never deactivated by
+# deployments to the main dp2p worker.
+# Preview alias URLs: https://pr-N-dp2p-preview.<account-subdomain>.workers.dev
+[env.preview]
+name = "dp2p-preview"
+workers_dev = true
+
+[[env.preview.services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "dp2p-preview"
+
+[env.preview.vars]
+NEXT_PUBLIC_URL = "https://staging-dp2p.deriv.com"
