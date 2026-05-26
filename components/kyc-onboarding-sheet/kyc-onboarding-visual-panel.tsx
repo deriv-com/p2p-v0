@@ -70,7 +70,7 @@ export function KycOnboardingVisualPanel({
       {isDesktop ? (
         <>
           {/* Logo, headline, chips — top-left, above the screen mockup */}
-          <div className="absolute left-12 right-10 top-[84px] z-[2] flex flex-col items-start">
+          <div className="absolute left-6 right-6 top-6 z-[2] flex flex-col items-start">
             <Image
               src="/images/onboarding/deriv-p2p-logo.svg"
               alt={logoAlt}
@@ -78,7 +78,7 @@ export function KycOnboardingVisualPanel({
               height={18}
               className="h-[18px] w-auto"
             />
-            <p className="mt-3 max-w-[320px] text-base font-semibold leading-snug text-white">
+            <p className="mt-8 max-w-[320px] text-2xl font-semibold leading-snug text-white">
               {headline}
             </p>
             <div className="mt-3 flex flex-col gap-2">
@@ -94,7 +94,7 @@ export function KycOnboardingVisualPanel({
           </div>
 
           {/* Desktop mockup — bottom-left, does not overlap hero copy */}
-          <div className="absolute bottom-[72px] left-12 z-[1] w-[384px]">
+          <div className="absolute bottom-6 left-6 z-[1] w-[384px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={screenSrc} alt="" aria-hidden className="h-auto w-full object-contain" />
           </div>
