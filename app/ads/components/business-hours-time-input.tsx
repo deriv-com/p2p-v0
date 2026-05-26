@@ -1,7 +1,8 @@
 "use client"
 
 import { Clock } from "lucide-react"
-import { useId, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { formatTime } from "@/lib/business-hours-codec"
 
@@ -12,23 +13,19 @@ export interface BusinessHoursTimeInputProps {
   /** 24h `HH:mm`. */
   value: string | null
   onChange: (next: string) => void
-  /**
-   * Used only to seed the picker when the field is empty (9 AM for `am`,
-   * 10 PM for `pm`). The actual AM/PM constraint is enforced by the inline
-   * error + Save button being disabled when invalid — the native picker
-   * itself is not restricted.
-   */
   range: BusinessHoursTimeRange
   enabled?: boolean
   hasError?: boolean
   ariaLabel?: string
 }
 
-/**
- * Read-aloud time field with a hidden native `<input type="time">` overlaid
- * for tap-to-pick. Always stores 24h `HH:mm` for the backend; the visible
- * label is locale-formatted (`9:00 AM`).
- */
+/** 30-min increments for the full 24h day. */
+const ALL_OPTIONS = Array.from({ length: 48 }, (_, i) => {
+  const h = Math.floor(i / 2)
+  const m = (i % 2) * 30
+  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`
+})
+
 export function BusinessHoursTimeInput({
   label,
   value,
@@ -37,78 +34,79 @@ export function BusinessHoursTimeInput({
   hasError = false,
   ariaLabel,
 }: BusinessHoursTimeInputProps) {
-  const id = useId()
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [open, setOpen] = useState(false)
+  const selectedRef = useRef<HTMLButtonElement>(null)
   const display = value ? formatTime(value) : ""
 
-  const handleWrapperClick = () => {
-    if (!enabled) return
-    // showPicker() opens the native time picker on desktop browsers (Chrome 99+,
-    // Safari 16+, Firefox 101+). On mobile the input already opens on tap.
-    try {
-      inputRef.current?.showPicker()
-    } catch {
-      inputRef.current?.focus()
+  // Scroll selected item into view when popover opens.
+  useEffect(() => {
+    if (open) {
+      requestAnimationFrame(() => {
+        selectedRef.current?.scrollIntoView({ block: "center" })
+      })
     }
-  }
+  }, [open])
 
   return (
     <div className="flex flex-col gap-1">
-      <label
-        htmlFor={id}
-        className={cn(
-          "text-xs",
-          enabled ? "text-gray-500" : "text-gray-400",
-        )}
-      >
+      <label className={cn("text-xs", enabled ? "text-gray-500" : "text-gray-400")}>
         {label}
       </label>
-      <div
-        role="button"
-        tabIndex={enabled ? 0 : -1}
-        aria-label={ariaLabel ?? label}
-        onClick={handleWrapperClick}
-        onKeyDown={(e) => e.key === "Enter" || e.key === " " ? handleWrapperClick() : undefined}
-        className={cn(
-          "relative h-12 rounded-lg border bg-transparent cursor-pointer",
-          !enabled && "border-gray-200 cursor-not-allowed",
-          enabled && hasError && "border-red-500 bg-red-50",
-          enabled && !hasError && "border-gray-300",
-        )}
-      >
-        <input
-          ref={inputRef}
-          id={id}
-          type="time"
-          step={60}
-          value={value ?? ""}
-          disabled={!enabled}
-          onChange={(e) => onChange(e.target.value)}
-          tabIndex={-1}
-          className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
-        />
-        <div
-          className={cn(
-            "pointer-events-none flex items-center justify-between h-full px-3",
-            !enabled && "text-gray-400",
-            enabled && hasError && "text-red-600",
-            enabled && !hasError && "text-gray-900",
-          )}
+      <Popover open={open} onOpenChange={(v) => enabled && setOpen(v)}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            disabled={!enabled}
+            aria-label={ariaLabel ?? label}
+            className={cn(
+              "flex h-12 w-full items-center justify-between rounded-lg border bg-transparent px-3",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400",
+              !enabled && "cursor-not-allowed border-gray-200 text-gray-400",
+              enabled && hasError && "border-red-500 bg-red-50 text-red-600",
+              enabled && !hasError && "border-gray-300 text-gray-900",
+            )}
+          >
+            <span className="text-base">{display}</span>
+            <Clock
+              size={16}
+              aria-hidden
+              className={
+                !enabled ? "text-gray-400" : hasError ? "text-red-500" : "text-gray-400"
+              }
+            />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          align="start"
+          sideOffset={4}
+          className="w-40 p-0 overflow-hidden rounded-xl shadow-lg border border-gray-200"
         >
-          <span className="text-base">{display}</span>
-          <Clock
-            size={16}
-            className={
-              !enabled
-                ? "text-gray-400"
-                : hasError
-                ? "text-red-600"
-                : "text-gray-500"
-            }
-            aria-hidden
-          />
-        </div>
-      </div>
+          <div className="h-56 overflow-y-auto overscroll-contain py-2">
+            {ALL_OPTIONS.map((opt) => {
+              const isSelected = opt === value
+              return (
+                <button
+                  key={opt}
+                  ref={isSelected ? selectedRef : undefined}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt)
+                    setOpen(false)
+                  }}
+                  className={cn(
+                    "w-full px-4 py-2 text-left text-base transition-colors",
+                    isSelected
+                      ? "bg-gray-100 font-semibold text-gray-900"
+                      : "text-gray-700 hover:bg-gray-50",
+                  )}
+                >
+                  {formatTime(opt)}
+                </button>
+              )
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }
