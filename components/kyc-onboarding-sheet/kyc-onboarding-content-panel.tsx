@@ -35,6 +35,8 @@ export function KycOnboardingContentPanel({
         "flex justify-center px-6 pb-6 pt-6",
         "md:justify-start md:self-stretch md:px-12 md:pb-[7%] md:pt-[13%]",
       )}
+      role="region"
+      aria-labelledby="kyc-onboarding-title"
     >
       {onClose && (
         <Button
@@ -50,7 +52,7 @@ export function KycOnboardingContentPanel({
       <div className="flex min-h-0 flex-1 flex-col justify-between gap-8">
         {/* Top: title, description, checklist */}
         <div>
-          <h2 className="text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
+          <h2 id="kyc-onboarding-title" className="text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
             {title}
           </h2>
           <p className="mt-2 text-base font-normal text-grayscale-600 md:mt-3 md:text-lg md:leading-7">

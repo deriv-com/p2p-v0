@@ -12,7 +12,7 @@ export interface KycOnboardingStep {
   link?: string
   rejected?: boolean
   inReview?: boolean
-  expired?: boolean | "" | 0
+  expired?: boolean
   status?: OnboardingKycStepStatus
 }
 

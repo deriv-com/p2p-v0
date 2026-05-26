@@ -32,8 +32,8 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const isPoaRejected = onboardingStatus?.kyc?.poa_status === "rejected"
   const isPoiInReview = onboardingStatus?.kyc?.poi_status === "pending"
   const isPoaInReview = onboardingStatus?.kyc?.poa_status === "pending"
-  const isPoiExpired = Boolean(userId && !isPoiCompleted)
-  const isPoaExpired = Boolean(userId && !isPoaCompleted)
+  const isPoiIncomplete = Boolean(userId && !isPoiCompleted)
+  const isPoaIncomplete = Boolean(userId && !isPoaCompleted)
   const isPhoneCompleted =
     onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
@@ -79,7 +79,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
         completed: isPoiCompleted,
         rejected: isPoiRejected,
         inReview: isPoiInReview,
-        expired: isPoiExpired,
+        expired: isPoiIncomplete,
         status: onboardingKycStepStatusFromRaw(onboardingStatus?.kyc?.poi_status),
         link: getHomeUrl(isV1Signup, "poi", isWalletAccount, fromParam, isTncAccepted),
       },
@@ -90,7 +90,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
         completed: isPoaCompleted,
         rejected: isPoaRejected,
         inReview: isPoaInReview,
-        expired: isPoaExpired,
+        expired: isPoaIncomplete,
         status: onboardingKycStepStatusFromRaw(onboardingStatus?.kyc?.poa_status),
         link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam, isTncAccepted),
       },
@@ -106,39 +106,39 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       isPoiCompleted,
       isPoiRejected,
       isPoiInReview,
-      isPoiExpired,
+      isPoiIncomplete,
       onboardingStatus?.kyc?.poi_status,
       isPoaCompleted,
       isPoaRejected,
       isPoaInReview,
-      isPoaExpired,
+      isPoaIncomplete,
       onboardingStatus?.kyc?.poa_status,
     ],
   )
 
-  const hasExpiredSteps = Boolean(isPoiExpired || isPoaExpired)
+  const hasIncompleteSteps = Boolean(isPoiIncomplete || isPoaIncomplete)
   const verificationSteps = useMemo(() => {
-    return hasExpiredSteps
+    return hasIncompleteSteps
       ? allVerificationSteps.filter((step) => {
-          if (isPoiExpired && step.id === "poi") return true
-          if (isPoaExpired && step.id === "poa") return true
+          if (isPoiIncomplete && step.id === "poi") return true
+          if (isPoaIncomplete && step.id === "poa") return true
           return false
         })
       : allVerificationSteps
-  }, [hasExpiredSteps, isPoiExpired, isPoaExpired, allVerificationSteps])
+  }, [hasIncompleteSteps, isPoiIncomplete, isPoaIncomplete, allVerificationSteps])
 
   const getDescription = () => {
-    if (hasExpiredSteps) {
-      if (isPoiExpired && isPoaExpired) return t("kyc.resubmitIdentityAndAddress")
-      if (isPoiExpired) return t("kyc.resubmitIdentity")
-      if (isPoaExpired) return t("kyc.resubmitAddress")
+    if (hasIncompleteSteps) {
+      if (isPoiIncomplete && isPoaIncomplete) return t("kyc.resubmitIdentityAndAddress")
+      if (isPoiIncomplete) return t("kyc.resubmitIdentity")
+      if (isPoaIncomplete) return t("kyc.resubmitAddress")
     }
 
     return t("kyc.completeRemainingSteps")
   }
 
   const handlePoiPoaExpiredLink = () => {
-    if (isPoiExpired) window.location.href = getHomeUrl(isV1Signup, "poi")
+    if (isPoiIncomplete) window.location.href = getHomeUrl(isV1Signup, "poi")
     else window.location.href = getHomeUrl(isV1Signup, "poa")
   }
 
@@ -175,7 +175,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
 
     return () => {
       links.forEach((link) => {
-        document.head.removeChild(link)
+        if (link.isConnected) link.remove()
       })
     }
   }, [verificationSteps])
@@ -249,8 +249,8 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
         title={t("kyc.finishAccountSetup")}
         description={getDescription()}
         steps={verificationSteps}
-        buttonLabel={hasExpiredSteps ? t("kyc.resubmitNow") : getButtonLabel()}
-        onButtonClick={hasExpiredSteps ? handlePoiPoaExpiredLink : handleCompleteVerification}
+        buttonLabel={hasIncompleteSteps ? t("kyc.resubmitNow") : getButtonLabel()}
+        onButtonClick={hasIncompleteSteps ? handlePoiPoaExpiredLink : handleCompleteVerification}
         onClose={onClose}
         statusLabels={statusLabels}
       />

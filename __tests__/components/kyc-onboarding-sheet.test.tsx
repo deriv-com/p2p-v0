@@ -149,7 +149,7 @@ describe("KycOnboardingSheet", () => {
     expect(window.location.href).toContain("dashboard/onboarding/personal-details")
   })
 
-  it("shows Resubmit now for expired POI/POA state", () => {
+  it("shows Resubmit now for incomplete POI/POA state", () => {
     mockUseUserDataStore.mockImplementation((selector?: (state: any) => unknown) => {
       const state = {
         onboardingStatus: {
@@ -170,6 +170,29 @@ describe("KycOnboardingSheet", () => {
     render(<KycOnboardingSheet />)
 
     expect(screen.getByText("Resubmit now")).toBeInTheDocument()
+  })
+
+  it("does not show Resubmit now when userId is null", () => {
+    mockUseUserDataStore.mockImplementation((selector?: (state: any) => unknown) => {
+      const state = {
+        onboardingStatus: {
+          ...baseOnboardingStatus,
+          kyc: {
+            status: "pending",
+            poi_status: "pending",
+            poa_status: "pending",
+          },
+        },
+        userId: null,
+        userData: { signup: "v2" },
+        isWalletAccount: false,
+      }
+      return selector ? selector(state) : state
+    })
+
+    render(<KycOnboardingSheet />)
+
+    expect(screen.queryByText("Resubmit now")).not.toBeInTheDocument()
   })
 
   it("shows check proof of identity CTA when POI is rejected and POA is complete", () => {
