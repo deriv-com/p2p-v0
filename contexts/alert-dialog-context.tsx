@@ -184,7 +184,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             className={cn(
               "p-0",
               isKycOnboarding
-                ? "max-h-[90vh] overflow-hidden rounded-t-2xl border-0"
+                ? "max-h-[95vh] overflow-hidden rounded-t-2xl border-0"
                 : "rounded-t-[16px]",
             )}
           >

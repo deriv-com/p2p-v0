@@ -47,7 +47,7 @@ export function KycOnboardingContentPanel({
         </Button>
       )}
 
-      <div className="flex min-h-0 flex-1 flex-col justify-between">
+      <div className="flex min-h-0 flex-1 flex-col justify-between gap-8">
         {/* Top: title, description, checklist */}
         <div>
           <h2 className="text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
@@ -62,10 +62,7 @@ export function KycOnboardingContentPanel({
         </div>
 
         {/* Bottom: CTA pinned to bottom */}
-        <Button
-          className="mt-8 w-full shrink-0 md:mt-0 md:h-12 md:rounded-full"
-          onClick={onButtonClick}
-        >
+        <Button className="w-full shrink-0 md:h-12 md:rounded-full" onClick={onButtonClick}>
           {buttonLabel}
         </Button>
       </div>
