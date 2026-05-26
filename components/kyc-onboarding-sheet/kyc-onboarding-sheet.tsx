@@ -1,14 +1,18 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { cn, getHomeUrl } from "@/lib/utils"
+import { useEffect, useMemo } from "react"
+import { getHomeUrl } from "@/lib/utils"
+import { onboardingKycStepStatusFromRaw } from "@/lib/kyc/onboarding-kyc-step-status"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useEffect, useMemo } from "react"
+import { KycOnboardingContentPanel } from "./kyc-onboarding-content-panel"
+import { KycOnboardingVisualPanel } from "./kyc-onboarding-visual-panel"
+import type { KycOnboardingStep } from "./kyc-onboarding-step-row"
+
+export type KycOnboardingRoute = "markets" | "profile" | "wallets" | "ads"
 
 interface KycOnboardingSheetProps {
-  route?: "markets" | "profile" | "wallets" | "ads"
+  route?: KycOnboardingRoute
   onClose?: () => void
 }
 
@@ -28,9 +32,10 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   const isPoaRejected = onboardingStatus?.kyc?.poa_status === "rejected"
   const isPoiInReview = onboardingStatus?.kyc?.poi_status === "pending"
   const isPoaInReview = onboardingStatus?.kyc?.poa_status === "pending"
-  const isPoiExpired = userId && !isPoiCompleted
-  const isPoaExpired = userId && !isPoaCompleted
-  const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
+  const isPoiExpired = Boolean(userId && !isPoiCompleted)
+  const isPoaExpired = Boolean(userId && !isPoaCompleted)
+  const isPhoneCompleted =
+    onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
   const getFromParam = () => {
     if (!route) return "from=p2p"
@@ -51,62 +56,85 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
 
   const fromParam = getFromParam()
 
-  const allVerificationSteps = [
-    {
-      id: "profile",
-      title: t("kyc.setupProfile"),
-      icon: "/icons/account-profile.svg",
-      completed: isProfileCompleted,
-      link: getHomeUrl(isV1Signup, "onboardingProfile", isWalletAccount, fromParam, isTncAccepted),
-    },
-    {
-      id: "phone",
-      title: t("kyc.phoneNumber"),
-      icon: "/icons/pnv.svg",
-      completed: isPhoneCompleted,
-      link: getHomeUrl(isV1Signup, "onboardingPNV", isWalletAccount, fromParam, isTncAccepted),
-    },
-    {
-      id: "poi",
-      title: t("kyc.proofOfIdentity"),
-      icon: "/icons/poi.svg",
-      completed: isPoiCompleted,
-      rejected: isPoiRejected,
-      inReview: isPoiInReview,
-      expired: isPoiExpired,
-      link: getHomeUrl(isV1Signup, "poi", isWalletAccount, fromParam, isTncAccepted),
-    },
-    {
-      id: "poa",
-      title: t("kyc.proofOfAddress"),
-      icon: "/icons/poa.svg",
-      completed: isPoaCompleted,
-      rejected: isPoaRejected,
-      inReview: isPoaInReview,
-      expired: isPoaExpired,
-      link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam, isTncAccepted),
-    },
-  ]
+  const allVerificationSteps: KycOnboardingStep[] = useMemo(
+    () => [
+      {
+        id: "profile",
+        title: t("kyc.setupProfile"),
+        icon: "/icons/account-profile.svg",
+        completed: isProfileCompleted,
+        link: getHomeUrl(isV1Signup, "onboardingProfile", isWalletAccount, fromParam, isTncAccepted),
+      },
+      {
+        id: "phone",
+        title: t("kyc.phoneNumber"),
+        icon: "/icons/pnv.svg",
+        completed: isPhoneCompleted,
+        link: getHomeUrl(isV1Signup, "onboardingPNV", isWalletAccount, fromParam, isTncAccepted),
+      },
+      {
+        id: "poi",
+        title: t("kyc.proofOfIdentity"),
+        icon: "/icons/poi.svg",
+        completed: isPoiCompleted,
+        rejected: isPoiRejected,
+        inReview: isPoiInReview,
+        expired: isPoiExpired,
+        status: onboardingKycStepStatusFromRaw(onboardingStatus?.kyc?.poi_status),
+        link: getHomeUrl(isV1Signup, "poi", isWalletAccount, fromParam, isTncAccepted),
+      },
+      {
+        id: "poa",
+        title: t("kyc.proofOfAddress"),
+        icon: "/icons/poa.svg",
+        completed: isPoaCompleted,
+        rejected: isPoaRejected,
+        inReview: isPoaInReview,
+        expired: isPoaExpired,
+        status: onboardingKycStepStatusFromRaw(onboardingStatus?.kyc?.poa_status),
+        link: getHomeUrl(isV1Signup, "poa", isWalletAccount, fromParam, isTncAccepted),
+      },
+    ],
+    [
+      t,
+      isProfileCompleted,
+      isV1Signup,
+      isWalletAccount,
+      fromParam,
+      isTncAccepted,
+      isPhoneCompleted,
+      isPoiCompleted,
+      isPoiRejected,
+      isPoiInReview,
+      isPoiExpired,
+      onboardingStatus?.kyc?.poi_status,
+      isPoaCompleted,
+      isPoaRejected,
+      isPoaInReview,
+      isPoaExpired,
+      onboardingStatus?.kyc?.poa_status,
+    ],
+  )
 
-  const hasExpiredSteps = isPoiExpired || isPoaExpired
+  const hasExpiredSteps = Boolean(isPoiExpired || isPoaExpired)
   const verificationSteps = useMemo(() => {
     return hasExpiredSteps
       ? allVerificationSteps.filter((step) => {
-        if (isPoiExpired && step.id === "poi") return true
-        if (isPoaExpired && step.id === "poa") return true
-        return false
-      })
+          if (isPoiExpired && step.id === "poi") return true
+          if (isPoaExpired && step.id === "poa") return true
+          return false
+        })
       : allVerificationSteps
-  }, [isPoiExpired, isPoaExpired, allVerificationSteps])
+  }, [hasExpiredSteps, isPoiExpired, isPoaExpired, allVerificationSteps])
 
   const getDescription = () => {
     if (hasExpiredSteps) {
       if (isPoiExpired && isPoaExpired) return t("kyc.resubmitIdentityAndAddress")
-      else if (isPoiExpired) return t("kyc.resubmitIdentity")
-      else if (isPoaExpired) return t("kyc.resubmitAddress")
+      if (isPoiExpired) return t("kyc.resubmitIdentity")
+      if (isPoaExpired) return t("kyc.resubmitAddress")
     }
 
-    return t("kyc.accessP2PMessage")
+    return t("kyc.completeRemainingSteps")
   }
 
   const handlePoiPoaExpiredLink = () => {
@@ -115,12 +143,12 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
   }
 
   const allStepsVerifiedOrInReview = verificationSteps.every(
-    (step) => step.completed || step.inReview
+    (step) => step.completed || step.inReview,
   )
 
   const getFailedPoiOrPoaStep = () => {
     const completedOrInReviewSteps = verificationSteps.filter(
-      (step) => step.completed || step.inReview
+      (step) => step.completed || step.inReview,
     )
     const failedStep = verificationSteps.find((step) => step.rejected)
 
@@ -145,7 +173,6 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       }
     })
 
-    // Cleanup: remove prefetch links on unmount or dependency change
     return () => {
       links.forEach((link) => {
         document.head.removeChild(link)
@@ -162,7 +189,9 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
       window.location.href = failedStep.link
       return
     }
-    const firstIncompleteStep = verificationSteps.find((step) => !step.completed && step.inReview !== true)
+    const firstIncompleteStep = verificationSteps.find(
+      (step) => !step.completed && step.inReview !== true,
+    )
     if (firstIncompleteStep?.link) {
       window.location.href = firstIncompleteStep.link
     }
@@ -175,77 +204,56 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
     if (failedStep) {
       if (failedStep.id === "poi") {
         return t("kyc.checkProofOfIdentity")
-      } else if (failedStep.id === "poa") {
+      }
+      if (failedStep.id === "poa") {
         return t("kyc.checkProofOfAddress")
       }
     }
-    return t("profile.gettingStarted")
+    return t("kyc.continueVerification")
   }
+
+  const statusLabels = {
+    verified: t("kyc.verified"),
+    inReview: t("kyc.statusInReview"),
+    failed: t("kyc.failed"),
+    unverified: t("kyc.unverified"),
+  }
+
+  const heroBenefits = [
+    t("kyc.heroBenefitPlaceOrder"),
+    t("kyc.heroBenefitPublishAds"),
+    t("kyc.heroBenefitHigherLimits"),
+    t("kyc.heroBenefitFasterWithdrawals"),
+  ] as [string, string, string, string]
 
   if (!onboardingStatus) {
     return null
   }
 
   return (
-    <div className="w-full">
-      <h2 className="text-grayscale-600 text-base font-normal mb-6">{getDescription()}</h2>
-
-      <div className="space-y-6 mb-6">
-        {verificationSteps.map((step, index) => (
-          <div key={step.id}>
-            <div
-              className={cn("flex items-center gap-3")}
-            >
-              <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
-                <Image
-                  src={step.icon || "/placeholder.svg"}
-                  alt={step.title}
-                  width={32}
-                  height={32}
-                  className="object-contain"
-                />
-              </div>
-              <div className="text-left text-slate-1200 text-base font-normal flex-1">{step.title}</div>
-              {step.completed && step.id === "profile" && (
-                <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
-                  <Image
-                    src="/icons/check-filled.png"
-                    alt={step.title}
-                    width={24}
-                    height={24}
-                    className="object-contain"
-                  />
-                </div>
-              )}
-              {step.completed && step.id !== "profile" && (
-                <div className="text-xs text-success-text bg-green-100 rounded-sm px-2 py-1">
-                  {t("kyc.verified")}
-                </div>
-              )}
-              {step.rejected && (
-                <div className="text-xs text-error-text bg-red-50 rounded-sm px-2 py-1">
-                  {t("kyc.failed")}
-                </div>
-              )}
-              {step.inReview && (
-                <div className="text-xs text-orange-100 bg-orange-50 rounded-sm px-2 py-1">
-                  {t("kyc.inReview")}
-                </div>
-              )}
-              {step.expired && (
-                <div className="text-xs text-grayscale-600 bg-grayscale-500 rounded-sm px-2 py-1">
-                  {t("kyc.unverified")}
-                </div>
-              )}
-            </div>
-
-          </div>
-        ))}
-      </div>
-      {hasExpiredSteps ? (
-        <Button className="w-full mt-6" onClick={handlePoiPoaExpiredLink}>{t("kyc.resubmitNow")}</Button>) : (
-        <Button className="w-full mt-6" onClick={handleCompleteVerification}>{getButtonLabel()}</Button>)
-      }
+    <div className="flex h-full w-full flex-col md:min-h-[600px] md:flex-row">
+      <KycOnboardingVisualPanel
+        variant="mobile"
+        showDragHandle
+        logoAlt={t("kyc.heroLogoAlt")}
+        headline={t("kyc.heroHeadline")}
+        benefits={heroBenefits}
+      />
+      <KycOnboardingVisualPanel
+        variant="desktop"
+        logoAlt={t("kyc.heroLogoAlt")}
+        headline={t("kyc.heroHeadline")}
+        benefits={heroBenefits}
+      />
+      <KycOnboardingContentPanel
+        title={t("kyc.finishAccountSetup")}
+        description={getDescription()}
+        steps={verificationSteps}
+        buttonLabel={hasExpiredSteps ? t("kyc.resubmitNow") : getButtonLabel()}
+        onButtonClick={hasExpiredSteps ? handlePoiPoaExpiredLink : handleCompleteVerification}
+        onClose={onClose}
+        statusLabels={statusLabels}
+      />
     </div>
   )
 }

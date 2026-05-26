@@ -859,7 +859,17 @@
     "resubmitIdentity": "Gửi lại chứng minh danh tính của bạn để tiếp tục sử dụng P2P.",
     "resubmitAddress": "Gửi lại chứng minh địa chỉ của bạn để tiếp tục sử dụng P2P.",
     "unverified": "Chưa xác minh",
-    "resubmitNow": "Gửi lại ngay"
+    "resubmitNow": "Gửi lại ngay",
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   },
   "status": {
     "refunded": "Đã hoàn tiền",

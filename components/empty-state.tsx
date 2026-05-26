@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useTrackers } from "@/analytics/useTrackers"
 
@@ -48,22 +48,7 @@ export default function EmptyState({
       const operation = adType === "buy" ? "sell" : "buy"
       router.push(`/ads/create?operation=${operation}`)
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route={route || "ads"} onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: route || "ads", onClose: hideAlert }))
     }
   }
 

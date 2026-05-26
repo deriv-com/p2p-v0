@@ -10,7 +10,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useRouter } from "next/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useTrackers } from "@/analytics/useTrackers"
@@ -95,18 +95,12 @@ export default function WalletPage() {
 
   useEffect(() => {
     if (showKycPopup) {
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="wallets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
+      showAlert(createKycOnboardingAlertConfig({
+        route: "wallets",
+        onClose: hideAlert,
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
-      })
+      }))
       setShowKycPopup(false)
     }
   }, [showKycPopup, showAlert, t])

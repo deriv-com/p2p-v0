@@ -816,7 +816,17 @@
     "resubmitIdentity": "P2P ব্যবহার চালিয়ে যেতে আপনার পরিচয়ের প্রমাণ পুনরায় জমা দিন।",
     "resubmitAddress": "P2P ব্যবহার চালিয়ে যেতে আপনার ঠিকানার প্রমাণ পুনরায় জমা দিন।",
     "unverified": "অযাচাইকৃত",
-    "resubmitNow": "এখনই পুনরায় জমা দিন"
+    "resubmitNow": "এখনই পুনরায় জমা দিন",
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   },
   "status": {
     "refunded": "ফেরত দেওয়া হয়েছে",

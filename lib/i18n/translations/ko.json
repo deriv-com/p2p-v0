@@ -743,5 +743,17 @@
     "visibilityClosedGroupDesc": "광고가 비공개 그룹 목록의 사용자에게만 표시됩니다.",
     "editList": "목록 편집",
     "failedToLoadAd": "광고 세부정보를 불러오지 못했습니다. 다시 시도하세요."
+  },
+  "kyc": {
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   }
 }

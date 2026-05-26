@@ -27,7 +27,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useOrders } from "@/hooks/use-api-queries"
 import { useTrackers } from "@/analytics/useTrackers"
 
@@ -106,18 +106,12 @@ export default function OrdersPage() {
 
   useEffect(() => {
     if (showKycPopup) {
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
+      showAlert(createKycOnboardingAlertConfig({
+        route: "markets",
+        onClose: hideAlert,
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
-      })
+      }))
       setShowKycPopup(false)
     }
   }, [showKycPopup, showAlert, t])

@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useCallback } from "react"
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
@@ -60,7 +61,17 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     isOpen,
   }
 
+  const isKycOnboarding = config.size === "kycOnboarding"
+
   const renderDesktopContent = () => {
+    if (isKycOnboarding && config.content) {
+      return (
+        <div className={cn("max-h-[90vh] overflow-y-auto", config.contentClassName)}>
+          {config.content}
+        </div>
+      )
+    }
+
     if (config.content) {
       return (
         <div className="overflow-y-auto">
@@ -112,6 +123,14 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   }
 
   const renderMobileContent = () => {
+    if (isKycOnboarding && config.content) {
+      return (
+        <div className={cn("max-h-[90vh] overflow-y-auto", config.contentClassName)}>
+          {config.content}
+        </div>
+      )
+    }
+
     if (config.content) {
       return (
         <div className="overflow-y-auto">
@@ -150,14 +169,29 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           setIsOpen(open)
           if (!open) config.onClose?.()
         }}>
-          <DrawerContent side="bottom" className="p-0 rounded-t-[16px]">
+          <DrawerContent
+            side="bottom"
+            className={cn(
+              "p-0",
+              isKycOnboarding
+                ? "max-h-[90vh] rounded-t-2xl [&>div:first-child]:hidden"
+                : "rounded-t-[16px]",
+            )}
+          >
             {renderMobileContent()}
           </DrawerContent>
         </Drawer>
       ) : (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
           <AlertDialogTitle></AlertDialogTitle>
-          <AlertDialogContent className="p-0">
+          <AlertDialogContent
+            className={cn(
+              "p-0",
+              isKycOnboarding &&
+                "max-h-[90vh] w-[min(880px,95vw)] max-w-[880px] overflow-hidden rounded-3xl border-0",
+              config.contentClassName,
+            )}
+          >
             <AlertDialogDescription>{renderDesktopContent()}</AlertDialogDescription>
           </AlertDialogContent>
         </AlertDialog>

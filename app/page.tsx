@@ -37,7 +37,7 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentMethods, useAdvertisements } from "@/hooks/use-api-queries"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -320,22 +320,8 @@ export default function BuySellPage() {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "markets",
+        onClose: hideAlert }))
     }
   }
 
@@ -368,22 +354,8 @@ export default function BuySellPage() {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "markets",
+        onClose: hideAlert }))
     }
   }
 
@@ -504,16 +476,8 @@ export default function BuySellPage() {
     const shouldShowKyc = searchParams.get("show_kyc_popup") === "true"
     if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="markets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "markets",
+        onClose: hideAlert }))
     }
   }, [searchParams, showKycPopup, showAlert, t])
 

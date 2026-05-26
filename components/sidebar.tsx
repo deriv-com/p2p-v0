@@ -16,7 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { useOrderSidebarStore } from "@/stores/order-sidebar-store"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useAdvertiserSearch } from "@/hooks/use-api-queries"
 import { FeedbackDialog } from "@/components/feedback/feedback-dialog"
 import type { Advertisement } from "@/services/api/api-buy-sell"
@@ -138,22 +138,8 @@ export default function Sidebar({ className }: SidebarProps) {
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="markets" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "markets",
+        onClose: hideAlert }))
     }
   }
 
