@@ -19,6 +19,8 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
+import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
+import { evaluateRisk, type RiskWarningResult } from "@/components/buy-sell/risk-warning/risk-warning-rules"
 
 interface MobileAdvertiserSearchProps {
     isOpen: boolean
@@ -135,10 +137,37 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         }
     }
 
+    const [pendingRiskAd, setPendingRiskAd] = useState<Advertisement | null>(null)
+    const [riskResult, setRiskResult] = useState<RiskWarningResult | null>(null)
+    const [isRiskWarningOpen, setIsRiskWarningOpen] = useState(false)
+
     const handleBuySellClick = (ad: Advertisement) => {
         track("ek_advert_action_markets_search", { advert_type: ad.type === "buy" ? "sell" : "buy" })
+        const risk = evaluateRisk(ad)
+        if (risk) {
+            setPendingRiskAd(ad)
+            setRiskResult(risk)
+            setIsRiskWarningOpen(true)
+            return
+        }
         setPendingAd(ad, true)
         handleClose()
+    }
+
+    const handleRiskContinue = () => {
+        if (pendingRiskAd) {
+            setPendingAd(pendingRiskAd, true)
+        }
+        setIsRiskWarningOpen(false)
+        setPendingRiskAd(null)
+        setRiskResult(null)
+        handleClose()
+    }
+
+    const handleRiskClose = () => {
+        setIsRiskWarningOpen(false)
+        setPendingRiskAd(null)
+        setRiskResult(null)
     }
 
     const handleClear = () => {
@@ -160,11 +189,17 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
     }
 
     return (
+        <>
         <Sheet open={isOpen} onOpenChange={(open) => !open && handleClose()}>
             <SheetContent
                 side="top"
                 hideCloseButton
                 className="h-full w-full p-0 flex flex-col gap-0 rounded-none"
+                onPointerDownOutside={(e) => e.preventDefault()}
+                onInteractOutside={(e) => e.preventDefault()}
+                onEscapeKeyDown={(e) => {
+                    if (isRiskWarningOpen) e.preventDefault()
+                }}
             >
                 {/* Header */}
                 <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0">
@@ -258,5 +293,15 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 </div>
             </SheetContent>
         </Sheet>
+        {pendingRiskAd && riskResult && (
+            <RiskWarningModal
+                isOpen={isRiskWarningOpen}
+                result={riskResult}
+                advertiserNickname={pendingRiskAd.user.nickname}
+                onContinue={handleRiskContinue}
+                onClose={handleRiskClose}
+            />
+        )}
+        </>
     )
 }

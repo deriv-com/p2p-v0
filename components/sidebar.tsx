@@ -24,6 +24,8 @@ import EmptyState from "@/components/empty-state"
 import { useTrackers } from "@/analytics/useTrackers"
 import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
+import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
+import { evaluateRisk, type RiskWarningResult } from "@/components/buy-sell/risk-warning/risk-warning-rules"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import MarketSelectedIcon from "@/public/icons/ic-buy-sell-selected.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -155,13 +157,43 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }
 
+  const [pendingRiskAd, setPendingRiskAd] = useState<Advertisement | null>(null)
+  const [riskResult, setRiskResult] = useState<RiskWarningResult | null>(null)
+  const [isRiskWarningOpen, setIsRiskWarningOpen] = useState(false)
+
   const handleBuySellClick = (ad: Advertisement) => {
     track("ek_advert_action_markets_search", { advert_type: ad.type === "buy" ? "sell" : "buy" })
+    const risk = evaluateRisk(ad)
+    if (risk) {
+      setPendingRiskAd(ad)
+      setRiskResult(risk)
+      setIsRiskWarningOpen(true)
+      return
+    }
     setPendingAd(ad)
     setIsSearchFocused(false)
     if (pathname.startsWith("/advertiser")) {
       router.push("/")
     }
+  }
+
+  const handleRiskContinue = () => {
+    if (pendingRiskAd) {
+      setPendingAd(pendingRiskAd)
+      setIsSearchFocused(false)
+      if (pathname.startsWith("/advertiser")) {
+        router.push("/")
+      }
+    }
+    setIsRiskWarningOpen(false)
+    setPendingRiskAd(null)
+    setRiskResult(null)
+  }
+
+  const handleRiskClose = () => {
+    setIsRiskWarningOpen(false)
+    setPendingRiskAd(null)
+    setRiskResult(null)
   }
 
   const handleClear = () => {
@@ -414,6 +446,15 @@ export default function Sidebar({ className }: SidebarProps) {
         </a>
       </div>
       <FeedbackDialog isOpen={showFeedbackDialog} onClose={() => setShowFeedbackDialog(false)} />
+      {pendingRiskAd && riskResult && (
+        <RiskWarningModal
+          isOpen={isRiskWarningOpen}
+          result={riskResult}
+          advertiserNickname={pendingRiskAd.user.nickname}
+          onContinue={handleRiskContinue}
+          onClose={handleRiskClose}
+        />
+      )}
     </div>
   )
 }

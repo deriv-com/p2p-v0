@@ -703,6 +703,7 @@
     "visibilityEveryoneDesc": "Tangazo lako litaonekana kwa kila mtu kwenye soko.",
     "visibilityClosedGroup": "Kikundi kilichofungwa",
     "visibilityClosedGroupDesc": "Tangazo lako litaonekana tu kwa watumiaji walio kwenye orodha yako ya kikundi kilichofungwa.",
-    "editList": "Hariri orodha"
+    "editList": "Hariri orodha",
+    "failedToLoadAd": "Imeshindwa kupakia maelezo ya tangazo. Tafadhali jaribu tena."
   }
 }

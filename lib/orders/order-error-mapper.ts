@@ -159,7 +159,7 @@ export function mapOrderError(
         title: t("order.tradeBandTitle"),
         message: t("order.tradeBandMessage"),
         primaryCta: t("order.viewLimits"),
-        primaryAction: OrderErrorAction.Dismiss,
+        primaryAction: OrderErrorAction.ViewProfile,
         secondaryCta: t("common.cancel"),
         secondaryAction: OrderErrorAction.Dismiss,
       }

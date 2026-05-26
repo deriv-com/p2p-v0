@@ -216,42 +216,23 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           const processedWallets: ProcessedWallet[] = []
 
           response.data.wallets.forEach((wallet: any) => {
-            if (!wallet.balances || wallet.balances.length === 0) {
-              // Handle USD wallets with no balances
-              const currencyLabel = currenciesData?.data["USD"]?.label || "USD"
-              const walletName =
-                (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
+            const isP2p = (wallet.type || "").toLowerCase() === "p2p"
+            const usdLabel = currenciesData?.data["USD"]?.label || "USD"
+            const usdName = isP2p ? `P2P ${usdLabel}` : usdLabel
+            const balances = wallet.balances ?? []
 
-              processedWallets.push({
-                wallet_id: wallet.wallet_id,
-                name: walletName,
-                balance: "0",
-                currency: "USD",
-                icon: currencyLogoMapper["USD"],
-                type: wallet.type,
-              })
-            } else {
-              wallet.balances.forEach((balance: any) => {
-                if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
-                  return
-                }
+            // Non-USD currencies are hidden for now. Always emit a USD entry —
+            // synthesize one with balance "0" when the API omits USD.
+            const usdBalance = balances.find((b: any) => b.currency === "USD")
 
-                const currencyLabel = currenciesData?.data[balance.currency]?.label || balance.currency
-
-                const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
-
-                if (balance.currency === "USD") {
-                  processedWallets.push({
-                    wallet_id: wallet.wallet_id,
-                    name: walletName,
-                    balance: balance.balance,
-                    currency: balance.currency,
-                    icon: "/icons/p2p-black.png",
-                    type: wallet.type,
-                  })
-                }
-              })
-            }
+            processedWallets.push({
+              wallet_id: wallet.wallet_id,
+              name: usdName,
+              balance: usdBalance?.balance ?? "0",
+              currency: "USD",
+              icon: isP2p ? "/icons/p2p-black.png" : currencyLogoMapper["USD"],
+              type: wallet.type,
+            })
           })
 
           setWallets(processedWallets)
