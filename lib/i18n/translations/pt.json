@@ -786,6 +786,7 @@
     "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
     "genericErrorCodeMessage": "Ocorreu um erro ({code}). Tente novamente ou entre em contato com o suporte.",
     "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+    "failedToLoadAd": "Falha ao carregar detalhes do anúncio. Tente novamente.",
     "advertFixedRateMinimumTitle": "Verifique sua taxa fixa",
     "advertFixedRateMinimumMessage": "A taxa fixa que você inseriu é menor que o limite permitido. Aumente a taxa para continuar.",
     "advertFixedRateMaximumTitle": "Verifique sua taxa fixa",

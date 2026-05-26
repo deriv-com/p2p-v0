@@ -1,3 +1,4 @@
+import { normalizeUpdateAdPayload } from "@/lib/ads/advert-edit-patch"
 import { API, AUTH } from "@/lib/local-variables"
 import { useUserDataStore } from "@/stores/user-data-store"
 
@@ -295,25 +296,9 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = AUTH.getAuthHeader()
 
-    if (adData.payment_method_names) {
-      if (!Array.isArray(adData.payment_method_names)) {
-        adData.payment_method_names = [String(adData.payment_method_names)]
-      } else {
-        adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
-      }
-    } else {
-      adData.payment_method_names = []
-    }
+    const payload = normalizeUpdateAdPayload(adData)
 
-    if (!adData.payment_method_ids) {
-      adData.payment_method_ids = null
-    }
-
-    if (!adData.available_countries) {
-      adData.available_countries = null
-    }
-
-    const requestData = { data: adData }
+    const requestData = { data: payload }
     const body = JSON.stringify(requestData)
 
     const response = await fetch(url, {

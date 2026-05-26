@@ -781,6 +781,7 @@
     "adUpdatedSuccess": "Los detalles del anuncio han sido actualizados.",
     "failedToCreateAd": "Error al crear el anuncio",
     "failedToUpdateAd": "Error al actualizar el anuncio",
+    "failedToLoadAd": "No se pudieron cargar los detalles del anuncio. Inténtelo de nuevo.",
     "tryAgain": "Por favor, inténtalo de nuevo.",
     "updateAd": "Actualizar anuncio",
     "updateRate": "Actualizar tasa",

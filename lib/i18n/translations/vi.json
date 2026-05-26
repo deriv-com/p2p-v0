@@ -719,6 +719,7 @@
     "adUpdatedSuccess": "Chi tiết quảng cáo đã được cập nhật.",
     "failedToCreateAd": "Không thể tạo quảng cáo",
     "failedToUpdateAd": "Không thể cập nhật quảng cáo",
+    "failedToLoadAd": "Không thể tải chi tiết quảng cáo. Vui lòng thử lại.",
     "tryAgain": "Vui lòng thử lại.",
     "updateAd": "Cập nhật quảng cáo",
     "updateRate": "Cập nhật tỷ giá",

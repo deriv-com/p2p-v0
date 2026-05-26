@@ -729,6 +729,7 @@
     "adUpdatedSuccess": "Anzeigendetails wurden aktualisiert.",
     "failedToCreateAd": "Anzeige konnte nicht erstellt werden",
     "failedToUpdateAd": "Anzeige konnte nicht aktualisiert werden",
+    "failedToLoadAd": "Anzeigendetails konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     "tryAgain": "Bitte versuchen Sie es erneut.",
     "updateAd": "Anzeige aktualisieren",
     "updateRate": "Kurs aktualisieren",
