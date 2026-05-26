@@ -33,7 +33,6 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
-import { FEATURE_FLAGS } from "@/lib/feature-flags"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -814,7 +813,7 @@ export default function BuySellPage() {
                                   size={18}
                                 />
                               )}
-                              {FEATURE_FLAGS.closedGroup && ad.is_private && (
+                              {ad.is_private && (
                                 <Image
                                   src="/icons/closed-group.svg"
                                   alt="Closed Group"

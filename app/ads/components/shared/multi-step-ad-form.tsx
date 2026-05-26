@@ -14,7 +14,6 @@ import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
 import AdVisibilitySelector from "./ad-visibility-selector"
-import { FEATURE_FLAGS } from "@/lib/feature-flags"
 import MinimumTierSelector, { type MinimumTradeBand } from "./minimum-tier-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
@@ -881,7 +880,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         adType={(formData.type as "buy" | "sell") || "buy"}
                       />
                     </div>
-                    {FEATURE_FLAGS.closedGroup && (userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
+                    {(userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
                       <div className="flex gap-[4px] items-center mb-4">
                         <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.adVisibility")}</h3>
                         <TooltipProvider>
