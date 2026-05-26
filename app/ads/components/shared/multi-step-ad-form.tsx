@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
@@ -28,6 +28,13 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useCreateAd, useUpdateAd, useSettings, useUserPaymentMethods, usePaymentMethods } from "@/hooks/use-api-queries"
 import type { Ad } from "@/types"
 import { useTrackers } from "@/analytics/useTrackers"
+import {
+  buildAdvertEditPatch,
+  buildCurrentEditState,
+  createAdvertEditSnapshot,
+  hasAdvertEditChanges,
+  type AdvertEditSnapshot,
+} from "@/lib/ads/advert-edit-patch"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -80,6 +87,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [showSuccessScreen, setShowSuccessScreen] = useState(false)
   const [successAd, setSuccessAd] = useState<Ad | null>(null)
   const [showSharePage, setShowSharePage] = useState(false)
+  const [originalEditSnapshot, setOriginalEditSnapshot] = useState<AdvertEditSnapshot | null>(null)
 
   const createAdMutation = useCreateAd()
   const updateAdMutation = useUpdateAd()
@@ -195,7 +203,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               maxAmount: data.maximum_order_amount,
               paymentMethods: paymentMethodNames,
               payment_method_ids: paymentMethodIds,
-              instructions: data.description || "",
+              instructions: (data.description || "").trim(),
               forCurrency: data.payment_currency,
               buyCurrency: data.account_currency,
               priceType: data.exchange_rate_type,
@@ -219,14 +227,27 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               setAdVisibility("everyone")
             }
 
-            // BE may return 'bronze' (= no restriction), null, or any tier.
-            // Normalize to the UI's MinimumTradeBand: only silver/gold/diamond
-            // are surfaced as selections; everything else (bronze, null, an
-            // unknown tier name) maps to null = "All tiers".
             const apiBand = data.minimum_trade_band as string | null | undefined
             const KNOWN_TIERS = new Set(["silver", "gold", "diamond"])
-            setMinimumTradeBand(
-              apiBand && KNOWN_TIERS.has(apiBand) ? (apiBand as MinimumTradeBand) : null,
+            const normalizedBand =
+              apiBand && KNOWN_TIERS.has(apiBand) ? (apiBand as MinimumTradeBand) : null
+            setMinimumTradeBand(normalizedBand)
+
+            setOriginalEditSnapshot(
+              createAdvertEditSnapshot({
+                type: data.type,
+                minimumOrderAmount: data.minimum_order_amount,
+                maximumOrderAmount: data.maximum_order_amount,
+                exchangeRate: Number.parseFloat(data.exchange_rate),
+                exchangeRateType: data.exchange_rate_type,
+                orderExpiryPeriod: data.order_expiry_period ?? 15,
+                availableCountries: data.available_countries,
+                minimumTradeBand: apiBand,
+                isPrivate: !!data.is_private,
+                description: data.description,
+                paymentMethodNames: paymentMethodNames,
+                paymentMethodIds: paymentMethodIds,
+              }),
             )
           }
 
@@ -246,6 +267,32 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }, [formData.type, mode, setSelectedPaymentMethodIds])
 
   const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
+
+  const hasEditChanges = useMemo(() => {
+    if (mode !== "edit" || !originalEditSnapshot) {
+      return false
+    }
+
+    const current = buildCurrentEditState(formDataRef.current, {
+      orderTimeLimit,
+      selectedCountries,
+      minimumTradeBand,
+      isPrivate: adVisibility === "closed-group",
+      selectedPaymentMethodIds:
+        formDataRef.current.type === "sell" ? selectedPaymentMethodIds : [],
+    })
+
+    return hasAdvertEditChanges(originalEditSnapshot, current)
+  }, [
+    mode,
+    originalEditSnapshot,
+    formData,
+    orderTimeLimit,
+    selectedCountries,
+    minimumTradeBand,
+    adVisibility,
+    selectedPaymentMethodIds,
+  ])
 
   useEffect(() => {
     const handleAdFormValidation = (e: any) => {
@@ -402,30 +449,29 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         },
       })
     } else {
-      const exchangeRate =
-        finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+      if (!originalEditSnapshot) {
+        setIsSubmitting(false)
+        return
+      }
 
-      const payload = {
-        is_active: true,
-        minimum_order_amount: finalData.minAmount || 0,
-        maximum_order_amount: finalData.maxAmount || 0,
-        exchange_rate: exchangeRate || 0,
-        exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
-        order_expiry_period: orderTimeLimit,
-        available_countries: selectedCountries,
-        description: finalData.instructions || "",
-        is_private: isPrivate,
-        // Edit mode: BE keeps previous value if key is omitted, so send
-        // 'bronze' (lowest tier = effectively no restriction) when user picks
-        // "All tiers" to clear an existing restriction.
-        minimum_trade_band: minimumTradeBand ?? "bronze",
-        ...(finalData.type === "buy"
-          ? { payment_method_names: finalData.paymentMethods || [] }
-          : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
+      const current = buildCurrentEditState(finalData, {
+        orderTimeLimit,
+        selectedCountries,
+        minimumTradeBand,
+        isPrivate,
+        selectedPaymentMethodIds: selectedPaymentMethodIdsForSubmit,
+      })
+
+      const patch = buildAdvertEditPatch(originalEditSnapshot, current)
+
+      if (Object.keys(patch).length === 0) {
+        setIsSubmitting(false)
+        router.push("/ads")
+        return
       }
 
       updateAdMutation.mutate(
-        { id: finalData.id, adData: payload },
+        { id: finalData.id, adData: patch },
         {
           onSuccess: () => {
             track("ek_ad_updated_create_ad_step_3")
@@ -596,7 +642,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
 
     if (currentStep === 2) {
-      if (mode === "edit" && !adFormValid) {
+      if (mode === "edit" && (!adFormValid || !hasEditChanges)) {
         return
       }
 
@@ -645,7 +691,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     (currentStep === 0 && !adFormValid) ||
     (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-    (currentStep === 2 && mode === "edit" && !adFormValid) ||
+    (currentStep === 2 && mode === "edit" && (!adFormValid || !hasEditChanges)) ||
     isBottomSheetOpen
 
   const getButtonText = () => {
