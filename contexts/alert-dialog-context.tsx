@@ -66,7 +66,12 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const renderDesktopContent = () => {
     if (isKycOnboarding && config.content) {
       return (
-        <div className={cn("max-h-[90vh] overflow-y-auto", config.contentClassName)}>
+        <div
+          className={cn(
+            "max-h-[90vh] overflow-y-auto md:max-h-none md:overflow-hidden",
+            config.contentClassName,
+          )}
+        >
           {config.content}
         </div>
       )
@@ -125,7 +130,12 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const renderMobileContent = () => {
     if (isKycOnboarding && config.content) {
       return (
-        <div className={cn("max-h-[90vh] overflow-y-auto", config.contentClassName)}>
+        <div
+          className={cn(
+            "max-h-[90vh] overflow-y-auto md:max-h-none md:overflow-hidden",
+            config.contentClassName,
+          )}
+        >
           {config.content}
         </div>
       )
@@ -188,7 +198,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             className={cn(
               "p-0",
               isKycOnboarding &&
-                "max-h-[90vh] w-[min(880px,95vw)] max-w-[880px] overflow-hidden rounded-3xl border-0",
+                "max-h-[90vh] w-[min(920px,95vw)] max-w-[920px] overflow-hidden rounded-3xl border-0",
               config.contentClassName,
             )}
           >

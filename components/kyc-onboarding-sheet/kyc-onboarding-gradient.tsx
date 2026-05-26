@@ -8,22 +8,35 @@ interface KycOnboardingGradientProps {
  */
 export function KycOnboardingGradient({ variant }: KycOnboardingGradientProps) {
   const lightColor = variant === "desktop" ? "#FF9BA3" : "#FFBFC2"
+  const isDesktop = variant === "desktop"
 
   return (
     <>
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-24 -right-28 h-72 w-[28rem] rounded-full opacity-90"
+        className={
+          isDesktop
+            ? "pointer-events-none absolute -bottom-32 -left-20 h-80 w-[32rem] rounded-full opacity-90"
+            : "pointer-events-none absolute -bottom-24 -right-28 h-72 w-[28rem] rounded-full opacity-90"
+        }
         style={{ backgroundColor: "#6A0000", filter: "blur(80px)" }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-96 rounded-full opacity-85"
+        className={
+          isDesktop
+            ? "pointer-events-none absolute -bottom-24 -left-12 h-72 w-[28rem] rounded-full opacity-85"
+            : "pointer-events-none absolute -bottom-20 -right-20 h-64 w-96 rounded-full opacity-85"
+        }
         style={{ backgroundColor: "#E12E3A", filter: "blur(64px)" }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-12 -right-12 h-56 w-80 rounded-full opacity-75"
+        className={
+          isDesktop
+            ? "pointer-events-none absolute -bottom-16 left-8 h-64 w-96 rounded-full opacity-75"
+            : "pointer-events-none absolute -bottom-12 -right-12 h-56 w-80 rounded-full opacity-75"
+        }
         style={{ backgroundColor: lightColor, filter: "blur(52px)" }}
       />
     </>

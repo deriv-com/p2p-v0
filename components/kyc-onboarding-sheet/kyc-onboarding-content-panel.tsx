@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 import { KycOnboardingChecklist } from "./kyc-onboarding-checklist"
 import type { KycOnboardingStep } from "./kyc-onboarding-step-row"
 
@@ -28,7 +29,13 @@ export function KycOnboardingContentPanel({
   statusLabels,
 }: KycOnboardingContentPanelProps) {
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col overflow-y-auto bg-background px-6 pb-6 pt-6 md:px-8 md:pb-8 md:pt-8">
+    <div
+      className={cn(
+        "relative flex min-h-0 flex-1 flex-col bg-background",
+        "px-6 pb-6 pt-6",
+        "md:h-[600px] md:px-[50px] md:pb-[42px] md:pt-[80px]",
+      )}
+    >
       {onClose && (
         <Button
           onClick={onClose}
@@ -40,15 +47,22 @@ export function KycOnboardingContentPanel({
         </Button>
       )}
 
-      <div className="md:pr-10">
-        <h2 className="text-base font-semibold text-slate-1200">{title}</h2>
-        <p className="mt-2 text-base font-normal text-grayscale-600">{description}</p>
+      <div className="flex min-h-0 flex-1 flex-col md:pr-6">
+        <h2 className="text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
+          {title}
+        </h2>
+        <p className="mt-2 text-base font-normal text-grayscale-600 md:mt-3 md:text-lg md:leading-7">
+          {description}
+        </p>
 
-        <div className="mt-6">
+        <div className="mt-6 min-h-0 flex-1 overflow-y-auto md:mt-8">
           <KycOnboardingChecklist steps={steps} statusLabels={statusLabels} />
         </div>
 
-        <Button className="mt-6 w-full" onClick={onButtonClick}>
+        <Button
+          className="mt-6 w-full shrink-0 md:mt-auto md:h-12 md:rounded-full"
+          onClick={onButtonClick}
+        >
           {buttonLabel}
         </Button>
       </div>
