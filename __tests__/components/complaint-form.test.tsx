@@ -17,6 +17,7 @@ describe("ComplaintForm", () => {
     onClose: jest.fn(),
     onSubmit: jest.fn(),
     orderId: "test-order-123",
+    type: "seller" as const,
   }
 
   beforeEach(() => {
@@ -28,11 +29,11 @@ describe("ComplaintForm", () => {
   it("renders complaint form when open", () => {
     render(<ComplaintForm {...defaultProps} />)
 
-    expect(screen.getByText("Submit a complaint")).toBeInTheDocument()
-    expect(screen.getByText("I didn't receive any payment.")).toBeInTheDocument()
-    expect(screen.getByText("I received less than the agreed amount.")).toBeInTheDocument()
-    expect(screen.getByText("I received more than the agreed amount.")).toBeInTheDocument()
-    expect(screen.getByText("I've received payment from 3rd party")).toBeInTheDocument()
+    expect(screen.getByText("Make a complaint")).toBeInTheDocument()
+    expect(screen.getByText("I didn't receive any payment")).toBeInTheDocument()
+    expect(screen.getByText("I received less than the agreed amount")).toBeInTheDocument()
+    expect(screen.getByText("I received more than the agreed amount")).toBeInTheDocument()
+    expect(screen.getByText("I received payment from a third party")).toBeInTheDocument()
   })
 
   it("does not render when closed", () => {
@@ -56,7 +57,7 @@ describe("ComplaintForm", () => {
     const submitButton = screen.getByText("Submit")
     expect(submitButton).toBeDisabled()
 
-    const firstOption = screen.getByLabelText("I didn't receive any payment.")
+    const firstOption = screen.getByText("I didn't receive any payment")
     fireEvent.click(firstOption)
 
     expect(submitButton).toBeEnabled()
@@ -65,7 +66,7 @@ describe("ComplaintForm", () => {
   it("submits complaint with selected option", async () => {
     render(<ComplaintForm {...defaultProps} />)
 
-    const firstOption = screen.getByLabelText("I didn't receive any payment.")
+    const firstOption = screen.getByText("I didn't receive any payment")
     fireEvent.click(firstOption)
 
     const submitButton = screen.getByText("Submit")
@@ -84,7 +85,7 @@ describe("ComplaintForm", () => {
     render(<ComplaintForm {...defaultProps} />)
 
     // Check if Sheet component is rendered (would need to check for specific mobile classes)
-    expect(screen.getByText("Submit a complaint")).toBeInTheDocument()
+    expect(screen.getByText("Make a complaint")).toBeInTheDocument()
   })
 
   it("renders as sidebar on desktop", () => {
@@ -93,7 +94,7 @@ describe("ComplaintForm", () => {
     render(<ComplaintForm {...defaultProps} />)
 
     // Check if desktop sidebar is rendered
-    expect(screen.getByText("Submit a complaint")).toBeInTheDocument()
+    expect(screen.getByText("Make a complaint")).toBeInTheDocument()
   })
 
   it("shows live chat help text", () => {
@@ -108,7 +109,7 @@ describe("ComplaintForm", () => {
 
     render(<ComplaintForm {...defaultProps} />)
 
-    const firstOption = screen.getByLabelText("I didn't receive any payment.")
+    const firstOption = screen.getByText("I didn't receive any payment")
     fireEvent.click(firstOption)
 
     const submitButton = screen.getByText("Submit")
