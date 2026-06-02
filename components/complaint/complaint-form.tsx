@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Image from "next/image"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -61,7 +61,10 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
     onClose()
   }
 
-  const filteredOptions = COMPLAINT_OPTIONS.filter((option) => option.type === type)
+  const filteredOptions = useMemo(
+    () => COMPLAINT_OPTIONS.filter((option) => option.type === type),
+    [type]
+  )
 
   if (!isOpen) return null
 
