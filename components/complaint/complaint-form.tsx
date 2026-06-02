@@ -74,8 +74,10 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
         {/* Warning card */}
         <Alert variant="warning">
-          <Image src="/icons/warning-icon-new.png" alt="" aria-hidden="true" width={24} height={24} />
-          <AlertTitle className="font-bold text-slate-1200 mb-2">{t("complaint.warningTitle")}</AlertTitle>
+          <AlertTitle className="font-bold text-slate-1200 mb-2 flex items-center gap-2">
+            <Image src="/icons/warning-icon-new.png" alt="" aria-hidden="true" width={20} height={20} />
+            {t("complaint.warningTitle")}
+          </AlertTitle>
           <AlertDescription className="text-sm text-slate-1200">
             {t("complaint.warningBodyPrefix")}
             <strong>{t("complaint.warningBodyBold")}</strong>
