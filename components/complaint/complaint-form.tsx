@@ -68,15 +68,15 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
   const ComplaintContent = () => (
     <div className="flex flex-col">
-      <div className="flex-1 px-6 pb-4 space-y-4 overflow-y-auto">
+      <div className="flex-1 px-6 pt-2 pb-4 space-y-4 overflow-y-auto">
         {/* Subtitle */}
-        <p className="text-sm text-grayscale-600">{t("complaint.subtitle")}</p>
+        <p className="text-grayscale-600">{t("complaint.subtitle")}</p>
 
         {/* Warning card */}
         <Alert variant="warning">
           <InfoCircleIcon />
-          <AlertTitle className="font-bold">{t("complaint.warningTitle")}</AlertTitle>
-          <AlertDescription className="text-sm">
+          <AlertTitle className="font-bold text-slate-1200">{t("complaint.warningTitle")}</AlertTitle>
+          <AlertDescription className="text-sm text-slate-1200">
             {t("complaint.warningBodyPrefix")}
             <strong>{t("complaint.warningBodyBold")}</strong>
             {t("complaint.warningBodySuffix")}
@@ -94,7 +94,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
               type="button"
               onClick={() => setSelectedOption(option.value === selectedOption ? "" : option.value)}
               className={cn(
-                "w-full text-left rounded-lg px-4 py-3 transition-colors bg-grayscale-500",
+                "w-full text-left rounded-lg p-4 transition-colors bg-grayscale-500",
                 selectedOption === option.value
                   ? "border border-slate-1400"
                   : "border border-transparent hover:bg-slate-100",
@@ -114,7 +114,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
             id="complaint-confirm"
             checked={confirmed}
             onCheckedChange={(v) => setConfirmed(v === true)}
-            className="shrink-0 mt-0.5"
+            className="shrink-0 mt-0.5 w-[20px] h-[20px] rounded-sm border-[2px] border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black"
           />
           <Label htmlFor="complaint-confirm" className="font-normal text-grayscale-600 text-sm cursor-pointer leading-snug">
             {t("complaint.confirmCheckbox")}
