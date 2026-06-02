@@ -2,10 +2,12 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 import { InfoCircleIcon } from "@/components/icons/info-circle"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
@@ -71,17 +73,15 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         <p className="text-sm text-slate-500">{t("complaint.subtitle")}</p>
 
         {/* Warning card */}
-        <div className="rounded-xl bg-warning-bg px-4 py-3">
-          <div className="flex items-start gap-2 mb-1">
-            <InfoCircleIcon className="text-warning-icon shrink-0 mt-0.5" />
-            <span className="text-sm font-bold text-slate-1200">{t("complaint.warningTitle")}</span>
-          </div>
-          <p className="text-sm text-slate-1200 pl-7">
+        <Alert variant="warning">
+          <InfoCircleIcon />
+          <AlertTitle className="font-bold text-sm">{t("complaint.warningTitle")}</AlertTitle>
+          <AlertDescription className="text-sm">
             {t("complaint.warningBodyPrefix")}
             <strong>{t("complaint.warningBodyBold")}</strong>
             {t("complaint.warningBodySuffix")}
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
 
         {/* What went wrong? */}
         <p className="text-sm font-medium text-slate-1200">{t("complaint.whatWentWrong")}</p>
@@ -107,7 +107,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         </div>
       </div>
 
-      {/* Bottom row: checkbox + submit button */}
+      {/* Bottom row: checkbox + label + submit button */}
       <div className="px-6 pb-6 pt-2 flex items-center gap-3">
         <Checkbox
           id="complaint-confirm"
@@ -115,9 +115,9 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           onCheckedChange={(v) => setConfirmed(v === true)}
           className="shrink-0"
         />
-        <label htmlFor="complaint-confirm" className="text-sm text-slate-600 cursor-pointer flex-1 leading-snug">
+        <Label htmlFor="complaint-confirm" className="font-normal text-slate-600 cursor-pointer flex-1 leading-snug">
           {t("complaint.confirmCheckbox")}
-        </label>
+        </Label>
         <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="shrink-0">
           {isSubmitting ? (
             <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
