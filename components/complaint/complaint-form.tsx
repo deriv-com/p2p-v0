@@ -70,12 +70,12 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
     <div className="flex flex-col">
       <div className="flex-1 px-6 pb-4 space-y-4 overflow-y-auto">
         {/* Subtitle */}
-        <p className="text-sm text-slate-500">{t("complaint.subtitle")}</p>
+        <p className="text-sm text-grayscale-600">{t("complaint.subtitle")}</p>
 
         {/* Warning card */}
         <Alert variant="warning">
           <InfoCircleIcon />
-          <AlertTitle className="font-bold text-sm">{t("complaint.warningTitle")}</AlertTitle>
+          <AlertTitle className="font-bold">{t("complaint.warningTitle")}</AlertTitle>
           <AlertDescription className="text-sm">
             {t("complaint.warningBodyPrefix")}
             <strong>{t("complaint.warningBodyBold")}</strong>
@@ -84,7 +84,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         </Alert>
 
         {/* What went wrong? */}
-        <p className="text-sm font-medium text-slate-1200">{t("complaint.whatWentWrong")}</p>
+        <p className="text-slate-1200">{t("complaint.whatWentWrong")}</p>
 
         {/* Reason tiles */}
         <div className="space-y-2">
@@ -94,31 +94,33 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
               type="button"
               onClick={() => setSelectedOption(option.value === selectedOption ? "" : option.value)}
               className={cn(
-                "w-full text-left rounded-xl px-4 py-3 transition-colors",
+                "w-full text-left rounded-lg px-4 py-3 transition-colors bg-grayscale-500",
                 selectedOption === option.value
-                  ? "bg-white border border-slate-1200"
-                  : "bg-slate-75 border border-transparent hover:bg-slate-100",
+                  ? "border border-slate-1400"
+                  : "border border-transparent hover:bg-slate-100",
               )}
             >
-              <p className="text-sm font-medium text-slate-1200">{t(`complaint.${option.value}`)}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{t(`complaint.${option.hintKey}`)}</p>
+              <p className="text-slate-1200">{t(`complaint.${option.value}`)}</p>
+              <p className="text-xs text-grayscale-text-muted mt-0.5">{t(`complaint.${option.hintKey}`)}</p>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Bottom row: checkbox + label + submit button */}
-      <div className="px-6 pb-6 pt-2 flex items-center gap-3">
-        <Checkbox
-          id="complaint-confirm"
-          checked={confirmed}
-          onCheckedChange={(v) => setConfirmed(v === true)}
-          className="shrink-0"
-        />
-        <Label htmlFor="complaint-confirm" className="font-normal text-slate-600 cursor-pointer flex-1 leading-snug">
-          {t("complaint.confirmCheckbox")}
-        </Label>
-        <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="shrink-0">
+      {/* Bottom: checkbox + label, button below on mobile / inline on desktop */}
+      <div className="px-6 pb-6 pt-2 flex flex-col md:flex-row md:items-center gap-3">
+        <div className="flex items-start gap-3 flex-1">
+          <Checkbox
+            id="complaint-confirm"
+            checked={confirmed}
+            onCheckedChange={(v) => setConfirmed(v === true)}
+            className="shrink-0 mt-0.5"
+          />
+          <Label htmlFor="complaint-confirm" className="font-normal text-grayscale-600 text-sm cursor-pointer leading-snug">
+            {t("complaint.confirmCheckbox")}
+          </Label>
+        </div>
+        <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="w-full md:w-auto shrink-0">
           {isSubmitting ? (
             <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
           ) : (
