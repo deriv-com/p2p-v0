@@ -9,7 +9,6 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { DialogClose } from "@/components/ui/dialog"
-import { InfoCircleIcon } from "@/components/icons/info-circle"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -75,7 +74,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
         {/* Warning card */}
         <Alert variant="warning">
-          <InfoCircleIcon />
+          <Image src="/icons/warning-icon-new.png" alt="" aria-hidden="true" width={24} height={24} />
           <AlertTitle className="font-bold text-slate-1200 mb-2">{t("complaint.warningTitle")}</AlertTitle>
           <AlertDescription className="text-sm text-slate-1200">
             {t("complaint.warningBodyPrefix")}
@@ -114,7 +113,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
             id="complaint-confirm"
             checked={confirmed}
             onCheckedChange={(v) => setConfirmed(v === true)}
-            className="shrink-0 mt-0.5 w-[20px] h-[20px] rounded-sm border-[2px] border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black"
+            className="shrink-0 mt-0.5 w-[20px] h-[20px] rounded-sm border border-grayscale-600 data-[state=checked]:bg-transparent data-[state=checked]:text-grayscale-600"
           />
           <Label htmlFor="complaint-confirm" className="font-normal text-grayscale-600 text-sm cursor-pointer leading-snug">
             {t("complaint.confirmCheckbox")}
