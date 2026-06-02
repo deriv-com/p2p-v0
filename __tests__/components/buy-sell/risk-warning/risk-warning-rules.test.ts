@@ -154,6 +154,59 @@ describe("evaluateRisk", () => {
     })
   })
 
+  describe("trusted tier bypass (gold / diamond)", () => {
+    it("returns null for a gold advertiser even when block count would trigger", () => {
+      const ad = makeAd({ user: { trade_band: "gold", blocked_by_count: 50 } })
+      expect(evaluateRisk(ad)).toBeNull()
+    })
+
+    it("returns null for a diamond advertiser even when block count would trigger", () => {
+      const ad = makeAd({ user: { trade_band: "diamond", blocked_by_count: 50 } })
+      expect(evaluateRisk(ad)).toBeNull()
+    })
+
+    it("returns null for a gold advertiser even when completion rate would trigger", () => {
+      const ad = makeAd({
+        type: "buy",
+        user: {
+          trade_band: "gold",
+          completion_rate_sell_30day: 10,
+          order_count_buy_30day: 10,
+          order_count_sell_30day: 10,
+        },
+      })
+      expect(evaluateRisk(ad)).toBeNull()
+    })
+
+    it("returns null for a diamond advertiser even when completion rate would trigger", () => {
+      const ad = makeAd({
+        type: "buy",
+        user: {
+          trade_band: "diamond",
+          completion_rate_sell_30day: 10,
+          order_count_buy_30day: 10,
+          order_count_sell_30day: 10,
+        },
+      })
+      expect(evaluateRisk(ad)).toBeNull()
+    })
+
+    it("still evaluates risk for a bronze advertiser", () => {
+      const ad = makeAd({ user: { trade_band: "bronze", blocked_by_count: 30 } })
+      expect(evaluateRisk(ad)?.type).toBe("high_block_count")
+    })
+
+    it("still evaluates risk for a silver advertiser", () => {
+      const ad = makeAd({ user: { trade_band: "silver", blocked_by_count: 30 } })
+      expect(evaluateRisk(ad)?.type).toBe("high_block_count")
+    })
+
+    it("still evaluates risk when trade_band is undefined", () => {
+      const ad = makeAd({ user: { blocked_by_count: 30 } })
+      expect(evaluateRisk(ad)?.type).toBe("high_block_count")
+    })
+  })
+
   describe("no warning", () => {
     it("returns null when no thresholds match", () => {
       const ad = makeAd({
