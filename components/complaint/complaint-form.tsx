@@ -69,30 +69,29 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
     <>
       <div className="fixed inset-0 z-40 bg-black/80" onClick={handleClose} />
       <div
-        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
-          isMobile ? "inset-0 w-full" : "w-full"
-        }`}
+        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${isMobile ? "inset-0 w-full" : "w-full"
+          }`}
       >
         <div className="max-w-xl mx-auto flex flex-col w-full h-full">
-          {/* Close button */}
-          <div className="flex items-center justify-end px-4 py-3">
+          {/* Back button */}
+          <div className="flex items-center px-4 py-3">
             <Button variant="ghost" size="sm" onClick={handleClose} className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
+              <Image src="/icons/arrow-left-icon.png" alt={t("order.goBack")} width={24} height={24} />
             </Button>
           </div>
 
           {/* Title + subtitle */}
-          <div className="px-4 pb-4">
+          <div className="px-4 pb-4 pt-6">
             <h2 className="text-2xl font-bold">{t("complaint.title")}</h2>
             <p className="text-sm text-grayscale-600 mt-1">{t("complaint.subtitle")}</p>
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 px-4 space-y-4 overflow-y-auto">
+          <div className="px-4 space-y-4 overflow-y-auto">
             {/* Warning card */}
             <Alert variant="warning">
               <div className="flex gap-2">
-                <Image src="/icons/warning-icon-new.png" alt="" aria-hidden="true" width={24} height={24} className="shrink-0 mt-0.5" />
+                <Image src="/icons/warning-icon-new.png" alt="" aria-hidden="true" width={24} height={24} className="self-start" />
                 <div>
                   <AlertTitle className="font-bold text-slate-1200 mb-1">{t("complaint.warningTitle")}</AlertTitle>
                   <AlertDescription className="text-sm text-slate-1200">
