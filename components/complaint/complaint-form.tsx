@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { DialogClose } from "@/components/ui/dialog"
 import { InfoCircleIcon } from "@/components/icons/info-circle"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
@@ -75,7 +76,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         {/* Warning card */}
         <Alert variant="warning">
           <InfoCircleIcon />
-          <AlertTitle className="font-bold text-slate-1200">{t("complaint.warningTitle")}</AlertTitle>
+          <AlertTitle className="font-bold text-slate-1200 mb-2">{t("complaint.warningTitle")}</AlertTitle>
           <AlertDescription className="text-sm text-slate-1200">
             {t("complaint.warningBodyPrefix")}
             <strong>{t("complaint.warningBodyBold")}</strong>
@@ -83,11 +84,10 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           </AlertDescription>
         </Alert>
 
-        {/* What went wrong? */}
-        <p className="text-slate-1200">{t("complaint.whatWentWrong")}</p>
-
         {/* Reason tiles */}
         <div className="space-y-2">
+          {/* What went wrong? */}
+          <p className="text-slate-1200">{t("complaint.whatWentWrong")}</p>
           {filteredOptions.map((option) => (
             <button
               key={option.id}
@@ -97,7 +97,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
                 "w-full text-left rounded-lg p-4 transition-colors bg-grayscale-500",
                 selectedOption === option.value
                   ? "border border-slate-1400"
-                  : "border border-transparent hover:bg-slate-100",
+                  : "border border-transparent",
               )}
             >
               <p className="text-slate-1200">{t(`complaint.${option.value}`)}</p>
@@ -148,11 +148,17 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md sm:rounded-[32px] p-0 gap-0 overflow-hidden">
+      <DialogContent className="sm:max-w-xl sm:rounded-[32px] p-0 gap-0 overflow-hidden">
         <DialogHeader className="px-6 pt-6 pb-0">
           <DialogTitle className="tracking-normal font-bold text-2xl text-left">
             {t("complaint.title")}
           </DialogTitle>
+          <DialogClose
+            aria-label={t("common.close")}
+            className="absolute right-4 top-4 rounded-full p-2 hover:bg-slate-100 focus:outline-none focus-visible:ring-2"
+          >
+            <Image src="/icons/close-icon.png" alt="" aria-hidden="true" width={24} height={24} />
+          </DialogClose>
         </DialogHeader>
         <ComplaintContent />
       </DialogContent>
