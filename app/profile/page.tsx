@@ -11,7 +11,7 @@ import { useMe } from "@/hooks/use-api-queries"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
 
 export default function ProfilePage() {
@@ -92,18 +92,12 @@ export default function ProfilePage() {
   useEffect(() => {
     if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
-      showAlert({
-        title: t("profile.gettingStarted"),
-        description: (
-          <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet route="profile" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
+      showAlert(createKycOnboardingAlertConfig({
+        route: "profile",
+        onClose: hideAlert,
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
-      })
+      }))
     }
   }, [shouldShowKyc, showKycPopup, showAlert, hideAlert, t])
 

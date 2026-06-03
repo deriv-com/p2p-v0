@@ -7,6 +7,8 @@ export interface AlertDialogConfig {
   cancelText?: string
   variant?: "default" | "destructive"
   type?: "warning" | "info" | "error" | "success"
+  size?: "default" | "kycOnboarding"
+  contentClassName?: string
   content?: React.ReactNode
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void

@@ -648,7 +648,7 @@ export default function OrderDetailsPage() {
                             width={24}
                             className="-mt-[2px]"
                           />
-                          <p className="text-sm text-grayscale-100">{t("orderDetails.cashTransactionWarning")}</p>
+                          <p className="text-sm text-slate-1200">{t("orderDetails.cashTransactionWarning")}</p>
                         </div>
                       </div>
 

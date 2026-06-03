@@ -22,8 +22,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { VisibilityStatusDialog } from "./visibility-status-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { FEATURE_FLAGS } from "@/lib/feature-flags"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useDeleteAd, useToggleAdActiveStatus } from "@/hooks/use-api-queries"
 import { useTrackers } from "@/analytics/useTrackers"
 
@@ -270,22 +269,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
   const handleOpenDrawer = (ad: Ad) => {
     track("ek_manage_ad_my_ads")
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
-      })
+      showAlert(createKycOnboardingAlertConfig({ route: "ads",
+        onClose: hideAlert }))
     } else {
       setSelectedAd(ad)
       setDrawerOpen(true)
@@ -504,7 +489,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
-                    {FEATURE_FLAGS.closedGroup && ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
+                    {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
                     {hasVisibilityStatus && (
                       <Button
                         variant="ghost"

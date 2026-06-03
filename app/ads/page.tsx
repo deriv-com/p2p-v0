@@ -19,7 +19,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
 
 interface StatusData {
@@ -87,24 +87,12 @@ export default function AdsPage() {
 
   useEffect(() => {
     if (showKycPopup) {
-      let title = t("profile.gettingStarted")
-
-      if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-      else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-      else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-      showAlert({
-        title,
-        description: (
-          <div className="space-y-4 my-2">
-            <KycOnboardingSheet route="ads" onClose={hideAlert} />
-          </div>
-        ),
-        confirmText: undefined,
-        cancelText: undefined,
+      showAlert(createKycOnboardingAlertConfig({
+        route: "ads",
+        onClose: hideAlert,
         onConfirm: () => setShowKycPopup(false),
         onCancel: () => setShowKycPopup(false),
-      })
+      }))
     }
   }, [showKycPopup, showAlert, hideAlert, t, isPoiExpired, isPoaExpired])
 

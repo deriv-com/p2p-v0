@@ -8,7 +8,7 @@ const config: Config = {
     "./lib/utils.ts",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet"],
+  safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet", "!w-[880px]", "!max-w-[880px]", "!w-[min(880px,95vw)]"],
   theme: {
     extend: {
       opacity: {
@@ -182,6 +182,12 @@ const config: Config = {
         red: {
           withdraw: "#E6190E",
           50: "#e6190e14",
+        },
+        "onboarding-gradient": {
+          "dark-red": "#6A0000",
+          "medium-red": "#E12E3A",
+          "light-red-desktop": "#FF9BA3",
+          "light-red-mobile": "#FFBFC2",
         },
       },
       borderRadius: {

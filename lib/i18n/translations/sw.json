@@ -286,16 +286,30 @@
     "loading": "Inapakua salio..."
   },
   "complaint": {
-    "title": "Wasilisha malalamiko",
-    "buyer_not_paid": "Sikupokea malipo yoyote.",
-    "buyer_underpaid": "Nilipokea chini ya kiasi kilichokubaliwa.",
-    "buyer_overpaid": "Nilipokea zaidi ya kiasi kilichokubaliwa.",
-    "buyer_third_party_payment_method": "Nilipokea malipo kutoka kwa pande ya 3.",
-    "seller_not_released": "Nimefanya malipo, lakini muuzaji hajaachilia fedha.",
-    "buyer_underpaid_buyer": "Sikuweza kukamilisha malipo kamili.",
-    "buyer_overpaid_buyer": "Nililipa zaidi ya kiasi kilichokubaliwa.",
+    "title": "Fanya malalamiko",
+    "buyer_not_paid": "Sikupokea malipo yoyote",
+    "buyer_underpaid": "Nilipokea chini ya kiasi kilichokubaliwa",
+    "buyer_overpaid": "Nilipokea zaidi ya kiasi kilichokubaliwa",
+    "buyer_third_party_payment_method": "Nilipokea malipo kutoka kwa mtu wa tatu",
+    "seller_not_released": "Nimefanya malipo, lakini muuzaji hajaachilia fedha",
+    "buyer_underpaid_buyer": "Sikuweza kukamilisha malipo kamili",
+    "buyer_overpaid_buyer": "Nililipa zaidi ya kiasi kilichokubaliwa",
     "helpText": "Ikiwa tatizo lako halijaorodheshwa, wasiliana nasi kupitia mazungumzo moja kwa moja.",
-    "submit": "Tuma"
+    "submit": "Tuma",
+    "subtitle": "Tunaangalia malalamiko ndani ya masaa 6. Pande zote mbili zitaombwa kutoa ushahidi.",
+    "warningTitle": "Malalamiko yanarekodiwa kwenye akaunti yako",
+    "warningBodyPrefix": "Ukipuuza majibu au kutoa taarifa za uongo, akaunti yako inaweza ",
+    "warningBodyBold": "kufungwa kabisa",
+    "warningBodySuffix": ".",
+    "whatWentWrong": "Nini kilienda vibaya?",
+    "confirmCheckbox": "Ninathibitisha kwamba taarifa zangu ni sahihi. Nitajibu maswali ya ufuatiliaji ndani ya masaa 6.",
+    "buyer_not_paid_hint": "Tutauliza akaunti ipi, ulipoangalia na picha ya hati yako ya benki.",
+    "buyer_underpaid_hint": "Tutauliza kiasi ulichopokea na picha ya hati yako ya benki.",
+    "buyer_overpaid_hint": "Tutauliza kiasi ulichopokea na picha ya hati yako ya benki.",
+    "buyer_third_party_payment_method_hint": "Tutauliza jina halisi la mtumaji linaloonyeshwa kwenye hati yako ya benki.",
+    "seller_not_released_hint": "Tutauliza uthibitisho wako wa malipo na picha ya hati yako ya benki.",
+    "buyer_underpaid_buyer_hint": "Tutauliza kiasi ulicholipa na picha ya hati yako ya benki.",
+    "buyer_overpaid_buyer_hint": "Tutauliza kiasi ulicholipa na picha ya hati yako ya benki."
   },
   "filter": {
     "fromFollowing": "Kutoka kwa wanaofuatwa",
@@ -705,5 +719,17 @@
     "visibilityClosedGroupDesc": "Tangazo lako litaonekana tu kwa watumiaji walio kwenye orodha yako ya kikundi kilichofungwa.",
     "editList": "Hariri orodha",
     "failedToLoadAd": "Imeshindwa kupakia maelezo ya tangazo. Tafadhali jaribu tena."
+  },
+  "kyc": {
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   }
 }

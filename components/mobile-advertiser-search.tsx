@@ -17,7 +17,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
 import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
 import { evaluateRisk, type RiskWarningResult } from "@/components/buy-sell/risk-warning/risk-warning-rules"
@@ -118,22 +118,8 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
             router.push(`/advertiser/${advertiserId}`)
             onClose()
         } else {
-            let title = t("profile.gettingStarted")
-
-            if (isPoiExpired && isPoaExpired) title = t("profile.verificationExpired")
-            else if (isPoiExpired) title = t("profile.identityVerificationExpired")
-            else if (isPoaExpired) title = t("profile.addressVerificationExpired")
-
-            showAlert({
-                title,
-                description: (
-                    <div className="space-y-4 my-2">
-                        <KycOnboardingSheet route="markets" onClose={hideAlert} />
-                    </div>
-                ),
-                confirmText: undefined,
-                cancelText: undefined,
-            })
+      showAlert(createKycOnboardingAlertConfig({ route: "markets",
+        onClose: hideAlert }))
         }
     }
 

@@ -286,16 +286,30 @@
     "loading": "잔액을 로딩 중입니다..."
   },
   "complaint": {
-    "title": "불만 제출",
-    "buyer_not_paid": "결제를 받지 못했습니다.",
-    "buyer_underpaid": "합의한 금액보다 적게 받았습니다.",
-    "buyer_overpaid": "합의한 금액보다 많이 받았습니다.",
-    "buyer_third_party_payment_method": "제3자로부터 결제를 받았습니다.",
-    "seller_not_released": "결제했지만 판매자가 자금을 해제하지 않았습니다.",
-    "buyer_underpaid_buyer": "전체 결제를 완료할 수 없었습니다.",
-    "buyer_overpaid_buyer": "합의한 금액보다 더 많이 지불했습니다.",
+    "title": "불만 제기",
+    "buyer_not_paid": "결제를 받지 못했습니다",
+    "buyer_underpaid": "합의한 금액보다 적게 받았습니다",
+    "buyer_overpaid": "합의한 금액보다 많이 받았습니다",
+    "buyer_third_party_payment_method": "제3자로부터 결제를 받았습니다",
+    "seller_not_released": "결제했지만 판매자가 자금을 해제하지 않았습니다",
+    "buyer_underpaid_buyer": "전체 결제를 완료할 수 없었습니다",
+    "buyer_overpaid_buyer": "합의한 금액보다 더 많이 지불했습니다",
     "helpText": "문제가 나열되지 않은 경우 실시간 채팅으로 문의하세요.",
-    "submit": "제출"
+    "submit": "제출",
+    "subtitle": "불만 사항은 6시간 내에 검토됩니다. 양측 모두 증거를 제출하도록 요청받습니다.",
+    "warningTitle": "불만 사항은 계정에 기록됩니다",
+    "warningBodyPrefix": "후속 조치를 무시하거나 허위 정보를 제공하면 계정이 ",
+    "warningBodyBold": "영구적으로 폐쇄될 수 있습니다",
+    "warningBodySuffix": ".",
+    "whatWentWrong": "무슨 문제가 있었나요?",
+    "confirmCheckbox": "제가 제공한 정보가 정확함을 확인합니다. 6시간 이내에 후속 조치에 응답하겠습니다.",
+    "buyer_not_paid_hint": "어떤 계좌를 언제 확인했는지와 거래 내역 스크린샷을 요청드립니다.",
+    "buyer_underpaid_hint": "수령 금액과 거래 내역 스크린샷을 요청드립니다.",
+    "buyer_overpaid_hint": "수령 금액과 거래 내역 스크린샷을 요청드립니다.",
+    "buyer_third_party_payment_method_hint": "거래 내역에 표시된 실제 발신인 이름을 요청드립니다.",
+    "seller_not_released_hint": "결제 확인서와 거래 내역 스크린샷을 요청드립니다.",
+    "buyer_underpaid_buyer_hint": "지불 금액과 거래 내역 스크린샷을 요청드립니다.",
+    "buyer_overpaid_buyer_hint": "지불 금액과 거래 내역 스크린샷을 요청드립니다."
   },
   "filter": {
     "fromFollowing": "팔로잉 중에서",
@@ -743,5 +757,17 @@
     "visibilityClosedGroupDesc": "광고가 비공개 그룹 목록의 사용자에게만 표시됩니다.",
     "editList": "목록 편집",
     "failedToLoadAd": "광고 세부정보를 불러오지 못했습니다. 다시 시도하세요."
+  },
+  "kyc": {
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   }
 }

@@ -14,7 +14,13 @@ export interface RiskWarningResult {
   blockCount?: number
 }
 
+const TRUSTED_TIERS = ["gold", "diamond"] as const
+
 export function evaluateRisk(ad: Advertisement): RiskWarningResult | null {
+  if (ad.user.trade_band && TRUSTED_TIERS.includes(ad.user.trade_band as (typeof TRUSTED_TIERS)[number])) {
+    return null
+  }
+
   const isBuyAdvert = ad.type === "buy"
   const blockCount = ad.user.blocked_by_count ?? 0
 

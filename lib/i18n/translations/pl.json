@@ -286,16 +286,30 @@
     "loading": "Ładowanie salda..."
   },
   "complaint": {
-    "title": "Złóż reklamację",
-    "buyer_not_paid": "Nie otrzymałem żadnej płatności.",
-    "buyer_underpaid": "Otrzymałem mniej niż uzgodniona kwota.",
-    "buyer_overpaid": "Otrzymałem więcej niż uzgodniona kwota.",
-    "buyer_third_party_payment_method": "Otrzymałem płatność od strony trzeciej.",
-    "seller_not_released": "Dokonałem płatności, ale sprzedawca nie wypłacił środków.",
-    "buyer_underpaid_buyer": "Nie mogłem ukończyć pełnej płatności.",
-    "buyer_overpaid_buyer": "Zapłaciłem więcej niż uzgodniona kwota.",
+    "title": "Złóż skargę",
+    "buyer_not_paid": "Nie otrzymałem żadnej płatności",
+    "buyer_underpaid": "Otrzymałem mniej niż uzgodniona kwota",
+    "buyer_overpaid": "Otrzymałem więcej niż uzgodniona kwota",
+    "buyer_third_party_payment_method": "Otrzymałem płatność od strony trzeciej",
+    "seller_not_released": "Dokonałem płatności, ale sprzedawca nie wypłacił środków",
+    "buyer_underpaid_buyer": "Nie mogłem ukończyć pełnej płatności",
+    "buyer_overpaid_buyer": "Zapłaciłem więcej niż uzgodniona kwota",
     "helpText": "Jeśli Twój problem nie jest na liście, skontaktuj się z nami przez czat na żywo.",
-    "submit": "Wyślij"
+    "submit": "Wyślij",
+    "subtitle": "Rozpatrujemy skargi w ciągu 6 godzin. Obie strony zostaną poproszone o przedstawienie dowodów.",
+    "warningTitle": "Skargi są rejestrowane na Twoim koncie",
+    "warningBodyPrefix": "Jeśli zignorujesz odpowiedzi lub podasz fałszywe informacje, Twoje konto może zostać ",
+    "warningBodyBold": "trwale zamknięte",
+    "warningBodySuffix": ".",
+    "whatWentWrong": "Co poszło nie tak?",
+    "confirmCheckbox": "Potwierdzam, że moje informacje są dokładne. Odpowiem na wiadomości w ciągu 6 godzin.",
+    "buyer_not_paid_hint": "Zapytamy o konto, kiedy je sprawdziłeś i screenshot z wyciągu bankowego.",
+    "buyer_underpaid_hint": "Zapytamy o otrzymaną kwotę i screenshot z wyciągu bankowego.",
+    "buyer_overpaid_hint": "Zapytamy o otrzymaną kwotę i screenshot z wyciągu bankowego.",
+    "buyer_third_party_payment_method_hint": "Zapytamy o rzeczywistą nazwę nadawcy widoczną na wyciągu bankowym.",
+    "seller_not_released_hint": "Zapytamy o potwierdzenie płatności i screenshot z wyciągu bankowego.",
+    "buyer_underpaid_buyer_hint": "Zapytamy o zapłaconą kwotę i screenshot z wyciągu bankowego.",
+    "buyer_overpaid_buyer_hint": "Zapytamy o zapłaconą kwotę i screenshot z wyciągu bankowego."
   },
   "filter": {
     "fromFollowing": "Od obserwowanych",
@@ -739,5 +753,17 @@
     "visibilityClosedGroupDesc": "Twoje ogłoszenie będzie widoczne tylko dla użytkowników z Twojej listy grupy zamkniętej.",
     "editList": "Edytuj listę",
     "failedToLoadAd": "Nie udało się załadować szczegółów ogłoszenia. Spróbuj ponownie."
+  },
+  "kyc": {
+    "finishAccountSetup": "Finish account setup",
+    "completeRemainingSteps": "Complete these steps to unlock full access to Deriv P2P.",
+    "continueVerification": "Continue verification",
+    "heroLogoAlt": "Deriv P2P",
+    "heroHeadline": "One quick check and you're ready to trade",
+    "heroBenefitPlaceOrder": "Place order",
+    "heroBenefitPublishAds": "Publish ads",
+    "heroBenefitHigherLimits": "Higher limits",
+    "heroBenefitFasterWithdrawals": "Faster withdrawals",
+    "statusInReview": "In review"
   }
 }
