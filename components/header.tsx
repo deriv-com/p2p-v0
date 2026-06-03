@@ -89,7 +89,7 @@ export default function Header() {
             })}
           </nav>
         </div>
-        <div className="h-12 flex items-center space-x-2">
+        <div className="h-12 flex items-center gap-x-2">
           {(pathname === "/" || pathname.startsWith("/advertiser")) && (
             <Button
               onClick={() => { track("ek_search_markets"); setUserIsSearchOpen(true) }}

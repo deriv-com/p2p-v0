@@ -668,16 +668,16 @@ export default function BuySellPage() {
               <Table>
                 <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                   <TableRow className="text-xs">
-                    <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 lg:ps-0 text-slate-600 font-normal">
                       <Skeleton className="bg-grayscale-500 h-5 w-32" />
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                       <Skeleton className="bg-grayscale-500 h-5 w-32" />
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
                       <Skeleton className="bg-grayscale-500 h-5 w-32" />
                     </TableHead>
-                    <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    <TableHead className="text-end py-4 px-4 lg:pe-0"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -686,7 +686,7 @@ export default function BuySellPage() {
                       key={index}
                       className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                     >
-                      <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
                           <Skeleton className="bg-grayscale-500 h-[40px] w-[40px] flex-shrink-0 rounded-full mr-[8px]" />
                           <div className="flex-1">
@@ -706,7 +706,7 @@ export default function BuySellPage() {
                           <Skeleton className="bg-grayscale-500 h-3 w-28" />
                         </div>
                       </TableCell>
-                      <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:pe-0 text-end align-middle row-start-3 whitespace-nowrap">
                         <Skeleton className="bg-grayscale-500 h-8 w-20 ml-auto" />
                       </TableCell>
                     </TableRow>
@@ -733,16 +733,16 @@ export default function BuySellPage() {
               <Table>
                 <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                   <TableRow className="text-xs">
-                    <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 lg:ps-0 text-slate-600 font-normal">
                       {t("market.advertisers")}
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                       {t("market.rates")}
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
                       {t("market.paymentMethods")}
                     </TableHead>
-                    <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    <TableHead className="text-end py-4 px-4 lg:pe-0"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -752,12 +752,12 @@ export default function BuySellPage() {
                       className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                       key={ad.id}
                     >
-                      <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl mr-[8px]">
                             {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                             <div
-                              className={`absolute bottom-0 right-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                              className={`absolute bottom-0 end-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
                                 }`}
                             />
                           </div>
@@ -900,7 +900,7 @@ export default function BuySellPage() {
                           ))}
                         </div>
                       </TableCell>
-                      <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:pe-0 text-end align-middle row-start-3 whitespace-nowrap">
                         {Number(userId) !== ad.user.id && (
                           <Button
                             variant={ad.type === "buy" ? "destructive" : "secondary"}

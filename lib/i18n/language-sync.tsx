@@ -3,11 +3,16 @@
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { useLanguageStore } from "@/stores/language-store"
-import { locales, defaultLocale, type Locale } from "./config"
+import { locales, defaultLocale, isRtlLocale, type Locale } from "./config"
+
+function applyDocumentLocale(locale: Locale) {
+  document.documentElement.lang = locale
+  document.documentElement.dir = isRtlLocale(locale) ? "rtl" : "ltr"
+}
 
 export function LanguageSync() {
   const searchParams = useSearchParams()
-  const setLocale = useLanguageStore((state) => state.setLocale)
+  const { locale, setLocale } = useLanguageStore()
 
   useEffect(() => {
     const langParam = searchParams.get("lang")
@@ -45,6 +50,12 @@ export function LanguageSync() {
       }
     }
   }, [searchParams, setLocale])
+
+  // Sync document lang/dir whenever the active locale changes (covers all
+  // supported locales including RTL Arabic and all LTR locales).
+  useEffect(() => {
+    applyDocumentLocale(locale)
+  }, [locale])
 
   return null
 }

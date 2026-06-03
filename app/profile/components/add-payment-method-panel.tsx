@@ -278,7 +278,7 @@ export default function AddPaymentMethodPanel({
                 variant="ghost"
                 size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
                 <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
               </Button>

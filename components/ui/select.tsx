@@ -36,7 +36,7 @@ const SelectTrigger = React.forwardRef<
           alt="Dropdown icon"
           width={24}
           height={24}
-          className="ml-[8px] transition-transform duration-200 group-data-[state=open]:rotate-180"
+          className="ms-[8px] transition-transform duration-200 group-data-[state=open]:rotate-180"
         />
       </SelectPrimitive.Icon>
     )}
@@ -100,7 +100,7 @@ const SelectLabel = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
 >(({ className, ...props }, ref) => (
-  <SelectPrimitive.Label ref={ref} className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)} {...props} />
+  <SelectPrimitive.Label ref={ref} className={cn("py-1.5 ps-8 pe-2 text-sm font-semibold", className)} {...props} />
 ))
 SelectLabel.displayName = SelectPrimitive.Label.displayName
 
@@ -111,7 +111,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-4 pr-2 text-sm outline-none hover:bg-black hover:text-white focus:bg-black focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 ps-4 pe-2 text-sm outline-none hover:bg-black hover:text-white focus:bg-black focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}

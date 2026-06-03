@@ -761,7 +761,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileSheet(null)}>
         <div
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
+          className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="p-4">
@@ -935,7 +935,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-start">
               {t("wallet.reviewAndConfirm")}
             </h2>
             <div className="mb-6">
@@ -1062,7 +1062,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <span className="text-base font-normal text-grayscale-text-muted">
                         {t("wallet.youllReceive")}
                       </span>
-                      <div className="text-right">
+                      <div className="text-end">
                         <div className="text-base font-normal text-slate-1200">
                           ≈
                           {formatAmountByCurrency(
@@ -1138,7 +1138,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
         <div
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
+          className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="pt-2 px-4 pb-8">
@@ -1272,7 +1272,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <span className="text-base font-normal text-grayscale-text-muted">
                         {t("wallet.youllReceive")}
                       </span>
-                      <div className="text-right">
+                      <div className="text-end">
                         <div className="text-base font-normal text-slate-1200">
                           ≈
                           {formatAmountByCurrency(
@@ -1682,7 +1682,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 </div>
                 <div className="flex justify-between items-start">
                   <span className="text-black/50 text-xs font-normal">{t("wallet.youllReceive")}:</span>
-                  <div className="text-right">
+                  <div className="text-end">
                     <div className="text-[#181C25] text-xs font-normal">
                       {transferFeeCalculation && exchangeRateData
                         ? `${formatAmountByCurrency(transferFeeCalculation.youllReceive, destinationWalletData?.currency || "")} ${destinationWalletData?.currency} (${countdown}s)`
@@ -1702,7 +1702,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </div>
             )}
 
-            <div className="hidden md:block absolute top-full right-0 mt-6">
+            <div className="hidden md:block absolute top-full end-0 mt-6">
               <Button
                 onClick={handleTransferClick}
                 disabled={

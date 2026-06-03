@@ -62,7 +62,7 @@ export default function MobileFooterNav() {
   const isWalletActive = pathname.startsWith("/wallet")
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
+    <div className="fixed bottom-0 inset-x-0 bg-white border-t md:hidden z-40">
       <div className={cn("grid grid-cols-4 min-h-16 relative", showWallet && "grid-cols-5")}>
         <Link
           href={getHomeUrl(isV1Signup, "home")}
@@ -82,7 +82,7 @@ export default function MobileFooterNav() {
             "text-slate-1200": !isMarketActive,
           })}
         >
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-px bg-grayscale-200"></div>
+          <div className="absolute start-0 top-1/2 -translate-y-1/2 h-8 w-px bg-grayscale-200"></div>
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
             <SvgIcon
               src={isMarketActive ? MarketSelectedIcon : MarketIcon}

@@ -292,17 +292,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 lg:ps-0 pr-4 text-slate-600 font-normal">
                 {t("myAds.adType")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.availableAmount")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.paymentMethods")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
-              <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
+              <TableHead className="text-start py-4 pl-4 lg:pe-0 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -311,7 +311,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                 key={index}
                 className="grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
               >
-                <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
+                <TableCell className="p-2 lg:ps-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
                   <div className="space-y-2">
                     <Skeleton className="h-6 w-24 bg-grayscale-500" />
                     <Skeleton className="h-4 w-32 bg-grayscale-500" />
@@ -336,7 +336,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   <Skeleton className="h-6 w-16 rounded-full bg-grayscale-500" />
                 </TableCell>
 
-                <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1">
+                <TableCell className="p-2 lg:pl-4 lg:pe-0 lg:py-4 align-top row-start-1">
                   <div className="flex items-end justify-end">
                     <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500" />
                   </div>
@@ -371,17 +371,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 lg:ps-0 pr-4 text-slate-600 font-normal">
                 {t("myAds.adType")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.availableAmount")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.paymentMethods")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
-              <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
+              <TableHead className="text-start py-4 pl-4 lg:pe-0 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -404,7 +404,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                 >
                   <TableCell
                     className={cn(
-                      "px-2 py-0 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      "px-2 py-0 lg:ps-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -501,7 +501,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                       </Button>
                     )}
                   </TableCell>
-                  <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="p-0 lg:pl-4 lg:pe-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
                       {isMobile ? (
                         <Button

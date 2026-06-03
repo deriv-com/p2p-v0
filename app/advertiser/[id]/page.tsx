@@ -476,7 +476,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
               <Button variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
-                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
               </Button>
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
