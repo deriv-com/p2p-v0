@@ -263,13 +263,13 @@ export default function AddPaymentMethodPanel({
               alt="Search"
               width={24}
               height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute start-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("paymentMethod.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
+              className="text-base ps-10 pe-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg text-start"
               autoComplete="off"
               autoFocus
             />

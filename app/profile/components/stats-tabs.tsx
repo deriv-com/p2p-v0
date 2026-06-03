@@ -168,7 +168,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-stats.svg" width={20} height={20} />
-              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.stats")}</span>
+              <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.stats")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
                 alt="Chevron right"
@@ -178,7 +178,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               />
             </div>
             {showStatsSidebar && (
-              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+              <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
@@ -195,7 +195,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
-            <Divider className="ml-[60px]" />
+            <Divider className="ms-[60px]" />
             <div
               onClick={() => {
                 track("ek_payment_methods_profile")
@@ -204,7 +204,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-pm.svg" width={20} height={20} />
-              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.paymentMethods")}</span>
+              <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.paymentMethods")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
                 alt="Chevron right"
@@ -214,7 +214,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               />
             </div>
             {showPaymentMethodsSidebar && (
-              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+              <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
@@ -247,7 +247,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 )}
               </div>
             )}
-            <Divider className="ml-[60px]" />
+            <Divider className="ms-[60px]" />
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.settings")}</div>
             <div
               onClick={() => {
@@ -257,7 +257,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-follows.svg" width={20} height={20} />
-              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.follows")}</span>
+              <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.follows")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
                 alt="Chevron right"
@@ -267,7 +267,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               />
             </div>
             {showFollowsSidebar && (
-              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+              <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
@@ -286,7 +286,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             )}
             {showClosedGroupTab && (
               <>
-                <Divider className="ml-[60px]" />
+                <Divider className="ms-[60px]" />
                 <div
                   onClick={() => {
                     track("ek_closed_group_profile")
@@ -295,7 +295,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                 >
                   <Image src="/icons/star-light.svg" width={20} height={20} />
-                  <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.closedGroup")}</span>
+                  <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.closedGroup")}</span>
                   <Image
                     src="/icons/chevron-right-gray.png"
                     alt="Chevron right"
@@ -306,7 +306,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </>)}
             {showClosedGroupTab && showClosedGroupSidebar && (
-              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+              <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
@@ -323,7 +323,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
-            <Divider className="ml-[60px]" />
+            <Divider className="ms-[60px]" />
             <div
               onClick={() => {
                 track("ek_blocked_users_profile")
@@ -332,7 +332,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-blocks.svg" width={20} height={20} />
-              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.blocked")}</span>
+              <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.blocked")}</span>
               <Image
                 src="/icons/chevron-right-sm.png"
                 alt="Chevron right"
@@ -342,7 +342,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               />
             </div>
             {showBlockedSidebar && (
-              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+              <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
@@ -359,7 +359,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
-            <Divider className="ml-[60px]" />
+            <Divider className="ms-[60px]" />
             <div
               onClick={() => {
                 track("ek_trade_partners_profile")
@@ -368,7 +368,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/counterparties.svg" width={20} height={20} />
-              <span className="text-sm font-normal text-gray-900 ml-4">{t("profile.counterparties")}</span>
+              <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.counterparties")}</span>
               <Image
                 src="/icons/chevron-right-sm.png"
                 alt="Chevron right"
@@ -378,7 +378,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               />
             </div>
             {showCounterpartiesSidebar && (
-              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+              <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
@@ -395,7 +395,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 </div>
               </div>
             )}
-            <Divider className="ml-[60px]" />
+            <Divider className="ms-[60px]" />
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.support")}</div>
             <div
               onClick={() => {
@@ -405,7 +405,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <Image src="/icons/profile-help-centre.svg" width={20} height={20} />
-              <span className="text-sm font-normal text-gray-900 ml-4">{t("navigation.p2pHelpCentre")}</span>
+              <span className="text-sm font-normal text-gray-900 ms-4">{t("navigation.p2pHelpCentre")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
                 alt="Chevron right"
@@ -416,13 +416,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
             </div>
             {!userData?.feedback_exist && (
               <>
-                <Divider className="ml-[60px]" />
+                <Divider className="ms-[60px]" />
                 <div
                   onClick={() => setShowFeedbackDialog(true)}
                   className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                 >
                   <Image src="/icons/ic-feedback.svg" width={20} height={20} alt="" />
-                  <span className="text-sm font-normal text-gray-900 ml-4">{t("nps.sendFeedback")}</span>
+                  <span className="text-sm font-normal text-gray-900 ms-4">{t("nps.sendFeedback")}</span>
                   <Image
                     src="/icons/chevron-right-gray.png"
                     alt="Chevron right"
@@ -492,7 +492,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
                     <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
-                      <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
+                      <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="me-1" />
                       {t("profile.addPaymentMethod")}
                     </Button>
                   </div>

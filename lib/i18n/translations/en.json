@@ -515,7 +515,9 @@
     "aboutYou": "About you",
     "settings": "Settings",
     "support": "Support",
-    "addFromYourFollowing": "Add from your following"
+    "addFromYourFollowing": "Add from your following",
+    "closedGroupEmptyTitle": "No followed users yet",
+    "closedGroupEmptyDescription": "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
   },
   "wallet": {
     "title": "Wallet",
@@ -571,6 +573,12 @@
     "depositNow": "Deposit now",
     "p2pWallet": "P2P Wallet",
     "tradingWallet": "Trading Wallet",
+    "select": "Select",
+    "estTotalAssetsTooltip": "This is your estimated combined balance across all P2P wallets, shown in USD.",
+    "transferRouteP2pToWallet": "P2P {currency} → {currency} Wallet",
+    "transferRouteWalletToP2p": "{currency} Wallet → P2P {currency}",
+    "transferRouteP2pToP2p": "P2P {currency} → P2P {currency}",
+    "transferRouteWalletOnly": "{currency} Wallet",
     "minimumTransfer": "Minimum transfer is {amount} {currency}",
     "minimumTransferAmount": "Minimum transfer amount is {amount} {currency}.",
     "exceedsBalance": "Amount cannot exceed available balance {amount} {currency}.",

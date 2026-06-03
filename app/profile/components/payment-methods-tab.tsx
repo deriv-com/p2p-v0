@@ -310,7 +310,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ms-2">
                           <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
@@ -361,7 +361,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ms-2">
                           <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>

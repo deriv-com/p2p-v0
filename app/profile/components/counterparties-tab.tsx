@@ -190,13 +190,13 @@ export default function CounterpartiesTab() {
               alt="Search"
               width={24}
               height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute start-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="h-14 pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none"
+              className="h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none"
               autoComplete="off"
             />
             {searchQuery && (
@@ -204,7 +204,7 @@ export default function CounterpartiesTab() {
                 variant="ghost"
                 size="sm"
                 onClick={handleClearSearch}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
                 <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
               </Button>
