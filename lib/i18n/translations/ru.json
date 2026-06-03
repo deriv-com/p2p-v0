@@ -40,7 +40,7 @@
     "failedToCreateAd": "Не удалось создать объявление",
     "failedToLoadAd": "Не удалось загрузить данные объявления. Повторите попытку.",
     "failedToUpdateAd": "Не удалось обновить объявление",
-    "fixed": "Фиксированный",
+    "fixed": "Исправлено",
     "floating": "Плавающий",
     "for": "За",
     "genericErrorCodeMessage": "Произошла ошибка ({code}). Повторите попытку или обратитесь в службу поддержки.",
@@ -127,7 +127,13 @@
     "visibilityClosedGroup": "Закрытая группа",
     "visibilityClosedGroupDesc": "Ваше объявление будет видно только пользователям из вашего списка закрытой группы.",
     "visibilityEveryone": "Все",
-    "visibilityEveryoneDesc": "Ваше объявление будет видно всем на маркетплейсе."
+    "visibilityEveryoneDesc": "Ваше объявление будет видно всем на маркетплейсе.",
+    "rateFixedTitle": "Ставка (фиксированная)",
+    "yourRate": "Ваша ставка:",
+    "currentMarketPrice": "Текущая рыночная цена:",
+    "lowestRateInMarket": "Самая низкая ставка на рынке:",
+    "highestRateInMarket": "Самая высокая ставка на рынке:",
+    "countrySelectionSubtitle": "Выбирайте любое количество стран."
   },
   "advertiser": {
     "addToClosedGroup": "Добавить в закрытую группу",

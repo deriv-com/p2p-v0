@@ -40,9 +40,9 @@
     "failedToCreateAd": "Không thể tạo quảng cáo",
     "failedToLoadAd": "Không thể tải chi tiết quảng cáo. Vui lòng thử lại.",
     "failedToUpdateAd": "Không thể cập nhật quảng cáo",
-    "fixed": "Cố định",
+    "fixed": "Đã sửa",
     "fixedRate": "Tỷ giá cố định",
-    "floating": "Thả nổi",
+    "floating": "Nổi",
     "floatingRate": "Tỷ giá thả nổi",
     "for": "Cho",
     "genericErrorCodeMessage": "Đã xảy ra lỗi ({code}). Vui lòng thử lại hoặc liên hệ hỗ trợ.",
@@ -128,7 +128,13 @@
     "visibilityClosedGroup": "Nhóm đóng",
     "visibilityClosedGroupDesc": "Quảng cáo của bạn sẽ chỉ hiển thị cho người dùng trong danh sách nhóm đóng của bạn.",
     "visibilityEveryone": "Mọi người",
-    "visibilityEveryoneDesc": "Quảng cáo của bạn sẽ hiển thị cho mọi người trên thị trường."
+    "visibilityEveryoneDesc": "Quảng cáo của bạn sẽ hiển thị cho mọi người trên thị trường.",
+    "rateFixedTitle": "Tỷ lệ (cố định)",
+    "yourRate": "Tỷ lệ của bạn:",
+    "currentMarketPrice": "Giá thị trường hiện tại:",
+    "lowestRateInMarket": "Lãi suất thấp nhất thị trường:",
+    "highestRateInMarket": "Lãi suất cao nhất thị trường:",
+    "countrySelectionSubtitle": "Chọn bất kỳ số lượng quốc gia."
   },
   "advertiser": {
     "addToClosedGroup": "Thêm vào nhóm đóng",

@@ -26,6 +26,8 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
+  const rateTypeLabel = value === "fixed" ? t("adForm.fixed") : t("adForm.floating")
+
   const handleSelect = (newValue: PriceType) => {
     onChange(newValue)
     setOpen(false)
@@ -37,8 +39,8 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
       disabled={disabled}
       className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
     >
-      <span className="text-grayscale-600">{value === "fixed" ? "Fixed" : "Floating"}</span>
-      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+      <span className="text-grayscale-600">{rateTypeLabel}</span>
+      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ms-2" />
     </Button>
   )
 
@@ -51,13 +53,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <div className="text-left flex-1">
-          <div className="text-base mb-1 text-slate-1200">Fixed</div>
+        <div className="text-start flex-1">
+          <div className="text-base mb-1 text-slate-1200">{t("adForm.fixed")}</div>
           <div className="text-xs text-grayscale-text-muted">
             {t("order.fixedRateDescription")}
           </div>
         </div>
-        <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="fixed" id="fixed" className="hidden mt-1 ms-4 h-6 w-6" />
       </Label>
 
       <Label
@@ -67,13 +69,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <div className="text-left flex-1">
-          <div className="text-base text-slate-1200 mb-1">Floating</div>
+        <div className="text-start flex-1">
+          <div className="text-base text-slate-1200 mb-1">{t("adForm.floating")}</div>
           <div className="text-xs text-grayscale-text-muted">
             {t("order.floatingRateDescription")}
           </div>
         </div>
-        <RadioGroupItem value="float" id="float" className="hidden mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="float" id="float" className="hidden mt-1 ms-4 h-6 w-6" />
       </Label>
     </RadioGroup>
   )
@@ -84,7 +86,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         {!marketPrice || !isFloatingRateEnabled ?
           (
             <div className="flex items-center">
-              <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
+              <h3 className="text-lg font-bold leading-6 tracking-normal">{t("adForm.rateFixedTitle")}</h3>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Image
@@ -92,7 +94,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                     alt="Info"
                     width={24}
                     height={24}
-                    className="ml-1 cursor-pointer flex-shrink-0"
+                    className="ms-1 cursor-pointer flex-shrink-0"
                   />
                 </TooltipTrigger>
                 <TooltipContent>
@@ -102,7 +104,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               </Tooltip>
             </div>
           ) :
-          (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>)
+          (<h3 className="text-lg font-bold leading-6 tracking-normal">{t("order.rate")}</h3>)
         }
         {marketPrice && isFloatingRateEnabled && (
           isMobile ? (
@@ -111,7 +113,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
               <DrawerContent>
                 <div className="px-4 pb-6">
                   <div className="py-4">
-                    <h3 className="text-xl font-bold text-center">Rate type</h3>
+                    <h3 className="text-xl font-bold text-center">{t("order.rateType")}</h3>
                   </div>
                   {content}
                 </div>
@@ -119,19 +121,19 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             </Drawer>
           ) : (
             <Select value={value} onValueChange={handleSelect} disabled={disabled}>
-              <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent">
-                <div className="text-slate-1200">{value === "fixed" ? "Fixed" : "Floating"}</div>
+              <SelectTrigger className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent text-start">
+                <div className="text-slate-1200">{rateTypeLabel}</div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="fixed">
-                  <div className="flex flex-col">
-                    <span className="text-base">Fixed</span>
+                  <div className="flex flex-col text-start">
+                    <span className="text-base">{t("adForm.fixed")}</span>
                     <span className="text-xs">{t("order.fixedRateDescription")}</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float">
-                  <div className="flex flex-col">
-                    <span className="text-base">Floating</span>
+                  <div className="flex flex-col text-start">
+                    <span className="text-base">{t("adForm.floating")}</span>
                     <span className="text-xs">{t("order.floatingRateDescription")}</span>
                   </div>
                 </SelectItem>

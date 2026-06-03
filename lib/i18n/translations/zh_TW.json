@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "封閉組",
     "visibilityClosedGroupDesc": "您的廣告僅對您的親密群組清單中的使用者可見。",
     "visibilityEveryone": "大家",
-    "visibilityEveryoneDesc": "市場上的每個人都可以看到您的廣告。"
+    "visibilityEveryoneDesc": "市場上的每個人都可以看到您的廣告。",
+    "fixed": "固定",
+    "floating": "浮動",
+    "rateFixedTitle": "費率（固定）",
+    "yourRate": "您的費率：",
+    "currentMarketPrice": "當前市場價格：",
+    "lowestRateInMarket": "市場最低利率：",
+    "highestRateInMarket": "市場最高利率：",
+    "countrySelectionSubtitle": "選擇任意數量的國家。"
   },
   "advertiser": {
     "addToClosedGroup": "新增到封閉組",

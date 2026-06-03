@@ -120,7 +120,13 @@
     "visibilityClosedGroup": "ক্লোজড গ্রুপ",
     "visibilityClosedGroupDesc": "আপনার বিজ্ঞাপন শুধুমাত্র আপনার ক্লোজ গ্রুপ তালিকার ব্যবহারকারীদের কাছে দৃশ্যমান হবে।",
     "visibilityEveryone": "সবাই",
-    "visibilityEveryoneDesc": "আপনার বিজ্ঞাপন মার্কেটপ্লেসে সবার কাছে দৃশ্যমান হবে।"
+    "visibilityEveryoneDesc": "আপনার বিজ্ঞাপন মার্কেটপ্লেসে সবার কাছে দৃশ্যমান হবে।",
+    "rateFixedTitle": "হার (নির্দিষ্ট)",
+    "yourRate": "আপনার হার:",
+    "currentMarketPrice": "বর্তমান বাজার মূল্য:",
+    "lowestRateInMarket": "বাজারে সর্বনিম্ন হার:",
+    "highestRateInMarket": "বাজারে সর্বোচ্চ হার:",
+    "countrySelectionSubtitle": "যেকোনো সংখ্যক দেশ নির্বাচন করুন।"
   },
   "advertiser": {
     "addToClosedGroup": "ক্লোজড গ্রুপে যোগ করুন",

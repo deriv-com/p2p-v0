@@ -40,8 +40,8 @@
     "failedToCreateAd": "Anzeige konnte nicht erstellt werden",
     "failedToLoadAd": "Anzeigendetails konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     "failedToUpdateAd": "Anzeige konnte nicht aktualisiert werden",
-    "fixed": "Fest",
-    "floating": "Variabel",
+    "fixed": "Behoben",
+    "floating": "Schwebend",
     "for": "Für",
     "genericErrorCodeMessage": "Ein Fehler ist aufgetreten ({code}). Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
     "genericProcessingErrorMessage": "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
@@ -127,7 +127,13 @@
     "visibilityClosedGroup": "Geschlossene Gruppe",
     "visibilityClosedGroupDesc": "Ihre Anzeige wird nur für Nutzer in Ihrer geschlossenen Gruppenliste sichtbar sein.",
     "visibilityEveryone": "Alle",
-    "visibilityEveryoneDesc": "Ihre Anzeige wird für alle auf dem Marktplatz sichtbar sein."
+    "visibilityEveryoneDesc": "Ihre Anzeige wird für alle auf dem Marktplatz sichtbar sein.",
+    "rateFixedTitle": "Tarif (fest)",
+    "yourRate": "Ihr Tarif:",
+    "currentMarketPrice": "Aktueller Marktpreis:",
+    "lowestRateInMarket": "Niedrigster Tarif auf dem Markt:",
+    "highestRateInMarket": "Höchster Preis auf dem Markt:",
+    "countrySelectionSubtitle": "Wählen Sie eine beliebige Anzahl Länder aus."
   },
   "advertiser": {
     "addToClosedGroup": "Zu geschlossener Gruppe hinzufügen",

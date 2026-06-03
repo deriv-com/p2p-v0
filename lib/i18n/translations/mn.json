@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "Хаалттай бүлэг",
     "visibilityClosedGroupDesc": "Таны зар зөвхөн таны ойр бүлгийн жагсаалтад байгаа хэрэглэгчдэд харагдах болно.",
     "visibilityEveryone": "Бүгд",
-    "visibilityEveryoneDesc": "Таны зар зах дээрх бүх хүмүүст харагдах болно."
+    "visibilityEveryoneDesc": "Таны зар зах дээрх бүх хүмүүст харагдах болно.",
+    "fixed": "Тогтмол",
+    "floating": "Хөвөгч",
+    "rateFixedTitle": "Үнэ (тогтмол)",
+    "yourRate": "Таны үнэлгээ:",
+    "currentMarketPrice": "Одоогийн зах зээлийн үнэ:",
+    "lowestRateInMarket": "Зах зээл дээрх хамгийн бага үнэ:",
+    "highestRateInMarket": "Зах зээл дээрх хамгийн өндөр ханш:",
+    "countrySelectionSubtitle": "Дурын тооны улсыг сонгоно уу."
   },
   "advertiser": {
     "addToClosedGroup": "Хаалттай бүлэгт нэмэх",

@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "සංවෘත කණ්ඩායම",
     "visibilityClosedGroupDesc": "ඔබගේ දැන්වීම දෘශ්‍යමාන වන්නේ ඔබගේ සමීප කණ්ඩායම් ලැයිස්තුවේ සිටින පරිශීලකයින්ට පමණි.",
     "visibilityEveryone": "හැමෝම",
-    "visibilityEveryoneDesc": "ඔබේ දැන්වීම වෙළඳපොලේ සිටින සෑම කෙනෙකුටම පෙනෙනු ඇත."
+    "visibilityEveryoneDesc": "ඔබේ දැන්වීම වෙළඳපොලේ සිටින සෑම කෙනෙකුටම පෙනෙනු ඇත.",
+    "fixed": "ස්ථාවර",
+    "floating": "පාවෙන",
+    "rateFixedTitle": "අනුපාතය (ස්ථාවර)",
+    "yourRate": "ඔබේ අනුපාතය:",
+    "currentMarketPrice": "වත්මන් වෙළඳපල මිල:",
+    "lowestRateInMarket": "වෙළඳපොලේ අඩුම මිල:",
+    "highestRateInMarket": "වෙළඳපොලේ ඉහළම මිල:",
+    "countrySelectionSubtitle": "ඕනෑම රටවල් ගණනක් තෝරන්න."
   },
   "advertiser": {
     "addToClosedGroup": "සංවෘත කණ්ඩායමට එක් කරන්න",

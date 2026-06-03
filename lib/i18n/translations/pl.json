@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "Grupa zamknięta",
     "visibilityClosedGroupDesc": "Twoje ogłoszenie będzie widoczne tylko dla użytkowników z Twojej listy grupy zamkniętej.",
     "visibilityEveryone": "Wszyscy",
-    "visibilityEveryoneDesc": "Twoje ogłoszenie będzie widoczne dla wszystkich na rynku."
+    "visibilityEveryoneDesc": "Twoje ogłoszenie będzie widoczne dla wszystkich na rynku.",
+    "fixed": "Naprawiono",
+    "floating": "Pływające",
+    "rateFixedTitle": "Stawka (stała)",
+    "yourRate": "Twoja stawka:",
+    "currentMarketPrice": "Aktualna cena rynkowa:",
+    "lowestRateInMarket": "Najniższa stawka na rynku:",
+    "highestRateInMarket": "Najwyższa stawka na rynku:",
+    "countrySelectionSubtitle": "Wybierz dowolną liczbę krajów."
   },
   "advertiser": {
     "addToClosedGroup": "Dodaj do zamkniętej grupy",

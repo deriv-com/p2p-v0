@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "封闭组",
     "visibilityClosedGroupDesc": "您的广告仅对您的亲密群组列表中的用户可见。",
     "visibilityEveryone": "大家",
-    "visibilityEveryoneDesc": "市场上的每个人都可以看到您的广告。"
+    "visibilityEveryoneDesc": "市场上的每个人都可以看到您的广告。",
+    "fixed": "固定",
+    "floating": "浮动",
+    "rateFixedTitle": "费率（固定）",
+    "yourRate": "您的费率：",
+    "currentMarketPrice": "当前市场价格：",
+    "lowestRateInMarket": "市场最低利率：",
+    "highestRateInMarket": "市场最高利率：",
+    "countrySelectionSubtitle": "选择任意数量的国家/地区。"
   },
   "advertiser": {
     "addToClosedGroup": "添加到封闭组",

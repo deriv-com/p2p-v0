@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "Kikundi kilichofungwa",
     "visibilityClosedGroupDesc": "Tangazo lako litaonekana tu kwa watumiaji walio kwenye orodha yako ya kikundi kilichofungwa.",
     "visibilityEveryone": "Kila mtu",
-    "visibilityEveryoneDesc": "Tangazo lako litaonekana kwa kila mtu kwenye soko."
+    "visibilityEveryoneDesc": "Tangazo lako litaonekana kwa kila mtu kwenye soko.",
+    "fixed": "Imerekebishwa",
+    "floating": "Inaelea",
+    "rateFixedTitle": "Kiwango (cha kudumu)",
+    "yourRate": "Kiwango chako:",
+    "currentMarketPrice": "Bei ya sasa ya soko:",
+    "lowestRateInMarket": "Kiwango cha chini zaidi katika soko:",
+    "highestRateInMarket": "Kiwango cha juu zaidi sokoni:",
+    "countrySelectionSubtitle": "Chagua idadi yoyote ya nchi."
   },
   "advertiser": {
     "addToClosedGroup": "Ongeza kwa kikundi kilichofungwa",

@@ -109,7 +109,15 @@
     "visibilityClosedGroup": "Grupo cerrado",
     "visibilityClosedGroupDesc": "Tu anuncio solo será visible para los usuarios de tu lista de grupo cerrado.",
     "visibilityEveryone": "Todos",
-    "visibilityEveryoneDesc": "Tu anuncio será visible para todos en el mercado."
+    "visibilityEveryoneDesc": "Tu anuncio será visible para todos en el mercado.",
+    "fixed": "Fijo",
+    "floating": "flotante",
+    "rateFixedTitle": "Tarifa (fija)",
+    "yourRate": "Tu tarifa:",
+    "currentMarketPrice": "Precio de mercado actual:",
+    "lowestRateInMarket": "Tarifa más baja del mercado:",
+    "highestRateInMarket": "Tarifa más alta del mercado:",
+    "countrySelectionSubtitle": "Seleccione cualquier número de países."
   },
   "advertiser": {
     "addToClosedGroup": "Añadir al grupo cerrado",
