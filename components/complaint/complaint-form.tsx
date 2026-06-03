@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 import Image from "next/image"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -79,7 +80,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           {/* Back button */}
           <div className="flex items-center px-4 py-3">
             <Button variant="ghost" size="sm" onClick={handleClose} className="bg-grayscale-300 px-1">
-              <Image src="/icons/arrow-left-icon.png" alt={t("order.goBack")} width={24} height={24} />
+              <BackArrowIcon alt={t("order.goBack")} width={24} height={24} />
             </Button>
           </div>
 

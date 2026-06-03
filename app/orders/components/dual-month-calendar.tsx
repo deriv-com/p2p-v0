@@ -13,6 +13,7 @@ import {
   isSameDay,
 } from "date-fns"
 import { Button } from "@/components/ui/button"
+import { RTL_MIRROR_ICON } from "@/lib/rtl"
 import { cn } from "@/lib/utils"
 import type { DateRange } from "@/stores/orders-filter-store"
 
@@ -85,7 +86,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
               onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
               className="p-2"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className={cn("h-4 w-4", RTL_MIRROR_ICON)} />
             </Button>
           )}
           <div className="text-center text-grayscale-600 mb-4 m-auto">{format(month, "MMM yyyy")}</div>
@@ -96,7 +97,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
               onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
               className="p-2"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className={cn("h-4 w-4", RTL_MIRROR_ICON)} />
             </Button>
           )}
         </div>

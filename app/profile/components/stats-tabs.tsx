@@ -14,6 +14,8 @@ import { Divider } from "@/components/ui/divider"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
+import { RTL_MIRROR_ICON } from "@/lib/rtl"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -172,7 +174,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 alt="Chevron right"
                 width={20}
                 height={20}
-                className="justify-self-end"
+                className={cn("justify-self-end", RTL_MIRROR_ICON)}
               />
             </div>
             {showStatsSidebar && (
@@ -184,7 +186,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowStatsSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt="Close" width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4">
@@ -208,7 +210,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 alt="Chevron right"
                 width={20}
                 height={20}
-                className="justify-self-end"
+                className={cn("justify-self-end", RTL_MIRROR_ICON)}
               />
             </div>
             {showPaymentMethodsSidebar && (
@@ -220,7 +222,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowPaymentMethodsSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt="Close" width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -261,7 +263,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 alt="Chevron right"
                 width={20}
                 height={20}
-                className="justify-self-end"
+                className={cn("justify-self-end", RTL_MIRROR_ICON)}
               />
             </div>
             {showFollowsSidebar && (
@@ -273,7 +275,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowFollowsSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt="Close" width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -312,7 +314,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowClosedGroupSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt="Close" width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -336,7 +338,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 alt="Chevron right"
                 width={20}
                 height={20}
-                className="justify-self-end"
+                className={cn("justify-self-end", RTL_MIRROR_ICON)}
               />
             </div>
             {showBlockedSidebar && (
@@ -348,7 +350,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowBlockedSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt="Close" width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -372,7 +374,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 alt="Chevron right"
                 width={20}
                 height={20}
-                className="justify-self-end"
+                className={cn("justify-self-end", RTL_MIRROR_ICON)}
               />
             </div>
             {showCounterpartiesSidebar && (
@@ -384,7 +386,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowCounterpartiesSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt="Close" width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -409,7 +411,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 alt="Chevron right"
                 width={20}
                 height={20}
-                className="justify-self-end"
+                className={cn("justify-self-end", RTL_MIRROR_ICON)}
               />
             </div>
             {!userData?.feedback_exist && (

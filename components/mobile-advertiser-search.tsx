@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
@@ -195,7 +196,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                         onClick={handleBack}
                         className="bg-grayscale-500 px-1 w-fit"
                     >
-                        <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+                        <BackArrowIcon alt="Back" width={24} height={24} />
                     </Button>
                     <div className="relative flex-1">
                         <Image

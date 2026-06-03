@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { cn } from "@/lib/utils"
@@ -25,7 +26,7 @@ export function PanelWrapper({ onBack, onClose, children }: PanelWrapperProps) {
         <div className="max-w-xl mx-auto flex flex-col w-full h-full">
           <div className={cn("flex items-center justify-end px-4 py-3", onBack && "justify-between")}>
             {onBack && <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
-              <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
+              <BackArrowIcon alt="Back" width={24} height={24} />
             </Button>}
             <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
