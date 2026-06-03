@@ -695,7 +695,36 @@
     "advertFixedRateMaximumMessage": "입력한 고정 환율이 허용 한도보다 높습니다. 환율을 낮춰 계속하세요.",
     "advertFloatRateMaximumTitle": "변동 환율을 확인하세요",
     "advertFloatRateMaximumMessage": "입력한 변동 환율이 허용 한도보다 높습니다. 환율을 낮춰 계속하세요.",
-    "updateRate": "환율 업데이트"
+    "updateRate": "환율 업데이트",
+    "businessHours": {
+      "title": "영업 시간",
+      "description": "광고는 설정한 시간 동안만 시장에 표시됩니다. 이 시간 외의 구매자는 광고를 이용 불가로 봅니다.",
+      "headerLabel": "영업 시간: {summary}",
+      "alwaysOpen": "항상 열림",
+      "closedSubtitle": "닫힘",
+      "offlineSubtitle": "오프라인",
+      "enableLabel": "영업 시간 활성화",
+      "daysLabel": "요일",
+      "hoursLabel": "시간",
+      "openLabel": "시작",
+      "closeLabel": "종료",
+      "saveChanges": "변경사항 저장",
+      "timezoneSuffix": "{tz} — 현재 위치 기준",
+      "dayMon": "월",
+      "dayTue": "화",
+      "dayWed": "수",
+      "dayThu": "목",
+      "dayFri": "금",
+      "daySat": "토",
+      "daySun": "일",
+      "schedulePeriodInvalidTitle": "유효하지 않은 시간 설정",
+      "schedulePeriodInvalidMessage": "이 날의 시작 및 종료 시간이 유효하지 않습니다. 시작 시간이 종료 시간보다 이르고 24시간 이내인지 확인하세요.",
+      "editSchedule": "일정 수정",
+      "resetSchedule": "일정 초기화",
+      "errorGenericTitle": "오류가 발생했습니다. 다시 시도해 주세요.",
+      "errorGenericMessage": "영업 시간을 저장할 수 없습니다 ({code}). 다시 시도해 주세요.",
+      "closeAfterOpenError": "종료 시간은 시작 시간 이후여야 합니다"
+    }
   },
   "p2pAnnouncement": {
     "whatsNew": {

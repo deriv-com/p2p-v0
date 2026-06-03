@@ -27,9 +27,7 @@ export function BusinessHoursDaySelector({
           <button
             key={key}
             type="button"
-            role="button"
             aria-pressed={selected}
-            aria-label={`day-${key}`}
             disabled={!enabled}
             onClick={() => onToggle(key)}
             className={cn(

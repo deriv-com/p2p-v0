@@ -9,6 +9,7 @@ import { useUserDataStore } from '@/stores/user-data-store'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
+import type { BusinessHoursSchedule } from '@/lib/business-hours-codec'
 
 export interface PaymentMethodError extends Error {
   errors?: Array<{ code?: string; message?: string }>
@@ -631,7 +632,7 @@ export function useSubmitFeedback() {
 export function useUpdateBusinessHours() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (schedule: import('@/lib/business-hours-codec').BusinessHoursSchedule) => {
+    mutationFn: async (schedule: BusinessHoursSchedule) => {
       const userId = useUserDataStore.getState().userId
       if (!userId) throw new Error('User not authenticated')
       await ProfileAPI.updateBusinessHours(userId, schedule)

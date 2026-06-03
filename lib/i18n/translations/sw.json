@@ -657,7 +657,36 @@
     "advertFixedRateMaximumMessage": "Kiwango cha kudumu ulichoweka ni juu ya kikomo kinachokubalika. Punguza kiwango ili kuendelea.",
     "advertFloatRateMaximumTitle": "Angalia kiwango chako cha kuelea",
     "advertFloatRateMaximumMessage": "Kiwango cha kuelea ulichoweka ni juu ya kikomo kinachokubalika. Punguza kiwango ili kuendelea.",
-    "updateRate": "Sasisha kiwango"
+    "updateRate": "Sasisha kiwango",
+    "businessHours": {
+      "title": "Masaa ya biashara",
+      "description": "Matangazo yako yanaonekana sokoni tu katika masaa unayoweka. Wanunuzi nje ya kipindi hiki wataona kama hayapatikani.",
+      "headerLabel": "Masaa ya biashara: {summary}",
+      "alwaysOpen": "Wazi wakati wote",
+      "closedSubtitle": "Imefungwa",
+      "offlineSubtitle": "Nje ya mtandao",
+      "enableLabel": "Wezesha masaa ya biashara",
+      "daysLabel": "Siku",
+      "hoursLabel": "Masaa",
+      "openLabel": "Kufungua",
+      "closeLabel": "Kufunga",
+      "saveChanges": "Hifadhi mabadiliko",
+      "timezoneSuffix": "{tz} — kulingana na mahali ulipo",
+      "dayMon": "J",
+      "dayTue": "J",
+      "dayWed": "J",
+      "dayThu": "A",
+      "dayFri": "I",
+      "daySat": "J",
+      "daySun": "J",
+      "schedulePeriodInvalidTitle": "Kipindi cha ratiba si sahihi",
+      "schedulePeriodInvalidMessage": "Nyakati za kuanza na kumaliza kwa siku hii si sahihi. Hakikisha wakati wa kuanza ni kabla ya wakati wa kumaliza na ndani ya masaa 24.",
+      "editSchedule": "Hariri ratiba",
+      "resetSchedule": "Weka upya ratiba",
+      "errorGenericTitle": "Kitu fulani kimekosea. Tafadhali jaribu tena.",
+      "errorGenericMessage": "Hatukuweza kuhifadhi masaa yako ya biashara ({code}). Tafadhali jaribu tena.",
+      "closeAfterOpenError": "Wakati wa kufunga lazima uwe baada ya wakati wa kufungua"
+    }
   },
   "p2pAnnouncement": {
     "whatsNew": {

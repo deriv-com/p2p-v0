@@ -39,12 +39,16 @@ export function BusinessHoursForm({ onClose }: BusinessHoursFormProps) {
   )
   const [state, setState] = useState<BusinessHoursUiState>(initial)
 
-  // Re-seed when the underlying schedule changes (e.g. another tab updated).
-  useEffect(() => {
-    setState(initial)
-  }, [initial])
+  const valid = isStateValid(state)
+  const dirty = !statesEqual(state, initial)
 
-  const dayLabels: Record<DayKey, string> = {
+  // Re-seed only when the form is clean. If the user has unsaved edits, preserve
+  // them — an external update (another tab saving) shouldn't silently clobber work.
+  useEffect(() => {
+    if (!dirty) setState(initial)
+  }, [initial, dirty])
+
+  const dayLabels = useMemo<Record<DayKey, string>>(() => ({
     mon: t("myAds.businessHours.dayMon"),
     tue: t("myAds.businessHours.dayTue"),
     wed: t("myAds.businessHours.dayWed"),
@@ -52,10 +56,7 @@ export function BusinessHoursForm({ onClose }: BusinessHoursFormProps) {
     fri: t("myAds.businessHours.dayFri"),
     sat: t("myAds.businessHours.daySat"),
     sun: t("myAds.businessHours.daySun"),
-  }
-
-  const valid = isStateValid(state)
-  const dirty = !statesEqual(state, initial)
+  }), [t])
   const canSave = valid && dirty && !mutation.isPending
   const timeOrderError = hasTimeOrderError(state)
 
@@ -110,7 +111,7 @@ export function BusinessHoursForm({ onClose }: BusinessHoursFormProps) {
       title: t("myAds.businessHours.errorGenericTitle"),
       description: code
         ? t("myAds.businessHours.errorGenericMessage", { code })
-        : (err as Error)?.message ??
+        : (err as Error)?.message ||
           t("myAds.businessHours.errorGenericMessage", { code: "unknown" }),
       confirmText: t("common.ok"),
       type: "warning",
