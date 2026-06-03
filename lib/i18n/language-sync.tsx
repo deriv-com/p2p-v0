@@ -3,10 +3,16 @@
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { useLanguageStore } from "@/stores/language-store"
-import { locales, defaultLocale, isRtlLocale, type Locale } from "./config"
+import {
+  defaultLocale,
+  isRtlLocale,
+  localeToBcp47,
+  normalizeLocaleParam,
+  type Locale,
+} from "./config"
 
 function applyDocumentLocale(locale: Locale) {
-  document.documentElement.lang = locale
+  document.documentElement.lang = localeToBcp47(locale)
   document.documentElement.dir = isRtlLocale(locale) ? "rtl" : "ltr"
 }
 
@@ -18,17 +24,20 @@ export function LanguageSync() {
     const langParam = searchParams.get("lang")
 
     if (langParam) {
-      const normalizedLang = langParam.toLowerCase()
-      if (locales.includes(normalizedLang as Locale)) {
-        setLocale(normalizedLang as Locale)
+      const resolved = normalizeLocaleParam(langParam)
+      if (resolved) {
+        setLocale(resolved)
       } else {
         // Fallback to stored locale if URL param is invalid
         const storedLocale = localStorage.getItem("language-storage")
         if (storedLocale) {
           try {
             const parsed = JSON.parse(storedLocale)
-            if (parsed.state?.locale && locales.includes(parsed.state.locale)) {
-              setLocale(parsed.state.locale)
+            const stored = parsed.state?.locale
+              ? normalizeLocaleParam(parsed.state.locale)
+              : null
+            if (stored) {
+              setLocale(stored)
             }
           } catch {
             setLocale(defaultLocale)
@@ -41,8 +50,11 @@ export function LanguageSync() {
       if (storedLocale) {
         try {
           const parsed = JSON.parse(storedLocale)
-          if (parsed.state?.locale && locales.includes(parsed.state.locale)) {
-            setLocale(parsed.state.locale)
+          const stored = parsed.state?.locale
+            ? normalizeLocaleParam(parsed.state.locale)
+            : null
+          if (stored) {
+            setLocale(stored)
           }
         } catch {
           setLocale(defaultLocale)

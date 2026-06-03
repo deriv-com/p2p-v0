@@ -34,7 +34,7 @@
     "editLimitsForRangeOverlap": "تعديل الحدود",
     "editList": "تحرير القائمة",
     "failedToCreateAd": "فشل إنشاء الإعلان",
-    "failedToLoadAd": "Failed to load ad details. Please try again.",
+    "failedToLoadAd": "فشل تحميل تفاصيل الإعلان. يرجى المحاولة مرة أخرى.",
     "failedToUpdateAd": "فشل تحديث الإعلان",
     "for": "مقابل",
     "genericErrorCodeMessage": "حدث خطأ ({code}). يرجى المحاولة مرة أخرى أو التواصل مع الدعم.",

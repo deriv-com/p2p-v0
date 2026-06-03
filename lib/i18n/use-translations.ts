@@ -15,6 +15,11 @@ import pl from "./translations/pl.json"
 import ko from "./translations/ko.json"
 import sw from "./translations/sw.json"
 import ar from "./translations/ar.json"
+import mn from "./translations/mn.json"
+import si from "./translations/si.json"
+import ta from "./translations/ta.json"
+import zh from "./translations/zh.json"
+import zh_TW from "./translations/zh_TW.json"
 import type { Locale } from "./config"
 
 const translations = {
@@ -31,6 +36,11 @@ const translations = {
   ko,
   sw,
   ar,
+  mn,
+  si,
+  ta,
+  zh,
+  zh_TW,
 }
 
 type TranslationKey = string
