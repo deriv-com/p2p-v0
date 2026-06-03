@@ -85,20 +85,20 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-6 md:mb-4 md:pr-6">
+      <div className="relative mb-6 md:mb-4 md:pe-6">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
           width={24}
           height={24}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2"
+          className="absolute start-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
           placeholder={placeholder === "Search" ? t("common.search") : placeholder}
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-sm font-normal placeholder:text-grayscale-text-placeholder pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
+          className="text-sm font-normal text-start placeholder:text-grayscale-text-placeholder ps-10 pe-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -107,14 +107,14 @@ export function CurrencyFilter({
             variant="ghost"
             size="sm"
             onClick={() => setSearchQuery("")}
-            className="absolute right-0  md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+            className="absolute end-0 md:end-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
             <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
           </Button>
         )}
       </div>
 
-      <div className="space-y-0 max-h-[80%] overflow-y-auto scrollbar-custom md:relative md:left-[-16px] md:w-[calc(100%+8px)]">
+      <div className="space-y-0 max-h-[80%] overflow-y-auto scrollbar-custom md:relative md:-start-4 md:w-[calc(100%+8px)]">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={t("filter.currencyUnavailable", { currency: searchQuery })}
@@ -123,7 +123,11 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-0">
-            {!isMobile && <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ml-4">{isTitleVisible && title}</div>}
+            {!isMobile && (
+              <div className="text-sm text-black/[0.48] font-normal pt-4 pb-2 md:ms-4 text-start">
+                {isTitleVisible && title}
+              </div>
+            )}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
@@ -174,7 +178,12 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className={cn("w-80 h-80 p-4 md:pl-6 md:pt-4 md:pr-0 md:pb-0", contentClassName)} align="end" side="bottom" avoidCollisions={false}>
+      <PopoverContent
+        className={cn("w-80 h-80 p-4 md:ps-6 md:pt-4 md:pe-0 md:pb-0", contentClassName)}
+        align="end"
+        side="bottom"
+        avoidCollisions={false}
+      >
         <CurrencyList />
       </PopoverContent>
     </Popover>

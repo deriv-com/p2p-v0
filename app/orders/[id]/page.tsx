@@ -35,12 +35,13 @@ import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
+import { localeToBcp47 } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import InfoCircleIcon from "@/public/icons/info-circle-bold.svg"
 import { useTrackers } from "@/analytics/useTrackers"
 
 export default function OrderDetailsPage() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const { track } = useTrackers()
   const params = useParams()
   const orderId = params.id as string
@@ -217,7 +218,7 @@ export default function OrderDetailsPage() {
       timeZoneName: "short",
     }
 
-    return deadline.toLocaleDateString("en-GB", options)
+    return deadline.toLocaleString(localeToBcp47(locale), options)
   }
 
   const renderPaymentMethodFields = (method: any) => {

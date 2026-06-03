@@ -495,10 +495,10 @@ export default function BuySellPage() {
             )}
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
-                <div>
+                <div className="flex flex-col rtl:items-end w-full md:w-auto">
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
                   <Tabs value={activeTab} onValueChange={(value) => { if (value === "sell") track("ek_buy_markets"); else track("ek_sell_markets"); setActiveTab(value as "buy" | "sell") }}>
-                    <TabsList className="w-auto bg-transparent p-0 gap-4">
+                    <TabsList className="w-auto bg-transparent p-0 gap-4 rtl:w-full rtl:justify-end">
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="sell"
@@ -548,7 +548,7 @@ export default function BuySellPage() {
                               alt={`${currency} logo`}
                               width={24}
                               height={16}
-                              className="mr-1 object-cover"
+                              className="me-1 object-cover"
                             />
                           )}
                           <span>{currency}</span>
@@ -557,7 +557,7 @@ export default function BuySellPage() {
                             alt="Arrow"
                             width={24}
                             height={24}
-                            className="ml-2 transition-transform duration-200"
+                            className="ms-2 transition-transform duration-200"
                           />
                         </Button>
                       }
@@ -568,7 +568,7 @@ export default function BuySellPage() {
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
-              <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
+              <div className="flex gap-2 items-center ms-auto flex-1 md:flex-none">
                 {!isV1Signup && (
                   <div className="flex gap-2 mb-3 flex-1 hidden">
                     {accountCurrencies.map((curr) => (
