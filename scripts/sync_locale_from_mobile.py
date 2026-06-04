@@ -30,6 +30,18 @@ WEB_L10N = REPO_ROOT / "lib" / "i18n" / "translations"
 MOBILE_FIRST_LOCALES = frozenset({"ar"})
 
 
+def validate_mobile_l10n() -> int:
+    if not MOBILE_L10N.is_dir():
+        print(f"Error: Mobile l10n directory not found at {MOBILE_L10N}", file=sys.stderr)
+        print("Ensure ai-deriv-p2p-app is cloned as a sibling to p2p-v0.", file=sys.stderr)
+        return 1
+    mob_en = MOBILE_L10N / "app_en.arb"
+    if not mob_en.is_file():
+        print(f"Error: Mobile English translations not found at {mob_en}", file=sys.stderr)
+        return 1
+    return 0
+
+
 def flatten(obj: object, prefix: str = "") -> dict[str, object]:
     out: dict[str, object] = {}
     if isinstance(obj, dict):
@@ -175,6 +187,9 @@ def sync_locale(locale: str, *, mode: str, dry_run: bool) -> int:
 
 
 def main() -> int:
+    if validate_mobile_l10n() != 0:
+        return 1
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("locale", help="Web/mobile locale code (e.g. ar, bn)")
     parser.add_argument(

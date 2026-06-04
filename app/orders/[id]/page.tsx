@@ -569,7 +569,7 @@ export default function OrderDetailsPage() {
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <span
-                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                                className={`ms-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
                                 aria-label="Info"
                                 role="img"
                               >
@@ -606,7 +606,7 @@ export default function OrderDetailsPage() {
                         </div>
                         <button className="flex items-center text-xs" onClick={showOrderDetails}>
                           {t("orderDetails.viewOrderDetails")}
-                          <ChevronRight className="h-4 w-4 ml-1" />
+                          <ChevronRight className="h-4 w-4 ms-1" />
                         </button>
                       </div>
                       <div className="flex justify-between items-end">

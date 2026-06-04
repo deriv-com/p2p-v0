@@ -84,7 +84,7 @@ export default function StatsContent({ profile }: StatsContentProps) {
                     alt="Info"
                     width={24}
                     height={24}
-                    className="ml-1 cursor-pointer flex-shrink-0"
+                    className="ms-1 cursor-pointer flex-shrink-0"
                   />
                 </TooltipTrigger>
                 <TooltipContent>
@@ -105,7 +105,7 @@ export default function StatsContent({ profile }: StatsContentProps) {
                     alt="Info"
                     width={24}
                     height={24}
-                    className="ml-1 cursor-pointer flex-shrink-0"
+                    className="ms-1 cursor-pointer flex-shrink-0"
                   />
                 </TooltipTrigger>
                 <TooltipContent>

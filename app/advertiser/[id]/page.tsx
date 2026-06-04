@@ -480,7 +480,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
               </Button>
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
-                  <div className="relative mr-[16px]">
+                  <div className="relative me-[16px]">
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
                       <div
@@ -510,19 +510,19 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           <PresenceLastSeen
                             isOnline={profile.is_online}
                             lastOnlineAt={profile.last_online_at}
-                            className="text-xs text-grayscale-600 mr-[8px]"
+                            className="text-xs text-grayscale-600 me-[8px]"
                           />
                           <span className="opacity-[0.08]">|</span>
                         </>
                       )}
-                      <span className={!profile?.is_online && profile?.last_online_at ? "ml-[8px]" : ""}>
+                      <span className={!profile?.is_online && profile?.last_online_at ? "ms-[8px]" : ""}>
                         {profile ? getJoinedDate(profile.created_at) : ""}
                       </span>
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
                       <div className="flex items-center">
-                        <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
-                        <span className="mr-[8px]">
+                        <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="me-1" />
+                        <span className="me-[8px]">
                           {profile?.statistics_lifetime?.recommend_count > 0
                             ? t("advertiser.recommendedBy", {
                               count: profile?.statistics_lifetime?.recommend_count,
@@ -533,7 +533,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       </div>
                       <span className="opacity-[0.08]">|</span>
                       <div className="flex items-center">
-                        <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
+                        <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="me-1" />
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
@@ -571,7 +571,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         disabled={isBlockLoading}
                       >
                         {isBlockLoading ? (
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent me-2"></div>
                         ) : null}
                         {isBlocked ? t("advertiser.unblock") : t("advertiser.block")}
                       </Button>
@@ -648,7 +648,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 </TableCell>
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
                                   <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-1" />
                                     <span>{ad.order_expiry_period} min</span>
                                   </div>
                                 </TableCell>
@@ -657,7 +657,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                     {ad.payment_methods?.map((method, index) => (
                                       <div key={index} className="flex items-center">
                                         <div
-                                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                          className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank")
                                             ? "bg-paymentMethod-bank"
                                             : "bg-paymentMethod-ewallet"
                                             }`}

@@ -25,7 +25,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
         <div className="px-4 py-3">
             {/* Row 1: Advertiser info */}
             <div className="flex items-center">
-                <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-xl mr-[8px]">
+                <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-xl me-[8px]">
                     {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                     <div className={`absolute bottom-0 right-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"}`} />
                 </div>
@@ -42,7 +42,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                             <TradeBandBadge tradeBand={ad.user.trade_band} showLearnMore={true} size={18} />
                         )}
                         {ad.is_private && (
-                            <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} className="cursor-pointer mr-1" />
+                            <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} className="cursor-pointer me-1" />
                         )}
                         {ad.user?.is_favourite && (
                             <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] whitespace-nowrap">
@@ -60,7 +60,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
             <div className="flex items-center text-xs text-slate-500 mb-2">
                 {ad.user.rating_average_lifetime && (
                     <span className="flex items-center">
-                        <Image src="/icons/star-active.svg" alt="Rating" width={16} height={16} className="mr-1" />
+                        <Image src="/icons/star-active.svg" alt="Rating" width={16} height={16} className="me-1" />
                         <span className="text-pending-text-secondary">{ad.user.rating_average_lifetime.toFixed(2)}</span>
                     </span>
                 )}
@@ -84,7 +84,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         ? ad.effective_rate_display.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : ""}{" "}
                     {ad.payment_currency}
-                    <span className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</span>
+                    <span className="text-xs text-slate-500 font-normal ms-1">{`/${ad.account_currency}`}</span>
                 </div>
                 <div className="mt-1 text-xs text-slate-600">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"} ${ad.account_currency}`}</div>
                 {ad.order_expiry_period && (
@@ -93,7 +93,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                        <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                        <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
                                         <span>{ad.order_expiry_period} {t("market.min")}</span>
                                     </div>
                                 </TooltipTrigger>
@@ -113,7 +113,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                     {ad.payment_methods?.map((method, index) => (
                         <div key={index} className="flex items-center">
                             {method && (
-                                <div className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"}`} />
+                                <div className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"}`} />
                             )}
                             <span className="text-xs">{formatPaymentMethodName(method)}</span>
                         </div>
@@ -124,7 +124,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         variant={ad.type === "buy" ? "destructive" : "secondary"}
                         size="sm"
                         onClick={() => onBuySellClick(ad)}
-                        className="ml-2 flex-shrink-0"
+                        className="ms-2 flex-shrink-0"
                     >
                         {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                     </Button>

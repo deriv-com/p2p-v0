@@ -145,7 +145,7 @@ const PaymentSelectionContent = ({
                 <div className="flex-1">
                   <div className="flex items-center mb-[6px] gap-2">
                     <div
-                      className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                      className={`h-2 w-2 rounded-full me-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                         }`}
                     />
                     <div className="flex- flex-col">
@@ -173,7 +173,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">
                 {t("paymentMethod.addPaymentMethod")}
               </span>
@@ -712,7 +712,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                           alt="Arrow"
                           width={24}
                           height={24}
-                          className="ml-2 transition-transform duration-200"
+                          className="ms-2 transition-transform duration-200"
                         />
                       </div>
                     </div>
@@ -759,7 +759,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                     {localAd.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                          className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                             }`}
                         />
                         <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>

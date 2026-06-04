@@ -431,7 +431,7 @@ export default function OrdersPage() {
                           <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
                             {order.rating > 0 && (
                               <div className="flex">
-                                <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                                <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="me-1" />
                                 {Number(order.rating).toFixed(1)}
                               </div>
                             )}

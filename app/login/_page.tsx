@@ -113,7 +113,7 @@ export default function LoginPage() {
     return (
       <div className="min-h-screen bg-white px-4 py-6">
         <div className="flex items-center mb-8">
-          <Button variant="ghost" onClick={() => setStep("login")} className="p-2 -ml-2">
+          <Button variant="ghost" onClick={() => setStep("login")} className="p-2 -ms-2">
             <BackArrowIcon width={24} height={24} />
             Back
           </Button>

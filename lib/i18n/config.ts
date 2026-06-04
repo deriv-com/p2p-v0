@@ -55,13 +55,12 @@ export function normalizeLocaleParam(lang: string): Locale | null {
   if (normalized in LANG_PARAM_ALIASES) {
     return LANG_PARAM_ALIASES[normalized]
   }
-  if (locales.includes(normalized as Locale)) {
-    return normalized as Locale
+  const caseInsensitiveMatch = locales.find((l) => l.toLowerCase() === normalized)
+  if (caseInsensitiveMatch) {
+    return caseInsensitiveMatch
   }
-  if (locales.includes(lang as Locale)) {
-    return lang as Locale
-  }
-  return null
+  const exactMatch = locales.find((l) => l === lang.trim())
+  return exactMatch ?? null
 }
 
 /** BCP 47 tag for document `lang` and third-party SDKs. */

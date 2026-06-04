@@ -688,7 +688,7 @@ export default function BuySellPage() {
                     >
                       <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
-                          <Skeleton className="bg-grayscale-500 h-[40px] w-[40px] flex-shrink-0 rounded-full mr-[8px]" />
+                          <Skeleton className="bg-grayscale-500 h-[40px] w-[40px] flex-shrink-0 rounded-full me-[8px]" />
                           <div className="flex-1">
                             <Skeleton className="bg-grayscale-500 h-4 w-32 mb-2" />
                             <Skeleton className="bg-grayscale-500 h-3 w-48" />
@@ -707,7 +707,7 @@ export default function BuySellPage() {
                         </div>
                       </TableCell>
                       <TableCell className="p-2 lg:p-4 lg:pe-0 text-end align-middle row-start-3 whitespace-nowrap">
-                        <Skeleton className="bg-grayscale-500 h-8 w-20 ml-auto" />
+                        <Skeleton className="bg-grayscale-500 h-8 w-20 ms-auto" />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -754,7 +754,7 @@ export default function BuySellPage() {
                     >
                       <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl mr-[8px]">
+                          <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl me-[8px]">
                             {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                             <div
                               className={`absolute bottom-0 end-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
@@ -783,11 +783,11 @@ export default function BuySellPage() {
                                   alt="Closed Group"
                                   width={32}
                                   height={32}
-                                  className="cursor-pointer mr-1"
+                                  className="cursor-pointer me-1"
                                 />
                               )}
                               {ad.user?.is_favourite && (
-                                <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                <span className="ms-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                   {t("market.following")}
                                 </span>
                               )}
@@ -807,7 +807,7 @@ export default function BuySellPage() {
                                 alt="Rating"
                                 width={16}
                                 height={16}
-                                className="mr-1"
+                                className="me-1"
                               />
                               <span className="text-pending-text-secondary">
                                 {ad.user.rating_average_lifetime.toFixed(2)}
@@ -836,7 +836,7 @@ export default function BuySellPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}
                                   </span>
@@ -860,7 +860,7 @@ export default function BuySellPage() {
                             })
                             : ""}{" "}
                           {ad.payment_currency}
-                          <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
+                          <div className="text-xs text-slate-500 font-normal ms-1">{`/${ad.account_currency}`}</div>
                         </div>
                         <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
                           }  ${ad.account_currency}`}</div>
@@ -869,7 +869,7 @@ export default function BuySellPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}
                                   </span>
@@ -889,7 +889,7 @@ export default function BuySellPage() {
                             <div key={index} className="flex items-center">
                               {method && (
                                 <div
-                                  className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                  className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank")
                                     ? "bg-paymentMethod-bank"
                                     : "bg-paymentMethod-ewallet"
                                     }`}

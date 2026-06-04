@@ -54,7 +54,7 @@ const RatingContent = ({
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                className="hover:bg-transparent p-0 mr-[4px]"
+                className="hover:bg-transparent p-0 me-[4px]"
               >
                 <Image
                   src={(hoverRating || rating) >= star ? "/icons/star-active.png" : "/icons/star-custom.png"}
@@ -83,7 +83,7 @@ const RatingContent = ({
               />
               <span
                 className={cn(
-                  "text-sm ml-[8px] font-normal ",
+                  "text-sm ms-[8px] font-normal ",
                   recommend === true ? "text-white" : "text-grayscale-100",
                 )}
               >
@@ -104,7 +104,7 @@ const RatingContent = ({
               />
               <span
                 className={cn(
-                  "text-sm ml-[8px] font-normal ",
+                  "text-sm ms-[8px] font-normal ",
                   recommend === false ? "text-white" : "text-grayscale-100",
                 )}
               >

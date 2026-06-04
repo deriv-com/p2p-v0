@@ -103,7 +103,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     return (
       <div className="px-8 py-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
-          {config.title && <div className="font-bold text-2xl mr-2">{config.title}</div>}
+          {config.title && <div className="font-bold text-2xl me-2">{config.title}</div>}
           {!config.hideCloseButton && (
             <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
               <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
