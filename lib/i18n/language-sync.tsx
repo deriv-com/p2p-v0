@@ -10,6 +10,7 @@ import {
   normalizeLocaleParam,
   type Locale,
 } from "./config"
+import { loadLocale } from "./translation-loader"
 
 function applyDocumentLocale(locale: Locale) {
   document.documentElement.lang = localeToBcp47(locale)
@@ -67,6 +68,11 @@ export function LanguageSync() {
   // supported locales including RTL Arabic and all LTR locales).
   useEffect(() => {
     applyDocumentLocale(locale)
+  }, [locale])
+
+  // Lazy-load only the active locale JSON chunk (English is bundled inline).
+  useEffect(() => {
+    void loadLocale(locale)
   }, [locale])
 
   return null
