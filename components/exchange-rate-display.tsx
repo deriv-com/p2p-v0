@@ -39,19 +39,20 @@ export function ExchangeRateDisplay({
     formatRate,
   )
 
-  if (line.mutedPosition === "prefix") {
-    return (
-      <span className={cn("inline-flex items-baseline gap-1", className)}>
-        <span className={mutedClassName}>{line.muted}</span>
-        <span>{line.primary}</span>
-      </span>
-    )
-  }
-
+  // Currency pairs use LTR typographic order; page `dir=rtl` would otherwise flip flex children.
   return (
-    <span className={cn("inline-flex items-baseline gap-1", className)}>
-      <span>{line.primary}</span>
-      <span className={mutedClassName}>{line.muted}</span>
+    <span dir="ltr" className={cn("inline-flex items-baseline gap-1", className)}>
+      {line.mutedPosition === "prefix" ? (
+        <>
+          <span className={mutedClassName}>{line.muted}</span>
+          <span>{line.primary}</span>
+        </>
+      ) : (
+        <>
+          <span>{line.primary}</span>
+          <span className={mutedClassName}>{line.muted}</span>
+        </>
+      )}
     </span>
   )
 }
