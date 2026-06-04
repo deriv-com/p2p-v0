@@ -381,6 +381,7 @@
       "orderCompletedLabel": "Завершенные ордера",
       "sellCompletionRateLabel": "Процент завершенных продаж"
     },
+    "searchAdvertiserNickname": "Поиск по никнейму рекламодателя",
     "sellTab": "Продать",
     "title": "Рынок",
     "verified": "Верифицирован"

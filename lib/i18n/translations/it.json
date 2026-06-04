@@ -367,6 +367,7 @@
       "orderCompletedLabel": "Ordini completati",
       "sellCompletionRateLabel": "Tasso di completamento vendite"
     },
+    "searchAdvertiserNickname": "Cerca il nickname dell'inserzionista",
     "sellTab": "Vendi",
     "title": "Mercato",
     "verified": "Verificato"

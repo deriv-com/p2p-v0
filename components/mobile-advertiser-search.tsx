@@ -201,25 +201,25 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                     <div className="relative flex-1">
                         <Image
                             src="/icons/search-icon-custom.png"
-                            alt="Search"
+                            alt={t("common.search")}
                             width={20}
                             height={20}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
+                            className="absolute start-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
                         />
                         <Input
                             variant="tertiary"
-                            placeholder="Search advertiser's nickname"
+                            placeholder={t("market.searchAdvertiserNickname")}
                             value={searchInput}
                             onChange={(e) => handleSearchChange(e.target.value)}
                             autoFocus
-                            className="rounded-full pr-8"
+                            className="w-full min-w-0 rounded-full ps-10 pe-10"
                         />
                         {searchInput && (
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={handleClear}
-                                className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-transparent p-0"
+                                className="absolute end-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-transparent p-0"
                             >
                                 <Image src="/icons/clear-search-icon.png" alt="Clear" width={20} height={20} />
                             </Button>

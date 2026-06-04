@@ -276,14 +276,14 @@ export default function Sidebar({ className }: SidebarProps) {
           <div className="relative mt-2">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
-              className="absolute start-2 top-1/2 transform -translate-y-1/2"
+              className="absolute start-2 top-1/2 z-10 -translate-y-1/2 pointer-events-none"
             />
             <Input
               variant="tertiary"
-              placeholder="Search advertiser's nickname"
+              placeholder={t("market.searchAdvertiserNickname")}
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
@@ -291,7 +291,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
                 blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
               }}
-              className="bg-grayscale-500 rounded-lg pe-8 ps-8"
+              className="w-full min-w-0 bg-grayscale-500 rounded-lg ps-10 pe-10"
             />
             {searchInput && (
               <Button

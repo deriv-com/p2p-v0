@@ -15,9 +15,9 @@ const inputVariants = cva(
         default:
           "border-input ring-offset-background placeholder:text-muted-foreground focus:border-[#000000] focus:outline-none focus:ring-0",
         secondary:
-          "h-[32px] bg-white border border-input rounded-lg px-2 flex flex-row items-center gap-2 focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] pl-10 pr-4",
+          "h-[32px] bg-white border border-input rounded-lg px-2 flex flex-row items-center gap-2 text-start focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] ps-10 pe-4",
         tertiary:
-          "h-[32px] bg-gray-100 border-transparent rounded-lg px-2 flex flex-row items-center gap-2 focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] pl-10 pr-4",
+          "h-[32px] bg-gray-100 border-transparent rounded-lg px-2 flex flex-row items-center gap-2 text-start focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] ps-10 pe-4",
         floating:
           "h-14 bg-white border border-input rounded-lg px-3 pt-6 pb-2 text-start focus-visible:outline-none focus:border-black focus:ring-0",
         floatingCurrency:
@@ -115,7 +115,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <input type={type} className={cn(inputVariants({ variant: computedVariant }), className)} ref={ref} {...props} />
+      <input
+        type={type}
+        dir={dir}
+        className={cn(inputVariants({ variant: computedVariant }), className)}
+        ref={ref}
+        {...props}
+      />
     )
   },
 )
