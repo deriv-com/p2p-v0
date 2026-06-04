@@ -119,7 +119,7 @@ const FullPagePaymentSelection = ({
         <div className="relative">
           <Image
             src="/icons/search-icon-custom.png"
-            alt="Search"
+            alt={t("common.search")}
             width={24}
             height={24}
             className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
@@ -141,7 +141,7 @@ const FullPagePaymentSelection = ({
               onClick={() => setSearchQuery("")}
               className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
             >
-              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
             </Button>
           )}
         </div>
@@ -154,7 +154,7 @@ const FullPagePaymentSelection = ({
       <div className="flex-1 overflow-y-auto px-4 md:px-0 space-y-2">
         {filteredMethods.length === 0 ? (
           <div className="text-center pt-0 pb-4 md:pt-4 md:pb-8 flex flex-col items-center">
-            <Image src="/icons/magnifier.png" alt="No results" width={88} height={88} className="mb-0" />
+            <Image src="/icons/magnifier.png" alt={t("common.noResults")} width={88} height={88} className="mb-0" />
             <p className="text-slate-1200 text-base font-bold text-center mb-2">
               {t("paymentMethod.noMatchingPayment")}
             </p>
@@ -282,9 +282,9 @@ const PaymentSelectionContent = ({
 
   const getMethodAccountInfo = (method: UserPaymentMethod | PaymentMethod) => {
     if ("fields" in method && method.fields?.account?.value) {
-      return `${formatPaymentMethodName(method.display_name)} - ${maskAccountNumber(method.fields.account.value)}`
+      return `${formatPaymentMethodName(method.display_name, t)} - ${maskAccountNumber(method.fields.account.value)}`
     }
-    return formatPaymentMethodName(method.display_name)
+    return formatPaymentMethodName(method.display_name, t)
   }
 
   return (
@@ -320,7 +320,7 @@ const PaymentSelectionContent = ({
                       />
                       <div className="flex- flex-col">
                         <span className="text-base text-slate-1200">
-                          {getCategoryDisplayName(getMethodType(method))}
+                          {getCategoryDisplayName(getMethodType(method), t)}
                         </span>
                         <div className="font-normal text-grayscale-text-muted text-xs">
                           {isUserMethod ? getMethodAccountInfo(method) : getMethodDisplayName(method)}
@@ -348,7 +348,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="me-2" />
+              <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">{t("paymentMethod.addPaymentMethod")}</span>
             </div>
           </div>
@@ -540,7 +540,7 @@ export default function PaymentDetailsForm({
                   <span className="text-left font-normal text-base text-black/[0.72]">
                     {getSelectedPaymentMethodsText()}
                   </span>
-                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ms-2" />
+                  <Image src="/icons/chevron-down.png" alt={t("common.dropdown")} width={24} height={24} className="ms-2" />
                 </Button>
               </div>
 

@@ -97,7 +97,7 @@ export default function Header() {
               size="icon"
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ffffff0a] p-0"
             >
-              <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
+              <Image src="/icons/search-icon-white.svg" alt={t("common.search")} width={24} height={24} />
             </Button>
           )}
           {userId && (

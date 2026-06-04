@@ -7,6 +7,7 @@ import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCoreUrl } from "@/lib/get-core-url"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface IframeResponse {
   status: string
@@ -29,6 +30,7 @@ export default function FullScreenIframeModal({
   operation = "DEPOSIT",
   currency = "USD",
 }: FullScreenIframeModalProps) {
+  const { t } = useTranslations()
   const router = useRouter()
   const userData = useUserDataStore((state) => state.userData)
   const walletId = userData?.wallet_id
@@ -108,7 +110,7 @@ export default function FullScreenIframeModal({
 
   if (!isOpen || !mounted) return null
 
-  const title = operation === "DEPOSIT" ? "Deposit to P2P" : "Withdraw from P2P"
+  const title = operation === "DEPOSIT" ? t("wallet.depositToP2p") : t("wallet.withdrawFromP2p")
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] bg-background flex flex-col">
@@ -119,7 +121,7 @@ export default function FullScreenIframeModal({
           size="icon"
           onClick={handleClose}
           className="flex w-8 h-8 items-center justify-center rounded-full aspect-square overflow-hidden flex-shrink-0 min-w-[2rem] min-h-[2rem] max-w-[2rem] max-h-[2rem] bg-[#EFF3F5] hover:bg-[#EFF3F5] p-0"
-          aria-label="Close"
+          aria-label={t("common.close")}
         >
           <X className="h-4 w-4" />
         </Button>
@@ -130,7 +132,7 @@ export default function FullScreenIframeModal({
           <div className="absolute inset-0 flex items-center justify-center bg-background z-10">
             <div className="flex flex-col items-center">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-              <p className="text-muted-foreground">Loading...</p>
+              <p className="text-muted-foreground">{t("common.loading")}</p>
             </div>
           </div>
         )}
@@ -138,14 +140,14 @@ export default function FullScreenIframeModal({
         {error && (
           <div className="flex items-center justify-center h-full">
             <div className="text-destructive text-center p-4">
-              <p className="text-lg font-semibold">Error loading page</p>
+              <p className="text-lg font-semibold">{t("common.errorLoadingPage")}</p>
               <p className="mt-2">{error}</p>
               <Button
                 variant="default"
                 onClick={() => window.location.reload()}
                 className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
               >
-                Try Again
+                {t("wallet.tryAgain")}
               </Button>
             </div>
           </div>

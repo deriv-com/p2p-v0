@@ -9,6 +9,7 @@ import * as SelectPrimitive from "@radix-ui/react-select"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 const Select = SelectPrimitive.Root
 
@@ -19,7 +20,9 @@ const SelectValue = SelectPrimitive.Value
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & { hideChevron?: boolean }
->(({ className, children, hideChevron = false, ...props }, ref) => (
+>(({ className, children, hideChevron = false, ...props }, ref) => {
+  const { t } = useTranslations()
+  return (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -33,7 +36,7 @@ const SelectTrigger = React.forwardRef<
       <SelectPrimitive.Icon asChild>
         <Image
           src="/icons/chevron-down.png"
-          alt="Dropdown icon"
+          alt={t("common.dropdown")}
           width={24}
           height={24}
           className="ms-[8px] transition-transform duration-200 group-data-[state=open]:rotate-180"
@@ -41,7 +44,7 @@ const SelectTrigger = React.forwardRef<
       </SelectPrimitive.Icon>
     )}
   </SelectPrimitive.Trigger>
-))
+)})
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectGrouped = React.forwardRef<

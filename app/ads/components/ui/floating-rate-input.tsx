@@ -119,10 +119,10 @@ export function FloatingRateInput({
 
             <div className="flex items-center gap-2 px-3 bg-white">
               <Button type="button" onClick={handleDecrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/minus.svg" alt="Decrement" />
+                <Image src="/icons/minus.svg" alt={t("common.decrement")} />
               </Button>
               <Button type="button" onClick={handleIncrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/plus.svg" alt="Increment" />
+                <Image src="/icons/plus.svg" alt={t("common.increment")} />
               </Button>
             </div>
           </div>

@@ -45,7 +45,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
       className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
     >
       <span className={cn("text-grayscale-600", textAlignClass)}>{rateTypeLabel}</span>
-      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ms-2 shrink-0" />
+      <Image src="/icons/chevron-down.png" alt={t("common.arrow")} width={24} height={24} className="ms-2 shrink-0" />
     </Button>
   )
 
@@ -96,7 +96,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <TooltipTrigger asChild>
                   <Image
                     src="/icons/info-circle.svg"
-                    alt="Info"
+                    alt={t("common.info")}
                     width={24}
                     height={24}
                     className="ms-1 cursor-pointer flex-shrink-0"

@@ -31,6 +31,51 @@
     "learnMore": "Learn More",
     "gotIt": "Got it",
     "removeAll": "Remove all",
+    "back": "Back",
+    "clear": "Clear",
+    "clearSearch": "Clear search",
+    "derivLogo": "Deriv logo",
+    "trade": "Trade",
+    "bank": "Bank",
+    "info": "Info",
+    "rating": "Rating",
+    "chat": "Chat",
+    "arrow": "Arrow",
+    "time": "Time",
+    "closedGroup": "Closed group",
+    "p2pLogo": "P2P logo",
+    "refreshBalance": "Refresh balance",
+    "noResults": "No results",
+    "previous": "Previous",
+    "next": "Next",
+    "searchNoResultsTitle": "No results found for \"{query}\"",
+    "searchNoResultsDescription": "Check spelling or try finding different advertisers.",
+    "errorLoadingPage": "Error loading page",
+    "plus": "Plus",
+    "recommended": "Recommended",
+    "star": "Star",
+    "user": "User",
+    "blockedUser": "Blocked user",
+    "success": "Success",
+    "options": "Options",
+    "copy": "Copy",
+    "warning": "Warning",
+    "dropdown": "Dropdown",
+    "visibilityStatus": "Visibility status",
+    "eWallet": "E-wallet",
+    "p2p": "P2P",
+    "switch": "Switch",
+    "refresh": "Refresh",
+    "calendar": "Calendar",
+    "unsuccessful": "Unsuccessful",
+    "thumbsDown": "Thumbs down",
+    "decrement": "Decrement",
+    "increment": "Increment",
+    "chevronRight": "Chevron right",
+    "toggleStatus": "Toggle status",
+    "transaction": "Transaction",
+    "sendMessage": "Send message",
+    "addPayment": "Add payment",
     "verifiedBadge": {
       "title": "Verified account",
       "description": "Email, phone, identity, and address checks are complete. This helps you trade with more confidence."
@@ -92,7 +137,9 @@
     "searchAdvertiserNickname": "Search advertiser's nickname",
     "sellTab": "Sell",
     "title": "Market",
-    "verified": "Verified"
+    "verified": "Verified",
+    "failedToLoadAdvertisements": "Failed to load advertisements",
+    "tradeLimitsLabel": "Trade limits:"
   },
   "order": {
     "secureTradeReminder": {
@@ -236,7 +283,14 @@
     "v1DebitFailedMessage": "We couldn't process the payment for this order. Try again or choose another ad.",
     "rateChangeIntro": "The exchange rate for your order has changed.",
     "rateChangeDetails": "You're {action} {amount} {accountCurrency} for {total} {paymentCurrency}, but the new rate is {newRate} {paymentCurrency}.",
-    "rateChangeContinue": "Would you like to continue with the new rate?"
+    "rateChangeContinue": "Would you like to continue with the new rate?",
+    "adUpdatedTitle": "Ad updated",
+    "adUpdatedDuringOrderMessage": "The ad details changed while you were placing your order. Review the new details to continue.",
+    "reviewChanges": "Review changes",
+    "createOrderFailed": "Failed to create order. Please try again. ({code})",
+    "unableToCompleteOrder": "Unable to complete order",
+    "rateFixed": "Fixed",
+    "rateFloating": "Floating"
   },
   "paymentMethod": {
     "title": "Payment method",
@@ -272,7 +326,15 @@
     "selectPaymentMethod": "Select a payment method",
     "addPaymentDetails": "Add payment details",
     "enterInstructions": "Enter your instructions",
-    "noMatchingPayment": "No matching payment"
+    "noMatchingPayment": "No matching payment",
+    "categoryOther": "Other",
+    "noPaymentMethodsAddedYet": "No payment methods are added yet",
+    "noPaymentMethodsFound": "No payment methods found",
+    "paymentMethodsSheetTitle": "Payment methods",
+    "selectPaymentMethodsHint": "You can select up to 3 payment methods.",
+    "methodNotAvailableSearch": "The payment method you're searching for is not available.",
+    "pleaseSelectPaymentMethod": "Please select a payment method",
+    "failedToLoadPaymentMethods": "Failed to load payment methods"
   },
   "paymentMethodFields": {
     "account": "Account",
@@ -518,7 +580,8 @@
     "support": "Support",
     "addFromYourFollowing": "Add from your following",
     "closedGroupEmptyTitle": "No followed users yet",
-    "closedGroupEmptyDescription": "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
+    "closedGroupEmptyDescription": "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here.",
+    "closedGroupMemberTooltip": "This user is in your group list."
   },
   "wallet": {
     "title": "Wallet",
@@ -613,10 +676,22 @@
     "transfer_wr_err_daily_payout_limit_exceeded_title": "Daily limit reached",
     "transfer_wr_err_daily_payout_limit_exceeded_body": "You've withdrawn {withdrawn_today} today. Your daily limit is {daily_limit}, and it resets tomorrow. Or contact support to discuss your options.",
     "transfer_wr_err_balance_too_high_title": "Account verification needed",
-    "transfer_wr_err_balance_too_high_body": "Your account needs a quick check before this withdrawal can go through. Contact support and we'll get it done."
+    "transfer_wr_err_balance_too_high_body": "Your account needs a quick check before this withdrawal can go through. Contact support and we'll get it done.",
+    "marketplaceTitle": "Marketplace",
+    "marketplaceDescription": "Trade directly with other users on the marketplace.",
+    "directDepositTitle": "Direct deposit",
+    "directDepositDescription": "Deposit funds directly from your bank account, e-wallet, or other payment methods.",
+    "directWithdrawalTitle": "Direct withdrawal",
+    "directWithdrawalDescription": "Withdraw funds directly to your bank account, e-wallet, or other payment methods.",
+    "depositToP2p": "Deposit to P2P",
+    "withdrawFromP2p": "Withdraw from P2P",
+    "transferErrorDuring": "An error occurred during the transfer.",
+    "transferUnexpectedError": "An unexpected error occurred. Please try again."
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",
+    "failedToLoadCurrencies": "Failed to load currencies",
+    "failedToProcessCurrencies": "Failed to process currencies",
     "networkError": "Network error. Please check your connection.",
     "unauthorized": "You are not authorized to perform this action.",
     "notFound": "The requested resource was not found."
@@ -959,6 +1034,40 @@
     "removedFromClosedGroup": "Successfully removed from closed group.",
     "userBlocked": "{nickname} blocked.",
     "userUnblocked": "{nickname} unblocked."
+  },
+  "p2pAccess": {
+    "title": "P2P access removed",
+    "description": "You can no longer use your Deriv P2P account. Check your email for more details. For support, reach out to us via live chat.",
+    "illustrationAlt": "P2P access removed"
+  },
+  "login": {
+    "verification": "Verification",
+    "welcomeBack": "Welcome back!",
+    "email": "Email",
+    "emailPlaceholder": "name@email.com",
+    "enterSixDigitCode": "Enter 6-digit code",
+    "verificationFailed": "Verification failed. Please try again.",
+    "verifyFailed": "Failed to verify code. Please try again.",
+    "loginFailed": "Login failed. Please try again.",
+    "failedToLogin": "Failed to login. Please try again.",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend code",
+    "resendCodeTimer": "Resend code ({seconds}s)",
+    "verifying": "Verifying...",
+    "verify": "Verify",
+    "loggingIn": "Logging in...",
+    "logIn": "Log in",
+    "noAccountYet": "Don't have an account yet?",
+    "signUp": "Sign up",
+    "failedToResendCode": "Failed to resend code.",
+    "failedToResendCodeTryAgain": "Failed to resend code. Please try again."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "loading": "Notifications loading",
+    "error": "Notifications error",
+    "loadFailed": "Failed to load notifications",
+    "poweredBy": "Notifications by"
   },
   "kyc": {
     "accessP2PMessage": "To continue, complete the remaining steps:",

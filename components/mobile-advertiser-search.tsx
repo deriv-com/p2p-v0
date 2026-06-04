@@ -196,7 +196,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                         onClick={handleBack}
                         className="bg-grayscale-500 px-1 w-fit"
                     >
-                        <BackArrowIcon alt="Back" width={24} height={24} />
+                        <BackArrowIcon alt={t("common.back")} width={24} height={24} />
                     </Button>
                     <div className="relative flex-1">
                         <Image
@@ -221,7 +221,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                                 onClick={handleClear}
                                 className="absolute end-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-transparent p-0"
                             >
-                                <Image src="/icons/clear-search-icon.png" alt="Clear" width={20} height={20} />
+                                <Image src="/icons/clear-search-icon.png" alt={t("common.clear")} width={20} height={20} />
                             </Button>
                         )}
                     </div>
@@ -272,8 +272,8 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                     ) : (
                         <div className="flex items-center justify-center h-full">
                             <EmptyState
-                                title={`No results found for "${debouncedSearchInput}"`}
-                                description="Check spelling or try finding different advertisers."
+                                title={t("common.searchNoResultsTitle", { query: debouncedSearchInput })}
+                                description={t("common.searchNoResultsDescription")}
                             />
                         </div>
                     )}

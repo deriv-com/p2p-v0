@@ -5,10 +5,11 @@ import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as AuthAPI from "@/services/api/api-auth"
-import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export default function LoginPage() {
+  const { t } = useTranslations()
   const [step, setStep] = useState<"login" | "verification">("login")
   const [email, setEmail] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
@@ -38,11 +39,11 @@ export default function LoginPage() {
           })
         }, 1000)
       } else {
-        setError(response.message || "Login failed. Please try again.")
+        setError(response.message || t("login.loginFailed"))
       }
     } catch (error: any) {
       console.error("Login failed:", error)
-      setError(error.message || "Failed to login. Please try again.")
+      setError(error.message || t("login.failedToLogin"))
     } finally {
       setIsLoading(false)
     }
@@ -73,11 +74,11 @@ export default function LoginPage() {
 
         window.location.href = "/"
       } else {
-        setError("Verification failed. Please try again.")
+        setError(t("login.verificationFailed"))
       }
     } catch (error: any) {
       console.error("Verification failed:", error)
-      setError(error.message || "Failed to verify code. Please try again.")
+      setError(error.message || t("login.verifyFailed"))
     } finally {
       setIsLoading(false)
     }
@@ -102,10 +103,10 @@ export default function LoginPage() {
           })
         }, 1000)
       } else {
-        setError(response.message || "Failed to resend code.")
+        setError(response.message || t("login.failedToResendCode"))
       }
     } catch (error: any) {
-      setError(error.message || "Failed to resend code. Please try again.")
+      setError(error.message || t("login.failedToResendCodeTryAgain"))
     }
   }
 
@@ -115,17 +116,17 @@ export default function LoginPage() {
         <div className="flex items-center mb-8">
           <Button variant="ghost" onClick={() => setStep("login")} className="p-2 -ms-2">
             <BackArrowIcon width={24} height={24} />
-            Back
+            {t("common.back")}
           </Button>
         </div>
         <div className="max-w-md mx-auto">
-          <h1 className="text-3xl font-bold text-black mb-6">Verification</h1>
+          <h1 className="text-3xl font-bold text-black mb-6">{t("login.verification")}</h1>
 
           <p className="text-gray-600 mb-8">{verificationMessage}</p>
           <div className="mb-8">
             <Input
               type="text"
-              placeholder="Enter 6-digit code"
+              placeholder={t("login.enterSixDigitCode")}
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value.replace(/[^0-9]/g, ""))}
               maxLength={6}
@@ -133,17 +134,17 @@ export default function LoginPage() {
             {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
           </div>
           <div className="text-center mb-8 space-y-2">
-            <p className="text-gray-600">{"Didn't receive the code?"}</p>
+            <p className="text-gray-600">{t("login.didntReceiveCode")}</p>
             {resendTimer > 0 ? (
-              <p className="text-gray-600">Resend code ({resendTimer}s)</p>
+              <p className="text-gray-600">{t("login.resendCodeTimer", { seconds: resendTimer })}</p>
             ) : (
               <Button variant="ghost" onClick={handleResendCode} size="sm">
-                Resend code
+                {t("login.resendCode")}
               </Button>
             )}
           </div>
           <Button className="w-full" onClick={handleVerification} disabled={verificationCode.length !== 6 || isLoading}>
-            {isLoading ? "Verifying..." : "Verify"}
+            {isLoading ? t("login.verifying") : t("login.verify")}
           </Button>
         </div>
       </div>
@@ -153,19 +154,19 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-white px-4 py-6">
       <div className="max-w-md mx-auto mt-12">
-        <h1 className="text-4xl font-bold text-black mb-8">Welcome back!</h1>
+        <h1 className="text-4xl font-bold text-black mb-8">{t("login.welcomeBack")}</h1>
         <div className="mb-6">
-          <label className="block text-gray-600 mb-3">Email</label>
-          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@email.com" />
+          <label className="block text-gray-600 mb-3">{t("login.email")}</label>
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("login.emailPlaceholder")} />
           {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
         </div>
         <Button onClick={handleLogin} disabled={!email.trim() || isLoading} className="w-full">
-          {isLoading ? "Logging in..." : "Log in"}
+          {isLoading ? t("login.loggingIn") : t("login.logIn")}
         </Button>
         <div className="mt-[2rem] text-center">
-          Don't have an account yet?{" "}
+          {t("login.noAccountYet")}{" "}
           <a className="text-primary" href="https://home.deriv.com/dashboard" target="_blank" rel="noopener noreferrer">
-            Sign up
+            {t("login.signUp")}
           </a>
         </div>
       </div>

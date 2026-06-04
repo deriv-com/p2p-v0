@@ -134,7 +134,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
             <span>{t("profile.paymentMethodUpdated")}</span>
           </div>
         ),
@@ -187,7 +187,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
             <span>{t("profile.paymentMethodDeleted")}</span>
           </div>
         ),
@@ -223,13 +223,13 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
 
   const getBankIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center">
-      <Image src="/icons/bank-transfer-icon.png" alt="Bank" width={24} height={24} />
+      <Image src="/icons/bank-transfer-icon.png" alt={t("common.bank")} width={24} height={24} />
     </div>
   )
 
   const getEWalletIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center">
-      <Image src="/icons/ewallet-icon-new.png" alt="E-wallet" width={24} height={24} />
+      <Image src="/icons/ewallet-icon-new.png" alt={t("common.eWallet")} width={24} height={24} />
     </div>
   )
 
@@ -267,7 +267,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     )
   }
 
-  const errorMessage = error instanceof Error ? error.message : "Failed to load payment methods"
+  const errorMessage = error instanceof Error ? error.message : t("paymentMethod.failedToLoadPaymentMethods")
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
@@ -320,7 +320,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
-                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
+                          <Image src="/icons/vertical.svg" alt={t("common.options")} width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side={menuSide} align="center" className="w-[160px]">
@@ -328,14 +328,14 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
+                          <Image src="/icons/edit-pencil-icon.png" alt={t("common.edit")} width={24} height={24} />
                           {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
+                          <Image src="/icons/delete-trash-icon.png" alt={t("common.delete")} width={24} height={24} />
                           {t("profile.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -371,7 +371,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
-                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
+                          <Image src="/icons/vertical.svg" alt={t("common.options")} width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side={menuSide} align="center" className="w-[160px]">
@@ -379,14 +379,14 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
+                          <Image src="/icons/edit-pencil-icon.png" alt={t("common.edit")} width={24} height={24} />
                           {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
+                          <Image src="/icons/delete-trash-icon.png" alt={t("common.delete")} width={24} height={24} />
                           {t("profile.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>

@@ -220,7 +220,7 @@ export default function OrderChat({
             onClick={onNavigateToOrderDetails}
             className="me-[16px] bg-grayscale-300 px-1"
           >
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
+            <Image src="/icons/arrow-left-icon.png" alt={t("common.back")} width={24} height={24} className="rtl:rotate-180" />
           </Button>
         )}
         <div className="relative w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold me-3">
@@ -249,7 +249,7 @@ export default function OrderChat({
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">
               <div className="flex-shrink-0">
-                <Image src="/icons/warning-icon-new.png" className="-mt-[2px]" alt="Warning" width={24} height={24} />
+                <Image src="/icons/warning-icon-new.png" className="-mt-[2px]" alt={t("common.warning")} width={24} height={24} />
               </div>
               <div className="text-sm text-slate-1200">
                 <span className="font-bold">{t("chat.disclaimerImportant")}</span>
@@ -309,7 +309,7 @@ export default function OrderChat({
                               )}
                               {msg.message}
                             </div>
-                            {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
+                            {msg.rejected && <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} />}
                           </div>
                         )}
                         {msg.rejected && msg.tags ? (
@@ -361,7 +361,7 @@ export default function OrderChat({
                   size="sm"
                   disabled={isSending}
                 >
-                  <Image src="/icons/send-message.png" alt="Send message" width={20} height={20} className="h-5 w-5" />
+                  <Image src="/icons/send-message.png" alt={t("common.sendMessage")} width={20} height={20} className="h-5 w-5" />
                 </Button>
               ) : (
                 <Button

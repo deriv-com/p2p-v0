@@ -114,7 +114,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
             <span>{t("profile.paymentMethodAdded")}</span>
           </div>
         ),
@@ -171,7 +171,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.stats")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
-                alt="Chevron right"
+                alt={t("common.chevronRight")}
                 width={20}
                 height={20}
                 className={cn("justify-self-end", RTL_MIRROR_ICON)}
@@ -186,7 +186,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowStatsSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <BackArrowIcon alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt={t("common.close")} width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4">
@@ -207,7 +207,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.paymentMethods")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
-                alt="Chevron right"
+                alt={t("common.chevronRight")}
                 width={20}
                 height={20}
                 className={cn("justify-self-end", RTL_MIRROR_ICON)}
@@ -222,7 +222,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowPaymentMethodsSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <BackArrowIcon alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt={t("common.close")} width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -260,7 +260,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.follows")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
-                alt="Chevron right"
+                alt={t("common.chevronRight")}
                 width={20}
                 height={20}
                 className={cn("justify-self-end", RTL_MIRROR_ICON)}
@@ -275,7 +275,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowFollowsSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <BackArrowIcon alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt={t("common.close")} width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -298,7 +298,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.closedGroup")}</span>
                   <Image
                     src="/icons/chevron-right-gray.png"
-                    alt="Chevron right"
+                    alt={t("common.chevronRight")}
                     width={20}
                     height={20}
                     className="justify-self-end"
@@ -314,7 +314,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowClosedGroupSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <BackArrowIcon alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt={t("common.close")} width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -335,7 +335,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.blocked")}</span>
               <Image
                 src="/icons/chevron-right-sm.png"
-                alt="Chevron right"
+                alt={t("common.chevronRight")}
                 width={20}
                 height={20}
                 className={cn("justify-self-end", RTL_MIRROR_ICON)}
@@ -350,7 +350,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowBlockedSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <BackArrowIcon alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt={t("common.close")} width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -371,7 +371,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               <span className="text-sm font-normal text-gray-900 ms-4">{t("profile.counterparties")}</span>
               <Image
                 src="/icons/chevron-right-sm.png"
-                alt="Chevron right"
+                alt={t("common.chevronRight")}
                 width={20}
                 height={20}
                 className={cn("justify-self-end", RTL_MIRROR_ICON)}
@@ -386,7 +386,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                     onClick={() => setShowCounterpartiesSidebar(false)}
                     className="bg-grayscale-300 px-1"
                   >
-                    <BackArrowIcon alt="Close" width={24} height={24} />
+                    <BackArrowIcon alt={t("common.close")} width={24} height={24} />
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
@@ -408,7 +408,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
               <span className="text-sm font-normal text-gray-900 ms-4">{t("navigation.p2pHelpCentre")}</span>
               <Image
                 src="/icons/chevron-right-gray.png"
-                alt="Chevron right"
+                alt={t("common.chevronRight")}
                 width={20}
                 height={20}
                 className={cn("justify-self-end", RTL_MIRROR_ICON)}
@@ -425,7 +425,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                   <span className="text-sm font-normal text-gray-900 ms-4">{t("nps.sendFeedback")}</span>
                   <Image
                     src="/icons/chevron-right-gray.png"
-                    alt="Chevron right"
+                    alt={t("common.chevronRight")}
                     width={20}
                     height={20}
                     className="justify-self-end"
@@ -492,7 +492,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
                     <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
-                      <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="me-1" />
+                      <Image src="/icons/plus_icon.png" alt={t("common.addPayment")} width={14} height={24} className="me-1" />
                       {t("profile.addPaymentMethod")}
                     </Button>
                   </div>

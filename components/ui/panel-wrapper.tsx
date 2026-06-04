@@ -17,7 +17,7 @@ interface PanelWrapperProps {
 
 export function PanelWrapper({ onBack, onClose, children }: PanelWrapperProps) {
   const isMobile = useIsMobile()
-  const { locale } = useTranslations()
+  const { t, locale } = useTranslations()
   const dir = isRtlLocale(locale) ? "rtl" : "ltr"
 
   return (
@@ -30,10 +30,10 @@ export function PanelWrapper({ onBack, onClose, children }: PanelWrapperProps) {
         <div dir={dir} className="max-w-xl mx-auto flex flex-col w-full h-full text-start">
           <div className={cn("flex items-center justify-end px-4 py-3", onBack && "justify-between")}>
             {onBack && <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
-              <BackArrowIcon alt="Back" width={24} height={24} />
+              <BackArrowIcon alt={t("common.back")} width={24} height={24} />
             </Button>}
             <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+              <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
             </Button>
           </div>
           {children}

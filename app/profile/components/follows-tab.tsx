@@ -88,7 +88,7 @@ export default function FollowsTab() {
               toast({
                 description: (
                   <div className="flex items-center gap-2">
-                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                    <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                     <span>{t("profile.userUnfollowed", { nickname: user.nickname })}</span>
                   </div>
                 ),
@@ -109,7 +109,7 @@ export default function FollowsTab() {
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                   <span>{t("profile.userFollowed", { nickname: user.nickname })}</span>
                 </div>
               ),

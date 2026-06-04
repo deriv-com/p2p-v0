@@ -264,7 +264,7 @@ export default function Sidebar({ className }: SidebarProps) {
   return (
     <div className={cn("w-[295px] flex flex-col border-e border-slate-200 me-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-p2p.png" alt="Deriv logo" width={128} height={24} />
+        <Image src="/icons/deriv-p2p.png" alt={t("common.derivLogo")} width={128} height={24} />
         {userId && (
           <div className="hidden md:block text-slate-600 hover:text-slate-700" onClick={() => track("ek_notifications_markets")}>
             <NovuNotifications />
@@ -300,7 +300,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 onClick={handleClear}
                 className="absolute end-2 md:end-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
             {isSearchFocused && searchInput.length > 0 && (
@@ -343,8 +343,8 @@ export default function Sidebar({ className }: SidebarProps) {
                   </div>
                 ) : debouncedSearchInput.length > 0 ? (
                   <EmptyState
-                    title={`No results found for "${debouncedSearchInput}"`}
-                    description="Check spelling or try finding different advertisers."
+                    title={t("common.searchNoResultsTitle", { query: debouncedSearchInput })}
+                    description={t("common.searchNoResultsDescription")}
                     className="py-4 px-2"
                   />
                 ) : null}
@@ -428,7 +428,7 @@ export default function Sidebar({ className }: SidebarProps) {
               {email && <span className="text-xs text-slate-1200 whitespace-pre-wrap wrap-anywhere">{email}</span>}
             </div>
           </div>
-          <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={14} height={24} className="rtl:rotate-180" />
+          <Image src="/icons/chevron-right-black.png" alt={t("common.derivLogo")} width={14} height={24} className="rtl:rotate-180" />
         </a>
       </div>
       <FeedbackDialog isOpen={showFeedbackDialog} onClose={() => setShowFeedbackDialog(false)} />

@@ -88,7 +88,7 @@ export function CurrencyFilter({
       <div className="relative mb-6 md:mb-4 md:pe-6">
         <Image
           src="/icons/search-icon-custom.png"
-          alt="Search"
+          alt={t("common.search")}
           width={24}
           height={24}
           className="absolute start-3 top-1/2 transform -translate-y-1/2"
@@ -109,7 +109,7 @@ export function CurrencyFilter({
             onClick={() => setSearchQuery("")}
             className="absolute end-0 md:end-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
-            <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+            <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
           </Button>
         )}
       </div>

@@ -416,7 +416,7 @@ export default function AdDetailsForm({
                     </div>
                     <Image
                       src="/icons/chevron-down.png"
-                      alt="Arrow"
+                      alt={t("common.arrow")}
                       width={24}
                       height={24}
                       className="ms-2 transition-transform duration-200"
@@ -458,7 +458,7 @@ export default function AdDetailsForm({
                     </div>
                     <Image
                       src="/icons/chevron-down.png"
-                      alt="Arrow"
+                      alt={t("common.arrow")}
                       width={24}
                       height={24}
                       className="ms-2 transition-transform duration-200"

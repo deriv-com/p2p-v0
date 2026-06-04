@@ -82,7 +82,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
       <div className="relative">
         <Image
           src="/icons/search-icon-custom.png"
-          alt="Search"
+          alt={t("common.search")}
           width={24}
           height={24}
           className="absolute start-3 top-1/2 transform -translate-y-1/2"
@@ -102,7 +102,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             onClick={() => setSearchTerm("")}
             className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
-            <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+            <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
           </Button>
         )}
       </div>
@@ -164,7 +164,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           <div className="absolute end-4 top-1/2 -translate-y-1/2 pointer-events-none">
             <Image
               src="/icons/chevron-down.png"
-              alt="Arrow"
+              alt={t("common.arrow")}
               width={24}
               height={24}
               className={cn("transition-transform", isOpen && "rotate-180")}
@@ -207,7 +207,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         <div className="absolute end-4 top-1/2 -translate-y-1/2 pointer-events-none">
           <Image
             src="/icons/chevron-down.png"
-            alt="Arrow"
+            alt={t("common.arrow")}
             width={24}
             height={24}
             className={cn("transition-transform", isOpen && "rotate-180")}

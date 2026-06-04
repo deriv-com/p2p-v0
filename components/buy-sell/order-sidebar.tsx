@@ -119,9 +119,9 @@ const PaymentSelectionContent = ({
                     className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+                      <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} />
                       <span className="text-base text-slate-1200">
-                        {formatPaymentMethodName(method.method)}
+                        {formatPaymentMethodName(method.method, t)}
                       </span>
                     </div>
                   </div>
@@ -152,8 +152,8 @@ const PaymentSelectionContent = ({
                         }`}
                     />
                     <div className="flex- flex-col">
-                      <span className="text-base text-slate-1200">{getCategoryDisplayName(method.type)}</span>
-                      <div className="font-normal text-grayscale-text-muted text-xs">{`${formatPaymentMethodName(method.display_name)} - ${method.fields.account.value}`}</div>
+                      <span className="text-base text-slate-1200">{getCategoryDisplayName(method.type, t)}</span>
+                      <div className="font-normal text-grayscale-text-muted text-xs">{`${formatPaymentMethodName(method.display_name, t)} - ${method.fields.account.value}`}</div>
                     </div>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="me-2" />
+              <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">
                 {t("paymentMethod.addPaymentMethod")}
               </span>
@@ -514,7 +514,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       track("ek_order_creation_failed_markets_advert_sheet", { error_code: "order_creation_error", error_message: errorCode })
       setOrderStatus({
         success: false,
-        message: `Failed to create order. Please try again. (${errorCode})`,
+        message: t("order.createOrderFailed", { code: errorCode }),
       })
     } finally {
       setIsSubmitting(false)
@@ -645,7 +645,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             <div className="flex flex-col h-full max-w-xl mx-auto">
               <div className="flex items-center justify-end px-4 py-3">
                 <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-                  <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+                  <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
                 </Button>
               </div>
 
@@ -713,7 +713,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                         </div>
                         <Image
                           src="/icons/chevron-down.png"
-                          alt="Arrow"
+                          alt={t("common.arrow")}
                           width={24}
                           height={24}
                           className="ms-2 transition-transform duration-200"
@@ -727,7 +727,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                   <div className="flex justify-between items-center gap-4 mb-2">
                     <span className="text-grayscale-text-muted shrink-0">{t("order.rateType")}</span>
                     <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1 shrink-0">
-                      {localAd.exchange_rate_type === "float" ? "Floating" : "Fixed"}
+                      {localAd.exchange_rate_type === "float" ? t("order.rateFloating") : t("order.rateFixed")}
                     </span>
                   </div>
                   <div className="flex justify-between items-center gap-4 mb-2">
@@ -771,7 +771,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                           className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                             }`}
                         />
-                        <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>
+                        <span className="text-slate-1200">{formatPaymentMethodName(method, t)}</span>
                       </div>
                     ))}
                   </div>
@@ -796,7 +796,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                     }
                   >
                     {isSubmitting ? (
-                      <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                      <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
                     ) : (
                       t("order.placeOrder")
                     )}

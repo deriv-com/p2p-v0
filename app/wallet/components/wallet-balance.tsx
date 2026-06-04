@@ -133,17 +133,17 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     <TooltipProvider>
       <div className={cn("flex flex-col items-center justify-center py-8", className)}>
         <div className="mb-6 h-14 w-14">
-          <Image src="/icons/p2p-logo.png" alt="P2P Logo" width={56} height={56} className="rounded-full" />
+          <Image src="/icons/p2p-logo.png" alt={t("common.p2pLogo")} width={56} height={56} className="rounded-full" />
         </div>
 
         <div className="flex items-center justify-center gap-2">
           <h1 className="text-[32px] font-black text-black text-center leading-normal">
             {isLoading ? t("common.loading") : `${balance} ${selectedCurrency}`}
           </h1>
-          <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
+          <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label={t("common.refreshBalance")}>
             <Image
               src="/icons/refresh-icon.png"
-              alt="Refresh"
+              alt={t("common.refresh")}
               width={16}
               height={16}
               className={cn("text-gray-400", isRefreshing && "animate-spin")}
@@ -157,7 +157,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             <TooltipTrigger asChild>
               <Image
                 src="/icons/info-circle.svg"
-                alt="Info"
+                alt={t("common.info")}
                 width={24}
                 height={24}
                 className="ms-1 cursor-pointer flex-shrink-0"
@@ -178,7 +178,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
               aria-label="Deposit"
               onClick={handleDepositClick}
             >
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+              <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} />
             </Button>
             <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">{t("wallet.deposit")}</span>
           </div>
@@ -206,7 +206,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
               aria-label="Transfer"
               onClick={handleTransferClick}
             >
-              <Image src="/icons/exchange-icon.png" alt="Transfer" width={20} height={20} />
+              <Image src="/icons/exchange-icon.png" alt={t("wallet.transfer")} width={20} height={20} />
             </Button>
             <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">
               {t("wallet.transfer")}

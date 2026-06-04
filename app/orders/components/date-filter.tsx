@@ -87,10 +87,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           >
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-2">
-                <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
+                <Image src="/icons/calendar.png" alt={t("common.calendar")} width={24} height={24} className="text-gray-500" />
                 <span>{getDisplayLabel()}</span>
               </div>
-              <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ms-2" />
+              <Image src="/icons/chevron-down.png" alt={t("common.arrow")} width={24} height={24} className="ms-2" />
             </div>
           </Button>
         </DrawerTrigger>
@@ -125,10 +125,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         >
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
+              <Image src="/icons/calendar.png" alt={t("common.calendar")} width={24} height={24} className="text-gray-500" />
               <span>{getDisplayLabel()}</span>
             </div>
-            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ms-2" />
+            <Image src="/icons/chevron-down.png" alt={t("common.arrow")} width={24} height={24} className="ms-2" />
           </div>
         </Button>
       </PopoverTrigger>

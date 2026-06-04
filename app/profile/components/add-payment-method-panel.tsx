@@ -117,7 +117,7 @@ export default function AddPaymentMethodPanel({
     const newErrors: Record<string, string> = {}
 
     if (!selectedMethod) {
-      newErrors.method = "Please select a payment method"
+      newErrors.method = t("paymentMethod.pleaseSelectPaymentMethod")
     }
 
     selectedMethodFields.forEach((field) => {
@@ -126,12 +126,12 @@ export default function AddPaymentMethodPanel({
       if (!value && field.required) {
         newErrors[field.name] = `${field.label} is required`
       } else if (value && !validateInput(value)) {
-        newErrors[field.name] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        newErrors[field.name] = t("profile.validationSymbolsOnly")
       }
     })
 
     if (instructions && !validateInput(instructions)) {
-      newErrors.instructions = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+      newErrors.instructions = t("profile.validationSymbolsOnly")
     }
 
     setErrors(newErrors)
@@ -153,7 +153,7 @@ export default function AddPaymentMethodPanel({
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        [name]: t("profile.validationSymbolsOnly"),
       }))
     }
   }
@@ -172,7 +172,7 @@ export default function AddPaymentMethodPanel({
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        instructions: t("profile.validationSymbolsOnly"),
       }))
     }
   }
@@ -260,7 +260,7 @@ export default function AddPaymentMethodPanel({
           <div className="relative">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
               className="absolute start-3 top-1/2 transform -translate-y-1/2"
@@ -280,7 +280,7 @@ export default function AddPaymentMethodPanel({
                 onClick={() => setSearchQuery("")}
                 className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
           </div>
@@ -376,7 +376,7 @@ export default function AddPaymentMethodPanel({
           className="w-full md:w-auto"
         >
           {isLoading ? (
-            <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+            <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
           ) : (
             t("common.add")
           )}

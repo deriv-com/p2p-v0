@@ -149,7 +149,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setIsGroupMember(advertiserData.data.is_group_member || false)
     } catch (err) {
       if (!abortController.signal.aborted) {
-        setError("Failed to load the advertiser profile.")
+        setError(t("advertiser.failedToLoad"))
         setProfile(null)
       }
     } finally {
@@ -232,9 +232,9 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
       } else {
         showAlert({
-          title: "Ad no longer available",
-          description: "This ad is no longer accessible. Try placing an order on a different ad.",
-          confirmText: "Got it",
+          title: t("order.adNotAvailableTitle"),
+          description: t("order.adNotAvailableMessage"),
+          confirmText: t("common.gotIt"),
           type: "warning",
         })
       }
@@ -255,7 +255,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
               {isFollowing ? (
                 <span>{t("advertiser.successfullyUnfollowed")}</span>
               ) : (
@@ -299,7 +299,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
               toast({
                 description: (
                   <div className="flex items-center gap-2">
-                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                    <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                     <span>
                       {isBlocked
                         ? t("advertiser.userUnblocked", { nickname: profile?.nickname })
@@ -340,7 +340,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
               <span>{t("advertiser.userUnblocked", { nickname: profile?.nickname })}</span>
             </div>
           ),
@@ -366,7 +366,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
               <span>{t("advertiser.addedToClosedGroup")}</span>
             </div>
           ),
@@ -390,7 +390,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
               <span>{t("advertiser.removedFromClosedGroup")}</span>
             </div>
           ),
@@ -440,7 +440,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const getJoinedDate = (timestamp: number) => {
     const joinDate = new Date(timestamp)
     const formattedDate = joinDate.toLocaleDateString("en-GB")
-    return `Joined on ${formattedDate}`
+    return t("advertiser.joinedOn", { date: formattedDate })
   }
 
   const handleBack = () => {
@@ -477,13 +477,13 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
               <Button variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
-                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
+                <Image src="/icons/arrow-left-icon.png" alt={t("common.back")} width={24} height={24} className="rtl:rotate-180" />
               </Button>
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
                   <div className="relative me-[16px]">
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
-                      <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
+                      <Image src="/icons/user-icon-black.png" alt={t("common.user")} width={32} height={32} />
                       <div
                         className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${profile?.is_online ? "bg-buy" : "bg-gray-400"
                           }`}
@@ -522,7 +522,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
                       <div className="flex items-center">
-                        <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="me-1" />
+                        <Image src="/icons/thumbs-up.png" alt={t("common.recommended")} width={24} height={24} className="me-1" />
                         <span className="me-[8px]">
                           {profile?.statistics_lifetime?.recommend_count > 0
                             ? t("advertiser.recommendedBy", {
@@ -534,7 +534,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       </div>
                       <span className="opacity-[0.08]">|</span>
                       <div className="flex items-center">
-                        <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="me-1" />
+                        <Image src="/icons/star-rating.png" alt={t("common.star")} width={24} height={24} className="me-1" />
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
@@ -584,7 +584,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
             {isBlocked && (
               <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
                 <div className="mb-4">
-                  <Image src="/icons/blocked.png" alt="Blocked user" width={128} height={128} className="mx-auto" />
+                  <Image src="/icons/blocked.png" alt={t("common.blockedUser")} width={128} height={128} className="mx-auto" />
                 </div>
                 <h2 className="text-lg font-bold text-neutral-10 mb-2">{t("advertiser.youveBlockedUser")}</h2>
                 <p className="text-base text-neutral-7">{t("advertiser.unblockDescription")}</p>
@@ -638,14 +638,14 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 </TableCell>
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
                                   <div>
-                                    {isMobile && <span>Trade Limits: </span>}
+                                    {isMobile && <span>{t("market.tradeLimitsLabel")} </span>}
                                     {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
                                   </div>
                                 </TableCell>
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
                                   <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-1" />
-                                    <span>{ad.order_expiry_period} min</span>
+                                    <Image src="/icons/clock.png" alt={t("common.time")} width={12} height={12} className="me-1" />
+                                    <span>{ad.order_expiry_period} {t("market.min")}</span>
                                   </div>
                                 </TableCell>
                                 <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
@@ -658,7 +658,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                             : "bg-paymentMethod-ewallet"
                                             }`}
                                         ></div>
-                                        <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                                        <span className="text-xs">{formatPaymentMethodName(method, t)}</span>
                                       </div>
                                     ))}
                                   </div>

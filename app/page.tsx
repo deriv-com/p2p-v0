@@ -555,7 +555,7 @@ export default function BuySellPage() {
                           <span className="shrink-0">{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
-                            alt="Arrow"
+                            alt={t("common.arrow")}
                             width={24}
                             height={24}
                             className="shrink-0 transition-transform duration-200"
@@ -614,7 +614,7 @@ export default function BuySellPage() {
                         {hasFilteredPaymentMethods ? (
                           <Image
                             src="/icons/chevron-down-white.png"
-                            alt="Arrow"
+                            alt={t("common.arrow")}
                             width={24}
                             height={24}
                             className="transition-transform duration-200"
@@ -622,7 +622,7 @@ export default function BuySellPage() {
                         ) : (
                           <Image
                             src="/icons/chevron-down.png"
-                            alt="Arrow"
+                            alt={t("common.arrow")}
                             width={24}
                             height={24}
                             className="transition-transform duration-200"
@@ -651,9 +651,9 @@ export default function BuySellPage() {
                         onClick={() => track("ek_filter_markets")}
                       >
                         {hasActiveFilters ? (
-                          <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} />
+                          <Image src="/icons/filter-icon-white.png" alt={t("common.filter")} width={16} height={16} />
                         ) : (
-                          <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                          <Image src="/icons/filter-icon.png" alt={t("common.filter")} width={20} height={20} />
                         )}
                       </Button>
                     }
@@ -717,7 +717,7 @@ export default function BuySellPage() {
             </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">
-              {error.message || "Failed to load advertisements"}
+              {error.message || t("market.failedToLoadAdvertisements")}
             </div>
           ) : adverts.length === 0 ? (
             <div className="h-full">
@@ -781,7 +781,7 @@ export default function BuySellPage() {
                               {ad.is_private && (
                                 <Image
                                   src="/icons/closed-group.svg"
-                                  alt="Closed Group"
+                                  alt={t("common.closedGroup")}
                                   width={32}
                                   height={32}
                                   className="cursor-pointer me-1"
@@ -805,7 +805,7 @@ export default function BuySellPage() {
                             <span className="flex items-center">
                               <Image
                                 src="/icons/star-active.svg"
-                                alt="Rating"
+                                alt={t("common.rating")}
                                 width={16}
                                 height={16}
                                 className="me-1"
@@ -837,7 +837,7 @@ export default function BuySellPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
+                                  <Image src="/icons/clock.png" alt={t("common.time")} width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}
                                   </span>
@@ -868,7 +868,7 @@ export default function BuySellPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className="flex items-center justify-start bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer text-start">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
+                                  <Image src="/icons/clock.png" alt={t("common.time")} width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}
                                   </span>
@@ -894,7 +894,7 @@ export default function BuySellPage() {
                                     }`}
                                 ></div>
                               )}
-                              <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                              <span className="text-xs">{formatPaymentMethodName(method, t)}</span>
                             </div>
                           ))}
                         </div>

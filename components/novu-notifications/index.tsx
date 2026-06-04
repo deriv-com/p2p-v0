@@ -56,7 +56,7 @@ export function NovuNotifications() {
   const userId = useUserDataStore((state) => state.userId)
   const userIdFallback = userId || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
-  const { locale } = useTranslations()
+  const { t, locale } = useTranslations()
 
   useEffect(() => {
     setMounted(true)
@@ -66,9 +66,9 @@ export function NovuNotifications() {
     icons: {
       bell: () => {
         return isMobile ? (
-          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+          <Image src="/icons/bell-sm.png" alt={t("notifications.title")} width={24} height={24} />
         ) : (
-          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+          <Image src="/icons/bell-desktop.png" alt={t("notifications.title")} width={24} height={24} />
         )
       },
     },
@@ -152,7 +152,7 @@ export function NovuNotifications() {
     return (
       <div className="flex h-8 w-8 items-center justify-center">
         <div className="relative inline-flex h-6 w-6 rounded-full bg-yellow-100">
-          <span className="sr-only">Notifications loading</span>
+          <span className="sr-only">{t("notifications.loading")}</span>
         </div>
       </div>
     )
@@ -163,9 +163,9 @@ export function NovuNotifications() {
       <div className="flex h-8 w-8 items-center justify-center">
         <div
           className="relative inline-flex h-6 w-6 rounded-full bg-red-100"
-          title={error || "Failed to load notifications"}
+          title={error || t("notifications.loadFailed")}
         >
-          <span className="sr-only">Notifications error</span>
+          <span className="sr-only">{t("notifications.error")}</span>
         </div>
       </div>
     )
@@ -177,9 +177,9 @@ export function NovuNotifications() {
         applicationIdentifier={applicationIdentifier}
         subscriber={subscriberId || ""}
         subscriberHash={subscriberHash}
-        localization={{ "inbox.filters.labels.default": "Notifications" }}
+        localization={{ "inbox.filters.labels.default": t("notifications.title") }}
         colorScheme="light"
-        i18n={{ lang: locale, poweredBy: "Notifications by" }}
+        i18n={{ lang: locale, poweredBy: t("notifications.poweredBy") }}
         onNotificationClick={(notification) => {
           if (notification.data?.order_id) {
             router.push(`/orders/${notification.data.order_id}`)

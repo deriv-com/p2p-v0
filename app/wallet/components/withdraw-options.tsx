@@ -3,6 +3,7 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface WithdrawOptionProps {
   onClose: () => void
@@ -12,6 +13,7 @@ interface WithdrawOptionProps {
 
 export default function WithdrawOptions({ onClose, onDirectWithdrawClick, selectedCurrency }: WithdrawOptionProps) {
   const router = useRouter()
+  const { t } = useTranslations()
 
   const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -36,12 +38,12 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick, select
         onClick={handleP2PTradingClick}
       >
         <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
-          <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
+          <Image src="/icons/up-down-arrows.png" alt={t("common.trade")} width={24} height={24} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-slate-1200 leading-6">Marketplace</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6">{t("wallet.marketplaceTitle")}</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] me-6 md:me-0">
-            {`Trade directly with other users on the marketplace.`}
+            {t("wallet.marketplaceDescription")}
           </p>
           <div className="border-b border-grayscale-200 mt-4 ms-0"></div>
         </div>
@@ -52,12 +54,12 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick, select
         onClick={handleDirectWithdrawClick}
       >
         <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
-          <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
+          <Image src="/icons/bank-icon.png" alt={t("common.bank")} width={24} height={24} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-slate-1200 leading-6">Direct withdrawal</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6">{t("wallet.directWithdrawalTitle")}</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] me-6 md:me-0">
-            Withdraw funds directly to your bank account, e-wallet, or other payment methods.
+            {t("wallet.directWithdrawalDescription")}
           </p>
           <div className="border-b border-grayscale-200 mt-4 ms-0"></div>
         </div>

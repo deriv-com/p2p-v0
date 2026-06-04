@@ -6,6 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 const Sheet = SheetPrimitive.Root
 
@@ -56,20 +57,22 @@ interface SheetContentProps
 }
 
 const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Content>, SheetContentProps>(
-  ({ side = "right", className, children, hideCloseButton = false, ...props }, ref) => (
+  ({ side = "right", className, children, hideCloseButton = false, ...props }, ref) => {
+    const { t } = useTranslations()
+    return (
     <SheetPortal>
       <SheetOverlay />
       <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
         {children}
         {!hideCloseButton && (
           <SheetPrimitive.Close className="absolute end-4 top-4 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-secondary bg-grayscale-300 px-1 h-[32px]">
-            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
-            <span className="sr-only">Close</span>
+            <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
+            <span className="sr-only">{t("common.close")}</span>
           </SheetPrimitive.Close>
         )}
       </SheetPrimitive.Content>
     </SheetPortal>
-  ),
+  )},
 )
 SheetContent.displayName = SheetPrimitive.Content.displayName
 

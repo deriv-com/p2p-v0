@@ -36,7 +36,7 @@ export default function UserInfo({
     <div className="w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between mb-4 md:mx-0 md:mt-0 sticky top-0 z-10">
       <div className="flex flex-col md:flex-row items-start gap-4">
         <div className="relative h-14 w-14 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
-          <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
+          <Image src="/icons/user-icon.png" alt={t("common.user")} width={32} height={32} />
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ export default function UserInfo({
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
             <div className="flex items-center text-white">
               <div className="flex items-center">
-                <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="me-1" />
+                <Image src="/icons/thumbs-up.png" alt={t("common.recommended")} width={24} height={24} className="me-1" />
                 <span className="text-white opacity-[0.72]">
                   {recommendation ? recommendation : t("profile.notRecommendedYet")}
                 </span>
@@ -61,7 +61,7 @@ export default function UserInfo({
             <>
               <div className="mx-4 h-4 w-px bg-white opacity-[0.08]"></div>
               <div className="flex items-center">
-                <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="me-1" />
+                <Image src="/icons/star-rating.png" alt={t("common.star")} width={24} height={24} className="me-1" />
                 <span className="text-white opacity-[0.72]">{rating ? rating : t("profile.notRatedYet")}</span>
               </div>
             </>

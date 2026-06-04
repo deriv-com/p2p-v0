@@ -126,7 +126,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
             <span className={`w-2 h-2 rounded-full me-2 ${getPaymentMethodColourByName(method)}`}></span>
-            <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
+            <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method, t)}</span>
           </div>
         ))}
       </div>
@@ -175,7 +175,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
           toast({
             description: (
               <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                 <span>{message}</span>
               </div>
             ),
@@ -232,7 +232,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                   <span>{t("myAds.adDeleted")}</span>
                 </div>
               ),
@@ -493,7 +493,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
-                    {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
+                    {ad.is_private && <Image src="/icons/closed-group.svg" alt={t("common.closedGroup")} width={24} height={24} />}
                     {hasVisibilityStatus && (
                       <Button
                         variant="ghost"
@@ -501,7 +501,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                         className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                         onClick={() => handleVisibilityStatusClick(ad)}
                       >
-                        <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
+                        <Image src="/icons/ad-warning.svg" alt={t("common.visibilityStatus")} width={24} height={24} />
                       </Button>
                     )}
                   </TableCell>
@@ -514,7 +514,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                           className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           onClick={() => handleOpenDrawer(ad)}
                         >
-                          <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                          <Image src="/icons/vertical.svg" alt={t("common.options")} width={20} height={20} />
                         </Button>
                       ) : (
                         <>
@@ -525,7 +525,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                               className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                               onClick={() => handleOpenDrawer(ad)}
                             >
-                              <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                              <Image src="/icons/vertical.svg" alt={t("common.options")} width={20} height={20} />
                             </Button>
                           ) : (
                             <DropdownMenu open={openDropdownId === ad.id} onOpenChange={(open) => setOpenDropdownId(open ? ad.id : null)}>
@@ -535,7 +535,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                                   size="sm"
                                   className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                                 >
-                                  <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                                  <Image src="/icons/vertical.svg" alt={t("common.options")} width={20} height={20} />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align={dropdownMenuAlign} className="w-auto flex flex-col p-1">

@@ -180,7 +180,7 @@ export default function EditPaymentMethodPanel({
           className="w-full md:w-auto"
         >
           {isLoading ? (
-            <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+            <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
           ) : (
             t("profile.saveChanges")
           )}

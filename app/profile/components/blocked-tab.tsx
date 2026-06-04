@@ -68,7 +68,7 @@ export default function BlockedTab() {
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                   <span>{t("profile.userUnblocked", { nickname: user.nickname })}</span>
                 </div>
               ),
@@ -122,7 +122,7 @@ export default function BlockedTab() {
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
               className="absolute start-3 top-1/2 transform -translate-y-1/2"
@@ -141,7 +141,7 @@ export default function BlockedTab() {
                 onClick={() => setSearchQuery("")}
                 className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
           </div>

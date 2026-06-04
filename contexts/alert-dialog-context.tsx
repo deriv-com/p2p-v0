@@ -23,7 +23,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [config, setConfig] = useState<AlertDialogConfig>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
-  const { locale } = useTranslations()
+  const { t, locale } = useTranslations()
   const dir = isRtlLocale(locale) ? "rtl" : "ltr"
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
@@ -88,7 +88,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             {config.title && <div className="flex-1 min-w-0 text-start font-bold text-2xl">{config.title}</div>}
             {!config.hideCloseButton && (
               <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
-                <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+                <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
               </Button>
             )}
           </div>
@@ -110,7 +110,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           {config.title && <div className="flex-1 min-w-0 text-start font-bold text-2xl">{config.title}</div>}
           {!config.hideCloseButton && (
             <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
-              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+              <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
             </Button>
           )}
         </div>

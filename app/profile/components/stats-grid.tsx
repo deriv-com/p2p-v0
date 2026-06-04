@@ -12,6 +12,7 @@ interface StatCardProps {
 }
 
 function StatCard({ tab, title, value }: StatCardProps) {
+  const { t } = useTranslations()
   return (
     <div className="flex flex-row-reverse justify-between md:border-none md:flex-col md:h-20 pt-6 pb-2">
       <div className="font-bold text-black text-base leading-6 tracking-normal">{value}</div>
@@ -22,7 +23,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
             <TooltipTrigger asChild>
               <Image
                 src="/icons/info-circle.svg"
-                alt="Info"
+                alt={t("common.info")}
                 width={24}
                 height={24}
                 className="ms-1 cursor-pointer flex-shrink-0"
@@ -39,7 +40,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
             <TooltipTrigger asChild>
                <Image
                 src="/icons/info-circle.svg"
-                alt="Info"
+                alt={t("common.info")}
                 width={24}
                 height={24}
                 className="ms-1 cursor-pointer flex-shrink-0"
@@ -56,7 +57,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
             <TooltipTrigger asChild>
               <Image
                 src="/icons/info-circle.svg"
-                alt="Info"
+                alt={t("common.info")}
                 width={24}
                 height={24}
                 className="ms-1 cursor-pointer flex-shrink-0"

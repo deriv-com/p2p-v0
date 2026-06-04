@@ -14,14 +14,14 @@ export function ClosedGroupBadge() {
         <TooltipTrigger asChild>
           <Image
             src="/icons/closed-group.svg"
-            alt="Closed Group"
+            alt={t("common.closedGroup")}
             width={32}
             height={32}
             className="cursor-pointer me-1"
           />
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-          <p className="text-white">This user is in your group list.</p>
+          <p className="text-white">{t("profile.closedGroupMemberTooltip")}</p>
           <TooltipArrow className="fill-black" />
         </TooltipContent>
       </Tooltip>

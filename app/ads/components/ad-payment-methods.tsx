@@ -95,8 +95,8 @@ const AdPaymentMethods = () => {
   return (
     <>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
-        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
+        <h3 className="text-lg font-semibold mb-2">{t("paymentMethod.selectPaymentMethod")}</h3>
+        <p className="text-gray-600 mb-4">{t("paymentMethod.selectUpTo3")}</p>
 
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
@@ -120,7 +120,7 @@ const AdPaymentMethods = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 ms-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type, t)}</span>
                       </div>
                       <div onClick={(e) => e.stopPropagation()} className="pointer-events-auto">
                         <Checkbox
@@ -147,19 +147,19 @@ const AdPaymentMethods = () => {
                 <div className="text-center">
                   <Image
                     src="/icons/plus_icon.png"
-                    alt="Add payment method"
+                    alt={t("paymentMethod.addPaymentMethod")}
                     width={14}
                     height={24}
                     className="mx-auto mb-2"
                   />
-                  <p className="text-sm text-neutral-10">Add payment method</p>
+                  <p className="text-sm text-neutral-10">{t("paymentMethod.addPaymentMethod")}</p>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
+        {paymentMethods.length === 0 && <p className="text-gray-500 italic">{t("paymentMethod.noPaymentMethodsAddedYet")}</p>}
       </div>
 
       {showAddPaymentPanel && (

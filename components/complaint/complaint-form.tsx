@@ -144,7 +144,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
             </div>
             <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="w-full md:w-auto shrink-0">
               {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
               ) : (
                 t("complaint.submit")
               )}

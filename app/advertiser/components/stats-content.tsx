@@ -2,6 +2,7 @@
 
 import { Tooltip, TooltipArrow, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 import Image from "next/image"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdvertiserProfile {
   id: string | number
@@ -30,6 +31,20 @@ interface AdvertiserProfile {
   release_time_average_30day: number
   rating_average_30day: number
   completion_average_30day: number
+  statistics_30day?: {
+    completion_rate_buy?: number
+    completion_count_buy?: number
+    completion_rate_sell?: number
+    completion_count_sell?: number
+    completion_count_all?: number
+    buy_time_average?: number
+    release_time_average?: number
+    completion_amount_all?: string
+  }
+  statistics_lifetime?: {
+    completion_count_all?: number
+    partner_count?: number
+  }
 }
 
 interface StatsContentProps {
@@ -37,13 +52,15 @@ interface StatsContentProps {
 }
 
 export default function StatsContent({ profile }: StatsContentProps) {
+  const { t } = useTranslations()
+
   const getDuration = (duration: number | null | undefined) => {
     if (duration == null || duration <= 0) return "-"
 
     const newDuration = duration / 60
-    if (newDuration < 1) return "< 1 min"
+    if (newDuration < 1) return t("profile.lessThanOneMin")
 
-    return newDuration.toFixed(2).toString() + " mins"
+    return `${newDuration.toFixed(2)} ${t("profile.mins")}`
   }
 
   return (
@@ -51,44 +68,44 @@ export default function StatsContent({ profile }: StatsContentProps) {
       <div className="space-y-6">
         <div className="flex flex-col">
         <div className="flex justify-between text-sm border-b py-6">
-            <div className="text-sm text-slate-500">Buy completion rate (30d)</div>
+            <div className="text-sm text-slate-500">{t("advertiser.buyCompletionRate30d")}</div>
             <div className="font-bold mt-1">{profile?.statistics_30day?.completion_rate_buy ? `${profile?.statistics_30day?.completion_rate_buy}% (${profile?.statistics_30day?.completion_count_buy})` :  "-"}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
-            <div className="text-sm text-slate-500">Sell completion rate (30d)</div>
+            <div className="text-sm text-slate-500">{t("advertiser.sellCompletionRate30d")}</div>
             <div className="font-bold mt-1">{profile?.statistics_30day?.completion_rate_sell ? `${profile?.statistics_30day?.completion_rate_sell}% (${profile?.statistics_30day?.completion_count_sell})` :  "-"}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
-            <div className="text-sm text-slate-500">Total trades (30d)</div>
+            <div className="text-sm text-slate-500">{t("advertiser.totalTrades30d")}</div>
             <div className="font-bold mt-1">{profile?.statistics_30day?.completion_count_all}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
-            <div className="text-sm text-slate-500">Total all time trades</div>
+            <div className="text-sm text-slate-500">{t("advertiser.totalAllTimeTrades")}</div>
             <div className="font-bold mt-1">{profile?.statistics_lifetime?.completion_count_all}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
-            <div className="text-sm text-slate-500">Avg. pay time (30d)</div>
+            <div className="text-sm text-slate-500">{t("profile.avgPayTime")} (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.statistics_30day?.buy_time_average)}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
-            <div className="text-sm text-slate-500">Avg. release time (30d)</div>
+            <div className="text-sm text-slate-500">{t("profile.avgReleaseTime")} (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.statistics_30day?.release_time_average)}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
             <div className="flex items-center text-sm text-slate-500">
-              Trade partners
+              {t("profile.tradePartners")}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Image
                     src="/icons/info-circle.svg"
-                    alt="Info"
+                    alt={t("common.info")}
                     width={24}
                     height={24}
                     className="ms-1 cursor-pointer flex-shrink-0"
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="opacity-[0.72]">Total number of users successfully traded with.</p>
+                  <p className="opacity-[0.72]">{t("profile.tradePartnersTooltip")}</p>
                   <TooltipArrow className="fill-black" />
                 </TooltipContent>
               </Tooltip>
@@ -97,19 +114,19 @@ export default function StatsContent({ profile }: StatsContentProps) {
           </div>
           <div className="flex justify-between text-sm border-b py-6">
             <div className="flex items-center text-sm text-slate-500">
-              Trade volume (30d)
+              {t("profile.tradeVolume")} (30d)
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Image
                     src="/icons/info-circle.svg"
-                    alt="Info"
+                    alt={t("common.info")}
                     width={24}
                     height={24}
                     className="ms-1 cursor-pointer flex-shrink-0"
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="opacity-[0.72]">Total value of trades completed in the last 30 days.</p>
+                  <p className="opacity-[0.72]">{t("profile.tradeVolume30DaysTooltip")}</p>
                   <TooltipArrow className="fill-black" />
                 </TooltipContent>
               </Tooltip>
