@@ -17,7 +17,9 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { ALERT_INLINE_FLEX } from "@/lib/rtl"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
@@ -197,7 +199,8 @@ const PaymentSelectionContent = ({
 }
 
 export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
@@ -647,9 +650,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
               <div className="flex flex-col h-auto overflow-y-auto">
                 <div className="p-4 pb-0">
-                  <Alert variant="warning" className="flex items-start gap-3">
+                  <Alert variant="warning" className={ALERT_INLINE_FLEX} dir={dir}>
                     <InfoCircleIcon className="shrink-0 mt-0.5" />
-                    <div>
+                    <div className="text-start">
                       <h3 className="font-bold text-sm mb-1">
                         {t("order.secureTradeReminder.title")}
                       </h3>
@@ -667,7 +670,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                       onChange={handleAmountChange}
                       type="number"
                       className={cn(
-                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0",
+                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none py-0",
                         validationError && "border-red-500 focus:border-red-500 focus-visible:ring-0",
                       )}
                       step="any"

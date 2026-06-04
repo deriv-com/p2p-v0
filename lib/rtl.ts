@@ -25,3 +25,7 @@ export const PAYMENT_METHOD_INFO = "flex items-start gap-2 flex-1 min-w-0"
 export const PAYMENT_METHOD_TEXT = "flex-1 min-w-0 text-sm text-start"
 
 export const PAYMENT_METHOD_SECTION_TITLE = "text-base font-bold mb-4 text-start"
+
+/** Inline alert with icon + text in flex (markets order sidebar, etc.). */
+export const ALERT_INLINE_FLEX =
+  "flex items-start gap-3 text-start [&>svg]:!static [&>svg]:relative [&>svg]:!top-auto [&>svg~*]:!ps-0 [&>svg+div]:!translate-y-0"
