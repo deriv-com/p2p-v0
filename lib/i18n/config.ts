@@ -45,8 +45,15 @@ export const localeNames: Record<Locale, string> = {
 
 const RTL_LOCALES: ReadonlySet<Locale> = new Set(["ar"])
 
+/** BCP-47 and platform `?lang=` values → internal locale ids (see `locales`). */
 const LANG_PARAM_ALIASES: Record<string, Locale> = {
+  zh_cn: "zh",
+  zh_sg: "zh",
+  zh_hans: "zh",
   zh_tw: "zh_TW",
+  zh_hk: "zh_TW",
+  zh_mo: "zh_TW",
+  zh_hant: "zh_TW",
 }
 
 /** Map `?lang=` / stored values to a supported Locale (e.g. zh-tw → zh_TW). */
@@ -67,6 +74,9 @@ export function normalizeLocaleParam(lang: string): Locale | null {
 export function localeToBcp47(locale: Locale): string {
   if (locale === "zh_TW") {
     return "zh-TW"
+  }
+  if (locale === "zh") {
+    return "zh-CN"
   }
   return locale
 }

@@ -10,6 +10,10 @@ describe("normalizeLocaleParam", () => {
     expect(normalizeLocaleParam("ZH-TW")).toBe("zh_TW")
     expect(normalizeLocaleParam("zh-tw")).toBe("zh_TW")
     expect(normalizeLocaleParam("zh_tw")).toBe("zh_TW")
+    expect(normalizeLocaleParam("zh-CN")).toBe("zh")
+    expect(normalizeLocaleParam("zh-cn")).toBe("zh")
+    expect(normalizeLocaleParam("zh-Hans")).toBe("zh")
+    expect(normalizeLocaleParam("zh-Hant")).toBe("zh_TW")
     expect(normalizeLocaleParam("AR")).toBe("ar")
   })
 
@@ -34,7 +38,8 @@ describe("isRtlLocale", () => {
 })
 
 describe("localeToBcp47", () => {
-  it("maps zh_TW to BCP 47 zh-TW", () => {
+  it("maps Chinese locales to BCP 47 tags", () => {
     expect(localeToBcp47("zh_TW")).toBe("zh-TW")
+    expect(localeToBcp47("zh")).toBe("zh-CN")
   })
 })
