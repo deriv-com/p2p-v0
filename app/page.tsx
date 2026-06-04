@@ -538,7 +538,7 @@ export default function BuySellPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                          className="h-10 min-h-10 max-h-10 gap-2 border border-[#ffffff3d] bg-transparent px-3 font-normal hover:bg-transparent rounded-3xl text-white"
                           onClick={() => track("ek_payment_currency_markets")}
                         >
                           {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
@@ -549,16 +549,16 @@ export default function BuySellPage() {
                               alt={`${currency} logo`}
                               width={24}
                               height={16}
-                              className="me-1 object-cover"
+                              className="shrink-0 object-cover"
                             />
                           )}
-                          <span>{currency}</span>
+                          <span className="shrink-0">{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
                             alt="Arrow"
                             width={24}
                             height={24}
-                            className="ms-2 transition-transform duration-200"
+                            className="shrink-0 transition-transform duration-200"
                           />
                         </Button>
                       }
@@ -816,7 +816,7 @@ export default function BuySellPage() {
                             </span>
                           )}
                           {ad.user.order_count_lifetime > 0 && (
-                            <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                            <div className="flex flex-row items-center justify-start gap-[8px] mx-[8px]">
                               {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
                               <span>
                                 {ad.user.order_count_lifetime} {t("market.orders")}
@@ -824,7 +824,7 @@ export default function BuySellPage() {
                             </div>
                           )}
                           {ad.user.completion_rate_all_30day > 0 && (
-                            <div className="flex flex-row items-center justify-center gap-[8px]">
+                            <div className="flex flex-row items-center justify-start gap-[8px]">
                               <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                               <span>
                                 {ad.user.completion_rate_all_30day}% {t("market.completion")}
@@ -852,8 +852,8 @@ export default function BuySellPage() {
                         </div>
                         }
                       </TableCell>
-                      <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
-                        <div className="font-bold text-base flex items-center">
+                      <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full text-start">
+                        <div className="font-bold text-base flex items-center justify-start text-start">
                           <ExchangeRateDisplay
                             rate={ad.effective_rate_display}
                             paymentCurrency={ad.payment_currency}
@@ -863,11 +863,11 @@ export default function BuySellPage() {
                         </div>
                         <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
                           }  ${ad.account_currency}`}</div>
-                        {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
+                        {isMobile && <div className="flex w-full items-center justify-start text-start text-xs text-slate-500 mt-2">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                <div className="flex items-center justify-start bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer text-start">
                                   <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}

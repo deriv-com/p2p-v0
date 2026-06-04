@@ -26,9 +26,23 @@ export const PAYMENT_METHOD_TEXT = "flex-1 min-w-0 text-sm text-start"
 
 export const PAYMENT_METHOD_SECTION_TITLE = "text-base font-bold mb-4 text-start"
 
-/** Inline alert with icon + text in flex (markets order sidebar, etc.). */
+/** Inline alert with icon + text in flex (order sidebar, etc.). Pair with Alert `flex` overrides in alert.tsx. */
 export const ALERT_INLINE_FLEX =
-  "flex items-start gap-2 text-start [&>svg]:!static [&>svg]:relative [&>svg]:!top-auto [&>svg]:shrink-0 [&>svg~*]:!ps-0 [&>svg~*]:!pr-0 [&>svg~*]:min-w-0 [&>svg~*]:flex-1 [&>svg+div]:!translate-y-0"
+  "flex items-start gap-2 text-start [&>svg]:shrink-0 [&>svg~*]:min-w-0 [&>svg~*]:flex-1"
+
+/** Text block inside inline alert — zeros physical right padding in RTL (alert base ps-7). */
+export const ALERT_INLINE_TEXT = "min-w-0 flex-1 text-start rtl:ps-0 rtl:pe-0 rtl:pr-0"
 
 /** Modal/sheet header: title at inline-start, close at inline-end (flips in RTL). */
 export const MODAL_HEADER_ROW = "flex items-center justify-between gap-4"
+
+/** Checkbox/radio + label row — use `gap` not `space-x` (breaks in RTL). */
+export const CHECKBOX_LABEL_ROW = "flex items-center gap-4"
+
+/** Label + value detail rows (order sidebar, summaries). Value column pins to inline-end. */
+export const DETAIL_INFO_ROW =
+  "grid w-full grid-cols-[minmax(0,1fr)_auto] gap-4 items-center text-start"
+
+export const DETAIL_INFO_LABEL = "min-w-0 text-start text-grayscale-text-muted"
+
+export const DETAIL_INFO_VALUE = "shrink-0 justify-self-end text-end text-slate-1200"

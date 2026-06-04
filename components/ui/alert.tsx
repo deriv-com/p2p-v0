@@ -4,7 +4,14 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const alertVariants = cva(
-  "relative w-full rounded-2xl border p-4 [&>svg~*]:ps-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:start-4 [&>svg]:top-4 [&>svg]:text-foreground",
+  [
+    "relative w-full rounded-2xl border p-4 [&>svg]:text-foreground",
+    "[&>svg~*]:ps-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:start-4 [&>svg]:top-4",
+    // Inline flex (icon + text row): drop absolute icon indent; RTL must not keep ps-7 as padding-right
+    "flex:[&>svg~*]:!ps-0 flex:[&>svg~*]:!pe-0 flex:[&>svg~*]:!pr-0",
+    "flex:[&>svg]:!static flex:[&>svg]:!relative flex:[&>svg]:!top-auto",
+    "flex:[&>svg+div]:!translate-y-0",
+  ].join(" "),
   {
     variants: {
       variant: {

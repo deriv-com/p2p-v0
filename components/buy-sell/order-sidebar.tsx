@@ -20,7 +20,13 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
-import { ALERT_INLINE_FLEX } from "@/lib/rtl"
+import {
+  ALERT_INLINE_FLEX,
+  ALERT_INLINE_TEXT,
+  DETAIL_INFO_LABEL,
+  DETAIL_INFO_ROW,
+  DETAIL_INFO_VALUE,
+} from "@/lib/rtl"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
@@ -653,7 +659,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 <div className="p-4 pb-0">
                   <Alert variant="warning" className={ALERT_INLINE_FLEX} dir={dir}>
                     <InfoCircleIcon className="shrink-0 mt-0.5" />
-                    <div className="min-w-0 flex-1 text-start">
+                    <div className={ALERT_INLINE_TEXT}>
                       <h3 className="font-bold text-sm mb-1">
                         {t("order.secureTradeReminder.title")}
                       </h3>
@@ -723,38 +729,38 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                   </div>
                 )}
 
-                <div className="mx-4 mt-4 text-sm">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
-                    <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
+                <div dir={dir} className="mx-4 mt-4 text-sm text-start">
+                  <div className={cn(DETAIL_INFO_ROW, "mb-2")}>
+                    <span className={DETAIL_INFO_LABEL}>{t("order.rateType")}</span>
+                    <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1 justify-self-end">
                       {localAd.exchange_rate_type === "float" ? "Floating" : "Fixed"}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
+                  <div className={cn(DETAIL_INFO_ROW, "mb-2")}>
+                    <span className={DETAIL_INFO_LABEL}>{t("order.exchangeRate")}</span>
                     <ExchangeRateDisplay
-                      className="text-slate-1200"
+                      className={cn(DETAIL_INFO_VALUE, "block")}
                       rate={localAd.effective_rate_display}
                       paymentCurrency={localAd.payment_currency}
                       accountCurrency={localAd.account_currency}
                       formatRate={false}
                     />
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.orderLimit")}</span>
-                    <span className="text-slate-1200">
+                  <div className={cn(DETAIL_INFO_ROW, "mb-2")}>
+                    <span className={DETAIL_INFO_LABEL}>{t("order.orderLimit")}</span>
+                    <span className={DETAIL_INFO_VALUE}>
                       {minLimit} - {maxLimit} {localAd.account_currency}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.paymentTime")}</span>
-                    <span className="text-slate-1200">
-                      {localAd.order_expiry_period} {t("market.min")}
+                  <div className={cn(DETAIL_INFO_ROW, "mb-2")}>
+                    <span className={DETAIL_INFO_LABEL}>{t("order.paymentTime")}</span>
+                    <span className={DETAIL_INFO_VALUE}>
+                      <bdi dir="ltr">{localAd.order_expiry_period}</bdi> {t("market.min")}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{isBuy ? t("order.buyer") : t("order.seller")}</span>
-                    <span className="text-slate-1200">{localAd.user?.nickname}</span>
+                  <div className={cn(DETAIL_INFO_ROW, "mb-2")}>
+                    <span className={DETAIL_INFO_LABEL}>{isBuy ? t("order.buyer") : t("order.seller")}</span>
+                    <span className={DETAIL_INFO_VALUE}>{localAd.user?.nickname}</span>
                   </div>
                 </div>
 

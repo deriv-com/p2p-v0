@@ -9,6 +9,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { CHECKBOX_LABEL_ROW } from "@/lib/rtl"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Country {
@@ -107,7 +108,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
       </div>
 
       <div ref={scrollContainerRef} className="space-y-4 px-1 max-h-[300px] md:max-h-[240px] overflow-y-auto">
-        <div className="flex items-center gap-4 mb-1">
+        <div className={cn(CHECKBOX_LABEL_ROW, "mb-1")}>
           <Checkbox
             id="all-countries"
             checked={isAllSelected}
@@ -122,7 +123,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         <div className="h-px bg-black/[0.08] my-7" />
 
         {filteredCountries.map((country) => (
-          <div key={country.code} className="flex items-center gap-4 py-1">
+          <div key={country.code} className={cn(CHECKBOX_LABEL_ROW, "py-1")}>
             <Checkbox
               id={country.code}
               checked={selectedCountries.includes(country.code)}
