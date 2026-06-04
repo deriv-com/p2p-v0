@@ -38,21 +38,20 @@ export function ExchangeRateDisplay({
     rtl,
     formatRate,
   )
-  const mutedMargin = line.mutedPosition === "prefix" ? "me-1" : "ms-1"
 
   if (line.mutedPosition === "prefix") {
     return (
-      <span className={cn(className)}>
-        <span className={cn(mutedClassName, mutedMargin)}>{line.muted}</span>
-        {line.primary}
+      <span className={cn("inline-flex items-baseline gap-1", className)}>
+        <span className={mutedClassName}>{line.muted}</span>
+        <span>{line.primary}</span>
       </span>
     )
   }
 
   return (
-    <span className={cn(className)}>
-      {line.primary}
-      <span className={cn(mutedClassName, mutedMargin)}>{line.muted}</span>
+    <span className={cn("inline-flex items-baseline gap-1", className)}>
+      <span>{line.primary}</span>
+      <span className={mutedClassName}>{line.muted}</span>
     </span>
   )
 }
