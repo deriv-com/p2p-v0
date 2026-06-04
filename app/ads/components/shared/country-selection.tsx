@@ -107,14 +107,14 @@ export default function CountrySelection({ countries, selectedCountries, onCount
       </div>
 
       <div ref={scrollContainerRef} className="space-y-4 px-1 max-h-[300px] md:max-h-[240px] overflow-y-auto">
-        <div className="flex items-center space-x-3 mb-1">
+        <div className="flex items-center gap-4 mb-1">
           <Checkbox
             id="all-countries"
             checked={isAllSelected}
             onCheckedChange={handleAllToggle}
-            className="data-[state=checked]:bg-black "
+            className="shrink-0 data-[state=checked]:bg-black"
           />
-          <label htmlFor="all-countries" className="text-sm cursor-pointer">
+          <label htmlFor="all-countries" className="flex-1 min-w-0 text-sm cursor-pointer text-start">
             {t("common.allCountries")}
           </label>
         </div>
@@ -122,15 +122,15 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         <div className="h-px bg-black/[0.08] my-7" />
 
         {filteredCountries.map((country) => (
-          <div key={country.code} className="flex items-center space-x-3">
+          <div key={country.code} className="flex items-center gap-4 py-1">
             <Checkbox
               id={country.code}
               checked={selectedCountries.includes(country.code)}
               onCheckedChange={() => handleCountryToggle(country.code)}
               disabled={false}
-              className="data-[state=checked]:bg-black "
+              className="shrink-0 data-[state=checked]:bg-black"
             />
-            <label htmlFor={country.code} className="text-sm cursor-pointer">
+            <label htmlFor={country.code} className="flex-1 min-w-0 text-sm cursor-pointer text-start">
               {country.name}
             </label>
           </div>

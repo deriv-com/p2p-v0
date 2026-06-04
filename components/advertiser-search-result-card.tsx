@@ -10,6 +10,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
 
 interface AdvertiserSearchResultCardProps {
     ad: Advertisement
@@ -80,11 +81,12 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
             {/* Row 2: Rate + Order limits + Expiry */}
             <div className="mb-2">
                 <div className="font-bold text-base flex items-center">
-                    {ad.effective_rate_display
-                        ? ad.effective_rate_display.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                        : ""}{" "}
-                    {ad.payment_currency}
-                    <span className="text-xs text-slate-500 font-normal ms-1">{`/${ad.account_currency}`}</span>
+                    <ExchangeRateDisplay
+                        rate={ad.effective_rate_display}
+                        paymentCurrency={ad.payment_currency}
+                        accountCurrency={ad.account_currency}
+                        mutedClassName="text-xs text-slate-500 font-normal"
+                    />
                 </div>
                 <div className="mt-1 text-xs text-slate-600">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"} ${ad.account_currency}`}</div>
                 {ad.order_expiry_period && (

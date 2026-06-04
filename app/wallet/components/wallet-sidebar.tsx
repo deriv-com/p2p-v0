@@ -4,6 +4,7 @@ import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
 import Transfer from "./transfer"
 import { Button } from "@/components/ui/button"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Currency {
@@ -35,7 +36,8 @@ export default function WalletSidebar({
   currencies,
   transferStep,
 }: WalletSidebarProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
 
   if (!isOpen) return null
 
@@ -75,8 +77,8 @@ export default function WalletSidebar({
         className="bg-background w-full h-full md:max-w-md flex flex-col shadow-lg md:rounded-none"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
-          <h2 className="text-lg font-bold">{getTitle()}</h2>
+        <div dir={dir} className="flex items-center justify-between gap-4 px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
+          <h2 className="min-w-0 flex-1 text-start text-lg font-bold">{getTitle()}</h2>
           <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>

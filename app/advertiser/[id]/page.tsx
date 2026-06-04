@@ -31,6 +31,7 @@ import { useAdvertiserAds, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
 
 interface UsersOnlineUpdate {
   user_id: number
@@ -624,17 +625,12 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                               >
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
                                   <div className="font-bold">
-                                    {ad.effective_rate_display
-                                      ? ad.effective_rate_display.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                      })
-                                      : ""}{" "}
-                                    {ad.payment_currency}
-                                    <span className="text-xs font-normal text-black opacity-[0.48]">
-                                      {" "}
-                                      /{ad.account_currency}
-                                    </span>
+                                    <ExchangeRateDisplay
+                                      rate={ad.effective_rate_display}
+                                      paymentCurrency={ad.payment_currency}
+                                      accountCurrency={ad.account_currency}
+                                      mutedClassName="text-xs font-normal text-black opacity-[0.48]"
+                                    />
                                   </div>
                                   {ad.exchange_rate_type === "floating" && (
                                     <div className="text-xs text-slate-500">0.1%</div>

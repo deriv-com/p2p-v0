@@ -19,6 +19,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
 import { ALERT_INLINE_FLEX } from "@/lib/rtl"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
@@ -652,7 +653,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 <div className="p-4 pb-0">
                   <Alert variant="warning" className={ALERT_INLINE_FLEX} dir={dir}>
                     <InfoCircleIcon className="shrink-0 mt-0.5" />
-                    <div className="text-start">
+                    <div className="min-w-0 flex-1 text-start">
                       <h3 className="font-bold text-sm mb-1">
                         {t("order.secureTradeReminder.title")}
                       </h3>
@@ -731,10 +732,13 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
-                    <span className="text-slate-1200">
-                      {localAd.effective_rate_display} {localAd.payment_currency}
-                      <span className="text-grayscale-text-muted"> /{localAd.account_currency}</span>
-                    </span>
+                    <ExchangeRateDisplay
+                      className="text-slate-1200"
+                      rate={localAd.effective_rate_display}
+                      paymentCurrency={localAd.payment_currency}
+                      accountCurrency={localAd.account_currency}
+                      formatRate={false}
+                    />
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.orderLimit")}</span>

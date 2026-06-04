@@ -136,13 +136,17 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                 <SelectItem value="fixed" className="h-auto items-start py-3">
                   <div className={cn("flex flex-col gap-0.5", textAlignClass)} dir={dir}>
                     <span className="text-base">{t("adForm.fixed")}</span>
-                    <span className="text-xs text-grayscale-text-muted">{t("order.fixedRateDescription")}</span>
+                    <span className="select-item-description text-xs text-grayscale-text-muted">
+                      {t("order.fixedRateDescription")}
+                    </span>
                   </div>
                 </SelectItem>
                 <SelectItem value="float" className="h-auto items-start py-3">
                   <div className={cn("flex flex-col gap-0.5", textAlignClass)} dir={dir}>
                     <span className="text-base">{t("adForm.floating")}</span>
-                    <span className="text-xs text-grayscale-text-muted">{t("order.floatingRateDescription")}</span>
+                    <span className="select-item-description text-xs text-grayscale-text-muted">
+                      {t("order.floatingRateDescription")}
+                    </span>
                   </div>
                 </SelectItem>
               </SelectContent>

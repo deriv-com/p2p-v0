@@ -31,6 +31,7 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { getTotalBalance } from "@/services/api/api-auth"
@@ -853,14 +854,12 @@ export default function BuySellPage() {
                       </TableCell>
                       <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
                         <div className="font-bold text-base flex items-center">
-                          {ad.effective_rate_display
-                            ? ad.effective_rate_display.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                            : ""}{" "}
-                          {ad.payment_currency}
-                          <div className="text-xs text-slate-500 font-normal ms-1">{`/${ad.account_currency}`}</div>
+                          <ExchangeRateDisplay
+                            rate={ad.effective_rate_display}
+                            paymentCurrency={ad.payment_currency}
+                            accountCurrency={ad.account_currency}
+                            mutedClassName="text-xs text-slate-500 font-normal"
+                          />
                         </div>
                         <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
                           }  ${ad.account_currency}`}</div>

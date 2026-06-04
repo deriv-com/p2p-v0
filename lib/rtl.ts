@@ -28,4 +28,7 @@ export const PAYMENT_METHOD_SECTION_TITLE = "text-base font-bold mb-4 text-start
 
 /** Inline alert with icon + text in flex (markets order sidebar, etc.). */
 export const ALERT_INLINE_FLEX =
-  "flex items-start gap-3 text-start [&>svg]:!static [&>svg]:relative [&>svg]:!top-auto [&>svg~*]:!ps-0 [&>svg+div]:!translate-y-0"
+  "flex items-start gap-2 text-start [&>svg]:!static [&>svg]:relative [&>svg]:!top-auto [&>svg]:shrink-0 [&>svg~*]:!ps-0 [&>svg~*]:!pr-0 [&>svg~*]:min-w-0 [&>svg~*]:flex-1 [&>svg+div]:!translate-y-0"
+
+/** Modal/sheet header: title at inline-start, close at inline-end (flips in RTL). */
+export const MODAL_HEADER_ROW = "flex items-center justify-between gap-4"
