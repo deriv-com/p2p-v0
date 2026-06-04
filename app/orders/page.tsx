@@ -325,7 +325,7 @@ export default function OrdersPage() {
               <TemporaryBanAlert tempBanUntil={tempBanUntil} />
             </div>
           )}
-          <div className="my-4 self-end">
+          <div className="my-4 self-end rtl:self-start">
             {activeTab === "past" && !isLoading && hasPastOrders && (
               <DateFilter
                 value={dateFilter}

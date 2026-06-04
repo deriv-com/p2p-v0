@@ -1,7 +1,7 @@
 "use client"
 
 import { isRtlLocale } from "@/lib/i18n/config"
-import { buildExchangeRateLine } from "@/lib/exchange-rate-display"
+import { formatEffectiveRateDisplay } from "@/lib/exchange-rate-display"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 
@@ -31,26 +31,26 @@ export function ExchangeRateDisplay({
 }: ExchangeRateDisplayProps) {
   const { locale } = useTranslations()
   const rtl = isRtlLocale(locale)
-  const line = buildExchangeRateLine(
-    rate,
-    paymentCurrency,
-    accountCurrency,
-    rtl,
-    formatRate,
-  )
+  const formattedRate = formatEffectiveRateDisplay(rate, formatRate)
+  const paymentAndRate = rtl
+    ? `${paymentCurrency} ${formattedRate}`.trim()
+    : `${formattedRate} ${paymentCurrency}`.trim()
 
-  // Currency pairs use LTR typographic order; page `dir=rtl` would otherwise flip flex children.
+  // Slash in its own segment: RTL "USD/" + gap + "AMD …"; LTR "AMD …" + gap + "/USD".
+  // `dir=ltr` keeps typographic order; page `dir=rtl` must not flip flex children.
   return (
     <span dir="ltr" className={cn("inline-flex items-baseline gap-1", className)}>
-      {line.mutedPosition === "prefix" ? (
+      {rtl ? (
         <>
-          <span className={mutedClassName}>{line.muted}</span>
-          <span>{line.primary}</span>
+          <span className={mutedClassName}>{accountCurrency}</span>
+          <span className={mutedClassName}>/</span>
+          <span>{paymentAndRate}</span>
         </>
       ) : (
         <>
-          <span>{line.primary}</span>
-          <span className={mutedClassName}>{line.muted}</span>
+          <span>{paymentAndRate}</span>
+          <span className={mutedClassName}>/</span>
+          <span className={mutedClassName}>{accountCurrency}</span>
         </>
       )}
     </span>
