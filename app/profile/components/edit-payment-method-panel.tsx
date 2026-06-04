@@ -129,7 +129,7 @@ export default function EditPaymentMethodPanel({
 
   return (
     <PanelWrapper onClose={onClose}>
-      <h2 className="text-2xl font-bold p-4 pb-0">{t("profile.editPaymentDetails")}</h2>
+      <h2 className="text-2xl font-bold p-4 pb-0 text-start">{t("profile.editPaymentDetails")}</h2>
       <form onSubmit={handleSubmit} className="overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="space-y-4">
@@ -146,8 +146,8 @@ export default function EditPaymentMethodPanel({
                       maxLength={300}
                       variant="floating"
                     />
-                    {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
-                    <div className="flex justify-end mt-1 text-xs text-gray-500">
+                    {errors[fieldName] && <p className="mt-1 text-xs text-red-500 text-start">{errors[fieldName]}</p>}
+                    <div className="flex justify-end mt-1 text-xs text-gray-500 rtl:justify-start">
                       {(fieldValues[fieldName] || "").length}/300
                     </div>
                   </div>
@@ -163,7 +163,7 @@ export default function EditPaymentMethodPanel({
                       variant="floating"
                       maxLength={30}
                     />
-                    {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
+                    {errors[fieldName] && <p className="mt-1 text-xs text-red-500 text-start">{errors[fieldName]}</p>}
                   </div>
                 )}
               </div>
@@ -172,7 +172,7 @@ export default function EditPaymentMethodPanel({
         </div>
       </form>
 
-      <div className="p-4 flex justify-end">
+      <div className="p-4 flex justify-end rtl:justify-start">
         <Button
           type="button"
           onClick={handleSubmit}

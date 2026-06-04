@@ -10,7 +10,9 @@ import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 import FollowUserList from "./follow-user-list"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { PROFILE_SUB_TABS_ROW } from "@/lib/rtl"
 import { useFavouriteUsers, useFollowers } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { queryKeys } from "@/hooks/use-api-queries"
@@ -21,7 +23,8 @@ interface FollowUser {
 }
 
 export default function FollowsTab() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
@@ -127,12 +130,14 @@ export default function FollowsTab() {
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" dir={dir}>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
-        <TabsList className="w-full md:w-fit">
-          <TabsTrigger value="follows" className="flex-1 md:flex-none md:w-32">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
-          <TabsTrigger value="followers" className="flex-1 md:flex-none md:w-32">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
-        </TabsList>
+        <div className={PROFILE_SUB_TABS_ROW}>
+          <TabsList className="w-full md:w-fit">
+            <TabsTrigger value="follows" className="flex-1 md:flex-none md:w-32">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
+            <TabsTrigger value="followers" className="flex-1 md:flex-none md:w-32">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="follows" className="flex-1 min-h-0">
           <FollowUserList

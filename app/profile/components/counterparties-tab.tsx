@@ -4,7 +4,9 @@ import type React from "react"
 
 import { useRouter } from "next/navigation"
 import { useCallback, useState, useMemo } from "react"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { PROFILE_TOOLBAR_ROW } from "@/lib/rtl"
 import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import type { TradePartner } from "@/services/api/api-profile"
 import { useTradePartners } from "@/hooks/use-api-queries"
@@ -19,7 +21,8 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
 
 export default function CounterpartiesTab() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
@@ -181,9 +184,9 @@ export default function CounterpartiesTab() {
   )
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" dir={dir}>
       {(filteredUsers.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4 mb-4">
+        <div className={PROFILE_TOOLBAR_ROW}>
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"

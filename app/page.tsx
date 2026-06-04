@@ -495,7 +495,7 @@ export default function BuySellPage() {
             )}
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
-                <div className="flex flex-col rtl:items-end w-full md:w-auto">
+                <div className="flex flex-col items-start w-full md:w-auto">
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
                   <Tabs value={activeTab} onValueChange={(value) => { if (value === "sell") track("ek_buy_markets"); else track("ek_sell_markets"); setActiveTab(value as "buy" | "sell") }}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4 rtl:w-full rtl:justify-end">

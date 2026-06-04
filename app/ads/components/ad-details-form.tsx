@@ -249,7 +249,7 @@ export default function AdDetailsForm({
       if (!floatingRate) {
         errors.floatingRate = t("adForm.rateRequired")
       } else if (rate < -10 || rate > 10) {
-        errors.floatingRate = "Rate must be between -10.00% and +10.00%."
+        errors.floatingRate = t("adForm.floatingRateRangeError")
       }
     }
 
@@ -581,7 +581,7 @@ export default function AdDetailsForm({
         </div>
 
         <div>
-          <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">Amount and order limit</h3>
+          <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">{t("adForm.amountAndOrderLimit")}</h3>
           <div className="mb-4">
             <CurrencyInput
               value={totalAmount}

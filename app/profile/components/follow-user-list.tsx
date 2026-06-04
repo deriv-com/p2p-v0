@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { PROFILE_TOOLBAR_ROW } from "@/lib/rtl"
 
 interface FollowUser {
   nickname: string
@@ -44,7 +46,8 @@ export default function FollowUserList({
   searchEmptyDescription,
   showFollowingButton = false,
 }: FollowUserListProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
 
   const UserCard = ({ user }: { user: FollowUser }) => {
     const isFollowing = followingUserIds.includes(user.user_id)
@@ -81,9 +84,9 @@ export default function FollowUserList({
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" dir={dir}>
       {(users.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4 mb-4">
+        <div className={PROFILE_TOOLBAR_ROW}>
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
