@@ -38,11 +38,3 @@ export const MODAL_HEADER_ROW = "flex items-center justify-between gap-4"
 
 /** Checkbox/radio + label row — use `gap` not `space-x` (breaks in RTL). */
 export const CHECKBOX_LABEL_ROW = "flex items-center gap-4"
-
-/** Label + value detail rows (order sidebar, summaries). Value column pins to inline-end. */
-export const DETAIL_INFO_ROW =
-  "grid w-full grid-cols-[minmax(0,1fr)_auto] gap-4 items-center text-start"
-
-export const DETAIL_INFO_LABEL = "min-w-0 text-start text-grayscale-text-muted"
-
-export const DETAIL_INFO_VALUE = "shrink-0 justify-self-end text-end text-slate-1200"
