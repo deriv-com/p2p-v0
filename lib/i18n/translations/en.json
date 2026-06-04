@@ -515,7 +515,8 @@
     "aboutYou": "About you",
     "settings": "Settings",
     "support": "Support",
-    "addFromYourFollowing": "Add from your following"
+    "addFromYourFollowing": "Add from your following",
+    "closedGroupDiamondOnlyWarning": "Closed group management is only available to Diamond tier members."
   },
   "wallet": {
     "title": "Wallet",

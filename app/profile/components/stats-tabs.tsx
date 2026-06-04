@@ -91,8 +91,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     router.push(`/profile?tab=${tab}`)
   }
 
-  const isDiamond = userData.trade_band === "diamond"
-  const showClosedGroupTab = isDiamond
+  const showClosedGroupTab = true
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
