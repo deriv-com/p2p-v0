@@ -88,12 +88,19 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               </Button>
             )}
           </div>
-          <div className="px-8 pb-6 overflow-y-auto flex-1">{config.content}</div>
-          {config.cancelText && (
-            <div className="px-8 pb-6">
-              <Button onClick={handleCancel} variant="primary" className="w-full">
-                {config.cancelText}
-              </Button>
+          <div className="px-8 overflow-y-auto h-[20rem]">{config.content}</div>
+          {(config.type || config.cancelText) && (
+            <div className="flex flex-col gap-2 px-8 py-4 flex-shrink-0 border-t border-grayscale-500">
+              {config.type && (
+                <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+                  {config.confirmText || "Continue"}
+                </Button>
+              )}
+              {config.cancelText && (
+                <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+                  {config.cancelText}
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -145,7 +152,21 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       return (
         <div className="flex flex-col max-h-[80vh] overflow-hidden">
           {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6 flex-shrink-0">{config.title}</div>}
-          <div className="px-6 pb-6 overflow-y-auto flex-1">{config.content}</div>
+          <div className="px-6 overflow-y-auto flex-1">{config.content}</div>
+          {(config.type || config.cancelText) && (
+            <div className="flex flex-col gap-2 px-6 py-4 flex-shrink-0 border-t border-grayscale-500">
+              {config.type && (
+                <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+                  {config.confirmText || "Continue"}
+                </Button>
+              )}
+              {config.cancelText && (
+                <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+                  {config.cancelText}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       )
     }
