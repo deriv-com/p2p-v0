@@ -5,6 +5,12 @@ import {
   locales,
   normalizeLocaleParam,
 } from "@/lib/i18n/config"
+import {
+  getServerHtmlLocale,
+  LOCALE_COOKIE_NAME,
+  persistLocaleCookie,
+  resolveLocaleFromCookieValue,
+} from "@/lib/i18n/locale-cookie"
 
 describe("normalizeLocaleParam", () => {
   it("handles case variations and aliases", () => {
@@ -55,5 +61,39 @@ describe("apiPreferredLanguageToLocale", () => {
   it("returns null for unsupported values", () => {
     expect(apiPreferredLanguageToLocale("invalid")).toBeNull()
     expect(apiPreferredLanguageToLocale("")).toBeNull()
+  })
+})
+
+describe("locale-cookie", () => {
+  describe("resolveLocaleFromCookieValue", () => {
+    it("resolves supported locale codes", () => {
+      expect(resolveLocaleFromCookieValue("ar")).toBe("ar")
+      expect(resolveLocaleFromCookieValue("zh_TW")).toBe("zh_TW")
+      expect(resolveLocaleFromCookieValue("zh-CN")).toBe("zh")
+    })
+
+    it("returns null for invalid values", () => {
+      expect(resolveLocaleFromCookieValue("")).toBeNull()
+      expect(resolveLocaleFromCookieValue("invalid")).toBeNull()
+      expect(resolveLocaleFromCookieValue(undefined)).toBeNull()
+    })
+  })
+
+  describe("getServerHtmlLocale", () => {
+    it("falls back to English when cookie is missing or invalid", () => {
+      expect(getServerHtmlLocale(undefined)).toBe("en")
+      expect(getServerHtmlLocale("not-a-locale")).toBe("en")
+    })
+
+    it("uses cookie value when valid", () => {
+      expect(getServerHtmlLocale("ar")).toBe("ar")
+    })
+  })
+
+  describe("persistLocaleCookie", () => {
+    it("writes locale to document.cookie", () => {
+      persistLocaleCookie("ar")
+      expect(document.cookie).toContain(`${LOCALE_COOKIE_NAME}=ar`)
+    })
   })
 })

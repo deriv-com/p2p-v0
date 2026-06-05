@@ -222,6 +222,7 @@ const FullPagePaymentSelection = ({
           asDialog
           title={t("paymentMethod.title")}
           onClose={onClose}
+          closeAriaLabel={t("common.close")}
           titleClassName="text-2xl font-extrabold"
           closeIconSrc="/icons/button-close.png"
           closeIconSize={48}

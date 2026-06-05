@@ -41,7 +41,6 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <Button
       variant="outline"
       disabled={disabled}
-      dir={dir}
       className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
     >
       <span className={cn("text-grayscale-600", textAlignClass)}>{rateTypeLabel}</span>
@@ -58,7 +57,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <div className={cn(textAlignClass)} dir={dir}>
+        <div className={cn(textAlignClass)}>
           <div className="text-base mb-1 text-slate-1200">{t("adForm.fixed")}</div>
           <div className="text-xs text-grayscale-text-muted">
             {t("order.fixedRateDescription")}
@@ -74,7 +73,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           : "border-grayscale-500"
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <div className={cn(textAlignClass)} dir={dir}>
+        <div className={cn(textAlignClass)}>
           <div className="text-base text-slate-1200 mb-1">{t("adForm.floating")}</div>
           <div className="text-xs text-grayscale-text-muted">
             {t("order.floatingRateDescription")}
@@ -116,7 +115,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
               <DrawerContent dir={dir}>
-                <div className="px-4 pb-6" dir={dir}>
+                <div className="px-4 pb-6">
                   <div className="py-4">
                     <h3 className="text-xl font-bold text-center">{t("order.rateType")}</h3>
                   </div>
@@ -127,14 +126,13 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
           ) : (
             <Select value={value} onValueChange={handleSelect} disabled={disabled} dir={dir}>
               <SelectTrigger
-                dir={dir}
                 className="w-full h-[56px] max-h-[56px] rounded-lg border border-gray-200 bg-transparent hover:bg-transparent text-start"
               >
                 <span className={cn("text-slate-1200", textAlignClass)}>{rateTypeLabel}</span>
               </SelectTrigger>
               <SelectContent dir={dir} className="text-start">
                 <SelectItem value="fixed" className="h-auto items-start py-3">
-                  <div className={cn("flex flex-col gap-0.5", textAlignClass)} dir={dir}>
+                  <div className={cn("flex flex-col gap-0.5", textAlignClass)}>
                     <span className="text-base">{t("adForm.fixed")}</span>
                     <span className="select-item-description text-xs text-grayscale-text-muted">
                       {t("order.fixedRateDescription")}
@@ -142,7 +140,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
                   </div>
                 </SelectItem>
                 <SelectItem value="float" className="h-auto items-start py-3">
-                  <div className={cn("flex flex-col gap-0.5", textAlignClass)} dir={dir}>
+                  <div className={cn("flex flex-col gap-0.5", textAlignClass)}>
                     <span className="text-base">{t("adForm.floating")}</span>
                     <span className="select-item-description text-xs text-grayscale-text-muted">
                       {t("order.floatingRateDescription")}

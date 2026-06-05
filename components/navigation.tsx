@@ -5,6 +5,7 @@ import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { NovuNotifications } from "@/components/novu-notifications"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 
 interface NavigationProps {
@@ -29,6 +30,7 @@ export default function Navigation({
   showNotificationIcon = false,
 }: NavigationProps) {
   const router = useRouter()
+  const { t } = useTranslations()
 
   const getHeaderComponent = () => {
     if (isBackBtnVisible) {
@@ -36,11 +38,11 @@ export default function Navigation({
         return (
           <div className="flex items-center gap-4 w-full justify-between">
             <Button variant="ghost" onClick={onBack} size="sm" className="bg-grayscale-300 px-1">
-              <BackArrowIcon alt="Back" width={24} height={24} />
+              <BackArrowIcon alt={t("common.back")} width={24} height={24} />
             </Button>
             <h1 className="text-xl font-bold">{title}</h1>
             <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+              <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
             </Button>
           </div>
         )
@@ -54,7 +56,7 @@ export default function Navigation({
                 size="sm"
                 className="bg-grayscale-300 px-1"
               >
-                <BackArrowIcon alt="Back" width={24} height={24} />
+                <BackArrowIcon alt={t("common.back")} width={24} height={24} />
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
@@ -83,7 +85,7 @@ export default function Navigation({
           size="sm"
           className="bg-grayscale-300 px-1"
         >
-          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
         </Button>
       </>
     )

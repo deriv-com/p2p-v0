@@ -48,7 +48,7 @@ p2p-v0/
 ├── services/api/           # API client (Ory + P2P backend)
 ├── contexts/               # React contexts (websocket, alert dialog, ...)
 ├── lib/
-│   ├── i18n/translations/  # 12 locale JSON files
+│   ├── i18n/translations/  # 18 locale JSON files
 │   └── utils.ts
 ├── analytics/              # Event tracking
 ├── public/icons/           # SVG/PNG assets

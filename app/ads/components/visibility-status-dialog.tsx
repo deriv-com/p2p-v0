@@ -165,7 +165,13 @@ export function VisibilityStatusDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent dir={dir} className="sm:max-w-md sm:rounded-[32px] p-6">
-        <ModalHeaderRow asDialog title={t("myAds.visibilityStatus")} className="mb-4" />
+        <ModalHeaderRow
+          asDialog
+          title={t("myAds.visibilityStatus")}
+          onClose={() => onOpenChange(false)}
+          closeAriaLabel={t("common.close")}
+          className="mb-4"
+        />
         <div className="text-start">{content}</div>
       </DialogContent>
     </Dialog>

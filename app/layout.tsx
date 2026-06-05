@@ -1,7 +1,10 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
+import { cookies } from "next/headers"
 import { Inter } from "next/font/google"
 import { Suspense } from "react"
+import { isRtlLocale, localeToBcp47 } from "@/lib/i18n/config"
+import { getServerHtmlLocale, LOCALE_COOKIE_NAME } from "@/lib/i18n/locale-cookie"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import Main from "./main"
@@ -32,13 +35,18 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = await cookies()
+  const htmlLocale = getServerHtmlLocale(cookieStore.get(LOCALE_COOKIE_NAME)?.value)
+  const htmlLang = localeToBcp47(htmlLocale)
+  const htmlDir = isRtlLocale(htmlLocale) ? "rtl" : "ltr"
+
   return (
-    <html lang="en" dir="ltr">
+    <html lang={htmlLang} dir={htmlDir}>
       <head>
         <Script
           id="gtm-script"

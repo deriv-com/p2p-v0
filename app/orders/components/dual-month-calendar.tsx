@@ -22,7 +22,7 @@ import type { DateRange } from "@/stores/orders-filter-store"
 interface DualMonthCalendarProps {
   selected: DateRange
   onSelect: (range: DateRange) => void
-  handleCustomRangeApply: () => void
+  handleCustomRangeApply: (fromDate?: Date, toDate?: Date) => void
 }
 
 export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }: DualMonthCalendarProps) {

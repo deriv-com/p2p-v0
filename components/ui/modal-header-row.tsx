@@ -13,7 +13,8 @@ type ModalHeaderRowProps = {
   className?: string
   titleClassName?: string
   closeButtonClassName?: string
-  closeAriaLabel?: string
+  /** Localized label for the close button (e.g. `t("common.close")`). */
+  closeAriaLabel: string
   /** Use Radix DialogTitle + DialogClose for accessible dialogs */
   asDialog?: boolean
   closeIconSrc?: string
@@ -30,7 +31,7 @@ export function ModalHeaderRow({
   className,
   titleClassName,
   closeButtonClassName,
-  closeAriaLabel = "Close",
+  closeAriaLabel,
   asDialog = false,
   closeIconSrc = "/icons/close-icon.png",
   closeIconSize = 24,
