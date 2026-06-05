@@ -160,7 +160,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       </div>)}
 
       <div className="space-y-0">
-        {isLoading ? (
+        {isLoading && isDiamond ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-[72px] flex items-center justify-between gap-3">
