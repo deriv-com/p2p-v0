@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AdsAPI } from "@/services/api"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
-import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
+import { formatPaymentMethodName, getPaymentMethodColourByName, IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -489,7 +489,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
-                    {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
+                    {IS_CLOSED_GROUP_ENABLED && ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
                     {hasVisibilityStatus && (
                       <Button
                         variant="ghost"

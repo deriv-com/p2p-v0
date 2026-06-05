@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import ClosedGroupTab from "@/app/profile/components/closed-group"
+import { IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 interface AdVisibilitySelectorProps {
   value: string
   onValueChange: (value: string) => void
@@ -51,7 +52,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
         <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ml-4 h-6 w-6" />
       </Label>
 
-      <Label
+      {IS_CLOSED_GROUP_ENABLED && <Label
           htmlFor="closed-group"
           className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border transition-colors bg-grayscale-500 ${value === "closed-group" ? "border-black" : "border-grayscale-500"} ${closedGroupDisabled ? "opacity-50 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
         >
@@ -76,7 +77,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
             </div>
           </div>
           <RadioGroupItem value="closed-group" id="closed-group" disabled={closedGroupDisabled} className="hidden mt-1 ml-4 h-6 w-6" />
-        </Label>
+        </Label>}
     </RadioGroup>
   )
 }
