@@ -79,8 +79,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     if (config.content) {
       return (
-        <div className="overflow-y-auto">
-          <div className="flex justify-between px-8 pt-6 items-center mb-4">
+        <div className="flex flex-col max-h-[80vh] overflow-hidden">
+          <div className="flex justify-between px-8 pt-6 items-center mb-4 flex-shrink-0">
             {config.title && <div className="font-bold text-2xl">{config.title}</div>}
             {!config.hideCloseButton && (
               <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
@@ -88,7 +88,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               </Button>
             )}
           </div>
-          <div className="px-8 pb-6">{config.content}</div>
+          <div className="px-8 pb-6 overflow-y-auto flex-1">{config.content}</div>
           {config.cancelText && (
             <div className="px-8 pb-6">
               <Button onClick={handleCancel} variant="primary" className="w-full">
@@ -143,9 +143,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     if (config.content) {
       return (
-        <div className="overflow-y-auto">
-          {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6">{config.title}</div>}
-          <div className="px-6 pb-6">{config.content}</div>
+        <div className="flex flex-col max-h-[80vh] overflow-hidden">
+          {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6 flex-shrink-0">{config.title}</div>}
+          <div className="px-6 pb-6 overflow-y-auto flex-1">{config.content}</div>
         </div>
       )
     }

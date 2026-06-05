@@ -118,6 +118,56 @@ describe("KycOnboardingSheet", () => {
     expect(ticks.length).toBeGreaterThan(0)
   })
 
+  it("shows Verified badge for phone step when phone_verified criteria passed", () => {
+    mockUseUserDataStore.mockImplementation((selector?: (state: any) => unknown) => {
+      const state = {
+        onboardingStatus: {
+          ...baseOnboardingStatus,
+          kyc: {
+            status: "pending",
+            poi_status: "pending",
+            poa_status: "pending",
+          },
+        },
+        userId: "user-1",
+        userData: { signup: "v2" },
+        isWalletAccount: false,
+      }
+      return selector ? selector(state) : state
+    })
+
+    render(<KycOnboardingSheet />)
+
+    expect(screen.getByText("Verified")).toBeInTheDocument()
+  })
+
+  it("does not show Verified badge for phone step when phone not verified", () => {
+    mockUseUserDataStore.mockImplementation((selector?: (state: any) => unknown) => {
+      const state = {
+        onboardingStatus: {
+          ...baseOnboardingStatus,
+          kyc: {
+            status: "pending",
+            poi_status: "pending",
+            poa_status: "pending",
+          },
+          p2p: {
+            allowed: true,
+            criteria: [{ code: "phone_verified", passed: false }],
+          },
+        },
+        userId: "user-1",
+        userData: { signup: "v2" },
+        isWalletAccount: false,
+      }
+      return selector ? selector(state) : state
+    })
+
+    render(<KycOnboardingSheet />)
+
+    expect(screen.queryByText("Verified")).not.toBeInTheDocument()
+  })
+
   it("navigates to the first incomplete step when Continue verification is clicked", () => {
     mockUseUserDataStore.mockImplementation((selector?: (state: any) => unknown) => {
       const state = {

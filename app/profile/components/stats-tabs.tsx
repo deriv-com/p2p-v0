@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { cn, IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { getHelpCentreUrl } from "@/lib/get-help-centre-url"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
@@ -91,7 +91,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     router.push(`/profile?tab=${tab}`)
   }
 
-  const showClosedGroupTab = IS_CLOSED_GROUP_ENABLED
+  const showClosedGroupTab = true
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },

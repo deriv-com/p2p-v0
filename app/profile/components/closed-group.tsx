@@ -14,6 +14,7 @@ import { removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } fro
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useFavouriteUsers } from "@/hooks/use-api-queries"
+import { useToast } from "@/hooks/use-toast"
 import { useUserDataStore } from "@/stores/user-data-store"
 interface ClosedGroup {
   user_id: number
@@ -28,6 +29,7 @@ interface ClosedGroupTabProps {
 export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
   const { hideAlert } = useAlertDialog()
+  const { toast } = useToast()
   const { userData } = useUserDataStore()
   const isDiamond = userData?.trade_band === "diamond"
   const { data, isLoading, refetch } = useFavouriteUsers(isDiamond)
@@ -53,19 +55,33 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     setSearchQuery(value)
   }, [])
 
+  const showToast = (message: string) => {
+    toast({
+      description: (
+        <div className="flex items-center gap-2">
+          <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+          <span>{message}</span>
+        </div>
+      ),
+      className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+      duration: 2500,
+    })
+  }
+
   const handleRemoveAll = useCallback(async () => {
     try {
       setIsRemoving(true)
       const result = await removeAllFromClosedGroup()
       if (result.success) {
         await refetch()
+        showToast(t("profile.removedFromClosedGroup"))
       }
     } catch (err) {
       console.error("Failed to remove all from closed group:", err)
     } finally {
       setIsRemoving(false)
     }
-  }, [refetch])
+  }, [refetch, t])
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
@@ -82,11 +98,15 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
 
       if (result.success) {
         await refetch()
+        showToast(group.is_group_member
+          ? t("profile.removedFromClosedGroup")
+          : t("profile.addedToClosedGroup")
+        )
       }
     } catch (err) {
       console.error("Failed to update closed group membership:", err)
     }
-  }, [refetch])
+  }, [refetch, t])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="h-[72px] flex items-center justify-between gap-3">
@@ -147,7 +167,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         </div>
       )}
 
-      {closedGroups.length > 0 && (<div className="flex items-center justify-between">
+      {closedGroups.length > 0 && !searchQuery && (<div className="flex items-center justify-between">
         <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
         {closedGroups.length > 0 && (
           <Button
