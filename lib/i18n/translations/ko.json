@@ -815,6 +815,7 @@
     "cannotDeletePaymentMethod": "이 결제 방법을 삭제할 수 없습니다",
     "cannotUpdatePaymentMethod": "이 결제 방법을 업데이트할 수 없습니다",
     "closedGroup": "폐쇄 그룹",
+    "closedGroupDiamondOnlyWarning": "폐쇄 그룹을 관리하려면 다이아몬드 등급이어야 합니다.",
     "closedGroupEmptyDescription": "팔로우한 사용자만 비공개 그룹에 추가할 수 있습니다. 사용자 프로필로 이동해 팔로우를 누르면 여기에 표시됩니다.",
     "closedGroupEmptyTitle": "아직 팔로우된 사용자가 없습니다.",
     "counterparties": "거래 파트너",

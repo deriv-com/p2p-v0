@@ -810,6 +810,7 @@
     "cannotDeletePaymentMethod": "Không thể xóa phương thức thanh toán này",
     "cannotUpdatePaymentMethod": "Bạn không thể cập nhật phương thức thanh toán này",
     "closedGroup": "Nhóm đóng",
+    "closedGroupDiamondOnlyWarning": "Bạn phải ở cấp Diamond để quản lý nhóm kín.",
     "closedGroupEmptyDescription": "Bạn chỉ có thể thêm những người dùng mà bạn theo dõi vào nhóm đóng của mình. Vào hồ sơ người dùng và nhấn Theo dõi để thấy họ ở đây.",
     "closedGroupEmptyTitle": "Chưa có người dùng nào được theo dõi",
     "counterparties": "Đối tác giao dịch",

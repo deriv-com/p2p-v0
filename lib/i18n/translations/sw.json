@@ -774,6 +774,7 @@
     "cannotDeletePaymentMethod": "Haiwezi kufuta njia hii ya kulipa",
     "cannotUpdatePaymentMethod": "Haiwezi kubadilisha njia hii ya kulipa",
     "closedGroup": "Kikundi kilichofungwa",
+    "closedGroupDiamondOnlyWarning": "Lazima uwe katika ngazi ya Diamond ili kusimamia kikundi kilichofungwa.",
     "closedGroupEmptyDescription": "Unaweza kuongeza kwenye kikundi chako kilichofungwa watumiaji unaowafuata tu. Nenda kwenye wasifu wa mtumiaji na gusa Fuata ili uwaone hapa.",
     "closedGroupEmptyTitle": "Bado hakuna watumiaji wanaofuatwa",
     "counterparties": "Washirika wa biashara",

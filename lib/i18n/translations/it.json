@@ -784,6 +784,7 @@
     "cannotDeletePaymentMethod": "Impossibile eliminare questo metodo di pagamento",
     "cannotUpdatePaymentMethod": "Non puoi aggiornare questo metodo di pagamento",
     "closedGroup": "Gruppo chiuso",
+    "closedGroupDiamondOnlyWarning": "Devi essere nel livello Diamond per gestire un gruppo chiuso.",
     "closedGroupEmptyDescription": "Puoi aggiungere al tuo gruppo chiuso solo gli utenti che segui. Vai al profilo di un utente e tocca Segui per vederlo qui.",
     "closedGroupEmptyTitle": "Nessun utente seguito ancora",
     "counterparties": "Contraenti",

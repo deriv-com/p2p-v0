@@ -778,6 +778,7 @@
     "cannotDeletePaymentMethod": "Nie można usunąć tej metody płatności",
     "cannotUpdatePaymentMethod": "Nie możesz zaktualizować tej metody płatności",
     "closedGroup": "Zamknięta grupa",
+    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond.",
     "closedGroupEmptyDescription": "Do zamkniętej grupy możesz dodać tylko użytkowników, których obserwujesz. Przejdź do profilu użytkownika i naciśnij Obserwuj, aby zobaczyć go tutaj.",
     "closedGroupEmptyTitle": "Brak obserwowanych użytkowników",
     "counterparties": "Partnerzy handlowi",

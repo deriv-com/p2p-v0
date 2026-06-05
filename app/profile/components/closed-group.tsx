@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useCallback, useState, useMemo } from "react"
+import { AlertCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -13,6 +14,7 @@ import { removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } fro
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useFavouriteUsers } from "@/hooks/use-api-queries"
+import { useUserDataStore } from "@/stores/user-data-store"
 interface ClosedGroup {
   user_id: number
   nickname: string
@@ -26,7 +28,9 @@ interface ClosedGroupTabProps {
 export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
   const { hideAlert } = useAlertDialog()
-  const { data, isLoading, refetch } = useFavouriteUsers()
+  const { userData } = useUserDataStore()
+  const isDiamond = userData?.trade_band === "diamond"
+  const { data, isLoading, refetch } = useFavouriteUsers(isDiamond)
   const closedGroups: ClosedGroup[] = data?.pages.flat() ?? []
   const [searchQuery, setSearchQuery] = useState("")
   const [isRemoving, setIsRemoving] = useState(false)
@@ -102,7 +106,13 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
 
   return (
     <div className="space-y-4">
-      {(filteredClosedGroups.length > 0 || searchQuery) && (
+      {!isDiamond && (
+        <Alert variant="warning">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{t("profile.closedGroupDiamondOnlyWarning")}</AlertDescription>
+        </Alert>
+      )}
+      {(isDiamond ? (filteredClosedGroups.length > 0 || searchQuery) : true) && (
         <div className="flex items-center justify-between gap-4">
           <div className={cn("relative", isInAlert ? "w-full" : "w-full md:w-[360px]")}>
             <Image
@@ -116,10 +126,14 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none"
+              disabled={!isDiamond}
+              className={cn(
+                "h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none",
+                !isDiamond && "opacity-50 cursor-not-allowed",
+              )}
               autoComplete="off"
             />
-            {searchQuery && (
+            {searchQuery && isDiamond && (
               <Button
                 variant="ghost"
                 size="sm"

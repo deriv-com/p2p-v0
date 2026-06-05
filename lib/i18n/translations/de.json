@@ -793,6 +793,7 @@
     "cannotDeletePaymentMethod": "Diese Zahlungsmethode kann nicht gelöscht werden",
     "cannotUpdatePaymentMethod": "Sie können diese Zahlungsmethode nicht aktualisieren",
     "closedGroup": "Geschlossene Gruppe",
+    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten.",
     "closedGroupEmptyDescription": "Sie können Ihrer geschlossenen Gruppe nur Benutzer hinzufügen, denen Sie folgen. Gehen Sie zum Profil eines Benutzers und tippen Sie auf Folgen, um ihn hier zu sehen.",
     "closedGroupEmptyTitle": "Noch keine verfolgten Benutzer",
     "counterparties": "Handelspartner",
