@@ -6,9 +6,7 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
-import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { PROFILE_TOOLBAR_ROW } from "@/lib/rtl"
 
 interface FollowUser {
   nickname: string
@@ -46,8 +44,7 @@ export default function FollowUserList({
   searchEmptyDescription,
   showFollowingButton = false,
 }: FollowUserListProps) {
-  const { t, locale } = useTranslations()
-  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
+  const { t } = useTranslations()
 
   const UserCard = ({ user }: { user: FollowUser }) => {
     const isFollowing = followingUserIds.includes(user.user_id)
@@ -72,11 +69,7 @@ export default function FollowUserList({
             onClick={() => onFollowToggle(user, showFollowingButton ? true : isFollowing)}
             className="rounded-full px-4 py-1 text-sm"
           >
-            {showFollowingButton
-              ? t("profile.unfollow")
-              : isFollowing
-                ? t("advertiser.following")
-                : t("advertiser.follow")}
+            {showFollowingButton ? t("profile.unfollow") : isFollowing ? "Following" : "Follow"}
           </Button>
         </div>
       </div>
@@ -84,22 +77,22 @@ export default function FollowUserList({
   }
 
   return (
-    <div className="flex flex-col h-full" dir={dir}>
+    <div className="flex flex-col h-full">
       {(users.length > 0 || searchQuery) && (
-        <div className={PROFILE_TOOLBAR_ROW}>
+        <div className="flex items-center justify-between gap-4 mb-4">
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
               width={24}
               height={24}
-              className="absolute start-3 top-1/2 transform -translate-y-1/2"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={onSearchChange}
-              className="h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none"
+              className="h-14 pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none"
               autoComplete="off"
             />
             {searchQuery && (
@@ -107,7 +100,7 @@ export default function FollowUserList({
                 variant="ghost"
                 size="sm"
                 onClick={onClearSearch}
-                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
                 <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
               </Button>

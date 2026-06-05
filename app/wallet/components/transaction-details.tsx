@@ -1,7 +1,5 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { formatAppDate } from "@/lib/format-date"
-import { localeToBcp47 } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import Image from "next/image"
 
@@ -34,8 +32,7 @@ interface TransactionDetailsProps {
 }
 
 export default function TransactionDetails({ transaction, onClose }: TransactionDetailsProps) {
-  const { t, locale } = useTranslations()
-  const numberLocale = localeToBcp47(locale)
+  const { t } = useTranslations()
 
   const formatAmount = (amount: string, currency: string) => {
     const numAmount = Number.parseFloat(amount)
@@ -44,7 +41,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
-    return formatAppDate(new Date(timestamp), locale, {
+    return date.toLocaleDateString("en-GB", {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -53,13 +50,13 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp)
-    return `${date.toLocaleTimeString(numberLocale, {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZone: "GMT",
-      timeZoneName: "short",
-    })}`
+    return (
+      date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }) + " GMT"
+    )
   }
 
   const formatTransactionType = (type: string) => {

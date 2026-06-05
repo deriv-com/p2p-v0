@@ -13,9 +13,6 @@ import {
   isSameDay,
 } from "date-fns"
 import { Button } from "@/components/ui/button"
-import { formatAppMonthYear, getMondayFirstWeekdayLabels } from "@/lib/format-date"
-import { useTranslations } from "@/lib/i18n/use-translations"
-import { RTL_MIRROR_ICON } from "@/lib/rtl"
 import { cn } from "@/lib/utils"
 import type { DateRange } from "@/stores/orders-filter-store"
 
@@ -26,10 +23,8 @@ interface DualMonthCalendarProps {
 }
 
 export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }: DualMonthCalendarProps) {
-  const { locale } = useTranslations()
   const [currentMonth, setCurrentMonth] = React.useState(new Date())
   const nextMonth = addMonths(currentMonth, 1)
-  const weekdayLabels = React.useMemo(() => getMondayFirstWeekdayLabels(locale), [locale])
 
   const isFutureDate = (date: Date) => {
     const today = new Date()
@@ -82,7 +77,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
 
     return (
       <div className="flex-1">
-        <div className="flex rtl:flex-row-reverse">
+        <div className="flex">
           {isPrevVisible && (
             <Button
               variant="ghost"
@@ -90,10 +85,10 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
               onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
               className="p-2"
             >
-              <ChevronLeft className={cn("h-4 w-4", RTL_MIRROR_ICON)} />
+              <ChevronLeft className="h-4 w-4" />
             </Button>
           )}
-          <div className="text-center text-grayscale-600 mb-4 m-auto">{formatAppMonthYear(month, locale)}</div>
+          <div className="text-center text-grayscale-600 mb-4 m-auto">{format(month, "MMM yyyy")}</div>
           {isNextVisible && (
             <Button
               variant="ghost"
@@ -101,13 +96,13 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
               onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
               className="p-2"
             >
-              <ChevronRight className={cn("h-4 w-4", RTL_MIRROR_ICON)} />
+              <ChevronRight className="h-4 w-4" />
             </Button>
           )}
         </div>
         <div className="grid grid-cols-7 gap-1 mb-2">
-          {weekdayLabels.map((day, index) => (
-            <div key={index} className="text-center text-sm text-gray-400 font-normal py-2">
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
+            <div key={day} className="text-center text-sm text-gray-400 font-normal py-2">
               {day}
             </div>
           ))}
@@ -151,7 +146,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
 
   return (
     <div className="p-6">
-      <div className="flex gap-8 rtl:flex-row-reverse">
+      <div className="flex gap-8">
         {renderMonth(currentMonth, true, false)}
         {renderMonth(nextMonth, false, true)}
       </div>

@@ -35,13 +35,12 @@ import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
-import { localeToBcp47 } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import InfoCircleIcon from "@/public/icons/info-circle-bold.svg"
 import { useTrackers } from "@/analytics/useTrackers"
 
 export default function OrderDetailsPage() {
-  const { t, locale } = useTranslations()
+  const { t } = useTranslations()
   const { track } = useTrackers()
   const params = useParams()
   const orderId = params.id as string
@@ -218,7 +217,7 @@ export default function OrderDetailsPage() {
       timeZoneName: "short",
     }
 
-    return deadline.toLocaleString(localeToBcp47(locale), options)
+    return deadline.toLocaleDateString("en-GB", options)
   }
 
   const renderPaymentMethodFields = (method: any) => {
@@ -491,7 +490,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute inset-x-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
+    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}
@@ -569,7 +568,7 @@ export default function OrderDetailsPage() {
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <span
-                                className={`ms-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
                                 aria-label="Info"
                                 role="img"
                               >
@@ -606,7 +605,7 @@ export default function OrderDetailsPage() {
                         </div>
                         <button className="flex items-center text-xs" onClick={showOrderDetails}>
                           {t("orderDetails.viewOrderDetails")}
-                          <ChevronRight className="h-4 w-4 ms-1" />
+                          <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
                       </div>
                       <div className="flex justify-between items-end">

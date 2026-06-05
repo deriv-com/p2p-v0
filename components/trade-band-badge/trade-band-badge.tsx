@@ -84,7 +84,7 @@ export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, cl
                   alt="Arrow"
                   width={8}
                   height={18}
-                  className="ms-2 cursor-pointer"
+                  className="ml-2 cursor-pointer"
                 />
               </Button>
             )}

@@ -191,7 +191,7 @@ export const PaymentReceivedConfirmationSidebar = ({
           <SheetHeader className="p-4">
             <div className="flex items-center justify-between">
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
-                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
               </Button>
             </div>
           </SheetHeader>

@@ -13,7 +13,7 @@ export function AdvertiserSkeleton() {
               
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
-                  <div className="relative me-[16px]">
+                  <div className="relative mr-[16px]">
                     <Skeleton className="h-[56px] w-[56px] rounded-full" />
                   </div>
                   

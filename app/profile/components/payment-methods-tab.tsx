@@ -12,14 +12,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import {
-  PAYMENT_METHOD_INFO,
-  PAYMENT_METHOD_ROW,
-  PAYMENT_METHOD_SECTION_TITLE,
-  PAYMENT_METHOD_TEXT,
-} from "@/lib/rtl"
 import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
@@ -38,9 +31,7 @@ interface PaymentMethodsTabProps {
 }
 
 export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethodsCountChange }: PaymentMethodsTabProps) {
-  const { t, locale } = useTranslations()
-  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
-  const menuSide = isRtlLocale(locale) ? "right" : "left"
+  const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const { toast } = useToast()
   const { showDeleteDialog, showAlert } = useAlertDialog()
@@ -295,10 +286,10 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
   }
 
   return (
-    <div dir={dir}>
+    <div>
       {bankTransfers.length > 0 && (
         <div className="mb-4">
-          <h3 className={PAYMENT_METHOD_SECTION_TITLE}>{t("paymentMethod.bankTransfers")}</h3>
+          <h3 className="text-base font-bold mb-4">{t("paymentMethod.bankTransfers")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {bankTransfers.map((method) => (
               <Card
@@ -307,10 +298,10 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                 className="overflow-hidden shadow-none border-0 border-b rounded-none"
               >
                 <CardContent className="p-2">
-                  <div className={PAYMENT_METHOD_ROW}>
-                    <div className={PAYMENT_METHOD_INFO}>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getBankIcon()}
-                      <div className={PAYMENT_METHOD_TEXT}>
+                      <div className="flex-1 min-w-0 text-sm ">
                         <div className="text-neutral-10">{method.details.bank_name.value}</div>
                         <div className="text-neutral-7 tracking-wide text-xs">
                           {maskAccountNumber(method.details.account.value)}
@@ -319,11 +310,11 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
                           <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent side={menuSide} align="center" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleEditPaymentMethod(method)}
@@ -349,7 +340,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       )}
       {eWallets.length > 0 && (
         <div>
-          <h3 className={PAYMENT_METHOD_SECTION_TITLE}>{t("paymentMethod.eWallets")}</h3>
+          <h3 className="text-base font-bold mb-4">{t("paymentMethod.eWallets")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {eWallets.map((method) => (
               <Card
@@ -358,10 +349,10 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                 className="overflow-hidden shadow-none border-0 border-b rounded-none"
               >
                 <CardContent className="p-2">
-                  <div className={PAYMENT_METHOD_ROW}>
-                    <div className={PAYMENT_METHOD_INFO}>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getEWalletIcon()}
-                      <div className={PAYMENT_METHOD_TEXT}>
+                      <div className="flex-1 min-w-0 text-sm">
                         <div className="text-neutral-10">{method.name}</div>
                         <div className="text-neutral-7 text-xs">
                           {method.details?.account?.value || `ID: ${method.id}`}
@@ -370,11 +361,11 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
                           <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent side={menuSide} align="center" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}

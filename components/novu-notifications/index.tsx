@@ -90,19 +90,11 @@ export function NovuNotifications() {
         borderRadius: "50%",
         backgroundColor: isMobile ? "rgba(255, 255, 255, 0.04)" : "rgba(0, 0, 0, 0.04)",
         padding: 0,
-        width: "32px",
-        height: "32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
       },
       bellContainer: {
         margin: 0,
         width: "32px",
         height: "32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
       },
       bellIcon: {
         width: "24px",
@@ -150,29 +142,25 @@ export function NovuNotifications() {
 
   if (!mounted || isLoading) {
     return (
-      <div className="flex h-8 w-8 items-center justify-center">
-        <div className="relative inline-flex h-6 w-6 rounded-full bg-yellow-100">
-          <span className="sr-only">Notifications loading</span>
-        </div>
+      <div className="relative inline-flex h-5 w-5 bg-yellow-100 rounded-full">
+        <span className="sr-only">Notifications loading</span>
       </div>
     )
   }
 
   if (error || !subscriberHash || !subscriberId) {
     return (
-      <div className="flex h-8 w-8 items-center justify-center">
-        <div
-          className="relative inline-flex h-6 w-6 rounded-full bg-red-100"
-          title={error || "Failed to load notifications"}
-        >
-          <span className="sr-only">Notifications error</span>
-        </div>
+      <div
+        className="relative inline-flex h-5 w-5 bg-red-100 rounded-full"
+        title={error || "Failed to load notifications"}
+      >
+        <span className="sr-only">Notifications error</span>
       </div>
     )
   }
 
   return (
-    <div className="flex h-8 w-8 items-center justify-center" style={{ position: "static" }}>
+    <div style={{ position: "static" }}>
       <Inbox
         applicationIdentifier={applicationIdentifier}
         subscriber={subscriberId || ""}

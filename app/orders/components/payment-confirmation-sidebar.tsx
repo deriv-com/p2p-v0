@@ -118,7 +118,7 @@ export const PaymentConfirmationSidebar = ({
     <>
       <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
       <div
-        className={`fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col ${
+        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
           isMobile ? "inset-0 w-full" : "w-full"
         }`}
       >
