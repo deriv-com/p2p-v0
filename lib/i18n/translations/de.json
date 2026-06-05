@@ -461,7 +461,7 @@
     "aboutYou": "Über Sie",
     "settings": "Einstellungen",
     "support": "Unterstützung",
-    "closedGroupDiamondOnlyWarning": "Die Verwaltung geschlossener Gruppen ist nur für Mitglieder der Diamond-Stufe verfügbar."
+    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten."
   },
   "wallet": {
     "title": "Wallet",

@@ -499,7 +499,7 @@
     "aboutYou": "Acerca de ti",
     "settings": "Configuración",
     "support": "Soporte",
-    "closedGroupDiamondOnlyWarning": "La gestión del grupo cerrado solo está disponible para los miembros del nivel Diamond."
+    "closedGroupDiamondOnlyWarning": "Debes estar en el nivel Diamond para gestionar un grupo cerrado."
   },
   "wallet": {
     "title": "Billetera",

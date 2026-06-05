@@ -497,7 +497,7 @@
     "aboutYou": "Sobre você",
     "settings": "Configurações",
     "support": "Suporte",
-    "closedGroupDiamondOnlyWarning": "O gerenciamento de grupo fechado está disponível apenas para membros do nível Diamond."
+    "closedGroupDiamondOnlyWarning": "Você precisa estar no nível Diamond para gerenciar um grupo fechado."
   },
   "wallet": {
     "title": "Carteira",

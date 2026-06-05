@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useCallback, useState, useMemo } from "react"
+import { AlertCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -107,6 +108,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     <div className="space-y-4">
       {!isDiamond && (
         <Alert variant="warning">
+          <AlertCircle className="h-4 w-4" />
           <AlertDescription>{t("profile.closedGroupDiamondOnlyWarning")}</AlertDescription>
         </Alert>
       )}

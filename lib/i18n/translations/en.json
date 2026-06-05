@@ -516,7 +516,7 @@
     "settings": "Settings",
     "support": "Support",
     "addFromYourFollowing": "Add from your following",
-    "closedGroupDiamondOnlyWarning": "Closed group management is only available to Diamond tier members."
+    "closedGroupDiamondOnlyWarning": "You must be in the Diamond tier to manage a closed group."
   },
   "wallet": {
     "title": "Wallet",

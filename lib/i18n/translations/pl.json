@@ -502,7 +502,7 @@
     "settings": "Ustawienia",
     "support": "Wsparcie",
     "addFromYourFollowing": "Dodaj z Twoich obserwowanych",
-    "closedGroupDiamondOnlyWarning": "Zarządzanie zamkniętą grupą jest dostępne tylko dla członków poziomu Diamond."
+    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond."
   },
   "wallet": {
     "title": "Portfel",
