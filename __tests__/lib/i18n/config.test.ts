@@ -1,4 +1,5 @@
 import {
+  apiPreferredLanguageToLocale,
   isRtlLocale,
   localeToBcp47,
   locales,
@@ -41,5 +42,18 @@ describe("localeToBcp47", () => {
   it("maps Chinese locales to BCP 47 tags", () => {
     expect(localeToBcp47("zh_TW")).toBe("zh-TW")
     expect(localeToBcp47("zh")).toBe("zh-CN")
+  })
+})
+
+describe("apiPreferredLanguageToLocale", () => {
+  it("maps API preferred_language values to supported locales", () => {
+    expect(apiPreferredLanguageToLocale("en")).toBe("en")
+    expect(apiPreferredLanguageToLocale("zh-CN")).toBe("zh")
+    expect(apiPreferredLanguageToLocale("zh_tw")).toBe("zh_TW")
+  })
+
+  it("returns null for unsupported values", () => {
+    expect(apiPreferredLanguageToLocale("invalid")).toBeNull()
+    expect(apiPreferredLanguageToLocale("")).toBeNull()
   })
 })

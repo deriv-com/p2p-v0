@@ -4,6 +4,7 @@ import { queryClient } from "@/lib/react-query-client"
 import { queryKeys } from "@/hooks/use-api-queries"
 import { getCoreUrl } from "@/lib/get-core-url"
 import { getOryUrl } from "@/lib/get-ory-url"
+import { localeToBcp47, type Locale } from "@/lib/i18n/config"
 
 export interface LoginRequest {
   email: string
@@ -701,6 +702,57 @@ export async function getAdvertStatistics(accountCurrency: string): Promise<any>
   } catch (error) {
     console.error("Error fetching advert statistics:", error)
     throw error
+  }
+}
+
+export interface ClientPreferencesResponse {
+  data?: {
+    preferred_language?: string
+  }
+}
+
+/**
+ * Fetch client preferences (`GET /v1/client/preferences`).
+ * Returns `preferred_language` when present, otherwise `null`.
+ */
+export async function getClientPreferences(): Promise<string | null> {
+  try {
+    const response = await fetch(`${getCoreUrl()}/v1/client/preferences`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      return null
+    }
+
+    const result = (await response.json()) as ClientPreferencesResponse
+    const raw = result?.data?.preferred_language
+    if (!raw || !raw.trim()) {
+      return null
+    }
+
+    return raw.trim()
+  } catch (error) {
+    console.error("Error fetching client preferences:", error)
+    return null
+  }
+}
+
+/**
+ * Persist the user's preferred language (`PUT /v1/client/preferred-language`).
+ */
+export async function updatePreferredLanguage(locale: Locale): Promise<void> {
+  const response = await fetch(`${getCoreUrl()}/v1/client/preferred-language`, {
+    method: "PUT",
+    credentials: "include",
+    headers: getAuthHeader(),
+    body: JSON.stringify({ preferred_language: localeToBcp47(locale) }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to update preferred language: ${response.statusText}`)
   }
 }
 

@@ -157,3 +157,59 @@ describe("getSession", () => {
     expect(result).toBe(false)
   })
 })
+
+describe("getClientPreferences", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("returns preferred_language from the API", async () => {
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { preferred_language: "fr" } }),
+    } as Response)
+
+    const result = await AuthAPI.getClientPreferences()
+
+    expect(fetch).toHaveBeenCalledWith(`${API.coreUrl}/v1/client/preferences`, {
+      method: "GET",
+      credentials: "include",
+      headers: AUTH.getAuthHeader(),
+    })
+    expect(result).toBe("fr")
+  })
+
+  it("returns null when the request fails", async () => {
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockResolvedValue({
+      ok: false,
+    } as Response)
+
+    const result = await AuthAPI.getClientPreferences()
+
+    expect(result).toBeNull()
+  })
+})
+
+describe("updatePreferredLanguage", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("PUTs canonical BCP-47 preferred_language", async () => {
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockResolvedValue({
+      ok: true,
+    } as Response)
+
+    await AuthAPI.updatePreferredLanguage("zh_TW")
+
+    expect(fetch).toHaveBeenCalledWith(`${API.coreUrl}/v1/client/preferred-language`, {
+      method: "PUT",
+      credentials: "include",
+      headers: AUTH.getAuthHeader(),
+      body: JSON.stringify({ preferred_language: "zh-TW" }),
+    })
+  })
+})

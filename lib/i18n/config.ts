@@ -70,7 +70,14 @@ export function normalizeLocaleParam(lang: string): Locale | null {
   return exactMatch ?? null
 }
 
-/** BCP 47 tag for document `lang` and third-party SDKs. */
+/** Map API `preferred_language` (e.g. `en`, `zh-cn`, `zh_tw`) to a supported [Locale]. */
+export function apiPreferredLanguageToLocale(code: string): Locale | null {
+  const trimmed = code.trim()
+  if (!trimmed) return null
+  return normalizeLocaleParam(trimmed)
+}
+
+/** BCP 47 tag for document `lang`, third-party SDKs, and `PUT /v1/client/preferred-language`. */
 export function localeToBcp47(locale: Locale): string {
   if (locale === "zh_TW") {
     return "zh-TW"
