@@ -235,7 +235,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       </div>
 
       {isInAlert && (
-        <div className="mt-6 border-gray-100">
+        <div className="my-6 border-gray-100">
           <Button
             onClick={hideAlert}
             variant="primary"
