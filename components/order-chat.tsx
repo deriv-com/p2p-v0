@@ -45,7 +45,7 @@ export default function OrderChat({
   counterpartyOnlineStatus,
   counterpartyLastOnlineAt,
 }: OrderChatProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const { showAlert } = useAlertDialog()
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
@@ -203,7 +203,7 @@ export default function OrderChat({
   const formatDateHeader = (dateString: string): string => {
     const date = new Date(dateString)
 
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(locale, {
       month: "long",
       day: "numeric",
       year: "numeric",
@@ -218,15 +218,15 @@ export default function OrderChat({
             variant="ghost"
             size="sm"
             onClick={onNavigateToOrderDetails}
-            className="mr-[16px] bg-grayscale-300 px-1"
+            className="me-[16px] bg-grayscale-300 px-1"
           >
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
           </Button>
         )}
-        <div className="relative w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
+        <div className="relative w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold me-3">
           {counterpartyInitial}
           <div
-            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
+            className={`absolute bottom-0 end-0 h-3 w-3 rounded-full border-2 border-white ${
               counterpartyOnlineStatus ? "bg-buy" : "bg-gray-400"
             }`}
           />
@@ -253,10 +253,10 @@ export default function OrderChat({
               </div>
               <div className="text-sm text-slate-1200">
                 <span className="font-bold">{t("chat.disclaimerImportant")}</span>
-                <span className="ml-1">{t("chat.disclaimerText")}</span>
+                <span className="ms-1">{t("chat.disclaimerText")}</span>
                 <div className="mt-[16px]">
                   <span className="font-bold">{t("chat.disclaimerNote")}</span>
-                  <span className="ml-1">{t("chat.disclaimerNoteText")}</span>
+                  <span className="ms-1">{t("chat.disclaimerNoteText")}</span>
                 </div>
               </div>
             </div>
@@ -284,10 +284,10 @@ export default function OrderChat({
                             className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px]`}
                           >
                             {!msg.sender_is_self && (
-                              <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
+                              <div className="absolute ltr:left-0 rtl:right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-r-[8px] ltr:border-r-slate-1700 ltr:-translate-x-full rtl:border-l-[8px] rtl:border-l-slate-1700 rtl:translate-x-full" />
                             )}
                             {msg.sender_is_self && (
-                              <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                              <div className="absolute ltr:right-0 rtl:left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-l-[8px] ltr:border-l-slate-200 ltr:translate-x-full rtl:border-r-[8px] rtl:border-r-slate-200 rtl:-translate-x-full" />
                             )}
                             <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
                               <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
@@ -302,10 +302,10 @@ export default function OrderChat({
                               className={`relative break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-slate-1700"} p-[16px] rounded-[8px] flex-1`}
                             >
                               {!msg.sender_is_self && (
-                                <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
+                                <div className="absolute ltr:left-0 rtl:right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-r-[8px] ltr:border-r-slate-1700 ltr:-translate-x-full rtl:border-l-[8px] rtl:border-l-slate-1700 rtl:translate-x-full" />
                               )}
                               {msg.sender_is_self && (
-                                <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                                <div className="absolute ltr:right-0 rtl:left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-l-[8px] ltr:border-l-slate-200 ltr:translate-x-full rtl:border-r-[8px] rtl:border-r-slate-200 rtl:-translate-x-full" />
                               )}
                               {msg.message}
                             </div>
@@ -351,11 +351,11 @@ export default function OrderChat({
                 onKeyDown={handleKeyDown}
                 placeholder={t("chat.enterMessage")}
                 disabled={isSending}
-                className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                className="w-full rounded-[8px] pe-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
               />
               {message.trim() ? (
                 <Button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  className="absolute end-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
                   onClick={handleSendMessage}
                   variant="ghost"
                   size="sm"
@@ -365,7 +365,7 @@ export default function OrderChat({
                 </Button>
               ) : (
                 <Button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  className="absolute end-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
                   onClick={() => fileInputRef.current?.click()}
                   variant="ghost"
                   size="sm"
@@ -383,7 +383,7 @@ export default function OrderChat({
             </div>
             <div className="flex justify-between items-center">
               <div></div>
-              <div className="text-xs text-[#0000007A] mr-16px">
+              <div className="text-xs text-[#0000007A] me-4">
                 {message.length}/{maxLength}
               </div>
             </div>

@@ -31,6 +31,7 @@ import { useAdvertiserAds, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { PresenceLastSeen } from "@/components/presence-last-seen"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
 
 interface UsersOnlineUpdate {
   user_id: number
@@ -476,11 +477,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
               <Button variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
-                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="rtl:rotate-180" />
               </Button>
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
-                  <div className="relative mr-[16px]">
+                  <div className="relative me-[16px]">
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
                       <div
@@ -510,19 +511,19 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           <PresenceLastSeen
                             isOnline={profile.is_online}
                             lastOnlineAt={profile.last_online_at}
-                            className="text-xs text-grayscale-600 mr-[8px]"
+                            className="text-xs text-grayscale-600 me-[8px]"
                           />
                           <span className="opacity-[0.08]">|</span>
                         </>
                       )}
-                      <span className={!profile?.is_online && profile?.last_online_at ? "ml-[8px]" : ""}>
+                      <span className={!profile?.is_online && profile?.last_online_at ? "ms-[8px]" : ""}>
                         {profile ? getJoinedDate(profile.created_at) : ""}
                       </span>
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
                       <div className="flex items-center">
-                        <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
-                        <span className="mr-[8px]">
+                        <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="me-1" />
+                        <span className="me-[8px]">
                           {profile?.statistics_lifetime?.recommend_count > 0
                             ? t("advertiser.recommendedBy", {
                               count: profile?.statistics_lifetime?.recommend_count,
@@ -533,7 +534,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       </div>
                       <span className="opacity-[0.08]">|</span>
                       <div className="flex items-center">
-                        <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
+                        <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="me-1" />
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
@@ -571,7 +572,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         disabled={isBlockLoading}
                       >
                         {isBlockLoading ? (
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent me-2"></div>
                         ) : null}
                         {isBlocked ? t("advertiser.unblock") : t("advertiser.block")}
                       </Button>
@@ -624,17 +625,12 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                               >
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
                                   <div className="font-bold">
-                                    {ad.effective_rate_display
-                                      ? ad.effective_rate_display.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                      })
-                                      : ""}{" "}
-                                    {ad.payment_currency}
-                                    <span className="text-xs font-normal text-black opacity-[0.48]">
-                                      {" "}
-                                      /{ad.account_currency}
-                                    </span>
+                                    <ExchangeRateDisplay
+                                      rate={ad.effective_rate_display}
+                                      paymentCurrency={ad.payment_currency}
+                                      accountCurrency={ad.account_currency}
+                                      mutedClassName="text-xs font-normal text-black opacity-[0.48]"
+                                    />
                                   </div>
                                   {ad.exchange_rate_type === "floating" && (
                                     <div className="text-xs text-slate-500">0.1%</div>
@@ -648,7 +644,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 </TableCell>
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
                                   <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-1" />
                                     <span>{ad.order_expiry_period} min</span>
                                   </div>
                                 </TableCell>
@@ -657,7 +653,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                     {ad.payment_methods?.map((method, index) => (
                                       <div key={index} className="flex items-center">
                                         <div
-                                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                          className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank")
                                             ? "bg-paymentMethod-bank"
                                             : "bg-paymentMethod-ewallet"
                                             }`}

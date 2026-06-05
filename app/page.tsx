@@ -31,6 +31,7 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { getTotalBalance } from "@/services/api/api-auth"
@@ -494,11 +495,11 @@ export default function BuySellPage() {
               </div>
             )}
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
-                <div>
+              <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -mx-3 mb-4 md:m-0">
+                <div className="flex flex-col items-start w-full md:w-auto">
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
                   <Tabs value={activeTab} onValueChange={(value) => { if (value === "sell") track("ek_buy_markets"); else track("ek_sell_markets"); setActiveTab(value as "buy" | "sell") }}>
-                    <TabsList className="w-auto bg-transparent p-0 gap-4">
+                    <TabsList className="w-auto bg-transparent p-0 gap-4 rtl:w-full rtl:justify-end">
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="sell"
@@ -537,7 +538,7 @@ export default function BuySellPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                          className="h-10 min-h-10 max-h-10 gap-2 border border-[#ffffff3d] bg-transparent px-3 font-normal hover:bg-transparent rounded-3xl text-white"
                           onClick={() => track("ek_payment_currency_markets")}
                         >
                           {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
@@ -548,16 +549,16 @@ export default function BuySellPage() {
                               alt={`${currency} logo`}
                               width={24}
                               height={16}
-                              className="mr-1 object-cover"
+                              className="shrink-0 object-cover"
                             />
                           )}
-                          <span>{currency}</span>
+                          <span className="shrink-0">{currency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
                             alt="Arrow"
                             width={24}
                             height={24}
-                            className="ml-2 transition-transform duration-200"
+                            className="shrink-0 transition-transform duration-200"
                           />
                         </Button>
                       }
@@ -568,7 +569,7 @@ export default function BuySellPage() {
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
-              <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
+              <div className="flex gap-2 items-center ms-auto flex-1 md:flex-none">
                 {!isV1Signup && (
                   <div className="flex gap-2 mb-3 flex-1 hidden">
                     {accountCurrencies.map((curr) => (
@@ -668,16 +669,16 @@ export default function BuySellPage() {
               <Table>
                 <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                   <TableRow className="text-xs">
-                    <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 lg:ps-0 text-slate-600 font-normal">
                       <Skeleton className="bg-grayscale-500 h-5 w-32" />
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                       <Skeleton className="bg-grayscale-500 h-5 w-32" />
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
                       <Skeleton className="bg-grayscale-500 h-5 w-32" />
                     </TableHead>
-                    <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    <TableHead className="text-end py-4 px-4 lg:pe-0"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -686,9 +687,9 @@ export default function BuySellPage() {
                       key={index}
                       className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                     >
-                      <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
-                          <Skeleton className="bg-grayscale-500 h-[40px] w-[40px] flex-shrink-0 rounded-full mr-[8px]" />
+                          <Skeleton className="bg-grayscale-500 h-[40px] w-[40px] flex-shrink-0 rounded-full me-[8px]" />
                           <div className="flex-1">
                             <Skeleton className="bg-grayscale-500 h-4 w-32 mb-2" />
                             <Skeleton className="bg-grayscale-500 h-3 w-48" />
@@ -706,8 +707,8 @@ export default function BuySellPage() {
                           <Skeleton className="bg-grayscale-500 h-3 w-28" />
                         </div>
                       </TableCell>
-                      <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                        <Skeleton className="bg-grayscale-500 h-8 w-20 ml-auto" />
+                      <TableCell className="p-2 lg:p-4 lg:pe-0 text-end align-middle row-start-3 whitespace-nowrap">
+                        <Skeleton className="bg-grayscale-500 h-8 w-20 ms-auto" />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -733,16 +734,16 @@ export default function BuySellPage() {
               <Table>
                 <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                   <TableRow className="text-xs">
-                    <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 lg:ps-0 text-slate-600 font-normal">
                       {t("market.advertisers")}
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                       {t("market.rates")}
                     </TableHead>
-                    <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                    <TableHead className="text-start py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
                       {t("market.paymentMethods")}
                     </TableHead>
-                    <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    <TableHead className="text-end py-4 px-4 lg:pe-0"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -752,12 +753,12 @@ export default function BuySellPage() {
                       className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                       key={ad.id}
                     >
-                      <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl mr-[8px]">
+                          <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-2xl me-[8px]">
                             {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                             <div
-                              className={`absolute bottom-0 right-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                              className={`absolute bottom-0 end-0 h-[10px] w-[10px] rounded-full border border-white ${ad.user?.is_online ? "bg-buy" : "bg-gray-400"
                                 }`}
                             />
                           </div>
@@ -783,11 +784,11 @@ export default function BuySellPage() {
                                   alt="Closed Group"
                                   width={32}
                                   height={32}
-                                  className="cursor-pointer mr-1"
+                                  className="cursor-pointer me-1"
                                 />
                               )}
                               {ad.user?.is_favourite && (
-                                <span className="ml-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                <span className="ms-1 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                   {t("market.following")}
                                 </span>
                               )}
@@ -807,7 +808,7 @@ export default function BuySellPage() {
                                 alt="Rating"
                                 width={16}
                                 height={16}
-                                className="mr-1"
+                                className="me-1"
                               />
                               <span className="text-pending-text-secondary">
                                 {ad.user.rating_average_lifetime.toFixed(2)}
@@ -815,7 +816,7 @@ export default function BuySellPage() {
                             </span>
                           )}
                           {ad.user.order_count_lifetime > 0 && (
-                            <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                            <div className="flex flex-row items-center justify-start gap-[8px] mx-[8px]">
                               {ad.user.rating_average_lifetime && <div className="h-1 w-1 rounded-full bg-slate-500"></div>}
                               <span>
                                 {ad.user.order_count_lifetime} {t("market.orders")}
@@ -823,7 +824,7 @@ export default function BuySellPage() {
                             </div>
                           )}
                           {ad.user.completion_rate_all_30day > 0 && (
-                            <div className="flex flex-row items-center justify-center gap-[8px]">
+                            <div className="flex flex-row items-center justify-start gap-[8px]">
                               <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                               <span>
                                 {ad.user.completion_rate_all_30day}% {t("market.completion")}
@@ -836,7 +837,7 @@ export default function BuySellPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}
                                   </span>
@@ -851,25 +852,23 @@ export default function BuySellPage() {
                         </div>
                         }
                       </TableCell>
-                      <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full">
-                        <div className="font-bold text-base flex items-center">
-                          {ad.effective_rate_display
-                            ? ad.effective_rate_display.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                            : ""}{" "}
-                          {ad.payment_currency}
-                          <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
+                      <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full text-start">
+                        <div className="font-bold text-base flex items-center justify-start text-start">
+                          <ExchangeRateDisplay
+                            rate={ad.effective_rate_display}
+                            paymentCurrency={ad.payment_currency}
+                            accountCurrency={ad.account_currency}
+                            mutedClassName="text-xs text-slate-500 font-normal"
+                          />
                         </div>
                         <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
                           }  ${ad.account_currency}`}</div>
-                        {isMobile && <div className="flex items-center text-xs text-slate-500 mt-2">
+                        {isMobile && <div className="flex w-full items-center justify-start text-start text-xs text-slate-500 mt-2">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                <div className="flex items-center justify-start bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer text-start">
+                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="me-2" />
                                   <span>
                                     {ad.order_expiry_period} {t("market.min")}
                                   </span>
@@ -889,7 +888,7 @@ export default function BuySellPage() {
                             <div key={index} className="flex items-center">
                               {method && (
                                 <div
-                                  className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                  className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank")
                                     ? "bg-paymentMethod-bank"
                                     : "bg-paymentMethod-ewallet"
                                     }`}
@@ -900,7 +899,7 @@ export default function BuySellPage() {
                           ))}
                         </div>
                       </TableCell>
-                      <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                      <TableCell className="p-2 lg:p-4 lg:pe-0 text-end align-middle row-start-3 whitespace-nowrap">
                         {Number(userId) !== ad.user.id && (
                           <Button
                             variant={ad.type === "buy" ? "destructive" : "secondary"}

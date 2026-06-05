@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { ModalHeaderRow } from "@/components/ui/modal-header-row"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import { ProfileAPI } from "@/services/api"
@@ -66,7 +68,8 @@ const FullPagePaymentSelection = ({
   onConfirm: (methods: string[]) => void
   onAddPaymentMethod: () => void
 }) => {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const isMobile = useIsMobile()
   const [localSelected, setLocalSelected] = useState<string[]>(selectedPaymentMethods)
   const [searchQuery, setSearchQuery] = useState("")
@@ -202,9 +205,9 @@ const FullPagePaymentSelection = ({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
-        <DrawerContent className="max-h-[90vh]">
-          <DrawerHeader className="pb-[10px]">
-            <DrawerTitle className="text-[20px] font-bold">{t("paymentMethod.title")}</DrawerTitle>
+        <DrawerContent dir={dir} className="max-h-[90vh]">
+          <DrawerHeader className="pb-[10px] text-start">
+            <DrawerTitle className="text-[20px] font-bold text-start">{t("paymentMethod.title")}</DrawerTitle>
           </DrawerHeader>
           {content}
         </DrawerContent>
@@ -214,19 +217,17 @@ const FullPagePaymentSelection = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
-        <DialogHeader className="relative mb-4">
-          <DialogTitle className="text-2xl font-extrabold mt-0">{t("paymentMethod.title")}</DialogTitle>
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="icon"
-            className="absolute right-[-16px] top-[-16px] p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12 pb-4"
-            aria-label="Close"
-          >
-            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
-          </Button>
-        </DialogHeader>
+      <DialogContent dir={dir} className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
+        <ModalHeaderRow
+          asDialog
+          title={t("paymentMethod.title")}
+          onClose={onClose}
+          titleClassName="text-2xl font-extrabold"
+          closeIconSrc="/icons/button-close.png"
+          closeIconSize={48}
+          closeButtonClassName="hover:bg-transparent hover:opacity-80 px-0 min-w-[48px]"
+          className="mb-4"
+        />
         {content}
       </DialogContent>
     </Dialog>
@@ -314,7 +315,7 @@ const PaymentSelectionContent = ({
                   <div className="flex-1">
                     <div className="flex items-center mb-[6px] gap-2">
                       <div
-                        className={`h-2 w-2 rounded-full mr-2 ${getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                        className={`h-2 w-2 rounded-full me-2 ${getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                           }`}
                       />
                       <div className="flex- flex-col">
@@ -347,7 +348,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">{t("paymentMethod.addPaymentMethod")}</span>
             </div>
           </div>
@@ -539,7 +540,7 @@ export default function PaymentDetailsForm({
                   <span className="text-left font-normal text-base text-black/[0.72]">
                     {getSelectedPaymentMethodsText()}
                   </span>
-                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ms-2" />
                 </Button>
               </div>
 

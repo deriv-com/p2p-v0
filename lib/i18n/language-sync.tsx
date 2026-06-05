@@ -3,48 +3,75 @@
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { useLanguageStore } from "@/stores/language-store"
-import { locales, defaultLocale, type Locale } from "./config"
+import {
+  defaultLocale,
+  isRtlLocale,
+  localeToBcp47,
+  normalizeLocaleParam,
+  type Locale,
+} from "./config"
+import { loadLocale } from "./translation-loader"
+
+function applyDocumentLocale(locale: Locale) {
+  document.documentElement.lang = localeToBcp47(locale)
+  document.documentElement.dir = isRtlLocale(locale) ? "rtl" : "ltr"
+}
+
+function resolveLangFromUrl(langParam: string | null): Locale | null {
+  if (!langParam) return null
+  return normalizeLocaleParam(langParam) ?? defaultLocale
+}
 
 export function LanguageSync() {
   const searchParams = useSearchParams()
+  const locale = useLanguageStore((state) => state.locale)
   const setLocale = useLanguageStore((state) => state.setLocale)
 
-  useEffect(() => {
+  const applyLocaleFromUrl = () => {
     const langParam = searchParams.get("lang")
+    if (!langParam) return false
+    const resolved = resolveLangFromUrl(langParam)
+    if (resolved) {
+      setLocale(resolved)
+    }
+    return true
+  }
 
-    if (langParam) {
-      const normalizedLang = langParam.toLowerCase()
-      if (locales.includes(normalizedLang as Locale)) {
-        setLocale(normalizedLang as Locale)
-      } else {
-        // Fallback to stored locale if URL param is invalid
-        const storedLocale = localStorage.getItem("language-storage")
-        if (storedLocale) {
-          try {
-            const parsed = JSON.parse(storedLocale)
-            if (parsed.state?.locale && locales.includes(parsed.state.locale)) {
-              setLocale(parsed.state.locale)
-            }
-          } catch {
-            setLocale(defaultLocale)
-          }
-        }
+  // `?lang=` from platform (e.g. zh-CN, zh-TW) wins over persisted preference.
+  useEffect(() => {
+    if (applyLocaleFromUrl()) return
+
+    const storedLocale = localStorage.getItem("language-storage")
+    if (!storedLocale) return
+
+    try {
+      const parsed = JSON.parse(storedLocale)
+      const stored = parsed.state?.locale ? normalizeLocaleParam(parsed.state.locale) : null
+      if (stored) {
+        setLocale(stored)
       }
-    } else {
-      // No lang param, use stored locale or default
-      const storedLocale = localStorage.getItem("language-storage")
-      if (storedLocale) {
-        try {
-          const parsed = JSON.parse(storedLocale)
-          if (parsed.state?.locale && locales.includes(parsed.state.locale)) {
-            setLocale(parsed.state.locale)
-          }
-        } catch {
-          setLocale(defaultLocale)
-        }
-      }
+    } catch {
+      setLocale(defaultLocale)
     }
   }, [searchParams, setLocale])
+
+  // Persist rehydration can run after the effect above and overwrite URL locale.
+  useEffect(() => {
+    const persistApi = useLanguageStore.persist
+    if (!persistApi?.onFinishHydration) return
+
+    return persistApi.onFinishHydration(() => {
+      applyLocaleFromUrl()
+    })
+  }, [searchParams, setLocale])
+
+  useEffect(() => {
+    applyDocumentLocale(locale)
+  }, [locale])
+
+  useEffect(() => {
+    void loadLocale(locale)
+  }, [locale])
 
   return null
 }

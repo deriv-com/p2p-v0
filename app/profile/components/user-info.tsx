@@ -52,7 +52,7 @@ export default function UserInfo({
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
             <div className="flex items-center text-white">
               <div className="flex items-center">
-                <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
+                <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="me-1" />
                 <span className="text-white opacity-[0.72]">
                   {recommendation ? recommendation : t("profile.notRecommendedYet")}
                 </span>
@@ -61,7 +61,7 @@ export default function UserInfo({
             <>
               <div className="mx-4 h-4 w-px bg-white opacity-[0.08]"></div>
               <div className="flex items-center">
-                <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
+                <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="me-1" />
                 <span className="text-white opacity-[0.72]">{rating ? rating : t("profile.notRatedYet")}</span>
               </div>
             </>

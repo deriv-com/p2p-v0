@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { formatAppDate } from "@/lib/format-date"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
@@ -45,7 +46,7 @@ function TimeRemainingDisplay({ expiresAt }) {
 }
 
 export default function OrdersPage() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const { track } = useTrackers()
   const router = useRouter()
   const { hideAlert, showAlert } = useAlertDialog()
@@ -150,14 +151,7 @@ export default function OrdersPage() {
     setShowPreviousOrders(false)
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    })
-  }
+  const formatDate = (dateString: string) => formatAppDate(new Date(dateString), locale)
 
   const navigateToOrderDetails = (orderId: string) => {
     router.push(`/orders/${orderId}`)
@@ -315,7 +309,14 @@ export default function OrdersPage() {
                 onClick={handleCheckPreviousOrders}
               >
                 {t("orders.checkPreviousOrders")}
-                <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
+                <Image
+                  src="/icons/chevron-right-white.png"
+                  width={10}
+                  height={24}
+                  className="ms-1 rtl:rotate-180"
+                  alt=""
+                  aria-hidden
+                />
               </Button>
             )}
           </div>
@@ -324,7 +325,7 @@ export default function OrdersPage() {
               <TemporaryBanAlert tempBanUntil={tempBanUntil} />
             </div>
           )}
-          <div className="my-4 self-end">
+          <div className="my-4 self-end rtl:self-start">
             {activeTab === "past" && !isLoading && hasPastOrders && (
               <DateFilter
                 value={dateFilter}
@@ -430,7 +431,7 @@ export default function OrdersPage() {
                           <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
                             {order.rating > 0 && (
                               <div className="flex">
-                                <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                                <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="me-1" />
                                 {Number(order.rating).toFixed(1)}
                               </div>
                             )}

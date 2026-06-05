@@ -14,7 +14,9 @@ import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/hooks/use-toast"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { PROFILE_TOOLBAR_ROW } from "@/lib/rtl"
 
 interface BlockedUser {
   nickname: string
@@ -22,7 +24,8 @@ interface BlockedUser {
 }
 
 export default function BlockedTab() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
@@ -113,22 +116,22 @@ export default function BlockedTab() {
   )
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" dir={dir}>
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4 mb-4">
+        <div className={PROFILE_TOOLBAR_ROW}>
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
               width={24}
               height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute start-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="h-14 pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none"
+              className="h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none"
               autoComplete="off"
             />
             {searchQuery && (
@@ -136,7 +139,7 @@ export default function BlockedTab() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
                 <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
               </Button>

@@ -41,13 +41,13 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
           : "border-grayscale-500"}`}
       >
         <Image src="/icons/global.svg" alt={t("adForm.visibilityEveryone")} width={32} height={32} />
-        <div className="text-left flex-1">
+        <div className="text-start flex-1">
           <div className="text-base mb-1 text-slate-1200">{t("adForm.visibilityEveryone")}</div>
           <div className="text-xs text-grayscale-text-muted">
             {t("adForm.visibilityEveryoneDesc")}
           </div>
         </div>
-        <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ml-4 h-6 w-6" />
+        <RadioGroupItem value="everyone" id="everyone" className="hidden mt-1 ms-4 h-6 w-6" />
       </Label>
 
       <Label
@@ -58,7 +58,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
             }`}
         >
           <Image src="/icons/closed-group.svg" alt={t("adForm.visibilityClosedGroup")} width={32} height={32} />
-          <div className="text-left flex-1">
+          <div className="text-start flex-1">
             <div className="text-base text-slate-1200 mb-1">{t("adForm.visibilityClosedGroup")}</div>
             <div className="text-xs text-grayscale-text-muted">
               {t("adForm.visibilityClosedGroupDesc")}{" "}
@@ -75,7 +75,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
               </Button>
             </div>
           </div>
-          <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ml-4 h-6 w-6" />
+          <RadioGroupItem value="closed-group" id="closed-group" className="hidden mt-1 ms-4 h-6 w-6" />
         </Label>
     </RadioGroup>
   )

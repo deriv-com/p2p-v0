@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
@@ -195,30 +196,30 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                         onClick={handleBack}
                         className="bg-grayscale-500 px-1 w-fit"
                     >
-                        <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+                        <BackArrowIcon alt="Back" width={24} height={24} />
                     </Button>
                     <div className="relative flex-1">
                         <Image
                             src="/icons/search-icon-custom.png"
-                            alt="Search"
+                            alt={t("common.search")}
                             width={20}
                             height={20}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
+                            className="absolute start-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
                         />
                         <Input
                             variant="tertiary"
-                            placeholder="Search advertiser's nickname"
+                            placeholder={t("market.searchAdvertiserNickname")}
                             value={searchInput}
                             onChange={(e) => handleSearchChange(e.target.value)}
                             autoFocus
-                            className="rounded-full pr-8"
+                            className="w-full min-w-0 rounded-full ps-10 pe-10"
                         />
                         {searchInput && (
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={handleClear}
-                                className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-transparent p-0"
+                                className="absolute end-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-transparent p-0"
                             >
                                 <Image src="/icons/clear-search-icon.png" alt="Clear" width={20} height={20} />
                             </Button>

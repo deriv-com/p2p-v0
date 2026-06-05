@@ -58,8 +58,8 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
-        <div className="md:hidden">
+      <header className="relative z-20 flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
+        <div className="flex items-center md:hidden">
           <MobileSidebarTrigger />
         </div>
 
@@ -89,19 +89,22 @@ export default function Header() {
             })}
           </nav>
         </div>
-        <div className="h-12 flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           {(pathname === "/" || pathname.startsWith("/advertiser")) && (
             <Button
               onClick={() => { track("ek_search_markets"); setUserIsSearchOpen(true) }}
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-full bg-[#ffffff0a]"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ffffff0a] p-0"
             >
               <Image src="/icons/search-icon-white.svg" alt="Search" width={24} height={24} />
             </Button>
           )}
           {userId && (
-            <div className="text-slate-600 hover:text-slate-700" onClick={() => track("ek_notifications_markets")}>
+            <div
+              className="flex h-8 w-8 shrink-0 items-center justify-center text-slate-600 hover:text-slate-700"
+              onClick={() => track("ek_notifications_markets")}
+            >
               <NovuNotifications />
             </div>
           )}

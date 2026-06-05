@@ -761,7 +761,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileSheet(null)}>
         <div
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
+          className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="p-4">
@@ -847,7 +847,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           <Button
             variant="ghost"
             size="default"
-            className="absolute top-4 right-4 min-w-0 px-0"
+            className="absolute top-4 end-4 min-w-0 px-0"
             onClick={() => setShowDesktopWalletPopup(null)}
             aria-label="Close"
           >
@@ -928,14 +928,14 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           <Button
             variant="ghost"
             size="default"
-            className="absolute top-4 right-4 min-w-0 px-0"
+            className="absolute top-4 end-4 min-w-0 px-0"
             onClick={() => setShowDesktopConfirmPopup(false)}
             aria-label="Close"
           >
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-start">
               {t("wallet.reviewAndConfirm")}
             </h2>
             <div className="mb-6">
@@ -1062,7 +1062,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <span className="text-base font-normal text-grayscale-text-muted">
                         {t("wallet.youllReceive")}
                       </span>
-                      <div className="text-right">
+                      <div className="text-end">
                         <div className="text-base font-normal text-slate-1200">
                           ≈
                           {formatAmountByCurrency(
@@ -1138,14 +1138,14 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
         <div
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
+          className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="pt-2 px-4 pb-8">
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-slate-1200 text-center text-[20px] font-extrabold mb-8 ml-4 ">
+            <h1 className="text-slate-1200 text-center text-[20px] font-extrabold mb-8 ms-4 ">
               {t("wallet.reviewAndConfirm")}
             </h1>
             <div className="mb-6 px-4">
@@ -1272,7 +1272,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <span className="text-base font-normal text-grayscale-text-muted">
                         {t("wallet.youllReceive")}
                       </span>
-                      <div className="text-right">
+                      <div className="text-end">
                         <div className="text-base font-normal text-slate-1200">
                           ≈
                           {formatAmountByCurrency(
@@ -1426,7 +1426,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="absolute top-4 left-6 flex flex-col items-start gap-1.5 w-10">
+              <div className="absolute top-4 start-6 flex flex-col items-start gap-1.5 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.from")}</div>
                 {sourceWalletData ? (
                   sourceWalletData.name.includes("P2P") ? (
@@ -1463,10 +1463,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     </div>
                   )
                 ) : (
-                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
+                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">{t("wallet.select")}</div>
                 )}
               </div>
-              <div className="flex-1 mt-6 ml-10">
+              <div className="flex-1 mt-6 ms-10 pe-8 text-start">
                 {sourceWalletData && (
                   <>
                     <div className="text-slate-1200 text-base font-bold">{sourceWalletData.name}</div>
@@ -1488,7 +1488,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="absolute top-4 left-6 flex flex-col items-start gap-1.5 w-10">
+              <div className="absolute top-4 start-6 flex flex-col items-start gap-1.5 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.to")}</div>
                 {destinationWalletData ? (
                   destinationWalletData.name.includes("P2P") ? (
@@ -1526,10 +1526,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     </div>
                   )
                 ) : (
-                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
+                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">{t("wallet.select")}</div>
                 )}
               </div>
-              <div className="flex-1 mt-6 ml-10">
+              <div className="flex-1 mt-6 ms-10 pe-8 text-start">
                 {destinationWalletData && (
                   <>
                     <div className="text-slate-1200 text-base font-bold">{destinationWalletData.name}</div>
@@ -1559,11 +1559,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   placeholder="0.00"
                   value={transferAmount || ""}
                   onChange={handleAmountChange}
-                  className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
+                  className="h-12 px-4 pe-16 border border-grayscale-200 rounded-lg text-base text-start placeholder:text-grayscale-text-placeholder appearance-none"
                   max={getSourceWalletBalance()}
                 />
                 {!showCurrencySwitcher && (
-                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
+                  <span className="absolute end-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
                     {selectedCurrency || "USD"}
                   </span>
                 )}
@@ -1682,7 +1682,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 </div>
                 <div className="flex justify-between items-start">
                   <span className="text-black/50 text-xs font-normal">{t("wallet.youllReceive")}:</span>
-                  <div className="text-right">
+                  <div className="text-end">
                     <div className="text-[#181C25] text-xs font-normal">
                       {transferFeeCalculation && exchangeRateData
                         ? `${formatAmountByCurrency(transferFeeCalculation.youllReceive, destinationWalletData?.currency || "")} ${destinationWalletData?.currency} (${countdown}s)`
@@ -1702,7 +1702,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </div>
             )}
 
-            <div className="hidden md:block absolute top-full right-0 mt-6">
+            <div className="hidden md:block absolute top-full end-0 mt-6">
               <Button
                 onClick={handleTransferClick}
                 disabled={

@@ -17,7 +17,10 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
+import { ALERT_INLINE_FLEX, ALERT_INLINE_TEXT } from "@/lib/rtl"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
@@ -145,7 +148,7 @@ const PaymentSelectionContent = ({
                 <div className="flex-1">
                   <div className="flex items-center mb-[6px] gap-2">
                     <div
-                      className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                      className={`h-2 w-2 rounded-full me-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                         }`}
                     />
                     <div className="flex- flex-col">
@@ -173,7 +176,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">
                 {t("paymentMethod.addPaymentMethod")}
               </span>
@@ -197,7 +200,8 @@ const PaymentSelectionContent = ({
 }
 
 export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
@@ -647,9 +651,9 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
               <div className="flex flex-col h-auto overflow-y-auto">
                 <div className="p-4 pb-0">
-                  <Alert variant="warning" className="flex items-start gap-3">
+                  <Alert variant="warning" className={ALERT_INLINE_FLEX} dir={dir}>
                     <InfoCircleIcon className="shrink-0 mt-0.5" />
-                    <div>
+                    <div className={ALERT_INLINE_TEXT}>
                       <h3 className="font-bold text-sm mb-1">
                         {t("order.secureTradeReminder.title")}
                       </h3>
@@ -667,7 +671,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                       onChange={handleAmountChange}
                       type="number"
                       className={cn(
-                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0",
+                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none py-0",
                         validationError && "border-red-500 focus:border-red-500 focus-visible:ring-0",
                       )}
                       step="any"
@@ -712,7 +716,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                           alt="Arrow"
                           width={24}
                           height={24}
-                          className="ml-2 transition-transform duration-200"
+                          className="ms-2 transition-transform duration-200"
                         />
                       </div>
                     </div>
@@ -720,46 +724,51 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 )}
 
                 <div className="mx-4 mt-4 text-sm">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
-                    <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.rateType")}</span>
+                    <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1 shrink-0">
                       {localAd.exchange_rate_type === "float" ? "Floating" : "Fixed"}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
-                    <span className="text-slate-1200">
-                      {localAd.effective_rate_display} {localAd.payment_currency}
-                      <span className="text-grayscale-text-muted"> /{localAd.account_currency}</span>
-                    </span>
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.exchangeRate")}</span>
+                    <ExchangeRateDisplay
+                      className="text-slate-1200 shrink-0"
+                      rate={localAd.effective_rate_display}
+                      paymentCurrency={localAd.payment_currency}
+                      accountCurrency={localAd.account_currency}
+                      formatRate={false}
+                    />
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.orderLimit")}</span>
-                    <span className="text-slate-1200">
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.orderLimit")}</span>
+                    <span className="text-slate-1200 shrink-0">
                       {minLimit} - {maxLimit} {localAd.account_currency}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.paymentTime")}</span>
-                    <span className="text-slate-1200">
-                      {localAd.order_expiry_period} {t("market.min")}
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.paymentTime")}</span>
+                    <span className="text-slate-1200 shrink-0">
+                      <bdi dir="ltr">{localAd.order_expiry_period}</bdi> {t("market.min")}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{isBuy ? t("order.buyer") : t("order.seller")}</span>
-                    <span className="text-slate-1200">{localAd.user?.nickname}</span>
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">
+                      {isBuy ? t("order.buyer") : t("order.seller")}
+                    </span>
+                    <span className="text-slate-1200 shrink-0">{localAd.user?.nickname}</span>
                   </div>
                 </div>
 
-                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
-                  <h3 className="text-grayscale-text-muted flex-1">
+                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex justify-between items-start gap-4">
+                  <h3 className="text-grayscale-text-muted shrink-0">
                     {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-4 justify-end shrink-0">
                     {localAd.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                          className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                             }`}
                         />
                         <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>
