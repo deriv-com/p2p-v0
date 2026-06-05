@@ -940,7 +940,11 @@
     "addedToClosedGroup": "Successfully added to closed group.",
     "removedFromClosedGroup": "Successfully removed from closed group.",
     "userBlocked": "{nickname} blocked.",
-    "userUnblocked": "{nickname} unblocked."
+    "userUnblocked": "{nickname} unblocked.",
+    "memberUnavailableTitle": "Member unavailable",
+    "closedGroupBlockedByAddMessage": "This trader has blocked you, so you can't add them to this group. Choose a different trader instead.",
+    "closedGroupBlockedByRemoveMessage": "This trader has blocked you, so you can't remove them from this group. Choose a different trader instead.",
+    "chooseAnotherTrader": "Choose another trader"
   },
   "kyc": {
     "accessP2PMessage": "To continue, complete the remaining steps:",

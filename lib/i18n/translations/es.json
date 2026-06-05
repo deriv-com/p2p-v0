@@ -629,7 +629,11 @@
     "addedToClosedGroup": "Añadido al grupo cerrado correctamente.",
     "removedFromClosedGroup": "Eliminado del grupo cerrado correctamente.",
     "userBlocked": "{nickname} bloqueado.",
-    "userUnblocked": "{nickname} desbloqueado."
+    "userUnblocked": "{nickname} desbloqueado.",
+    "memberUnavailableTitle": "Miembro no disponible",
+    "closedGroupBlockedByAddMessage": "Este trader te ha bloqueado, por lo que no puedes añadirlo a este grupo. Elige otro trader.",
+    "closedGroupBlockedByRemoveMessage": "Este trader te ha bloqueado, por lo que no puedes eliminarlo de este grupo. Elige otro trader.",
+    "chooseAnotherTrader": "Elegir otro trader"
   },
   "myAds": {
     "title": "Todos los anuncios",

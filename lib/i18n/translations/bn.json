@@ -806,7 +806,11 @@
     "addedToClosedGroup": "সফলভাবে ক্লোজড গ্রুপে যোগ করা হয়েছে।",
     "removedFromClosedGroup": "সফলভাবে ক্লোজড গ্রুপ থেকে সরানো হয়েছে।",
     "userBlocked": "{nickname} ব্লক করা হয়েছে।",
-    "userUnblocked": "{nickname} আনব্লক করা হয়েছে।"
+    "userUnblocked": "{nickname} আনব্লক করা হয়েছে।",
+    "memberUnavailableTitle": "সদস্য অনুপলব্ধ",
+    "closedGroupBlockedByAddMessage": "এই ট্রেডার আপনাকে ব্লক করেছেন, তাই আপনি তাদের এই গ্রুপে যোগ করতে পারবেন না। পরিবর্তে অন্য একজন ট্রেডার বেছে নিন।",
+    "closedGroupBlockedByRemoveMessage": "এই ট্রেডার আপনাকে ব্লক করেছেন, তাই আপনি তাদের এই গ্রুপ থেকে সরাতে পারবেন না। পরিবর্তে অন্য একজন ট্রেডার বেছে নিন।",
+    "chooseAnotherTrader": "অন্য একজন ট্রেডার বেছে নিন"
   },
   "kyc": {
     "accessP2PMessage": "P2P অ্যাক্সেস করতে, আপনার প্রোফাইল এবং যাচাইকরণ সম্পূর্ণ করুন।",

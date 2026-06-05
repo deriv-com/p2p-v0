@@ -693,7 +693,11 @@
     "unblockUser": "Odblokować {nickname}?",
     "blockDescription": "Ich ogłoszenia nie będą dla Ciebie widoczne, a oni nie będą mogli Ciebie znaleźć.",
     "blockedSuccessfully": "Użytkownik zablokowany pomyślnie.",
-    "unblockedSuccessfully": "Użytkownik odblokowany pomyślnie."
+    "unblockedSuccessfully": "Użytkownik odblokowany pomyślnie.",
+    "memberUnavailableTitle": "Członek niedostępny",
+    "closedGroupBlockedByAddMessage": "Ten trader zablokował Cię, więc nie możesz dodać go do tej grupy. Wybierz innego tradera.",
+    "closedGroupBlockedByRemoveMessage": "Ten trader zablokował Cię, więc nie możesz usunąć go z tej grupy. Wybierz innego tradera.",
+    "chooseAnotherTrader": "Wybierz innego tradera"
   },
   "p2pAnnouncement": {
     "whatsNew": {

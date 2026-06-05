@@ -88,7 +88,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               </Button>
             )}
           </div>
-          <div className="px-8 h-[20rem] overflow-y-auto">{config.content}</div>
+          <div className="px-8">{config.content}</div>
           {(config.type || config.cancelText) && (
             <div className="flex flex-col gap-2 px-8 py-4 border-t border-grayscale-500">
               {config.type && (
@@ -217,7 +217,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           <AlertDialogTitle></AlertDialogTitle>
           <AlertDialogContent
             className={cn(
-              "p-0",
+              "p-0 overflow-hidden",
               isKycOnboarding &&
                 "!w-[min(880px,95vw)] !max-w-[880px] !p-0 overflow-hidden rounded-3xl border-0",
               config.contentClassName,

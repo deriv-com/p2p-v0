@@ -827,7 +827,11 @@
     "noAdsDescription": "Dieser Inserent hat derzeit keine aktiven Anzeigen.",
     "loadingProfile": "Profil wird geladen...",
     "errorLoadingProfile": "Inserentenprofil konnte nicht geladen werden",
-    "tryAgain": "Erneut versuchen"
+    "tryAgain": "Erneut versuchen",
+    "memberUnavailableTitle": "Mitglied nicht verfügbar",
+    "closedGroupBlockedByAddMessage": "Dieser Händler hat Sie blockiert, daher können Sie ihn nicht zu dieser Gruppe hinzufügen. Wählen Sie stattdessen einen anderen Händler.",
+    "closedGroupBlockedByRemoveMessage": "Dieser Händler hat Sie blockiert, daher können Sie ihn nicht aus dieser Gruppe entfernen. Wählen Sie stattdessen einen anderen Händler.",
+    "chooseAnotherTrader": "Anderen Händler wählen"
   },
   "kyc": {
     "accessP2PMessage": "Um auf P2P zuzugreifen, vervollständigen Sie Ihr Profil und die Verifizierung.",

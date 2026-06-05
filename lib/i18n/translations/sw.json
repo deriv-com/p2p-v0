@@ -733,5 +733,11 @@
     "heroBenefitHigherLimits": "Higher limits",
     "heroBenefitFasterWithdrawals": "Faster withdrawals",
     "statusInReview": "In review"
+  },
+  "advertiser": {
+    "memberUnavailableTitle": "Mwanachama hapatikani",
+    "closedGroupBlockedByAddMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaongeza kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
+    "closedGroupBlockedByRemoveMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaondoa kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
+    "chooseAnotherTrader": "Chagua mfanyabiashara mwingine"
   }
 }

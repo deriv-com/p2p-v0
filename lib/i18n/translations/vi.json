@@ -863,7 +863,11 @@
     "addedToClosedGroup": "Đã thêm vào nhóm đóng thành công.",
     "removedFromClosedGroup": "Đã xóa khỏi nhóm đóng thành công.",
     "userBlocked": "Đã chặn {nickname}.",
-    "userUnblocked": "Đã bỏ chặn {nickname}."
+    "userUnblocked": "Đã bỏ chặn {nickname}.",
+    "memberUnavailableTitle": "Thành viên không khả dụng",
+    "closedGroupBlockedByAddMessage": "Nhà giao dịch này đã chặn bạn, vì vậy bạn không thể thêm họ vào nhóm này. Hãy chọn nhà giao dịch khác.",
+    "closedGroupBlockedByRemoveMessage": "Nhà giao dịch này đã chặn bạn, vì vậy bạn không thể xóa họ khỏi nhóm này. Hãy chọn nhà giao dịch khác.",
+    "chooseAnotherTrader": "Chọn nhà giao dịch khác"
   },
   "kyc": {
     "accessP2PMessage": "Để truy cập P2P, hoàn tất hồ sơ và xác minh của bạn.",

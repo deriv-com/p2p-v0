@@ -28,7 +28,7 @@ interface ClosedGroupTabProps {
 
 export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
-  const { hideAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
   const { toast } = useToast()
   const { userData } = useUserDataStore()
   const isDiamond = userData?.trade_band === "diamond"
@@ -55,6 +55,29 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     setSearchQuery(value)
   }, [])
 
+  const handleClosedGroupError = useCallback((errors: Array<{ code: string; message: string }> | undefined, isAdd: boolean) => {
+    const code = errors?.[0]?.code
+    if (code === "UserGroupMemberBlockedBy") {
+      showAlert({
+        title: t("advertiser.memberUnavailableTitle"),
+        description: isAdd
+          ? t("advertiser.closedGroupBlockedByAddMessage")
+          : t("advertiser.closedGroupBlockedByRemoveMessage"),
+        confirmText: t("advertiser.chooseAnotherTrader"),
+        cancelText: t("common.close"),
+        type: "warning",
+        onConfirm: hideAlert,
+        onCancel: hideAlert,
+      })
+    } else {
+      toast({
+        description: errors?.[0]?.message ?? t("common.error"),
+        className: "bg-red-600 text-white border-red-600 h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 3000,
+      })
+    }
+  }, [showAlert, hideAlert, toast, t])
+
   const showToast = useCallback((message: string) => {
     toast({
       description: (
@@ -75,13 +98,15 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       if (result.success) {
         await refetch()
         showToast(t("advertiser.removedFromClosedGroup"))
+      } else {
+        handleClosedGroupError(result.errors, false)
       }
     } catch (err) {
       console.error("Failed to remove all from closed group:", err)
     } finally {
       setIsRemoving(false)
     }
-  }, [refetch, t, showToast])
+  }, [refetch, t, showToast, handleClosedGroupError])
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
@@ -89,24 +114,24 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         return
       }
 
-      let result
-      if (group.is_group_member) {
-        result = await removeFromClosedGroup(group.user_id)
-      } else {
-        result = await addToClosedGroup(group.user_id)
-      }
+      const isAdd = !group.is_group_member
+      const result = isAdd
+        ? await addToClosedGroup(group.user_id)
+        : await removeFromClosedGroup(group.user_id)
 
       if (result.success) {
         await refetch()
-        showToast(group.is_group_member
-          ? t("advertiser.removedFromClosedGroup")
-          : t("advertiser.addedToClosedGroup")
+        showToast(isAdd
+          ? t("advertiser.addedToClosedGroup")
+          : t("advertiser.removedFromClosedGroup")
         )
+      } else {
+        handleClosedGroupError(result.errors, isAdd)
       }
     } catch (err) {
       console.error("Failed to update closed group membership:", err)
     }
-  }, [refetch, t, showToast])
+  }, [refetch, t, showToast, handleClosedGroupError])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="h-[72px] flex items-center justify-between gap-3">
@@ -182,7 +207,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         )}
       </div>)}
 
-      <div className="space-y-0">
+      <div className="space-y-0 h-[20rem] overflow-y-auto">
         {isLoading && isDiamond ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (

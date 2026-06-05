@@ -627,7 +627,11 @@
     "addedToClosedGroup": "Adicionado ao grupo fechado com sucesso.",
     "removedFromClosedGroup": "Removido do grupo fechado com sucesso.",
     "userBlocked": "{nickname} bloqueado.",
-    "userUnblocked": "{nickname} desbloqueado."
+    "userUnblocked": "{nickname} desbloqueado.",
+    "memberUnavailableTitle": "Membro indisponível",
+    "closedGroupBlockedByAddMessage": "Este trader bloqueou você, portanto não é possível adicioná-lo a este grupo. Escolha outro trader.",
+    "closedGroupBlockedByRemoveMessage": "Este trader bloqueou você, portanto não é possível removê-lo deste grupo. Escolha outro trader.",
+    "chooseAnotherTrader": "Escolher outro trader"
   },
   "errors": {
     "generic": "Algo deu errado. Por favor, tente novamente.",
