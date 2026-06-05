@@ -31,6 +31,9 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
   const { userData } = useUserDataStore()
   const isDiamond = userData?.trade_band === "diamond"
   const { data, isLoading, refetch } = useFavouriteUsers(isDiamond)
+  // Force empty list for non-diamond users even if React Query returns stale cached
+  // data (e.g. user downgraded mid-session). The enabled:false flag prevents new
+  // network requests; this override ensures the UI never renders cached results.
   const closedGroups: ClosedGroup[] = isDiamond ? (data?.pages.flat() ?? []) : []
   const [searchQuery, setSearchQuery] = useState("")
   const [isRemoving, setIsRemoving] = useState(false)
