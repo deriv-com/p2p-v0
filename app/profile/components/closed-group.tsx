@@ -175,7 +175,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
               </div>
             ))}
           </div>
-        ) : filteredClosedGroups.length > 0 ? (
+        ) : isDiamond && filteredClosedGroups.length > 0 ? (
           filteredClosedGroups.map((group) => <GroupCard key={group.user_id} group={group} />)
         ) : (
           <EmptyState
