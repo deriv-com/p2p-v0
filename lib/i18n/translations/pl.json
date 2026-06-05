@@ -35,7 +35,8 @@
       "title": "Zweryfikowane konto",
       "description": "Potwierdzenie poczty elektronicznej, telefonu, tożsamości i adresu jest zakończone. Pomaga to handlować z większą pewnością."
     },
-    "remove": "Usuń"
+    "remove": "Usuń",
+    "somethingWentWrong": "Coś poszło nie tak"
   },
   "navigation": {
     "market": "Rynek",

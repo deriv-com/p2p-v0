@@ -70,10 +70,13 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         onCancel: hideAlert,
       })
     } else {
-      toast({
-        description: errors?.[0]?.message ?? t("common.error"),
-        className: "bg-red-600 text-white border-red-600 h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 3000,
+      const errorCode = errors?.[0]?.code ?? "unknown"
+      showAlert({
+        title: t("common.somethingWentWrong"),
+        description: t("nps.errorMessage", { errorCode }),
+        confirmText: t("common.gotIt"),
+        type: "warning",
+        onConfirm: hideAlert,
       })
     }
   }, [showAlert, hideAlert, toast, t])

@@ -30,7 +30,8 @@
       "title": "Cuenta totalmente verificada",
       "description": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
     },
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "somethingWentWrong": "Algo salió mal"
   },
   "navigation": {
     "market": "Mercado",

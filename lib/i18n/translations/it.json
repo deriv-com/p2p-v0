@@ -30,7 +30,8 @@
       "title": "Account completamente verificato",
       "description": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
     },
-    "remove": "Rimuovi"
+    "remove": "Rimuovi",
+    "somethingWentWrong": "Qualcosa è andato storto"
   },
   "navigation": {
     "market": "Mercato",

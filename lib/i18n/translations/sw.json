@@ -35,7 +35,8 @@
       "title": "Akaunti iliyothibitishwa",
       "description": "Barua pepe, simu, kitambulisho, na ukaguzi wa anwani umekamilika. Hii inakusaidia kuuza na ujasiri zaidi."
     },
-    "remove": "Ondoa"
+    "remove": "Ondoa",
+    "somethingWentWrong": "Kuna tatizo limetokea"
   },
   "navigation": {
     "market": "Soko",

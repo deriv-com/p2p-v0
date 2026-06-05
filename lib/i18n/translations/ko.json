@@ -35,7 +35,8 @@
       "title": "인증된 계정",
       "description": "이메일, 전화, 신원, 주소 확인이 완료되었습니다. 더 안심하고 거래할 수 있습니다."
     },
-    "remove": "제거"
+    "remove": "제거",
+    "somethingWentWrong": "문제가 발생했습니다"
   },
   "navigation": {
     "market": "마켓",

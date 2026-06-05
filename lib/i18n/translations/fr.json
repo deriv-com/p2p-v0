@@ -30,7 +30,8 @@
       "title": "Compte entièrement vérifié",
       "description": "Cet utilisateur a complété toutes les étapes de vérification requises, y compris l'email, le numéro de téléphone, l'identité (KYC) et la vérification d'adresse. Vous pouvez trader en toute confiance en sachant que ce compte est vérifié."
     },
-    "remove": "Supprimer"
+    "remove": "Supprimer",
+    "somethingWentWrong": "Quelque chose s'est mal passé"
   },
   "navigation": {
     "market": "Marché",

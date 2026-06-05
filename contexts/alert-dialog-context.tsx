@@ -118,18 +118,20 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           )}
         </div>
         {config.description && <div className="text-grayscale-100">{config.description}</div>}
-        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-6">
-          {config.type && (
-            <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
-              {config.confirmText || "Continue"}
-            </Button>
-          )}
-          {config.cancelText && (
-            <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
-              {config.cancelText}
-            </Button>
-          )}
-        </div>)}
+        {(config.cancelText || config.type) && (
+          <div className="flex flex-col gap-2 mt-6">
+            {config.type && (
+              <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+                {config.confirmText || "Continue"}
+              </Button>
+            )}
+            {config.cancelText && (
+              <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+                {config.cancelText}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     )
   }
