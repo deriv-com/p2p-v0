@@ -34,7 +34,9 @@
     "verifiedBadge": {
       "title": "Zweryfikowane konto",
       "description": "Potwierdzenie poczty elektronicznej, telefonu, tożsamości i adresu jest zakończone. Pomaga to handlować z większą pewnością."
-    }
+    },
+    "remove": "Usuń",
+    "somethingWentWrong": "Coś poszło nie tak"
   },
   "navigation": {
     "market": "Rynek",
@@ -502,7 +504,9 @@
     "settings": "Ustawienia",
     "support": "Wsparcie",
     "addFromYourFollowing": "Dodaj z Twoich obserwowanych",
-    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond."
+    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond.",
+    "noFollowedUsersYet": "Brak obserwowanych użytkowników",
+    "noFollowedUsersDescription": "Do zamkniętej grupy możesz dodawać tylko obserwowanych użytkowników. Przejdź do profilu użytkownika i kliknij Obserwuj, aby go zobaczyć tutaj."
   },
   "wallet": {
     "title": "Portfel",
@@ -692,7 +696,11 @@
     "unblockUser": "Odblokować {nickname}?",
     "blockDescription": "Ich ogłoszenia nie będą dla Ciebie widoczne, a oni nie będą mogli Ciebie znaleźć.",
     "blockedSuccessfully": "Użytkownik zablokowany pomyślnie.",
-    "unblockedSuccessfully": "Użytkownik odblokowany pomyślnie."
+    "unblockedSuccessfully": "Użytkownik odblokowany pomyślnie.",
+    "memberUnavailableTitle": "Członek niedostępny",
+    "closedGroupBlockedByAddMessage": "Ten trader zablokował Cię, więc nie możesz dodać go do tej grupy. Wybierz innego tradera.",
+    "closedGroupBlockedByRemoveMessage": "Ten trader zablokował Cię, więc nie możesz usunąć go z tej grupy. Wybierz innego tradera.",
+    "chooseAnotherTrader": "Wybierz innego tradera"
   },
   "p2pAnnouncement": {
     "whatsNew": {

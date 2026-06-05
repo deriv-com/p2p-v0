@@ -29,7 +29,9 @@
     "verifiedBadge": {
       "title": "Cuenta totalmente verificada",
       "description": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
-    }
+    },
+    "remove": "Eliminar",
+    "somethingWentWrong": "Algo salió mal"
   },
   "navigation": {
     "market": "Mercado",
@@ -499,7 +501,9 @@
     "aboutYou": "Acerca de ti",
     "settings": "Configuración",
     "support": "Soporte",
-    "closedGroupDiamondOnlyWarning": "Debes estar en el nivel Diamond para gestionar un grupo cerrado."
+    "closedGroupDiamondOnlyWarning": "Debes estar en el nivel Diamond para gestionar un grupo cerrado.",
+    "noFollowedUsersYet": "Aún no hay usuarios seguidos",
+    "noFollowedUsersDescription": "Solo puedes añadir usuarios que sigues a tu grupo cerrado. Ve al perfil de un usuario y toca Seguir para verlos aquí."
   },
   "wallet": {
     "title": "Billetera",
@@ -628,7 +632,11 @@
     "addedToClosedGroup": "Añadido al grupo cerrado correctamente.",
     "removedFromClosedGroup": "Eliminado del grupo cerrado correctamente.",
     "userBlocked": "{nickname} bloqueado.",
-    "userUnblocked": "{nickname} desbloqueado."
+    "userUnblocked": "{nickname} desbloqueado.",
+    "memberUnavailableTitle": "Miembro no disponible",
+    "closedGroupBlockedByAddMessage": "Este trader te ha bloqueado, por lo que no puedes añadirlo a este grupo. Elige otro trader.",
+    "closedGroupBlockedByRemoveMessage": "Este trader te ha bloqueado, por lo que no puedes eliminarlo de este grupo. Elige otro trader.",
+    "chooseAnotherTrader": "Elegir otro trader"
   },
   "myAds": {
     "title": "Todos los anuncios",

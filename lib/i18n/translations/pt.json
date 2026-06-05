@@ -29,7 +29,9 @@
     "verifiedBadge": {
       "title": "Conta totalmente verificada",
       "description": "Este usuário concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço. Você pode negociar com confiança sabendo que esta conta está verificada."
-    }
+    },
+    "remove": "Remover",
+    "somethingWentWrong": "Algo deu errado"
   },
   "navigation": {
     "market": "Mercado",
@@ -497,7 +499,9 @@
     "aboutYou": "Sobre você",
     "settings": "Configurações",
     "support": "Suporte",
-    "closedGroupDiamondOnlyWarning": "Você precisa estar no nível Diamond para gerenciar um grupo fechado."
+    "closedGroupDiamondOnlyWarning": "Você precisa estar no nível Diamond para gerenciar um grupo fechado.",
+    "noFollowedUsersYet": "Nenhum usuário seguido ainda",
+    "noFollowedUsersDescription": "Você só pode adicionar usuários que segue ao seu grupo fechado. Acesse o perfil de um usuário e toque em Seguir para vê-lo aqui."
   },
   "wallet": {
     "title": "Carteira",
@@ -626,7 +630,11 @@
     "addedToClosedGroup": "Adicionado ao grupo fechado com sucesso.",
     "removedFromClosedGroup": "Removido do grupo fechado com sucesso.",
     "userBlocked": "{nickname} bloqueado.",
-    "userUnblocked": "{nickname} desbloqueado."
+    "userUnblocked": "{nickname} desbloqueado.",
+    "memberUnavailableTitle": "Membro indisponível",
+    "closedGroupBlockedByAddMessage": "Este trader bloqueou você, portanto não é possível adicioná-lo a este grupo. Escolha outro trader.",
+    "closedGroupBlockedByRemoveMessage": "Este trader bloqueou você, portanto não é possível removê-lo deste grupo. Escolha outro trader.",
+    "chooseAnotherTrader": "Escolher outro trader"
   },
   "errors": {
     "generic": "Algo deu errado. Por favor, tente novamente.",

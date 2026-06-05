@@ -70,6 +70,7 @@ function KycOnboardingSheet({ route, onClose }: KycOnboardingSheetProps) {
         title: t("kyc.phoneNumber"),
         icon: "/icons/pnv.svg",
         completed: isPhoneCompleted,
+        status: isPhoneCompleted ? "verified" : "none",
         link: getHomeUrl(isV1Signup, "onboardingPNV", isWalletAccount, fromParam, isTncAccepted),
       },
       {

@@ -29,7 +29,9 @@
     "verifiedBadge": {
       "title": "Vollständig verifiziertes Konto",
       "description": "Dieser Benutzer hat alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung. Sie können mit Vertrauen handeln, da dieses Konto verifiziert ist."
-    }
+    },
+    "remove": "Entfernen",
+    "somethingWentWrong": "Etwas ist schiefgelaufen"
   },
   "navigation": {
     "market": "Markt",
@@ -461,7 +463,9 @@
     "aboutYou": "Über Sie",
     "settings": "Einstellungen",
     "support": "Unterstützung",
-    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten."
+    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten.",
+    "noFollowedUsersYet": "Noch keine gefolgten Nutzer",
+    "noFollowedUsersDescription": "Sie können nur Nutzer, denen Sie folgen, zu Ihrer geschlossenen Gruppe hinzufügen. Gehen Sie zum Profil eines Nutzers und tippen Sie auf \"Folgen\"."
   },
   "wallet": {
     "title": "Wallet",
@@ -826,7 +830,11 @@
     "noAdsDescription": "Dieser Inserent hat derzeit keine aktiven Anzeigen.",
     "loadingProfile": "Profil wird geladen...",
     "errorLoadingProfile": "Inserentenprofil konnte nicht geladen werden",
-    "tryAgain": "Erneut versuchen"
+    "tryAgain": "Erneut versuchen",
+    "memberUnavailableTitle": "Mitglied nicht verfügbar",
+    "closedGroupBlockedByAddMessage": "Dieser Händler hat Sie blockiert, daher können Sie ihn nicht zu dieser Gruppe hinzufügen. Wählen Sie stattdessen einen anderen Händler.",
+    "closedGroupBlockedByRemoveMessage": "Dieser Händler hat Sie blockiert, daher können Sie ihn nicht aus dieser Gruppe entfernen. Wählen Sie stattdessen einen anderen Händler.",
+    "chooseAnotherTrader": "Anderen Händler wählen"
   },
   "kyc": {
     "accessP2PMessage": "Um auf P2P zuzugreifen, vervollständigen Sie Ihr Profil und die Verifizierung.",

@@ -29,7 +29,9 @@
     "verifiedBadge": {
       "title": "Compte entièrement vérifié",
       "description": "Cet utilisateur a complété toutes les étapes de vérification requises, y compris l'email, le numéro de téléphone, l'identité (KYC) et la vérification d'adresse. Vous pouvez trader en toute confiance en sachant que ce compte est vérifié."
-    }
+    },
+    "remove": "Supprimer",
+    "somethingWentWrong": "Quelque chose s'est mal passé"
   },
   "navigation": {
     "market": "Marché",
@@ -495,7 +497,9 @@
     "validationSymbolsOnly": "Seuls les lettres, chiffres, espaces et symboles -+.,'#@():; sont autorisés",
     "fieldRequired": "{field} est obligatoire",
     "enterField": "Entrez {field}",
-    "tryAgain": "Réessayer"
+    "tryAgain": "Réessayer",
+    "noFollowedUsersYet": "Aucun utilisateur suivi pour l'instant",
+    "noFollowedUsersDescription": "Vous ne pouvez ajouter à votre groupe fermé que les utilisateurs que vous suivez. Accédez au profil d'un utilisateur et appuyez sur Suivre pour les voir ici."
   },
   "wallet": {
     "title": "Portefeuille",
@@ -835,7 +839,11 @@
     "addedToClosedGroup": "Ajouté avec succès au groupe fermé.",
     "removedFromClosedGroup": "Retiré avec succès du groupe fermé.",
     "userBlocked": "{nickname} bloqué.",
-    "userUnblocked": "{nickname} débloqué."
+    "userUnblocked": "{nickname} débloqué.",
+    "memberUnavailableTitle": "Membre indisponible",
+    "closedGroupBlockedByAddMessage": "Ce trader vous a bloqué, vous ne pouvez donc pas l'ajouter à ce groupe. Choisissez un autre trader.",
+    "closedGroupBlockedByRemoveMessage": "Ce trader vous a bloqué, vous ne pouvez donc pas le retirer de ce groupe. Choisissez un autre trader.",
+    "chooseAnotherTrader": "Choisir un autre trader"
   },
   "kyc": {
     "title": "Vérification d'identité",

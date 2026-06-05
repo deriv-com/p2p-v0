@@ -29,7 +29,9 @@
     "verifiedBadge": {
       "title": "Account completamente verificato",
       "description": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
-    }
+    },
+    "remove": "Rimuovi",
+    "somethingWentWrong": "Qualcosa è andato storto"
   },
   "navigation": {
     "market": "Mercato",
@@ -471,7 +473,9 @@
     "aboutYou": "Su di te",
     "settings": "Impostazioni",
     "support": "Supporto",
-    "closedGroupDiamondOnlyWarning": "Devi essere nel livello Diamond per gestire un gruppo chiuso."
+    "closedGroupDiamondOnlyWarning": "Devi essere nel livello Diamond per gestire un gruppo chiuso.",
+    "noFollowedUsersYet": "Nessun utente seguito ancora",
+    "noFollowedUsersDescription": "Puoi aggiungere al tuo gruppo chiuso solo gli utenti che segui. Vai al profilo di un utente e tocca Segui per vederli qui."
   },
   "wallet": {
     "title": "Portafoglio",
@@ -809,7 +813,11 @@
     "addedToClosedGroup": "Aggiunto con successo al gruppo chiuso.",
     "removedFromClosedGroup": "Rimosso con successo dal gruppo chiuso.",
     "userBlocked": "{nickname} bloccato.",
-    "userUnblocked": "{nickname} sbloccato."
+    "userUnblocked": "{nickname} sbloccato.",
+    "memberUnavailableTitle": "Membro non disponibile",
+    "closedGroupBlockedByAddMessage": "Questo trader ti ha bloccato, quindi non puoi aggiungerlo a questo gruppo. Scegli un altro trader.",
+    "closedGroupBlockedByRemoveMessage": "Questo trader ti ha bloccato, quindi non puoi rimuoverlo da questo gruppo. Scegli un altro trader.",
+    "chooseAnotherTrader": "Scegli un altro trader"
   },
   "kyc": {
     "title": "Verifica dell'identità",

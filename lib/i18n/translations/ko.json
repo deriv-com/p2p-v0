@@ -34,7 +34,9 @@
     "verifiedBadge": {
       "title": "인증된 계정",
       "description": "이메일, 전화, 신원, 주소 확인이 완료되었습니다. 더 안심하고 거래할 수 있습니다."
-    }
+    },
+    "remove": "제거",
+    "somethingWentWrong": "문제가 발생했습니다"
   },
   "navigation": {
     "market": "마켓",
@@ -499,7 +501,9 @@
     "settings": "설정",
     "support": "지원",
     "addFromYourFollowing": "팔로잉 중에서 추가",
-    "closedGroupDiamondOnlyWarning": "폐쇄 그룹을 관리하려면 다이아몬드 등급이어야 합니다."
+    "closedGroupDiamondOnlyWarning": "폐쇄 그룹을 관리하려면 다이아몬드 등급이어야 합니다.",
+    "noFollowedUsersYet": "아직 팔로우한 사용자 없음",
+    "noFollowedUsersDescription": "팔로우하는 사용자만 폐쇄 그룹에 추가할 수 있습니다. 사용자의 프로필로 이동하여 팔로우를 탭하면 여기에 표시됩니다."
   },
   "wallet": {
     "title": "지갑",
@@ -770,5 +774,11 @@
     "heroBenefitHigherLimits": "Higher limits",
     "heroBenefitFasterWithdrawals": "Faster withdrawals",
     "statusInReview": "In review"
+  },
+  "advertiser": {
+    "memberUnavailableTitle": "회원 이용 불가",
+    "closedGroupBlockedByAddMessage": "이 트레이더가 회원님을 차단했으므로 그룹에 추가할 수 없습니다. 다른 트레이더를 선택하세요.",
+    "closedGroupBlockedByRemoveMessage": "이 트레이더가 회원님을 차단했으므로 그룹에서 제거할 수 없습니다. 다른 트레이더를 선택하세요.",
+    "chooseAnotherTrader": "다른 트레이더 선택"
   }
 }
