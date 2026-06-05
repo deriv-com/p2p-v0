@@ -489,7 +489,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
-                    {ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
+                    {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
                     {hasVisibilityStatus && (
                       <Button
                         variant="ghost"

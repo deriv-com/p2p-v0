@@ -41,7 +41,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         {ad.user.trade_band && (
                             <TradeBandBadge tradeBand={ad.user.trade_band} showLearnMore={true} size={18} />
                         )}
-                        {ad.is_private && (
+                        {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && ad.is_private && (
                             <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} className="cursor-pointer mr-1" />
                         )}
                         {ad.user?.is_favourite && (

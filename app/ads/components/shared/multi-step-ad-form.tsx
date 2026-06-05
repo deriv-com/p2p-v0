@@ -695,7 +695,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const isDiamond = userData.trade_band === "diamond"
   const initialIsPrivate = originalEditSnapshot?.isPrivate ?? false
   const isDowngradedPrivate = mode === "edit" && initialIsPrivate && !isDiamond
-  const showVisibility = isDiamond || isDowngradedPrivate
+  const showVisibility = process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && (isDiamond || isDowngradedPrivate)
   const mustSwitchEveryone = isDowngradedPrivate && adVisibility === "closed-group"
 
   const isButtonDisabled =

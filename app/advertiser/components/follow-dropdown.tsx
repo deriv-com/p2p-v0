@@ -37,7 +37,7 @@ export default function FollowDropdown({
   const isMobile = useIsMobile()
   const userData = useUserDataStore((state) => state.userData)
   const { t } = useTranslations()
-  const isClosedGroupEnabled = userData?.trade_band === "diamond"
+  const isClosedGroupEnabled = process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && userData?.trade_band === "diamond"
 
   const handleUnfollow = () => {
     onUnfollow()

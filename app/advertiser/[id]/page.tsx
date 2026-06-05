@@ -500,7 +500,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           size={18}
                         />
                       )}
-                      {isGroupMember &&
+                      {process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1" && isGroupMember &&
                         <ClosedGroupBadge />
                       }
                     </div>
