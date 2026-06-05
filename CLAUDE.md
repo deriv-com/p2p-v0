@@ -66,15 +66,6 @@ pnpm test          # jest (if configured in scripts)
 npx tsc --noEmit   # typecheck
 ```
 
-## pnpm lockfiles (agents — do not touch)
-
-**Never edit or commit changes to `pnpm-lock.yaml` or `pnpm-workspace.yaml` unless `package.json` (or another manifest) intentionally changed** — e.g. adding/removing/updating a dependency.
-
-- Do **not** run `pnpm install` only to verify builds/tests/lint if it will rewrite the lockfile.
-- Prefer `pnpm dev`, `pnpm lint`, `npx tsc --noEmit`, `pnpm test` without reinstalling.
-- If a hook or install accidentally modified lockfiles, **revert** them before commit (`git checkout -- pnpm-lock.yaml pnpm-workspace.yaml`).
-- Only update lockfiles in the same PR that changes `package.json`, and only because that dependency change requires it.
-
 ## Key Patterns
 
 ### State split

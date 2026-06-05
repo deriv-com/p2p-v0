@@ -4,7 +4,7 @@ export default function OrderChatSkeleton() {
   return (
     <div className="flex flex-col h-full overflow-auto">
       <div className="flex items-center p-4 border-b">
-        <Skeleton className="w-10 h-10 rounded-full me-3" />
+        <Skeleton className="w-10 h-10 rounded-full mr-3" />
         <div className="flex-1 space-y-2">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-3 w-20" />
@@ -32,7 +32,7 @@ export default function OrderChatSkeleton() {
           <div className="flex justify-end">
             <div className="max-w-[80%] space-y-2">
               <Skeleton className="h-16 w-48" />
-              <Skeleton className="h-3 w-16 ms-auto" />
+              <Skeleton className="h-3 w-16 ml-auto" />
             </div>
           </div>
 
@@ -46,7 +46,7 @@ export default function OrderChatSkeleton() {
           <div className="flex justify-end">
             <div className="max-w-[80%] space-y-2">
               <Skeleton className="h-12 w-40" />
-              <Skeleton className="h-3 w-16 ms-auto" />
+              <Skeleton className="h-3 w-16 ml-auto" />
             </div>
           </div>
         </div>

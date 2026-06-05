@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import EmptyState from "@/components/empty-state"
 import { cn } from "@/lib/utils"
-import { CHECKBOX_LABEL_ROW } from "@/lib/rtl"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useTrackers } from "@/analytics/useTrackers"
 
@@ -165,15 +164,15 @@ export default function PaymentMethodsFilter({
           <h4 className="text-grayscale-text-muted text-sm">{getGroupTitle(type)}</h4>
           <div className="flex flex-col gap-3">
             {methods.map((method) => (
-              <div key={method.method} className={CHECKBOX_LABEL_ROW}>
+              <div key={method.method} className="flex items-center space-x-3">
                 <Checkbox
                   id={method.method}
                   checked={isAllSelected ? false : tempSelectedMethods.includes(method.method)}
                   onCheckedChange={() => handleMethodToggle(method.method)}
-                  className="shrink-0 data-[state=checked]:bg-black"
+                  className="data-[state=checked]:bg-black "
                   disabled={isLoading}
                 />
-                <label htmlFor={method.method} className="flex-1 min-w-0 cursor-pointer text-start text-sm text-grayscale-600">
+                <label htmlFor={method.method} className="text-sm text-grayscale-600 cursor-pointer flex-1">
                   {method.display_name}
                 </label>
               </div>
@@ -191,13 +190,13 @@ export default function PaymentMethodsFilter({
           alt="Search"
           width={24}
           height={24}
-          className="absolute start-3 top-1/2 transform -translate-y-1/2"
+          className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
           placeholder={t("paymentMethod.search")}
           value={searchQuery}
           onChange={handleSearchChange}
-          className="h-14 rounded-lg border-0 bg-grayscale-500 text-sm font-normal text-start placeholder:text-grayscale-text-placeholder ps-10 pe-10 focus:border-0 md:h-8"
+          className="text-sm font-normal placeholder:text-grayscale-text-placeholder pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -206,7 +205,7 @@ export default function PaymentMethodsFilter({
             variant="ghost"
             size="sm"
             onClick={() => setSearchQuery("")}
-            className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
             <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
           </Button>
@@ -215,7 +214,7 @@ export default function PaymentMethodsFilter({
 
       <div ref={scrollContainerRef} className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
         {filteredPaymentMethods.length > 0 && (
-          <div className={cn(CHECKBOX_LABEL_ROW, "mb-4")}>
+          <div className="flex items-center space-x-3 mb-4">
             <Checkbox
               id="select-all"
               checked={isAllSelected}
@@ -223,10 +222,10 @@ export default function PaymentMethodsFilter({
                 if (el) el.indeterminate = isIndeterminate
               }}
               onCheckedChange={handleSelectAll}
-              className="shrink-0 data-[state=checked]:bg-black"
+              className="data-[state=checked]:bg-black "
               disabled={isLoading || filteredPaymentMethods.length === 0}
             />
-            <label htmlFor="select-all" className="flex-1 min-w-0 cursor-pointer text-start text-sm text-slate-1200">
+            <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
               {t("paymentMethod.allPaymentMethod")}
             </label>
           </div>

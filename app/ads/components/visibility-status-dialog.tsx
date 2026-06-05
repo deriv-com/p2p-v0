@@ -1,11 +1,10 @@
 "use client"
 
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import Image from "next/image"
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { ModalHeaderRow } from "@/components/ui/modal-header-row"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -77,8 +76,7 @@ export function VisibilityStatusDialog({
   reasons,
 }: VisibilityStatusDialogProps) {
   const isMobile = useIsMobile()
-  const { t, locale } = useTranslations()
-  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
+  const { t } = useTranslations()
   const router = useRouter()
   const { track } = useTrackers()
 
@@ -150,13 +148,13 @@ export function VisibilityStatusDialog({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent dir={dir}>
-          <DrawerHeader className="text-start">
-            <DrawerTitle className="font-bold text-2xl text-slate-1200 text-start">
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle className="font-bold text-2xl text-slate-1200 text-left">
               {t("myAds.visibilityStatus")}
             </DrawerTitle>
           </DrawerHeader>
-          <div className="px-4 pb-6 text-start">{content}</div>
+          <div className="px-4 pb-6">{content}</div>
         </DrawerContent>
       </Drawer>
     )
@@ -164,9 +162,16 @@ export function VisibilityStatusDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent dir={dir} className="sm:max-w-md sm:rounded-[32px] p-6">
-        <ModalHeaderRow asDialog title={t("myAds.visibilityStatus")} className="mb-4" />
-        <div className="text-start">{content}</div>
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
+        <DialogHeader>
+          <DialogTitle className="font-bold text-2xl text-slate-1200">{t("myAds.visibilityStatus")}</DialogTitle>
+          <DialogClose> 
+            <Button variant="ghost" className="bg-slate-75 min-w-[48px] px-0 absolute right-[32px] top-4">
+              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+            </Button>
+          </DialogClose>
+        </DialogHeader>
+        {content}
       </DialogContent>
     </Dialog>
   )

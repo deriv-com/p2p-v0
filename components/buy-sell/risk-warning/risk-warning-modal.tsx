@@ -4,7 +4,6 @@ import { CircleAlert, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog"
-import { isRtlLocale } from "@/lib/i18n/config"
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -30,8 +29,7 @@ export default function RiskWarningModal({
   onClose,
 }: RiskWarningModalProps) {
   const isMobile = useIsMobile()
-  const { t, locale } = useTranslations()
-  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
+  const { t } = useTranslations()
 
   if (!isOpen) return null
 
@@ -116,8 +114,8 @@ export default function RiskWarningModal({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DrawerContent dir={dir} className="px-6 pb-8">
-          <DrawerTitle className="my-4 text-2xl font-bold text-start">{title}</DrawerTitle>
+        <DrawerContent className="px-6 pb-8">
+          <DrawerTitle className="text-2xl font-bold my-4">{title}</DrawerTitle>
           {bodyContent}
         </DrawerContent>
       </Drawer>
@@ -126,16 +124,16 @@ export default function RiskWarningModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent dir={dir} className="p-8 sm:rounded-2xl">
-        <div className="mb-2 flex items-start justify-between gap-4">
-          <DialogTitle className="flex-1 text-start text-2xl font-bold">{title}</DialogTitle>
-          <DialogClose
-            aria-label={t("market.riskWarning.goBack")}
-            className="shrink-0 rounded-full p-2 hover:bg-slate-100 focus:outline-none focus-visible:ring-2"
-          >
-            <X size={20} />
-          </DialogClose>
-        </div>
+      <DialogContent className="p-8 sm:rounded-2xl">
+        <DialogClose
+          aria-label={t("market.riskWarning.goBack")}
+          className="absolute right-4 top-4 rounded-full p-2 hover:bg-slate-100 focus:outline-none focus-visible:ring-2"
+        >
+          <X size={20} />
+        </DialogClose>
+        <DialogTitle className="text-2xl font-bold mb-2 pr-10">
+          {title}
+        </DialogTitle>
         {bodyContent}
       </DialogContent>
     </Dialog>

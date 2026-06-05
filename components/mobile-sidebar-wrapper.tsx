@@ -34,9 +34,11 @@ export function MobileSidebarTrigger() {
   return (
     <Link
       href="/profile"
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ffffff0a]"
+      className="h-8 w-8 text-center max-w-full py-2"
     >
-      <Image src="/icons/profile-icon-white.svg" width={24} height={24} alt="Profile" />
+      <div className="h-8 w-8 flex items-center justify-center flex-shrink-0 rounded-full bg-[#ffffff0a]">
+        <Image src="/icons/profile-icon-white.svg" width={24} height={24} alt="Profile" />
+      </div>
     </Link>
   )
 }

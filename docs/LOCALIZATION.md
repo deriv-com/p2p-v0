@@ -1,80 +1,191 @@
 # Localization Guide
 
-P2P web supports **18 locales**. English ships in the main bundle; other languages load on demand when selected.
+This P2P application now supports multiple languages: English, Spanish, and Italian.
 
 ## Architecture
 
-- **Zustand** (`stores/language-store.ts`) — persisted locale preference
-- **`LanguageSync`** — reads `?lang=`, restores storage, sets `document.lang` / `document.dir`, triggers locale chunk load
-- **`useTranslations`** — `t("dotted.key", params?)` with English fallback for missing keys
-- **`translation-loader.ts`** — dynamic `import()` per locale JSON + in-memory cache
-- **JSON files** — `lib/i18n/translations/{locale}.json`
+The localization system is built using:
+- **Zustand** for state management (language preference)
+- **Custom translation hook** (`useTranslations`) for accessing translations
+- **JSON translation files** for each supported language
 
-## Supported locales
+## Supported Languages
 
-Defined in `lib/i18n/config.ts`: `en`, `es`, `it`, `pt`, `fr`, `ru`, `vi`, `de`, `bn`, `pl`, `ko`, `sw`, `ar`, `mn`, `si`, `ta`, `zh`, `zh_TW`.
+- **English (en)** - Default
+- **Spanish (es)** - Español
+- **Italian (it)** - Italiano
 
-RTL: only `ar` (see `RTL_LOCALES` in `config.ts`).
+## File Structure
 
-## Usage in components
+\`\`\`
+lib/i18n/
+├── config.ts                 # Language configuration
+├── use-translations.ts       # Translation hook
+└── translations/
+    ├── en.json              # English translations
+    ├── es.json              # Spanish translations
+    └── it.json              # Italian translations
 
-```tsx
+stores/
+└── language-store.ts         # Language state management
+
+components/
+└── language-selector.tsx     # Language switcher UI
+\`\`\`
+
+## Usage
+
+### Using Translations in Components
+
+\`\`\`tsx
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function MyComponent() {
-  const { t, locale } = useTranslations()
-
+  const { t } = useTranslations()
+  
   return (
     <div>
       <h1>{t("common.buy")}</h1>
-      <p>{t("order.orderLimitError", { min: "10", max: "100", currency: "USD" })}</p>
+      <p>{t("market.loadingAds")}</p>
     </div>
   )
 }
-```
+\`\`\`
 
-While a non-English chunk is loading, UI shows **English** strings (same per-key fallback as missing keys). After load, components re-render automatically.
+### Using Translations with Parameters
 
-## Adding a new language
+\`\`\`tsx
+const { t } = useTranslations()
 
-1. Add code to `locales` and `localeNames` in `lib/i18n/config.ts`.
-2. If RTL, add to `RTL_LOCALES`.
-3. Create `lib/i18n/translations/{code}.json` (copy structure from `en.json`).
-4. Add a loader entry in `lib/i18n/translation-loader.ts` → `localeLoaders`.
-5. Optionally sync from mobile: `python3 scripts/sync_locale_from_mobile.py {code}` (from `p2p-v0/`).
-6. Test with `?lang={code}` and language selector.
+// Translation with parameters
+const message = t("order.orderLimitError", {
+  min: "10.00",
+  max: "1000.00",
+  currency: "USD"
+})
+// Result: "Order limit: 10.00 - 1000.00 USD"
+\`\`\`
 
-## Updating translations
+### Changing Language
 
-- **Manual** — edit the locale JSON under `lib/i18n/translations/`.
-- **Mobile parity** — `scripts/sync_locale_from_mobile.py`:
-  - `web-first` (default): only fills missing / still-English keys.
-  - `mobile-first` (e.g. `ar`): overwrites when mobile has a match.
-  - Requires sibling repo `p2p/ai-deriv-p2p-app/lib/l10n/`.
+Users can change the language using the `LanguageSelector` component in the header:
 
-## Bundle behaviour
+\`\`\`tsx
+import { LanguageSelector } from "@/components/language-selector"
 
-| Locale | Bundle |
-|--------|--------|
-| `en` | Main client chunk (always available) |
-| Others | Separate async chunks, loaded once per session when first selected |
+<LanguageSelector />
+\`\`\`
 
-Do **not** statically import all JSON files in `use-translations.ts`; use `translation-loader.ts` only.
+The language preference is automatically persisted in localStorage.
 
-## RTL testing checklist
+## Adding New Translations
 
-With `?lang=ar`:
+1. Add the translation key to all language files (`en.json`, `es.json`, `it.json`)
+2. Use the translation in your component with the `t()` function
+3. Test in all supported languages
 
-- [ ] `document.documentElement.dir === "rtl"`
-- [ ] Sheets open from logical end (`components/ui/sheet.tsx`)
-- [ ] Tabs, dropdowns, margins use logical classes (`ms`/`me`, `start`/`end`)
-- [ ] Back chevrons mirrored (`rtl:rotate-180` / `BackArrowIcon`)
-- [ ] Calendars and date labels use locale (`format-date.ts`)
+Example:
 
-## Tests
+\`\`\`json
+// en.json
+{
+  "myFeature": {
+    "title": "My New Feature",
+    "description": "This is a new feature"
+  }
+}
 
-```bash
-pnpm exec jest __tests__/lib/i18n/
-```
+// es.json
+{
+  "myFeature": {
+    "title": "Mi Nueva Función",
+    "description": "Esta es una nueva función"
+  }
+}
 
-Covers `config`, `translation-tree`, and async `translation-loader`.
+// it.json
+{
+  "myFeature": {
+    "title": "La Mia Nuova Funzione",
+    "description": "Questa è una nuova funzione"
+  }
+}
+\`\`\`
+
+## Adding a New Language
+
+1. Update `lib/i18n/config.ts`:
+\`\`\`typescript
+export const locales = ['en', 'es', 'it', 'fr'] as const // Add 'fr'
+
+export const localeNames: Record<Locale, string> = {
+  en: 'English',
+  es: 'Español',
+  it: 'Italiano',
+  fr: 'Français', // Add French
+}
+\`\`\`
+
+2. Create a new translation file: `lib/i18n/translations/fr.json`
+
+3. Import it in `lib/i18n/use-translations.ts`:
+\`\`\`typescript
+import fr from "./translations/fr.json"
+
+const translations = {
+  en,
+  es,
+  it,
+  fr, // Add French
+}
+\`\`\`
+
+4. Update `lib/local-variables.ts` to include the new language code
+
+## Translation Keys Structure
+
+Translations are organized by feature/domain:
+
+- `common.*` - Common UI elements (buttons, actions)
+- `navigation.*` - Navigation items
+- `market.*` - Market/trading page
+- `order.*` - Order creation and details
+- `paymentMethod.*` - Payment method management
+- `balance.*` - Balance and wallet
+- `filter.*` - Filtering and sorting
+- `chat.*` - Chat functionality
+- `orderDetails.*` - Order details view
+- `errors.*` - Error messages
+- `validation.*` - Form validation messages
+
+## Best Practices
+
+1. **Always use translation keys** - Never hardcode user-facing text
+2. **Keep keys organized** - Group related translations together
+3. **Use descriptive keys** - Make keys self-documenting
+4. **Provide fallbacks** - The system falls back to English if a key is missing
+5. **Test all languages** - Verify translations in all supported languages
+6. **Consider text length** - Some languages are longer than others (e.g., German)
+
+## Current Implementation Status
+
+### ✅ Fully Translated
+- Navigation (header, sidebar, mobile footer)
+- Language selector component
+
+### 🚧 Partially Translated
+- Market page (structure ready, needs component updates)
+- Order sidebar (structure ready, needs component updates)
+
+### ⏳ To Be Translated
+- All other pages and components throughout the app
+
+## Next Steps
+
+To complete the localization:
+
+1. Update each component to use the `useTranslations` hook
+2. Replace hardcoded strings with `t()` calls
+3. Add missing translation keys to all language files
+4. Test thoroughly in all languages
+5. Consider adding more languages based on user demand

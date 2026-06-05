@@ -51,7 +51,7 @@ export function P2PBalanceWarning() {
       <Button
         variant="destructive"
         size="sm"
-        className="flex-shrink-0 self-start ms-11 rounded-full px-6 md:ms-0 md:self-auto"
+        className="flex-shrink-0 self-start ml-11 rounded-full px-6 md:ml-0 md:self-auto"
         aria-label={`${transferLabel} — ${title}`}
         onClick={() => router.push("/wallet?operation=TRANSFER")}
       >

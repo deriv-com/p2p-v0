@@ -14,7 +14,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { useCurrencies } from "@/hooks/use-api-queries"
 import { currencyLogoMapper } from "@/lib/utils"
 import { getCoreUrl } from "@/lib/get-core-url"
-import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface WalletBalanceProps {
   className?: string
@@ -29,7 +28,6 @@ interface Currency {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
-  const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const { data: currenciesResponse, isLoading: isCurrenciesLoading } = useCurrencies()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -138,7 +136,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
         <div className="flex items-center justify-center gap-2">
           <h1 className="text-[32px] font-black text-black text-center leading-normal">
-            {isLoading ? t("common.loading") : `${balance} ${selectedCurrency}`}
+            {isLoading ? "Loading..." : `${balance} ${selectedCurrency}`}
           </h1>
           <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
             <Image
@@ -152,7 +150,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         </div>
 
         <div className="mt-1 flex items-center justify-center gap-1">
-          <p className="text-sm font-normal text-muted-foreground text-center leading-[22px]">{t("wallet.estTotalValue")}</p>
+          <p className="text-sm font-normal text-muted-foreground text-center leading-[22px]">Est total assets</p>
           <Tooltip>
             <TooltipTrigger asChild>
               <Image
@@ -160,11 +158,11 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
                 alt="Info"
                 width={24}
                 height={24}
-                className="ms-1 cursor-pointer flex-shrink-0"
+                className="ml-1 cursor-pointer flex-shrink-0"
               />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t("wallet.estTotalAssetsTooltip")}</p>
+              <p>This is your estimated combined balance across all P2P wallets, shown in USD.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -180,7 +178,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             >
               <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
             </Button>
-            <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">{t("wallet.deposit")}</span>
+            <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">Deposit</span>
           </div>
 
           <div className="flex flex-col items-center">
@@ -194,7 +192,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
               <Minus className="h-6 w-6" />
             </Button>
             <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">
-              {t("wallet.withdraw")}
+              Withdraw
             </span>
           </div>
 
@@ -209,7 +207,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
               <Image src="/icons/exchange-icon.png" alt="Transfer" width={20} height={20} />
             </Button>
             <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">
-              {t("wallet.transfer")}
+              Transfer
             </span>
           </div>
         </div>

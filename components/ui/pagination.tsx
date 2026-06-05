@@ -29,7 +29,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
         disabled={currentPage === 1}
         className="h-8 w-8 p-0"
       >
-        <Image src="/icons/chevron-left.svg" alt="Previous" width={16} height={16} className="rtl:rotate-180" />
+        <Image src="/icons/chevron-left.svg" alt="Previous" width={16} height={16} />
       </Button>
 
       <div className="flex gap-1">
@@ -60,7 +60,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
         disabled={currentPage === totalPages}
         className="h-8 w-8 p-0"
       >
-        <Image src="/icons/chevron-right.svg" alt="Next" width={16} height={16} className="rtl:rotate-180" />
+        <Image src="/icons/chevron-right.svg" alt="Next" width={16} height={16} />
       </Button>
     </div>
   )

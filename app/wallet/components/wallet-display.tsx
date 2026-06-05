@@ -55,14 +55,14 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
         </div>
       )}
 
-      <div className="flex-1 ms-4">
+      <div className="flex-1 ml-4">
         <h3 className="text-slate-1200 text-base font-normal">{name}</h3>
         <p className="text-grayscale-text-muted text-sm font-normal">
           {amount} {currency}
         </p>
       </div>
 
-      <div className="ms-4">
+      <div className="ml-4">
         <div
           className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
             isSelected ? "border-black bg-black" : "border-grayscale-text-muted"

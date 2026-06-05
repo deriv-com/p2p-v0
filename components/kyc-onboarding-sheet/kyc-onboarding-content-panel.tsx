@@ -42,7 +42,7 @@ export function KycOnboardingContentPanel({
         <Button
           onClick={onClose}
           variant="ghost"
-          className="absolute end-4 top-4 hidden min-w-[48px] bg-slate-75 px-1 md:end-6 md:top-6 md:inline-flex"
+          className="absolute right-4 top-4 hidden min-w-[48px] bg-slate-75 px-1 md:inline-flex md:right-6 md:top-6"
           aria-label="Close"
         >
           <Image src="/icons/close-icon.png" alt="" width={24} height={24} />
@@ -52,7 +52,7 @@ export function KycOnboardingContentPanel({
       <div className="flex min-h-0 flex-1 flex-col justify-between gap-8">
         {/* Top: title, description, checklist */}
         <div>
-          <h2 id="kyc-onboarding-title" className="text-start text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
+          <h2 id="kyc-onboarding-title" className="text-base font-semibold text-slate-1200 md:text-2xl md:font-bold md:leading-8">
             {title}
           </h2>
           <p className="mt-2 text-base font-normal text-grayscale-600 md:mt-3 md:text-lg md:leading-7">

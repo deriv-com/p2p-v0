@@ -1,10 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { ModalHeaderRow } from "@/components/ui/modal-header-row"
-import { isRtlLocale } from "@/lib/i18n/config"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button"
 import { FeedbackSurvey } from "./feedback-survey"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
@@ -79,17 +78,16 @@ function FeedbackDialogContent({
 }
 
 export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
-  const { t, locale } = useTranslations()
+  const { t } = useTranslations()
   const isMobile = useIsMobile()
-  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const title = t("nps.title")
 
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-        <DrawerContent dir={dir} className="max-h-[90vh] rounded-t-2xl pb-safe">
-          <DrawerHeader className="pb-0 text-start">
-            <DrawerTitle className="text-xl font-bold text-start">{title}</DrawerTitle>
+        <DrawerContent className="max-h-[90vh] rounded-t-2xl pb-safe">
+          <DrawerHeader className="pb-0">
+            <DrawerTitle className="text-xl font-bold text-left">{title}</DrawerTitle>
           </DrawerHeader>
           <div className="overflow-y-auto">
             <FeedbackDialogContent onClose={onClose} title="" />
@@ -101,15 +99,22 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent dir={dir} className="sm:max-w-[580px] sm:rounded-[32px] p-0">
-        <ModalHeaderRow
-          asDialog
-          title={title}
-          onClose={onClose}
-          closeAriaLabel={t("common.close")}
-          titleClassName="tracking-normal"
-          className="px-8 pt-6 pb-0"
-        />
+      <DialogContent className="sm:max-w-[580px] sm:rounded-[32px] p-0">
+        <DialogHeader className="px-8 pt-6 pb-0">
+          <div className="flex justify-between items-start">
+            <DialogTitle className="tracking-normal font-bold text-2xl text-left pr-4">
+              {title}
+            </DialogTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="px-1 min-w-[48px] shrink-0 hover:bg-transparent"
+              onClick={onClose}
+            >
+              <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
+            </Button>
+          </div>
+        </DialogHeader>
         <FeedbackDialogContent onClose={onClose} title="" />
       </DialogContent>
     </Dialog>

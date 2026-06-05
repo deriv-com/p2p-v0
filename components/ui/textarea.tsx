@@ -10,7 +10,7 @@ const textareaVariants = cva(
     variants: {
       variant: {
         default: "",
-        floating: "placeholder:opacity-0 pt-7 pb-2 text-start",
+        floating: "placeholder:opacity-0 pt-7 pb-2",
       },
     },
     defaultVariants: {
@@ -69,12 +69,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
           <label
             className={cn(
-              "absolute start-3 text-sm text-muted-foreground transition-all duration-200 ease-in-out pointer-events-none z-10 bg-background px-1",
+              "absolute left-3 text-sm text-muted-foreground transition-all duration-200 ease-in-out pointer-events-none z-10 bg-background px-1",
               shouldFloatLabel ? "top-[1px] text-xs text-[#000000B8] py-2" : "top-4 text-sm",
             )}
           >
             {label}
-            {required && <span className="text-red-500 ms-1">*</span>}
+            {required && <span className="text-red-500 ml-1">*</span>}
           </label>
         </div>
       )

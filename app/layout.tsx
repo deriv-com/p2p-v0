@@ -38,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en">
       <head>
         <Script
           id="gtm-script"

@@ -422,7 +422,7 @@ export default function WalletSummary({
                 ) : (
                   <>
                     <p className="text-[28px] font-extrabold text-slate-1200">
-                      {propIsLoading ? t("common.loading") : `${formattedBalance} ${displayCurrency}`}
+                      {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
                     </p>
                     <p className="text-sm font-normal text-grayscale-100">{displayCurrencyLabel}</p>
                   </>

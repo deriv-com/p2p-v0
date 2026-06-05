@@ -40,11 +40,11 @@ export default function DepositOptions({ onClose, onDirectDepositClick, selected
         </div>
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">Marketplace</h3>
-          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] me-6 md:me-0">
+          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
             {`Trade directly with other users on the marketplace.`}
           </p>
 
-          <div className="border-b border-grayscale-200 mt-4 ms-0"></div>
+          <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>
 
@@ -57,11 +57,11 @@ export default function DepositOptions({ onClose, onDirectDepositClick, selected
         </div>
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">Direct deposit</h3>
-          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] me-6 md:me-0">
+          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
             Deposit funds directly from your bank account, e-wallet, or other payment methods.
           </p>
 
-          <div className="border-b border-grayscale-200 mt-4 ms-0"></div>
+          <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>
     </div>

@@ -125,7 +125,7 @@ export function RatingSidebar({
           <Button variant="black" onClick={handleSubmit} disabled={isSubmitting || rating === 0} className="w-full">
             {isSubmitting ? (
               <>
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent me-2"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                 Submitting...
               </>
             ) : (

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { formatAppDate } from "@/lib/format-date"
+import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
@@ -22,21 +22,20 @@ interface DateFilterProps {
 }
 
 export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
-  const { t, locale } = useTranslations()
+  const { t } = useTranslations()
   const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
   const isMobile = useIsMobile()
 
   const getDisplayLabel = () => {
     if (customRange.from) {
-      const formatRangeDate = (date: Date) => formatAppDate(date, locale)
       if (customRange.to) {
-        if (customRange.from.getTime() === customRange.to.getTime()) {
-          return formatRangeDate(customRange.from)
+        if (customRange.from == customRange.to) {
+          return format(customRange.from, "dd MMM yyyy")
         }
-        return `${formatRangeDate(customRange.from)} - ${formatRangeDate(customRange.to)}`
+        return `${format(customRange.from, "dd MMM yyyy")} - ${format(customRange.to, "dd MMM yyyy")}`
       }
-      return formatRangeDate(customRange.from)
+      return format(customRange.from, "dd MMM yyyy")
     }
     return t("orders.allTime")
   }
@@ -90,7 +89,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
                 <span>{getDisplayLabel()}</span>
               </div>
-              <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ms-2" />
+              <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
             </div>
           </Button>
         </DrawerTrigger>
@@ -128,7 +127,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
               <span>{getDisplayLabel()}</span>
             </div>
-            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ms-2" />
+            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
           </div>
         </Button>
       </PopoverTrigger>
