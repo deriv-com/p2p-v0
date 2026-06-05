@@ -31,7 +31,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
   const { userData } = useUserDataStore()
   const isDiamond = userData?.trade_band === "diamond"
   const { data, isLoading, refetch } = useFavouriteUsers(isDiamond)
-  const closedGroups: ClosedGroup[] = data?.pages.flat() ?? []
+  const closedGroups: ClosedGroup[] = isDiamond ? (data?.pages.flat() ?? []) : []
   const [searchQuery, setSearchQuery] = useState("")
   const [isRemoving, setIsRemoving] = useState(false)
 
