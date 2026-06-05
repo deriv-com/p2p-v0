@@ -463,7 +463,9 @@
     "aboutYou": "Über Sie",
     "settings": "Einstellungen",
     "support": "Unterstützung",
-    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten."
+    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten.",
+    "noFollowedUsersYet": "Noch keine gefolgten Nutzer",
+    "noFollowedUsersDescription": "Sie können nur Nutzer, denen Sie folgen, zu Ihrer geschlossenen Gruppe hinzufügen. Gehen Sie zum Profil eines Nutzers und tippen Sie auf \"Folgen\"."
   },
   "wallet": {
     "title": "Wallet",

@@ -473,7 +473,9 @@
     "aboutYou": "Su di te",
     "settings": "Impostazioni",
     "support": "Supporto",
-    "closedGroupDiamondOnlyWarning": "Devi essere nel livello Diamond per gestire un gruppo chiuso."
+    "closedGroupDiamondOnlyWarning": "Devi essere nel livello Diamond per gestire un gruppo chiuso.",
+    "noFollowedUsersYet": "Nessun utente seguito ancora",
+    "noFollowedUsersDescription": "Puoi aggiungere al tuo gruppo chiuso solo gli utenti che segui. Vai al profilo di un utente e tocca Segui per vederli qui."
   },
   "wallet": {
     "title": "Portafoglio",

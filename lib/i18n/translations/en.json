@@ -518,7 +518,9 @@
     "settings": "Settings",
     "support": "Support",
     "addFromYourFollowing": "Add from your following",
-    "closedGroupDiamondOnlyWarning": "You must be in the Diamond tier to manage a closed group."
+    "closedGroupDiamondOnlyWarning": "You must be in the Diamond tier to manage a closed group.",
+    "noFollowedUsersYet": "No followed users yet",
+    "noFollowedUsersDescription": "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
   },
   "wallet": {
     "title": "Wallet",

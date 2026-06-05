@@ -501,7 +501,9 @@
     "aboutYou": "Acerca de ti",
     "settings": "Configuración",
     "support": "Soporte",
-    "closedGroupDiamondOnlyWarning": "Debes estar en el nivel Diamond para gestionar un grupo cerrado."
+    "closedGroupDiamondOnlyWarning": "Debes estar en el nivel Diamond para gestionar un grupo cerrado.",
+    "noFollowedUsersYet": "Aún no hay usuarios seguidos",
+    "noFollowedUsersDescription": "Solo puedes añadir usuarios que sigues a tu grupo cerrado. Ve al perfil de un usuario y toca Seguir para verlos aquí."
   },
   "wallet": {
     "title": "Billetera",

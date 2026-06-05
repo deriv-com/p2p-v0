@@ -504,7 +504,9 @@
     "settings": "Ustawienia",
     "support": "Wsparcie",
     "addFromYourFollowing": "Dodaj z Twoich obserwowanych",
-    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond."
+    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond.",
+    "noFollowedUsersYet": "Brak obserwowanych użytkowników",
+    "noFollowedUsersDescription": "Do zamkniętej grupy możesz dodawać tylko obserwowanych użytkowników. Przejdź do profilu użytkownika i kliknij Obserwuj, aby go zobaczyć tutaj."
   },
   "wallet": {
     "title": "Portfel",

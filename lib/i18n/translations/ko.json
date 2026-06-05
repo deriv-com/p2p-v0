@@ -501,7 +501,9 @@
     "settings": "설정",
     "support": "지원",
     "addFromYourFollowing": "팔로잉 중에서 추가",
-    "closedGroupDiamondOnlyWarning": "폐쇄 그룹을 관리하려면 다이아몬드 등급이어야 합니다."
+    "closedGroupDiamondOnlyWarning": "폐쇄 그룹을 관리하려면 다이아몬드 등급이어야 합니다.",
+    "noFollowedUsersYet": "아직 팔로우한 사용자 없음",
+    "noFollowedUsersDescription": "팔로우하는 사용자만 폐쇄 그룹에 추가할 수 있습니다. 사용자의 프로필로 이동하여 팔로우를 탭하면 여기에 표시됩니다."
   },
   "wallet": {
     "title": "지갑",

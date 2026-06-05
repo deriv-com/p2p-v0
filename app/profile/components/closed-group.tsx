@@ -197,17 +197,15 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
 
       {closedGroups.length > 0 && !searchQuery && (<div className="flex items-center justify-between">
         <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
-        {closedGroups.length > 0 && (
-          <Button
-            onClick={handleRemoveAll}
-            disabled={isRemoving || !hasGroupMembers}
-            variant="ghost"
-            size="sm"
-            className="px-0 underline hover:opacity-100 hover:bg-transparent disabled:text-grayscale-text-placeholder disabled:opacity-100 cursor-pointer"
-          >
-            {t("common.removeAll")}
-          </Button>
-        )}
+        <Button
+          onClick={handleRemoveAll}
+          disabled={isRemoving || !hasGroupMembers}
+          variant="ghost"
+          size="sm"
+          className="px-0 underline hover:opacity-100 hover:bg-transparent disabled:text-grayscale-text-placeholder disabled:opacity-100 cursor-pointer"
+        >
+          {t("common.removeAll")}
+        </Button>
       </div>)}
 
       <div className="space-y-0 h-[20rem] overflow-y-auto">
@@ -227,9 +225,9 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           filteredClosedGroups.map((group) => <GroupCard key={group.user_id} group={group} />)
         ) : (
           <EmptyState
-            title={searchQuery ? "No matching name" : "No followed users yet"}
+            title={searchQuery ? t("profile.noMatchingName") : t("profile.noFollowedUsersYet")}
             description={
-              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
+              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : t("profile.noFollowedUsersDescription")
             }
             redirectToAds={false}
           />
