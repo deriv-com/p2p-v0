@@ -74,7 +74,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       const result = await removeAllFromClosedGroup()
       if (result.success) {
         await refetch()
-        showToast(t("profile.removedFromClosedGroup"))
+        showToast(t("advertiser.removedFromClosedGroup"))
       }
     } catch (err) {
       console.error("Failed to remove all from closed group:", err)
@@ -99,8 +99,8 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       if (result.success) {
         await refetch()
         showToast(group.is_group_member
-          ? t("profile.removedFromClosedGroup")
-          : t("profile.addedToClosedGroup")
+          ? t("advertiser.removedFromClosedGroup")
+          : t("advertiser.addedToClosedGroup")
         )
       }
     } catch (err) {
