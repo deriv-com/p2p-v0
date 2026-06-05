@@ -34,7 +34,8 @@
     "verifiedBadge": {
       "title": "Akaunti iliyothibitishwa",
       "description": "Barua pepe, simu, kitambulisho, na ukaguzi wa anwani umekamilika. Hii inakusaidia kuuza na ujasiri zaidi."
-    }
+    },
+    "remove": "Ondoa"
   },
   "navigation": {
     "market": "Soko",

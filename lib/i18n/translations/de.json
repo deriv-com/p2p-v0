@@ -29,7 +29,8 @@
     "verifiedBadge": {
       "title": "Vollständig verifiziertes Konto",
       "description": "Dieser Benutzer hat alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung. Sie können mit Vertrauen handeln, da dieses Konto verifiziert ist."
-    }
+    },
+    "remove": "Entfernen"
   },
   "navigation": {
     "market": "Markt",

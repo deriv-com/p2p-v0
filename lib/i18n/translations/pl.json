@@ -34,7 +34,8 @@
     "verifiedBadge": {
       "title": "Zweryfikowane konto",
       "description": "Potwierdzenie poczty elektronicznej, telefonu, tożsamości i adresu jest zakończone. Pomaga to handlować z większą pewnością."
-    }
+    },
+    "remove": "Usuń"
   },
   "navigation": {
     "market": "Rynek",

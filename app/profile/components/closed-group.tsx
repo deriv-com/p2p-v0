@@ -55,7 +55,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     setSearchQuery(value)
   }, [])
 
-  const showToast = (message: string) => {
+  const showToast = useCallback((message: string) => {
     toast({
       description: (
         <div className="flex items-center gap-2">
@@ -66,7 +66,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
       duration: 2500,
     })
-  }
+  }, [toast])
 
   const handleRemoveAll = useCallback(async () => {
     try {
@@ -81,7 +81,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     } finally {
       setIsRemoving(false)
     }
-  }, [refetch, t])
+  }, [refetch, t, showToast])
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
@@ -106,7 +106,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     } catch (err) {
       console.error("Failed to update closed group membership:", err)
     }
-  }, [refetch, t])
+  }, [refetch, t, showToast])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="h-[72px] flex items-center justify-between gap-3">
@@ -121,7 +121,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           size="sm"
           className="min-w-fit"
         >
-          {group.is_group_member ? "Remove" : "Add"}
+          {group.is_group_member ? t("common.remove") : t("common.add")}
         </Button>
       </div>
     </div>
@@ -177,7 +177,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
             size="sm"
             className="px-0 underline hover:opacity-100 hover:bg-transparent disabled:text-grayscale-text-placeholder disabled:opacity-100 cursor-pointer"
           >
-            Remove all
+            {t("common.removeAll")}
           </Button>
         )}
       </div>)}
