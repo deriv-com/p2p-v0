@@ -91,7 +91,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
     router.push(`/profile?tab=${tab}`)
   }
 
-  const showClosedGroupTab = IS_CLOSED_GROUP_ENABLED
+  const showClosedGroupTab = true
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
