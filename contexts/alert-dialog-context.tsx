@@ -79,8 +79,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     if (config.content) {
       return (
-        <div className="flex flex-col max-h-[80vh] overflow-hidden">
-          <div className="flex justify-between px-8 pt-6 items-center mb-4 flex-shrink-0">
+        <div className="overflow-hidden">
+          <div className="flex justify-between px-8 pt-6 items-center mb-4">
             {config.title && <div className="font-bold text-2xl">{config.title}</div>}
             {!config.hideCloseButton && (
               <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
@@ -88,9 +88,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               </Button>
             )}
           </div>
-          <div className="px-8 overflow-y-auto h-[20rem]">{config.content}</div>
+          <div className="px-8 h-[20rem] overflow-y-auto">{config.content}</div>
           {(config.type || config.cancelText) && (
-            <div className="flex flex-col gap-2 px-8 py-4 flex-shrink-0 border-t border-grayscale-500">
+            <div className="flex flex-col gap-2 px-8 py-4 border-t border-grayscale-500">
               {config.type && (
                 <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
                   {config.confirmText || "Continue"}
