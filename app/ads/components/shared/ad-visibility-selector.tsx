@@ -15,16 +15,12 @@ interface AdVisibilitySelectorProps {
 
 export default function AdVisibilitySelector({ value, onValueChange, onEditClosedGroup }: AdVisibilitySelectorProps) {
   const { t } = useTranslations()
-  const { showAlert, hideAlert } = useAlertDialog()
+  const { showAlert } = useAlertDialog()
 
   const handleEditListClick = () => {
     showAlert({
       title: t("adForm.closedGroup"),
       content: <ClosedGroupTab isInAlert={true} />,
-      confirmText: t("common.done"),
-      cancelText: undefined,
-      type: "warning",
-      onConfirm: hideAlert,
     })
     onEditClosedGroup?.()
   }
