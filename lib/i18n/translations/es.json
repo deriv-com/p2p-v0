@@ -498,7 +498,8 @@
     "tryAgain": "Volver a intentar",
     "aboutYou": "Acerca de ti",
     "settings": "Configuración",
-    "support": "Soporte"
+    "support": "Soporte",
+    "closedGroupDiamondOnlyWarning": "Debes estar en el nivel Diamond para gestionar un grupo cerrado."
   },
   "wallet": {
     "title": "Billetera",

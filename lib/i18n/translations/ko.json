@@ -498,7 +498,8 @@
     "aboutYou": "당신에 대해",
     "settings": "설정",
     "support": "지원",
-    "addFromYourFollowing": "팔로잉 중에서 추가"
+    "addFromYourFollowing": "팔로잉 중에서 추가",
+    "closedGroupDiamondOnlyWarning": "폐쇄 그룹을 관리하려면 다이아몬드 등급이어야 합니다."
   },
   "wallet": {
     "title": "지갑",

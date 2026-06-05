@@ -379,11 +379,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
     const isPrivate = adVisibility === "closed-group"
 
-    if (
-      !isPrivate &&
-      finalData?.visibility_status &&
-      finalData.visibility_status.includes("advertiser_no_private_groups")
-    ) {
+    if (!isPrivate && isDowngradedPrivate) {
       showAlert({
         title: t("adForm.adVisibilityUpdate"),
         description: t("adForm.adVisibilityUpdateDescription"),
@@ -696,11 +692,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
   }
 
+  const isDiamond = userData.trade_band === "diamond"
+  const initialIsPrivate = originalEditSnapshot?.isPrivate ?? false
+  const isDowngradedPrivate = mode === "edit" && initialIsPrivate && !isDiamond
+  const showVisibility = isDiamond || isDowngradedPrivate
+  const mustSwitchEveryone = isDowngradedPrivate && adVisibility === "closed-group"
+
   const isButtonDisabled =
     (currentStep === 0 && !adFormValid) ||
     (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
     (currentStep === 2 && mode === "edit" && (!adFormValid || !hasEditChanges)) ||
+    (currentStep === 2 && mustSwitchEveryone) ||
     isBottomSheetOpen
 
   const getButtonText = () => {
@@ -880,7 +883,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         adType={(formData.type as "buy" | "sell") || "buy"}
                       />
                     </div>
-                    {(userData.trade_band === "diamond" || formData?.visibility_status?.includes("advertiser_no_private_groups")) && (<div>
+                    {showVisibility && (<div>
                       <div className="flex gap-[4px] items-center mb-4">
                         <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.adVisibility")}</h3>
                         <TooltipProvider>
@@ -901,7 +904,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           </Tooltip>
                         </TooltipProvider>
                       </div>
-                      <AdVisibilitySelector value={adVisibility} onValueChange={setAdVisibility} />
+                      <AdVisibilitySelector value={adVisibility} onValueChange={setAdVisibility} closedGroupDisabled={isDowngradedPrivate} />
                     </div>)}
                   </div>
                 )}

@@ -501,7 +501,8 @@
     "aboutYou": "Juu yako",
     "settings": "Mipangilio",
     "support": "Msaada",
-    "addFromYourFollowing": "Ongeza kutoka kwa unayowafuata"
+    "addFromYourFollowing": "Ongeza kutoka kwa unayowafuata",
+    "closedGroupDiamondOnlyWarning": "Lazima uwe katika ngazi ya Diamond ili kusimamia kikundi kilichofungwa."
   },
   "wallet": {
     "title": "Hazina",

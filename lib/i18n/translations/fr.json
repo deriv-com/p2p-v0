@@ -415,6 +415,7 @@
     "aboutYou": "À propos de vous",
     "settings": "Paramètres",
     "support": "Support",
+    "closedGroupDiamondOnlyWarning": "Vous devez être au niveau Diamond pour gérer un groupe fermé.",
     "addPaymentMethod": "Ajouter une méthode de paiement",
     "paymentMethodAdded": "Méthode de paiement ajoutée.",
     "bronzeTier": "Niveau Bronze",

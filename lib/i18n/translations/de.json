@@ -460,7 +460,8 @@
     "tryAgain": "Erneut versuchen",
     "aboutYou": "Über Sie",
     "settings": "Einstellungen",
-    "support": "Unterstützung"
+    "support": "Unterstützung",
+    "closedGroupDiamondOnlyWarning": "Sie müssen in der Diamond-Stufe sein, um eine geschlossene Gruppe zu verwalten."
   },
   "wallet": {
     "title": "Wallet",

@@ -496,7 +496,8 @@
     "tryAgain": "Tentar novamente",
     "aboutYou": "Sobre você",
     "settings": "Configurações",
-    "support": "Suporte"
+    "support": "Suporte",
+    "closedGroupDiamondOnlyWarning": "Você precisa estar no nível Diamond para gerenciar um grupo fechado."
   },
   "wallet": {
     "title": "Carteira",

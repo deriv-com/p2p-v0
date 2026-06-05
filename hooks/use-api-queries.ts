@@ -447,7 +447,7 @@ export function useAdvertiserAds(id: string | number) {
   })
 }
 
-export function useFavouriteUsers() {
+export function useFavouriteUsers(enabled = true) {
   return useInfiniteQuery({
     queryKey: queryKeys.buySell.favouriteUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFavouriteUsers(pageParam as number, PAGE_SIZE),
@@ -455,6 +455,7 @@ export function useFavouriteUsers() {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
+    enabled,
   })
 }
 

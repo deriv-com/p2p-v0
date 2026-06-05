@@ -470,7 +470,8 @@
     "tryAgain": "Riprova",
     "aboutYou": "Su di te",
     "settings": "Impostazioni",
-    "support": "Supporto"
+    "support": "Supporto",
+    "closedGroupDiamondOnlyWarning": "Devi essere nel livello Diamond per gestire un gruppo chiuso."
   },
   "wallet": {
     "title": "Portafoglio",

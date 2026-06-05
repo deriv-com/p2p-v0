@@ -382,6 +382,7 @@
     "aboutYou": "О вас",
     "settings": "Настройки",
     "support": "Поддержка",
+    "closedGroupDiamondOnlyWarning": "Для управления закрытой группой необходимо находиться на уровне Diamond.",
     "addPaymentMethod": "Добавить способ оплаты",
     "paymentMethodAdded": "Способ оплаты добавлен.",
     "bronzeTier": "Бронзовый уровень",

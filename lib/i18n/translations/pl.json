@@ -501,7 +501,8 @@
     "aboutYou": "O Tobie",
     "settings": "Ustawienia",
     "support": "Wsparcie",
-    "addFromYourFollowing": "Dodaj z Twoich obserwowanych"
+    "addFromYourFollowing": "Dodaj z Twoich obserwowanych",
+    "closedGroupDiamondOnlyWarning": "Aby zarządzać zamkniętą grupą, musisz być na poziomie Diamond."
   },
   "wallet": {
     "title": "Portfel",
