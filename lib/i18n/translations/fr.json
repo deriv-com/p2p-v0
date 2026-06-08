@@ -496,6 +496,7 @@
     "loading": "Chargement...",
     "validationSymbolsOnly": "Seuls les lettres, chiffres, espaces et symboles -+.,'#@():; sont autorisés",
     "validationNumbersOnly": "Seuls les chiffres sont autorisés.",
+    "validationAccountTooLong": "Le numéro de compte doit comporter 50 caractères ou moins.",
     "fieldRequired": "{field} est obligatoire",
     "enterField": "Entrez {field}",
     "tryAgain": "Réessayer",

@@ -468,6 +468,7 @@
     "loading": "Caricamento...",
     "validationSymbolsOnly": "Sono consentiti solo lettere, numeri, spazi e simboli -+.,'#@():;",
     "validationNumbersOnly": "Sono consentiti solo numeri.",
+    "validationAccountTooLong": "Il numero di conto deve contenere al massimo 50 caratteri.",
     "fieldRequired": "{field} è obbligatorio",
     "enterField": "Inserisci {field}",
     "tryAgain": "Riprova",

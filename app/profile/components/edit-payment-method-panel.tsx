@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import {
-  isDigitsOnly,
+  getPaymentMethodAccountValidationIssue,
+  PAYMENT_METHOD_ACCOUNT_MAX_LENGTH,
   requiresNumericAccountField,
   sanitizeNumericAccountInput,
 } from "@/lib/payment-method-validation"
@@ -75,9 +76,9 @@ export default function EditPaymentMethodPanel({
     const trimmed = value.trim()
     if (!trimmed) return null
 
-    if (requiresNumericAccountField(method, fieldName)) {
-      return isDigitsOnly(trimmed) ? null : t("profile.validationNumbersOnly")
-    }
+    const accountIssue = getPaymentMethodAccountValidationIssue(method, fieldName, value)
+    if (accountIssue === "numbersOnly") return t("profile.validationNumbersOnly")
+    if (accountIssue === "tooLong") return t("profile.validationAccountTooLong")
 
     return validateSymbolsInput(trimmed) ? null : t("profile.validationSymbolsOnly")
   }
@@ -198,17 +199,14 @@ export default function EditPaymentMethodPanel({
                           ? "numeric"
                           : undefined
                       }
-                      pattern={
-                        requiresNumericAccountField(paymentMethod.type, fieldName)
-                          ? "[0-9]*"
-                          : undefined
-                      }
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
                       label={t("profile.enterField", { field: fieldConfig.display_name.toLowerCase() })}
                       required={fieldConfig.required}
                       variant="floating"
-                      maxLength={30}
+                      maxLength={
+                        fieldName === "account" ? PAYMENT_METHOD_ACCOUNT_MAX_LENGTH : undefined
+                      }
                     />
                     {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
                   </div>

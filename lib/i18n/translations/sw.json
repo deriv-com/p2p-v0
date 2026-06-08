@@ -497,6 +497,7 @@
     "loading": "Inapakua...",
     "validationSymbolsOnly": "Herufi, namba, nafasi, na alama -+.,'#@():; tu zinakubaliwa",
     "validationNumbersOnly": "Namba pekee zinakubaliwa.",
+    "validationAccountTooLong": "Nambari ya akaunti lazima iwe na vibambo 50 au chini.",
     "fieldRequired": "{field} inahitajika",
     "enterField": "Ingiza {field}",
     "tryAgain": "Jaribu tena",

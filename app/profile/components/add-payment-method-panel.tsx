@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { usePaymentMethods } from "@/hooks/use-api-queries"
 import {
-  isDigitsOnly,
+  getPaymentMethodAccountValidationIssue,
+  PAYMENT_METHOD_ACCOUNT_MAX_LENGTH,
   requiresNumericAccountField,
   sanitizeNumericAccountInput,
 } from "@/lib/payment-method-validation"
@@ -122,9 +123,9 @@ export default function AddPaymentMethodPanel({
     const trimmed = value.trim()
     if (!trimmed) return null
 
-    if (requiresNumericAccountField(method, fieldName)) {
-      return isDigitsOnly(trimmed) ? null : t("profile.validationNumbersOnly")
-    }
+    const accountIssue = getPaymentMethodAccountValidationIssue(method, fieldName, value)
+    if (accountIssue === "numbersOnly") return t("profile.validationNumbersOnly")
+    if (accountIssue === "tooLong") return t("profile.validationAccountTooLong")
 
     return validateSymbolsInput(trimmed) ? null : t("profile.validationSymbolsOnly")
   }
@@ -366,15 +367,14 @@ export default function AddPaymentMethodPanel({
                     inputMode={
                       requiresNumericAccountField(selectedMethod, field.name) ? "numeric" : undefined
                     }
-                    pattern={
-                      requiresNumericAccountField(selectedMethod, field.name) ? "[0-9]*" : undefined
-                    }
                     value={details[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                     label={`${t("profile.enterField", { field: field.label.toLowerCase() })}`}
                     required={field.required}
                     variant="floating"
-                    maxLength={30}
+                    maxLength={
+                      field.name === "account" ? PAYMENT_METHOD_ACCOUNT_MAX_LENGTH : undefined
+                    }
                   />
                   {(touched[field.name] || details[field.name]) && errors[field.name] && (
                     <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
