@@ -83,7 +83,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     if (config.content) {
       return (
-        <div className="overflow-y-auto">
+        <div className="overflow-hidden">
           <div className="flex justify-between gap-4 px-8 pt-6 items-center mb-4">
             {config.title && <div className="flex-1 min-w-0 text-start font-bold text-2xl">{config.title}</div>}
             {!config.hideCloseButton && (
@@ -92,12 +92,19 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               </Button>
             )}
           </div>
-          <div className="px-8 pb-6">{config.content}</div>
-          {config.cancelText && (
-            <div className="px-8 pb-6">
-              <Button onClick={handleCancel} variant="primary" className="w-full">
-                {config.cancelText}
-              </Button>
+          <div className="px-8">{config.content}</div>
+          {(config.type || config.cancelText) && (
+            <div className="flex flex-col gap-2 px-8 py-4 border-t border-grayscale-500">
+              {config.type && (
+                <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+                  {config.confirmText || "Continue"}
+                </Button>
+              )}
+              {config.cancelText && (
+                <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+                  {config.cancelText}
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -115,18 +122,20 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           )}
         </div>
         {config.description && <div className="text-grayscale-100">{config.description}</div>}
-        {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-6">
-          {config.type && (
-            <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
-              {config.confirmText || "Continue"}
-            </Button>
-          )}
-          {config.cancelText && (
-            <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
-              {config.cancelText}
-            </Button>
-          )}
-        </div>)}
+        {(config.cancelText || config.type) && (
+          <div className="flex flex-col gap-2 mt-6">
+            {config.type && (
+              <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+                {config.confirmText || "Continue"}
+              </Button>
+            )}
+            {config.cancelText && (
+              <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+                {config.cancelText}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     )
   }
@@ -147,9 +156,23 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     if (config.content) {
       return (
-        <div className="overflow-y-auto">
-          {config.title && <div className="mb-4 px-6 pt-6 text-start font-bold text-lg">{config.title}</div>}
-          <div className="px-6 pb-6">{config.content}</div>
+        <div className="flex flex-col max-h-[80vh] overflow-hidden">
+          {config.title && <div className="mb-4 px-6 pt-6 text-start font-bold text-lg flex-shrink-0">{config.title}</div>}
+          <div className="px-6 overflow-y-auto flex-1">{config.content}</div>
+          {(config.type || config.cancelText) && (
+            <div className="flex flex-col gap-2 px-6 py-4 flex-shrink-0 border-t border-grayscale-500">
+              {config.type && (
+                <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+                  {config.confirmText || "Continue"}
+                </Button>
+              )}
+              {config.cancelText && (
+                <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+                  {config.cancelText}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       )
     }
@@ -202,7 +225,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           <AlertDialogContent
             dir={dir}
             className={cn(
-              "p-0",
+              "p-0 overflow-hidden",
               isKycOnboarding &&
                 "!w-[min(880px,95vw)] !max-w-[880px] !p-0 overflow-hidden rounded-3xl border-0",
               config.contentClassName,

@@ -162,7 +162,11 @@
     "userBlocked": "{nickname} bloqueado.",
     "userUnblocked": "{nickname} desbloqueado.",
     "viewMore": "Ver más",
-    "youveBlockedUser": "Has bloqueado a este usuario"
+    "youveBlockedUser": "Has bloqueado a este usuario",
+    "chooseAnotherTrader": "Elegir otro trader",
+    "closedGroupBlockedByAddMessage": "Este trader te ha bloqueado, por lo que no puedes añadirlo a este grupo. Elige otro trader.",
+    "closedGroupBlockedByRemoveMessage": "Este trader te ha bloqueado, por lo que no puedes eliminarlo de este grupo. Elige otro trader.",
+    "memberUnavailableTitle": "Miembro no disponible"
   },
   "balance": {
     "loading": "Cargando saldo...",
@@ -236,7 +240,9 @@
       "title": "Cuenta totalmente verificada"
     },
     "wallet": "Billetera",
-    "yes": "Sí"
+    "yes": "Sí",
+    "remove": "Eliminar",
+    "somethingWentWrong": "Algo salió mal"
   },
   "complaint": {
     "buyer_not_paid": "No recibí ningún pago",
@@ -868,7 +874,9 @@
     "userUnfollowed": "Has dejado de seguir a {nickname}.",
     "validationSymbolsOnly": "Solo se permiten letras, números, espacios y símbolos -+.,'#@():;",
     "verificationExpired": "Verificación vencida",
-    "whenUsersFollow": "Cuando los usuarios te sigan, aparecerán aquí."
+    "whenUsersFollow": "Cuando los usuarios te sigan, aparecerán aquí.",
+    "noFollowedUsersDescription": "Solo puedes añadir usuarios que sigues a tu grupo cerrado. Ve al perfil de un usuario y toca Seguir para verlos aquí.",
+    "noFollowedUsersYet": "Aún no hay usuarios seguidos"
   },
   "ratingSidebar": {
     "no": "No",

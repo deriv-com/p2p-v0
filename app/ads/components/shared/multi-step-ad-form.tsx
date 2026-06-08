@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useMemo } from "react"
+import { IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
@@ -695,7 +696,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const isDiamond = userData.trade_band === "diamond"
   const initialIsPrivate = originalEditSnapshot?.isPrivate ?? false
   const isDowngradedPrivate = mode === "edit" && initialIsPrivate && !isDiamond
-  const showVisibility = isDiamond || isDowngradedPrivate
+  const showVisibility = IS_CLOSED_GROUP_ENABLED && (isDiamond || isDowngradedPrivate)
   const mustSwitchEveryone = isDowngradedPrivate && adVisibility === "closed-group"
 
   const isButtonDisabled =

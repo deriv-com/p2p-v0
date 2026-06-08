@@ -161,7 +161,11 @@
     "userBlocked": "{nickname} 被阻止。",
     "userUnblocked": "{nickname} 已解锁。",
     "viewMore": "查看更多",
-    "youveBlockedUser": "您已屏蔽该用户"
+    "youveBlockedUser": "您已屏蔽该用户",
+    "chooseAnotherTrader": "选择其他交易者",
+    "closedGroupBlockedByAddMessage": "该交易者已将您拉黑，因此无法将其添加到此群组。请选择其他交易者。",
+    "closedGroupBlockedByRemoveMessage": "该交易者已将您拉黑，因此无法将其从此群组移除。请选择其他交易者。",
+    "memberUnavailableTitle": "成员不可用"
   },
   "balance": {
     "loading": "负载平衡...",
@@ -235,7 +239,9 @@
       "title": "已验证帐户"
     },
     "wallet": "钱包",
-    "yes": "是的"
+    "yes": "是的",
+    "remove": "移除",
+    "somethingWentWrong": "出了点问题"
   },
   "complaint": {
     "buyer_not_paid": "我没有收到任何付款",
@@ -849,7 +855,10 @@
     "userUnfollowed": "{nickname} 已取消关注。",
     "validationSymbolsOnly": "仅限字母、数字、空格和符号 -+.,'#@():;被允许",
     "verificationExpired": "验证已过期",
-    "whenUsersFollow": "当用户关注您时，他们会出现在此处。"
+    "whenUsersFollow": "当用户关注您时，他们会出现在此处。",
+    "noFollowedUsersDescription": "您只能将已关注的用户添加到封闭群组。请前往用户资料并点击关注，即可在此处看到对方。",
+    "noFollowedUsersYet": "还没有关注的用户",
+    "closedGroupDiamondOnlyWarning": "您必须成为钻石级会员才能管理封闭组。"
   },
   "ratingSidebar": {
     "no": "否",

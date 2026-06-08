@@ -161,7 +161,11 @@
     "userBlocked": "تم حجب {nickname}.",
     "userUnblocked": "تم إلغاء حظر {nickname}.",
     "viewMore": "عرض المزيد",
-    "youveBlockedUser": "لقد قمت بحظر هذا المستخدم"
+    "youveBlockedUser": "لقد قمت بحظر هذا المستخدم",
+    "chooseAnotherTrader": "اختر متداولاً آخر",
+    "closedGroupBlockedByAddMessage": "هذا المتداول قام بحظرك، لذا لا يمكنك إضافته إلى هذه المجموعة. اختر متداولاً مختلفاً بدلاً من ذلك.",
+    "closedGroupBlockedByRemoveMessage": "هذا المتداول قام بحظرك، لذا لا يمكنك إزالته من هذه المجموعة. اختر متداولاً مختلفاً بدلاً من ذلك.",
+    "memberUnavailableTitle": "العضو غير متاح"
   },
   "balance": {
     "loading": "جارٍ تحميل الرصيد...",
@@ -235,7 +239,9 @@
       "title": "حساب تم التحقق منه"
     },
     "wallet": "المحفظة",
-    "yes": "نعم"
+    "yes": "نعم",
+    "remove": "إزالة",
+    "somethingWentWrong": "حدث خطأ ما"
   },
   "complaint": {
     "buyer_not_paid": "لم أتلق أي دفعة",
@@ -849,7 +855,10 @@
     "userUnfollowed": "تم إلغاء متابعة {nickname}.",
     "validationSymbolsOnly": "يُسمح فقط بالحروف والأرقام والمسافات والرموز -+.,'#@():;",
     "verificationExpired": "انتهت صلاحية التحقق",
-    "whenUsersFollow": "عندما يتابعك المستخدمون، سيظهرون هنا."
+    "whenUsersFollow": "عندما يتابعك المستخدمون، سيظهرون هنا.",
+    "noFollowedUsersDescription": "يمكنك إضافة المستخدمين الذين تتابعهم فقط إلى مجموعتك المغلقة. انتقل إلى ملف المستخدم واضغط متابعة لرؤيته هنا.",
+    "noFollowedUsersYet": "لا يوجد مستخدمين تابعين حتى الآن",
+    "closedGroupDiamondOnlyWarning": "يجب أن تكون في الفئة الماسية لإدارة مجموعة مغلقة."
   },
   "ratingSidebar": {
     "no": "لا",

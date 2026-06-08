@@ -185,7 +185,11 @@
     "userBlocked": "{nickname} blockiert.",
     "userUnblocked": "{nickname} entsperrt.",
     "viewMore": "Mehr anzeigen",
-    "youveBlockedUser": "Sie haben diesen Nutzer blockiert"
+    "youveBlockedUser": "Sie haben diesen Nutzer blockiert",
+    "chooseAnotherTrader": "Anderen Händler wählen",
+    "closedGroupBlockedByAddMessage": "Dieser Händler hat Sie blockiert, daher können Sie ihn nicht zu dieser Gruppe hinzufügen. Wählen Sie stattdessen einen anderen Händler.",
+    "closedGroupBlockedByRemoveMessage": "Dieser Händler hat Sie blockiert, daher können Sie ihn nicht aus dieser Gruppe entfernen. Wählen Sie stattdessen einen anderen Händler.",
+    "memberUnavailableTitle": "Mitglied nicht verfügbar"
   },
   "balance": {
     "loading": "Guthaben wird geladen...",
@@ -260,7 +264,9 @@
       "title": "Vollständig verifiziertes Konto"
     },
     "wallet": "Geldbörse",
-    "yes": "Ja"
+    "yes": "Ja",
+    "remove": "Entfernen",
+    "somethingWentWrong": "Etwas ist schiefgelaufen"
   },
   "complaint": {
     "buyer_not_paid": "Ich habe keine Zahlung erhalten",
@@ -877,7 +883,9 @@
     "userUnfollowed": "{nickname} wird nicht mehr gefolgt.",
     "validationSymbolsOnly": "Nur Buchstaben, Zahlen, Leerzeichen und die Symbole -+.,'#@():; sind erlaubt",
     "verificationExpired": "Verifizierung abgelaufen",
-    "whenUsersFollow": "Wenn Ihnen Nutzer folgen, erscheinen sie hier."
+    "whenUsersFollow": "Wenn Ihnen Nutzer folgen, erscheinen sie hier.",
+    "noFollowedUsersDescription": "Sie können nur Nutzer, denen Sie folgen, zu Ihrer geschlossenen Gruppe hinzufügen. Gehen Sie zum Profil eines Nutzers und tippen Sie auf \"Folgen\".",
+    "noFollowedUsersYet": "Noch keine gefolgten Nutzer"
   },
   "ratingSidebar": {
     "no": "Nein",

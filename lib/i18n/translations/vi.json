@@ -178,7 +178,11 @@
     "userBlocked": "Đã chặn {nickname}.",
     "userUnblocked": "Đã bỏ chặn {nickname}.",
     "viewMore": "Xem thêm",
-    "youveBlockedUser": "Bạn đã chặn người dùng này"
+    "youveBlockedUser": "Bạn đã chặn người dùng này",
+    "chooseAnotherTrader": "Chọn nhà giao dịch khác",
+    "closedGroupBlockedByAddMessage": "Nhà giao dịch này đã chặn bạn, vì vậy bạn không thể thêm họ vào nhóm này. Hãy chọn nhà giao dịch khác.",
+    "closedGroupBlockedByRemoveMessage": "Nhà giao dịch này đã chặn bạn, vì vậy bạn không thể xóa họ khỏi nhóm này. Hãy chọn nhà giao dịch khác.",
+    "memberUnavailableTitle": "Thành viên không khả dụng"
   },
   "audience": {
     "adVisibilityUpdate": "Cập nhật khả năng hiển thị quảng cáo",
@@ -271,7 +275,9 @@
       "title": "Tài khoản đã xác minh đầy đủ"
     },
     "wallet": "Ví",
-    "yes": "Có"
+    "yes": "Có",
+    "remove": "Xóa",
+    "somethingWentWrong": "Đã xảy ra sự cố"
   },
   "complaint": {
     "buyer_not_paid": "Tôi không nhận được bất kỳ khoản thanh toán nào",
@@ -894,7 +900,9 @@
     "userUnfollowed": "{nickname} đã hủy theo dõi.",
     "validationSymbolsOnly": "Chỉ cho phép chữ cái, số, khoảng trắng và ký hiệu -+.,'#@():;",
     "verificationExpired": "Xác minh đã hết hạn",
-    "whenUsersFollow": "Khi người dùng theo dõi bạn, họ sẽ xuất hiện ở đây."
+    "whenUsersFollow": "Khi người dùng theo dõi bạn, họ sẽ xuất hiện ở đây.",
+    "noFollowedUsersDescription": "Bạn chỉ có thể thêm những người dùng bạn theo dõi vào nhóm kín. Truy cập hồ sơ người dùng và nhấn Theo dõi để xem họ ở đây.",
+    "noFollowedUsersYet": "Chưa có người dùng nào được theo dõi"
   },
   "ratingSidebar": {
     "no": "Không",

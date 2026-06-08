@@ -161,7 +161,11 @@
     "userBlocked": "{nickname} 被阻止。",
     "userUnblocked": "{nickname} 已解鎖。",
     "viewMore": "看更多",
-    "youveBlockedUser": "您已封鎖該用戶"
+    "youveBlockedUser": "您已封鎖該用戶",
+    "chooseAnotherTrader": "選擇其他交易者",
+    "closedGroupBlockedByAddMessage": "該交易者已將您封鎖，因此無法將其新增至此群組。請選擇其他交易者。",
+    "closedGroupBlockedByRemoveMessage": "該交易者已將您封鎖，因此無法將其從此群組移除。請選擇其他交易者。",
+    "memberUnavailableTitle": "成員不可用"
   },
   "balance": {
     "loading": "負載平衡...",
@@ -235,7 +239,9 @@
       "title": "已驗證帳戶"
     },
     "wallet": "錢包",
-    "yes": "是的"
+    "yes": "是的",
+    "remove": "移除",
+    "somethingWentWrong": "出了點問題"
   },
   "complaint": {
     "buyer_not_paid": "我沒有收到任何付款",
@@ -849,7 +855,10 @@
     "userUnfollowed": "{nickname} 已取消關注。",
     "validationSymbolsOnly": "僅限字母、數字、空格和符號 -+.,'#@():;被允許",
     "verificationExpired": "驗證已過期",
-    "whenUsersFollow": "當用戶關注您時，他們會出現在此。"
+    "whenUsersFollow": "當用戶關注您時，他們會出現在此。",
+    "noFollowedUsersDescription": "您只能將已關注的使用者新增至封閉群組。請前往使用者個人檔案並點選關注，即可在此處看到對方。",
+    "noFollowedUsersYet": "還沒關注的用戶",
+    "closedGroupDiamondOnlyWarning": "您必須成為鑽石級會員才能管理封閉群組。"
   },
   "ratingSidebar": {
     "no": "否",

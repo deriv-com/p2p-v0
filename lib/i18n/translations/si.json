@@ -161,7 +161,11 @@
     "userBlocked": "{nickname} අවහිර කර ඇත.",
     "userUnblocked": "{nickname} අවහිර කිරීම ඉවත් කරන ලදී.",
     "viewMore": "තව බලන්න",
-    "youveBlockedUser": "ඔබ මෙම පරිශීලකයා අවහිර කර ඇත"
+    "youveBlockedUser": "ඔබ මෙම පරිශීලකයා අවහිර කර ඇත",
+    "chooseAnotherTrader": "වෙනත් වෙළඳකරුවෙකු තෝරන්න",
+    "closedGroupBlockedByAddMessage": "මෙම වෙළඳකරු ඔබව අවහිර කර ඇති නිසා ඔබට ඔවුන්ව මෙම කණ්ඩායමට එක් කළ නොහැක. වෙනත් වෙළඳකරුවෙකු තෝරන්න.",
+    "closedGroupBlockedByRemoveMessage": "මෙම වෙළඳකරු ඔබව අවහිර කර ඇති නිසා ඔබට ඔවුන්ව මෙම කණ්ඩායමෙන් ඉවත් කළ නොහැක. වෙනත් වෙළඳකරුවෙකු තෝරන්න.",
+    "memberUnavailableTitle": "සාමාජිකයා නොමැත"
   },
   "balance": {
     "loading": "ශේෂය පූරණය වෙමින්...",
@@ -235,7 +239,9 @@
       "title": "තහවුරු කළ ගිණුම"
     },
     "wallet": "පසුම්බිය",
-    "yes": "ඔව්"
+    "yes": "ඔව්",
+    "remove": "ඉවත් කරන්න",
+    "somethingWentWrong": "යමක් වැරදී ඇත"
   },
   "complaint": {
     "buyer_not_paid": "මට කිසිම ගෙවීමක් ලැබුණේ නැහැ",
@@ -849,7 +855,10 @@
     "userUnfollowed": "{nickname} අනුගමනය නොකළේය.",
     "validationSymbolsOnly": "අකුරු, ඉලක්කම්, හිස්තැන් සහ සංකේත පමණි -+.,'#@():; අවසර ලැබේ",
     "verificationExpired": "සත්‍යාපනය කල් ඉකුත් විය",
-    "whenUsersFollow": "පරිශීලකයන් ඔබව අනුගමනය කරන විට, ඔවුන් මෙහි දිස් වනු ඇත."
+    "whenUsersFollow": "පරිශීලකයන් ඔබව අනුගමනය කරන විට, ඔවුන් මෙහි දිස් වනු ඇත.",
+    "noFollowedUsersDescription": "ඔබට අනුගමනය කරන පරිශීලකයින් පමණක් ඔබේ වසන් කණ්ඩායමට එක් කළ හැක. මෙහි දැකගැනීමට පරිශීලක පැතිකඩට ගොස් අනුගමනය තට්ටු කරන්න.",
+    "noFollowedUsersYet": "තවමත් අනුගාමික පරිශීලකයන් නොමැත",
+    "closedGroupDiamondOnlyWarning": "සංවෘත කණ්ඩායමක් කළමනාකරණය කිරීමට ඔබ ඩයමන්ඩ් ස්ථරයේ සිටිය යුතුය."
   },
   "ratingSidebar": {
     "no": "නැත",

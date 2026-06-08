@@ -161,7 +161,11 @@
     "userBlocked": "{nickname} blocked.",
     "userUnblocked": "{nickname} unblocked.",
     "viewMore": "View more",
-    "youveBlockedUser": "You've blocked this user"
+    "youveBlockedUser": "You've blocked this user",
+    "chooseAnotherTrader": "Choose another trader",
+    "closedGroupBlockedByAddMessage": "This trader has blocked you, so you can't add them to this group. Choose a different trader instead.",
+    "closedGroupBlockedByRemoveMessage": "This trader has blocked you, so you can't remove them from this group. Choose a different trader instead.",
+    "memberUnavailableTitle": "Member unavailable"
   },
   "balance": {
     "loading": "Loading balance...",
@@ -280,7 +284,9 @@
     "visibilityStatus": "Visibility status",
     "wallet": "Wallet",
     "warning": "Warning",
-    "yes": "Yes"
+    "yes": "Yes",
+    "remove": "Remove",
+    "somethingWentWrong": "Something went wrong"
   },
   "complaint": {
     "buyer_not_paid": "I didn't receive any payment",
@@ -949,7 +955,9 @@
     "userUnfollowed": "{nickname} unfollowed.",
     "validationSymbolsOnly": "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
     "verificationExpired": "Verification expired",
-    "whenUsersFollow": "When users follow you, they'll appear here."
+    "whenUsersFollow": "When users follow you, they'll appear here.",
+    "noFollowedUsersDescription": "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here.",
+    "noFollowedUsersYet": "No followed users yet"
   },
   "ratingSidebar": {
     "no": "No",

@@ -165,7 +165,11 @@
     "userBlocked": "{nickname} zablokowany.",
     "userUnblocked": "Użytkownik {nickname} został odblokowany.",
     "viewMore": "Wyświetl więcej",
-    "youveBlockedUser": "Zablokowałeś tego użytkownika"
+    "youveBlockedUser": "Zablokowałeś tego użytkownika",
+    "chooseAnotherTrader": "Wybierz innego tradera",
+    "closedGroupBlockedByAddMessage": "Ten trader zablokował Cię, więc nie możesz dodać go do tej grupy. Wybierz innego tradera.",
+    "closedGroupBlockedByRemoveMessage": "Ten trader zablokował Cię, więc nie możesz usunąć go z tej grupy. Wybierz innego tradera.",
+    "memberUnavailableTitle": "Członek niedostępny"
   },
   "balance": {
     "loading": "Ładowanie salda...",
@@ -239,7 +243,9 @@
       "title": "Zweryfikowane konto"
     },
     "wallet": "Portfel",
-    "yes": "Tak"
+    "yes": "Tak",
+    "remove": "Usuń",
+    "somethingWentWrong": "Coś poszło nie tak"
   },
   "complaint": {
     "buyer_not_paid": "Nie otrzymałem żadnej płatności",
@@ -862,7 +868,9 @@
     "userUnfollowed": "Użytkownik {nickname} nie jest już obserwowany.",
     "validationSymbolsOnly": "Dozwolone są tylko litery, cyfry, spacje i symbole -+.,'#@():;",
     "verificationExpired": "Weryfikacja wygasła",
-    "whenUsersFollow": "Gdy użytkownicy Cię obserwują, pojawią się tutaj."
+    "whenUsersFollow": "Gdy użytkownicy Cię obserwują, pojawią się tutaj.",
+    "noFollowedUsersDescription": "Do zamkniętej grupy możesz dodawać tylko obserwowanych użytkowników. Przejdź do profilu użytkownika i kliknij Obserwuj, aby go zobaczyć tutaj.",
+    "noFollowedUsersYet": "Brak obserwowanych użytkowników"
   },
   "ratingSidebar": {
     "no": "Nie",

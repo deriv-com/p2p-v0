@@ -14,6 +14,7 @@ import { removeAllFromClosedGroup, addToClosedGroup, removeFromClosedGroup } fro
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useFavouriteUsers } from "@/hooks/use-api-queries"
+import { useToast } from "@/hooks/use-toast"
 import { useUserDataStore } from "@/stores/user-data-store"
 interface ClosedGroup {
   user_id: number
@@ -27,11 +28,15 @@ interface ClosedGroupTabProps {
 
 export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProps) {
   const { t } = useTranslations()
-  const { hideAlert } = useAlertDialog()
+  const { hideAlert, showAlert } = useAlertDialog()
+  const { toast } = useToast()
   const { userData } = useUserDataStore()
   const isDiamond = userData?.trade_band === "diamond"
   const { data, isLoading, refetch } = useFavouriteUsers(isDiamond)
-  const closedGroups: ClosedGroup[] = data?.pages.flat() ?? []
+  // Force empty list for non-diamond users even if React Query returns stale cached
+  // data (e.g. user downgraded mid-session). The enabled:false flag prevents new
+  // network requests; this override ensures the UI never renders cached results.
+  const closedGroups: ClosedGroup[] = isDiamond ? (data?.pages.flat() ?? []) : []
   const [searchQuery, setSearchQuery] = useState("")
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -50,19 +55,61 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
     setSearchQuery(value)
   }, [])
 
+  const handleClosedGroupError = useCallback((errors: Array<{ code: string; message: string }> | undefined, isAdd: boolean) => {
+    const code = errors?.[0]?.code
+    if (code === "UserGroupMemberBlockedBy") {
+      showAlert({
+        title: t("advertiser.memberUnavailableTitle"),
+        description: isAdd
+          ? t("advertiser.closedGroupBlockedByAddMessage")
+          : t("advertiser.closedGroupBlockedByRemoveMessage"),
+        confirmText: t("advertiser.chooseAnotherTrader"),
+        cancelText: t("common.close"),
+        type: "warning",
+        onConfirm: hideAlert,
+        onCancel: hideAlert,
+      })
+    } else {
+      const errorCode = errors?.[0]?.code ?? "unknown"
+      showAlert({
+        title: t("common.somethingWentWrong"),
+        description: t("nps.errorMessage", { errorCode }),
+        confirmText: t("common.gotIt"),
+        type: "warning",
+        onConfirm: hideAlert,
+      })
+    }
+  }, [showAlert, hideAlert, toast, t])
+
+  const showToast = useCallback((message: string) => {
+    toast({
+      description: (
+        <div className="flex items-center gap-2">
+          <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+          <span>{message}</span>
+        </div>
+      ),
+      className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+      duration: 2500,
+    })
+  }, [toast])
+
   const handleRemoveAll = useCallback(async () => {
     try {
       setIsRemoving(true)
       const result = await removeAllFromClosedGroup()
       if (result.success) {
         await refetch()
+        showToast(t("advertiser.removedFromClosedGroup"))
+      } else {
+        handleClosedGroupError(result.errors, false)
       }
     } catch (err) {
       console.error("Failed to remove all from closed group:", err)
     } finally {
       setIsRemoving(false)
     }
-  }, [refetch])
+  }, [refetch, t, showToast, handleClosedGroupError])
 
   const handleToggleMembership = useCallback(async (group: ClosedGroup) => {
     try {
@@ -70,20 +117,24 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         return
       }
 
-      let result
-      if (group.is_group_member) {
-        result = await removeFromClosedGroup(group.user_id)
-      } else {
-        result = await addToClosedGroup(group.user_id)
-      }
+      const isAdd = !group.is_group_member
+      const result = isAdd
+        ? await addToClosedGroup(group.user_id)
+        : await removeFromClosedGroup(group.user_id)
 
       if (result.success) {
         await refetch()
+        showToast(isAdd
+          ? t("advertiser.addedToClosedGroup")
+          : t("advertiser.removedFromClosedGroup")
+        )
+      } else {
+        handleClosedGroupError(result.errors, isAdd)
       }
     } catch (err) {
       console.error("Failed to update closed group membership:", err)
     }
-  }, [refetch])
+  }, [refetch, t, showToast, handleClosedGroupError])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
     <div className="h-[72px] flex items-center justify-between gap-3">
@@ -98,7 +149,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           size="sm"
           className="min-w-fit"
         >
-          {group.is_group_member ? "Remove" : "Add"}
+          {group.is_group_member ? t("common.remove") : t("common.add")}
         </Button>
       </div>
     </div>
@@ -147,23 +198,21 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
         </div>
       )}
 
-      {closedGroups.length > 0 && (<div className="flex items-center justify-between">
+      {closedGroups.length > 0 && !searchQuery && (<div className="flex items-center justify-between">
         <h2 className="text-grayscale-text-muted text-base">{t("profile.addFromYourFollowing")}</h2>
-        {closedGroups.length > 0 && (
-          <Button
-            onClick={handleRemoveAll}
-            disabled={isRemoving || !hasGroupMembers}
-            variant="ghost"
-            size="sm"
-            className="px-0 underline hover:opacity-100 hover:bg-transparent disabled:text-grayscale-text-placeholder disabled:opacity-100 cursor-pointer"
-          >
-            Remove all
-          </Button>
-        )}
+        <Button
+          onClick={handleRemoveAll}
+          disabled={isRemoving || !hasGroupMembers}
+          variant="ghost"
+          size="sm"
+          className="px-0 underline hover:opacity-100 hover:bg-transparent disabled:text-grayscale-text-placeholder disabled:opacity-100 cursor-pointer"
+        >
+          {t("common.removeAll")}
+        </Button>
       </div>)}
 
-      <div className="space-y-0">
-        {isLoading ? (
+      <div className="space-y-0 h-[20rem] overflow-y-auto">
+        {isLoading && isDiamond ? (
           <div className="space-y-0">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-[72px] flex items-center justify-between gap-3">
@@ -175,7 +224,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
               </div>
             ))}
           </div>
-        ) : filteredClosedGroups.length > 0 ? (
+        ) : isDiamond && filteredClosedGroups.length > 0 ? (
           filteredClosedGroups.map((group) => <GroupCard key={group.user_id} group={group} />)
         ) : (
           <EmptyState
@@ -191,7 +240,7 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
       </div>
 
       {isInAlert && (
-        <div className="mt-6 border-gray-100">
+        <div className="my-6 border-gray-100 pb-6">
           <Button
             onClick={hideAlert}
             variant="primary"

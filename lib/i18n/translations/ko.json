@@ -161,7 +161,11 @@
     "userBlocked": "{nickname}이 차단되었습니다.",
     "userUnblocked": "{nickname}을 차단 해제했습니다.",
     "viewMore": "더 보기",
-    "youveBlockedUser": "이 사용자를 차단했습니다."
+    "youveBlockedUser": "이 사용자를 차단했습니다.",
+    "chooseAnotherTrader": "다른 트레이더 선택",
+    "closedGroupBlockedByAddMessage": "이 트레이더가 회원님을 차단했으므로 그룹에 추가할 수 없습니다. 다른 트레이더를 선택하세요.",
+    "closedGroupBlockedByRemoveMessage": "이 트레이더가 회원님을 차단했으므로 그룹에서 제거할 수 없습니다. 다른 트레이더를 선택하세요.",
+    "memberUnavailableTitle": "회원 이용 불가"
   },
   "balance": {
     "loading": "잔액을 로딩 중입니다...",
@@ -235,7 +239,9 @@
       "title": "인증된 계정"
     },
     "wallet": "지갑",
-    "yes": "예"
+    "yes": "예",
+    "remove": "제거",
+    "somethingWentWrong": "문제가 발생했습니다"
   },
   "complaint": {
     "buyer_not_paid": "결제를 받지 못했습니다",
@@ -899,7 +905,9 @@
     "userUnfollowed": "{nickname} 팔로우를 취소했습니다.",
     "validationSymbolsOnly": "문자, 숫자, 공백 및 기호 -+.,'#@():;만 허용됩니다",
     "verificationExpired": "검증 만료",
-    "whenUsersFollow": "사용자가 팔로우할 때 여기에 나타납니다."
+    "whenUsersFollow": "사용자가 팔로우할 때 여기에 나타납니다.",
+    "noFollowedUsersDescription": "팔로우하는 사용자만 폐쇄 그룹에 추가할 수 있습니다. 사용자의 프로필로 이동하여 팔로우를 탭하면 여기에 표시됩니다.",
+    "noFollowedUsersYet": "아직 팔로우한 사용자 없음"
   },
   "ratingSidebar": {
     "no": "아니오",

@@ -161,7 +161,11 @@
     "userBlocked": "{nickname} imezuiwa.",
     "userUnblocked": "{nickname} zuio limeondolewa.",
     "viewMore": "Tazama zaidi",
-    "youveBlockedUser": "Umemzuia mtumiaji huyu"
+    "youveBlockedUser": "Umemzuia mtumiaji huyu",
+    "chooseAnotherTrader": "Chagua mfanyabiashara mwingine",
+    "closedGroupBlockedByAddMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaongeza kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
+    "closedGroupBlockedByRemoveMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaondoa kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
+    "memberUnavailableTitle": "Mwanachama hapatikani"
   },
   "balance": {
     "loading": "Inapakua salio...",
@@ -235,7 +239,9 @@
       "title": "Akaunti iliyothibitishwa"
     },
     "wallet": "Hazina",
-    "yes": "Ndiyo"
+    "yes": "Ndiyo",
+    "remove": "Ondoa",
+    "somethingWentWrong": "Kuna tatizo limetokea"
   },
   "complaint": {
     "buyer_not_paid": "Sikupokea malipo yoyote",
@@ -858,7 +864,9 @@
     "userUnfollowed": "{nickname} haifuatwi tena.",
     "validationSymbolsOnly": "Herufi, namba, nafasi, na alama -+.,'#@():; tu zinakubaliwa",
     "verificationExpired": "Uthibitisho umepita muda",
-    "whenUsersFollow": "Wakati watumiaji wanakufuata, wataonekana hapa."
+    "whenUsersFollow": "Wakati watumiaji wanakufuata, wataonekana hapa.",
+    "noFollowedUsersDescription": "Unaweza tu kuongeza watumiaji unaowafuata kwenye kikundi chako kilichofungwa. Nenda kwenye wasifu wa mtumiaji na uguse Fuata ili kuwaona hapa.",
+    "noFollowedUsersYet": "Bado hakuna watumiaji wanaofuatwa"
   },
   "ratingSidebar": {
     "no": "Hapana",

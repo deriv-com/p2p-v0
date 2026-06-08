@@ -161,7 +161,11 @@
     "userBlocked": "{nickname} блоклогдсон.",
     "userUnblocked": "{nickname} блокоос гарсан.",
     "viewMore": "Илүү ихийг үзэх",
-    "youveBlockedUser": "Та энэ хэрэглэгчийг блоклосон байна"
+    "youveBlockedUser": "Та энэ хэрэглэгчийг блоклосон байна",
+    "chooseAnotherTrader": "Өөр арилжаач сонгоно уу",
+    "closedGroupBlockedByAddMessage": "Энэ арилжаач таныг блоклосон тул та тэднийг энэ бүлэгт нэмж чадахгүй. Өөр арилжаач сонгоно уу.",
+    "closedGroupBlockedByRemoveMessage": "Энэ арилжаач таныг блоклосон тул та тэднийг энэ бүлгээс хасаж чадахгүй. Өөр арилжаач сонгоно уу.",
+    "memberUnavailableTitle": "Гишүүн боломжгүй"
   },
   "balance": {
     "loading": "Үлдэгдлийг ачаалж байна...",
@@ -235,7 +239,9 @@
       "title": "Баталгаажсан бүртгэл"
     },
     "wallet": "Түрийвч",
-    "yes": "Тиймээ"
+    "yes": "Тиймээ",
+    "remove": "Хасах",
+    "somethingWentWrong": "Ямар нэг зүйл буруу боллоо"
   },
   "complaint": {
     "buyer_not_paid": "Би ямар ч төлбөр аваагүй",
@@ -849,7 +855,10 @@
     "userUnfollowed": "{nickname} дагахаа больсон.",
     "validationSymbolsOnly": "Зөвхөн үсэг, тоо, зай, тэмдэг -+.,'#@():; зөвшөөрөгдсөн",
     "verificationExpired": "Баталгаажуулах хугацаа дууссан",
-    "whenUsersFollow": "Хэрэглэгчид таныг дагавал энд харагдах болно."
+    "whenUsersFollow": "Хэрэглэгчид таныг дагавал энд харагдах болно.",
+    "noFollowedUsersDescription": "Та зөвхөн дагаж буй хэрэглэгчдийг хаалттай бүлэгтээ нэмж болно. Энд харахын тулд хэрэглэгчийн профайл руу орж Дагах дээр дарна уу.",
+    "noFollowedUsersYet": "Дагасан хэрэглэгч хараахан алга",
+    "closedGroupDiamondOnlyWarning": "Хаалттай бүлгийг удирдахын тулд Diamond зэрэглэлд байх ёстой."
   },
   "ratingSidebar": {
     "no": "Үгүй",

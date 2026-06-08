@@ -12,7 +12,7 @@ import {
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { cn } from "@/lib/utils"
+import { cn, IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 interface FollowDropdownProps {
   isFollowing: boolean
@@ -37,7 +37,7 @@ export default function FollowDropdown({
   const isMobile = useIsMobile()
   const userData = useUserDataStore((state) => state.userData)
   const { t } = useTranslations()
-  const isClosedGroupEnabled = userData?.trade_band === "diamond"
+  const isClosedGroupEnabled = IS_CLOSED_GROUP_ENABLED && userData?.trade_band === "diamond"
 
   const handleUnfollow = () => {
     onUnfollow()
