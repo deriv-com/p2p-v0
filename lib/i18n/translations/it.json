@@ -467,6 +467,7 @@
     "saveChanges": "Salva modifiche",
     "loading": "Caricamento...",
     "validationSymbolsOnly": "Sono consentiti solo lettere, numeri, spazi e simboli -+.,'#@():;",
+    "validationNumbersOnly": "Sono consentiti solo numeri.",
     "fieldRequired": "{field} è obbligatorio",
     "enterField": "Inserisci {field}",
     "tryAgain": "Riprova",

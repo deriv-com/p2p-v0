@@ -510,6 +510,7 @@
     "saveChanges": "Save changes",
     "loading": "Loading...",
     "validationSymbolsOnly": "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+    "validationNumbersOnly": "Only numbers are allowed.",
     "fieldRequired": "{field} is required",
     "enterField": "Enter {field}",
     "tryAgain": "Try again",

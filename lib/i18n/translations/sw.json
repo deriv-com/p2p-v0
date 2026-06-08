@@ -496,6 +496,7 @@
     "saveChanges": "Hifadhi mabadiliko",
     "loading": "Inapakua...",
     "validationSymbolsOnly": "Herufi, namba, nafasi, na alama -+.,'#@():; tu zinakubaliwa",
+    "validationNumbersOnly": "Namba pekee zinakubaliwa.",
     "fieldRequired": "{field} inahitajika",
     "enterField": "Ingiza {field}",
     "tryAgain": "Jaribu tena",

@@ -462,6 +462,7 @@
     "saveChanges": "Сохранить изменения",
     "loading": "Загрузка...",
     "validationSymbolsOnly": "Разрешены только буквы, цифры, пробелы и символы -+.,'#@():;",
+    "validationNumbersOnly": "Разрешены только цифры.",
     "fieldRequired": "{field} обязательно",
     "enterField": "Введите {field}",
     "tryAgain": "Попробовать снова",

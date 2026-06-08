@@ -493,6 +493,7 @@
     "saveChanges": "Salvar alterações",
     "loading": "Carregando...",
     "validationSymbolsOnly": "Apenas letras, números, espaços e símbolos -+.,'#@():; são permitidos",
+    "validationNumbersOnly": "Apenas números são permitidos.",
     "fieldRequired": "{field} é obrigatório",
     "enterField": "Digite {field}",
     "tryAgain": "Tentar novamente",
