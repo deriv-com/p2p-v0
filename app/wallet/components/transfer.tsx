@@ -1426,10 +1426,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="absolute top-4 start-6 flex flex-col items-start gap-1.5 w-10">
+              <div className="absolute top-4 start-6 flex flex-col items-start gap-1.5">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.from")}</div>
-                {sourceWalletData ? (
-                  sourceWalletData.name.includes("P2P") ? (
+                {sourceWalletData &&
+                  (sourceWalletData.name.includes("P2P") ? (
                     <div className="relative w-[21px] h-[21px] flex-shrink-0 mt-1">
                       <Image
                         src="/icons/p2p-black.png"
@@ -1461,17 +1461,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         className="w-full h-full object-cover"
                       />
                     </div>
-                  )
-                ) : (
-                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">{t("wallet.select")}</div>
-                )}
+                  ))}
               </div>
-              <div className="flex-1 mt-6 ms-10 pe-8 text-start">
-                {sourceWalletData && (
+              <div className="flex-1 min-w-0 mt-6 ms-10 pe-8 text-start">
+                {sourceWalletData ? (
                   <>
                     <div className="text-slate-1200 text-base font-bold">{sourceWalletData.name}</div>
                     <div className="text-grayscale-600 text-sm font-normal">{getSourceWalletAmount()}</div>
                   </>
+                ) : (
+                  <div className="text-grayscale-text-placeholder text-base font-normal whitespace-nowrap">{t("wallet.select")}</div>
                 )}
               </div>
               <Image src="/icons/chevron-down.png" alt={t("common.dropdown")} width={24} height={24} />
@@ -1488,10 +1487,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="absolute top-4 start-6 flex flex-col items-start gap-1.5 w-10">
+              <div className="absolute top-4 start-6 flex flex-col items-start gap-1.5">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.to")}</div>
-                {destinationWalletData ? (
-                  destinationWalletData.name.includes("P2P") ? (
+                {destinationWalletData &&
+                  (destinationWalletData.name.includes("P2P") ? (
                     <div className="relative w-[21px] h-[21px] flex-shrink-0 mt-1">
                       <Image
                         src="/icons/p2p-black.png"
@@ -1524,17 +1523,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         className="w-full h-full object-cover"
                       />
                     </div>
-                  )
-                ) : (
-                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">{t("wallet.select")}</div>
-                )}
+                  ))}
               </div>
-              <div className="flex-1 mt-6 ms-10 pe-8 text-start">
-                {destinationWalletData && (
+              <div className="flex-1 min-w-0 mt-6 ms-10 pe-8 text-start">
+                {destinationWalletData ? (
                   <>
                     <div className="text-slate-1200 text-base font-bold">{destinationWalletData.name}</div>
                     <div className="text-grayscale-600 text-sm font-normal">{getDestinationWalletAmount()}</div>
                   </>
+                ) : (
+                  <div className="text-grayscale-text-placeholder text-base font-normal whitespace-nowrap">{t("wallet.select")}</div>
                 )}
               </div>
               <Image src="/icons/chevron-down.png" alt={t("common.dropdown")} width={24} height={24} />

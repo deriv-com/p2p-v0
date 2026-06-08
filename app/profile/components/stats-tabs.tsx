@@ -435,13 +435,13 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
           </div>
         ) : (
           <Tabs value={selectedTab} onValueChange={handleTabChange} className="h-full">
-            <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
-              <TabsList className="w-auto h-9 bg-transparent">
+            <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8 overflow-x-auto">
+              <TabsList className="h-auto min-h-10 w-auto bg-transparent p-0 gap-1 md:gap-2">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="w-full px-4 py-2 rounded-none border-b-2 border-b-transparent data-[state=active]:border-b-black data-[state=active]:shadow-none"
+                    className="h-auto w-auto flex-none shrink-0 px-4 md:px-5 py-2.5 rounded-none border-b-2 border-b-transparent -mb-[2px] leading-normal data-[state=active]:border-b-black data-[state=active]:shadow-none data-[state=active]:bg-transparent"
                   >
                     {tab.label}
                   </TabsTrigger>

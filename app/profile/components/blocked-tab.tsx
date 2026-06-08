@@ -90,24 +90,24 @@ export default function BlockedTab() {
   }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
-    <div className="h-[72px] flex items-center justify-between gap-3">
+    <div className="h-[72px] flex items-center justify-between gap-3 min-w-0">
       <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
         {user.nickname?.charAt(0).toUpperCase()}
       </div>
-      <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+      <div className="flex-1 min-w-0 border-b border-gray-100 py-4 flex items-center justify-between gap-3">
         <Button
           onClick={() => onUserClick(user.user_id)}
-          className="hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200 px-0 text-base"
+          className="min-w-0 flex-1 justify-start text-start hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200 px-0 text-base overflow-hidden"
           size="sm"
           variant="ghost"
         >
-          {user.nickname}
+          <span className="block truncate">{user.nickname}</span>
         </Button>
         <Button
           variant="outline"
           size="sm"
           onClick={() => handleUnblock(user)}
-          className="rounded-full px-4 py-1 text-sm"
+          className="shrink-0 whitespace-nowrap rounded-full px-4 py-1 text-sm"
         >
           {t("profile.unblock")}
         </Button>
