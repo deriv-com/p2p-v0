@@ -727,3 +727,6 @@ export const getLoginUrl = (isV1Signup = false) => {
 
   return isProduction ? `https://home.${domain}/dashboard/login` : `https://staging-home.${domain}/dashboard/login`
 }
+
+/** Whether the closed group feature is enabled. Set NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED=1 in GitHub Secrets to enable. */
+export const IS_CLOSED_GROUP_ENABLED = process.env.NEXT_PUBLIC_IS_CLOSED_GROUP_ENABLED === "1"

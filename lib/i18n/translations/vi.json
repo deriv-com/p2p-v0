@@ -29,7 +29,9 @@
     "verifiedBadge": {
       "title": "Tài khoản đã xác minh đầy đủ",
       "description": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
-    }
+    },
+    "remove": "Xóa",
+    "somethingWentWrong": "Đã xảy ra sự cố"
   },
   "navigation": {
     "market": "Thị trường",
@@ -384,6 +386,7 @@
     "aboutYou": "Về bạn",
     "settings": "Cài đặt",
     "support": "Hỗ trợ",
+    "closedGroupDiamondOnlyWarning": "Bạn phải ở cấp Diamond để quản lý nhóm kín.",
     "bronzeTier": "Hạng Đồng",
     "bronzeTierDescription": "Hạng mặc định cho người dùng mới với giới hạn giao dịch cơ bản.",
     "silverTier": "Hạng Bạc",
@@ -455,7 +458,9 @@
     "validationSymbolsOnly": "Chỉ cho phép chữ cái, số, khoảng trắng và ký hiệu -+.,'#@():;",
     "fieldRequired": "{field} là bắt buộc",
     "enterField": "Nhập {field}",
-    "tryAgain": "Thử lại"
+    "tryAgain": "Thử lại",
+    "noFollowedUsersYet": "Chưa có người dùng nào được theo dõi",
+    "noFollowedUsersDescription": "Bạn chỉ có thể thêm những người dùng bạn theo dõi vào nhóm kín. Truy cập hồ sơ người dùng và nhấn Theo dõi để xem họ ở đây."
   },
   "wallet": {
     "title": "Ví",
@@ -890,7 +895,11 @@
     "addedToClosedGroup": "Đã thêm vào nhóm đóng thành công.",
     "removedFromClosedGroup": "Đã xóa khỏi nhóm đóng thành công.",
     "userBlocked": "Đã chặn {nickname}.",
-    "userUnblocked": "Đã bỏ chặn {nickname}."
+    "userUnblocked": "Đã bỏ chặn {nickname}.",
+    "memberUnavailableTitle": "Thành viên không khả dụng",
+    "closedGroupBlockedByAddMessage": "Nhà giao dịch này đã chặn bạn, vì vậy bạn không thể thêm họ vào nhóm này. Hãy chọn nhà giao dịch khác.",
+    "closedGroupBlockedByRemoveMessage": "Nhà giao dịch này đã chặn bạn, vì vậy bạn không thể xóa họ khỏi nhóm này. Hãy chọn nhà giao dịch khác.",
+    "chooseAnotherTrader": "Chọn nhà giao dịch khác"
   },
   "kyc": {
     "accessP2PMessage": "Để truy cập P2P, hoàn tất hồ sơ và xác minh của bạn.",

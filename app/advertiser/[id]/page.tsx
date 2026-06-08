@@ -11,7 +11,7 @@ import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import { addToClosedGroup, removeFromClosedGroup } from "@/services/api/api-profile"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName, IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
@@ -500,7 +500,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           size={18}
                         />
                       )}
-                      {isGroupMember &&
+                      {IS_CLOSED_GROUP_ENABLED && isGroupMember &&
                         <ClosedGroupBadge />
                       }
                     </div>

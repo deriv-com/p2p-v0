@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { TradeBandBadge } from "@/components/trade-band-badge"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName, IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -41,7 +41,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                         {ad.user.trade_band && (
                             <TradeBandBadge tradeBand={ad.user.trade_band} showLearnMore={true} size={18} />
                         )}
-                        {ad.is_private && (
+                        {IS_CLOSED_GROUP_ENABLED && ad.is_private && (
                             <Image src="/icons/closed-group.svg" alt="Closed Group" width={32} height={32} className="cursor-pointer mr-1" />
                         )}
                         {ad.user?.is_favourite && (

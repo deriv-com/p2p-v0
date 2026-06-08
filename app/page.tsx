@@ -21,7 +21,7 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { currencyFlagMapper, formatPaymentMethodName } from "@/lib/utils"
+import { currencyFlagMapper, formatPaymentMethodName, IS_CLOSED_GROUP_ENABLED } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
@@ -777,7 +777,7 @@ export default function BuySellPage() {
                                   size={18}
                                 />
                               )}
-                              {ad.is_private && (
+                              {IS_CLOSED_GROUP_ENABLED && ad.is_private && (
                                 <Image
                                   src="/icons/closed-group.svg"
                                   alt="Closed Group"

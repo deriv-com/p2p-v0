@@ -34,7 +34,9 @@
     "verifiedBadge": {
       "title": "Akaunti iliyothibitishwa",
       "description": "Barua pepe, simu, kitambulisho, na ukaguzi wa anwani umekamilika. Hii inakusaidia kuuza na ujasiri zaidi."
-    }
+    },
+    "remove": "Ondoa",
+    "somethingWentWrong": "Kuna tatizo limetokea"
   },
   "navigation": {
     "market": "Soko",
@@ -501,7 +503,10 @@
     "aboutYou": "Juu yako",
     "settings": "Mipangilio",
     "support": "Msaada",
-    "addFromYourFollowing": "Ongeza kutoka kwa unayowafuata"
+    "addFromYourFollowing": "Ongeza kutoka kwa unayowafuata",
+    "closedGroupDiamondOnlyWarning": "Lazima uwe katika ngazi ya Diamond ili kusimamia kikundi kilichofungwa.",
+    "noFollowedUsersYet": "Bado hakuna watumiaji wanaofuatwa",
+    "noFollowedUsersDescription": "Unaweza tu kuongeza watumiaji unaowafuata kwenye kikundi chako kilichofungwa. Nenda kwenye wasifu wa mtumiaji na uguse Fuata ili kuwaona hapa."
   },
   "wallet": {
     "title": "Hazina",
@@ -760,5 +765,11 @@
     "heroBenefitHigherLimits": "Higher limits",
     "heroBenefitFasterWithdrawals": "Faster withdrawals",
     "statusInReview": "In review"
+  },
+  "advertiser": {
+    "memberUnavailableTitle": "Mwanachama hapatikani",
+    "closedGroupBlockedByAddMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaongeza kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
+    "closedGroupBlockedByRemoveMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaondoa kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
+    "chooseAnotherTrader": "Chagua mfanyabiashara mwingine"
   }
 }

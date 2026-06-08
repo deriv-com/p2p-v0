@@ -34,7 +34,9 @@
     "verifiedBadge": {
       "title": "Verified account",
       "description": "Email, phone, identity, and address checks are complete. This helps you trade with more confidence."
-    }
+    },
+    "remove": "Remove",
+    "somethingWentWrong": "Something went wrong"
   },
   "navigation": {
     "market": "Market",
@@ -515,7 +517,10 @@
     "aboutYou": "About you",
     "settings": "Settings",
     "support": "Support",
-    "addFromYourFollowing": "Add from your following"
+    "addFromYourFollowing": "Add from your following",
+    "closedGroupDiamondOnlyWarning": "You must be in the Diamond tier to manage a closed group.",
+    "noFollowedUsersYet": "No followed users yet",
+    "noFollowedUsersDescription": "You can only add users you follow to your closed group. Go to a user's profile and tap Follow to see them here."
   },
   "wallet": {
     "title": "Wallet",
@@ -967,7 +972,11 @@
     "addedToClosedGroup": "Successfully added to closed group.",
     "removedFromClosedGroup": "Successfully removed from closed group.",
     "userBlocked": "{nickname} blocked.",
-    "userUnblocked": "{nickname} unblocked."
+    "userUnblocked": "{nickname} unblocked.",
+    "memberUnavailableTitle": "Member unavailable",
+    "closedGroupBlockedByAddMessage": "This trader has blocked you, so you can't add them to this group. Choose a different trader instead.",
+    "closedGroupBlockedByRemoveMessage": "This trader has blocked you, so you can't remove them from this group. Choose a different trader instead.",
+    "chooseAnotherTrader": "Choose another trader"
   },
   "kyc": {
     "accessP2PMessage": "To continue, complete the remaining steps:",
