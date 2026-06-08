@@ -457,6 +457,8 @@
     "saveChanges": "Änderungen speichern",
     "loading": "Wird geladen...",
     "validationSymbolsOnly": "Nur Buchstaben, Zahlen, Leerzeichen und die Symbole -+.,'#@():; sind erlaubt",
+    "validationNumbersOnly": "Nur Zahlen sind erlaubt.",
+    "validationAccountTooLong": "Die Kontonummer darf maximal 50 Zeichen lang sein.",
     "fieldRequired": "{field} ist erforderlich",
     "enterField": "{field} eingeben",
     "tryAgain": "Erneut versuchen",

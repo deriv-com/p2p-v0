@@ -462,6 +462,8 @@
     "saveChanges": "Сохранить изменения",
     "loading": "Загрузка...",
     "validationSymbolsOnly": "Разрешены только буквы, цифры, пробелы и символы -+.,'#@():;",
+    "validationNumbersOnly": "Разрешены только цифры.",
+    "validationAccountTooLong": "Номер учетной записи должен содержать не более 50 символов.",
     "fieldRequired": "{field} обязательно",
     "enterField": "Введите {field}",
     "tryAgain": "Попробовать снова",

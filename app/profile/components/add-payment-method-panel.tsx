@@ -7,6 +7,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { usePaymentMethods } from "@/hooks/use-api-queries"
+import {
+  getPaymentMethodAccountValidationIssue,
+  PAYMENT_METHOD_ACCOUNT_MAX_LENGTH,
+  requiresNumericAccountField,
+  sanitizeNumericAccountInput,
+} from "@/lib/payment-method-validation"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
 import EmptyState from "@/components/empty-state"
@@ -108,9 +114,20 @@ export default function AddPaymentMethodPanel({
     onBack?.()
   }
 
-  const validateInput = (value: string) => {
+  const validateSymbolsInput = (value: string) => {
     const allowedPattern = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/
     return allowedPattern.test(value)
+  }
+
+  const getFieldValidationError = (method: string, fieldName: string, value: string): string | null => {
+    const trimmed = value.trim()
+    if (!trimmed) return null
+
+    const accountIssue = getPaymentMethodAccountValidationIssue(method, fieldName, value)
+    if (accountIssue === "numbersOnly") return t("profile.validationNumbersOnly")
+    if (accountIssue === "tooLong") return t("profile.validationAccountTooLong")
+
+    return validateSymbolsInput(trimmed) ? null : t("profile.validationSymbolsOnly")
   }
 
   const validateForm = () => {
@@ -121,17 +138,21 @@ export default function AddPaymentMethodPanel({
     }
 
     selectedMethodFields.forEach((field) => {
-      const value = details[field.name]?.trim()
+      const value = details[field.name]?.trim() ?? ""
 
       if (!value && field.required) {
         newErrors[field.name] = `${field.label} is required`
-      } else if (value && !validateInput(value)) {
-        newErrors[field.name] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        return
+      }
+
+      const fieldError = getFieldValidationError(selectedMethod, field.name, value)
+      if (fieldError) {
+        newErrors[field.name] = fieldError
       }
     })
 
-    if (instructions && !validateInput(instructions)) {
-      newErrors.instructions = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+    if (instructions && !validateSymbolsInput(instructions)) {
+      newErrors.instructions = t("profile.validationSymbolsOnly")
     }
 
     setErrors(newErrors)
@@ -139,23 +160,27 @@ export default function AddPaymentMethodPanel({
   }
 
   const handleInputChange = (name: string, value: string) => {
-    setDetails((prev) => ({ ...prev, [name]: value }))
+    const nextValue = requiresNumericAccountField(selectedMethod, name)
+      ? sanitizeNumericAccountInput(value)
+      : value
+
+    setDetails((prev) => ({ ...prev, [name]: nextValue }))
     setTouched((prev) => ({ ...prev, [name]: true }))
 
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-
-    if (value && !validateInput(value)) {
+    const fieldError = getFieldValidationError(selectedMethod, name, nextValue)
+    if (fieldError) {
       setErrors((prev) => ({
         ...prev,
-        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        [name]: fieldError,
       }))
+      return
     }
+
+    setErrors((prev) => {
+      const newErrors = { ...prev }
+      delete newErrors[name]
+      return newErrors
+    })
   }
 
   const handleInstructionsChange = (value: string) => {
@@ -169,10 +194,10 @@ export default function AddPaymentMethodPanel({
       })
     }
 
-    if (value && !validateInput(value)) {
+    if (value && !validateSymbolsInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        instructions: t("profile.validationSymbolsOnly"),
       }))
     }
   }
@@ -336,13 +361,20 @@ export default function AddPaymentMethodPanel({
                 <div key={field.name}>
                   <Input
                     id={field.name}
-                    type={field.type}
+                    type={
+                      requiresNumericAccountField(selectedMethod, field.name) ? "tel" : field.type
+                    }
+                    inputMode={
+                      requiresNumericAccountField(selectedMethod, field.name) ? "numeric" : undefined
+                    }
                     value={details[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                     label={`${t("profile.enterField", { field: field.label.toLowerCase() })}`}
                     required={field.required}
                     variant="floating"
-                    maxLength={30}
+                    maxLength={
+                      field.name === "account" ? PAYMENT_METHOD_ACCOUNT_MAX_LENGTH : undefined
+                    }
                   />
                   {(touched[field.name] || details[field.name]) && errors[field.name] && (
                     <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>

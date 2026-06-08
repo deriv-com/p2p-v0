@@ -496,6 +496,8 @@
     "saveChanges": "Zapisz zmiany",
     "loading": "Ładowanie...",
     "validationSymbolsOnly": "Dozwolone są tylko litery, cyfry, spacje i symbole -+.,'#@():;",
+    "validationNumbersOnly": "Dozwolone są tylko cyfry.",
+    "validationAccountTooLong": "Numer konta musi mieć maksymalnie 50 znaków.",
     "fieldRequired": "Pole {field} jest wymagane",
     "enterField": "Wpisz {field}",
     "tryAgain": "Spróbuj ponownie",

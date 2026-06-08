@@ -493,6 +493,8 @@
     "saveChanges": "Salvar alterações",
     "loading": "Carregando...",
     "validationSymbolsOnly": "Apenas letras, números, espaços e símbolos -+.,'#@():; são permitidos",
+    "validationNumbersOnly": "Apenas números são permitidos.",
+    "validationAccountTooLong": "O número da conta deve ter 50 caracteres ou menos.",
     "fieldRequired": "{field} é obrigatório",
     "enterField": "Digite {field}",
     "tryAgain": "Tentar novamente",
