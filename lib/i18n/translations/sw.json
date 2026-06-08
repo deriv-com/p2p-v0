@@ -712,8 +712,8 @@
     "allPaymentMethod": "Njia zote za kulipa",
     "apply": "Tekeleza",
     "bankTransfers": "Uhamisho wa benki",
-    "duplicateMethod": "Njia ya kulipa inayojirudia",
-    "duplicateMethodDescription": "Njia ya kulipa iliyo na thamani sawa tayari ipo. Ongeza mpya.",
+    "duplicateMethod": "Njia ya malipo tayari imeongezwa",
+    "duplicateMethodDescription": "Njia hii ya malipo tayari inatumika. Badilisha maelezo au chagua njia tofauti.",
     "eWallets": "E-Hazina",
     "enterInstructions": "Ingiza maelekezo yako",
     "invalidField": "Maelezo ya malipo si sahihi",
@@ -736,7 +736,8 @@
     "selectUpTo3": "Chagua hadi 3",
     "sellerAccepts": "Muuzaji anakubali",
     "title": "Njia ya kulipa",
-    "unableToAdd": "Haiwezi kuongeza njia ya kulipa"
+    "unableToAdd": "Haiwezi kuongeza njia ya kulipa",
+    "duplicateMethodPrimaryCta": "Dhibiti njia za malipo"
   },
   "paymentMethodFields": {
     "account": "Akaunti",

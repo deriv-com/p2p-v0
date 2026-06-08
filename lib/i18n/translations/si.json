@@ -704,8 +704,8 @@
     "allPaymentMethod": "සියලුම ගෙවීම් ක්‍රම",
     "apply": "අයදුම් කරන්න",
     "bankTransfers": "බැංකු මාරු කිරීම",
-    "duplicateMethod": "අනුපිටපත් ගෙවීමේ ක්‍රමය",
-    "duplicateMethodDescription": "එකම අගයන් සහිත ගෙවීම් ක්‍රමයක් දැනටමත් පවතී. අලුත් එකක් එකතු කරන්න.",
+    "duplicateMethod": "ගෙවීම් ක්‍රමය දැනටමත් එකතු කර ඇත",
+    "duplicateMethodDescription": "මෙම ගෙවීම් ක්‍රමය දැනටමත් භාවිතයේ පවතී. විස්තර වෙනස් කරන්න හෝ වෙනත් ක්‍රමයක් තෝරන්න.",
     "eWallets": "ඊ-පසුම්බි",
     "enterInstructions": "ඔබගේ උපදෙස් ඇතුලත් කරන්න",
     "invalidField": "ගෙවීම් විස්තර වැරදියි",
@@ -728,7 +728,8 @@
     "selectUpTo3": "3 දක්වා තෝරන්න",
     "sellerAccepts": "විකුණන්නා පිළිගනී",
     "title": "ගෙවීම් ක්රමය",
-    "unableToAdd": "ගෙවීමේ ක්‍රමය එක් කිරීමට නොහැක"
+    "unableToAdd": "ගෙවීමේ ක්‍රමය එක් කිරීමට නොහැක",
+    "duplicateMethodPrimaryCta": "ගෙවීම් ක්රම කළමනාකරණය කරන්න"
   },
   "paymentMethodFields": {
     "account": "ගිණුම",

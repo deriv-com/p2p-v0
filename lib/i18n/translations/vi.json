@@ -748,8 +748,8 @@
     "allPaymentMethod": "Tất cả phương thức thanh toán",
     "apply": "Áp dụng",
     "bankTransfers": "Chuyển khoản ngân hàng",
-    "duplicateMethod": "Phương thức thanh toán trùng lặp",
-    "duplicateMethodDescription": "Phương thức thanh toán có cùng giá trị đã tồn tại. Thêm một phương thức mới.",
+    "duplicateMethod": "Phương thức thanh toán đã được thêm",
+    "duplicateMethodDescription": "Phương thức thanh toán này đã được sử dụng. Hãy thay đổi chi tiết hoặc chọn phương thức khác.",
     "eWallets": "Ví điện tử",
     "enterInstructions": "Nhập hướng dẫn của bạn",
     "invalidField": "Chi tiết thanh toán không chính xác",
@@ -772,7 +772,8 @@
     "selectUpTo3": "Chọn tối đa 3",
     "sellerAccepts": "Người bán chấp nhận",
     "title": "Phương thức thanh toán",
-    "unableToAdd": "Không thể thêm phương thức thanh toán"
+    "unableToAdd": "Không thể thêm phương thức thanh toán",
+    "duplicateMethodPrimaryCta": "Quản lý phương thức thanh toán"
   },
   "paymentMethodFields": {
     "account": "Tài khoản",

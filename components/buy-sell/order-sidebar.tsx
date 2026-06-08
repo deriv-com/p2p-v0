@@ -29,6 +29,7 @@ import AdUpdatedConfirmation from "./ad-updated-confirmation"
 import { useTrackers } from "@/analytics/useTrackers"
 import { mapOrderError } from "@/lib/orders/order-error-mapper"
 import { createOrderErrorDispatcher } from "@/lib/orders/order-error-dispatcher"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -547,16 +548,22 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
       setShowAddPaymentPanel(false)
     } catch (error: any) {
-      let title = t("paymentMethod.unableToAdd")
-      let description = t("paymentMethod.addError")
-
-      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
-        title = t("paymentMethod.duplicateMethod")
-        description = t("paymentMethod.duplicateMethodDescription")
+      if (error.errors?.[0]?.code === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setShowAddPaymentPanel(false)
+              router.push("/profile?tab=payment")
+            },
+          }),
+        )
+        return
       }
+
       showAlert({
-        title,
-        description,
+        title: t("paymentMethod.unableToAdd"),
+        description: t("paymentMethod.addError"),
         confirmText: t("common.ok"),
         type: "warning",
       })

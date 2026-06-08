@@ -704,8 +704,8 @@
     "allPaymentMethod": "所有付款方式",
     "apply": "申请",
     "bankTransfers": "银行转账",
-    "duplicateMethod": "重复付款方式",
-    "duplicateMethodDescription": "已存在具有相同值的付款方式。添加一个新的。",
+    "duplicateMethod": "付款方式已添加",
+    "duplicateMethodDescription": "此付款方式已在使用中。请更改详细信息或选择其他方式。",
     "eWallets": "电子钱包",
     "enterInstructions": "输入您的说明",
     "invalidField": "付款详情不正确",
@@ -728,7 +728,8 @@
     "selectUpTo3": "最多选择 3 个",
     "sellerAccepts": "卖家接受",
     "title": "付款方式",
-    "unableToAdd": "无法添加付款方式"
+    "unableToAdd": "无法添加付款方式",
+    "duplicateMethodPrimaryCta": "管理付款方式"
   },
   "paymentMethodFields": {
     "account": "账户",

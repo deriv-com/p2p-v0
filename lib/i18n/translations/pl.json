@@ -716,8 +716,8 @@
     "allPaymentMethod": "Wszystkie metody płatności",
     "apply": "Zastosuj",
     "bankTransfers": "Przelewy bankowe",
-    "duplicateMethod": "Zduplikowana metoda płatności",
-    "duplicateMethodDescription": "Metoda płatności o takich samych wartościach już istnieje. Dodaj nową.",
+    "duplicateMethod": "Metoda płatności już dodana",
+    "duplicateMethodDescription": "Ta metoda płatności jest już używana. Zmień dane lub wybierz inną metodę.",
     "eWallets": "Portfele elektroniczne",
     "enterInstructions": "Wpisz swoje instrukcje",
     "invalidField": "Szczegóły płatności są nieprawidłowe",
@@ -740,7 +740,8 @@
     "selectUpTo3": "Wybierz do 3",
     "sellerAccepts": "Sprzedawca akceptuje",
     "title": "Metoda płatności",
-    "unableToAdd": "Nie można dodać metody płatności"
+    "unableToAdd": "Nie można dodać metody płatności",
+    "duplicateMethodPrimaryCta": "Zarządzaj metodami płatności"
   },
   "paymentMethodFields": {
     "account": "Konto",

@@ -23,6 +23,7 @@ import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-shee
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 import { useTrackers } from "@/analytics/useTrackers"
 import { FeedbackDialog } from "@/components/feedback/feedback-dialog"
 
@@ -124,16 +125,31 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
       setShowAddPaymentPanel(false)
     } catch (err) {
       const error = err as PaymentMethodError
+      const errorCode = error?.errors?.[0]?.code
+
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setShowAddPaymentPanel(false)
+            },
+          }),
+        )
+        return
+      }
+
       const errorMessages: Record<string, { title: string; description: string }> = {
-        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
         PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
         PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
         PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
         PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
 
-      const errorCode = error?.errors?.[0]?.code
-      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+      const { title, description } = (typeof errorCode === "string" ? errorMessages[errorCode] : undefined) ?? {
+        title: t("paymentMethod.unableToAdd"),
+        description: t("paymentMethod.addError"),
+      }
 
       showAlert({
         title,

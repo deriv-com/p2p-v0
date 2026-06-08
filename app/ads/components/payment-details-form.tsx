@@ -21,6 +21,8 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { useRouter } from "next/navigation"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface PaymentMethod {
   display_name: string
@@ -380,6 +382,7 @@ export default function PaymentDetailsForm({
   onRefetchPaymentMethods,
 }: PaymentDetailsFormProps) {
   const { t } = useTranslations()
+  const router = useRouter()
   const isMobile = useIsMobile()
   const { mutateAsync: addPaymentMethod, isPending: isAddingPaymentMethod } = useAddPaymentMethod()
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
@@ -469,16 +472,32 @@ export default function PaymentDetailsForm({
       setShowAddPaymentPanel(false)
     } catch (err) {
       const error = err as PaymentMethodError
+      const errorCode = error?.errors?.[0]?.code
+
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setShowAddPaymentPanel(false)
+              router.push("/profile?tab=payment")
+            },
+          }),
+        )
+        return
+      }
+
       const errorMessages: Record<string, { title: string; description: string }> = {
-        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
         PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
         PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
         PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
         PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
 
-      const errorCode = error?.errors?.[0]?.code
-      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+      const { title, description } = (typeof errorCode === "string" ? errorMessages[errorCode] : undefined) ?? {
+        title: t("paymentMethod.unableToAdd"),
+        description: t("paymentMethod.addError"),
+      }
 
       showAlert({
         title,

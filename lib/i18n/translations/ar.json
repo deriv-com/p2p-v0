@@ -704,8 +704,8 @@
     "allPaymentMethod": "جميع طرق الدفع",
     "apply": "تطبيق",
     "bankTransfers": "تحويل مصرفي",
-    "duplicateMethod": "طريقة دفع مكررة",
-    "duplicateMethodDescription": "طريقة دفع بنفس القيم موجودة بالفعل. أضف طريقة جديدة.",
+    "duplicateMethod": "تمت إضافة طريقة الدفع بالفعل",
+    "duplicateMethodDescription": "طريقة الدفع هذه قيد الاستخدام بالفعل. غيّر التفاصيل أو اختر طريقة أخرى.",
     "eWallets": "المحافظ الإلكترونية",
     "enterInstructions": "أدخل التعليمات الخاصة بك",
     "invalidField": "تفاصيل الدفع غير صحيحة",
@@ -728,7 +728,8 @@
     "selectUpTo3": "اختر ما يصل إلى 3",
     "sellerAccepts": "البائع يقبل",
     "title": "طريقة الدفع",
-    "unableToAdd": "تعذر إضافة طريقة الدفع"
+    "unableToAdd": "تعذر إضافة طريقة الدفع",
+    "duplicateMethodPrimaryCta": "إدارة طرق الدفع"
   },
   "paymentMethodFields": {
     "account": "الحساب",

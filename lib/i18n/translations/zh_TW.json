@@ -704,8 +704,8 @@
     "allPaymentMethod": "所有付款方式",
     "apply": "申請",
     "bankTransfers": "銀行轉帳",
-    "duplicateMethod": "重複付款方式",
-    "duplicateMethodDescription": "已存在具有相同值的付款方式。新增一個新的。",
+    "duplicateMethod": "付款方式已新增",
+    "duplicateMethodDescription": "此付款方式已在使用中。請變更詳細資料或選擇其他方式。",
     "eWallets": "電子錢包",
     "enterInstructions": "輸入您的說明",
     "invalidField": "付款詳情不正確",
@@ -728,7 +728,8 @@
     "selectUpTo3": "最多選擇 3 個",
     "sellerAccepts": "賣家接受",
     "title": "付款方式",
-    "unableToAdd": "無法新增付款方式"
+    "unableToAdd": "無法新增付款方式",
+    "duplicateMethodPrimaryCta": "管理付款方式"
   },
   "paymentMethodFields": {
     "account": "帳戶",

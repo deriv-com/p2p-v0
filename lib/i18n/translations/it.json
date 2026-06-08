@@ -722,8 +722,8 @@
     "allPaymentMethod": "Tutti i metodi di pagamento",
     "apply": "Applica",
     "bankTransfers": "Bonifici Bancari",
-    "duplicateMethod": "Metodo di pagamento duplicato",
-    "duplicateMethodDescription": "Esiste già un metodo di pagamento con gli stessi valori. Aggiungine uno nuovo.",
+    "duplicateMethod": "Metodo di pagamento già aggiunto",
+    "duplicateMethodDescription": "Questo metodo di pagamento è già in uso. Modifica i dettagli o scegli un metodo diverso.",
     "eWallets": "Portafogli Elettronici",
     "enterInstructions": "Inserisci le tue istruzioni",
     "invalidField": "Dettagli di pagamento errati",
@@ -746,7 +746,8 @@
     "selectUpTo3": "Seleziona fino a 3",
     "sellerAccepts": "Il venditore accetta",
     "title": "Metodo di pagamento",
-    "unableToAdd": "Impossibile aggiungere il metodo di pagamento"
+    "unableToAdd": "Impossibile aggiungere il metodo di pagamento",
+    "duplicateMethodPrimaryCta": "Gestisci metodi di pagamento"
   },
   "paymentMethodFields": {
     "account": "Conto",

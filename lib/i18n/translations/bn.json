@@ -713,8 +713,8 @@
     "allPaymentMethod": "সব পেমেন্ট পদ্ধতি",
     "apply": "প্রয়োগ করুন",
     "bankTransfers": "ব্যাংক ট্রান্সফার",
-    "duplicateMethod": "ডুপ্লিকেট পেমেন্ট পদ্ধতি",
-    "duplicateMethodDescription": "একই মান সহ একটি পেমেন্ট পদ্ধতি ইতিমধ্যে বিদ্যমান। একটি নতুন যোগ করুন।",
+    "duplicateMethod": "পেমেন্ট পদ্ধতি ইতিমধ্যে যোগ করা হয়েছে",
+    "duplicateMethodDescription": "এই পেমেন্ট পদ্ধতি ইতিমধ্যে ব্যবহারে রয়েছে। বিবরণ পরিবর্তন করুন বা অন্য পদ্ধতি বেছে নিন।",
     "eWallets": "ই-ওয়ালেট",
     "enterInstructions": "আপনার নির্দেশনা লিখুন",
     "invalidField": "পেমেন্টের বিবরণ সঠিক নয়",
@@ -737,7 +737,8 @@
     "selectUpTo3": "৩টি পর্যন্ত নির্বাচন করুন",
     "sellerAccepts": "বিক্রেতা গ্রহণ করে",
     "title": "পেমেন্ট পদ্ধতি",
-    "unableToAdd": "পেমেন্ট পদ্ধতি যোগ করা সম্ভব নয়"
+    "unableToAdd": "পেমেন্ট পদ্ধতি যোগ করা সম্ভব নয়",
+    "duplicateMethodPrimaryCta": "পেমেন্ট পদ্ধতি পরিচালনা করুন"
   },
   "paymentMethodFields": {
     "account": "অ্যাকাউন্ট",

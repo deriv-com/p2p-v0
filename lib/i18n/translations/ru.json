@@ -734,8 +734,8 @@
     "allPaymentMethod": "Все способы оплаты",
     "apply": "Применить",
     "bankTransfers": "Банковский перевод",
-    "duplicateMethod": "Дублирующий способ оплаты",
-    "duplicateMethodDescription": "Способ оплаты с такими же значениями уже существует. Добавьте новый.",
+    "duplicateMethod": "Способ оплаты уже добавлен",
+    "duplicateMethodDescription": "Этот способ оплаты уже используется. Измените данные или выберите другой способ.",
     "eWallets": "Электронные кошельки",
     "enterInstructions": "Введите инструкции",
     "invalidField": "Платежные реквизиты неверны",
@@ -758,7 +758,8 @@
     "selectUpTo3": "Выберите до 3",
     "sellerAccepts": "Продавец принимает",
     "title": "Способ оплаты",
-    "unableToAdd": "Не удалось добавить способ оплаты"
+    "unableToAdd": "Не удалось добавить способ оплаты",
+    "duplicateMethodPrimaryCta": "Управление способами оплаты"
   },
   "paymentMethodFields": {
     "account": "Счет",

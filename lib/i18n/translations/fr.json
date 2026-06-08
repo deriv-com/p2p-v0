@@ -720,8 +720,8 @@
     "allPaymentMethod": "Toutes les méthodes de paiement",
     "apply": "Appliquer",
     "bankTransfers": "Virements Bancaires",
-    "duplicateMethod": "Méthode de paiement en double",
-    "duplicateMethodDescription": "Une méthode de paiement avec les mêmes valeurs existe déjà. Ajoutez-en une nouvelle.",
+    "duplicateMethod": "Mode de paiement déjà ajouté",
+    "duplicateMethodDescription": "Ce mode de paiement est déjà utilisé. Modifiez les détails ou choisissez un autre mode.",
     "eWallets": "Portefeuilles Électroniques",
     "enterInstructions": "Entrez vos instructions",
     "invalidField": "Détails de paiement incorrects",
@@ -744,7 +744,8 @@
     "selectUpTo3": "Sélectionnez jusqu'à 3",
     "sellerAccepts": "Le vendeur accepte",
     "title": "Méthode de paiement",
-    "unableToAdd": "Impossible d'ajouter la méthode de paiement"
+    "unableToAdd": "Impossible d'ajouter la méthode de paiement",
+    "duplicateMethodPrimaryCta": "Gérer les modes de paiement"
   },
   "paymentMethodFields": {
     "account": "Compte",
