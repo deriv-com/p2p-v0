@@ -34,7 +34,7 @@ function shouldBlockForMaintenance(input: RequestInfo | URL): boolean {
 function maintenanceBlockedResponse(): Response {
   return new Response(
     JSON.stringify({
-      errors: [{ code: "P2P_System_Maintenance", message: "P2P API calls are disabled during maintenance." }],
+      errors: [{ code: "P2PDisabled", message: "P2P API calls are disabled during maintenance." }],
     }),
     {
       status: 503,

@@ -24,6 +24,8 @@ describe("p2pFetch maintenance blocking", () => {
 
     expect(response.status).toBe(503)
     expect(global.fetch).not.toHaveBeenCalled()
+    const body = (await response.json()) as { errors: Array<{ code: string }> }
+    expect(body.errors[0]?.code).toBe("P2PDisabled")
   })
 
   it("allows /users/me from any page during API maintenance", async () => {
