@@ -16,7 +16,7 @@ export async function fetchTransactions(selectedCurrencyCode?: string) {
     url += `&transaction_currency=${selectedCurrencyCode}`
   }
 
-  return fetch(url, {
+  return p2pFetch(url, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -36,7 +36,7 @@ export async function fetchTransactions(selectedCurrencyCode?: string) {
 export async function fetchWalletsList() {
   const url = `${getCoreUrl()}/v1/wallets`
 
-  return fetch(url, {
+  return p2pFetch(url, {
     method: "GET",
     credentials: "include",
     headers: {

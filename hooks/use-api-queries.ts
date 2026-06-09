@@ -1,5 +1,6 @@
 import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
+import { usePathname } from 'next/navigation'
 import * as BuySellAPI from '@/services/api/api-buy-sell'
 import * as OrdersAPI from '@/services/api/api-orders'
 import * as AuthAPI from '@/services/api/api-auth'
@@ -92,28 +93,33 @@ export function useSession() {
 
 export function useMe() {
   const maintenanceBlocked = useP2PQueriesBlocked()
+  const pathname = usePathname()
+  const allowMaintenanceRecoveryCheck = pathname.startsWith('/profile')
   return useQuery({
     queryKey: queryKeys.auth.me(),
     queryFn: () => AuthAPI.getMe(),
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled: !maintenanceBlocked,
+    enabled: !maintenanceBlocked || allowMaintenanceRecoveryCheck,
   })
 }
 
 export function useKycStatus() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.kycStatus(),
     queryFn: () => AuthAPI.getKycStatus(),
     staleTime: 1000 * 60 * 5,
+    enabled: !maintenanceBlocked,
   })
 }
 
 export function useOnboardingStatus(enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.onboardingStatus(),
     queryFn: () => AuthAPI.getOnboardingStatus(),
     staleTime: 1000 * 60 * 5,
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
@@ -128,35 +134,43 @@ export function useTotalBalance() {
 }
 
 export function useUserBalance() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.userBalance(),
     queryFn: () => AuthAPI.getUserBalance(),
     staleTime: 1000 * 60 * 2,
+    enabled: !maintenanceBlocked,
   })
 }
 
 export function useSettings() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.settings(),
     queryFn: () => AuthAPI.getSettings(),
     staleTime: 1000 * 60 * 30, // 30 minutes
     retry: 0,
+    enabled: !maintenanceBlocked,
   })
 }
 
 export function useClientProfile() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.clientProfile(),
     queryFn: () => AuthAPI.getClientProfile(),
     staleTime: 1000 * 60 * 5,
+    enabled: !maintenanceBlocked,
   })
 }
 
 export function useSocketToken() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.socketToken(),
     queryFn: () => AuthAPI.getSocketToken(),
     staleTime: 1000 * 60 * 30,
+    enabled: !maintenanceBlocked,
   })
 }
 
@@ -171,10 +185,12 @@ export function useAdvertStats(currency: string, enabled = true) {
 }
 
 export function useCurrencies() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.currencies(),
     queryFn: () => AuthAPI.getCurrencies(),
     staleTime: 1000 * 60 * 2, // 2 minutes
+    enabled: !maintenanceBlocked,
   })
 }
 
