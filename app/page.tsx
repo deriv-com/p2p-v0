@@ -31,7 +31,6 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
-import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
@@ -493,13 +492,8 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-            {/* Desktop only — mobile banner is rendered above the Header in main.tsx. */}
+            {/* Desktop only — maintenance + mobile balance banners live in main.tsx. */}
             {/* Tuck the dark balance card under the banner's bottom edge via `-mb-8`. */}
-            {isMaintenanceActive && (
-              <div className="hidden md:block md:-mb-8">
-                <P2PSystemMaintenanceBanner />
-              </div>
-            )}
             {showBalanceWarning && (
               <div className="hidden md:block md:-mb-8">
                 <P2PBalanceWarning />

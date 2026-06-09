@@ -91,10 +91,12 @@ export function useSession() {
 }
 
 export function useMe() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.me(),
     queryFn: () => AuthAPI.getMe(),
     staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !maintenanceBlocked,
   })
 }
 
@@ -159,11 +161,12 @@ export function useSocketToken() {
 }
 
 export function useAdvertStats(currency: string, enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.advertStats(currency),
     queryFn: () => AuthAPI.getAdvertStatistics(currency),
     staleTime: 1000 * 60 * 5,
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
@@ -176,15 +179,17 @@ export function useCurrencies() {
 }
 
 export function useUserPaymentMethods(enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.userPaymentMethods(),
     queryFn: () => ProfileAPI.getUserPaymentMethods(),
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
 export function useBlockedUsers(enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useInfiniteQuery({
     queryKey: queryKeys.auth.blockedUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getBlockedUsers(pageParam as number, PAGE_SIZE),
@@ -192,11 +197,12 @@ export function useBlockedUsers(enabled = true) {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
 export function useTradePartners(enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useInfiniteQuery({
     queryKey: queryKeys.auth.tradePartners(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getTradePartners(pageParam as number, PAGE_SIZE),
@@ -204,11 +210,12 @@ export function useTradePartners(enabled = true) {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
 export function useFollowers(enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useInfiniteQuery({
     queryKey: queryKeys.auth.followers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFollowers(pageParam as number, PAGE_SIZE),
@@ -216,7 +223,7 @@ export function useFollowers(enabled = true) {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
@@ -437,14 +444,17 @@ export function usePaymentMethods() {
 }
 
 export function useAdvertiser(id: string | number) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.buySell.advertiser(id),
     queryFn: () => BuySellAPI.getAdvertiserById(id),
     staleTime: 1000 * 60 * 5,
+    enabled: !maintenanceBlocked,
   })
 }
 
 export function useAdvertiserAds(id: string | number) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useInfiniteQuery({
     queryKey: queryKeys.buySell.advertiserAds(id),
     queryFn: ({ pageParam = 1 }) => BuySellAPI.getAdvertiserAds(id, pageParam as number, PAGE_SIZE),
@@ -452,10 +462,12 @@ export function useAdvertiserAds(id: string | number) {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
+    enabled: !maintenanceBlocked,
   })
 }
 
 export function useFavouriteUsers(enabled = true) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useInfiniteQuery({
     queryKey: queryKeys.buySell.favouriteUsers(),
     queryFn: ({ pageParam = 1 }) => ProfileAPI.getFavouriteUsers(pageParam as number, PAGE_SIZE),
@@ -463,7 +475,7 @@ export function useFavouriteUsers(enabled = true) {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length + 1,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 5,
-    enabled,
+    enabled: enabled && !maintenanceBlocked,
   })
 }
 
@@ -484,10 +496,12 @@ export function useOrders(filters?: OrderFilters) {
 }
 
 export function useOrderById(id: string) {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.orders.detail(id),
     queryFn: () => OrdersAPI.getOrderById(id),
     staleTime: 1000 * 30,
+    enabled: !maintenanceBlocked,
   })
 }
 

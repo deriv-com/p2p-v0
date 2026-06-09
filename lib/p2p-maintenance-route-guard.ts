@@ -5,23 +5,25 @@ import { P2P_MAINTENANCE_ALLOWED_ROOTS } from "@/lib/p2p-maintenance-constants"
  * Returns `null` when [pathname] is already allowed.
  */
 export function p2pMaintenanceRedirectFor(pathname: string): string | null {
-  if ((P2P_MAINTENANCE_ALLOWED_ROOTS as readonly string[]).includes(pathname)) {
+  const cleanPath = pathname.split("?")[0].split("#")[0]
+
+  if ((P2P_MAINTENANCE_ALLOWED_ROOTS as readonly string[]).includes(cleanPath)) {
     return null
   }
 
-  if (pathname.startsWith("/advertiser")) {
+  if (cleanPath === "/advertiser" || cleanPath.startsWith("/advertiser/")) {
     return "/"
   }
-  if (pathname.startsWith("/orders/")) {
+  if (cleanPath.startsWith("/orders/")) {
     return "/orders"
   }
-  if (pathname.startsWith("/ads/")) {
+  if (cleanPath.startsWith("/ads/")) {
     return "/ads"
   }
-  if (pathname.startsWith("/wallet")) {
+  if (cleanPath.startsWith("/wallet")) {
     return "/wallet"
   }
-  if (pathname.startsWith("/profile")) {
+  if (cleanPath.startsWith("/profile")) {
     return "/profile"
   }
 

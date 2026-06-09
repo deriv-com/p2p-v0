@@ -12,9 +12,7 @@ interface P2PSystemMaintenanceBannerProps {
 }
 
 function openLiveChat(): void {
-  if (typeof window !== "undefined" && window.Intercom) {
-    window.Intercom("show")
-  }
+  window.Intercom?.("show")
 }
 
 export function P2PSystemMaintenanceBanner({
@@ -32,6 +30,7 @@ export function P2PSystemMaintenanceBanner({
 
   return (
     <Alert
+      role="alert"
       aria-live="polite"
       className={cn(
         "flex flex-col gap-3 rounded-none border-transparent px-4 pt-4 pb-4",

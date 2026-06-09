@@ -8,15 +8,20 @@ import { extractP2PErrorCode, handleP2PApiStatusCode } from "@/lib/api/p2p-api-s
 export async function p2pFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
   const response = await fetch(input, init)
 
+  const contentType = response.headers.get("content-type")
+  if (!contentType?.includes("application/json")) {
+    return response
+  }
+
   try {
-    const cloned = response.clone()
-    const text = await cloned.text()
-    if (text) {
-      const body = JSON.parse(text) as unknown
-      handleP2PApiStatusCode(extractP2PErrorCode(body))
+    const body = (await response.clone().json()) as unknown
+    handleP2PApiStatusCode(extractP2PErrorCode(body))
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      // Empty or malformed JSON bodies are ignored.
+      return response
     }
-  } catch {
-    // Non-JSON or empty bodies are ignored.
+    console.warn("p2pFetch: unexpected error parsing response body", error)
   }
 
   return response

@@ -5,14 +5,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { getIntercomToken } from "@/services/api/api-intercom"
 import { useLanguageStore } from "@/stores/language-store"
 
-declare global {
-  interface Window {
-    Intercom: any
-    intercomSettings: any
-    __intercomBooted?: boolean
-  }
-}
-
 export function IntercomProvider({ appId }: { appId: string }) {
   const { userData, userId } = useUserDataStore()
   const locale = useLanguageStore((s) => s.locale)

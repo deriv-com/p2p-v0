@@ -222,7 +222,18 @@ export default function Main({
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
-          <div className="container mx-auto">{children}</div>
+          <div className="container mx-auto">
+            {showMaintenanceBanner && (
+              isMarketsPage ? (
+                <div className="md:-mb-8">
+                  <P2PSystemMaintenanceBanner />
+                </div>
+              ) : (
+                <P2PSystemMaintenanceBanner />
+              )
+            )}
+            {children}
+          </div>
         </div>
       </div>
       <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
