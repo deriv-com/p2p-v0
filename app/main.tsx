@@ -224,20 +224,16 @@ export default function Main({
         <div className="flex-1">
           <div className="container mx-auto">
             {showMaintenanceBanner && (
-              isMarketsPage ? (
-                <div className="md:-mb-8">
-                  <P2PSystemMaintenanceBanner />
-                </div>
-              ) : (
+              <div className="relative z-0 md:-mb-8 md:px-3">
                 <P2PSystemMaintenanceBanner />
-              )
+              </div>
             )}
             {children}
           </div>
         </div>
       </div>
-      <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
-        {showMaintenanceBanner && <P2PSystemMaintenanceBanner />}
+      <div className="md:hidden flex flex-col h-dvh overflow-hidden">
+        {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
         {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>

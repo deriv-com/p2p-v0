@@ -348,7 +348,7 @@ export default function WalletSummary({
     <>
       <div
         className={cn(
-          "w-full p-6 flex flex-col",
+          "relative z-10 w-full p-6 flex flex-col",
           isBalancesView && !isShowingTransactionDetails ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
           isMobile ? (isBalancesView && !isShowingTransactionDetails ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
         )}
