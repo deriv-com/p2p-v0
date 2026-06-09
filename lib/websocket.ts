@@ -88,19 +88,25 @@ export class WebSocketClient {
     })
   }
 
-  public send(message: WebSocketMessage): void {
+  public send(message: WebSocketMessage): boolean {
     if (isP2PMaintenanceActive() || !isP2PWebSocketEligible()) {
-      return
+      console.warn("WebSocket send blocked:", {
+        maintenance: isP2PMaintenanceActive(),
+        eligible: isP2PWebSocketEligible(),
+      })
+      return false
     }
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message))
-    } else {
-      console.warn("WebSocket is not connected. Message not sent:", message)
+      return true
     }
+
+    console.warn("WebSocket is not connected. Message not sent:", message)
+    return false
   }
 
-  public joinChannel(channel: string, id: number): void {
+  public joinChannel(channel: string, id: number): boolean {
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -110,7 +116,7 @@ export class WebSocketClient {
         order_id: id,
       },
     }
-    this.send(joinMessage)
+    return this.send(joinMessage)
   }
 
   public joinUserChannel(): void {

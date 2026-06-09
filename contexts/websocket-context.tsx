@@ -98,19 +98,25 @@ export class WebSocketClient {
     })
   }
 
-  public send(message: WebSocketMessage): void {
+  public send(message: WebSocketMessage): boolean {
     if (isP2PMaintenanceActive() || !isP2PWebSocketEligible()) {
-      return
+      console.warn("WebSocket send blocked:", {
+        maintenance: isP2PMaintenanceActive(),
+        eligible: isP2PWebSocketEligible(),
+      })
+      return false
     }
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message))
-    } else {
-      console.warn("WebSocket is not connected. Message not sent:", message)
+      return true
     }
+
+    console.warn("WebSocket is not connected. Message not sent:", message)
+    return false
   }
 
-  public joinChannel(channel: string, id: number): void {
+  public joinChannel(channel: string, id: number): boolean {
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -120,7 +126,7 @@ export class WebSocketClient {
         order_id: id,
       },
     }
-    this.send(joinMessage)
+    return this.send(joinMessage)
   }
 
   public joinExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
@@ -279,7 +285,7 @@ export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient 
 
 interface WebSocketContextType {
   isConnected: boolean
-  joinChannel: (channel: string, id: number) => void
+  joinChannel: (channel: string, id: number) => boolean
   leaveChannel: (channel: string) => void
   getChatHistory: (channel: string, orderId: string) => void
   subscribe: (callback: (data: any) => void) => () => void
@@ -399,9 +405,15 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
   }, [isMaintenanceActive, isWebSocketEligible])
 
-  const joinChannel = useCallback((channel: string, id: number) => {
-    if (isMaintenanceActive || !isWebSocketEligible) return
-    wsClientRef.current?.joinChannel(channel, id)
+  const joinChannel = useCallback((channel: string, id: number): boolean => {
+    if (isMaintenanceActive || !isWebSocketEligible) {
+      console.warn("WebSocket join blocked:", {
+        maintenance: isMaintenanceActive,
+        eligible: isWebSocketEligible,
+      })
+      return false
+    }
+    return wsClientRef.current?.joinChannel(channel, id) ?? false
   }, [isMaintenanceActive, isWebSocketEligible])
 
   const leaveChannel = useCallback((channel: string) => {

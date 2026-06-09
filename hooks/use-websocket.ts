@@ -63,19 +63,27 @@ export function useWebSocket(options?: WebSocketOptions) {
   }, [isMaintenanceActive, isWebSocketEligible])
 
   // Send a message
-  const sendMessage = useCallback((message: WebSocketMessage) => {
-    if (isMaintenanceActive || !isWebSocketEligible) return
-    if (wsClientRef.current) {
-      wsClientRef.current.send(message)
+  const sendMessage = useCallback((message: WebSocketMessage): boolean => {
+    if (isMaintenanceActive || !isWebSocketEligible) {
+      console.warn("WebSocket send blocked:", {
+        maintenance: isMaintenanceActive,
+        eligible: isWebSocketEligible,
+      })
+      return false
     }
+    return wsClientRef.current?.send(message) ?? false
   }, [isMaintenanceActive, isWebSocketEligible])
 
   // Join a channel
-  const joinChannel = useCallback((channel: string, id: number) => {
-    if (isMaintenanceActive || !isWebSocketEligible) return
-    if (wsClientRef.current) {
-      wsClientRef.current.joinChannel(channel, id)
+  const joinChannel = useCallback((channel: string, id: number): boolean => {
+    if (isMaintenanceActive || !isWebSocketEligible) {
+      console.warn("WebSocket join blocked:", {
+        maintenance: isMaintenanceActive,
+        eligible: isWebSocketEligible,
+      })
+      return false
     }
+    return wsClientRef.current?.joinChannel(channel, id) ?? false
   }, [isMaintenanceActive, isWebSocketEligible])
 
   // Leave a channel

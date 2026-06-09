@@ -17,10 +17,6 @@ function isProfileUsersMeRequest(url: URL): boolean {
   return url.pathname === "/p2p/v1/users/me"
 }
 
-function isProfilePage(): boolean {
-  return typeof window !== "undefined" && window.location.pathname.startsWith("/profile")
-}
-
 function isLogoutRequest(url: URL): boolean {
   return url.pathname === "/v1/logout"
 }
@@ -28,9 +24,9 @@ function isLogoutRequest(url: URL): boolean {
 function shouldBlockForMaintenance(input: RequestInfo | URL): boolean {
   const url = requestUrl(input)
   if (!url) return false
-  if (!isP2PMaintenanceActive() && !useP2PMaintenanceStore.getState().isApiMaintenanceActive) return false
+  if (!isP2PMaintenanceActive()) return false
   if (isLogoutRequest(url)) return false
-  if (isProfileUsersMeRequest(url) && isProfilePage()) return false
+  if (isProfileUsersMeRequest(url)) return false
 
   return true
 }
