@@ -938,11 +938,11 @@
     "seenMoreThanSixMonthsAgo": "Vu il y a plus de 6 mois"
   },
   "maintenance": {
-    "title": "System maintenance in progress",
-    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
-    "liveChatLink": "live chat",
+    "title": "Maintenance du système en cours",
+    "descriptionPrefix": "Nous travaillons à rétablir Deriv P2P. Pour les demandes urgentes, contactez-nous via le ",
+    "liveChatLink": "chat en direct",
     "descriptionSuffix": ".",
-    "errorTitle": "System maintenance in progress",
-    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
+    "errorTitle": "Maintenance du système en cours",
+    "errorMessage": "Deriv P2P est temporairement indisponible. Pour les demandes urgentes, contactez-nous via le chat en direct."
   }
 }

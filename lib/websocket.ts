@@ -1,5 +1,7 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getSocketUrl } from "@/lib/get-socket-url"
+import { isP2PMaintenanceActive } from "@/lib/p2p-maintenance-env"
+import { isP2PWebSocketEligible } from "@/lib/p2p-websocket-eligibility"
 import type { WebSocketMessage } from "./websocket-message"
 import type { WebSocketOptions } from "./websocket-options"
 
@@ -18,6 +20,15 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
+    if (isP2PMaintenanceActive()) {
+      this.disconnect()
+      return Promise.reject(new Error("P2P system maintenance is active"))
+    }
+    if (!isP2PWebSocketEligible()) {
+      this.disconnect()
+      return Promise.reject(new Error("P2P user is not eligible for WebSocket"))
+    }
+
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return Promise.resolve(this.socket)
     }
@@ -78,6 +89,10 @@ export class WebSocketClient {
   }
 
   public send(message: WebSocketMessage): void {
+    if (isP2PMaintenanceActive() || !isP2PWebSocketEligible()) {
+      return
+    }
+
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message))
     } else {

@@ -22,6 +22,11 @@ describe("p2pMaintenanceRedirectFor", () => {
     expect(p2pMaintenanceRedirectFor("/advertiser-settings")).toBe("/")
   })
 
+  it("does not match similarly named wallet or profile routes", () => {
+    expect(p2pMaintenanceRedirectFor("/wallet-settings")).toBe("/")
+    expect(p2pMaintenanceRedirectFor("/profile-settings")).toBe("/")
+  })
+
   it("strips query and hash before matching", () => {
     expect(p2pMaintenanceRedirectFor("/orders/456?tab=past")).toBe("/orders")
     expect(p2pMaintenanceRedirectFor("/ads/create#step-2")).toBe("/ads")

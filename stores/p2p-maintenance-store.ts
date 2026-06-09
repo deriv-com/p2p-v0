@@ -11,5 +11,3 @@ export const useP2PMaintenanceStore = create<P2PMaintenanceState>((set) => ({
   setApiMaintenanceActive: (active) => set({ isApiMaintenanceActive: active }),
   clearMaintenance: () => set({ isApiMaintenanceActive: false }),
 }))
-
-export { isP2PMaintenanceActive as isP2PMaintenanceEnvEnabled } from "@/lib/p2p-maintenance-env"

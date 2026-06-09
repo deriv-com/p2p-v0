@@ -922,11 +922,11 @@
     "seenMoreThanSixMonthsAgo": "Visto há mais de 6 meses"
   },
   "maintenance": {
-    "title": "System maintenance in progress",
-    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
-    "liveChatLink": "live chat",
+    "title": "Manutenção do sistema em andamento",
+    "descriptionPrefix": "Estamos trabalhando para restaurar o Deriv P2P. Para consultas urgentes, entre em contato conosco pelo ",
+    "liveChatLink": "chat ao vivo",
     "descriptionSuffix": ".",
-    "errorTitle": "System maintenance in progress",
-    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
+    "errorTitle": "Manutenção do sistema em andamento",
+    "errorMessage": "O Deriv P2P está temporariamente indisponível. Para consultas urgentes, entre em contato conosco pelo chat ao vivo."
   }
 }

@@ -747,11 +747,11 @@
     "chooseAnotherTrader": "Chagua mfanyabiashara mwingine"
   },
   "maintenance": {
-    "title": "System maintenance in progress",
-    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
-    "liveChatLink": "live chat",
+    "title": "Matengenezo ya mfumo yanaendelea",
+    "descriptionPrefix": "Tunafanya kazi kurejesha Deriv P2P. Kwa maswali ya dharura, wasiliana nasi kupitia ",
+    "liveChatLink": "gumzo la moja kwa moja",
     "descriptionSuffix": ".",
-    "errorTitle": "System maintenance in progress",
-    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
+    "errorTitle": "Matengenezo ya mfumo yanaendelea",
+    "errorMessage": "Deriv P2P haipatikani kwa muda. Kwa maswali ya dharura, wasiliana nasi kupitia gumzo la moja kwa moja."
   }
 }

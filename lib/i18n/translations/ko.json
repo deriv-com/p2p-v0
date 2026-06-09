@@ -785,11 +785,11 @@
     "chooseAnotherTrader": "다른 트레이더 선택"
   },
   "maintenance": {
-    "title": "System maintenance in progress",
-    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
-    "liveChatLink": "live chat",
-    "descriptionSuffix": ".",
-    "errorTitle": "System maintenance in progress",
-    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
+    "title": "시스템 점검 진행 중",
+    "descriptionPrefix": "Deriv P2P 복구 작업을 진행 중입니다. 긴급 문의는 ",
+    "liveChatLink": "라이브 채팅",
+    "descriptionSuffix": "으로 연락해 주세요.",
+    "errorTitle": "시스템 점검 진행 중",
+    "errorMessage": "Deriv P2P를 일시적으로 이용할 수 없습니다. 긴급 문의는 라이브 채팅으로 연락해 주세요."
   }
 }

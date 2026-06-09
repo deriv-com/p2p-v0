@@ -20,10 +20,10 @@ export function p2pMaintenanceRedirectFor(pathname: string): string | null {
   if (cleanPath.startsWith("/ads/")) {
     return "/ads"
   }
-  if (cleanPath.startsWith("/wallet")) {
+  if (cleanPath.startsWith("/wallet/")) {
     return "/wallet"
   }
-  if (cleanPath.startsWith("/profile")) {
+  if (cleanPath.startsWith("/profile/")) {
     return "/profile"
   }
 

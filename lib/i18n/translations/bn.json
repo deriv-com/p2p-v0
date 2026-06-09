@@ -946,11 +946,11 @@
     "seenMoreThanSixMonthsAgo": "৬ মাসেরও বেশি আগে দেখা গেছে"
   },
   "maintenance": {
-    "title": "System maintenance in progress",
-    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
-    "liveChatLink": "live chat",
+    "title": "সিস্টেম রক্ষণাবেক্ষণ চলছে",
+    "descriptionPrefix": "আমরা Deriv P2P পুনরুদ্ধার করতে কাজ করছি। জরুরি প্রশ্নের জন্য, আমাদের সাথে যোগাযোগ করুন ",
+    "liveChatLink": "লাইভ চ্যাটের মাধ্যমে",
     "descriptionSuffix": ".",
-    "errorTitle": "System maintenance in progress",
-    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
+    "errorTitle": "সিস্টেম রক্ষণাবেক্ষণ চলছে",
+    "errorMessage": "Deriv P2P সাময়িকভাবে অনুপলব্ধ। জরুরি প্রশ্নের জন্য, লাইভ চ্যাটের মাধ্যমে আমাদের সাথে যোগাযোগ করুন।"
   }
 }

@@ -8,6 +8,7 @@ import * as AdsAPI from '@/services/api/api-my-ads'
 import * as ProfileAPI from '@/services/api/api-profile'
 import { useUserDataStore } from '@/stores/user-data-store'
 import { useP2PQueriesBlocked } from '@/hooks/use-p2p-system-maintenance'
+import { isP2PWebSocketEligibleFromState } from '@/lib/p2p-websocket-eligibility'
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
@@ -168,11 +169,16 @@ export function useClientProfile() {
 
 export function useSocketToken() {
   const maintenanceBlocked = useP2PQueriesBlocked()
+  const userId = useUserDataStore((state) => state.userId)
+  const userData = useUserDataStore((state) => state.userData)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isWebSocketEligible = isP2PWebSocketEligibleFromState({ userId, userData, onboardingStatus })
+
   return useQuery({
     queryKey: queryKeys.auth.socketToken(),
     queryFn: () => AuthAPI.getSocketToken(),
     staleTime: 1000 * 60 * 30,
-    enabled: !maintenanceBlocked,
+    enabled: !maintenanceBlocked && isWebSocketEligible,
   })
 }
 

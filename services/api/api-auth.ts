@@ -6,6 +6,7 @@ import { queryClient } from "@/lib/react-query-client"
 import { queryKeys } from "@/hooks/use-api-queries"
 import { getCoreUrl } from "@/lib/get-core-url"
 import { getOryUrl } from "@/lib/get-ory-url"
+import { isP2PWebSocketEligible } from "@/lib/p2p-websocket-eligibility"
 
 export interface LoginRequest {
   email: string
@@ -494,6 +495,11 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token?: string): Promise<void> {
   try {
+    if (!isP2PWebSocketEligible()) {
+      useUserDataStore.getState().setSocketToken(null)
+      return
+    }
+
     const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/user-websocket-token`, {
       method: "GET",
       credentials: "include",
