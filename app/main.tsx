@@ -21,6 +21,7 @@ import { P2PMaintenanceController } from "@/components/p2p-maintenance-controlle
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import { shouldShowP2PMaintenanceBanner } from "@/lib/p2p-maintenance-constants"
 import "./globals.css"
 
 export default function Main({
@@ -56,7 +57,8 @@ export default function Main({
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded, isV2User)
   const isMarketsPage = pathname === "/"
   const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning && !isMaintenanceActive
-  const showMaintenanceBanner = isMaintenanceActive
+  const showMaintenanceBanner =
+    isMaintenanceActive && shouldShowP2PMaintenanceBanner(pathname)
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")
