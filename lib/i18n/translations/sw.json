@@ -92,7 +92,8 @@
       "orderCompletedLabel": "Maagizo yaliyokamilika",
       "continueAnyway": "Endelea hata hivyo",
       "goBack": "Rudi nyuma"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -744,5 +745,13 @@
     "closedGroupBlockedByAddMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaongeza kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
     "closedGroupBlockedByRemoveMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaondoa kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
     "chooseAnotherTrader": "Chagua mfanyabiashara mwingine"
+  },
+  "maintenance": {
+    "title": "System maintenance in progress",
+    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
+    "liveChatLink": "live chat",
+    "descriptionSuffix": ".",
+    "errorTitle": "System maintenance in progress",
+    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
   }
 }

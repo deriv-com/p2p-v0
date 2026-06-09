@@ -77,6 +77,7 @@
     "noBalanceTitle": "No balance in P2P Wallet",
     "noBalanceDescription": "Your sell ads are hidden from the marketplace when your P2P Wallet balance is zero. Transfer funds to your P2P Wallet to make them visible again.",
     "noBalanceTransfer": "Transfer funds",
+    "noAdsMaintenanceTitle": "No ads available",
     "riskWarning": {
       "lowCompletion": {
         "title": "This advertiser has a low completion rate",
@@ -1050,6 +1051,14 @@
     "errorTitle": "Something went wrong.",
     "errorMessage": "Error code: {errorCode}. Please try again later or contact support.",
     "validationError": "Only letters, numbers, spaces, and the following special characters are allowed: @ - . ! / % & , _ ( ) + : ;"
+  },
+  "maintenance": {
+    "title": "System maintenance in progress",
+    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
+    "liveChatLink": "live chat",
+    "descriptionSuffix": ".",
+    "errorTitle": "System maintenance in progress",
+    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
   },
   "presence": {
     "seenJustNow": "Seen just now",

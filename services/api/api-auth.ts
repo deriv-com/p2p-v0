@@ -1,4 +1,6 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useP2PMaintenanceStore } from "@/stores/p2p-maintenance-store"
+import { p2pFetch } from "./p2p-fetch"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { queryClient } from "@/lib/react-query-client"
 import { queryKeys } from "@/hooks/use-api-queries"
@@ -95,7 +97,7 @@ const getAuthHeader = () => ({
  */
 export async function login(email: LoginRequest): Promise<LoginResponse> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/login`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/login`, {
       method: "POST",
       body: JSON.stringify(email),
     })
@@ -119,7 +121,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
  */
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/verify`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/verify`, {
       method: "POST",
       headers: {
         "X-Enable-Session": "true",
@@ -150,7 +152,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
   try {
     if (isOryEnabled) {
-      const response = await fetch(`${getCoreUrl()}/v1/auth/redirect-url?token=${token}`, {
+      const response = await p2pFetch(`${getCoreUrl()}/v1/auth/redirect-url?token=${token}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -165,7 +167,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const { data } = result
 
       if (data.recovery_link) {
-        const recoveryResponse = await fetch(data.recovery_link, {
+        const recoveryResponse = await p2pFetch(data.recovery_link, {
           method: "GET",
           redirect: "manual",
           credentials: "include",
@@ -180,7 +182,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       return data
     } else {
-      const response = await fetch(`${getCoreUrl()}/v1/auth/token/verify`, {
+      const response = await p2pFetch(`${getCoreUrl()}/v1/auth/token/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -215,7 +217,7 @@ export async function getSession(): Promise<boolean> {
       ? `${getOryUrl()}/sessions/whoami`
       : `${getCoreUrl()}/session`
 
-    const response = await fetch(sessionUrl, {
+    const response = await p2pFetch(sessionUrl, {
       method: "GET",
       credentials: "include",
     })
@@ -242,7 +244,7 @@ export async function getSession(): Promise<boolean> {
  */
 export async function logout(): Promise<void> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/logout`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/logout`, {
       method: "POST",
       credentials: "include",
     })
@@ -252,6 +254,7 @@ export async function logout(): Promise<void> {
     }
 
     useUserDataStore.getState().clearUserData()
+    useP2PMaintenanceStore.getState().clearMaintenance()
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")
     window.location.href = "/"
@@ -266,7 +269,7 @@ export async function logout(): Promise<void> {
  */
 export async function getMe(): Promise<any> {
   try {
-    const response = await fetch(`${getCoreUrl()}/p2p/v1/users/me`, {
+    const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/users/me`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -291,7 +294,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
 
-    const response = await fetch(`${getCoreUrl()}/p2p/v1/users/me`, {
+    const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/users/me`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -456,7 +459,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/client/profile`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/client/profile`, {
       method: "GET",
       credentials: "include",
     })
@@ -491,7 +494,7 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token?: string): Promise<void> {
   try {
-    const response = await fetch(`${getCoreUrl()}/p2p/v1/user-websocket-token`, {
+    const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/user-websocket-token`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -520,7 +523,7 @@ export async function getSocketToken(token?: string): Promise<void> {
  */
 export async function getKycStatus(): Promise<KycStatusResponse[]> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/client/kyc-status`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/client/kyc-status`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -542,7 +545,7 @@ export async function getKycStatus(): Promise<KycStatusResponse[]> {
  */
 export async function getOnboardingStatus(): Promise<OnboardingStatusResponse> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/client/onboarding-status`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/client/onboarding-status`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -565,7 +568,7 @@ export async function getOnboardingStatus(): Promise<OnboardingStatusResponse> {
  */
 export async function getTotalBalance(): Promise<TotalBalanceResponse> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/client/total-balance`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/client/total-balance`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -588,7 +591,7 @@ export async function getTotalBalance(): Promise<TotalBalanceResponse> {
  */
 export async function getUserBalance(): Promise<{ amount: string; currency: string }> {
   try {
-    const response = await fetch(`${getCoreUrl()}/p2p/v1/users/me`, {
+    const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/users/me`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -617,7 +620,7 @@ export async function getUserBalance(): Promise<{ amount: string; currency: stri
  */
 export async function getCurrencies(): Promise<CurrenciesResponse> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/core/business/config/currencies`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/core/business/config/currencies`, {
       method: "POST",
       credentials: "include",
     })
@@ -639,7 +642,7 @@ export async function getCurrencies(): Promise<CurrenciesResponse> {
  */
 export async function getSettings(): Promise<any> {
   try {
-    const response = await fetch(`${getCoreUrl()}/p2p/v1/settings`, {
+    const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/settings`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -662,7 +665,7 @@ export async function getSettings(): Promise<any> {
  */
 export async function createP2PUser(): Promise<CreateP2PUserResponse> {
   try {
-    const response = await fetch(`${getCoreUrl()}/v1/p2p/client`, {
+    const response = await p2pFetch(`${getCoreUrl()}/v1/p2p/client`, {
       method: "POST",
       credentials: "include",
       headers: getAuthHeader(),
@@ -686,7 +689,7 @@ export async function createP2PUser(): Promise<CreateP2PUserResponse> {
  */
 export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
   try {
-    const response = await fetch(`${getCoreUrl()}/p2p/v1/advert-statistics/${accountCurrency}`, {
+    const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/advert-statistics/${accountCurrency}`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
@@ -709,7 +712,7 @@ export interface FeedbackError extends Error {
 }
 
 export async function submitFeedback(userId: string, payload: { nps_score: number; review_text: string }): Promise<void> {
-  const response = await fetch(`${getCoreUrl()}/p2p/v1/users/${userId}/feedback`, {
+  const response = await p2pFetch(`${getCoreUrl()}/p2p/v1/users/${userId}/feedback`, {
     method: "POST",
     credentials: "include",
     headers: getAuthHeader(),

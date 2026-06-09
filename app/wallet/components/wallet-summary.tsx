@@ -62,6 +62,7 @@ interface WalletSummaryProps {
   hasBalance?: boolean
   selectedTransaction?: Transaction | null
   onTransactionSelect?: (transaction: Transaction | null) => void
+  actionsDisabled?: boolean
 }
 
 export default function WalletSummary({
@@ -74,6 +75,7 @@ export default function WalletSummary({
   hasBalance = false,
   selectedTransaction: parentSelectedTransaction = null,
   onTransactionSelect,
+  actionsDisabled = false,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const { track } = useTrackers()
@@ -212,6 +214,7 @@ export default function WalletSummary({
   }, [currenciesResponse])
 
   const handleDepositClick = () => {
+    if (actionsDisabled) return
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
@@ -222,6 +225,7 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
+    if (actionsDisabled) return
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
@@ -232,6 +236,7 @@ export default function WalletSummary({
   }
 
   const handleTransferClick = () => {
+    if (actionsDisabled) return
     if (!hasBalance) return
     track("ek_transfer_wallets")
 
@@ -251,6 +256,7 @@ export default function WalletSummary({
   // funds into it. The URL is cleaned immediately so a refresh doesn't
   // re-open the sheet.
   useEffect(() => {
+    if (actionsDisabled) return
     if (searchParams.get("operation") !== "TRANSFER") return
     if (!userId) return
     router.replace("/wallet")
@@ -273,6 +279,7 @@ export default function WalletSummary({
     t,
     showAlert,
     hideAlert,
+    actionsDisabled,
   ])
 
   const handleBuyClick = () => {
@@ -466,7 +473,7 @@ export default function WalletSummary({
                   size="icon"
                   className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
                   onClick={handleTransferClick}
-                  disabled={!hasBalance}
+                  disabled={actionsDisabled || !hasBalance}
                   aria-label="Transfer"
                 >
                   <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />

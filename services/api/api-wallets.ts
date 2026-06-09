@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { p2pFetch } from "./p2p-fetch"
 import { getCoreUrl } from "@/lib/get-core-url"
 
 const getAuthHeader = () => ({
@@ -57,7 +58,7 @@ export async function getCurrencies(): Promise<any> {
     const url = `${getCoreUrl()}/v1/core/business/config/currencies`
     const headers = getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       headers,
       credentials: "include",
@@ -81,7 +82,7 @@ export async function walletTransfer(params: {
     const url = `${getCoreUrl()}/v1/wallets/transfers`
     const headers = getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       headers: {
         ...headers,
@@ -108,7 +109,7 @@ export async function fetchBalance(selectedCurrency: string): Promise<number> {
 
     const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       credentials: "include",
       headers: {
         ...getAuthHeader(),
@@ -145,7 +146,7 @@ export async function fetchUserBalances(): Promise<any> {
 
     const url = `${getCoreUrl()}/p2p/v1/users/${userId}`
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       credentials: "include",
       headers: {
         ...getAuthHeader(),
@@ -178,7 +179,7 @@ export async function fetchExchangeRate(params: {
     const url = `${getCoreUrl()}/v1/wallets/exchange-rate?source_currency=${params.source_currency}&destination_currency=${params.destination_currency}`
     const headers = getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "GET",
       headers,
       credentials: "include",
@@ -206,7 +207,7 @@ export async function walletExchangeTransfer(params: {
     const url = `${getCoreUrl()}/v1/wallets/transfers/exchange`
     const headers = getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       headers: {
         ...headers,
@@ -229,7 +230,7 @@ export async function fetchTransactionByReferenceId(referenceId: string): Promis
     const url = `${getCoreUrl()}/v1/wallets/transactions?reference_id=${referenceId}`
     const headers = getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "GET",
       headers,
       credentials: "include",

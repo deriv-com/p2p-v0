@@ -14,6 +14,9 @@ import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-shee
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useTrackers } from "@/analytics/useTrackers"
+import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import EmptyState from "@/components/empty-state"
 
 interface Balance {
   wallet_id: string
@@ -43,6 +46,9 @@ export default function WalletPage() {
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const p2pBalanceAmount = userData?.balances?.amount ?? totalBalance
+  const p2pBalanceCurrency = userData?.balances?.currency ?? balanceCurrency
 
   const processBalanceData = useCallback(
     (currencies: Record<string, any>, balance: any) => {
@@ -189,21 +195,29 @@ export default function WalletPage() {
             isBalancesView={displayBalances || !!selectedTransaction}
             selectedCurrency={selectedCurrency}
             onBack={handleBackToBalances}
-            balance={totalBalance}
-            currency={balanceCurrency}
-            isLoading={isBalanceLoading}
+            balance={isMaintenanceActive ? p2pBalanceAmount : totalBalance}
+            currency={isMaintenanceActive ? p2pBalanceCurrency : balanceCurrency}
+            isLoading={isMaintenanceActive ? false : isBalanceLoading}
             hasBalance={hasBalance}
             selectedTransaction={selectedTransaction}
             onTransactionSelect={setSelectedTransaction}
+            actionsDisabled={isMaintenanceActive}
           />
         </div>
-        {tempBanUntil && (
+        {isMaintenanceActive && (
+          <div className="w-full px-4 md:px-0 mt-4">
+            <P2PSystemMaintenanceBanner embeddedInDarkHeader />
+          </div>
+        )}
+        {tempBanUntil && !isMaintenanceActive && (
           <div className="w-full px-4 md:px-0 mt-4">
             <TemporaryBanAlert tempBanUntil={tempBanUntil} />
           </div>
         )}
         <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
-          {displayBalances ? (
+          {isMaintenanceActive ? (
+            <EmptyState icon="/icons/no-active-orders.svg" title={t("wallet.noTransactions")} />
+          ) : displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isBalanceLoading} />
           ) : (
             <TransactionsTab

@@ -167,6 +167,14 @@ describe("mapOrderError", () => {
       expect(result.secondaryAction).toBe(OrderErrorAction.Dismiss)
     })
 
+    it("maps P2P_Disabled to maintenance copy + OpenLiveChat", () => {
+      const result = mapOrderError("P2P_Disabled", t)
+      expect(result.title).toBe("maintenance.errorTitle")
+      expect(result.message).toBe("maintenance.errorMessage")
+      expect(result.primaryAction).toBe(OrderErrorAction.OpenLiveChat)
+      expect(result.secondaryAction).toBe(OrderErrorAction.Dismiss)
+    })
+
     it("maps OrderUserFundsInsufficient to Retry + OpenLiveChat", () => {
       const result = mapOrderError("OrderUserFundsInsufficient", t)
       expect(result.primaryAction).toBe(OrderErrorAction.Retry)

@@ -45,7 +45,11 @@ async function fetchSubscriberHash() {
   }
 }
 
-export function NovuNotifications() {
+interface NovuNotificationsProps {
+  disabled?: boolean
+}
+
+export function NovuNotifications({ disabled = false }: NovuNotificationsProps) {
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
   const [subscriberHash, setSubscriberHash] = useState<string | null>(null)
@@ -139,6 +143,19 @@ export function NovuNotifications() {
 
     getSubscriberHash()
   }, [userIdFallback])
+
+  if (disabled) {
+    return (
+      <div className="relative inline-flex h-8 w-8 items-center justify-center rounded-full opacity-50 pointer-events-none" aria-hidden="true">
+        <Image
+          src={isMobile ? "/icons/bell-sm.png" : "/icons/bell-desktop.png"}
+          alt=""
+          width={24}
+          height={24}
+        />
+      </div>
+    )
+  }
 
   if (!mounted || isLoading) {
     return (

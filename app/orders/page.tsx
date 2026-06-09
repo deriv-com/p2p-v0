@@ -30,6 +30,8 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useOrders } from "@/hooks/use-api-queries"
 import { useTrackers } from "@/analytics/useTrackers"
+import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -63,6 +65,7 @@ export default function OrdersPage() {
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const observerTarget = useRef<HTMLDivElement>(null)
   const scrollContainer = useRef<HTMLDivElement>(null)
 
@@ -319,7 +322,12 @@ export default function OrdersPage() {
               </Button>
             )}
           </div>
-          {tempBanUntil && (
+          {isMaintenanceActive && (
+            <div className="mt-4">
+              <P2PSystemMaintenanceBanner embeddedInDarkHeader />
+            </div>
+          )}
+          {tempBanUntil && !isMaintenanceActive && (
             <div className="mt-4">
               <TemporaryBanAlert tempBanUntil={tempBanUntil} />
             </div>
@@ -339,7 +347,15 @@ export default function OrdersPage() {
           </div>
         </div>
         <div className="flex-1 pb-4 flex flex-col overflow-hidden">
-          {isLoading ? (
+          {isMaintenanceActive ? (
+            <div>
+              {activeTab === "active" ? (
+                <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} />
+              ) : (
+                <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noPastOrders")} description={t("orders.noPastOrdersDescription")} />
+              )}
+            </div>
+          ) : isLoading ? (
             <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
             <div>

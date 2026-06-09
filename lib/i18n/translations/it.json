@@ -85,7 +85,8 @@
       "orderCompletedLabel": "Ordini completati",
       "continueAnyway": "Continua comunque",
       "goBack": "Indietro"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -936,5 +937,13 @@
     "seenDaysAgo": "Visto {count} giorno{plural} fa",
     "seenMonthsAgo": "Visto {count} mese{plural} fa",
     "seenMoreThanSixMonthsAgo": "Visto più di 6 mesi fa"
+  },
+  "maintenance": {
+    "title": "System maintenance in progress",
+    "descriptionPrefix": "We're working to restore Deriv P2P. For urgent queries, contact us via ",
+    "liveChatLink": "live chat",
+    "descriptionSuffix": ".",
+    "errorTitle": "System maintenance in progress",
+    "errorMessage": "Deriv P2P is temporarily unavailable. For urgent queries, contact us via live chat."
   }
 }
