@@ -9,6 +9,8 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { getCoreUrl } from "@/lib/get-core-url"
 import Image from "next/image"
 import "../../styles/globals.css"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import { p2pFetch } from "@/services/api/p2p-fetch"
 
 const API = {
   notificationUrl: `${getCoreUrl()}/notifications/v1`,
@@ -27,7 +29,7 @@ const NOTIFICATIONS = {
 async function fetchSubscriberHash() {
   try {
     const url = `${API.notificationUrl}/hash`
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers: AUTH.getNotificationHeader(),
@@ -51,6 +53,7 @@ interface NovuNotificationsProps {
 
 export function NovuNotifications({ disabled = false }: NovuNotificationsProps) {
   const router = useRouter()
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const [mounted, setMounted] = useState(false)
   const [subscriberHash, setSubscriberHash] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -61,6 +64,7 @@ export function NovuNotifications({ disabled = false }: NovuNotificationsProps) 
   const userIdFallback = userId || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
   const { locale } = useTranslations()
+  const isDisabled = disabled || isMaintenanceActive
 
   useEffect(() => {
     setMounted(true)
@@ -117,6 +121,11 @@ export function NovuNotifications({ disabled = false }: NovuNotificationsProps) 
   }
 
   useEffect(() => {
+    if (isDisabled) {
+      setIsLoading(false)
+      return
+    }
+
     if (!userIdFallback) {
       setError("No user ID available")
       setIsLoading(false)
@@ -142,9 +151,9 @@ export function NovuNotifications({ disabled = false }: NovuNotificationsProps) 
     }
 
     getSubscriberHash()
-  }, [userIdFallback])
+  }, [isDisabled, userIdFallback])
 
-  if (disabled) {
+  if (isDisabled) {
     return (
       <div className="relative inline-flex h-8 w-8 items-center justify-center rounded-full opacity-50 pointer-events-none" aria-hidden="true">
         <Image

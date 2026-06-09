@@ -84,10 +84,12 @@ export const queryKeys = {
 
 // Auth Hooks
 export function useSession() {
+  const maintenanceBlocked = useP2PQueriesBlocked()
   return useQuery({
     queryKey: queryKeys.auth.session(),
     queryFn: () => AuthAPI.getSession(),
     staleTime: 1000 * 60 * 10, // 10 minutes
+    enabled: !maintenanceBlocked,
   })
 }
 

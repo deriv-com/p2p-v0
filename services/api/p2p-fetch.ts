@@ -25,22 +25,11 @@ function isLogoutRequest(url: URL): boolean {
   return url.pathname === "/v1/logout"
 }
 
-function isAuthBootstrapRequest(url: URL): boolean {
-  return (
-    url.pathname === "/session" ||
-    url.pathname === "/sessions/whoami" ||
-    url.pathname === "/v1/login" ||
-    url.pathname === "/v1/verify" ||
-    url.pathname.startsWith("/v1/auth/")
-  )
-}
-
 function shouldBlockForMaintenance(input: RequestInfo | URL): boolean {
   const url = requestUrl(input)
   if (!url) return false
   if (!isP2PMaintenanceActive() && !useP2PMaintenanceStore.getState().isApiMaintenanceActive) return false
   if (isLogoutRequest(url)) return false
-  if (isAuthBootstrapRequest(url)) return false
   if (isProfileUsersMeRequest(url) && isProfilePage()) return false
 
   return true

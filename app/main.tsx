@@ -41,7 +41,10 @@ export default function Main({
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
-  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(
+    isAuthenticated && !isMaintenanceActive,
+  )
 
   const isDisabled = userData?.status === "disabled"
 
@@ -51,7 +54,6 @@ export default function Main({
   const isV2User = userData?.signup === "v2"
   const { isFullyOnboarded } = useOnboardingGate()
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded, isV2User)
-  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const isMarketsPage = pathname === "/"
   const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning && !isMaintenanceActive
   const showMaintenanceBanner = isMaintenanceActive
@@ -79,6 +81,11 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
+        if (isMaintenanceActive && !isPublic) {
+          setIsAuthenticated(true)
+          return
+        }
+
         const token = searchParams.get("token")
         if (token) {
           try {
@@ -127,10 +134,10 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams])
+  }, [isMaintenanceActive, pathname, router, searchParams])
 
   useEffect(() => {
-    if (!isAuthenticated || isOnboardingLoading || !onboardingStatus) {
+    if (isMaintenanceActive || !isAuthenticated || isOnboardingLoading || !onboardingStatus) {
       return
     }
 
@@ -176,7 +183,7 @@ export default function Main({
       isMounted = false
       abortController.abort()
     }
-  }, [isAuthenticated, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
+  }, [isAuthenticated, isMaintenanceActive, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
