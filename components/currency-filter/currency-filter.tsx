@@ -24,6 +24,7 @@ export function CurrencyFilter({
   title,
   trigger,
   placeholder = "Search",
+  disabled = false,
 }: CurrencyFilterProps) {
   const { t } = useTranslations()
   const { track } = useTrackers()
@@ -65,11 +66,12 @@ export function CurrencyFilter({
   )
 
   const handleOpenChange = useCallback((open: boolean) => {
+    if (disabled) return
     setIsOpen(open)
     if (!open) {
       setSearchQuery("")
     }
-  }, [])
+  }, [disabled])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -154,8 +156,18 @@ export function CurrencyFilter({
   )
 
   const enhancedTrigger = cloneElement(trigger, {
-    className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"),
+    className: cn(
+      trigger.props.className,
+      isOpen && !disabled && "[&_img[alt='Arrow']]:rotate-180",
+      disabled && "pointer-events-none opacity-60 cursor-not-allowed",
+    ),
+    disabled: disabled || trigger.props.disabled,
+    "aria-disabled": disabled || undefined,
   })
+
+  if (disabled) {
+    return enhancedTrigger
+  }
 
   if (isMobile) {
     return (

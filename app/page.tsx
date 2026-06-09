@@ -148,6 +148,8 @@ export default function BuySellPage() {
     !isV1Signup,
   )
   const showBalanceWarning = shouldShowBalanceWarning && !isMaintenanceActive
+  const displayCurrency = currency || localCurrency || selectedAccountCurrency
+  const showCurrencyFilter = currencies.length > 0 || Boolean(displayCurrency)
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -522,7 +524,7 @@ export default function BuySellPage() {
                     </TabsList>
                   </Tabs>
                 </div>
-                {currencies.length > 0 && (
+                {showCurrencyFilter && (
                   <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
                     {activeTab === "sell" && (
                       <span className="text-xs font-normal text-white opacity-72">
@@ -536,28 +538,30 @@ export default function BuySellPage() {
                     )}
                     <CurrencyFilter
                       currencies={currencies}
-                      selectedCurrency={currency}
+                      selectedCurrency={displayCurrency}
                       onCurrencySelect={handleCurrencySelect}
+                      disabled={isMaintenanceActive}
                       title={activeTab === "sell" ? t("market.payWith") : t("market.receiveIn")}
                       trigger={
                         <Button
                           variant="outline"
                           size="sm"
+                          disabled={isMaintenanceActive}
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                           onClick={() => track("ek_payment_currency_markets")}
                         >
-                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
+                          {currencyFlagMapper[displayCurrency as keyof typeof currencyFlagMapper] && (
                             <Image
                               src={
-                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                                currencyFlagMapper[displayCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                               }
-                              alt={`${currency} logo`}
+                              alt={`${displayCurrency} logo`}
                               width={24}
                               height={16}
                               className="mr-1 object-cover"
                             />
                           )}
-                          <span>{currency}</span>
+                          <span>{displayCurrency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
                             alt="Arrow"
@@ -601,10 +605,12 @@ export default function BuySellPage() {
                     selectedMethods={selectedPaymentMethods}
                     onSelectionChange={setSelectedPaymentMethods}
                     isLoading={isLoadingPaymentMethods}
+                    disabled={isMaintenanceActive}
                     trigger={
                       <Button
                         variant="outline"
                         size="sm"
+                        disabled={isMaintenanceActive}
                         className={cn(
                           "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
                           hasFilteredPaymentMethods
@@ -645,10 +651,12 @@ export default function BuySellPage() {
                     initialFilters={filterOptions}
                     initialSortBy={sortBy}
                     hasActiveFilters={hasActiveFilters}
+                    disabled={isMaintenanceActive}
                     trigger={
                       <Button
                         variant="outline"
                         size="sm"
+                        disabled={isMaintenanceActive}
                         className={cn(
                           "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
                           hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
