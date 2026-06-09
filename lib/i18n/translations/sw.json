@@ -92,7 +92,8 @@
       "orderCompletedLabel": "Maagizo yaliyokamilika",
       "continueAnyway": "Endelea hata hivyo",
       "goBack": "Rudi nyuma"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -744,5 +745,13 @@
     "closedGroupBlockedByAddMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaongeza kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
     "closedGroupBlockedByRemoveMessage": "Mfanyabiashara huyu amekuzuia, kwa hivyo huwezi kuwaondoa kwenye kikundi hiki. Chagua mfanyabiashara mwingine.",
     "chooseAnotherTrader": "Chagua mfanyabiashara mwingine"
+  },
+  "maintenance": {
+    "title": "Matengenezo ya mfumo yanaendelea",
+    "descriptionPrefix": "Tunafanya kazi kurejesha Deriv P2P. Kwa maswali ya dharura, wasiliana nasi kupitia ",
+    "liveChatLink": "gumzo la moja kwa moja",
+    "descriptionSuffix": ".",
+    "errorTitle": "Matengenezo ya mfumo yanaendelea",
+    "errorMessage": "Deriv P2P haipatikani kwa muda. Kwa maswali ya dharura, wasiliana nasi kupitia gumzo la moja kwa moja."
   }
 }

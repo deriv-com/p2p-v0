@@ -1,4 +1,5 @@
 import { normalizeUpdateAdPayload } from "@/lib/ads/advert-edit-patch"
+import { p2pFetch } from "./p2p-fetch"
 import { API, AUTH } from "@/lib/local-variables"
 import { useUserDataStore } from "@/stores/user-data-store"
 
@@ -159,7 +160,7 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
     const requestData = { data: payload }
     const body = JSON.stringify(requestData)
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "PATCH",
       credentials: "include",
       headers,
@@ -191,7 +192,7 @@ export async function getCurrencies(): Promise<string[]> {
     const url = `${API.baseUrl}${API.endpoints.settings}`
     const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -222,7 +223,7 @@ export async function getUserAdverts(showInactive?: boolean, page = 1, per_page 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -301,7 +302,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const requestData = { data: payload }
     const body = JSON.stringify(requestData)
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "PATCH",
       headers,
       credentials: "include",
@@ -358,7 +359,7 @@ export async function toggleAdActiveStatus(
     const requestData = { data: payload }
     const body = JSON.stringify(requestData)
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "PATCH",
       headers,
       credentials: "include",
@@ -407,7 +408,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "DELETE",
       headers,
       credentials: "include",
@@ -461,7 +462,7 @@ export async function createAd(
     const requestBody = { data: enhancedPayload }
     const body = JSON.stringify(requestBody)
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       headers,
       credentials: "include",
@@ -568,7 +569,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
 
     const body = JSON.stringify({ data: payload })
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "PATCH",
       headers,
       credentials: "include",
@@ -612,7 +613,7 @@ export async function getAdvert(id: string): Promise<MyAd> {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })

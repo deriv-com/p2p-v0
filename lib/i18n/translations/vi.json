@@ -85,7 +85,8 @@
       "orderCompletedLabel": "Đơn hàng đã hoàn thành",
       "continueAnyway": "Vẫn tiếp tục",
       "goBack": "Quay lại"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -974,5 +975,13 @@
     "seenDaysAgo": "Hoạt động {count} ngày trước",
     "seenMonthsAgo": "Hoạt động {count} tháng trước",
     "seenMoreThanSixMonthsAgo": "Hoạt động hơn 6 tháng trước"
+  },
+  "maintenance": {
+    "title": "Đang bảo trì hệ thống",
+    "descriptionPrefix": "Chúng tôi đang khôi phục Deriv P2P. Với các yêu cầu khẩn cấp, hãy liên hệ với chúng tôi qua ",
+    "liveChatLink": "trò chuyện trực tiếp",
+    "descriptionSuffix": ".",
+    "errorTitle": "Đang bảo trì hệ thống",
+    "errorMessage": "Deriv P2P tạm thời không khả dụng. Với các yêu cầu khẩn cấp, hãy liên hệ với chúng tôi qua trò chuyện trực tiếp."
   }
 }

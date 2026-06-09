@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -140,11 +141,15 @@ export default function BuySellPage() {
   //      loading so the hook preserves its state until a definitive
   //      value arrives.
   const { isFullyOnboarded } = useOnboardingGate()
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
     isLoadingBalance ? undefined : balance,
     isFullyOnboarded,
     !isV1Signup,
   )
+  const showBalanceWarning = shouldShowBalanceWarning && !isMaintenanceActive
+  const displayCurrency = currency || localCurrency || selectedAccountCurrency
+  const showCurrencyFilter = currencies.length > 0 || Boolean(displayCurrency)
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -316,6 +321,7 @@ export default function BuySellPage() {
   }, [paymentMethods, selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const handleAdvertiserClick = (advertiserId: number) => {
+    if (isMaintenanceActive) return
     track("ek_advertiser_profile_markets")
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
@@ -342,6 +348,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
+    if (isMaintenanceActive) return
     track("ek_advert_action_markets", { advert_type: ad.type === "buy" ? "sell" : "buy" })
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       const risk = evaluateRisk(ad)
@@ -396,6 +403,7 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   useEffect(() => {
+    if (isMaintenanceActive) return
     if (isConnected && selectedAccountCurrency && currency && activeTab) {
       joinAdvertsChannel(selectedAccountCurrency, currency, activeTab)
 
@@ -403,7 +411,7 @@ export default function BuySellPage() {
         leaveAdvertsChannel(selectedAccountCurrency, currency, activeTab)
       }
     }
-  }, [isConnected, selectedAccountCurrency, currency, activeTab, joinAdvertsChannel, leaveAdvertsChannel])
+  }, [isMaintenanceActive, isConnected, selectedAccountCurrency, currency, activeTab, joinAdvertsChannel, leaveAdvertsChannel])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
@@ -457,7 +465,7 @@ export default function BuySellPage() {
   }, [])
 
   useEffect(() => {
-    if (!isConnected) return
+    if (isMaintenanceActive || !isConnected) return
 
     joinUsersOnlineChannel()
     const unsubscribe = subscribe(handleUsersOnlineUpdate)
@@ -466,7 +474,7 @@ export default function BuySellPage() {
       unsubscribe()
       leaveUsersOnlineChannel()
     }
-  }, [isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
+  }, [isMaintenanceActive, isConnected, handleUsersOnlineUpdate, joinUsersOnlineChannel, leaveUsersOnlineChannel])
 
   useEffect(() => {
     track("ek_open_markets")
@@ -486,9 +494,9 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden">
         <div className="flex-shrink-0 flex-grow-0 sticky top-0 z-4 bg-background px-3">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-            {/* Desktop only — mobile banner is rendered above the Header in main.tsx. */}
+            {/* Desktop only — maintenance + mobile balance banners live in main.tsx. */}
             {/* Tuck the dark balance card under the banner's bottom edge via `-mb-8`. */}
-            {shouldShowBalanceWarning && (
+            {showBalanceWarning && (
               <div className="hidden md:block md:-mb-8">
                 <P2PBalanceWarning />
               </div>
@@ -516,7 +524,7 @@ export default function BuySellPage() {
                     </TabsList>
                   </Tabs>
                 </div>
-                {currencies.length > 0 && (
+                {showCurrencyFilter && (
                   <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
                     {activeTab === "sell" && (
                       <span className="text-xs font-normal text-white opacity-72">
@@ -530,28 +538,30 @@ export default function BuySellPage() {
                     )}
                     <CurrencyFilter
                       currencies={currencies}
-                      selectedCurrency={currency}
+                      selectedCurrency={displayCurrency}
                       onCurrencySelect={handleCurrencySelect}
+                      disabled={isMaintenanceActive}
                       title={activeTab === "sell" ? t("market.payWith") : t("market.receiveIn")}
                       trigger={
                         <Button
                           variant="outline"
                           size="sm"
+                          disabled={isMaintenanceActive}
                           className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                           onClick={() => track("ek_payment_currency_markets")}
                         >
-                          {currencyFlagMapper[currency as keyof typeof currencyFlagMapper] && (
+                          {currencyFlagMapper[displayCurrency as keyof typeof currencyFlagMapper] && (
                             <Image
                               src={
-                                currencyFlagMapper[currency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                                currencyFlagMapper[displayCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
                               }
-                              alt={`${currency} logo`}
+                              alt={`${displayCurrency} logo`}
                               width={24}
                               height={16}
                               className="mr-1 object-cover"
                             />
                           )}
-                          <span>{currency}</span>
+                          <span>{displayCurrency}</span>
                           <Image
                             src="/icons/chevron-down-white.png"
                             alt="Arrow"
@@ -566,7 +576,7 @@ export default function BuySellPage() {
                 )}
               </div>
             </div>
-            {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+            {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex gap-2 items-center ml-auto flex-1 md:flex-none">
                 {!isV1Signup && (
@@ -595,10 +605,12 @@ export default function BuySellPage() {
                     selectedMethods={selectedPaymentMethods}
                     onSelectionChange={setSelectedPaymentMethods}
                     isLoading={isLoadingPaymentMethods}
+                    disabled={isMaintenanceActive}
                     trigger={
                       <Button
                         variant="outline"
                         size="sm"
+                        disabled={isMaintenanceActive}
                         className={cn(
                           "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
                           hasFilteredPaymentMethods
@@ -639,10 +651,12 @@ export default function BuySellPage() {
                     initialFilters={filterOptions}
                     initialSortBy={sortBy}
                     hasActiveFilters={hasActiveFilters}
+                    disabled={isMaintenanceActive}
                     trigger={
                       <Button
                         variant="outline"
                         size="sm"
+                        disabled={isMaintenanceActive}
                         className={cn(
                           "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
                           hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
@@ -663,7 +677,11 @@ export default function BuySellPage() {
           </div>
         </div>
         <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto pb-20 md:pb-4 scrollbar-hide px-3">
-          {isLoading || (adverts.length === 0 && !currency) ? (
+          {isMaintenanceActive ? (
+            <div className="h-full">
+              <EmptyState title={t("market.noAdsMaintenanceTitle")} route={null} />
+            </div>
+          ) : isLoading || (adverts.length === 0 && !currency) ? (
             <div className="md:block">
               <Table>
                 <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
@@ -906,7 +924,7 @@ export default function BuySellPage() {
                             variant={ad.type === "buy" ? "destructive" : "secondary"}
                             size="sm"
                             onClick={() => handleOrderClick(ad)}
-                            disabled={!!tempBanUntil}
+                            disabled={!!tempBanUntil || isMaintenanceActive}
                           >
                             {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                           </Button>

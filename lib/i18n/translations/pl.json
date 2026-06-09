@@ -92,7 +92,8 @@
       "orderCompletedLabel": "Zrealizowane zlecenia",
       "continueAnyway": "Mimo to kontynuuj",
       "goBack": "Wróć"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -776,5 +777,13 @@
     "heroBenefitHigherLimits": "Higher limits",
     "heroBenefitFasterWithdrawals": "Faster withdrawals",
     "statusInReview": "In review"
+  },
+  "maintenance": {
+    "title": "Trwa konserwacja systemu",
+    "descriptionPrefix": "Pracujemy nad przywróceniem Deriv P2P. W pilnych sprawach skontaktuj się z nami przez ",
+    "liveChatLink": "czat na żywo",
+    "descriptionSuffix": ".",
+    "errorTitle": "Trwa konserwacja systemu",
+    "errorMessage": "Deriv P2P jest tymczasowo niedostępny. W pilnych sprawach skontaktuj się z nami przez czat na żywo."
   }
 }

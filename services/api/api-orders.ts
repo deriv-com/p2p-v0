@@ -1,4 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
+import { p2pFetch } from "./p2p-fetch"
 
 // Type definitions
 export interface Order {
@@ -87,7 +88,7 @@ export async function getOrders(filters?: OrderFilters, page?: number, perPage?:
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -119,7 +120,7 @@ export async function getOrderById(id: string): Promise<Order> {
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -152,7 +153,7 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -186,7 +187,7 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -220,7 +221,7 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -259,7 +260,7 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
       },
     })
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -304,7 +305,7 @@ export async function createOrder(advertId: number, exchangeRate: number, amount
       },
     })
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -334,7 +335,7 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -377,7 +378,7 @@ export async function reviewOrder(
       },
     })
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -412,7 +413,7 @@ export async function completeOrder(orderId: string, otpValue: string | null): P
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -467,7 +468,7 @@ export async function sendChatMessage(
       })
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,
@@ -515,7 +516,7 @@ export async function requestOrderCompletionOtp(orderId: string): Promise<{ succ
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method: "POST",
       credentials: "include",
       headers,

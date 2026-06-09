@@ -1,5 +1,7 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getSocketUrl } from "@/lib/get-socket-url"
+import { isP2PMaintenanceActive } from "@/lib/p2p-maintenance-env"
+import { isP2PWebSocketEligible } from "@/lib/p2p-websocket-eligibility"
 import type { WebSocketMessage } from "./websocket-message"
 import type { WebSocketOptions } from "./websocket-options"
 
@@ -18,6 +20,15 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
+    if (isP2PMaintenanceActive()) {
+      this.disconnect()
+      return Promise.reject(new Error("P2P system maintenance is active"))
+    }
+    if (!isP2PWebSocketEligible()) {
+      this.disconnect()
+      return Promise.reject(new Error("P2P user is not eligible for WebSocket"))
+    }
+
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return Promise.resolve(this.socket)
     }
@@ -77,15 +88,25 @@ export class WebSocketClient {
     })
   }
 
-  public send(message: WebSocketMessage): void {
+  public send(message: WebSocketMessage): boolean {
+    if (isP2PMaintenanceActive() || !isP2PWebSocketEligible()) {
+      console.warn("WebSocket send blocked:", {
+        maintenance: isP2PMaintenanceActive(),
+        eligible: isP2PWebSocketEligible(),
+      })
+      return false
+    }
+
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message))
-    } else {
-      console.warn("WebSocket is not connected. Message not sent:", message)
+      return true
     }
+
+    console.warn("WebSocket is not connected. Message not sent:", message)
+    return false
   }
 
-  public joinChannel(channel: string, id: number): void {
+  public joinChannel(channel: string, id: number): boolean {
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -95,7 +116,7 @@ export class WebSocketClient {
         order_id: id,
       },
     }
-    this.send(joinMessage)
+    return this.send(joinMessage)
   }
 
   public joinUserChannel(): void {

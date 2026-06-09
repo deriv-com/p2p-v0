@@ -3,6 +3,9 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getSocketUrl } from "@/lib/get-socket-url"
+import { isP2PMaintenanceActive } from "@/lib/p2p-maintenance-env"
+import { isP2PWebSocketEligible, isP2PWebSocketEligibleFromState } from "@/lib/p2p-websocket-eligibility"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import type { WebSocketMessage } from "@/lib/websocket-message"
 import type { WebSocketOptions } from "@/lib/websocket-options"
 
@@ -22,6 +25,15 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
+    if (isP2PMaintenanceActive()) {
+      this.disconnect()
+      return Promise.reject(new Error("P2P system maintenance is active"))
+    }
+    if (!isP2PWebSocketEligible()) {
+      this.disconnect()
+      return Promise.reject(new Error("P2P user is not eligible for WebSocket"))
+    }
+
     const socketToken = this.getSocketToken()
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
@@ -86,15 +98,25 @@ export class WebSocketClient {
     })
   }
 
-  public send(message: WebSocketMessage): void {
+  public send(message: WebSocketMessage): boolean {
+    if (isP2PMaintenanceActive() || !isP2PWebSocketEligible()) {
+      console.warn("WebSocket send blocked:", {
+        maintenance: isP2PMaintenanceActive(),
+        eligible: isP2PWebSocketEligible(),
+      })
+      return false
+    }
+
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message))
-    } else {
-      console.warn("WebSocket is not connected. Message not sent:", message)
+      return true
     }
+
+    console.warn("WebSocket is not connected. Message not sent:", message)
+    return false
   }
 
-  public joinChannel(channel: string, id: number): void {
+  public joinChannel(channel: string, id: number): boolean {
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -104,7 +126,7 @@ export class WebSocketClient {
         order_id: id,
       },
     }
-    this.send(joinMessage)
+    return this.send(joinMessage)
   }
 
   public joinExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
@@ -263,7 +285,7 @@ export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient 
 
 interface WebSocketContextType {
   isConnected: boolean
-  joinChannel: (channel: string, id: number) => void
+  joinChannel: (channel: string, id: number) => boolean
   leaveChannel: (channel: string) => void
   getChatHistory: (channel: string, orderId: string) => void
   subscribe: (callback: (data: any) => void) => () => void
@@ -296,18 +318,28 @@ interface WebSocketProviderProps {
 export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
-  const hasInitializedRef = useRef(false)
   const [isConnected, setIsConnected] = useState(false)
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const shouldReconnectRef = useRef(true)
   const retryCountRef = useRef(0)
   const maxRetries = 5
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const userId = useUserDataStore((state) => state.userId)
+  const userData = useUserDataStore((state) => state.userData)
+  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+  const isWebSocketEligible = isP2PWebSocketEligibleFromState({ userId, userData, onboardingStatus })
 
   useEffect(() => {
-    if (hasInitializedRef.current) return
+    if (isMaintenanceActive || !isWebSocketEligible) {
+      shouldReconnectRef.current = false
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
+      wsClientRef.current?.disconnect()
+      setIsConnected(false)
+      return
+    }
 
-    hasInitializedRef.current = true
-
+    shouldReconnectRef.current = true
+    retryCountRef.current = 0
     const wsClient = getWebSocketClient({
       onOpen: () => {
         retryCountRef.current = 0
@@ -341,7 +373,9 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current = wsClient
 
     wsClient.connect().catch((error) => {
-      console.error("Failed to connect WebSocket:", error)
+      if (!isP2PMaintenanceActive() && isP2PWebSocketEligible()) {
+        console.error("Failed to connect WebSocket:", error)
+      }
     })
 
     return () => {
@@ -355,10 +389,11 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   useEffect(() => {
     const handleVisibilityChange = () => {
+      if (isMaintenanceActive || !isWebSocketEligible) return
       const client = wsClientRef.current
       if (document.visibilityState === "visible" && client && !client.isConnected() && !client.isConnectingNow()) {
         if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current)
@@ -368,19 +403,27 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
     document.addEventListener("visibilitychange", handleVisibilityChange)
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
-  const joinChannel = useCallback((channel: string, id: number) => {
-    wsClientRef.current?.joinChannel(channel, id)
-  }, [])
+  const joinChannel = useCallback((channel: string, id: number): boolean => {
+    if (isMaintenanceActive || !isWebSocketEligible) {
+      console.warn("WebSocket join blocked:", {
+        maintenance: isMaintenanceActive,
+        eligible: isWebSocketEligible,
+      })
+      return false
+    }
+    return wsClientRef.current?.joinChannel(channel, id) ?? false
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const leaveChannel = useCallback((channel: string) => {
     wsClientRef.current?.leaveChannel(channel)
   }, [])
 
   const getChatHistory = useCallback((channel: string, orderId: string) => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     wsClientRef.current?.getChatHistory(channel, orderId)
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const subscribe = useCallback((callback: (data: any) => void) => {
     subscribersRef.current.add(callback)
@@ -390,45 +433,51 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   }, [])
 
   const reconnect = useCallback(() => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     if (wsClientRef.current) {
       wsClientRef.current.disconnect()
       wsClientRef.current.connect().catch((error) => {
         console.error("Failed to reconnect WebSocket:", error)
       })
     }
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const subscribeToUserUpdates = useCallback(() => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     wsClientRef.current?.subscribeToUserUpdates()
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const unsubscribeFromUserUpdates = useCallback(() => {
     wsClientRef.current?.unsubscribeFromUserUpdates()
   }, [])
 
   const joinExchangeRatesChannel = useCallback((buyCurrency: string, forCurrency: string) => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     wsClientRef.current?.joinExchangeRatesChannel(buyCurrency, forCurrency)
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const leaveExchangeRatesChannel = useCallback((buyCurrency: string, forCurrency: string) => {
     wsClientRef.current?.leaveExchangeRatesChannel(buyCurrency, forCurrency)
   }, [])
 
   const requestExchangeRate = useCallback((buyCurrency: string, forCurrency: string) => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     wsClientRef.current?.requestExchangeRate(buyCurrency, forCurrency)
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const joinAdvertsChannel = useCallback((accountCurrency: string, localCurrency: string, advertType: string) => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     wsClientRef.current?.joinAdvertsChannel(accountCurrency, localCurrency, advertType)
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const leaveAdvertsChannel = useCallback((accountCurrency: string, localCurrency: string, advertType: string) => {
     wsClientRef.current?.leaveAdvertsChannel(accountCurrency, localCurrency, advertType)
   }, [])
 
   const joinUsersOnlineChannel = useCallback(() => {
+    if (isMaintenanceActive || !isWebSocketEligible) return
     wsClientRef.current?.joinUsersOnlineChannel()
-  }, [])
+  }, [isMaintenanceActive, isWebSocketEligible])
 
   const leaveUsersOnlineChannel = useCallback(() => {
     wsClientRef.current?.leaveUsersOnlineChannel()

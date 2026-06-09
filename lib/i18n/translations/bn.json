@@ -85,7 +85,8 @@
       "orderCompletedLabel": "সম্পূর্ণ অর্ডার",
       "continueAnyway": "তারপরও চালিয়ে যান",
       "goBack": "ফিরে যান"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -943,5 +944,13 @@
     "seenDaysAgo": "{count} দিন আগে দেখা গেছে",
     "seenMonthsAgo": "{count} মাস আগে দেখা গেছে",
     "seenMoreThanSixMonthsAgo": "৬ মাসেরও বেশি আগে দেখা গেছে"
+  },
+  "maintenance": {
+    "title": "সিস্টেম রক্ষণাবেক্ষণ চলছে",
+    "descriptionPrefix": "আমরা Deriv P2P পুনরুদ্ধার করতে কাজ করছি। জরুরি প্রশ্নের জন্য, আমাদের সাথে যোগাযোগ করুন ",
+    "liveChatLink": "লাইভ চ্যাটের মাধ্যমে",
+    "descriptionSuffix": ".",
+    "errorTitle": "সিস্টেম রক্ষণাবেক্ষণ চলছে",
+    "errorMessage": "Deriv P2P সাময়িকভাবে অনুপলব্ধ। জরুরি প্রশ্নের জন্য, লাইভ চ্যাটের মাধ্যমে আমাদের সাথে যোগাযোগ করুন।"
   }
 }
