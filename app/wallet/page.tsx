@@ -14,7 +14,6 @@ import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-shee
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useTrackers } from "@/analytics/useTrackers"
-import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import EmptyState from "@/components/empty-state"
 
@@ -204,11 +203,6 @@ export default function WalletPage() {
             actionsDisabled={isMaintenanceActive}
           />
         </div>
-        {isMaintenanceActive && (
-          <div className="w-full px-4 md:px-0 mt-4">
-            <P2PSystemMaintenanceBanner embeddedInDarkHeader />
-          </div>
-        )}
         {tempBanUntil && !isMaintenanceActive && (
           <div className="w-full px-4 md:px-0 mt-4">
             <TemporaryBanAlert tempBanUntil={tempBanUntil} />

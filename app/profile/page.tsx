@@ -13,7 +13,6 @@ import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
-import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import { useRouter } from "next/navigation"
 
@@ -136,7 +135,6 @@ export default function ProfilePage() {
               isLoading={isLoading}
               tradeBand={userData?.trade_band}
             />
-            {isMaintenanceActive && <P2PSystemMaintenanceBanner />}
             {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4 px-3 md:px-0">
               <TradeLimits

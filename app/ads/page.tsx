@@ -19,7 +19,6 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
-import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 
 interface StatusData {
@@ -267,7 +266,6 @@ export default function AdsPage() {
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
             {t("myAds.title")}
           </div>
-          {isMaintenanceActive && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
           {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
             {!isMaintenanceActive && userAdverts.length > 0 && (

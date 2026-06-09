@@ -30,7 +30,6 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useOrders } from "@/hooks/use-api-queries"
 import { useTrackers } from "@/analytics/useTrackers"
-import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 
 function TimeRemainingDisplay({ expiresAt }) {
@@ -322,11 +321,6 @@ export default function OrdersPage() {
               </Button>
             )}
           </div>
-          {isMaintenanceActive && (
-            <div className="mt-4">
-              <P2PSystemMaintenanceBanner embeddedInDarkHeader />
-            </div>
-          )}
           {tempBanUntil && !isMaintenanceActive && (
             <div className="mt-4">
               <TemporaryBanAlert tempBanUntil={tempBanUntil} />

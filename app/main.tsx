@@ -237,7 +237,7 @@ export default function Main({
         </div>
       </div>
       <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
-        {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
+        {showMaintenanceBanner && <P2PSystemMaintenanceBanner />}
         {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>
