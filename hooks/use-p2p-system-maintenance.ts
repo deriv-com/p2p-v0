@@ -10,7 +10,7 @@ import {
 
 /**
  * Combined maintenance signal: Remote Config flag OR latched `P2P_Disabled`
- * from any P2P API response OR `NEXT_PUBLIC_P2P_SYSTEM_MAINTENANCE=1`.
+ * from any P2P API response OR `NEXT_PUBLIC_P2P_SYSTEM_MAINTENANCE_ENABLED=1`.
  */
 export function useP2PSystemMaintenance(): { isActive: boolean } {
   const isActive = useP2PMaintenanceStore(selectIsP2PSystemMaintenanceActive)

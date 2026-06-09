@@ -16,8 +16,9 @@ export const useP2PMaintenanceStore = create<P2PMaintenanceState>((set) => ({
   clearMaintenance: () => set({ isApiMaintenanceActive: false, remoteConfigEnabled: false }),
 }))
 
+/** GitHub / deploy env kill-switch — only `"1"` enables maintenance from env. */
 export function isP2PMaintenanceEnvEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_P2P_SYSTEM_MAINTENANCE === "1"
+  return process.env.NEXT_PUBLIC_P2P_SYSTEM_MAINTENANCE_ENABLED === "1"
 }
 
 export function selectIsP2PSystemMaintenanceActive(state: P2PMaintenanceState): boolean {
