@@ -406,7 +406,7 @@ export function mapOrderError(
         secondaryAction: OrderErrorAction.Dismiss,
       }
 
-    case "P2P_Disabled":
+    case "P2PDisabled":
       return {
         title: t("maintenance.errorTitle"),
         message: t("maintenance.errorMessage"),

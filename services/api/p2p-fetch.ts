@@ -50,7 +50,7 @@ function maintenanceBlockedResponse(): Response {
 
 /**
  * Drop-in fetch wrapper for P2P backend calls. Inspects JSON bodies for
- * embedded status codes (including `P2P_Disabled`) on both success and error
+ * embedded status codes (including `P2PDisabled`) on both success and error
  * responses — mirrors the mobile Dio interceptor.
  */
 export async function p2pFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {

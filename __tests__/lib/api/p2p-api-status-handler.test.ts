@@ -14,14 +14,14 @@ describe("p2p-api-status-handler", () => {
 
     it("returns the first error code when present", () => {
       expect(
-        extractP2PErrorCode({ errors: [{ code: "P2P_Disabled" }] }),
-      ).toBe("P2P_Disabled")
+        extractP2PErrorCode({ errors: [{ code: "P2PDisabled" }] }),
+      ).toBe("P2PDisabled")
     })
   })
 
   describe("handleP2PApiStatusCode", () => {
-    it("latches maintenance when code is P2P_Disabled", () => {
-      handleP2PApiStatusCode("P2P_Disabled")
+    it("latches maintenance when code is P2PDisabled", () => {
+      handleP2PApiStatusCode("P2PDisabled")
       expect(useP2PMaintenanceStore.getState().isApiMaintenanceActive).toBe(true)
     })
 

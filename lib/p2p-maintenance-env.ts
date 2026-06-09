@@ -1,6 +1,6 @@
 import { useP2PMaintenanceStore } from "@/stores/p2p-maintenance-store"
 
-/** Maintenance kill-switch for web — env flag or API `P2P_Disabled` latch. */
+/** Maintenance kill-switch for web — env flag or API `P2PDisabled` latch. */
 
 /** Whether P2P system maintenance mode is active (banner, gates, query blocking). */
 export function isP2PMaintenanceActive(): boolean {
