@@ -1,4 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
+import { p2pFetch } from "./p2p-fetch"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 // Define the Advertisement interface directly in this file
@@ -105,7 +106,7 @@ export async function getAdvertisements(params?: SearchParams, signal?: AbortSig
 
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
     const headers = AUTH.getAuthHeader()
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
       signal,
@@ -146,7 +147,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     // First try to get user data from the users endpoint
     const url = `${API.baseUrl}${API.endpoints.advertisers}/${id}`
     const headers = AUTH.getAuthHeader()
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -273,7 +274,7 @@ export async function getAdvertiserAds(advertiserId: string | number, page?: num
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -324,7 +325,7 @@ export async function toggleFavouriteAdvertiser(
       },
     })
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method,
       credentials: "include",
       headers,
@@ -386,7 +387,7 @@ export async function toggleBlockAdvertiser(
       },
     })
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       method,
       credentials: "include",
       headers,
@@ -431,7 +432,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
     const url = `${API.baseUrl}${API.endpoints.availablePaymentMethods}`
     const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })

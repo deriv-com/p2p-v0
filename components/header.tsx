@@ -15,11 +15,14 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import MobileAdvertiserSearch from "./mobile-advertiser-search"
 import { Button } from "@/components/ui/button"
 import { useTrackers } from "@/analytics/useTrackers"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import { guardP2PNavigation } from "@/lib/p2p-maintenance-navigation"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
   const { track } = useTrackers()
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
   const pathname = usePathname()
@@ -92,7 +95,12 @@ export default function Header() {
         <div className="h-12 flex items-center space-x-2">
           {(pathname === "/" || pathname.startsWith("/advertiser")) && (
             <Button
-              onClick={() => { track("ek_search_markets"); setUserIsSearchOpen(true) }}
+              onClick={() => {
+                guardP2PNavigation(isMaintenanceActive, () => {
+                  track("ek_search_markets")
+                  setUserIsSearchOpen(true)
+                })
+              }}
               variant="ghost"
               size="icon"
               className="h-8 w-8 rounded-full bg-[#ffffff0a]"
@@ -101,8 +109,11 @@ export default function Header() {
             </Button>
           )}
           {userId && (
-            <div className="text-slate-600 hover:text-slate-700" onClick={() => track("ek_notifications_markets")}>
-              <NovuNotifications />
+            <div
+              className="text-slate-600 hover:text-slate-700"
+              onClick={() => guardP2PNavigation(isMaintenanceActive, () => track("ek_notifications_markets"))}
+            >
+              <NovuNotifications disabled={isMaintenanceActive} />
             </div>
           )}
         </div>

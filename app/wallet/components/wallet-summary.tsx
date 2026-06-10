@@ -62,6 +62,7 @@ interface WalletSummaryProps {
   hasBalance?: boolean
   selectedTransaction?: Transaction | null
   onTransactionSelect?: (transaction: Transaction | null) => void
+  actionsDisabled?: boolean
 }
 
 export default function WalletSummary({
@@ -74,6 +75,7 @@ export default function WalletSummary({
   hasBalance = false,
   selectedTransaction: parentSelectedTransaction = null,
   onTransactionSelect,
+  actionsDisabled = false,
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const { track } = useTrackers()
@@ -212,6 +214,7 @@ export default function WalletSummary({
   }, [currenciesResponse])
 
   const handleDepositClick = () => {
+    if (actionsDisabled) return
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
@@ -222,6 +225,7 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
+    if (actionsDisabled) return
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
@@ -232,6 +236,7 @@ export default function WalletSummary({
   }
 
   const handleTransferClick = () => {
+    if (actionsDisabled) return
     if (!hasBalance) return
     track("ek_transfer_wallets")
 
@@ -251,6 +256,7 @@ export default function WalletSummary({
   // funds into it. The URL is cleaned immediately so a refresh doesn't
   // re-open the sheet.
   useEffect(() => {
+    if (actionsDisabled) return
     if (searchParams.get("operation") !== "TRANSFER") return
     if (!userId) return
     router.replace("/wallet")
@@ -273,6 +279,7 @@ export default function WalletSummary({
     t,
     showAlert,
     hideAlert,
+    actionsDisabled,
   ])
 
   const handleBuyClick = () => {
@@ -341,7 +348,7 @@ export default function WalletSummary({
     <>
       <div
         className={cn(
-          "w-full p-6 flex flex-col",
+          "relative z-10 w-full p-6 flex flex-col",
           isBalancesView && !isShowingTransactionDetails ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
           isMobile ? (isBalancesView && !isShowingTransactionDetails ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
         )}
@@ -466,7 +473,7 @@ export default function WalletSummary({
                   size="icon"
                   className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
                   onClick={handleTransferClick}
-                  disabled={!hasBalance}
+                  disabled={actionsDisabled || !hasBalance}
                   aria-label="Transfer"
                 >
                   <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />

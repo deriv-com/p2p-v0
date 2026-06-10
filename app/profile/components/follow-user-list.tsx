@@ -51,7 +51,7 @@ export default function FollowUserList({
 
     return (
       <div className="h-[72px] flex items-center justify-between gap-3">
-        <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+        <div className="w-10 h-10 rounded-full bg-grayscale-300 flex items-center justify-center text-slate-700 font-bold text-sm flex-shrink-0">
           {user.nickname?.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">

@@ -85,7 +85,8 @@
       "orderCompletedLabel": "Órdenes completadas",
       "continueAnyway": "Continuar de todos modos",
       "goBack": "Volver"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -495,6 +496,8 @@
     "saveChanges": "Guardar cambios",
     "loading": "Cargando...",
     "validationSymbolsOnly": "Solo se permiten letras, números, espacios y símbolos -+.,'#@():;",
+    "validationNumbersOnly": "Solo se permiten números.",
+    "validationAccountTooLong": "El número de cuenta debe tener 50 caracteres o menos.",
     "fieldRequired": "{field} es obligatorio",
     "enterField": "Introduce {field}",
     "tryAgain": "Volver a intentar",
@@ -966,5 +969,13 @@
     "seenDaysAgo": "Visto hace {count} día{plural}",
     "seenMonthsAgo": "Visto hace {count} mes{plural}",
     "seenMoreThanSixMonthsAgo": "Visto hace más de 6 meses"
+  },
+  "maintenance": {
+    "title": "Mantenimiento del sistema en curso",
+    "descriptionPrefix": "Estamos trabajando para restaurar Deriv P2P. Para consultas urgentes, contáctenos por ",
+    "liveChatLink": "chat en vivo",
+    "descriptionSuffix": ".",
+    "errorTitle": "Mantenimiento del sistema en curso",
+    "errorMessage": "Deriv P2P no está disponible temporalmente. Para consultas urgentes, contáctenos por chat en vivo."
   }
 }

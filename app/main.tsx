@@ -16,8 +16,12 @@ import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
 import { P2PAnnouncementController } from "@/components/p2p-announcement"
 import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
+import { P2PMaintenanceController } from "@/components/p2p-maintenance-controller"
 import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import { shouldShowP2PMaintenanceBanner } from "@/lib/p2p-maintenance-constants"
 import "./globals.css"
 
 export default function Main({
@@ -38,7 +42,10 @@ export default function Main({
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
-  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(isAuthenticated)
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(
+    isAuthenticated && !isMaintenanceActive,
+  )
 
   const isDisabled = userData?.status === "disabled"
 
@@ -49,7 +56,9 @@ export default function Main({
   const { isFullyOnboarded } = useOnboardingGate()
   const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded, isV2User)
   const isMarketsPage = pathname === "/"
-  const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning
+  const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning && !isMaintenanceActive
+  const showMaintenanceBanner =
+    isMaintenanceActive && shouldShowP2PMaintenanceBanner(pathname)
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")
@@ -74,6 +83,11 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
+        if (isMaintenanceActive && !isPublic) {
+          setIsAuthenticated(true)
+          return
+        }
+
         const token = searchParams.get("token")
         if (token) {
           try {
@@ -122,10 +136,10 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams])
+  }, [isMaintenanceActive, pathname, router, searchParams])
 
   useEffect(() => {
-    if (!isAuthenticated || isOnboardingLoading || !onboardingStatus) {
+    if (isMaintenanceActive || !isAuthenticated || isOnboardingLoading || !onboardingStatus) {
       return
     }
 
@@ -171,7 +185,7 @@ export default function Main({
       isMounted = false
       abortController.abort()
     }
-  }, [isAuthenticated, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
+  }, [isAuthenticated, isMaintenanceActive, onboardingStatus, isOnboardingLoading, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
@@ -212,14 +226,23 @@ export default function Main({
       {process.env.NEXT_PUBLIC_INTERCOM_APP_ID && (
         <IntercomProvider appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID} />
       )}
+      <P2PMaintenanceController />
       <P2PAnnouncementController />
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
-          <div className="container mx-auto">{children}</div>
+          <div className="container mx-auto">
+            {showMaintenanceBanner && (
+              <div className="relative z-0 md:-mb-8 md:px-3">
+                <P2PSystemMaintenanceBanner />
+              </div>
+            )}
+            {children}
+          </div>
         </div>
       </div>
-      <div className="md:hidden flex flex-col h-screen h-dvh overflow-hidden">
+      <div className="md:hidden flex flex-col h-dvh overflow-hidden">
+        {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
         {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>

@@ -85,7 +85,8 @@
       "orderCompletedLabel": "Abgeschlossene Aufträge",
       "continueAnyway": "Trotzdem fortfahren",
       "goBack": "Zurück"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -457,6 +458,8 @@
     "saveChanges": "Änderungen speichern",
     "loading": "Wird geladen...",
     "validationSymbolsOnly": "Nur Buchstaben, Zahlen, Leerzeichen und die Symbole -+.,'#@():; sind erlaubt",
+    "validationNumbersOnly": "Nur Zahlen sind erlaubt.",
+    "validationAccountTooLong": "Die Kontonummer darf maximal 50 Zeichen lang sein.",
     "fieldRequired": "{field} ist erforderlich",
     "enterField": "{field} eingeben",
     "tryAgain": "Erneut versuchen",
@@ -991,5 +994,13 @@
     "seenDaysAgo": "Vor {count} Tag{plural} gesehen",
     "seenMonthsAgo": "Vor {count} Monat{plural} gesehen",
     "seenMoreThanSixMonthsAgo": "Vor mehr als 6 Monaten gesehen"
+  },
+  "maintenance": {
+    "title": "Systemwartung läuft",
+    "descriptionPrefix": "Wir arbeiten daran, Deriv P2P wiederherzustellen. Bei dringenden Fragen kontaktieren Sie uns über den ",
+    "liveChatLink": "Live-Chat",
+    "descriptionSuffix": ".",
+    "errorTitle": "Systemwartung läuft",
+    "errorMessage": "Deriv P2P ist vorübergehend nicht verfügbar. Bei dringenden Fragen kontaktieren Sie uns über den Live-Chat."
   }
 }

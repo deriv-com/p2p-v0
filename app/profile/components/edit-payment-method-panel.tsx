@@ -9,6 +9,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import {
+  getPaymentMethodAccountValidationIssue,
+  PAYMENT_METHOD_ACCOUNT_MAX_LENGTH,
+  requiresNumericAccountField,
+  sanitizeNumericAccountInput,
+} from "@/lib/payment-method-validation"
 
 interface EditPaymentMethodPanelProps {
   onClose: () => void
@@ -42,47 +48,78 @@ export default function EditPaymentMethodPanel({
   useEffect(() => {
     if (!paymentMethod?.details) return
 
-    setFieldValues(
-      Object.fromEntries(
-        Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => [fieldName, fieldConfig.value || ""]),
-      ),
+    const initialValues = Object.fromEntries(
+      Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => [fieldName, fieldConfig.value || ""]),
     )
+
+    setFieldValues(initialValues)
+
+    const initialErrors: Record<string, string> = {}
+    Object.entries(paymentMethod.details).forEach(([fieldName, fieldConfig]) => {
+      const value = initialValues[fieldName] ?? ""
+      if (!value.trim() && fieldConfig.required) return
+
+      const fieldError = getFieldValidationError(paymentMethod.type, fieldName, value)
+      if (fieldError) {
+        initialErrors[fieldName] = fieldError
+      }
+    })
+    setErrors(initialErrors)
   }, [paymentMethod])
 
-  const validateInput = (value: string) => {
+  const validateSymbolsInput = (value: string) => {
     const allowedPattern = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/
     return allowedPattern.test(value)
   }
 
+  const getFieldValidationError = (method: string, fieldName: string, value: string): string | null => {
+    const trimmed = value.trim()
+    if (!trimmed) return null
+
+    const accountIssue = getPaymentMethodAccountValidationIssue(method, fieldName, value)
+    if (accountIssue === "numbersOnly") return t("profile.validationNumbersOnly")
+    if (accountIssue === "tooLong") return t("profile.validationAccountTooLong")
+
+    return validateSymbolsInput(trimmed) ? null : t("profile.validationSymbolsOnly")
+  }
+
   const handleInputChange = (fieldName: string, value: string) => {
-    setFieldValues((prev) => ({ ...prev, [fieldName]: value }))
+    const nextValue = requiresNumericAccountField(paymentMethod.type, fieldName)
+      ? sanitizeNumericAccountInput(value)
+      : value
 
-    if (errors[fieldName]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[fieldName]
-        return newErrors
-      })
-    }
+    setFieldValues((prev) => ({ ...prev, [fieldName]: nextValue }))
 
-    if (value && !validateInput(value)) {
+    const fieldError = getFieldValidationError(paymentMethod.type, fieldName, nextValue)
+    if (fieldError) {
       setErrors((prev) => ({
         ...prev,
-        [fieldName]: t("profile.validationSymbolsOnly"),
+        [fieldName]: fieldError,
       }))
+      return
     }
+
+    setErrors((prev) => {
+      const newErrors = { ...prev }
+      delete newErrors[fieldName]
+      return newErrors
+    })
   }
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
     Object.entries(paymentMethod.details).forEach(([fieldName, fieldConfig]) => {
-      const value = fieldValues[fieldName]?.trim()
+      const value = fieldValues[fieldName]?.trim() ?? ""
 
       if (!value && fieldConfig.required) {
         newErrors[fieldName] = t("profile.fieldRequired", { field: fieldConfig.display_name })
-      } else if (value && !validateInput(value)) {
-        newErrors[fieldName] = t("profile.validationSymbolsOnly")
+        return
+      }
+
+      const fieldError = getFieldValidationError(paymentMethod.type, fieldName, value)
+      if (fieldError) {
+        newErrors[fieldName] = fieldError
       }
     })
 
@@ -99,6 +136,7 @@ export default function EditPaymentMethodPanel({
   }
 
   const getFieldType = (fieldName: string): string => {
+    if (requiresNumericAccountField(paymentMethod.type, fieldName)) return "tel"
     if (fieldName.includes("phone")) return "tel"
     if (fieldName.includes("email")) return "email"
     return "text"
@@ -156,12 +194,19 @@ export default function EditPaymentMethodPanel({
                     <Input
                       id={fieldName}
                       type={getFieldType(fieldName)}
+                      inputMode={
+                        requiresNumericAccountField(paymentMethod.type, fieldName)
+                          ? "numeric"
+                          : undefined
+                      }
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
                       label={t("profile.enterField", { field: fieldConfig.display_name.toLowerCase() })}
                       required={fieldConfig.required}
                       variant="floating"
-                      maxLength={30}
+                      maxLength={
+                        fieldName === "account" ? PAYMENT_METHOD_ACCOUNT_MAX_LENGTH : undefined
+                      }
                     />
                     {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
                   </div>

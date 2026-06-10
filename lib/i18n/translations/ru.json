@@ -85,7 +85,8 @@
       "orderCompletedLabel": "Завершенные ордера",
       "continueAnyway": "Все равно продолжить",
       "goBack": "Назад"
-    }
+    },
+    "noAdsMaintenanceTitle": "No ads available"
   },
   "order": {
     "secureTradeReminder": {
@@ -462,6 +463,8 @@
     "saveChanges": "Сохранить изменения",
     "loading": "Загрузка...",
     "validationSymbolsOnly": "Разрешены только буквы, цифры, пробелы и символы -+.,'#@():;",
+    "validationNumbersOnly": "Разрешены только цифры.",
+    "validationAccountTooLong": "Номер учетной записи должен содержать не более 50 символов.",
     "fieldRequired": "{field} обязательно",
     "enterField": "Введите {field}",
     "tryAgain": "Попробовать снова",
@@ -995,5 +998,13 @@
     "seenDaysAgo": "В сети {count} день{plural} назад",
     "seenMonthsAgo": "В сети {count} месяц{plural} назад",
     "seenMoreThanSixMonthsAgo": "В сети более 6 месяцев назад"
+  },
+  "maintenance": {
+    "title": "Выполняется техническое обслуживание системы",
+    "descriptionPrefix": "Мы работаем над восстановлением Deriv P2P. По срочным вопросам свяжитесь с нами через ",
+    "liveChatLink": "чат",
+    "descriptionSuffix": ".",
+    "errorTitle": "Выполняется техническое обслуживание системы",
+    "errorMessage": "Deriv P2P временно недоступен. По срочным вопросам свяжитесь с нами через чат."
   }
 }

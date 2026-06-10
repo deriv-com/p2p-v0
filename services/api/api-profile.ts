@@ -1,5 +1,6 @@
 import { API, AUTH, USER } from "@/lib/local-variables"
 import type { BusinessHoursSchedule } from "@/lib/business-hours-codec"
+import { p2pFetch } from "./p2p-fetch"
 
 export interface UserProfile {
   id: number
@@ -79,7 +80,7 @@ export interface PaymentMethod {
  */
 export async function getUserProfile(): Promise<UserProfile> {
   try {
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
+    const response = await p2pFetch(`${API.baseUrl}${API.endpoints.profile}`, {
       credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
@@ -109,7 +110,7 @@ export async function updateBusinessHours(
   userId: string | number,
   schedule: BusinessHoursSchedule,
 ): Promise<void> {
-  const response = await fetch(`${API.baseUrl}/users/${userId}`, {
+  const response = await p2pFetch(`${API.baseUrl}/users/${userId}`, {
     method: "PATCH",
     credentials: "include",
     headers: {
@@ -140,7 +141,7 @@ export async function updateBusinessHours(
  */
 export async function getUserBalance(): Promise<{ balance: number; currency: string }> {
   try {
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
+    const response = await p2pFetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
       credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
@@ -164,7 +165,7 @@ export async function getUserBalance(): Promise<{ balance: number; currency: str
  */
 export async function toggleRealNameVisibility(show: boolean): Promise<{ success: boolean }> {
   try {
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
+    const response = await p2pFetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -205,7 +206,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
     const url = `${API.baseUrl}/users/${userId}`
     const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
       cache: "no-store",
@@ -274,7 +275,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
 export async function getUserPaymentMethods(): Promise<{ data: PaymentMethod[] }> {
   try {
     const headers = AUTH.getAuthHeader()
-    const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-payment-methods`, {
       headers,
       credentials: "include",
     })
@@ -313,7 +314,7 @@ export async function addPaymentMethod(
     }
 
     const headers = AUTH.getAuthHeader()
-    const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-payment-methods`, {
       method: "POST",
       headers,
       credentials: "include",
@@ -373,7 +374,7 @@ export async function updatePaymentMethod(
     }
 
     const headers = AUTH.getAuthHeader()
-    const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
       credentials: "include",
       headers,
@@ -440,7 +441,7 @@ export async function deletePaymentMethod(
 ): Promise<{ success: boolean; data?: PaymentMethod; errors?: Array<{ code: string; message: string }> }> {
   try {
     const headers = AUTH.getAuthHeader()
-    const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "DELETE",
       headers,
       credentials: "include",
@@ -479,7 +480,7 @@ export async function getFavouriteUsers(page?: number, perPage?: number): Promis
       ? `${API.baseUrl}/user-favourites?${queryParams.toString()}`
       : `${API.baseUrl}/user-favourites`
     
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -509,7 +510,7 @@ export async function getFollowers(page?: number, perPage?: number): Promise<[]>
       ? `${API.baseUrl}/user-favourited-by?${queryParams.toString()}`
       : `${API.baseUrl}/user-favourited-by`
     
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -539,7 +540,7 @@ export async function getBlockedUsers(page?: number, perPage?: number): Promise<
       ? `${API.baseUrl}/user-blocks?${queryParams.toString()}`
       : `${API.baseUrl}/user-blocks`
     
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
@@ -561,7 +562,7 @@ export async function getClosedGroup(): Promise<[]> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-group/members`, {
       headers,
       credentials: "include",
     })
@@ -592,7 +593,7 @@ export async function addToClosedGroup(advertiserId: string | number): Promise<{
         user_id: String(advertiserId),
       },
     })
-    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-group/members`, {
       method: "POST",
       headers,
       credentials: "include",
@@ -631,7 +632,7 @@ export async function removeFromClosedGroup(advertiserId: string | number): Prom
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(`${API.baseUrl}/user-group/members/${String(advertiserId)}`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-group/members/${String(advertiserId)}`, {
       method: "DELETE",
       headers,
       credentials: "include",
@@ -665,7 +666,7 @@ export async function removeAllFromClosedGroup(): Promise<{ success: boolean; er
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(`${API.baseUrl}/user-group/members`, {
+    const response = await p2pFetch(`${API.baseUrl}/user-group/members`, {
       method: "DELETE",
       headers,
       credentials: "include",
@@ -704,7 +705,7 @@ export async function getTradePartners(page?: number, perPage?: number): Promise
       ? `${API.baseUrl}/trade-partners?${queryParams.toString()}`
       : `${API.baseUrl}/trade-partners`
     
-    const response = await fetch(url, {
+    const response = await p2pFetch(url, {
       headers,
       credentials: "include",
     })
