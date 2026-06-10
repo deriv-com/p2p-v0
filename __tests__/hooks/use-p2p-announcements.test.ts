@@ -2,11 +2,6 @@ import jest from "jest"
 import { renderHook, act } from "@testing-library/react"
 import { useP2PAnnouncements } from "@/hooks/use-p2p-announcements"
 
-jest.mock("@/components/p2p-announcement/p2p-announcement-config", () => ({
-  ...jest.requireActual("@/components/p2p-announcement/p2p-announcement-config"),
-  FORCE_SHOW_WHATS_NEW_FOR_QA: false,
-}))
-
 const WHATS_NEW_SEEN_KEY = "p2p.whatsNew.seenTag"
 const WHATS_COMING_DISMISSED_KEY = "p2p.whatsComing.dismissedTag"
 

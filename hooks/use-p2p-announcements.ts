@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react"
 import {
   type AnnouncementKind,
   ANNOUNCEMENT_STORAGE_KEYS,
-  FORCE_SHOW_WHATS_NEW_FOR_QA,
   getReleaseTag,
   getWhatsComingTag,
   isWhatsNewEnabled,
@@ -50,8 +49,6 @@ function writeStoredTag(key: string, value: string): void {
 }
 
 function resolveEligible(): AnnouncementKind | null {
-  if (FORCE_SHOW_WHATS_NEW_FOR_QA) return "whatsNew"
-
   const releaseTag = getReleaseTag()
   const whatsComingTag = getWhatsComingTag()
   const whatsNewEnabled = isWhatsNewEnabled()
@@ -116,11 +113,6 @@ export function useP2PAnnouncements(): UseP2PAnnouncementsReturn {
 
     // Inline the tag writes here so this callback has no hidden dependencies
     // on module-level helpers that the exhaustive-deps rule cannot inspect.
-    if (FORCE_SHOW_WHATS_NEW_FOR_QA && currentAnnouncement === "whatsNew") {
-      setCurrentAnnouncement(null)
-      return
-    }
-
     if (currentAnnouncement === "whatsNew") {
       writeStoredTag(ANNOUNCEMENT_STORAGE_KEYS.whatsNew, getReleaseTag())
     } else if (currentAnnouncement === "whatsComing") {
