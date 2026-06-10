@@ -411,7 +411,7 @@ export default function PaymentDetailsForm({
     setTouched(true)
 
     const formValid = isFormValid()
-    const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
+    const errors = !formValid ? { paymentMethods: t("paymentMethod.pleaseSelectPaymentMethod") } : undefined
 
     let paymentMethodNames: string[] = []
 
@@ -446,7 +446,7 @@ export default function PaymentDetailsForm({
       setShowFullPageModal(true)
     } else {
       showAlert({
-        title: "Payment method",
+        title: t("paymentMethod.paymentMethodsSheetTitle"),
         description: (
           <PaymentSelectionContent
             paymentMethods={userPaymentMethods}

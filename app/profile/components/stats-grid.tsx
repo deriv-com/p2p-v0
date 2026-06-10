@@ -9,16 +9,17 @@ interface StatCardProps {
   tab: string
   title: string
   value: string | number
+  tooltipKey?: string
 }
 
-function StatCard({ tab, title, value }: StatCardProps) {
+function StatCard({ title, value, tooltipKey }: StatCardProps) {
   const { t } = useTranslations()
   return (
     <div className="flex flex-row-reverse justify-between md:border-none md:flex-col md:h-20 pt-6 pb-2">
       <div className="font-bold text-black text-base leading-6 tracking-normal">{value}</div>
       <div className="flex items-center text-slate-500 mb-2 font-normal text-xs leading-5 tracking-normal">
         {title}
-        {title === "Trade partners" && (
+        {tooltipKey && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Image
@@ -30,41 +31,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-white">Total number of users you've successfully traded with.</p>
-              <TooltipArrow className="fill-black" />
-            </TooltipContent>
-          </Tooltip>
-        )}
-        {title === "Trade volume" && tab === "lifetime" && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-               <Image
-                src="/icons/info-circle.svg"
-                alt={t("common.info")}
-                width={24}
-                height={24}
-                className="ms-1 cursor-pointer flex-shrink-0"
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white">The total value of all trades completed in your lifetime.</p>
-              <TooltipArrow className="fill-black" />
-            </TooltipContent>
-          </Tooltip>
-        )}
-        {title === "Trade volume" && tab === "last30days" && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Image
-                src="/icons/info-circle.svg"
-                alt={t("common.info")}
-                width={24}
-                height={24}
-                className="ms-1 cursor-pointer flex-shrink-0"
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white">The total value of all completed trades in the last 30 days.</p>
+              <p className="text-white">{t(tooltipKey)}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -144,6 +111,7 @@ export default function StatsGrid({ stats }) {
                   <StatCard
                     tab="last30days"
                     title={t("profile.tradeVolume")}
+                    tooltipKey="profile.tradeVolume30DaysTooltip"
                     value={
                       stats?.statistics_30day?.completion_amount_all > 0
                         ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD`
@@ -194,11 +162,13 @@ export default function StatsGrid({ stats }) {
                   <StatCard
                     tab="lifetime"
                     title={t("profile.tradePartners")}
+                    tooltipKey="profile.tradePartnersTooltip"
                     value={stats?.statistics_lifetime?.partner_count ?? "0"}
                   />
                   <StatCard
                     tab="lifetime"
                     title={t("profile.tradeVolume")}
+                    tooltipKey="profile.tradeVolumeLifetimeTooltip"
                     value={
                       stats?.statistics_lifetime?.completion_amount_all > 0
                         ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD`

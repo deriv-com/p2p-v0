@@ -3,6 +3,23 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
+jest.mock("@/lib/i18n/use-translations", () => ({
+  useTranslations: () => ({
+    t: (key: string) =>
+      ({
+        "common.confirm": "Confirm",
+        "common.cancel": "Cancel",
+        "common.delete": "Delete",
+        "common.deleteItemTitle": "Delete item",
+        "common.deleteItemDescription":
+          "Are you sure you want to delete this item? This action cannot be undone.",
+        "common.warning": "Warning",
+        "common.continue": "Continue",
+      })[key] ?? key,
+    locale: "en",
+  }),
+}))
+
 function TestHookComponent() {
   const { showConfirmDialog, showDeleteDialog, showWarningDialog, hideAlert } = useAlertDialog()
 

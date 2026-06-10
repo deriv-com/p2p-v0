@@ -141,7 +141,7 @@ export default function AddPaymentMethodPanel({
       const value = details[field.name]?.trim() ?? ""
 
       if (!value && field.required) {
-        newErrors[field.name] = `${field.label} is required`
+        newErrors[field.name] = t("profile.fieldRequired", { field: field.label })
         return
       }
 

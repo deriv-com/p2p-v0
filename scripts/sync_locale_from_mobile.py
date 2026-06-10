@@ -24,20 +24,29 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MOBILE_L10N = REPO_ROOT.parent / "p2p" / "ai-deriv-p2p-app" / "lib" / "l10n"
+MOBILE_L10N_CANDIDATES = (
+    REPO_ROOT.parent / "p2p" / "ai-deriv-p2p-app-languages" / "lib" / "l10n",
+    REPO_ROOT.parent / "p2p" / "ai-deriv-p2p-app" / "lib" / "l10n",
+)
 WEB_L10N = REPO_ROOT / "lib" / "i18n" / "translations"
+
+
+def resolve_mobile_l10n() -> Path | None:
+    for path in MOBILE_L10N_CANDIDATES:
+        if (path / "app_en.arb").is_file():
+            return path
+    return None
 
 MOBILE_FIRST_LOCALES = frozenset({"ar"})
 
 
 def validate_mobile_l10n() -> int:
-    if not MOBILE_L10N.is_dir():
-        print(f"Error: Mobile l10n directory not found at {MOBILE_L10N}", file=sys.stderr)
-        print("Ensure ai-deriv-p2p-app is cloned as a sibling to p2p-v0.", file=sys.stderr)
-        return 1
-    mob_en = MOBILE_L10N / "app_en.arb"
-    if not mob_en.is_file():
-        print(f"Error: Mobile English translations not found at {mob_en}", file=sys.stderr)
+    if resolve_mobile_l10n() is None:
+        print("Error: Mobile l10n directory not found.", file=sys.stderr)
+        print(
+            "Ensure ai-deriv-p2p-app-languages or ai-deriv-p2p-app is cloned as a sibling to p2p-v0.",
+            file=sys.stderr,
+        )
         return 1
     return 0
 
@@ -81,8 +90,11 @@ def resolve_mode(locale: str, mode: str | None) -> str:
 
 
 def sync_locale(locale: str, *, mode: str, dry_run: bool) -> int:
-    mob_en_path = MOBILE_L10N / "app_en.arb"
-    mob_loc_path = MOBILE_L10N / f"app_{locale}.arb"
+    mobile_l10n = resolve_mobile_l10n()
+    if mobile_l10n is None:
+        return 1
+    mob_en_path = mobile_l10n / "app_en.arb"
+    mob_loc_path = mobile_l10n / f"app_{locale}.arb"
     web_en_path = WEB_L10N / "en.json"
     web_loc_path = WEB_L10N / f"{locale}.json"
 
