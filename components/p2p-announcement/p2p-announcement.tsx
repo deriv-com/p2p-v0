@@ -1,6 +1,6 @@
 "use client"
 
-import { memo } from "react"
+import { memo, useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,6 +30,50 @@ interface AnnouncementContentProps extends P2PAnnouncementProps {
   layout: "modal" | "sheet"
 }
 
+interface AnnouncementCarouselProps {
+  imagePaths: readonly string[]
+  alt: string
+  layout: "modal" | "sheet"
+}
+
+const AnnouncementCarousel = memo(function AnnouncementCarousel({
+  imagePaths,
+  alt,
+}: AnnouncementCarouselProps) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  return (
+    <div className="flex shrink-0 flex-col">
+      <Image
+        src={imagePaths[currentSlide]}
+        alt={alt}
+        width={1024}
+        height={575}
+        className="block w-full h-auto"
+        priority
+        sizes="(max-width: 448px) 100vw, 448px"
+      />
+      {imagePaths.length > 1 && (
+        <div className="flex justify-center gap-1 px-6 pt-2">
+          {imagePaths.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              aria-label={`Go to slide ${index + 1}`}
+              className={`h-2 rounded-full transition-all ${
+                currentSlide === index
+                  ? "w-4 bg-slate-1200"
+                  : "w-2 bg-grayscale-400"
+              }`}
+              onClick={() => setCurrentSlide(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+})
+
 // Memoized so the content subtree is not recreated when the parent re-renders
 // due to useIsMobile returning a new value on viewport resize.
 const AnnouncementContent = memo(function AnnouncementContent({
@@ -39,41 +83,48 @@ const AnnouncementContent = memo(function AnnouncementContent({
 }: AnnouncementContentProps) {
   const { t } = useTranslations()
   const keys = ANNOUNCEMENT_TRANSLATION_KEYS[kind]
-  const imagePath = ANNOUNCEMENT_ASSET_PATHS[kind]
+  const assetPaths = ANNOUNCEMENT_ASSET_PATHS[kind]
   const isModal = layout === "modal"
 
   return (
-    <div className="flex flex-col">
-      {/* Visual area */}
-      <div
-        className={
-          isModal
-            ? "relative w-full h-48 bg-grayscale-500 rounded-t-2xl overflow-hidden"
-            : "relative w-full h-56 bg-grayscale-500 overflow-hidden"
-        }
-      >
-        <Image
-          src={imagePath}
+    <div className="flex flex-col overflow-hidden">
+      {Array.isArray(assetPaths) ? (
+        <AnnouncementCarousel
+          imagePaths={assetPaths}
           alt={t(keys.title)}
-          fill
-          className="object-contain p-6"
-          priority
+          layout={layout}
         />
-      </div>
+      ) : (
+        <Image
+          src={assetPaths}
+          alt={t(keys.title)}
+          width={320}
+          height={192}
+          className="block w-full h-auto shrink-0"
+          priority
+          sizes="(max-width: 448px) 100vw, 448px"
+        />
+      )}
 
       {/* Content area */}
       <div className={isModal ? "px-8 pt-6 pb-4" : "px-6 pt-6 pb-4"}>
         <h2 className="text-xl font-bold text-slate-1200 mb-4">
           {t(keys.title)}
         </h2>
-        <ul className="space-y-2">
-          {keys.bullets.map((bulletKey, index) => (
-            <li key={index} className="flex items-start gap-2 text-base text-grayscale-600">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-grayscale-600" />
-              {t(bulletKey)}
-            </li>
-          ))}
-        </ul>
+        {"description" in keys ? (
+          <p className="text-base text-grayscale-600">
+            {t(keys.description)}
+          </p>
+        ) : (
+          <ul className="space-y-2">
+            {keys.bullets.map((bulletKey, index) => (
+              <li key={index} className="flex items-start gap-2 text-base text-grayscale-600">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-grayscale-600" />
+                {t(bulletKey)}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* CTA area */}
@@ -98,8 +149,11 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
 
   if (isMobile) {
     return (
-      <Drawer open onOpenChange={(open) => { if (!open) onDismiss() }}>
-        <DrawerContent className="p-0 rounded-t-2xl max-h-[90vh] overflow-y-auto">
+      <Drawer open dismissible={false}>
+        <DrawerContent
+          hideHandle
+          className="gap-0 max-h-none overflow-hidden rounded-t-2xl border-0 p-0"
+        >
           <DrawerTitle className="sr-only">
             {t(keys.title)}
           </DrawerTitle>
@@ -111,7 +165,7 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onDismiss() }}>
-      <DialogContent className="p-0 max-w-md rounded-2xl overflow-hidden">
+      <DialogContent className="gap-0 p-0 max-w-md rounded-2xl overflow-hidden">
         <DialogTitle className="sr-only">
           {t(keys.title)}
         </DialogTitle>

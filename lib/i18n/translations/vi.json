@@ -942,9 +942,7 @@
   "p2pAnnouncement": {
     "whatsNew": {
       "title": "Có gì mới",
-      "bullet0": "Xem hoạt động của nhà quảng cáo rõ ràng hơn.",
-      "bullet1": "Tận hưởng trải nghiệm gọn gàng và cải tiến hơn.",
-      "bullet2": "Chúng tôi đã cập nhật để cải thiện quy trình P2P của bạn.",
+      "description": "Người dùng Diamond trên Deriv P2P hiện có thể tạo nhóm kín để chia sẻ quảng cáo độc quyền với những người dùng đáng tin cậy.",
       "primaryCta": "Đã hiểu"
     },
     "whatsComing": {

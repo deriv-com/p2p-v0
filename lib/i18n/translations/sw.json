@@ -670,9 +670,7 @@
   "p2pAnnouncement": {
     "whatsNew": {
       "title": "Nini kipya",
-      "bullet0": "Ona shughuli za watangazaji kwa uwazi zaidi.",
-      "bullet1": "Furahia matumizi yaliyo safi na kuboreshwa.",
-      "bullet2": "Tumefanya masasisho ili kuboresha mtiririko wako wa P2P.",
+      "description": "Watumiaji wa Diamond kwenye Deriv P2P sasa wanaweza kuunda kikundi kilichofungwa ili kushiriki matangazo ya kipekee na watumiaji wanaoaminika.",
       "primaryCta": "Nimeelewa"
     },
     "whatsComing": {
