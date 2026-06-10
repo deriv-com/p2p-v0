@@ -39,30 +39,22 @@ interface AnnouncementCarouselProps {
 const AnnouncementCarousel = memo(function AnnouncementCarousel({
   imagePaths,
   alt,
-  layout,
 }: AnnouncementCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const isModal = layout === "modal"
 
   return (
-    <div className="flex flex-col">
-      <div
-        className={
-          isModal
-            ? "relative w-full aspect-[1024/575] bg-grayscale-500 rounded-t-2xl overflow-hidden"
-            : "relative w-full aspect-[1024/575] bg-grayscale-500 overflow-hidden"
-        }
-      >
-        <Image
-          src={imagePaths[currentSlide]}
-          alt={alt}
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+    <div className="flex shrink-0 flex-col">
+      <Image
+        src={imagePaths[currentSlide]}
+        alt={alt}
+        width={1024}
+        height={575}
+        className="block w-full h-auto"
+        priority
+        sizes="(max-width: 448px) 100vw, 448px"
+      />
       {imagePaths.length > 1 && (
-        <div className="flex justify-center gap-1 pt-2">
+        <div className="flex justify-center gap-1 px-6 pt-2">
           {imagePaths.map((_, index) => (
             <button
               key={index}
@@ -95,7 +87,7 @@ const AnnouncementContent = memo(function AnnouncementContent({
   const isModal = layout === "modal"
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-hidden">
       {Array.isArray(assetPaths) ? (
         <AnnouncementCarousel
           imagePaths={assetPaths}
@@ -103,21 +95,15 @@ const AnnouncementContent = memo(function AnnouncementContent({
           layout={layout}
         />
       ) : (
-        <div
-          className={
-            isModal
-              ? "relative w-full h-48 bg-grayscale-500 rounded-t-2xl overflow-hidden"
-              : "relative w-full h-56 bg-grayscale-500 overflow-hidden"
-          }
-        >
-          <Image
-            src={assetPaths}
-            alt={t(keys.title)}
-            fill
-            className="object-contain p-6"
-            priority
-          />
-        </div>
+        <Image
+          src={assetPaths}
+          alt={t(keys.title)}
+          width={320}
+          height={192}
+          className="block w-full h-auto shrink-0"
+          priority
+          sizes="(max-width: 448px) 100vw, 448px"
+        />
       )}
 
       {/* Content area */}
@@ -163,8 +149,11 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
 
   if (isMobile) {
     return (
-      <Drawer open onOpenChange={(open) => { if (!open) onDismiss() }}>
-        <DrawerContent className="p-0 rounded-t-2xl max-h-[90vh] overflow-y-auto">
+      <Drawer open dismissible={false}>
+        <DrawerContent
+          hideHandle
+          className="gap-0 max-h-none overflow-hidden rounded-t-2xl border-0 p-0"
+        >
           <DrawerTitle className="sr-only">
             {t(keys.title)}
           </DrawerTitle>
@@ -176,7 +165,7 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onDismiss() }}>
-      <DialogContent className="p-0 max-w-md rounded-2xl overflow-hidden">
+      <DialogContent className="gap-0 p-0 max-w-md rounded-2xl overflow-hidden">
         <DialogTitle className="sr-only">
           {t(keys.title)}
         </DialogTitle>
