@@ -19,6 +19,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 
 interface StatusData {
   success: "create" | "update"
@@ -36,6 +37,7 @@ export default function AdsPage() {
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const tempBanUntil = userData?.temp_ban_until
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -94,6 +96,7 @@ export default function AdsPage() {
   }, [showKycPopup, showAlert, hideAlert, t, isPoiExpired, isPoaExpired])
 
   const handleCreateAd = () => {
+    if (isMaintenanceActive) return
     track("ek_create_ad_my_ads")
     if (!userId || !verificationStatus?.phone_verified || isPoiExpired || isPoaExpired) {
       setShowKycPopup(true)
@@ -260,12 +263,12 @@ export default function AdsPage() {
     <>
       <div className="flex flex-col h-screen bg-white px-3">
         <div className="flex-none container mx-auto">
-          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
+          <div className="relative z-10 w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
             {t("myAds.title")}
           </div>
-          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+          {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
-            {userAdverts.length > 0 && (
+            {!isMaintenanceActive && userAdverts.length > 0 && (
               <Button
                 onClick={handleCreateAd}
                 size="sm"
@@ -284,7 +287,13 @@ export default function AdsPage() {
           {queryError ? (
             <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
-            <MyAdsTable ads={userAdverts} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} isFetching={isFetching} />
+            <MyAdsTable
+              ads={isMaintenanceActive ? [] : userAdverts}
+              onAdDeleted={handleAdUpdated}
+              hiddenAdverts={hiddenAdverts}
+              isLoading={isMaintenanceActive ? false : loading}
+              isFetching={isMaintenanceActive ? false : isFetching}
+            />
           )}
           {isFetchingNextPage && (
             <div className="flex justify-center py-4">

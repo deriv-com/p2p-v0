@@ -25,6 +25,7 @@ interface MarketFilterDropdownProps {
   trigger: React.ReactElement
   hasActiveFilters?: boolean
   onOpenChange?: (open: boolean) => void
+  disabled?: boolean
 }
 
 export default function MarketFilterDropdown({
@@ -35,6 +36,7 @@ export default function MarketFilterDropdown({
   trigger,
   hasActiveFilters = false,
   onOpenChange: onOpenChangeProp,
+  disabled = false,
 }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
@@ -65,10 +67,11 @@ export default function MarketFilterDropdown({
 
   const handleOpenChange = useCallback(
     (open: boolean) => {
+      if (disabled) return
       setIsOpen(open)
       onOpenChangeProp?.(open)
     },
-    [onOpenChangeProp],
+    [disabled, onOpenChangeProp],
   )
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
@@ -161,6 +164,22 @@ export default function MarketFilterDropdown({
       )}
     </div>
   )
+
+  const disabledTrigger = (
+    <div
+      className={cn("relative w-fit", disabled && "pointer-events-none opacity-60 cursor-not-allowed")}
+      aria-disabled={disabled || undefined}
+    >
+      {trigger}
+      {hasActiveFilters && (
+        <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
+      )}
+    </div>
+  )
+
+  if (disabled) {
+    return disabledTrigger
+  }
 
   if (isMobile) {
     return (

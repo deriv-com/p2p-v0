@@ -31,6 +31,7 @@ interface StatsTabsProps {
   stats?: any
   isLoading?: boolean,
   activeTab: string
+  maintenanceActive?: boolean
 }
 
 const profileTabTrackerMap: Record<string, string> = {
@@ -42,7 +43,7 @@ const profileTabTrackerMap: Record<string, string> = {
   "closed-group": "ek_closed_group_profile",
 }
 
-export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProps) {
+export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActive = false }: StatsTabsProps) {
   const router = useRouter()
   const { track } = useTrackers()
   const isMobile = useIsMobile()
@@ -88,6 +89,7 @@ export default function StatsTabs({ stats, isLoading, activeTab }: StatsTabsProp
   }, [activeTab, isMobile])
 
   const handleTabChange = (tab: string) => {
+    if (maintenanceActive && tab !== "stats") return
     const trackerId = profileTabTrackerMap[tab]
     if (trackerId) track(trackerId)
     setSelectedTab(tab)

@@ -406,6 +406,16 @@ export function mapOrderError(
         secondaryAction: OrderErrorAction.Dismiss,
       }
 
+    case "P2PDisabled":
+      return {
+        title: t("maintenance.errorTitle"),
+        message: t("maintenance.errorMessage"),
+        primaryCta: t("order.openLiveChat"),
+        primaryAction: OrderErrorAction.OpenLiveChat,
+        secondaryCta: t("common.close"),
+        secondaryAction: OrderErrorAction.Dismiss,
+      }
+
     case "DuplicateRequestDetected":
       return {
         title: t("order.duplicateRequestTitle"),

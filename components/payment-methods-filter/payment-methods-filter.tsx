@@ -30,6 +30,7 @@ interface PaymentMethodsFilterProps {
   isLoading?: boolean
   trigger: ReactElement
   onOpenChange?: (isOpen: boolean) => void
+  disabled?: boolean
 }
 
 export default function PaymentMethodsFilter({
@@ -39,6 +40,7 @@ export default function PaymentMethodsFilter({
   isLoading = false,
   trigger,
   onOpenChange: onOpenChangeProp,
+  disabled = false,
 }: PaymentMethodsFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -120,6 +122,7 @@ export default function PaymentMethodsFilter({
   }
 
   const handleOpenChange = (open: boolean) => {
+    if (disabled) return
     setIsOpen(open)
     onOpenChangeProp?.(open)
     if (!open) {
@@ -277,8 +280,18 @@ export default function PaymentMethodsFilter({
   }, [tempSelectedMethods])
 
   const enhancedTrigger = cloneElement(trigger, {
-    className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"),
+    className: cn(
+      trigger.props.className,
+      isOpen && !disabled && "[&_img[alt='Arrow']]:rotate-180",
+      disabled && "pointer-events-none opacity-60 cursor-not-allowed",
+    ),
+    disabled: disabled || trigger.props.disabled,
+    "aria-disabled": disabled || undefined,
   })
+
+  if (disabled) {
+    return enhancedTrigger
+  }
 
   if (isMobile) {
     return (

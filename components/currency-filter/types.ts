@@ -15,4 +15,5 @@ export interface CurrencyFilterProps {
   title?: string
   placeholder?: string
   emptyMessage?: string
+  disabled?: boolean
 }

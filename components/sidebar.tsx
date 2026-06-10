@@ -22,6 +22,8 @@ import { FeedbackDialog } from "@/components/feedback/feedback-dialog"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import EmptyState from "@/components/empty-state"
 import { useTrackers } from "@/analytics/useTrackers"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import { guardP2PNavigation } from "@/lib/p2p-maintenance-navigation"
 import { AdvertiserSearchResultCard } from "@/components/advertiser-search-result-card"
 import { AdvertiserSearchSkeleton } from "@/components/advertiser-search-skeleton"
 import RiskWarningModal from "@/components/buy-sell/risk-warning/risk-warning-modal"
@@ -54,6 +56,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const { setPendingAd, setShouldReopenSearchOnReturn } = useOrderSidebarStore()
   const { hideAlert, showAlert } = useAlertDialog()
   const { track } = useTrackers()
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const isPoiExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poi_status !== "approved"
   const isPoaExpired = process.env.NEXT_PUBLIC_IS_KYC_MANDATORY == "1" && userId && onboardingStatus?.kyc?.poa_status !== "approved"
   const [searchInput, setSearchInput] = useState(nickname)
@@ -134,6 +137,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
+    if (isMaintenanceActive) return
     track("ek_advertiser_profile_markets_search")
     if (userId && verificationStatus?.phone_verified && !isPoiExpired && !isPoaExpired) {
       router.push(`/advertiser/${advertiserId}`)
@@ -148,6 +152,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const [isRiskWarningOpen, setIsRiskWarningOpen] = useState(false)
 
   const handleBuySellClick = (ad: Advertisement) => {
+    if (isMaintenanceActive) return
     track("ek_advert_action_markets_search", { advert_type: ad.type === "buy" ? "sell" : "buy" })
     const risk = evaluateRisk(ad)
     if (risk) {
@@ -266,8 +271,11 @@ export default function Sidebar({ className }: SidebarProps) {
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-p2p.png" alt={t("common.derivLogo")} width={128} height={24} />
         {userId && (
-          <div className="hidden md:block text-slate-600 hover:text-slate-700" onClick={() => track("ek_notifications_markets")}>
-            <NovuNotifications />
+          <div
+            className="hidden md:block text-slate-600 hover:text-slate-700"
+            onClick={() => guardP2PNavigation(isMaintenanceActive, () => track("ek_notifications_markets"))}
+          >
+            <NovuNotifications disabled={isMaintenanceActive} />
           </div>
         )}
       </div>
@@ -286,7 +294,11 @@ export default function Sidebar({ className }: SidebarProps) {
               placeholder={t("market.searchAdvertiserNickname")}
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
-              onFocus={() => setIsSearchFocused(true)}
+              onFocus={() => {
+                if (isMaintenanceActive) return
+                setIsSearchFocused(true)
+              }}
+              disabled={isMaintenanceActive}
               onBlur={() => {
                 if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
                 blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)

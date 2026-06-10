@@ -13,9 +13,13 @@ import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { createKycOnboardingAlertConfig } from "@/components/kyc-onboarding-sheet"
 import { useTrackers } from "@/analytics/useTrackers"
+import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
+import { useRouter } from "next/navigation"
 
 export default function ProfilePage() {
+  const router = useRouter()
   const { track } = useTrackers()
+  const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const { hideAlert, showAlert } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const { data: meData, isLoading, error } = useMe()
@@ -90,6 +94,12 @@ export default function ProfilePage() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    if (isMaintenanceActive && tabFromQuery && tabFromQuery !== "stats") {
+      router.replace("/profile")
+    }
+  }, [isMaintenanceActive, tabFromQuery, router])
+
+  useEffect(() => {
     if (shouldShowKyc && !showKycPopup) {
       setShowKycPopup(true)
       showAlert(createKycOnboardingAlertConfig({
@@ -125,7 +135,7 @@ export default function ProfilePage() {
               isLoading={isLoading}
               tradeBand={userData?.trade_band}
             />
-            {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+            {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4 px-3 md:px-0">
               <TradeLimits
                 buyLimit={userData?.tradeLimits?.buy}
@@ -133,7 +143,12 @@ export default function ProfilePage() {
                 userData={userData}
               />
             </div>
-            <StatsTabs stats={userData} isLoading={isLoading} activeTab={tabFromQuery || (shouldShowKyc ? "payment" : "stats")} />
+            <StatsTabs
+              stats={userData}
+              isLoading={isLoading}
+              activeTab={isMaintenanceActive ? "stats" : tabFromQuery || (shouldShowKyc ? "payment" : "stats")}
+              maintenanceActive={isMaintenanceActive}
+            />
           </div>
         </div>
       </div>
