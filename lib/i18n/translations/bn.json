@@ -911,9 +911,7 @@
   "p2pAnnouncement": {
     "whatsNew": {
       "title": "নতুন কী আছে",
-      "bullet0": "বিজ্ঞাপনদাতার কার্যকলাপ আরও স্পষ্টভাবে দেখুন।",
-      "bullet1": "আরও পরিষ্কার ও উন্নত অভিজ্ঞতা উপভোগ করুন।",
-      "bullet2": "আপনার P2P প্রবাহ উন্নত করতে আমরা আপডেট করেছি।",
+      "description": "Diamond users on Deriv P2P can now create a closed group to share exclusive ads with trusted users.",
       "primaryCta": "বুঝেছি"
     },
     "whatsComing": {

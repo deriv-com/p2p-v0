@@ -670,9 +670,7 @@
   "p2pAnnouncement": {
     "whatsNew": {
       "title": "Nini kipya",
-      "bullet0": "Ona shughuli za watangazaji kwa uwazi zaidi.",
-      "bullet1": "Furahia matumizi yaliyo safi na kuboreshwa.",
-      "bullet2": "Tumefanya masasisho ili kuboresha mtiririko wako wa P2P.",
+      "description": "Diamond users on Deriv P2P can now create a closed group to share exclusive ads with trusted users.",
       "primaryCta": "Nimeelewa"
     },
     "whatsComing": {

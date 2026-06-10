@@ -75,11 +75,11 @@ describe("P2PAnnouncement", () => {
       expect(screen.getByText("p2pAnnouncement.whatsNew.title")).toBeInTheDocument()
     })
 
-    it("renders all three bullet keys", () => {
+    it("renders whats-new description key", () => {
       render(<P2PAnnouncement kind="whatsNew" onDismiss={onDismiss} />)
-      expect(screen.getByText("p2pAnnouncement.whatsNew.bullet0")).toBeInTheDocument()
-      expect(screen.getByText("p2pAnnouncement.whatsNew.bullet1")).toBeInTheDocument()
-      expect(screen.getByText("p2pAnnouncement.whatsNew.bullet2")).toBeInTheDocument()
+      expect(
+        screen.getByText("p2pAnnouncement.whatsNew.description"),
+      ).toBeInTheDocument()
     })
   })
 })

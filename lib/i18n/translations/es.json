@@ -907,9 +907,7 @@
   "p2pAnnouncement": {
     "whatsNew": {
       "title": "Novedades",
-      "bullet0": "Consulta la actividad de los anunciantes con más claridad.",
-      "bullet1": "Disfruta de una experiencia más limpia y mejorada.",
-      "bullet2": "Hemos realizado mejoras para optimizar tu flujo P2P.",
+      "description": "Diamond users on Deriv P2P can now create a closed group to share exclusive ads with trusted users.",
       "primaryCta": "Entendido"
     },
     "whatsComing": {

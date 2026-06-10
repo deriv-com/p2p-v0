@@ -1,6 +1,6 @@
 "use client"
 
-import { memo } from "react"
+import { memo, useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,6 +30,58 @@ interface AnnouncementContentProps extends P2PAnnouncementProps {
   layout: "modal" | "sheet"
 }
 
+interface AnnouncementCarouselProps {
+  imagePaths: readonly string[]
+  alt: string
+  layout: "modal" | "sheet"
+}
+
+const AnnouncementCarousel = memo(function AnnouncementCarousel({
+  imagePaths,
+  alt,
+  layout,
+}: AnnouncementCarouselProps) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const isModal = layout === "modal"
+
+  return (
+    <div className="flex flex-col">
+      <div
+        className={
+          isModal
+            ? "relative w-full aspect-[1024/575] bg-grayscale-500 rounded-t-2xl overflow-hidden"
+            : "relative w-full aspect-[1024/575] bg-grayscale-500 overflow-hidden"
+        }
+      >
+        <Image
+          src={imagePaths[currentSlide]}
+          alt={alt}
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      {imagePaths.length > 1 && (
+        <div className="flex justify-center gap-1 pt-2">
+          {imagePaths.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              aria-label={`Go to slide ${index + 1}`}
+              className={`h-2 rounded-full transition-all ${
+                currentSlide === index
+                  ? "w-4 bg-slate-1200"
+                  : "w-2 bg-grayscale-400"
+              }`}
+              onClick={() => setCurrentSlide(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+})
+
 // Memoized so the content subtree is not recreated when the parent re-renders
 // due to useIsMobile returning a new value on viewport resize.
 const AnnouncementContent = memo(function AnnouncementContent({
@@ -39,41 +91,54 @@ const AnnouncementContent = memo(function AnnouncementContent({
 }: AnnouncementContentProps) {
   const { t } = useTranslations()
   const keys = ANNOUNCEMENT_TRANSLATION_KEYS[kind]
-  const imagePath = ANNOUNCEMENT_ASSET_PATHS[kind]
+  const assetPaths = ANNOUNCEMENT_ASSET_PATHS[kind]
   const isModal = layout === "modal"
 
   return (
     <div className="flex flex-col">
-      {/* Visual area */}
-      <div
-        className={
-          isModal
-            ? "relative w-full h-48 bg-grayscale-500 rounded-t-2xl overflow-hidden"
-            : "relative w-full h-56 bg-grayscale-500 overflow-hidden"
-        }
-      >
-        <Image
-          src={imagePath}
+      {Array.isArray(assetPaths) ? (
+        <AnnouncementCarousel
+          imagePaths={assetPaths}
           alt={t(keys.title)}
-          fill
-          className="object-contain p-6"
-          priority
+          layout={layout}
         />
-      </div>
+      ) : (
+        <div
+          className={
+            isModal
+              ? "relative w-full h-48 bg-grayscale-500 rounded-t-2xl overflow-hidden"
+              : "relative w-full h-56 bg-grayscale-500 overflow-hidden"
+          }
+        >
+          <Image
+            src={assetPaths}
+            alt={t(keys.title)}
+            fill
+            className="object-contain p-6"
+            priority
+          />
+        </div>
+      )}
 
       {/* Content area */}
       <div className={isModal ? "px-8 pt-6 pb-4" : "px-6 pt-6 pb-4"}>
         <h2 className="text-xl font-bold text-slate-1200 mb-4">
           {t(keys.title)}
         </h2>
-        <ul className="space-y-2">
-          {keys.bullets.map((bulletKey, index) => (
-            <li key={index} className="flex items-start gap-2 text-base text-grayscale-600">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-grayscale-600" />
-              {t(bulletKey)}
-            </li>
-          ))}
-        </ul>
+        {"description" in keys ? (
+          <p className="text-base text-grayscale-600">
+            {t(keys.description)}
+          </p>
+        ) : (
+          <ul className="space-y-2">
+            {keys.bullets.map((bulletKey, index) => (
+              <li key={index} className="flex items-start gap-2 text-base text-grayscale-600">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-grayscale-600" />
+                {t(bulletKey)}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* CTA area */}

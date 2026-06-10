@@ -6,18 +6,14 @@ export const ANNOUNCEMENT_STORAGE_KEYS = {
 } as const
 
 export const ANNOUNCEMENT_ASSET_PATHS = {
-  whatsNew: "/illustrations/announcement-whats-new.svg",
+  whatsNew: ["/illustrations/whats-new/closed_group.png"],
   whatsComing: "/illustrations/announcement-whats-coming.svg",
 } as const
 
 export const ANNOUNCEMENT_TRANSLATION_KEYS = {
   whatsNew: {
     title: "p2pAnnouncement.whatsNew.title",
-    bullets: [
-      "p2pAnnouncement.whatsNew.bullet0",
-      "p2pAnnouncement.whatsNew.bullet1",
-      "p2pAnnouncement.whatsNew.bullet2",
-    ],
+    description: "p2pAnnouncement.whatsNew.description",
     primaryCta: "p2pAnnouncement.whatsNew.primaryCta",
   },
   whatsComing: {
