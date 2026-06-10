@@ -1,5 +1,8 @@
 export type AnnouncementKind = "whatsNew" | "whatsComing"
 
+/** TODO(pr): set to `false` before merge — forces What's New for PR/preview QA. */
+export const FORCE_SHOW_WHATS_NEW_FOR_QA = true
+
 export const ANNOUNCEMENT_STORAGE_KEYS = {
   whatsNew: "p2p.whatsNew.seenTag",
   whatsComing: "p2p.whatsComing.dismissedTag",
