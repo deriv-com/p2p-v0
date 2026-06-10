@@ -442,6 +442,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           status: status,
           trade_band: tradeBand,
           feedback_exist: result.data.feedback_exist ?? false,
+          schedule: result.data.schedule,
         })
       }
     } else {

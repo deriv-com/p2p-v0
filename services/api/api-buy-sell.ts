@@ -100,6 +100,7 @@ export async function getAdvertisements(params?: SearchParams, signal?: AbortSig
 
     const auth_country_code = useUserDataStore.getState().residenceCountry
     if (auth_country_code) queryParams.append("auth_country_code", auth_country_code)
+    queryParams.append("hide_schedule_unavailable", "true")
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
 

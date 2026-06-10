@@ -1,4 +1,5 @@
 import { API, AUTH, USER } from "@/lib/local-variables"
+import type { BusinessHoursSchedule } from "@/lib/business-hours-codec"
 import { p2pFetch } from "./p2p-fetch"
 
 export interface UserProfile {
@@ -48,9 +49,20 @@ export interface TradePartner {
   is_blocked?: boolean
 }
 
-export interface BusinessHours {
-  isOpen: boolean
-  availability: string
+/**
+ * Error thrown by [updateBusinessHours] when the backend rejects the schedule.
+ * `code` carries the business code (e.g. `SchedulePeriodInvalid`) which the
+ * UI uses to switch on a bespoke error sheet.
+ */
+export class BusinessHoursError extends Error {
+  constructor(
+    message: string,
+    public readonly code?: string,
+    public readonly status?: number,
+  ) {
+    super(message)
+    this.name = "BusinessHoursError"
+  }
 }
 
 export interface PaymentMethod {
@@ -88,29 +100,40 @@ export async function getUserProfile(): Promise<UserProfile> {
 }
 
 /**
- * Update business hours
+ * Persists the business hours schedule for the current user via
+ * `PATCH /p2p/v1/users/{userId}` with `{ data: { schedule } }`.
+ *
+ * Throws a [BusinessHoursError] carrying the backend `code` on non-2xx
+ * responses so the form can branch on `SchedulePeriodInvalid` etc.
  */
-export async function updateBusinessHours(data: BusinessHours): Promise<{ success: boolean }> {
+export async function updateBusinessHours(
+  userId: string | number,
+  schedule: BusinessHoursSchedule,
+): Promise<void> {
+  const response = await p2pFetch(`${API.baseUrl}/users/${userId}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ data: { schedule } }),
+  })
+
+  if (response.ok) return
+
+  let body: unknown = null
   try {
-    const response = await p2pFetch(`${API.baseUrl}${API.endpoints.profile}/business-hours`, {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        ...AUTH.getAuthHeader(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Error updating business hours: ${response.statusText}`)
-    }
-
-    return await response.json()
-  } catch (error) {
-    console.error("Failed to update business hours:", error)
-    throw error
+    body = await response.json()
+  } catch {
+    // ignore — error body may be plain text or empty
   }
+  const firstError = (body as { errors?: Array<{ code?: string; detail?: unknown }> })?.errors?.[0]
+  throw new BusinessHoursError(
+    firstError?.code ?? `Error updating business hours: ${response.statusText}`,
+    firstError?.code,
+    response.status,
+  )
 }
 
 /**

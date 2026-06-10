@@ -12,6 +12,7 @@ import { isP2PWebSocketEligibleFromState } from '@/lib/p2p-websocket-eligibility
 import type { Advertisement, SearchParams as BuySellSearchParams, PaymentMethod } from '@/services/api/api-buy-sell'
 import type { Order, OrderFilters } from '@/services/api/api-orders'
 import type { MyAd } from '@/services/api/api-my-ads'
+import type { BusinessHoursSchedule } from '@/lib/business-hours-codec'
 
 export interface PaymentMethodError extends Error {
   errors?: Array<{ code?: string; message?: string }>
@@ -673,6 +674,23 @@ export function useSubmitFeedback() {
       queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() })
       const { updateUserData } = useUserDataStore.getState()
       updateUserData({ feedback_exist: true })
+    },
+  })
+}
+
+export function useUpdateBusinessHours() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (schedule: BusinessHoursSchedule) => {
+      const userId = useUserDataStore.getState().userId
+      if (!userId) throw new Error('User not authenticated')
+      await ProfileAPI.updateBusinessHours(userId, schedule)
+      return schedule
+    },
+    retry: 0,
+    onSuccess: (schedule) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() })
+      useUserDataStore.getState().updateUserData({ schedule })
     },
   })
 }
