@@ -13,7 +13,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod } from "@/hooks/use-api-queries"
+import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
 
 interface PaymentMethod {
   id: string
@@ -137,24 +137,28 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         show: false,
         paymentMethod: null,
       })
-    } catch (error: any) {
-      let errorMessage = t("profile.unableToUpdatePaymentMethod")
+    } catch (err) {
+      const error = err as PaymentMethodError
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
+        PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
+        PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
+        PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
+        PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
+        PaymentMethodInUseByOrder: { title: t("profile.cannotUpdatePaymentMethod"), description: t("profile.paymentMethodInUseByOrder") },
+      }
 
-      if (error.errors && error.errors.length > 0) {
-        const errorCode = error.errors[0].code
-
-        if (errorCode === "PaymentMethodInUseByOrder") {
-          errorMessage = t("profile.paymentMethodInUseByOrder")
-        } else if (error.errors[0].message) {
-          errorMessage = error.errors[0].message
-        }
+      const errorCode = error?.errors?.[0]?.code
+      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? {
+        title: t("profile.cannotUpdatePaymentMethod"),
+        description: t("profile.unableToUpdatePaymentMethod"),
       }
 
       showAlert({
-        title: t("profile.cannotUpdatePaymentMethod"),
-        description: errorMessage,
-        confirmText: t("orderDetails.gotIt"),
-        type: "error",
+        title,
+        description,
+        confirmText: t("common.ok"),
+        type: "warning",
       })
     }
   }
