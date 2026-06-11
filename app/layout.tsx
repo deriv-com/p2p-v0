@@ -17,6 +17,8 @@ import { LoadingIndicator } from "@/components/loading-indicator"
 import Script from "next/script"
 import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 
+export const runtime = "edge"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
