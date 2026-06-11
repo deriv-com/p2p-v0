@@ -356,7 +356,7 @@ export default function WalletSummary({
         {!isBalancesView && (
           <div className="flex justify-start items-center h-8 mb-6">
             <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
-              <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+              <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
             </button>
           </div>
         )}
@@ -364,7 +364,7 @@ export default function WalletSummary({
         {isShowingTransactionDetails && selectedTransaction && (
           <div className="flex justify-start items-center h-8 mb-6">
             <button onClick={handleCloseTransactionDetails} className="w-8 h-8 flex items-center justify-center" aria-label="Back to transaction list">
-              <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+              <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
             </button>
           </div>
         )}
@@ -375,7 +375,7 @@ export default function WalletSummary({
               <div className={`w-16 h-16 rounded-full flex items-center justify-center ${getTransactionDisplay(selectedTransaction).iconBg}`}>
                 <Image
                   src={getTransactionDisplay(selectedTransaction).icon}
-                  alt="Transaction"
+                  alt={t("common.transaction")}
                   width={24}
                   height={24}
                   className="w-6 h-6"
@@ -397,13 +397,13 @@ export default function WalletSummary({
               <div className="flex-shrink-0">
                 {isBalancesView ? (<Image
                   src="/icons/dp2p-wallet.png"
-                  alt="P2P Logo"
+                  alt={t("common.p2pLogo")}
                   width={92}
                   height={92}
                   className="w-18 h-18 md:w-24 md:h-24"
                 />) :
                   (<div className="flex-shrink-0 relative w-16 h-16">
-                    <Image src="/icons/icon-p2p.svg" alt="P2P" width={64} height={64} className="w-16 h-16 rounded-full" />
+                    <Image src="/icons/icon-p2p.svg" alt={t("common.p2p")} width={64} height={64} className="w-16 h-16 rounded-full" />
                     <div className="absolute -bottom-[0.5rem] left-1/2 -translate-x-1/2">
                       <Image
                         src={currencyLogo}
@@ -429,7 +429,7 @@ export default function WalletSummary({
                 ) : (
                   <>
                     <p className="text-[28px] font-extrabold text-slate-1200">
-                      {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
+                      {propIsLoading ? t("common.loading") : `${formattedBalance} ${displayCurrency}`}
                     </p>
                     <p className="text-sm font-normal text-grayscale-100">{displayCurrencyLabel}</p>
                   </>
@@ -445,7 +445,7 @@ export default function WalletSummary({
                   onClick={handleDepositClick}
                   aria-label="Deposit"
                 >
-                  <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
+                  <Image src="/icons/plus-white.png" alt={t("wallet.deposit")} width={14} height={14} />
                 </Button>
                 <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                   {t("wallet.deposit")}
@@ -460,7 +460,7 @@ export default function WalletSummary({
                     onClick={handleBuyClick}
                     aria-label="Buy"
                   >
-                    <Image src="/icons/plus-white.png" alt="Buy" width={14} height={14} />
+                    <Image src="/icons/plus-white.png" alt={t("common.buy")} width={14} height={14} />
                   </Button>
                   <span className="text-xs font-normal text-slate-1200">
                     {t("common.buy")}
@@ -476,7 +476,7 @@ export default function WalletSummary({
                   disabled={actionsDisabled || !hasBalance}
                   aria-label="Transfer"
                 >
-                  <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
+                  <Image src="/icons/transfer-white.png" alt={t("wallet.transfer")} width={14} height={14} />
                 </Button>
                 <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                   {t("wallet.transfer")}
@@ -492,7 +492,7 @@ export default function WalletSummary({
                     aria-label="Sell"
                     variant="ghost"
                   >
-                    <Image src="/icons/withdraw-black.png" alt="Sell" width={14} height={24} />
+                    <Image src="/icons/withdraw-black.png" alt={t("common.sell")} width={14} height={24} />
                   </Button>
                   <span className="text-xs font-normal text-slate-1200">
                     {t("common.sell")}
@@ -517,7 +517,7 @@ export default function WalletSummary({
                 >
                   <Image
                     src={isBalancesView ? "/icons/withdraw-white.png" : "/icons/withdraw-black.png"}
-                    alt="Withdraw"
+                    alt={t("wallet.withdraw")}
                     width={14}
                     height={14}
                     className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
@@ -572,7 +572,7 @@ export default function WalletSummary({
                   className="w-8 h-8 flex items-center justify-center"
                   aria-label="Back to transactions"
                 >
-                  <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+                  <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
                 </button>
               </div>
               <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />

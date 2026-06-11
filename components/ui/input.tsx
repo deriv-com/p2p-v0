@@ -3,6 +3,8 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
+import { isRtlLocale } from "@/lib/i18n/config"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 
 const inputVariants = cva(
@@ -13,13 +15,13 @@ const inputVariants = cva(
         default:
           "border-input ring-offset-background placeholder:text-muted-foreground focus:border-[#000000] focus:outline-none focus:ring-0",
         secondary:
-          "h-[32px] bg-white border border-input rounded-lg px-2 flex flex-row items-center gap-2 focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] pl-10 pr-4",
+          "h-[32px] bg-white border border-input rounded-lg px-2 flex flex-row items-center gap-2 text-start focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] ps-10 pe-4",
         tertiary:
-          "h-[32px] bg-gray-100 border-transparent rounded-lg px-2 flex flex-row items-center gap-2 focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] pl-10 pr-4",
+          "h-[32px] bg-gray-100 border-transparent rounded-lg px-2 flex flex-row items-center gap-2 text-start focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] ps-10 pe-4",
         floating:
-          "h-14 bg-white border border-input rounded-lg px-3 pt-6 pb-2 focus-visible:outline-none focus:border-black focus:ring-0",
+          "h-14 bg-white border border-input rounded-lg px-3 pt-6 pb-2 text-start focus-visible:outline-none focus:border-black focus:ring-0",
         floatingCurrency:
-          "h-14 bg-white border border-input rounded-lg px-3 pt-6 pb-2 pr-16 focus-visible:outline-none focus:border-black focus:ring-0",
+          "h-14 bg-white border border-input rounded-lg ps-4 pt-6 pb-2 pe-16 text-start focus-visible:outline-none focus:border-black focus:ring-0",
       },
     },
     defaultVariants: {
@@ -38,6 +40,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, variant, type, label, required, currency, ...props }, ref) => {
+    const { locale } = useTranslations()
+    const dir = isRtlLocale(locale) ? "rtl" : "ltr"
     const [isFocused, setIsFocused] = React.useState(false)
     const [hasValue, setHasValue] = React.useState(false)
     const computedVariant = VALID_VARIANTS.includes(variant as string) ? variant : "default"
@@ -73,13 +77,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <> 
         {variant === "floatingCurrency" && (
           <label
-            className="text-slate-1200 mb-2 font-normal text-sm"
+            className="text-slate-1200 mb-2 font-normal text-sm text-start block"
           >
             {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {required && <span className="text-red-500 ms-1">*</span>}
           </label>
         )}
-        <div className="relative mt-2">
+        <div className="relative mt-2" dir={dir}>
           <input
             type={type}
             className={cn(inputVariants({ variant: computedVariant }), className)}
@@ -87,20 +91,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
+            dir={dir}
             {...props}
           />
           {variant === "floating" && (<label
             className={cn(
-              "absolute left-4 transition-all duration-200 ease-in-out pointer-events-none",
+              "absolute start-4 transition-all duration-200 ease-in-out pointer-events-none",
               "text-[#000000B8]",
               shouldFloatLabel ? "top-2 text-xs" : "top-1/2 -translate-y-1/2 text-sm",
             )}
           >
             {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {required && <span className="text-red-500 ms-1">*</span>}
           </label>)}
           {variant === "floatingCurrency" && currency && (
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-grayscale-600">
+            <div className="absolute end-4 top-1/2 -translate-y-1/2 text-sm text-grayscale-600">
               {currency}
             </div>
           )}
@@ -110,7 +115,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <input type={type} className={cn(inputVariants({ variant: computedVariant }), className)} ref={ref} {...props} />
+      <input
+        type={type}
+        dir={dir}
+        className={cn(inputVariants({ variant: computedVariant }), className)}
+        ref={ref}
+        {...props}
+      />
     )
   },
 )

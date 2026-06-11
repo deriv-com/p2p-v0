@@ -68,7 +68,7 @@ function OverlappingTierIcons({ icons }: { icons: TierOption["icons"] }) {
           width={ICON_SIZE}
           height={ICON_SIZE}
           className="absolute top-0"
-          style={{ left: i * ICON_STEP }}
+          style={{ insetInlineStart: i * ICON_STEP }}
         />
       ))}
     </div>
@@ -91,7 +91,7 @@ function TierRow({
       type="button"
       onClick={onSelect}
       className={cn(
-        "w-full text-left rounded-lg p-4 bg-grayscale-500 transition-colors",
+        "w-full text-start rounded-lg p-4 bg-grayscale-500 transition-colors",
         "border-[1.5px]",
         isSelected ? "border-black" : "border-transparent",
       )}
@@ -164,19 +164,19 @@ export default function MinimumTierSelector({
             <Button
               variant="outline"
               className={cn(
-                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
+                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal ps-4 pe-12 [&>svg]:hidden",
                 "pt-6 pb-2",
               )}
             >
-              <span className="text-left text-base text-grayscale-600">
+              <span className="text-start text-base text-grayscale-600">
                 {t(selectedOption.titleKey)}
               </span>
             </Button>
           </DrawerTrigger>
-          <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
+          <label className="absolute start-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
             {triggerLabel}
           </label>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="absolute end-4 top-1/2 -translate-y-1/2 pointer-events-none">
             <Image
               src="/icons/chevron-down.png"
               alt=""
@@ -203,18 +203,18 @@ export default function MinimumTierSelector({
         variant="outline"
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
+          "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal ps-4 pe-12 [&>svg]:hidden",
           "pt-6 pb-2",
         )}
       >
-        <span className="text-left text-base text-grayscale-600">
+        <span className="text-start text-base text-grayscale-600">
           {t(selectedOption.titleKey)}
         </span>
       </Button>
-      <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
+      <label className="absolute start-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
         {triggerLabel}
       </label>
-      <div className="absolute right-4 top-[28px] -translate-y-1/2 pointer-events-none">
+      <div className="absolute end-4 top-[28px] -translate-y-1/2 pointer-events-none">
         <Image
           src="/icons/chevron-down.png"
           alt=""
@@ -225,7 +225,7 @@ export default function MinimumTierSelector({
         />
       </div>
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-lg bg-white shadow-lg p-2 border border-grayscale-200">
+        <div className="absolute inset-x-0 top-full z-50 mt-2 rounded-lg bg-white shadow-lg p-2 border border-grayscale-200">
           <TierList />
         </div>
       )}

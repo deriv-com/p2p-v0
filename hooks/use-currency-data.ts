@@ -3,8 +3,10 @@
 import { useMemo } from "react"
 import type { Currency } from "@/components/currency-filter/types"
 import { useSettings } from "@/hooks/use-api-queries"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function useCurrencyData(currency = "USD") {
+  const { t } = useTranslations()
   const { data: response, isLoading, error: queryError } = useSettings()
 
   const { currencies, error } = useMemo(() => {
@@ -32,9 +34,9 @@ export function useCurrencyData(currency = "USD") {
       return { currencies: currencyList, error: null }
     } catch (err) {
       console.error("Error processing currencies:", err)
-      return { currencies: [], error: "Failed to process currencies" }
+      return { currencies: [], error: t("errors.failedToProcessCurrencies") }
     }
-  }, [response])
+  }, [response, t])
 
   const getCurrencyByCode = (code: string): Currency | undefined => {
     return currencies.find((currency) => currency.code === code)
@@ -45,7 +47,7 @@ export function useCurrencyData(currency = "USD") {
     return currency ? `${currency.code} - ${currency.name}` : code
   }
 
-  const finalError = error || (queryError ? "Failed to load currencies" : null)
+  const finalError = error || (queryError ? t("errors.failedToLoadCurrencies") : null)
 
   return {
     currencies,

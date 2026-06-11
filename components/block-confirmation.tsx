@@ -45,7 +45,7 @@ export default function BlockConfirmation({
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-left">{t("profile.blockUser", { nickname })}</SheetTitle>
+            <SheetTitle className="text-xl font-bold text-start">{t("profile.blockUser", { nickname })}</SheetTitle>
           </SheetHeader>
           {content}
         </SheetContent>
@@ -56,7 +56,7 @@ export default function BlockConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md rounded-4xl">
-        <DialogTitle className="font-bold">{t("profile.blockUser", { nickname })}</DialogTitle>
+        <DialogTitle className="text-start font-bold">{t("profile.blockUser", { nickname })}</DialogTitle>
         <div className="relative">{content}</div>
       </DialogContent>
     </Dialog>

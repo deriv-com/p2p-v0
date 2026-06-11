@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { format } from "date-fns"
+import { formatAppDate } from "@/lib/format-date"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
@@ -22,20 +22,21 @@ interface DateFilterProps {
 }
 
 export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
   const isMobile = useIsMobile()
 
   const getDisplayLabel = () => {
     if (customRange.from) {
+      const formatRangeDate = (date: Date) => formatAppDate(date, locale)
       if (customRange.to) {
-        if (customRange.from == customRange.to) {
-          return format(customRange.from, "dd MMM yyyy")
+        if (customRange.from.getTime() === customRange.to.getTime()) {
+          return formatRangeDate(customRange.from)
         }
-        return `${format(customRange.from, "dd MMM yyyy")} - ${format(customRange.to, "dd MMM yyyy")}`
+        return `${formatRangeDate(customRange.from)} - ${formatRangeDate(customRange.to)}`
       }
-      return format(customRange.from, "dd MMM yyyy")
+      return formatRangeDate(customRange.from)
     }
     return t("orders.allTime")
   }
@@ -54,7 +55,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
     setIsOpen(false)
   }
 
-  const handleCustomRange = (fromDate, toDate) => {
+  const handleCustomRange = (fromDate?: Date, toDate?: Date) => {
     const normalizedRange = {
       from: fromDate ? new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()) : undefined,
       to: toDate ? new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()) : undefined,
@@ -86,10 +87,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           >
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-2">
-                <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
+                <Image src="/icons/calendar.png" alt={t("common.calendar")} width={24} height={24} className="text-gray-500" />
                 <span>{getDisplayLabel()}</span>
               </div>
-              <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+              <Image src="/icons/chevron-down.png" alt={t("common.arrow")} width={24} height={24} className="ms-2" />
             </div>
           </Button>
         </DrawerTrigger>
@@ -124,10 +125,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         >
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
+              <Image src="/icons/calendar.png" alt={t("common.calendar")} width={24} height={24} className="text-gray-500" />
               <span>{getDisplayLabel()}</span>
             </div>
-            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+            <Image src="/icons/chevron-down.png" alt={t("common.arrow")} width={24} height={24} className="ms-2" />
           </div>
         </Button>
       </PopoverTrigger>

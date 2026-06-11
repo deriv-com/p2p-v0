@@ -267,9 +267,9 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   return (
-    <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
+    <div className={cn("w-[295px] flex flex-col border-e border-slate-200 me-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-p2p.png" alt="Deriv logo" width={128} height={24} />
+        <Image src="/icons/deriv-p2p.png" alt={t("common.derivLogo")} width={128} height={24} />
         {userId && (
           <div
             className="hidden md:block text-slate-600 hover:text-slate-700"
@@ -284,14 +284,14 @@ export default function Sidebar({ className }: SidebarProps) {
           <div className="relative mt-2">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2"
+              className="absolute start-2 top-1/2 z-10 -translate-y-1/2 pointer-events-none"
             />
             <Input
               variant="tertiary"
-              placeholder="Search advertiser's nickname"
+              placeholder={t("market.searchAdvertiserNickname")}
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => {
@@ -303,20 +303,20 @@ export default function Sidebar({ className }: SidebarProps) {
                 if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
                 blurTimeoutRef.current = setTimeout(() => setIsSearchFocused(false), 150)
               }}
-              className="bg-grayscale-500 rounded-lg pr-8 pl-8"
+              className="w-full min-w-0 bg-grayscale-500 rounded-lg ps-10 pe-10"
             />
             {searchInput && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleClear}
-                className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
+                className="absolute end-2 md:end-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
             {isSearchFocused && searchInput.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
+              <div className="absolute top-full start-0 mt-1 w-[360px] min-h-[272px] bg-white border border-slate-200 rounded-xl shadow-md z-50 overflow-hidden" onMouseDown={(e) => e.preventDefault()}>
                 <div className="px-0 pt-3 pb-0">
                   <Tabs value={searchTab} onValueChange={(v) => { if (v === "sell") track("ek_buy_tab_markets_search"); else track("ek_sell_tab_markets_search"); setSearchTab(v as "buy" | "sell") }}>
                     <TabsList className="w-full bg-transparent p-0">
@@ -355,8 +355,8 @@ export default function Sidebar({ className }: SidebarProps) {
                   </div>
                 ) : debouncedSearchInput.length > 0 ? (
                   <EmptyState
-                    title={`No results found for "${debouncedSearchInput}"`}
-                    description="Check spelling or try finding different advertisers."
+                    title={t("common.searchNoResultsTitle", { query: debouncedSearchInput })}
+                    description={t("common.searchNoResultsDescription")}
                     className="py-4 px-2"
                   />
                 ) : null}
@@ -388,7 +388,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 {item.name === t("navigation.liveChat") ? (
                   <button
                     onClick={handleLiveChat}
-                    className="flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
+                    className="flex items-center gap-3 rounded-md py-4 text-sm w-full text-start"
                   >
                     {linkContent}
                   </button>
@@ -416,7 +416,7 @@ export default function Sidebar({ className }: SidebarProps) {
         {!userData?.feedback_exist && !isDisabled && (
           <button
             onClick={() => setShowFeedbackDialog(true)}
-            className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-left"
+            className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-start"
           >
             <div className="h-5 w-5 flex items-center justify-center">
               <Image src="/icons/ic-feedback.svg" alt="" width={20} height={20} />
@@ -440,7 +440,7 @@ export default function Sidebar({ className }: SidebarProps) {
               {email && <span className="text-xs text-slate-1200 whitespace-pre-wrap wrap-anywhere">{email}</span>}
             </div>
           </div>
-          <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={14} height={24} />
+          <Image src="/icons/chevron-right-black.png" alt={t("common.derivLogo")} width={14} height={24} className="rtl:rotate-180" />
         </a>
       </div>
       <FeedbackDialog isOpen={showFeedbackDialog} onClose={() => setShowFeedbackDialog(false)} />

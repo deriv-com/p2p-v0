@@ -14,7 +14,9 @@ import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/hooks/use-toast"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { PROFILE_TOOLBAR_ROW } from "@/lib/rtl"
 
 interface BlockedUser {
   nickname: string
@@ -22,7 +24,8 @@ interface BlockedUser {
 }
 
 export default function BlockedTab() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState("")
@@ -65,7 +68,7 @@ export default function BlockedTab() {
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                   <span>{t("profile.userUnblocked", { nickname: user.nickname })}</span>
                 </div>
               ),
@@ -87,24 +90,24 @@ export default function BlockedTab() {
   }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
-    <div className="h-[72px] flex items-center justify-between gap-3">
+    <div className="h-[72px] flex items-center justify-between gap-3 min-w-0">
       <div className="w-10 h-10 rounded-full bg-grayscale-300 flex items-center justify-center text-slate-700 font-bold text-sm flex-shrink-0">
         {user.nickname?.charAt(0).toUpperCase()}
       </div>
-      <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
+      <div className="flex-1 min-w-0 border-b border-gray-100 py-4 flex items-center justify-between gap-3">
         <Button
           onClick={() => onUserClick(user.user_id)}
-          className="hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200 px-0 text-base"
+          className="min-w-0 flex-1 justify-start text-start hover:underline hover:bg-transparent cursor-pointer font-normal text-slate-1200 px-0 text-base overflow-hidden"
           size="sm"
           variant="ghost"
         >
-          {user.nickname}
+          <span className="block truncate">{user.nickname}</span>
         </Button>
         <Button
           variant="outline"
           size="sm"
           onClick={() => handleUnblock(user)}
-          className="rounded-full px-4 py-1 text-sm"
+          className="shrink-0 whitespace-nowrap rounded-full px-4 py-1 text-sm"
         >
           {t("profile.unblock")}
         </Button>
@@ -113,22 +116,22 @@ export default function BlockedTab() {
   )
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" dir={dir}>
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between gap-4 mb-4">
+        <div className={PROFILE_TOOLBAR_ROW}>
           <div className="relative w-full md:w-[360px]">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute start-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="h-14 pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none"
+              className="h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none"
               autoComplete="off"
             />
             {searchQuery && (
@@ -136,9 +139,9 @@ export default function BlockedTab() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
           </div>

@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { ModalHeaderRow } from "@/components/ui/modal-header-row"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import { ProfileAPI } from "@/services/api"
@@ -19,6 +21,8 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAddPaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { useRouter } from "next/navigation"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface PaymentMethod {
   display_name: string
@@ -66,7 +70,8 @@ const FullPagePaymentSelection = ({
   onConfirm: (methods: string[]) => void
   onAddPaymentMethod: () => void
 }) => {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const isMobile = useIsMobile()
   const [localSelected, setLocalSelected] = useState<string[]>(selectedPaymentMethods)
   const [searchQuery, setSearchQuery] = useState("")
@@ -116,7 +121,7 @@ const FullPagePaymentSelection = ({
         <div className="relative">
           <Image
             src="/icons/search-icon-custom.png"
-            alt="Search"
+            alt={t("common.search")}
             width={24}
             height={24}
             className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
@@ -138,7 +143,7 @@ const FullPagePaymentSelection = ({
               onClick={() => setSearchQuery("")}
               className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
             >
-              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
             </Button>
           )}
         </div>
@@ -151,7 +156,7 @@ const FullPagePaymentSelection = ({
       <div className="flex-1 overflow-y-auto px-4 md:px-0 space-y-2">
         {filteredMethods.length === 0 ? (
           <div className="text-center pt-0 pb-4 md:pt-4 md:pb-8 flex flex-col items-center">
-            <Image src="/icons/magnifier.png" alt="No results" width={88} height={88} className="mb-0" />
+            <Image src="/icons/magnifier.png" alt={t("common.noResults")} width={88} height={88} className="mb-0" />
             <p className="text-slate-1200 text-base font-bold text-center mb-2">
               {t("paymentMethod.noMatchingPayment")}
             </p>
@@ -202,9 +207,9 @@ const FullPagePaymentSelection = ({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
-        <DrawerContent className="max-h-[90vh]">
-          <DrawerHeader className="pb-[10px]">
-            <DrawerTitle className="text-[20px] font-bold">{t("paymentMethod.title")}</DrawerTitle>
+        <DrawerContent dir={dir} className="max-h-[90vh]">
+          <DrawerHeader className="pb-[10px] text-start">
+            <DrawerTitle className="text-[20px] font-bold text-start">{t("paymentMethod.title")}</DrawerTitle>
           </DrawerHeader>
           {content}
         </DrawerContent>
@@ -214,19 +219,18 @@ const FullPagePaymentSelection = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
-        <DialogHeader className="relative mb-4">
-          <DialogTitle className="text-2xl font-extrabold mt-0">{t("paymentMethod.title")}</DialogTitle>
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="icon"
-            className="absolute right-[-16px] top-[-16px] p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12 pb-4"
-            aria-label="Close"
-          >
-            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
-          </Button>
-        </DialogHeader>
+      <DialogContent dir={dir} className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
+        <ModalHeaderRow
+          asDialog
+          title={t("paymentMethod.title")}
+          onClose={onClose}
+          closeAriaLabel={t("common.close")}
+          titleClassName="text-2xl font-extrabold"
+          closeIconSrc="/icons/button-close.png"
+          closeIconSize={48}
+          closeButtonClassName="hover:bg-transparent hover:opacity-80 px-0 min-w-[48px]"
+          className="mb-4"
+        />
         {content}
       </DialogContent>
     </Dialog>
@@ -281,9 +285,9 @@ const PaymentSelectionContent = ({
 
   const getMethodAccountInfo = (method: UserPaymentMethod | PaymentMethod) => {
     if ("fields" in method && method.fields?.account?.value) {
-      return `${formatPaymentMethodName(method.display_name)} - ${maskAccountNumber(method.fields.account.value)}`
+      return `${formatPaymentMethodName(method.display_name, t)} - ${maskAccountNumber(method.fields.account.value)}`
     }
-    return formatPaymentMethodName(method.display_name)
+    return formatPaymentMethodName(method.display_name, t)
   }
 
   return (
@@ -314,12 +318,12 @@ const PaymentSelectionContent = ({
                   <div className="flex-1">
                     <div className="flex items-center mb-[6px] gap-2">
                       <div
-                        className={`h-2 w-2 rounded-full mr-2 ${getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                        className={`h-2 w-2 rounded-full me-2 ${getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                           }`}
                       />
                       <div className="flex- flex-col">
                         <span className="text-base text-slate-1200">
-                          {getCategoryDisplayName(getMethodType(method))}
+                          {getCategoryDisplayName(getMethodType(method), t)}
                         </span>
                         <div className="font-normal text-grayscale-text-muted text-xs">
                           {isUserMethod ? getMethodAccountInfo(method) : getMethodDisplayName(method)}
@@ -347,7 +351,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">{t("paymentMethod.addPaymentMethod")}</span>
             </div>
           </div>
@@ -378,6 +382,7 @@ export default function PaymentDetailsForm({
   onRefetchPaymentMethods,
 }: PaymentDetailsFormProps) {
   const { t } = useTranslations()
+  const router = useRouter()
   const isMobile = useIsMobile()
   const { mutateAsync: addPaymentMethod, isPending: isAddingPaymentMethod } = useAddPaymentMethod()
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
@@ -406,7 +411,7 @@ export default function PaymentDetailsForm({
     setTouched(true)
 
     const formValid = isFormValid()
-    const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
+    const errors = !formValid ? { paymentMethods: t("paymentMethod.pleaseSelectPaymentMethod") } : undefined
 
     let paymentMethodNames: string[] = []
 
@@ -441,7 +446,7 @@ export default function PaymentDetailsForm({
       setShowFullPageModal(true)
     } else {
       showAlert({
-        title: "Payment method",
+        title: t("paymentMethod.paymentMethodsSheetTitle"),
         description: (
           <PaymentSelectionContent
             paymentMethods={userPaymentMethods}
@@ -467,16 +472,32 @@ export default function PaymentDetailsForm({
       setShowAddPaymentPanel(false)
     } catch (err) {
       const error = err as PaymentMethodError
+      const errorCode = error?.errors?.[0]?.code
+
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setShowAddPaymentPanel(false)
+              router.push("/profile?tab=payment")
+            },
+          }),
+        )
+        return
+      }
+
       const errorMessages: Record<string, { title: string; description: string }> = {
-        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
         PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
         PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
         PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
         PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
       }
 
-      const errorCode = error?.errors?.[0]?.code
-      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
+      const { title, description } = (typeof errorCode === "string" ? errorMessages[errorCode] : undefined) ?? {
+        title: t("paymentMethod.unableToAdd"),
+        description: t("paymentMethod.addError"),
+      }
 
       showAlert({
         title,
@@ -539,7 +560,7 @@ export default function PaymentDetailsForm({
                   <span className="text-left font-normal text-base text-black/[0.72]">
                     {getSelectedPaymentMethodsText()}
                   </span>
-                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+                  <Image src="/icons/chevron-down.png" alt={t("common.dropdown")} width={24} height={24} className="ms-2" />
                 </Button>
               </div>
 

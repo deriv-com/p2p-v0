@@ -249,7 +249,7 @@ export default function AdDetailsForm({
       if (!floatingRate) {
         errors.floatingRate = t("adForm.rateRequired")
       } else if (rate < -10 || rate > 10) {
-        errors.floatingRate = "Rate must be between -10.00% and +10.00%."
+        errors.floatingRate = t("adForm.floatingRateRangeError")
       }
     }
 
@@ -409,17 +409,17 @@ export default function AdDetailsForm({
                           alt={`${buyCurrency} logo`}
                           width={24}
                           height={16}
-                          className="mr-1 object-cover"
+                          className="me-1 object-cover"
                         />
                       )}
                       <span>{buyCurrency}</span>
                     </div>
                     <Image
                       src="/icons/chevron-down.png"
-                      alt="Arrow"
+                      alt={t("common.arrow")}
                       width={24}
                       height={24}
-                      className="ml-2 transition-transform duration-200"
+                      className="ms-2 transition-transform duration-200"
                     />
                   </Button>
                 }
@@ -428,7 +428,7 @@ export default function AdDetailsForm({
 
             <div>
               <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
-                {type === "buy" ? "Paying with" : "Receive in"}
+                {type === "buy" ? t("market.payWith") : t("market.receiveIn")}
               </label>
               <CurrencyFilter
                 contentClassName="w-[278px]"
@@ -436,7 +436,7 @@ export default function AdDetailsForm({
                 isTitleVisible={isMobile}
                 selectedCurrency={forCurrency}
                 onCurrencySelect={setForCurrency}
-                title={type === "buy" ? "Paying with" : "Receive in"}
+                title={type === "buy" ? t("market.payWith") : t("market.receiveIn")}
                 trigger={
                   <Button
                     variant="outline"
@@ -451,17 +451,17 @@ export default function AdDetailsForm({
                           alt={`${forCurrency} logo`}
                           width={24}
                           height={16}
-                          className="mr-1 object-cover"
+                          className="me-1 object-cover"
                         />
                       )}
                       <span>{forCurrency}</span>
                     </div>
                     <Image
                       src="/icons/chevron-down.png"
-                      alt="Arrow"
+                      alt={t("common.arrow")}
                       width={24}
                       height={24}
-                      className="ml-2 transition-transform duration-200"
+                      className="ms-2 transition-transform duration-200"
                     />
                   </Button>
                 }
@@ -511,7 +511,7 @@ export default function AdDetailsForm({
                     error={touched.fixedRate && !!formErrors.fixedRate}
                   />
                   {touched.fixedRate && formErrors.fixedRate && (
-                    <p className="text-destructive text-xs mt-1 ml-4">{formErrors.fixedRate}</p>
+                    <p className="text-destructive text-xs mt-1 ms-4">{formErrors.fixedRate}</p>
                   )}
                 </div>
               ) : (
@@ -520,7 +520,6 @@ export default function AdDetailsForm({
                     value={floatingRate}
                     onChange={setFloatingRate}
                     onBlur={() => setTouched((prev) => ({ ...prev, floatingRate: true }))}
-                    label="Rate"
                     currency={forCurrency}
                     marketPrice={marketPrice || undefined}
                     error={touched.floatingRate && !!formErrors.floatingRate}
@@ -534,7 +533,7 @@ export default function AdDetailsForm({
           <div>
             {priceType === "fixed" && (
               <div className="flex items-center justify-between text-xs mt-4">
-                <span className="text-grayscale-text-muted">Your rate:</span>
+                <span className="text-grayscale-text-muted">{t("adForm.yourRate")}</span>
                 {fixedRate ? (
                   <span className="text-slate-1200">
                     {Number(fixedRate).toLocaleString(undefined, {
@@ -549,7 +548,7 @@ export default function AdDetailsForm({
               </div>
             )}
             <div className="flex items-center justify-between text-xs ">
-              <span className="text-grayscale-text-muted">Lowest rate in market:</span>
+              <span className="text-grayscale-text-muted">{t("adForm.lowestRateInMarket")}</span>
               {priceRange?.lowestPrice ? (
                 <span className="text-slate-1200">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
@@ -563,7 +562,7 @@ export default function AdDetailsForm({
               )}
             </div>
             <div className="flex items-center justify-between text-xs ">
-              <span className="text-grayscale-text-muted">Highest rate in market:</span>
+              <span className="text-grayscale-text-muted">{t("adForm.highestRateInMarket")}</span>
               {priceRange?.highestPrice ? (
                 <span className="text-slate-1200">
                   {priceRange.highestPrice.toLocaleString(undefined, {
@@ -582,7 +581,7 @@ export default function AdDetailsForm({
         </div>
 
         <div>
-          <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">Amount and order limit</h3>
+          <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">{t("adForm.amountAndOrderLimit")}</h3>
           <div className="mb-4">
             <CurrencyInput
               value={totalAmount}
@@ -611,7 +610,7 @@ export default function AdDetailsForm({
               currency={buyCurrency}
             />
             {touched.totalAmount && formErrors.totalAmount && (
-              <p className="text-destructive text-xs mt-1 ml-4">{formErrors.totalAmount}</p>
+              <p className="text-destructive text-xs mt-1 ms-4">{formErrors.totalAmount}</p>
             )}
           </div>
           <div className="flex flex-col md:flex-row md:items-baseline gap-4">
@@ -642,7 +641,7 @@ export default function AdDetailsForm({
                 currency={buyCurrency}
               />
               {touched.minAmount && formErrors.minAmount && (
-                <p className="text-destructive text-xs mt-1 ml-4">{formErrors.minAmount}</p>
+                <p className="text-destructive text-xs mt-1 ms-4">{formErrors.minAmount}</p>
               )}
             </div>
             <div className="text-xl hidden md:block">~</div>
@@ -673,7 +672,7 @@ export default function AdDetailsForm({
                 currency={buyCurrency}
               />
               {touched.maxAmount && formErrors.maxAmount && (
-                <p className="text-destructive text-xs mt-1 ml-4">{formErrors.maxAmount}</p>
+                <p className="text-destructive text-xs mt-1 ms-4">{formErrors.maxAmount}</p>
               )}
             </div>
           </div>

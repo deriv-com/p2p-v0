@@ -4,6 +4,7 @@ import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cva, type VariantProps } from "class-variance-authority"
 
+import { RTL_TABS_LIST } from "@/lib/rtl"
 import { cn } from "@/lib/utils"
 
 const Tabs = TabsPrimitive.Root
@@ -16,6 +17,7 @@ const TabsList = React.forwardRef<
     ref={ref}
     className={cn(
       "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+      RTL_TABS_LIST,
       className,
     )}
     {...props}

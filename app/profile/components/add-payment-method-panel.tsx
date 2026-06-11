@@ -134,14 +134,14 @@ export default function AddPaymentMethodPanel({
     const newErrors: Record<string, string> = {}
 
     if (!selectedMethod) {
-      newErrors.method = "Please select a payment method"
+      newErrors.method = t("paymentMethod.pleaseSelectPaymentMethod")
     }
 
     selectedMethodFields.forEach((field) => {
       const value = details[field.name]?.trim() ?? ""
 
       if (!value && field.required) {
-        newErrors[field.name] = `${field.label} is required`
+        newErrors[field.name] = t("profile.fieldRequired", { field: field.label })
         return
       }
 
@@ -280,21 +280,21 @@ export default function AddPaymentMethodPanel({
 
     const methodSelectionContent = (
       <>
-        <h2 className="text-2xl font-bold p-4 pb-0">{t("paymentMethod.selectPaymentMethod")}</h2>
+        <h2 className="text-2xl font-bold p-4 pb-0 text-start">{t("paymentMethod.selectPaymentMethod")}</h2>
         <div className="p-4 pb-2">
           <div className="relative">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute start-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("paymentMethod.search")}
               value={searchQuery}
               onChange={handleSearchChange}
-              className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
+              className="text-base ps-10 pe-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg text-start"
               autoComplete="off"
               autoFocus
             />
@@ -303,9 +303,9 @@ export default function AddPaymentMethodPanel({
                 variant="ghost"
                 size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
           </div>
@@ -351,7 +351,7 @@ export default function AddPaymentMethodPanel({
   const formContent = (
     <>
       <div className="flex items-center gap-4 p-4 pb-0">
-        <h2 className="text-2xl font-bold">{t("paymentMethod.addPaymentDetails")}</h2>
+        <h2 className="text-2xl font-bold text-start">{t("paymentMethod.addPaymentDetails")}</h2>
       </div>
       <form onSubmit={handleSubmit} className="overflow-y-auto">
         <div className="p-4 space-y-4">
@@ -377,7 +377,7 @@ export default function AddPaymentMethodPanel({
                     }
                   />
                   {(touched[field.name] || details[field.name]) && errors[field.name] && (
-                    <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
+                    <p className="mt-1 text-xs text-red-500 text-start">{errors[field.name]}</p>
                   )}
                 </div>
               ))}
@@ -394,13 +394,13 @@ export default function AddPaymentMethodPanel({
               maxLength={300}
               variant="floating"
             />
-            {errors.instructions && <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>}
-            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+            {errors.instructions && <p className="mt-1 text-xs text-red-500 text-start">{errors.instructions}</p>}
+            <div className="flex justify-end rtl:justify-start mt-1 text-xs text-gray-500">{charCount}/300</div>
           </div>
         </div>
       </form>
 
-      <div className="p-4 flex justify-end">
+      <div className="p-4 flex justify-end rtl:justify-start">
         <Button
           type="button"
           onClick={handleSubmit}
@@ -408,7 +408,7 @@ export default function AddPaymentMethodPanel({
           className="w-full md:w-auto"
         >
           {isLoading ? (
-            <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+            <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
           ) : (
             t("common.add")
           )}

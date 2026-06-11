@@ -1,25 +1,27 @@
 "use client"
 
 import { useAlertDialog as useAlertDialogContext } from "@/contexts/alert-dialog-context"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import type { AlertDialogConfig } from "@/types/alert-dialog"
 
 export function useAlertDialog() {
   const { showAlert, hideAlert, isOpen } = useAlertDialogContext()
+  const { t } = useTranslations()
 
   const showConfirmDialog = (config: AlertDialogConfig) => {
     showAlert({
-      confirmText: "Confirm",
-      cancelText: "Cancel",
+      confirmText: t("common.confirm"),
+      cancelText: t("common.cancel"),
       ...config,
     })
   }
 
   const showDeleteDialog = (config: Omit<AlertDialogConfig, "variant">) => {
     showAlert({
-      title: "Delete Item",
-      description: "Are you sure you want to delete this item? This action cannot be undone.",
-      confirmText: "Delete",
-      cancelText: "Cancel",
+      title: t("common.deleteItemTitle"),
+      description: t("common.deleteItemDescription"),
+      confirmText: t("common.delete"),
+      cancelText: t("common.cancel"),
       variant: "destructive",
       type: "warning",
       ...config,
@@ -28,9 +30,9 @@ export function useAlertDialog() {
 
   const showWarningDialog = (config: AlertDialogConfig) => {
     showAlert({
-      title: "Warning",
-      confirmText: "Continue",
-      cancelText: "Cancel",
+      title: t("common.warning"),
+      confirmText: t("common.continue"),
+      cancelText: t("common.cancel"),
       ...config,
     })
   }

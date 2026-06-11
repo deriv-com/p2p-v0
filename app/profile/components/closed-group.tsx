@@ -137,17 +137,19 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
   }, [refetch, t, showToast, handleClosedGroupError])
 
   const GroupCard = ({ group }: { group: ClosedGroup }) => (
-    <div className="h-[72px] flex items-center justify-between gap-3">
+    <div className="h-[72px] flex items-center justify-between gap-3 min-w-0">
       <div className="w-10 h-10 rounded-full bg-grayscale-300 flex items-center justify-center text-slate-700 font-bold text-sm flex-shrink-0">
         {group.nickname?.charAt(0).toUpperCase()}
       </div>
-      <div className="flex-1 border-b border-gray-100 py-4 flex items-center justify-between">
-        <div className="text-slate-1200">{group.nickname}</div>
+      <div className="flex-1 min-w-0 border-b border-gray-100 py-4 flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1 overflow-hidden text-start text-slate-1200">
+          <span className="block truncate">{group.nickname}</span>
+        </div>
         <Button
           onClick={() => handleToggleMembership(group)}
           variant="outline"
           size="sm"
-          className="min-w-fit"
+          className="shrink-0 whitespace-nowrap min-w-fit"
         >
           {group.is_group_member ? t("common.remove") : t("common.add")}
         </Button>
@@ -168,17 +170,20 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           <div className={cn("relative", isInAlert ? "w-full" : "w-full md:w-[360px]")}>
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute start-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               placeholder={t("common.search")}
               value={searchQuery}
               onChange={handleSearchChange}
               disabled={!isDiamond}
-              className={cn("h-14 pl-10 pr-10 border-0 bg-grayscale-500 rounded-lg focus:outline-none", !isDiamond && "opacity-50 cursor-not-allowed")}
+              className={cn(
+                "h-14 ps-10 pe-10 border-0 bg-grayscale-500 rounded-lg text-start focus:outline-none",
+                !isDiamond && "opacity-50 cursor-not-allowed",
+              )}
               autoComplete="off"
             />
             {searchQuery && isDiamond && (
@@ -186,9 +191,9 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
                 variant="ghost"
                 size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
-                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
               </Button>
             )}
           </div>
@@ -225,9 +230,11 @@ export default function ClosedGroupTab({ isInAlert = false }: ClosedGroupTabProp
           filteredClosedGroups.map((group) => <GroupCard key={group.user_id} group={group} />)
         ) : (
           <EmptyState
-            title={searchQuery ? t("profile.noMatchingName") : t("profile.noFollowedUsersYet")}
+            title={searchQuery ? t("profile.noMatchingName") : t("profile.closedGroupEmptyTitle")}
             description={
-              searchQuery ? t("profile.noResultFor", { query: searchQuery }) : t("profile.noFollowedUsersDescription")
+              searchQuery
+                ? t("profile.noResultFor", { query: searchQuery })
+                : t("profile.closedGroupEmptyDescription")
             }
             redirectToAds={false}
           />

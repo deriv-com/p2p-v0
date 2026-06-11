@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
+import { formatAppDate } from "@/lib/format-date"
 import { formatAmountWithDecimals } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -50,7 +51,7 @@ export default function TransactionsTab({
   selectedTransaction: parentSelectedTransaction,
   onTransactionSelect
 }: TransactionsTabProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState(t("wallet.all"))
@@ -85,7 +86,7 @@ export default function TransactionsTab({
       return t("wallet.today")
     }
 
-    return date.toLocaleDateString()
+    return formatAppDate(date, locale, { day: "numeric", month: "long", year: "numeric" })
   }
 
   const getTransactionType = (transaction: Transaction) => {
@@ -151,14 +152,15 @@ export default function TransactionsTab({
     const currencyLabel = currencies[transaction_currency]?.label || transaction_currency
 
     if (isSourceP2P && !isDestinationP2P) {
-      return `P2P ${currencyLabel} -> ${currencyLabel} Wallet`
-    } else if (!isSourceP2P && isDestinationP2P) {
-      return `${currencyLabel} Wallet -> P2P ${currencyLabel}`
-    } else if (isSourceP2P && isDestinationP2P) {
-      return `P2P ${currencyLabel} -> P2P ${currencyLabel}`
-    } else {
-      return `${currencyLabel} Wallet`
+      return t("wallet.transferRouteP2pToWallet", { currency: currencyLabel })
     }
+    if (!isSourceP2P && isDestinationP2P) {
+      return t("wallet.transferRouteWalletToP2p", { currency: currencyLabel })
+    }
+    if (isSourceP2P && isDestinationP2P) {
+      return t("wallet.transferRouteP2pToP2p", { currency: currencyLabel })
+    }
+    return t("wallet.transferRouteWalletOnly", { currency: currencyLabel })
   }
 
   const filteredTransactions = transactions.filter((transaction) => {
@@ -259,13 +261,13 @@ export default function TransactionsTab({
                             </div>
                           </div>
 
-                          <div className={`${display.amountColor} text-base font-normal mr-6`}>
+                          <div className={`${display.amountColor} text-base font-normal me-6`}>
                             {formatAmountWithDecimals(transaction.metadata.transaction_net_amount)}{" "}
                             {transaction.metadata.transaction_currency}
                           </div>
                         </div>
 
-                        <div className="h-px bg-grayscale-200 ml-10" />
+                        <div className="h-px bg-grayscale-200 ms-10" />
                       </div>
                     )
                   })}

@@ -67,7 +67,17 @@ export function getPaymentMethodColourByName(methodName: string): string {
   return "bg-paymentMethod-ewallet"
 }
 
-export function getCategoryDisplayName(type: string): string {
+export function getCategoryDisplayName(type: string, t?: (key: string) => string): string {
+  if (t) {
+    switch (type) {
+      case "bank":
+        return t("paymentMethod.bankTransfers")
+      case "ewallet":
+        return t("paymentMethod.eWallets")
+      default:
+        return t("paymentMethod.categoryOther")
+    }
+  }
   switch (type) {
     case "bank":
       return "Bank transfer"
@@ -98,11 +108,11 @@ export const maskAccountNumber = (accountNumber: any): string => {
   return "*".repeat(accountStr.length - 4) + accountStr.slice(-4)
 }
 
-export function formatPaymentMethodName(methodName: string): string {
+export function formatPaymentMethodName(methodName: string, t?: (key: string) => string): string {
   if (!methodName) return ""
 
   if (methodName === "bank_transfer") {
-    return "Bank transfer"
+    return t ? t("paymentMethod.bankTransfers") : "Bank transfer"
   }
 
   return methodName

@@ -27,12 +27,12 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
         <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
           {[1, 2].map((i) => (
             <div key={i} className="flex items-center justify-between h-[72px] w-full relative">
-              <div className="flex items-center gap-4 pl-0 w-full">
+              <div className="flex items-center gap-4 ps-0 w-full">
                 <Skeleton className="h-7 w-7 rounded-full flex-shrink-0 bg-grayscale-500" />
                 <Skeleton className="h-5 w-24 bg-grayscale-500" />
               </div>
               <Skeleton className="h-5 w-32 bg-grayscale-500" />
-              <div className="absolute bottom-0 left-10 right-0 h-[1px] bg-grayscale-200" />
+              <div className="absolute bottom-0 start-10 end-0 h-[1px] bg-grayscale-200" />
             </div>
           ))}
         </div>
