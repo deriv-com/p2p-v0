@@ -4,8 +4,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function MobileSidebarTrigger() {
+  const { t } = useTranslations()
   const pathname = usePathname()
   const router = useRouter()
   const isProfilePage = pathname === "/profile" || pathname.startsWith("/profile/")
@@ -26,7 +28,7 @@ export function MobileSidebarTrigger() {
         size="icon"
         className="h-8 w-8 rounded-full bg-[#ffffff0a]"
       >
-        <Image src="/icons/arrow-back.svg" width={24} height={24} alt="Back" />
+        <Image src="/icons/arrow-back.svg" width={24} height={24} alt={t("common.back")} />
       </Button>
     )
   }
@@ -34,11 +36,9 @@ export function MobileSidebarTrigger() {
   return (
     <Link
       href="/profile"
-      className="h-8 w-8 text-center max-w-full py-2"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ffffff0a]"
     >
-      <div className="h-8 w-8 flex items-center justify-center flex-shrink-0 rounded-full bg-[#ffffff0a]">
-        <Image src="/icons/profile-icon-white.svg" width={24} height={24} alt="Profile" />
-      </div>
+      <Image src="/icons/profile-icon-white.svg" width={24} height={24} alt={t("common.profile")} />
     </Link>
   )
 }

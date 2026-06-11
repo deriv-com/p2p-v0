@@ -41,7 +41,7 @@ export default function AdsPage() {
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
-    title: "Error",
+    title: "",
     message: "",
   })
   const { hideAlert, showAlert } = useAlertDialog()
@@ -235,7 +235,7 @@ export default function AdsPage() {
           className="data-[state=checked]:bg-completed-icon"
           disabled={!!tempBanUntil}
         />
-        <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ml-2 whitespace-nowrap">
+        <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ms-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
         </label>
         <TooltipProvider>
@@ -243,10 +243,10 @@ export default function AdsPage() {
             <TooltipTrigger asChild>
               <Image
                 src="/icons/info-circle.svg"
-                alt="Info"
+                alt={t("common.info")}
                 width={24}
                 height={24}
-                className="ml-1 cursor-pointer flex-shrink-0"
+                className="ms-1 cursor-pointer flex-shrink-0"
               />
             </TooltipTrigger>
             <TooltipContent>
@@ -275,7 +275,7 @@ export default function AdsPage() {
                 className="font-bold text-base leading-4 tracking-[0%] text-center whitespace-nowrap"
                 disabled={!!tempBanUntil}
               >
-                <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
+                <Image src="/icons/plus-white.png" alt={t("common.plus")} className="me-1" height={22} width={13} />
                 {t("myAds.createAd")}
               </Button>
             )}

@@ -35,12 +35,13 @@ import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
+import { localeToBcp47 } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import InfoCircleIcon from "@/public/icons/info-circle-bold.svg"
 import { useTrackers } from "@/analytics/useTrackers"
 
 export default function OrderDetailsPage() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const { track } = useTrackers()
   const params = useParams()
   const orderId = params.id as string
@@ -170,7 +171,7 @@ export default function OrderDetailsPage() {
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
             <span>{t("orderDetails.proofOfTransferSubmitted")}</span>
           </div>
         ),
@@ -217,7 +218,7 @@ export default function OrderDetailsPage() {
       timeZoneName: "short",
     }
 
-    return deadline.toLocaleDateString("en-GB", options)
+    return deadline.toLocaleString(localeToBcp47(locale), options)
   }
 
   const renderPaymentMethodFields = (method: any) => {
@@ -247,7 +248,7 @@ export default function OrderDetailsPage() {
                     toast({
                       description: (
                         <div className="flex items-center gap-2">
-                          <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                          <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                           <span>{t("orderDetails.textCopiedToClipboard")}</span>
                         </div>
                       ),
@@ -260,7 +261,7 @@ export default function OrderDetailsPage() {
                 size="sm"
                 className="p-0 h-auto"
               >
-                <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
+                <Image src="/icons/copy-icon.png" alt={t("common.copy")} width={24} height={24} className="text-slate-500" />
               </Button>
             </div>
           ) : (
@@ -394,7 +395,7 @@ export default function OrderDetailsPage() {
 
         if (result.errors && result.errors.length > 0) {
           showAlert({
-            title: "Unable to complete order",
+            title: t("order.unableToCompleteOrder"),
             description: result.errors[0].message,
             confirmText: t("common.ok"),
             type: "warning",
@@ -490,7 +491,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
+    <div className="lg:absolute inset-x-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}
@@ -568,7 +569,7 @@ export default function OrderDetailsPage() {
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <span
-                                className={`ml-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                                className={`ms-1 inline-flex cursor-pointer ${getStatusBadgeStyle(order.status, isBuyer)}`}
                                 aria-label="Info"
                                 role="img"
                               >
@@ -605,7 +606,7 @@ export default function OrderDetailsPage() {
                         </div>
                         <button className="flex items-center text-xs" onClick={showOrderDetails}>
                           {t("orderDetails.viewOrderDetails")}
-                          <ChevronRight className="h-4 w-4 ml-1" />
+                          <ChevronRight className="h-4 w-4 ms-1" />
                         </button>
                       </div>
                       <div className="flex justify-between items-end">
@@ -624,7 +625,7 @@ export default function OrderDetailsPage() {
                             variant="ghost"
                             size="sm"
                           >
-                            <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                            <Image src="/icons/chat-icon.png" alt={t("common.chat")} width={20} height={20} />
                           </Button>
                         )}
                       </div>
@@ -643,7 +644,7 @@ export default function OrderDetailsPage() {
                         <div className="flex items-start gap-2">
                           <Image
                             src="/icons/warning-icon-new.png"
-                            alt="Warning"
+                            alt={t("common.warning")}
                             height={24}
                             width={24}
                             className="-mt-[2px]"
@@ -711,7 +712,7 @@ export default function OrderDetailsPage() {
                         disabled={isConfirmLoading}
                       >
                         {isConfirmLoading ? (
-                          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                          <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
                         ) : (
                           t("orderDetails.iveReceivedPayment")
                         )}
@@ -722,7 +723,7 @@ export default function OrderDetailsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
                       <div className="flex-shrink-0">
-                        <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
+                        <Image src="/icons/info-custom.png" alt={t("common.info")} width={24} height={24} />
                       </div>
                       <p className="text-sm text-grayscale-100">
                         {t("orderDetails.ratingDeadline", {
@@ -751,7 +752,7 @@ export default function OrderDetailsPage() {
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.recommend && (
                         <div className="flex items-center gap-2">
-                          <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={16} />
+                          <Image src="/icons/thumbs-up-green.png" alt={t("common.recommended")} width={16} height={16} />
                           <span className="text-sm">{t("orderDetails.recommended")}</span>
                         </div>
                       )}

@@ -3,6 +3,8 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
+import { localeToBcp47 } from "@/lib/i18n/config"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,7 +28,9 @@ export function FloatingRateInput({
   currency = "IDR",
   marketPrice,
 }: FloatingRateInputProps) {
+  const { t, locale } = useTranslations()
   const [isFocused, setIsFocused] = useState(false)
+  const numberLocale = localeToBcp47(locale)
   const inputRef = useRef<HTMLInputElement>(null)
   const [displayValue, setDisplayValue] = useState(value)
 
@@ -109,25 +113,25 @@ export function FloatingRateInput({
                 onFocus={handleFocus}
                 placeholder=""
                 aria-invalid={error}
-                className={cn("pr-8 border-0 h-[56px] text-grayscale-600", error ? "text-destructive" : "")}
+                className={cn("pe-8 border-0 h-[56px] text-start text-grayscale-600", error ? "text-destructive" : "")}
               />
             </div>
 
             <div className="flex items-center gap-2 px-3 bg-white">
               <Button type="button" onClick={handleDecrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/minus.svg" alt="Decrement" />
+                <Image src="/icons/minus.svg" alt={t("common.decrement")} />
               </Button>
               <Button type="button" onClick={handleIncrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/plus.svg" alt="Increment" />
+                <Image src="/icons/plus.svg" alt={t("common.increment")} />
               </Button>
             </div>
           </div>
-          {error && <p className="text-destructive text-xs mt-1 ml-4">{errorMsg}</p>}
-          <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
-            Current market price:{" "}
+          {error && <p className="text-destructive text-xs mt-1 ms-4">{errorMsg}</p>}
+          <div className="text-xs text-grayscale-text-muted ms-4 mt-1 text-start">
+            {t("adForm.currentMarketPrice")}{" "}
             {marketPrice ? (
               <span>
-                {Number(marketPrice).toLocaleString(undefined, {
+                {Number(marketPrice).toLocaleString(numberLocale, {
                   minimumFractionDigits: 6,
                   maximumFractionDigits: 6,
                 })}{" "}
@@ -140,10 +144,10 @@ export function FloatingRateInput({
         </div>
       </div>
       <div className="flex items-center justify-between text-xs">
-        <span className="text-grayscale-text-muted">Your rate:</span>
+        <span className="text-grayscale-text-muted">{t("adForm.yourRate")}</span>
         {yourPrice ? (
           <span className="text-slate-1200">
-            {yourPrice.toLocaleString(undefined, {
+            {yourPrice.toLocaleString(numberLocale, {
               minimumFractionDigits: 6,
               maximumFractionDigits: 6,
             })}{" "}

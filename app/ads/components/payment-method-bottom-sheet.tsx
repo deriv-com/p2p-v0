@@ -6,6 +6,7 @@ import { Check, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentMethod {
   display_name: string
@@ -31,6 +32,7 @@ export default function PaymentMethodBottomSheet({
   availableMethods,
   maxSelections = 3,
 }: PaymentMethodBottomSheetProps) {
+  const { t } = useTranslations()
   const [localSelectedMethods, setLocalSelectedMethods] = useState<string[]>(selectedMethods)
   const [initialSelectedMethods, setInitialSelectedMethods] = useState<string[]>(selectedMethods)
   const [searchQuery, setSearchQuery] = useState("")
@@ -168,21 +170,21 @@ export default function PaymentMethodBottomSheet({
         </div>
 
         <form onSubmit={handleFormSubmit} className="px-6 pb-8">
-          <h2 className="text-2xl font-bold text-center mb-2">Payment methods</h2>
-          <p className="text-center text-gray-600 mb-6">You can select up to 3 payment methods.</p>
+          <h2 className="text-2xl font-bold text-center mb-2">{t("paymentMethod.paymentMethodsSheetTitle")}</h2>
+          <p className="text-center text-gray-600 mb-6">{t("paymentMethod.selectPaymentMethodsHint")}</p>
 
           {/* Search input */}
           <div className="relative mb-6">
             <Image
               src="/icons/search-icon-custom.png"
-              alt="Search"
+              alt={t("common.search")}
               width={24}
               height={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
               type="text"
-              placeholder="Search"
+              placeholder={t("paymentMethod.search")}
               variant="tertiary"
               value={searchQuery}
               onChange={(e) => {
@@ -224,8 +226,8 @@ export default function PaymentMethodBottomSheet({
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                   <AlertCircle className="h-8 w-8 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-medium mb-1">No payment methods found</h3>
-                <p className="text-gray-500 max-w-xs">The payment method you're searching for is not available.</p>
+                <h3 className="text-lg font-medium mb-1">{t("paymentMethod.noPaymentMethodsFound")}</h3>
+                <p className="text-gray-500 max-w-xs">{t("paymentMethod.methodNotAvailableSearch")}</p>
               </div>
             )}
           </div>
@@ -236,7 +238,7 @@ export default function PaymentMethodBottomSheet({
               onMouseDown={(e) => e.stopPropagation()}
               className="w-full"
             >
-              Select
+              {t("wallet.select")}
             </Button>
             <Button
               type="button"
@@ -245,7 +247,7 @@ export default function PaymentMethodBottomSheet({
               variant="outline"
               className="w-full h-[48px] border-black rounded-full"
             >
-              Reset
+              {t("paymentMethod.reset")}
             </Button>
           </div>
         </form>

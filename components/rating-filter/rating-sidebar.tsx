@@ -54,11 +54,11 @@ const RatingContent = ({
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                className="hover:bg-transparent p-0 mr-[4px]"
+                className="hover:bg-transparent p-0 me-[4px]"
               >
                 <Image
                   src={(hoverRating || rating) >= star ? "/icons/star-active.png" : "/icons/star-custom.png"}
-                  alt="Star rating"
+                  alt={t("common.rating")}
                   width={32}
                   height={32}
                 />
@@ -77,13 +77,13 @@ const RatingContent = ({
             >
               <Image
                 src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"}
-                alt="Thumbs up"
+                alt={t("common.recommended")}
                 width={14}
                 height={14}
               />
               <span
                 className={cn(
-                  "text-sm ml-[8px] font-normal ",
+                  "text-sm ms-[8px] font-normal ",
                   recommend === true ? "text-white" : "text-grayscale-100",
                 )}
               >
@@ -98,13 +98,13 @@ const RatingContent = ({
             >
               <Image
                 src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png"}
-                alt="Thumbs down"
+                alt={t("common.thumbsDown")}
                 width={14}
                 height={14}
               />
               <span
                 className={cn(
-                  "text-sm ml-[8px] font-normal ",
+                  "text-sm ms-[8px] font-normal ",
                   recommend === false ? "text-white" : "text-grayscale-100",
                 )}
               >
@@ -118,7 +118,7 @@ const RatingContent = ({
     <div className="p-4 md:px-0">
       <Button onClick={onSubmit} disabled={rating === 0 || isSubmitting} className="w-full disabled:opacity-[0.24]">
         {isSubmitting ? (
-          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+          <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
         ) : (
           t("ratingSidebar.submit")
         )}

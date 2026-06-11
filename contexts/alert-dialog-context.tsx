@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { isRtlLocale } from "@/lib/i18n/config"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
 
@@ -21,6 +23,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [config, setConfig] = useState<AlertDialogConfig>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
     setConfig(alertConfig)
@@ -80,11 +84,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     if (config.content) {
       return (
         <div className="overflow-hidden">
-          <div className="flex justify-between px-8 pt-6 items-center mb-4">
-            {config.title && <div className="font-bold text-2xl">{config.title}</div>}
+          <div className="flex justify-between gap-4 px-8 pt-6 items-center mb-4">
+            {config.title && <div className="flex-1 min-w-0 text-start font-bold text-2xl">{config.title}</div>}
             {!config.hideCloseButton && (
               <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
-                <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+                <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
               </Button>
             )}
           </div>
@@ -109,11 +113,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     return (
       <div className="px-8 py-6 overflow-y-auto">
-        <div className="flex justify-between items-center mb-8">
-          {config.title && <div className="font-bold text-2xl mr-2">{config.title}</div>}
+        <div className="flex justify-between items-center gap-4 mb-8">
+          {config.title && <div className="flex-1 min-w-0 text-start font-bold text-2xl">{config.title}</div>}
           {!config.hideCloseButton && (
             <Button onClick={handleClose} variant="ghost" className="bg-slate-75 px-1 min-w-[48px]">
-              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+              <Image src="/icons/close-icon.png" alt={t("common.close")} width={24} height={24} />
             </Button>
           )}
         </div>
@@ -153,7 +157,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     if (config.content) {
       return (
         <div className="flex flex-col max-h-[80vh] overflow-hidden">
-          {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6 flex-shrink-0">{config.title}</div>}
+          {config.title && <div className="mb-4 px-6 pt-6 text-start font-bold text-lg flex-shrink-0">{config.title}</div>}
           <div className="px-6 overflow-y-auto flex-1">{config.content}</div>
           {(config.type || config.cancelText) && (
             <div className="flex flex-col gap-2 px-6 py-4 flex-shrink-0 border-t border-grayscale-500">
@@ -175,7 +179,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
     return (
       <div className="p-6 overflow-y-auto">
-        {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
+        {config.title && <div className="mb-8 text-start font-bold text-lg">{config.title}</div>}
         {config.description && <div className="text-grayscale-100">{config.description}</div>}
         {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-8">
           {config.type && (
@@ -203,6 +207,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           if (!open) config.onClose?.()
         }}>
           <DrawerContent
+            dir={dir}
             hideHandle={isKycOnboarding}
             className={cn(
               "p-0",
@@ -218,6 +223,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
           <AlertDialogTitle></AlertDialogTitle>
           <AlertDialogContent
+            dir={dir}
             className={cn(
               "p-0 overflow-hidden",
               isKycOnboarding &&

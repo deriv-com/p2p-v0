@@ -1,8 +1,11 @@
 "use client"
 
 import type React from "react"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { isRtlLocale } from "@/lib/i18n/config"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 
@@ -14,21 +17,23 @@ interface PanelWrapperProps {
 
 export function PanelWrapper({ onBack, onClose, children }: PanelWrapperProps) {
   const isMobile = useIsMobile()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
 
   return (
     <>
       <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
       <div
-        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${isMobile ? "inset-0 w-full" : "w-full"
+        className={`fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col ${isMobile ? "inset-0 w-full" : "w-full"
           }`}
       >
-        <div className="max-w-xl mx-auto flex flex-col w-full h-full">
+        <div dir={dir} className="max-w-xl mx-auto flex flex-col w-full h-full text-start">
           <div className={cn("flex items-center justify-end px-4 py-3", onBack && "justify-between")}>
             {onBack && <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
-              <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+              <BackArrowIcon alt={t("common.back")} width={24} height={24} />
             </Button>}
             <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+              <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
             </Button>
           </div>
           {children}

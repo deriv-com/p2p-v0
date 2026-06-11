@@ -18,7 +18,9 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useLanguageStore } from "@/stores/language-store"
 import { VisibilityStatusDialog } from "./visibility-status-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -37,6 +39,8 @@ interface MyAdsTableProps {
 
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching = false, onAdDeleted }: MyAdsTableProps) {
   const { t } = useTranslations()
+  const locale = useLanguageStore((state) => state.locale)
+  const dropdownMenuAlign = isRtlLocale(locale) ? "start" : "end"
   const { track } = useTrackers()
   const router = useRouter()
   const { toast } = useToast()
@@ -121,8 +125,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
       <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
-            <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
-            <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
+            <span className={`w-2 h-2 rounded-full me-2 ${getPaymentMethodColourByName(method)}`}></span>
+            <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method, t)}</span>
           </div>
         ))}
       </div>
@@ -171,7 +175,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
           toast({
             description: (
               <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                 <span>{message}</span>
               </div>
             ),
@@ -228,7 +232,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+                  <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
                   <span>{t("myAds.adDeleted")}</span>
                 </div>
               ),
@@ -292,17 +296,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 lg:ps-0 pe-4 text-slate-600 font-normal">
                 {t("myAds.adType")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.availableAmount")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.paymentMethods")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
-              <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
+              <TableHead className="text-start py-4 ps-4 lg:pe-0 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -311,7 +315,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                 key={index}
                 className="grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
               >
-                <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
+                <TableCell className="p-2 lg:ps-0 lg:pe-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4">
                   <div className="space-y-2">
                     <Skeleton className="h-6 w-24 bg-grayscale-500" />
                     <Skeleton className="h-4 w-32 bg-grayscale-500" />
@@ -336,7 +340,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   <Skeleton className="h-6 w-16 rounded-full bg-grayscale-500" />
                 </TableCell>
 
-                <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1">
+                <TableCell className="p-2 lg:ps-4 lg:pe-0 lg:py-4 align-top row-start-1">
                   <div className="flex items-end justify-end">
                     <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500" />
                   </div>
@@ -371,17 +375,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 lg:ps-0 pe-4 text-slate-600 font-normal">
                 {t("myAds.adType")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.availableAmount")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">
                 {t("myAds.paymentMethods")}
               </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
-              <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
+              <TableHead className="text-start py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
+              <TableHead className="text-start py-4 ps-4 lg:pe-0 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -404,7 +408,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                 >
                   <TableCell
                     className={cn(
-                      "px-2 py-0 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      "px-2 py-0 lg:ps-0 lg:pe-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
@@ -418,7 +422,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                         >
                           {adType.toLowerCase() === "buy" ? t("common.buy") : t("common.sell")}
                         </span>
-                        <span className="text-base font-bold leading-6 ml-1">
+                        <span className="text-base font-bold leading-6 ms-1">
                           {" "}
                           {ad.account_currency}
                         </span>
@@ -437,7 +441,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                             </span>
                             <span className="text-xs font-bold leading-5">{rate} {ad.payment_currency}</span>
                             {exchangeRateType == "float" && ad.exchange_rate != 0 && (
-                              <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                              <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ms-1">
                                 {exchangeRate}
                               </span>
                             )}
@@ -467,7 +471,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                         <div>
                           <span className="text-xs leading-5 text-gray-900 font-bold">{rate} {ad.payment_currency}</span>
                           {exchangeRateType == "float" && ad.exchange_rate != 0 && (
-                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-2">
+                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ms-2">
                               {exchangeRate}
                             </span>
                           )}
@@ -489,7 +493,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
                     {getStatusBadge(isActive)}
-                    {IS_CLOSED_GROUP_ENABLED && ad.is_private && <Image src="/icons/closed-group.svg" alt="Closed Group" width={24} height={24} />}
+                    {IS_CLOSED_GROUP_ENABLED && ad.is_private && (
+                      <Image src="/icons/closed-group.svg" alt={t("common.closedGroup")} width={24} height={24} />
+                    )}
                     {hasVisibilityStatus && (
                       <Button
                         variant="ghost"
@@ -497,11 +503,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                         className="p-1 hover:bg-transparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                         onClick={() => handleVisibilityStatusClick(ad)}
                       >
-                        <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={24} height={24} />
+                        <Image src="/icons/ad-warning.svg" alt={t("common.visibilityStatus")} width={24} height={24} />
                       </Button>
                     )}
                   </TableCell>
-                  <TableCell className="p-0 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="p-0 lg:ps-4 lg:pe-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     <div className="flex items-end justify-end">
                       {isMobile ? (
                         <Button
@@ -510,7 +516,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                           className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           onClick={() => handleOpenDrawer(ad)}
                         >
-                          <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                          <Image src="/icons/vertical.svg" alt={t("common.options")} width={20} height={20} />
                         </Button>
                       ) : (
                         <>
@@ -521,7 +527,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                               className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                               onClick={() => handleOpenDrawer(ad)}
                             >
-                              <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                              <Image src="/icons/vertical.svg" alt={t("common.options")} width={20} height={20} />
                             </Button>
                           ) : (
                             <DropdownMenu open={openDropdownId === ad.id} onOpenChange={(open) => setOpenDropdownId(open ? ad.id : null)}>
@@ -531,10 +537,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                                   size="sm"
                                   className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                                 >
-                                  <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                                  <Image src="/icons/vertical.svg" alt={t("common.options")} width={20} height={20} />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
+                              <DropdownMenuContent align={dropdownMenuAlign} className="w-auto flex flex-col p-1">
                                 <AdActionsMenu
                                   ad={ad}
                                   onEdit={handleEdit}

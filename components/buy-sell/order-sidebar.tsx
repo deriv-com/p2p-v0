@@ -17,7 +17,10 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
+import { ALERT_INLINE_FLEX, ALERT_INLINE_TEXT } from "@/lib/rtl"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAddPaymentMethod, useUserPaymentMethods, queryKeys } from "@/hooks/use-api-queries"
 import { useQueryClient } from "@tanstack/react-query"
@@ -26,6 +29,7 @@ import AdUpdatedConfirmation from "./ad-updated-confirmation"
 import { useTrackers } from "@/analytics/useTrackers"
 import { mapOrderError } from "@/lib/orders/order-error-mapper"
 import { createOrderErrorDispatcher } from "@/lib/orders/order-error-dispatcher"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -116,9 +120,9 @@ const PaymentSelectionContent = ({
                     className="border border-grayscale-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+                      <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} />
                       <span className="text-base text-slate-1200">
-                        {formatPaymentMethodName(method.method)}
+                        {formatPaymentMethodName(method.method, t)}
                       </span>
                     </div>
                   </div>
@@ -145,12 +149,12 @@ const PaymentSelectionContent = ({
                 <div className="flex-1">
                   <div className="flex items-center mb-[6px] gap-2">
                     <div
-                      className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                      className={`h-2 w-2 rounded-full me-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                         }`}
                     />
                     <div className="flex- flex-col">
-                      <span className="text-base text-slate-1200">{getCategoryDisplayName(method.type)}</span>
-                      <div className="font-normal text-grayscale-text-muted text-xs">{`${formatPaymentMethodName(method.display_name)} - ${method.fields.account.value}`}</div>
+                      <span className="text-base text-slate-1200">{getCategoryDisplayName(method.type, t)}</span>
+                      <div className="font-normal text-grayscale-text-muted text-xs">{`${formatPaymentMethodName(method.display_name, t)} - ${method.fields.account.value}`}</div>
                     </div>
                   </div>
                 </div>
@@ -173,7 +177,7 @@ const PaymentSelectionContent = ({
             }}
           >
             <div className="flex items-center">
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+              <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} className="me-2" />
               <span className="text-slate-1200 text-base">
                 {t("paymentMethod.addPaymentMethod")}
               </span>
@@ -197,7 +201,8 @@ const PaymentSelectionContent = ({
 }
 
 export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const router = useRouter()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
@@ -510,7 +515,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
       track("ek_order_creation_failed_markets_advert_sheet", { error_code: "order_creation_error", error_message: errorCode })
       setOrderStatus({
         success: false,
-        message: `Failed to create order. Please try again. (${errorCode})`,
+        message: t("order.createOrderFailed", { code: errorCode }),
       })
     } finally {
       setIsSubmitting(false)
@@ -543,16 +548,22 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
       setShowAddPaymentPanel(false)
     } catch (error: any) {
-      let title = t("paymentMethod.unableToAdd")
-      let description = t("paymentMethod.addError")
-
-      if (error.errors && error.errors.length > 0 && error.errors[0].code === "PaymentMethodDuplicate") {
-        title = t("paymentMethod.duplicateMethod")
-        description = t("paymentMethod.duplicateMethodDescription")
+      if (error.errors?.[0]?.code === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setShowAddPaymentPanel(false)
+              router.push("/profile?tab=payment")
+            },
+          }),
+        )
+        return
       }
+
       showAlert({
-        title,
-        description,
+        title: t("paymentMethod.unableToAdd"),
+        description: t("paymentMethod.addError"),
         confirmText: t("common.ok"),
         type: "warning",
       })
@@ -641,15 +652,15 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             <div className="flex flex-col h-full max-w-xl mx-auto">
               <div className="flex items-center justify-end px-4 py-3">
                 <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-                  <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+                  <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
                 </Button>
               </div>
 
               <div className="flex flex-col h-auto overflow-y-auto">
                 <div className="p-4 pb-0">
-                  <Alert variant="warning" className="flex items-start gap-3">
+                  <Alert variant="warning" className={ALERT_INLINE_FLEX} dir={dir}>
                     <InfoCircleIcon className="shrink-0 mt-0.5" />
-                    <div>
+                    <div className={ALERT_INLINE_TEXT}>
                       <h3 className="font-bold text-sm mb-1">
                         {t("order.secureTradeReminder.title")}
                       </h3>
@@ -667,7 +678,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                       onChange={handleAmountChange}
                       type="number"
                       className={cn(
-                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0",
+                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none py-0",
                         validationError && "border-red-500 focus:border-red-500 focus-visible:ring-0",
                       )}
                       step="any"
@@ -709,10 +720,10 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                         </div>
                         <Image
                           src="/icons/chevron-down.png"
-                          alt="Arrow"
+                          alt={t("common.arrow")}
                           width={24}
                           height={24}
-                          className="ml-2 transition-transform duration-200"
+                          className="ms-2 transition-transform duration-200"
                         />
                       </div>
                     </div>
@@ -720,49 +731,54 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 )}
 
                 <div className="mx-4 mt-4 text-sm">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
-                    <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
-                      {localAd.exchange_rate_type === "float" ? "Floating" : "Fixed"}
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.rateType")}</span>
+                    <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1 shrink-0">
+                      {localAd.exchange_rate_type === "float" ? t("order.rateFloating") : t("order.rateFixed")}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
-                    <span className="text-slate-1200">
-                      {localAd.effective_rate_display} {localAd.payment_currency}
-                      <span className="text-grayscale-text-muted"> /{localAd.account_currency}</span>
-                    </span>
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.exchangeRate")}</span>
+                    <ExchangeRateDisplay
+                      className="text-slate-1200 shrink-0"
+                      rate={localAd.effective_rate_display}
+                      paymentCurrency={localAd.payment_currency}
+                      accountCurrency={localAd.account_currency}
+                      formatRate={false}
+                    />
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.orderLimit")}</span>
-                    <span className="text-slate-1200">
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.orderLimit")}</span>
+                    <span className="text-slate-1200 shrink-0">
                       {minLimit} - {maxLimit} {localAd.account_currency}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{t("order.paymentTime")}</span>
-                    <span className="text-slate-1200">
-                      {localAd.order_expiry_period} {t("market.min")}
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">{t("order.paymentTime")}</span>
+                    <span className="text-slate-1200 shrink-0">
+                      <bdi dir="ltr">{localAd.order_expiry_period}</bdi> {t("market.min")}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-grayscale-text-muted">{isBuy ? t("order.buyer") : t("order.seller")}</span>
-                    <span className="text-slate-1200">{localAd.user?.nickname}</span>
+                  <div className="flex justify-between items-center gap-4 mb-2">
+                    <span className="text-grayscale-text-muted shrink-0">
+                      {isBuy ? t("order.buyer") : t("order.seller")}
+                    </span>
+                    <span className="text-slate-1200 shrink-0">{localAd.user?.nickname}</span>
                   </div>
                 </div>
 
-                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
-                  <h3 className="text-grayscale-text-muted flex-1">
+                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex justify-between items-start gap-4">
+                  <h3 className="text-grayscale-text-muted shrink-0">
                     {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-4 justify-end shrink-0">
                     {localAd.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                          className={`h-2 w-2 rounded-full me-2 ${method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                             }`}
                         />
-                        <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>
+                        <span className="text-slate-1200">{formatPaymentMethodName(method, t)}</span>
                       </div>
                     ))}
                   </div>
@@ -787,7 +803,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                     }
                   >
                     {isSubmitting ? (
-                      <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                      <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
                     ) : (
                       t("order.placeOrder")
                     )}

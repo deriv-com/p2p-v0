@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 import Image from "next/image"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { BackArrowIcon } from "@/components/ui/back-arrow-icon"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -79,7 +80,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           {/* Back button */}
           <div className="flex items-center px-4 py-3">
             <Button variant="ghost" size="sm" onClick={handleClose} className="bg-grayscale-300 px-1">
-              <Image src="/icons/arrow-left-icon.png" alt={t("order.goBack")} width={24} height={24} />
+              <BackArrowIcon alt={t("order.goBack")} width={24} height={24} />
             </Button>
           </div>
 
@@ -143,7 +144,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
             </div>
             <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="w-full md:w-auto shrink-0">
               {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
               ) : (
                 t("complaint.submit")
               )}

@@ -81,10 +81,10 @@ export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, cl
                 {t("common.learnMore")}
                 <Image
                   src="/icons/chevron-right-white.png"
-                  alt="Arrow"
+                  alt={t("common.arrow")}
                   width={8}
                   height={18}
-                  className="ml-2 cursor-pointer"
+                  className="ms-2 cursor-pointer"
                 />
               </Button>
             )}
