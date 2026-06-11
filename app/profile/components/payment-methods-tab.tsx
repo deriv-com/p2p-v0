@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import { useState, useMemo, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
@@ -32,6 +33,7 @@ interface PaymentMethodsTabProps {
 
 export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethodsCountChange }: PaymentMethodsTabProps) {
   const { t } = useTranslations()
+  const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const { toast } = useToast()
   const { showDeleteDialog, showAlert } = useAlertDialog()
@@ -154,12 +156,23 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         description: t("profile.unableToUpdatePaymentMethod"),
       }
 
-      showAlert({
-        title,
-        description,
-        confirmText: t("common.ok"),
-        type: "warning",
-      })
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert({
+          title,
+          description,
+          confirmText: t("paymentMethod.managePaymentMethods"),
+          cancelText: t("common.cancel"),
+          type: "warning",
+          onConfirm: () => router.push("/profile?tab=payment"),
+        })
+      } else {
+        showAlert({
+          title,
+          description,
+          confirmText: t("common.ok"),
+          type: "warning",
+        })
+      }
     }
   }
 

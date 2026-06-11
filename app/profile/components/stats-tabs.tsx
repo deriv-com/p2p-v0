@@ -135,12 +135,23 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
       const errorCode = error?.errors?.[0]?.code
       const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? { title: t("paymentMethod.unableToAdd"), description: t("paymentMethod.addError") }
 
-      showAlert({
-        title,
-        description,
-        confirmText: t("common.ok"),
-        type: "warning",
-      })
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert({
+          title,
+          description,
+          confirmText: t("paymentMethod.managePaymentMethods"),
+          cancelText: t("common.cancel"),
+          type: "warning",
+          onConfirm: () => router.push("/profile?tab=payment"),
+        })
+      } else {
+        showAlert({
+          title,
+          description,
+          confirmText: t("common.ok"),
+          type: "warning",
+        })
+      }
     }
   }
 
