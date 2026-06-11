@@ -805,11 +805,9 @@
       "title": "Próximamente"
     },
     "whatsNew": {
-      "bullet0": "Consulta la actividad de los anunciantes con más claridad.",
-      "bullet1": "Disfruta de una experiencia más limpia y mejorada.",
-      "bullet2": "Hemos realizado mejoras para optimizar tu flujo P2P.",
-      "primaryCta": "Entendido",
-      "title": "Novedades"
+      "title": "Novedades",
+      "description": "Los usuarios Diamond en Deriv P2P ya pueden crear un grupo cerrado para compartir anuncios exclusivos con usuarios de confianza.",
+      "primaryCta": "Entendido"
     }
   },
   "paymentMethod": {

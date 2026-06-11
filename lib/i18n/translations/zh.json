@@ -789,11 +789,9 @@
       "title": "即将发生什么"
     },
     "whatsNew": {
-      "bullet0": "更清楚地查看广告商活动。",
-      "bullet1": "享受更干净、改进的体验。",
-      "bullet2": "我们进行了更新以改进您的 P2P 流程。",
-      "primaryCta": "明白了",
-      "title": "有什么新消息"
+      "title": "有什么新消息",
+      "description": "Deriv P2P 的 Diamond 用户现在可以创建封闭群组，与信任的用户分享专属广告。",
+      "primaryCta": "明白了"
     }
   },
   "paymentMethod": {
