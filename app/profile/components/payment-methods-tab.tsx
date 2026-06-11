@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import { useState, useMemo, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
@@ -21,6 +22,7 @@ import {
   PAYMENT_METHOD_TEXT,
 } from "@/lib/rtl"
 import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface PaymentMethod {
   id: string
@@ -39,11 +41,12 @@ interface PaymentMethodsTabProps {
 
 export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethodsCountChange }: PaymentMethodsTabProps) {
   const { t, locale } = useTranslations()
+  const router = useRouter()
   const dir = isRtlLocale(locale) ? "rtl" : "ltr"
   const menuSide = isRtlLocale(locale) ? "right" : "left"
   const userId = useUserDataStore((state) => state.userId)
   const { toast } = useToast()
-  const { showDeleteDialog, showAlert } = useAlertDialog()
+  const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -149,7 +152,6 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     } catch (err) {
       const error = err as PaymentMethodError
       const errorMessages: Record<string, { title: string; description: string }> = {
-        PaymentMethodDuplicate: { title: t("paymentMethod.duplicateMethod"), description: t("paymentMethod.duplicateMethodDescription") },
         PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
         PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
         PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
@@ -158,6 +160,19 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       }
 
       const errorCode = error?.errors?.[0]?.code
+
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setEditPanel({ show: false, paymentMethod: null })
+            },
+          }),
+        )
+        return
+      }
+
       const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? {
         title: t("profile.cannotUpdatePaymentMethod"),
         description: t("profile.unableToUpdatePaymentMethod"),
