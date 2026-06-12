@@ -98,6 +98,7 @@ export const PaymentConfirmationSidebar = ({
           description: t("orders.attachmentRejected"),
           confirmText: t("common.gotIt"),
           type: "warning",
+          onConfirm: () => handleRemoveFile(),
         })
       } else if (errorCode === "ChatAttachmentLimitReached") {
         showAlert({
@@ -105,6 +106,7 @@ export const PaymentConfirmationSidebar = ({
           description: t("orders.attachmentLimitReached"),
           confirmText: t("common.gotIt"),
           type: "warning",
+          onConfirm: () => handleRemoveFile(),
         })
       } else {
         console.error("Error uploading file to chat:", error)
