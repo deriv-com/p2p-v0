@@ -322,7 +322,7 @@ export default function OrderChat({
                     <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                       <div className="max-w-[80%] rounded-lg pb-[16px]">
                         {msg.attachment && (
-                          <div className={`flex items-center ${msg.sender_is_self ? "justify-end" : ""}`}>
+                          <div className={`flex items-start ${msg.sender_is_self ? "justify-end" : ""}`}>
                             <div
                               className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px] ${msg.rejected ? "opacity-50" : ""}`}
                             >
@@ -342,7 +342,7 @@ export default function OrderChat({
                                 )}
                               </div>
                             </div>
-                            {msg.rejected && <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} />}
+                            {msg.rejected && <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} className="mt-[16px]" />}
                           </div>
                         )}
                         {msg.message && (
