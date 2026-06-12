@@ -192,6 +192,8 @@
     "errorPromotionalContent": "不允许出现促销内容和广告。",
     "errorSensitiveDataRequests": "您的消息需要额外审核。请稍候，我们正在为您联系专家。",
     "fileTooLargeDescription": "附件不得超过 5 MB。压缩文件或发送较小的文件。",
+    "errorAttachmentRejected": "图片未发送。请仅分享与此订单相关的消息。",
+    "errorAttachmentLimitReached": "图片未发送：您已达到附件的最大数量。",
     "fileTooLargeTitle": "文件太大",
     "justNow": "刚才",
     "messageNotSent": "消息未发送：{error}",

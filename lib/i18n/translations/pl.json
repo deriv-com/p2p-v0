@@ -196,6 +196,8 @@
     "errorPromotionalContent": "Treści promocyjne i reklamy są niedozwolone.",
     "errorSensitiveDataRequests": "Twoja wiadomość wymaga dodatkowej recenzji. Proszę czekaj, aż połączymy Cię ze specjalistą.",
     "fileTooLargeDescription": "Załączniki muszą mieć 5 MB lub mniej. Skompresuj plik lub wyślij mniejszy.",
+    "errorAttachmentRejected": "Obraz nie został wysłany. Udostępniaj tylko wiadomości związane z tym zamówieniem.",
+    "errorAttachmentLimitReached": "Obraz nie został wysłany: osiągnięto maksymalną liczbę załączników.",
     "fileTooLargeTitle": "Plik jest za duży",
     "justNow": "właśnie teraz",
     "messageNotSent": "Wiadomość nie wysłana: {error}",

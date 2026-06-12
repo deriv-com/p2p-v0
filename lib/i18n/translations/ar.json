@@ -192,6 +192,8 @@
     "errorPromotionalContent": "المحتوى الترويجي والإعلانات غير مسموح بها.",
     "errorSensitiveDataRequests": "رسالتك تتطلب مراجعة إضافية. يرجى الانتظار بينما نوصلك بأخصائي.",
     "fileTooLargeDescription": "يجب أن يكون حجم المرفقات 5 ميجابايت أو أقل. ضغط الملف أو أرسل ملفًا أصغر.",
+    "errorAttachmentRejected": "لم يتم إرسال الصورة. يرجى مشاركة الرسائل ذات الصلة بهذا الطلب فقط.",
+    "errorAttachmentLimitReached": "لم يتم إرسال الصورة: لقد وصلت إلى الحد الأقصى لعدد المرفقات.",
     "fileTooLargeTitle": "الملف كبير جدًا",
     "justNow": "الآن",
     "messageNotSent": "لم يتم إرسال الرسالة: {error}",

@@ -165,6 +165,32 @@ export default function OrderChat({
           showFileTooLargeDialog()
         } else if (error instanceof Error && error.message === "OrderTempLocked") {
           showOrderTempLockedAlert()
+        } else if (error instanceof Error && error.message === "OrderChatAttachmentRejected") {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `local-rejected-${Date.now()}`,
+              attachment: { name: file.name, url: "" },
+              message: "",
+              sender_is_self: true,
+              time: Date.now(),
+              rejected: true,
+              tags: ["attachment_rejected"],
+            },
+          ])
+        } else if (error instanceof Error && error.message === "ChatAttachmentLimitReached") {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `local-rejected-${Date.now()}`,
+              attachment: { name: file.name, url: "" },
+              message: "",
+              sender_is_self: true,
+              time: Date.now(),
+              rejected: true,
+              tags: ["attachment_limit_reached"],
+            },
+          ])
         }
       } finally {
         setIsSending(false)
@@ -280,20 +306,27 @@ export default function OrderChat({
                     <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                       <div className="max-w-[80%] rounded-lg pb-[16px]">
                         {msg.attachment && (
-                          <div
-                            className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px]`}
-                          >
-                            {!msg.sender_is_self && (
-                              <div className="absolute ltr:left-0 rtl:right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-r-[8px] ltr:border-r-slate-1700 ltr:-translate-x-full rtl:border-l-[8px] rtl:border-l-slate-1700 rtl:translate-x-full" />
-                            )}
-                            {msg.sender_is_self && (
-                              <div className="absolute ltr:right-0 rtl:left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-l-[8px] ltr:border-l-slate-200 ltr:translate-x-full rtl:border-r-[8px] rtl:border-r-slate-200 rtl:-translate-x-full" />
-                            )}
-                            <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
-                              <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
-                                {msg.attachment.name}
-                              </a>
+                          <div className="flex items-center">
+                            <div
+                              className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px] ${msg.rejected ? "opacity-50" : ""}`}
+                            >
+                              {!msg.sender_is_self && (
+                                <div className="absolute ltr:left-0 rtl:right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-r-[8px] ltr:border-r-slate-1700 ltr:-translate-x-full rtl:border-l-[8px] rtl:border-l-slate-1700 rtl:translate-x-full" />
+                              )}
+                              {msg.sender_is_self && (
+                                <div className="absolute ltr:right-0 rtl:left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-l-[8px] ltr:border-l-slate-200 ltr:translate-x-full rtl:border-r-[8px] rtl:border-r-slate-200 rtl:-translate-x-full" />
+                              )}
+                              <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
+                                {msg.rejected ? (
+                                  <span>{msg.attachment.name}</span>
+                                ) : (
+                                  <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
+                                    {msg.attachment.name}
+                                  </a>
+                                )}
+                              </div>
                             </div>
+                            {msg.rejected && <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} />}
                           </div>
                         )}
                         {msg.message && (
@@ -314,7 +347,11 @@ export default function OrderChat({
                         )}
                         {msg.rejected && msg.tags ? (
                           <div className="text-xs text-error-text mt-[4px]">
-                            {t("chat.messageNotSent", { error: getChatErrorMessage(msg.tags, t) })}
+                            {msg.tags.includes("attachment_rejected")
+                              ? t("chat.errorAttachmentRejected")
+                              : msg.tags.includes("attachment_limit_reached")
+                                ? t("chat.errorAttachmentLimitReached")
+                                : t("chat.messageNotSent", { error: getChatErrorMessage(msg.tags, t) })}
                           </div>
                         ) : (
                           <div

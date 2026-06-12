@@ -193,6 +193,8 @@
     "errorPromotionalContent": "I contenuti promozionali e le pubblicità non sono consentiti.",
     "errorSensitiveDataRequests": "Il tuo messaggio richiede una revisione aggiuntiva. Per favore, attendi mentre ti mettiamo in contatto con uno specialista.",
     "fileTooLargeDescription": "Gli allegati devono essere di 5 MB o meno. Comprimi il file o invia uno più piccolo.",
+    "errorAttachmentRejected": "Immagine non inviata. Si prega di condividere solo i messaggi pertinenti a questo ordine.",
+    "errorAttachmentLimitReached": "Immagine non inviata: hai raggiunto il numero massimo di allegati.",
     "fileTooLargeTitle": "File troppo grande",
     "justNow": "proprio ora",
     "messageNotSent": "Messaggio non inviato: {error}",

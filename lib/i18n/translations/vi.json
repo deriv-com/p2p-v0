@@ -228,6 +228,8 @@
     "errorPromotionalContent": "Nội dung quảng cáo và quảng bá không được phép.",
     "errorSensitiveDataRequests": "Tin nhắn của bạn cần được xem xét thêm. Vui lòng đợi trong khi chúng tôi kết nối bạn với chuyên gia.",
     "fileTooLargeDescription": "Tệp đính kèm phải là 5 MB hoặc nhỏ hơn. Nén tệp hoặc gửi tệp nhỏ hơn.",
+    "errorAttachmentRejected": "Hình ảnh không được gửi. Vui lòng chỉ chia sẻ các tin nhắn liên quan đến đơn hàng này.",
+    "errorAttachmentLimitReached": "Hình ảnh không được gửi: bạn đã đạt đến số lượng tệp đính kèm tối đa.",
     "fileTooLargeTitle": "Tệp quá lớn",
     "justNow": "vừa xong",
     "messageNotSent": "Tin nhắn chưa được gửi: {error}",
