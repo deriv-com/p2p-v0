@@ -782,7 +782,11 @@
     "verifying": "Inathibitisha...",
     "wouldYouRecommend": "Je, ungependa kupendekeza {role} hii?",
     "youPay": "Unalipa:",
-    "youReceive": "Unapokea:"
+    "youReceive": "Unapokea:",
+    "attachmentRejected": "Faili hii haikuweza kutumwa. Tumia faili tofauti.",
+    "attachmentRejectedTitle": "Faili haikukubaliwa",
+    "attachmentLimitReachedTitle": "Kikomo cha viambatisho kimefikiwa",
+    "attachmentLimitReached": "Umefika idadi ya juu zaidi ya viambatisho."
   },
   "p2pAccess": {
     "description": "Huwezi tena kutumia Deriv P2P akaunti yako. Angalia barua pepe yako kwa maelezo zaidi. Kwa usaidizi, wasiliana nasi kupitia gumzo la moja kwa moja.",

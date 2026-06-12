@@ -774,7 +774,11 @@
     "verifying": "正在驗證...",
     "wouldYouRecommend": "您會推薦這個 {role} 嗎？",
     "youPay": "您付款：",
-    "youReceive": "您收到："
+    "youReceive": "您收到：",
+    "attachmentRejected": "此檔案無法傳送。請使用其他檔案。",
+    "attachmentRejectedTitle": "檔案不被接受",
+    "attachmentLimitReachedTitle": "已達到附件限制",
+    "attachmentLimitReached": "您已達到最大附件數量。"
   },
   "p2pAccess": {
     "description": "您無法再使用您的 Deriv P2P 帳戶。檢查您的電子郵件以了解更多詳細資訊。如需支持，請透過即時聊天與我們聯繫。",

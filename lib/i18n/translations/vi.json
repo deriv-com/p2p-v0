@@ -818,7 +818,11 @@
     "verifying": "Đang xác minh...",
     "wouldYouRecommend": "Bạn có giới thiệu {role} này không?",
     "youPay": "Bạn thanh toán: ",
-    "youReceive": "Bạn nhận được: "
+    "youReceive": "Bạn nhận được: ",
+    "attachmentRejected": "Không thể gửi tệp này. Hãy sử dụng tệp khác.",
+    "attachmentRejectedTitle": "Tệp không được chấp nhận",
+    "attachmentLimitReachedTitle": "Đã đạt giới hạn tệp đính kèm",
+    "attachmentLimitReached": "Bạn đã đạt đến số lượng tệp đính kèm tối đa."
   },
   "p2pAccess": {
     "description": "Bạn không thể sử dụng tài khoản Deriv P2P của mình nữa. Kiểm tra email của bạn để biết thêm chi tiết. Để được hỗ trợ, hãy liên hệ với chúng tôi qua trò chuyện trực tiếp.",
