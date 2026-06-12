@@ -63,7 +63,7 @@ export default function OrderChat({
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
           setMessages((prev) => {
-            const localRejected = prev.filter((msg) => msg.id.startsWith("local-rejected-"))
+            const localRejected = prev.filter((msg) => msg.id?.startsWith("local-rejected-"))
             return [...data.payload.data.chat_history, ...localRejected]
           })
         }
