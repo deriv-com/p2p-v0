@@ -17,7 +17,7 @@ type Message = {
   attachment: {
     name: string
     url: string
-  }
+  } | null
   id: string
   message: string
   sender_is_self: boolean
@@ -62,7 +62,10 @@ export default function OrderChat({
     const unsubscribe = subscribe((data) => {
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
-          setMessages(data.payload.data.chat_history)
+          setMessages((prev) => {
+            const localRejected = prev.filter((msg) => msg.id.startsWith("local-rejected-"))
+            return [...data.payload.data.chat_history, ...localRejected]
+          })
         }
 
         if (data.payload.data.message || data.payload.data.attachment) {
@@ -110,14 +113,27 @@ export default function OrderChat({
 
     setIsSending(true)
 
-    try {
-      const messageToSend = message
-      setMessage("")
+    const messageToSend = message
+    setMessage("")
 
+    try {
       await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
     } catch (error) {
       if (error instanceof Error && error.message === "OrderTempLocked") {
         showOrderTempLockedAlert()
+      } else if (error instanceof Error && error.message === "OrderChatMessageRejected") {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `local-rejected-${Date.now()}`,
+            attachment: null,
+            message: messageToSend,
+            sender_is_self: true,
+            time: Date.now(),
+            rejected: true,
+            tags: ["miscellaneous"],
+          },
+        ])
       }
     } finally {
       setIsSending(false)
@@ -318,7 +334,7 @@ export default function OrderChat({
                               )}
                               <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
                                 {msg.rejected ? (
-                                  <span>{msg.attachment.name}</span>
+                                  <Image src="/icons/image-unavailable.svg" alt={t("common.error")} width={40} height={40} />
                                 ) : (
                                   <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                                     {msg.attachment.name}
