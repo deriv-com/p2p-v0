@@ -774,7 +774,11 @@
     "verifying": "සත්‍යාපනය කරමින්...",
     "wouldYouRecommend": "ඔබ මෙය {role} නිර්දේශ කරනවාද?",
     "youPay": "ඔබ ගෙවන්නේ:",
-    "youReceive": "ඔබට ලැබෙන්නේ:"
+    "youReceive": "ඔබට ලැබෙන්නේ:",
+    "attachmentRejected": "මෙම ගොනුව යැවිය නොහැකි විය. වෙනත් ගොනුවක් භාවිතා කරන්න.",
+    "attachmentRejectedTitle": "ගොනුව පිළිගනු නොලැබේ",
+    "attachmentLimitReachedTitle": "උපග්‍රන්ථ සීමාවට ළඟා විය",
+    "attachmentLimitReached": "ඔබ උපරිම උපග්‍රන්ථ සංඛ්‍යාවට ළඟා වී ඇත."
   },
   "p2pAccess": {
     "description": "ඔබට තවදුරටත් ඔබේ Deriv P2P ගිණුම භාවිත කළ නොහැක. වැඩි විස්තර සඳහා ඔබගේ විද්‍යුත් තැපෑල පරීක්ෂා කරන්න. සහාය සඳහා, සජීවී කතාබස් හරහා අප හා සම්බන්ධ වන්න.",

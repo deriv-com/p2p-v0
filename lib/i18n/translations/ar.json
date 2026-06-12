@@ -774,7 +774,11 @@
     "verifying": "جارٍ التحقق...",
     "wouldYouRecommend": "هل توصي بهذا {role}؟",
     "youPay": "تدفع: ",
-    "youReceive": "تستلم: "
+    "youReceive": "تستلم: ",
+    "attachmentRejected": "تعذر إرسال هذا الملف. استخدم ملفًا مختلفًا.",
+    "attachmentRejectedTitle": "الملف غير مقبول",
+    "attachmentLimitReachedTitle": "تم الوصول إلى حد المرفقات",
+    "attachmentLimitReached": "لقد وصلت إلى الحد الأقصى لعدد المرفقات."
   },
   "p2pAccess": {
     "description": "لم يعد بإمكانك استخدام حساب Deriv P2P الخاص بك. تحقق من بريدك الإلكتروني لمزيد من التفاصيل. للحصول على الدعم، تواصل معنا عبر الدردشة المباشرة.",

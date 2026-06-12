@@ -790,7 +790,11 @@
     "verifying": "Vérification en cours...",
     "wouldYouRecommend": "Recommanderiez-vous ce {role} ?",
     "youPay": "Vous payez : ",
-    "youReceive": "Vous recevez : "
+    "youReceive": "Vous recevez : ",
+    "attachmentRejected": "Ce fichier n'a pas pu être envoyé. Utilisez un fichier différent.",
+    "attachmentRejectedTitle": "Fichier non accepté",
+    "attachmentLimitReachedTitle": "Limite de pièces jointes atteinte",
+    "attachmentLimitReached": "Vous avez atteint le nombre maximum de pièces jointes."
   },
   "p2pAccess": {
     "description": "Vous ne pouvez plus utiliser votre compte Deriv P2P. Vérifiez votre courrier électronique pour plus de détails. Pour obtenir de l'aide, contactez-nous via le chat en direct.",

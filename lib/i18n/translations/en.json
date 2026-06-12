@@ -872,6 +872,7 @@
     "uploadProof": "Upload proof of payment",
     "fileTypes": "JPEG, JPG, PNG, PDF (up to 5MB)",
     "fileTooLarge": "File must be 5MB or smaller.",
+    "attachmentRejected": "This file couldn't be sent. Use a different file.",
     "submit": "Submit",
     "confirmPaymentReceived": "Confirm payment received",
     "otpSentTo": "Enter the 6-digit code sent to {email}. This step verifies your identity before releasing payment to the other party.",
@@ -883,7 +884,10 @@
     "verifying": "Verifying...",
     "didntReceiveCode": "Didn't receive the code?",
     "resendCode": "Resend code",
-    "resendCodeTimer": "Resend code ({seconds}s)"
+    "resendCodeTimer": "Resend code ({seconds}s)",
+    "attachmentRejectedTitle": "File not accepted",
+    "attachmentLimitReachedTitle": "Attachment limit reached",
+    "attachmentLimitReached": "You've reached the maximum number of attachments."
   },
   "adForm": {
     "createAd": "Create ad",

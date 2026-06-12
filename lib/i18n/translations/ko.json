@@ -823,7 +823,11 @@
     "verifying": "확인 중...",
     "wouldYouRecommend": "이 {role}을(를) 추천하시겠습니까?",
     "youPay": "귀하는 다음을 지불합니다:",
-    "youReceive": "귀하는 다음을 받습니다:"
+    "youReceive": "귀하는 다음을 받습니다:",
+    "attachmentRejected": "이 파일을 보낼 수 없습니다. 다른 파일을 사용하세요.",
+    "attachmentRejectedTitle": "파일이 허용되지 않음",
+    "attachmentLimitReachedTitle": "첨부 파일 한도 도달",
+    "attachmentLimitReached": "최대 첨부 파일 수에 도달했습니다."
   },
   "p2pAccess": {
     "description": "더 이상 Deriv P2P 계정을 사용할 수 없습니다. 자세한 내용은 이메일을 확인하세요. 지원을 받으려면 실시간 채팅을 통해 문의하세요.",

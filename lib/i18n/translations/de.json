@@ -801,7 +801,11 @@
     "verifying": "Überprüfung...",
     "wouldYouRecommend": "Würden Sie diesen {role} empfehlen?",
     "youPay": "Sie zahlen: ",
-    "youReceive": "Sie erhalten: "
+    "youReceive": "Sie erhalten: ",
+    "attachmentRejected": "Diese Datei konnte nicht gesendet werden. Verwenden Sie eine andere Datei.",
+    "attachmentRejectedTitle": "Datei nicht akzeptiert",
+    "attachmentLimitReachedTitle": "Anhangslimit erreicht",
+    "attachmentLimitReached": "Sie haben die maximale Anzahl an Anhängen erreicht."
   },
   "p2pAccess": {
     "description": "Sie können Ihr Deriv P2P-Konto nicht mehr verwenden. Weitere Informationen finden Sie in Ihren E-Mails. Wenn Sie Unterstützung benötigen, kontaktieren Sie uns per Live-Chat.",
