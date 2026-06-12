@@ -193,6 +193,8 @@
     "errorPromotionalContent": "Le contenu promotionnel et les publicités ne sont pas autorisés.",
     "errorSensitiveDataRequests": "Votre message nécessite un examen supplémentaire. Veuillez patienter pendant que nous vous connectons avec un spécialiste.",
     "fileTooLargeDescription": "Les pièces jointes doivent faire 5 Mo ou moins. Compressez le fichier ou envoyez-en un plus petit.",
+    "errorAttachmentRejected": "Pièce jointe non envoyée. Veuillez partager uniquement les messages pertinents pour cette commande.",
+    "errorAttachmentLimitReached": "Pièce jointe non envoyée : vous avez atteint le nombre maximum de pièces jointes.",
     "fileTooLargeTitle": "Fichier trop volumineux",
     "justNow": "à l'instant",
     "messageNotSent": "Message non envoyé : {error}",

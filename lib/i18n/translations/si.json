@@ -192,6 +192,8 @@
     "errorPromotionalContent": "ප්‍රවර්ධන අන්තර්ගතය සහ වෙළඳ දැන්වීම් වලට ඉඩ නොදේ.",
     "errorSensitiveDataRequests": "ඔබේ පණිවිඩයට අමතර සමාලෝචනයක් අවශ්‍යයි. අපි ඔබව විශේෂඥයෙකු සමඟ සම්බන්ධ කරන තෙක් කරුණාකර රැඳී සිටින්න.",
     "fileTooLargeDescription": "ඇමුණුම් 5 MB හෝ ඊට අඩු විය යුතුය. ගොනුව සම්පීඩනය කරන්න හෝ කුඩා එකක් යවන්න.",
+    "errorAttachmentRejected": "ඇමුණුම යවා නැත. කරුණාකර මෙම ඇණවුමට අදාළ පණිවිඩ පමණක් බෙදා ගන්න.",
+    "errorAttachmentLimitReached": "ඇමුණුම යවා නැත: ඔබ උපරිම ඇමුණුම් සීමාවට ළඟා වී ඇත.",
     "fileTooLargeTitle": "ගොනුව ඉතා විශාලයි",
     "justNow": "දැන්",
     "messageNotSent": "පණිවිඩය යවා නැත: {error}",

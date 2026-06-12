@@ -217,6 +217,8 @@
     "errorPromotionalContent": "Werbeinhalte und Anzeigen sind nicht erlaubt.",
     "errorSensitiveDataRequests": "Ihre Nachricht erfordert eine zusätzliche Überprüfung. Bitte warten Sie, während wir Sie mit einem Spezialisten verbinden.",
     "fileTooLargeDescription": "Anhänge müssen 5 MB oder kleiner sein. Komprimiere die Datei oder sende eine kleinere.",
+    "errorAttachmentRejected": "Anhang nicht gesendet. Bitte teilen Sie nur relevante Nachrichten zu dieser Bestellung.",
+    "errorAttachmentLimitReached": "Anhang nicht gesendet: Sie haben die maximale Anzahl an Anhängen erreicht.",
     "fileTooLargeTitle": "Datei zu groß",
     "justNow": "gerade eben",
     "messageNotSent": "Nachricht nicht gesendet: {error}",
